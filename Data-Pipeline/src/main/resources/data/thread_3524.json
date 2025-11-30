@@ -1,0 +1,78 @@
+{
+  "tags" : [ "java", "cryptography", "bouncycastle", "fips" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3421244,
+      "reputation" : 39516,
+      "user_id" : 2868801,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3f265dbe3edef5d671947a604f7171bf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dave_thompson_085",
+      "link" : "https://stackoverflow.com/users/2868801/dave-thompson-085"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1725387673,
+    "post_id" : 78945143,
+    "comment_id" : 139192741,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Exactly as it says; Kyber is a <a href=\"https://en.wikipedia.org/wiki/Key_encapsulation_mechanism\" rel=\"nofollow noreferrer\">KEM = <b>Key</b> Encapsulation Mechanism</a> which securely conveys/shares a <i>key</i> not data; in the JCA API this is handled as &#39;key wrap&#39; (KW) and unwrap although technically KEM is not exactly the same thing as KW. You use the KEM to share a key (often called a &#39;working&#39; key or DEK = Data Encryption Key for clarity) and use <i>that</i> key with a symmetric (not publickey) encryption algorithm like AES to encrypt (and decrypt) the data."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 39232885,
+      "reputation" : 21,
+      "user_id" : 29172215,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/92e193e97e151b68342cfe2d190cd938?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Myungkyu Jung",
+      "link" : "https://stackoverflow.com/users/29172215/myungkyu-jung"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1736747680,
+    "creation_date" : 1736747680,
+    "answer_id" : 79351272,
+    "question_id" : 78945143,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>ML-KEM using encapsulation/decapsulation instead of encrypt/decrypt.\n(refer <a href=\"https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf\" rel=\"nofollow noreferrer\">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf</a>)</p>\n<p>and I used bouncycastle v1.79</p>\n<pre><code>static {\n    Security.addProvider(new BouncyCastleProvider());\n}\n\n@Test\npublic void MLKEM_PKCS_Test(){\n    try{\n        KeyPairGenerator keyGen = KeyPairGenerator.getInstance(&quot;ML-KEM-512&quot;, &quot;BC&quot;);\n        KeyPair keyPair = keyGen.generateKeyPair();\n\n        PrivateKey privateKey = keyPair.getPrivate();\n        System.out.println(&quot;Private Key: &quot; + DatatypeConverter.printHexBinary(privateKey.getEncoded()));\n        MLKEMPrivateKeyParameters priKey = (MLKEMPrivateKeyParameters) PrivateKeyFactory.createKey(privateKey.getEncoded());\n        System.out.println(&quot;dk: &quot; + DatatypeConverter.printHexBinary(priKey.getEncoded()));\n\n        PublicKey publicKey = keyPair.getPublic();\n        System.out.println(&quot;Public Key: &quot; + DatatypeConverter.printHexBinary(publicKey.getEncoded()));\n        MLKEMPublicKeyParameters pubKey = (MLKEMPublicKeyParameters)PublicKeyFactory.createKey(publicKey.getEncoded());\n        System.out.println(&quot;ek: &quot; + DatatypeConverter.printHexBinary(pubKey.getEncoded()));\n\n        MLKEMGenerator mlkemGenerator = new MLKEMGenerator(new SecureRandom());\n        SecretWithEncapsulation encaps = mlkemGenerator.generateEncapsulated(pubKey);\n        System.out.println(&quot;Cipher: &quot;+DatatypeConverter.printHexBinary(encaps.getEncapsulation()));\n        System.out.println(&quot;secret(encap): &quot; + DatatypeConverter.printHexBinary(encaps.getSecret()));\n\n        MLKEMExtractor mlkemExtractor = new MLKEMExtractor(priKey);\n        byte[] secret = mlkemExtractor.extractSecret(encaps.getEncapsulation());\n        System.out.println(&quot;secret(decap): &quot; + DatatypeConverter.printHexBinary(secret));\n\n\n    } catch (Exception e) {\n        e.printStackTrace();\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12359353,
+      "reputation" : 50548,
+      "user_id" : 9014097,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Y9EVM.jpg?s=256",
+      "display_name" : "Topaco",
+      "link" : "https://stackoverflow.com/users/9014097/topaco"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762288520,
+    "creation_date" : 1762288520,
+    "answer_id" : 79809370,
+    "question_id" : 78945143,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Since Java 24, ML-KEM<sup>1</sup> is <em>natively</em> supported (<a href=\"https://openjdk.org/jeps/496\" rel=\"nofollow noreferrer\">JEP 496</a>), so BouncyCastle is no longer needed. Sample code:</p>\n<pre class=\"lang-java prettyprint-override\"><code>import java.security.KeyPair;\nimport java.security.KeyPairGenerator;\nimport java.security.spec.NamedParameterSpec;\nimport java.util.HexFormat;\nimport javax.crypto.KEM;\nimport javax.crypto.SecretKey;\n\n...\n\n// Receiver's side\nKeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(&quot;ML-KEM&quot;);\nkeyPairGenerator.initialize(NamedParameterSpec.ML_KEM_1024); // ML_KEM_512, ML-KEM-768\nKeyPair kpReceiver = keyPairGenerator.generateKeyPair(); // an ML-KEM-1024 key pair, send public key to sender\n\n// Sender's side\nKEM kemSender = KEM.getInstance(&quot;ML-KEM&quot;);\nKEM.Encapsulator encapsulater = kemSender.newEncapsulator(kpReceiver.getPublic());\nKEM.Encapsulated encapsulated = encapsulater.encapsulate();\nbyte[] ciphertext = encapsulated.encapsulation(); // send ciphertext to receiver\nSecretKey sharedSecretKeySender = encapsulated.key();\nSystem.out.println(&quot;Sender's   shared secret key: &quot; + HexFormat.of().formatHex(sharedSecretKeySender.getEncoded()));\n\n// Receiver's side\nKEM kemReceiver = KEM.getInstance(&quot;ML-KEM&quot;);\nKEM.Decapsulator decapsulator = kemReceiver.newDecapsulator(kpReceiver.getPrivate());\nSecretKey sharedSecretKeyReceiver = decapsulator.decapsulate(ciphertext);       \nSystem.out.println(&quot;Receiver's shared secret key: &quot; + HexFormat.of().formatHex(sharedSecretKeyReceiver.getEncoded()));      \n</code></pre>\n<hr />\n<p>In addition to ML-KEM, ML-DSA<sup>2</sup> has also been supported since Java 24 (<a href=\"https://openjdk.org/jeps/497\" rel=\"nofollow noreferrer\">JEP 497</a>).</p>\n<p>BouncyCastle also implements ML-KEM and ML-DSA, and in addition SLH-DSA<sup>3</sup>.</p>\n<hr />\n<p><sup><sup>1</sup>ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism) is the NIST standard derived from CRYSTALS-Kyber (<a href=\"https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf\" rel=\"nofollow noreferrer\">FIPS 203</a>).</sup><br />\n<sup><sup>2</sup>ML-DSA (Module-Lattice-Based Digital Signature Algorithm) is the NIST standard derived from CRYSTALS-Dilithium (<a href=\"https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf\" rel=\"nofollow noreferrer\">FIPS 204</a>).</sup><br />\n<sup><sup>3</sup>SLH-DSA (Stateless Hash-Based Digital Signature Algorithm) is the NIST standard derived from SPHINCS+ (<a href=\"https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.205.pdf\" rel=\"nofollow noreferrer\">FIPS 205</a>).</sup></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 33258629,
+    "reputation" : 11,
+    "user_id" : 25753955,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/4fc2025070d04c0bf7d82ad67df3ac57?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user25753955",
+    "link" : "https://stackoverflow.com/users/25753955/user25753955"
+  },
+  "is_answered" : true,
+  "view_count" : 1534,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1762288520,
+  "creation_date" : 1725378484,
+  "last_edit_date" : 1725472910,
+  "question_id" : 78945143,
+  "link" : "https://stackoverflow.com/questions/78945143/how-to-use-ml-kem-kyber-for-encrypting-data-using-publickey-and-decrypting-data",
+  "title" : "How to use ML-KEM/Kyber for encrypting data using PublicKey and decrypting data using PrivateKey",
+  "body" : "<p>I am learning how to use Post quantum cryptography with Java. The vendor implementation is provided by BouncyCastle version 1.78.1. In short, I'm using a  BouncyCastlePQCProvider to obtain a Key Pair of specification Kyber1024.</p>\n<pre><code>static\n    {\n        Security.addProvider(new BouncyCastleProvider());\n        Security.addProvider(new BouncyCastlePQCProvider());\n    }\n    \n    public static KeyPair generateKeyPair() {\n        try {\n            KeyPairGenerator kpg=KeyPairGenerator.getInstance(&quot;Kyber&quot;,&quot;BCPQC&quot;);\n            kpg.initialize(KyberParameterSpec.kyber1024);\n            return kpg.generateKeyPair();\n        } catch (Throwable t) {\n            t.printStackTrace();\n            throw new RuntimeException(t.getMessage(), t);\n        }\n    }\n    \n    public static byte[] encryptData(byte[] data, PublicKey publicKey)\n    {\n        Cipher cipher=null;\n        try\n        {\n            cipher=Cipher.getInstance(&quot;Kyber&quot;, &quot;BCPQC&quot;);\n            cipher.init(Cipher.ENCRYPT_MODE, publicKey);\n            return cipher.doFinal(data);\n        } catch (Throwable t) {\n            t.printStackTrace();\n            throw new RuntimeException(t.getMessage(), t);\n        }\n    }\n    \n    public static byte[] decryptData(byte[] encryptedData, PrivateKey privateKey)\n    {\n        Cipher cipher=null;\n        try\n        {\n            cipher=Cipher.getInstance(&quot;Kyber&quot;, &quot;BCPQC&quot;);\n            cipher.init(Cipher.DECRYPT_MODE, privateKey);\n            return cipher.doFinal(encryptedData);\n        } catch (Throwable t) {\n            t.printStackTrace();\n            throw new RuntimeException(t.getMessage(), t);\n        }\n    }\n    \n    public static void main(String[] args) {\n        KeyPair keyPair=generateKeyPair();\n        byte[] publicKeyData=keyPair.getPublic().getEncoded();\n        byte[] privateKeyData=keyPair.getPrivate().getEncoded();\n        String publicKeyHex=Hex.toHexString(publicKeyData);\n        String privateKeyHex=Hex.toHexString(privateKeyData);\n        System.out.println(&quot;Public key length &quot; + keyPair.getPublic().getEncoded().length + &quot; format &quot; + keyPair.getPublic().getFormat() + &quot; algorithm &quot; + keyPair.getPublic().getAlgorithm());\n        System.out.println(&quot;Public Key &quot;);\n        System.out.println(publicKeyHex);\n        System.out.println(&quot;Private key length &quot; + keyPair.getPrivate().getEncoded().length + &quot; format &quot; + keyPair.getPrivate().getFormat() + &quot; algorithm &quot; + keyPair.getPrivate().getAlgorithm());\n        System.out.println(&quot;Private Key &quot;);\n        System.out.println(privateKeyHex);\n        String message=&quot;Hello World!&quot;;\n        byte[] encryptedData=encryptData(message.getBytes(), keyPair.getPublic());\n        String encryptedDataStr=DatatypeConverter.printBase64Binary(encryptedData);\n        System.out.println(&quot;encrypted:&quot; + encryptedDataStr);\n        byte[] decryptedData=decryptData(encryptedData, keyPair.getPrivate());\n        String decrtyptedDataStr=new String(decryptedData);\n        System.out.println(&quot;decrypted:&quot; + decrtyptedDataStr);\n    }\n</code></pre>\n<p>However when running this code, getting some exceptions during encryption, getting Cipher only valid for wrapping/unwrapping exception</p>\n<p><code>java.security.InvalidParameterException: Cipher only valid for wrapping/unwrapping</code></p>\n<p>What am I doing wrong?</p>\n"
+}

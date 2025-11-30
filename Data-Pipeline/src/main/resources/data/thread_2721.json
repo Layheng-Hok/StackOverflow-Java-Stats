@@ -1,0 +1,92 @@
+{
+  "tags" : [ "java", "android" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 452482,
+        "reputation" : 77,
+        "user_id" : 848947,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/619a24db597cf485e3639a85a6fd623a?s=256&d=identicon&r=PG",
+        "display_name" : "trey85stang",
+        "link" : "https://stackoverflow.com/users/848947/trey85stang"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1311441790,
+      "post_id" : 6802024,
+      "comment_id" : 8075492,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I sure did not,  but I just added it and low and behold it works now  I appreciate the quick response Nikola.  Can someone give me a quick explanation why that is needed?  Doesnt quite make sense to me why it is needed when I already have a query that should only return that value??"
+    }, {
+      "owner" : {
+        "account_id" : 268428,
+        "reputation" : 50653,
+        "user_id" : 557179,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/7KJPr.jpg?s=256",
+        "display_name" : "Nikola Despotoski",
+        "link" : "https://stackoverflow.com/users/557179/nikola-despotoski"
+      },
+      "reply_to_user" : {
+        "account_id" : 452482,
+        "reputation" : 77,
+        "user_id" : 848947,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/619a24db597cf485e3639a85a6fd623a?s=256&d=identicon&r=PG",
+        "display_name" : "trey85stang",
+        "link" : "https://stackoverflow.com/users/848947/trey85stang"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1311442142,
+      "post_id" : 6802024,
+      "comment_id" : 8075565,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It is essential to put cursors pointer to the first record, so you can iterate through the records using .moveToNext() and checking if the that pointer is after the last record usin .isAfterLast(). Query does not returns only that value (better said one value) it returns as much as there is data to the conditions of the query respectively. You can use the cursors to iterate and see the results of the query. I hope my suggestion for your problem did the job and this quick explanation make things clearer for you. Cheers."
+    } ],
+    "owner" : {
+      "account_id" : 268428,
+      "reputation" : 50653,
+      "user_id" : 557179,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/7KJPr.jpg?s=256",
+      "display_name" : "Nikola Despotoski",
+      "link" : "https://stackoverflow.com/users/557179/nikola-despotoski"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1311441399,
+    "creation_date" : 1311441399,
+    "answer_id" : 6802024,
+    "question_id" : 6801974,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Did you tried to make cursor pointer point to the first row to its data like <code>cursor.moveToFirst()</code> before you access data inside it? Actually, for <code>Cursor phone_num</code> and <code>Cursor phone_id</code>?</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 452482,
+    "reputation" : 77,
+    "user_id" : 848947,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/619a24db597cf485e3639a85a6fd623a?s=256&d=identicon&r=PG",
+    "display_name" : "trey85stang",
+    "link" : "https://stackoverflow.com/users/848947/trey85stang"
+  },
+  "is_answered" : true,
+  "view_count" : 895,
+  "accepted_answer_id" : 6802024,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1764034116,
+  "creation_date" : 1311440928,
+  "last_edit_date" : 1764034116,
+  "question_id" : 6801974,
+  "link" : "https://stackoverflow.com/questions/6801974/unable-to-get-phone-number-from-contact-list-code-inside",
+  "title" : "Unable to get phone number from contact list... code inside",
+  "body" : "<p>I'm new to android and programming in general (I'm a linux sys admin / scripting person). And I've been trying to get a simple android app going to get a feel for programming but I am having some problems.</p>\n<p>I was able to string together some ideas and queries to get a list view of all the contacts, but now id like to be able to grab the phone number of the selected contact but I am not having any luck...  I know there are probably better ways to do what I am doing but I'm just trying to get a grasp on this.</p>\n<p>Code first:</p>\n<pre class=\"lang-java prettyprint-override\"><code>package com.SomeApp;\n\nimport android.app.AlertDialog;\nimport android.app.ListActivity;\nimport android.database.Cursor;\n//import android.net.Uri;\nimport android.os.Bundle;\nimport android.provider.ContactsContract;\nimport android.view.View;\nimport android.widget.ListAdapter;\nimport android.widget.ListView;\nimport android.widget.SimpleCursorAdapter;\n\npublic class CallAppActivity extends ListActivity \n{  /** Called when the activity is first created. */\n    private ListAdapter mAdapter;\n    @Override\n    public void onCreate(Bundle savedInstanceState) \n    {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.main);\n    \n        //Get All information from ContactsContract\n        Cursor managedCursor = getContentResolver().query(\n          ContactsContract.Contacts.CONTENT_URI, \n          null, \n          null, \n          null, \n          null\n        );\n            \n        //Activity will manage the cursor lifecycle.\n        startManagingCursor(managedCursor);\n        String[] columns = new String[] {ContactsContract.Contacts.DISPLAY_NAME};\n        int[] names = new int[] {R.id.contact_entry};\n        mAdapter = new SimpleCursorAdapter(\n          this, \n          R.layout.main, \n          managedCursor, \n          columns, \n          names\n       );\n       setListAdapter(mAdapter);\n    }\n    \n    @Override\n    protected void onListItemClick(ListView l, View v, int position, long id) \n    {\n        super.onListItemClick(l, v, position, id);\n    \n        Cursor lookup = (Cursor) mAdapter.getItem(position); \n        String contactId = lookup.getString(\n          lookup.getColumnIndex(\n            ContactsContract.Contacts._ID\n          )\n        );\n    \n        Cursor phone_num = getContentResolver().query(\n          ContactsContract.CommonDataKinds.Phone.CONTENT_URI, \n          null, \n          ContactsContract.CommonDataKinds.Phone.CONTACT_ID +&quot; = &quot;+ contactId, \n          null, \n          null\n        );\n    \n        String phoneId = phone_num.getString(\n          phone_num.getColumnIndex(\n            ContactsContract.CommonDataKinds.Phone.NUMBER\n          )\n        );\n \n        //We are going to print shit to a message box....\n        AlertDialog.Builder alertbox = new AlertDialog.Builder(this);\n        alertbox.setMessage(phoneId);\n        alertbox.show();\n    }\n}\n</code></pre>\n<p>And now the logcat....</p>\n<pre class=\"lang-none prettyprint-override\"><code>07-23 11:35:34.469: WARN/dalvikvm(781): threadid=1: thread exiting with uncaught exception (group=0x40015560)\n07-23 11:35:34.479: ERROR/AndroidRuntime(781): FATAL EXCEPTION: main\n07-23 11:35:34.479: ERROR/AndroidRuntime(781): android.database.CursorIndexOutOfBoundsException: Index -1 requested, with a size of 1\n</code></pre>\n<p>No matter what Contact I pick I get the same exception.</p>\n"
+}

@@ -1,0 +1,354 @@
+{
+  "tags" : [ "java", "apache-kafka", "kafka-producer-api", "windows-subsystem-for-linux" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 16329453,
+      "reputation" : 553,
+      "user_id" : 11793187,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5e52609f466397935f11fd67155cf3b5?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "g43m1",
+      "link" : "https://stackoverflow.com/users/11793187/g43m1"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1605828629,
+    "creation_date" : 1605828629,
+    "answer_id" : 64921590,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is not the optimal solution, but you will be able to connect if you run your producer in Ubuntu/WSL.  This means if you are using a Windows IDE, writing the code, switching to Ubuntu and using a command line compiler and running the producer.  See this post <a href=\"https://stackoverflow.com/questions/62511091/error-connecting-to-kafka-server-via-ide-in-wsl2\">Error connecting to kafka server via IDE in WSL2</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8677319,
+        "reputation" : 621,
+        "user_id" : 6812826,
+        "user_type" : "registered",
+        "accept_rate" : 52,
+        "profile_image" : "https://i.sstatic.net/3cVUy.png?s=256",
+        "display_name" : "Andrew",
+        "link" : "https://stackoverflow.com/users/6812826/andrew"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1678125411,
+      "post_id" : 65553634,
+      "comment_id" : 133469114,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It works. But I had an issue with my connection even after this changes. Then I looked on ubuntu kafka  server.log and there was an error &#39;ERROR Processor got uncaught exception. (kafka.network.Processor)&#39;, and I&#39;ve found that the issue also can be caused by kafka-clients version missmatch in your maven dependecies.  I&#39;am also recommend check this"
+    } ],
+    "owner" : {
+      "account_id" : 20358264,
+      "reputation" : 141,
+      "user_id" : 14933278,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e797b0388e36fd4768d7835f68c5ed6d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Goose",
+      "link" : "https://stackoverflow.com/users/14933278/goose"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1609699853,
+    "creation_date" : 1609699853,
+    "answer_id" : 65553634,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had the exact problem you are having and I resolved it as follows:</p>\n<ol>\n<li>I ran the following command in my WSL2 Ubuntu shell:\nip addr | grep &quot;eth0&quot;\nI made note of the ip address against the inet property, for example, 172.27.10.68</li>\n<li>In my Kafka server.properties I replaced the listeners property value as follows:\nlisteners=PLAINTEXT://172.27.10.68:9092\nI commented out the advertised.listeners property. But you can alternatively assign\nthe ip in question to this property, and have the listeners property set to 0.0.0.0.\nBut I assume you are using the Kafka installation for testing/learning purposes,\nso I would keep it simple.</li>\n<li>I made no change to the Zookeeper's default ip:port</li>\n<li>I am using the Schema Registry, so I modified the Kafka bootstrap property as follows:\nkafkastore.bootstrap.servers=PLAINTEXT://172.27.10.68:9092\nI made no change to the default schema registry listener listeners=http://0.0.0.0:8081</li>\n<li>I used the same ip (as listed above) in my IntelliJ Kafka Producer.\nIt then happily connected to my Kafka broker in WSL2.</li>\n</ol>\n<p>More information on WSL2 networking can be found at <a href=\"https://learn.microsoft.com/en-us/windows/wsl/compare-versions\" rel=\"noreferrer\">https://learn.microsoft.com/en-us/windows/wsl/compare-versions</a> .</p>\n<p>The only problem with this setup is that every time you shutdown or restart your Windows machine, or close your Ubuntu terminal, the ip address for eth0 changes. And this results in redoing steps 2, 4 and 5. I am sure there is a better way, but everything I tried failed, except for this.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7455566,
+        "reputation" : 3488,
+        "user_id" : 5668956,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/MTbKM.png?s=256",
+        "display_name" : "ThangLeQuoc",
+        "link" : "https://stackoverflow.com/users/5668956/thanglequoc"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1623288568,
+      "post_id" : 66379094,
+      "comment_id" : 120038867,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you. A light note, inside the WSL2, we&#39;ll need to change the bootstrap server declaration in the CLI as well. E.g: <code>kafka-console-consumer.sh --bootstrap-server [::1]:9092 --topic my_topic</code>"
+    }, {
+      "owner" : {
+        "account_id" : 5790692,
+        "reputation" : 89,
+        "user_id" : 4568273,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/29GD2.jpg?s=256",
+        "display_name" : "Hiresh",
+        "link" : "https://stackoverflow.com/users/4568273/hiresh"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1643984274,
+      "post_id" : 66379094,
+      "comment_id" : 125490957,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I am running the confluent platform in wsl - kafka runs after changing this, but the connect service does not run even after changing the bootstrap server props in connect related services"
+    }, {
+      "owner" : {
+        "account_id" : 13964222,
+        "reputation" : 858,
+        "user_id" : 10084505,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7d1cf77a5c15cd178875d5220fec8157?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Walnussb&#228;r",
+        "link" : "https://stackoverflow.com/users/10084505/walnussb%c3%a4r"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1650974160,
+      "post_id" : 66379094,
+      "comment_id" : 127246201,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It should be noted however that the example applications (e. g. <a href=\"https://kafka.apache.org/31/documentation/streams/quickstart\" rel=\"nofollow noreferrer\">kafka.apache.org/31/documentation/streams/quickstart</a>) don&#39;t work out of the box, as their code still uses localhost:9092 as host connection"
+    } ],
+    "owner" : {
+      "account_id" : 5903296,
+      "reputation" : 421,
+      "user_id" : 4646004,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bbc726a47542b037733a25935f31bb59?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ed P",
+      "link" : "https://stackoverflow.com/users/4646004/ed-p"
+    },
+    "is_accepted" : false,
+    "score" : 32,
+    "last_activity_date" : 1614305054,
+    "creation_date" : 1614305054,
+    "answer_id" : 66379094,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Had this same issue. The root cause seems to be that WSL2 is broken with regards to IPv6 and localhost (See: <a href=\"https://github.com/microsoft/WSL/issues/4851\" rel=\"noreferrer\">https://github.com/microsoft/WSL/issues/4851</a>)</p>\n<p>The only fix I found that doesn't involve changing configs every time you reboot (per the &quot;172.*&quot; suggestion above) is to use the IPv6 loopback address ::1 in both the Kafka server config running in Linux and the Java client in Windows.</p>\n<p>In server.properties I have this:</p>\n<pre><code>listeners=PLAINTEXT://[::1]:9092\n</code></pre>\n<p>And likewise in my Java client bootstrap server config I use</p>\n<pre><code>&quot;[::1]:9092&quot;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1086310,
+      "reputation" : 3384,
+      "user_id" : 1081945,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://i.sstatic.net/eWRZV.jpg?s=256",
+      "display_name" : "Gautam",
+      "link" : "https://stackoverflow.com/users/1081945/gautam"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1622202467,
+    "creation_date" : 1622202467,
+    "answer_id" : 67738246,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>WSL2 runs on hypervisor and you need port proxy to connect Kafka Broker running on WSL2.</p>\n<p>Step 1 . Check you WSL2 IP using following command and copy inet value</p>\n<pre><code>$ ifconfig\ninet 172.X.X.X \n</code></pre>\n<p>Step 2. Open cmd with Admin permsissions</p>\n<pre><code>   netsh interface portproxy add v4tov4 listenport=9092 listenaddress=0.0.0.0 connectport=9092 connectaddress=172.X.X.X\n</code></pre>\n<p>You should be able to connect now</p>\n<p>Note : WSL2 IP changes everytime you restart machine</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8391615,
+      "reputation" : 91,
+      "user_id" : 6300171,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/wlqMi.png?s=256",
+      "display_name" : "shijin raj",
+      "link" : "https://stackoverflow.com/users/6300171/shijin-raj"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1642786442,
+    "creation_date" : 1642786442,
+    "answer_id" : 70805375,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I am able to find a work around . Thanks to Goose's comments</p>\n<ol>\n<li>I ran the following command in my WSL2 Ubuntu shell: ip addr</li>\n<li>Then ip address against the inet property global eth0 . for example, inet 172.20.XXX.XXX/20 .... scope global eth0</li>\n<li>I replaced all localhost with this IP address in the docker-compose.yml</li>\n<li>I replaced the localhost with this IP address in springboot yml or properties file.</li>\n<li>My Kafka producer and consumer able to connect to the Kafka running in Ubunti - WSL 2 from Windows</li>\n</ol>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9076634,
+        "reputation" : 1043,
+        "user_id" : 7613058,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/sRGfh.jpg?s=256",
+        "display_name" : "Kyle McClellan",
+        "link" : "https://stackoverflow.com/users/7613058/kyle-mcclellan"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679521497,
+      "post_id" : 71538344,
+      "comment_id" : 133739160,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This workaround seems best, since it&#39;s a one-time fix applied to the server and doesn&#39;t require changing client config. Also keeps the fix confined to WSL itself, which is where the bug supposedly is."
+    }, {
+      "owner" : {
+        "account_id" : 1482070,
+        "reputation" : 405,
+        "user_id" : 1391213,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/8d15126826831c4cd99f979ce9eb1ad4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Knowledge_seeker",
+        "link" : "https://stackoverflow.com/users/1391213/knowledge-seeker"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1711191443,
+      "post_id" : 71538344,
+      "comment_id" : 137882762,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Stephane Maarek , I tried this but I am getting  sysctl: cannot stat /proc/sys/net/ipv6/conf/all/disable_ipv6: No such file or directory"
+    } ],
+    "owner" : {
+      "account_id" : 3620665,
+      "reputation" : 5372,
+      "user_id" : 3019499,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/3ad22a64e5ea6c2c653d5b4f9161a00e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Stephane Maarek",
+      "link" : "https://stackoverflow.com/users/3019499/stephane-maarek"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1647694788,
+    "creation_date" : 1647694788,
+    "answer_id" : 71538344,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Stop Kafka and Zookeeper, then</p>\n<p>Disable IPv6 on WSL2:</p>\n<pre><code>sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1\nsudo sysctl -w net.ipv6.conf.default.disable_ipv6=1\n</code></pre>\n<p>Start Kafka, and you're good to go!</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1664199840,
+      "post_id" : 73806761,
+      "comment_id" : 130410182,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Your answer could be improved with additional supporting information. Please <a href=\"https://stackoverflow.com/posts/73806761/edit\">edit</a> to add further details, such as citations or documentation, so that others can confirm that your answer is correct. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    } ],
+    "owner" : {
+      "account_id" : 16535601,
+      "reputation" : 41,
+      "user_id" : 11963794,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4280b6cfedbc9b5b6f4793e61376decd?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "denise",
+      "link" : "https://stackoverflow.com/users/11963794/denise"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1664207488,
+    "last_edit_date" : 1664207488,
+    "creation_date" : 1663793146,
+    "answer_id" : 73806761,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I got this problem when running a kafka producer in IntelliJ and a consumer in ubuntu terminal while on WSL2.</p>\n<p>First, stop Kafka and Zookeeper. Then run these commands on WSL2, one by one:</p>\n<pre><code>sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1\nsudo sysctl -w net.ipv6.conf.default.disable_ipv6=1\n</code></pre>\n<p>After that, in the kakfa folder, go to <strong>config/server.properties</strong> and edit the file to add the line:</p>\n<pre><code>listeners=PLAINTEXT://localhost:9092\n</code></pre>\n<p>When these commands have succeeded relaunch zookeeper and kafka.</p>\n<p><a href=\"https://www.conduktor.io/kafka/kafka-fundamentals\" rel=\"nofollow noreferrer\">https://www.conduktor.io/kafka/kafka-fundamentals</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 20843053,
+        "reputation" : 59,
+        "user_id" : 15309228,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6afe32af3e614bda4aeadde801749c64?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "omankame",
+        "link" : "https://stackoverflow.com/users/15309228/omankame"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1686386075,
+      "post_id" : 75208054,
+      "comment_id" : 134794135,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I was strugguling and tried lot of option. Finally change server.properties as below. listeners=PLAINTEXT://:9092, advertised.listeners=PLAINTEXT://172.25.205.68:9092 please make note 172.25.205.68 need to be replace with your wsl2 address. and make chanes in java code like advertised.listeners=PLAINTEXT://172.25.205.68:9092 . That will  work."
+    } ],
+    "owner" : {
+      "account_id" : 13724825,
+      "reputation" : 51,
+      "user_id" : 9903878,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-j04snKIe6U8/AAAAAAAAAAI/AAAAAAAADYA/B4WpLisq7u4/s256-rj/photo.jpg",
+      "display_name" : "Vijay Chaudhari",
+      "link" : "https://stackoverflow.com/users/9903878/vijay-chaudhari"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1674468775,
+    "creation_date" : 1674468775,
+    "answer_id" : 75208054,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<ol>\n<li><p>Edit the file <strong>etc/sysctl.conf</strong> and add following lines in it.</p>\n<p><code>net.ipv6.conf.all.disable_ipv6=1</code></p>\n<p><code>net.ipv6.conf.default.disable_ipv6=1</code></p>\n</li>\n<li><p>Replace <code>listeners=PLAINTEXT://:9092</code> with <code>listeners=PLAINTEXT://localhost:9092</code> in your server.properties.</p>\n</li>\n<li><p>Update the sysctl config by using the following command. (Everytime you restart your machine this command needs to be run to update the configuration)</p>\n<p><code>sudo sysctl -p</code></p>\n</li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 29208947,
+      "reputation" : 1,
+      "user_id" : 22377397,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/7cfa46191661844cb36728fe42d8ace2?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Simon Sundarraj",
+      "link" : "https://stackoverflow.com/users/22377397/simon-sundarraj"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1691800842,
+    "last_edit_date" : 1691800842,
+    "creation_date" : 1691793018,
+    "answer_id" : 76886983,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Step 1\nDisable IPv6 on WSL2:</p>\n<pre><code>sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1\n\nsudo sysctl -w net.ipv6.conf.default.disable_ipv6=1\n</code></pre>\n<p>Step 2:</p>\n<p>In <code>\\config\\server.properties</code> under Kafka folder\nReplace <code>listeners=PLAINTEXT://:9092 with listeners=PLAINTEXT://localhost:9092</code> in your <code>server.properties</code>.</p>\n<p>Step 3:\nIn WLS2 Ubuntu,</p>\n<pre><code>sudo sysctl -p\n</code></pre>\n<p>After making above changes it worked for me in my local</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8787440,
+      "reputation" : 311,
+      "user_id" : 6568785,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d6d8b481ba434286292bc200864551bc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Hyperdingo",
+      "link" : "https://stackoverflow.com/users/6568785/hyperdingo"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1730194645,
+    "creation_date" : 1730194645,
+    "answer_id" : 79136580,
+    "question_id" : 64177422,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I use docker inside my WSL2 linux instance.</p>\n<p>I use this <strong>base</strong> docker compose to run kafka: <a href=\"https://github.com/conduktor/kafka-stack-docker-compose/blob/master/zk-single-kafka-single.yml\" rel=\"nofollow noreferrer\">https://github.com/conduktor/kafka-stack-docker-compose/blob/master/zk-single-kafka-single.yml</a></p>\n<p>I had to  modify the file and replace: ${DOCKER_HOST_IP:-127.0.0.1} on 2 places with the private ip. In linux you can find that ip by writing: <code>ip addr | grep &quot;eth0&quot;</code>, e.g. 172.x.y.z</p>\n<p>After that I started the docker instance with: <code>docker compose -f zk-single-kafka-single.yml up -d</code></p>\n<p>Then I could connect to kafka with above aquired ip, e.g. 172.x.y.z:9092</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 305461,
+    "reputation" : 3021,
+    "user_id" : 615636,
+    "user_type" : "registered",
+    "accept_rate" : 85,
+    "profile_image" : "https://www.gravatar.com/avatar/f607cd4b333f59df36c7422ebd676855?s=256&d=identicon&r=PG",
+    "display_name" : "Viriato",
+    "link" : "https://stackoverflow.com/users/615636/viriato"
+  },
+  "is_answered" : true,
+  "view_count" : 12170,
+  "answer_count" : 10,
+  "score" : 14,
+  "last_activity_date" : 1763279459,
+  "creation_date" : 1601667936,
+  "last_edit_date" : 1601668871,
+  "question_id" : 64177422,
+  "link" : "https://stackoverflow.com/questions/64177422/unable-to-produce-to-kafka-topic-that-is-running-on-wsl-2-from-windows",
+  "title" : "Unable to produce to Kafka topic that is running on WSL 2 from Windows",
+  "body" : "<p>I am running the latest Kafka on Ubuntu WSL2 successfully. I can start zookeeper, kafka server, create topics, console produce and console consume just fine from within the Ubuntu that I have running on the WSL. However, when I go into my Intellij on Windows and create a simple Java Producer it does not seem to be able to connect to the broker</p>\n<p><strong>Versions &amp; Hostname</strong></p>\n<pre><code>    Java version: 1.8\n    Kafka Version: 2.6\n    hostname (from Ubuntu): KDAAPPDEV04\n    hostname (from Powershell): KDAAPPDEV04\n    java.net.InetAddress.getLocalHost().getHostName() = KDAAPPDEV04\n    java.net.InetAddress.getLocalHost().getCanonicalHostName() = KDAAPPDEV04\n    netstat from CMD:\n        TCP    [::1]:9092             [::]:0                 LISTENING\n</code></pre>\n<p><strong>server.properties</strong>\nI found this settings on another SO answer but these did not work for me.</p>\n<pre><code>advertised.listeners=PLAINTEXT://127.0.0.1:9092\nlistener.security.protocol.map=PLAINTEXT:PLAINTEXT\nlisteners=PLAINTEXT://0.0.0.0:9092\n</code></pre>\n<p>then tried (and restarted zookeeper and kafka)</p>\n<pre><code>advertised.listeners=PLAINTEXT://KDAAPPDEV04:9092\nlistener.security.protocol.map=PLAINTEXT:PLAINTEXT\nlisteners=PLAINTEXT://0.0.0.0:9092\n</code></pre>\n<p><strong>Producer</strong></p>\n<p>I run this producer with three different values: hostname, localhost and 127.0.0.1 but it never connects to the broker</p>\n<pre><code>    public class ProducerDemo{\n\n    private static Logger logger = LoggerFactory.getLogger(ProducerDemo.class);\n\n    public static void main(String[] args) throws UnknownHostException{\n\n        System.out.println(InetAddress.getLocalHost().getHostName());\n        System.out.println(InetAddress.getLocalHost().getCanonicalHostName());\n\n        String bootstrapServers = &quot;127.0.0.1:9092&quot;;\n//        String bootstrapServers = &quot;localhost:9092&quot;;\n//        String bootstrapServers = &quot;KDAAPPDEV04:9092&quot;;\n\n        //create Producer properties\n        Properties properties = new Properties();\n        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,bootstrapServers);\n        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());\n        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());\n\n        //create the producer\n        KafkaProducer&lt;String,String&gt; producer = new KafkaProducer&lt;String, String&gt;(properties);\n\n        //create a producer record\n        ProducerRecord&lt;String,String&gt; record = new ProducerRecord&lt;String, String&gt;(&quot;first-topic&quot;,&quot;hola mundo&quot;);\n\n        //send data\n        producer.send(record);\n\n        //flush + close\n        producer.flush();\n        producer.close();\n    }\n}\n</code></pre>\n<p><strong>Error</strong></p>\n<pre><code>[main] INFO org.apache.kafka.common.utils.AppInfoParser - Kafka version: 2.6.0\n[main] INFO org.apache.kafka.common.utils.AppInfoParser - Kafka commitId: 62abe01bee039651\n[main] INFO org.apache.kafka.common.utils.AppInfoParser - Kafka startTimeMs: 1601666175706\n[kafka-producer-network-thread | producer-1] WARN org.apache.kafka.clients.NetworkClient - [Producer clientId=producer-1] Connection to node -1 (KDAAPPDEV04/my-ipconfig-address-here:9092) could not be established. Broker may not be available.\n</code></pre>\n"
+}

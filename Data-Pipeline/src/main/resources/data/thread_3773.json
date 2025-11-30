@@ -1,0 +1,98 @@
+{
+  "tags" : [ "java", "cluster-computing", "hazelcast" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 8085695,
+      "reputation" : 1294,
+      "user_id" : 6093330,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/GkJ89.jpg?s=256",
+      "display_name" : "A.K.Desai",
+      "link" : "https://stackoverflow.com/users/6093330/a-k-desai"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1468907713,
+    "post_id" : 38449721,
+    "comment_id" : 64305878,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Are you trying to connect to an already running cluster or adding another member to a cluster? From the code chunk, I see that you are starting a new cluster itself. Unless you have used the exact same configuration to start the node at xxx.xx.xx.x:5701, it will not be able to join that node to form a cluster and instead it will startup its own cluster."
+  }, {
+    "owner" : {
+      "account_id" : 8085695,
+      "reputation" : 1294,
+      "user_id" : 6093330,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/GkJ89.jpg?s=256",
+      "display_name" : "A.K.Desai",
+      "link" : "https://stackoverflow.com/users/6093330/a-k-desai"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1468907846,
+    "post_id" : 38449721,
+    "comment_id" : 64305935,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "If you just intend to start a client then make use of <code>ClientConfig</code> &amp; <code>ClientNetworkConfig</code> and start using <code>HazelcastClient.newHazelcastClient(clientConfig)</code>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 335609,
+      "reputation" : 1652,
+      "user_id" : 662796,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8d565a99a2b70397374c22411d53727d?s=256&d=identicon&r=PG",
+      "display_name" : "tom.bujok",
+      "link" : "https://stackoverflow.com/users/662796/tom-bujok"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1468915775,
+    "creation_date" : 1468915775,
+    "answer_id" : 38452801,
+    "question_id" : 38449721,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your config looks good, but I assume it's a pseudo-code, since there's no var-arg method <code>addMember</code>. You can invoke the <code>addMember</code> method multiple times or use the <code>setMembers</code> method to add a couple of members.</p>\n\n<p>You didn't post the config of the first node. You need have identical configs - including the cluster name, and password too (if you have defined them).</p>\n\n<p>It can also be a firewall problem still - try doing <code>telnet xxx.xxxx.xxx.xx 5701</code> to see if the connection can be opened successfully.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13652,
+      "reputation" : 5452,
+      "user_id" : 27563,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/0680be1c881abcf19219f09f1e8cf140?s=256&d=identicon&r=PG",
+      "display_name" : "Vik Gamov",
+      "link" : "https://stackoverflow.com/users/27563/vik-gamov"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1469053709,
+    "creation_date" : 1469053709,
+    "answer_id" : 38491906,
+    "question_id" : 38449721,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Matt,</p>\n\n<p>This is how you can create new client</p>\n\n<pre><code>import com.hazelcast.client.HazelcastClient;\nimport com.hazelcast.client.config.ClientConfig;\n\npublic void HazelcastCacheClient(String mapName, Map cacheMap) {\n\n    ClientConfig cfg = new ClientConfig();\n    cfg.getNetworkConfig().addAddress(\"xxx.xx.xx.x\");\n\n    HazelcastInstance instance = HazelcastClient.newHazelcastClient(cfg);\n\n    cacheMap = instance.getMap(mapName);\n\n}\n</code></pre>\n\n<p>With API that you use, you just start member on localhost.\nYou need to make sure you running Hazelcast member on <code>xxx.xx.xx.x:5701</code> (default port).</p>\n\n<p>Thank you</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1805472,
+    "reputation" : 5878,
+    "user_id" : 1642642,
+    "user_type" : "registered",
+    "accept_rate" : 63,
+    "profile_image" : "https://www.gravatar.com/avatar/ac7e83c588e39d6e04387fe5ebc9005c?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Matt",
+    "link" : "https://stackoverflow.com/users/1642642/matt"
+  },
+  "is_answered" : false,
+  "view_count" : 10158,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1761725330,
+  "creation_date" : 1468903344,
+  "question_id" : 38449721,
+  "link" : "https://stackoverflow.com/questions/38449721/hazelcast-connection-refused-to-address-x",
+  "title" : "Hazelcast Connection Refused to Address x",
+  "body" : "<p>I have a very simple Hazelcast client that I'm using to connect to a clustered instace.  See that I'm connecting to localhost (127.0.0.1) as well as a remote server (xxx.xx.xx.x).</p>\n\n<pre><code>public HazelcastCacheClient(String mapName, Map&lt;K,V&gt; cacheMap) {\n\n    Config cfg = new Config();\n    NetworkConfig networkConfig = cfg.getNetworkConfig();\n    networkConfig.setPort(5701);\n    networkConfig.setPortCount(1);\n\n    JoinConfig joinConfig = networkConfig.getJoin();\n    joinConfig.getMulticastConfig().setEnabled(false);\n    joinConfig.getAwsConfig().setEnabled(false);\n    joinConfig.getTcpIpConfig()\n                    .addMember(\"127.0.0.1, xxx.xx.xx.x\").setEnabled(true);\n\n    HazelcastInstance instance = Hazelcast.newHazelcastInstance(cfg);\n\n    Map&lt;String, Integer&gt; map = instance.getMap(mapName);\n}\n</code></pre>\n\n<p>I've opened ports 5701-5710 on the CentOS server (xxx.xx.xx.x), but am seeing the following in the logs:</p>\n\n<pre><code>com.hazelcast.instance.DefaultAddressPicker\nINFO: [LOCAL] [dev] [3.5.5] Resolving domain name 'xxx.xx.xx.x' to address(es): [xxx.xx.xx.x]\ncom.hazelcast.instance.DefaultAddressPicker\nINFO: [LOCAL] [dev] [3.5.5] Interfaces is disabled, trying to pick one address from TCP-IP config addresses: [xxx.xx.xx.x/xxx.xx.xx.x, 127.0.0.1]\ncom.hazelcast.instance.DefaultAddressPicker\nINFO: [LOCAL] [dev] [3.5.5] Picked Address[127.0.0.1]:5701, using socket ServerSocket[addr=/0:0:0:0:0:0:0:0,localport=5701], bind any local is true\ncom.hazelcast.spi.OperationService\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Backpressure is disabled\ncom.hazelcast.spi.impl.operationexecutor.classic.ClassicOperationExecutor\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Starting with 4 generic operation threads and 8 partition operation threads.\ncom.hazelcast.system\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Hazelcast 3.5.5 (20160122 - 6805b8e) starting at Address[127.0.0.1]:5701\ncom.hazelcast.system\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Copyright (c) 2008-2015, Hazelcast, Inc. All Rights Reserved.\n com.hazelcast.instance.Node\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Creating TcpIpJoiner\ncom.hazelcast.core.LifecycleService\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Address[127.0.0.1]:5701 is STARTING\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Connecting to xxx.xx.xx.x/xxx.xx.xx.x:5701, timeout: 0, bind-any: true\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Connecting to xxx.xx.xx.x/xxx.xx.xx.x, timeout: 0, bind-any: true\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Connecting to /127.0.0.1:5703, timeout: 0, bind-any: true\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Connecting to /127.0.0.1:5702, timeout: 0, bind-any: true\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Connecting to xxx.xx.xx.x/xxx.xx.xx.x:5703, timeout: 0, bind-any: true\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Could not connect to: /127.0.0.1:5702. Reason: SocketException[Connection refused to address /127.0.0.1:5702]\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Could not connect to: /127.0.0.1:5703. Reason: SocketException[Connection refused to address /127.0.0.1:5703]\ncom.hazelcast.cluster.impl.TcpIpJoiner\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Address[127.0.0.1]:5702 is added to the blacklist.\ncom.hazelcast.cluster.impl.TcpIpJoiner\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Address[127.0.0.1]:5703 is added to the blacklist.\ncom.hazelcast.nio.tcp.SocketConnector\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Could not connect to: xxx.xx.xx.x/xxx.xx.xx.x:5701. Reason: SocketException[Connection refused to address xxx.xx.xx.x/xxx.xx.xx.x:5701]\ncom.hazelcast.cluster.impl.TcpIpJoiner\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Address[xxx.xx.xx.x]:5701 is added to the blacklist.\ncom.hazelcast.cluster.impl.TcpIpJoiner\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] \n\n\nMembers [1] {\n    Member [127.0.0.1]:5701 this\n}\n\nJul 19, 2016 12:32:45 AM com.hazelcast.core.LifecycleService\nINFO: [127.0.0.1]:5701 [dev] [3.5.5] Address[127.0.0.1]:5701 is STARTED\n</code></pre>\n\n<p>As you can see, there's no trouble connecting to localhost (127.0.0.1), but it cannot connect to the remote server xxx.xx.xx.x.  I've enabled the port to be accessed through the firewall on the CentOS server for 5701.</p>\n\n<p>Note the following line in particular:\n<strong><em>INFO: [127.0.0.1]:5701 [dev] [3.5.5] Could not connect to: xxx.xx.xx.x/xxx.xx.xx.x:5701. Reason: SocketException[Connection refused to address xxx.xx.xx.x/xxx.xx.xx.x:5701]</em></strong></p>\n"
+}

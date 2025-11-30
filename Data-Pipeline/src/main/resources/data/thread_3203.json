@@ -1,0 +1,176 @@
+{
+  "tags" : [ "java", "hibernate", "spring", "lazy-loading" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 30469,
+      "reputation" : 4916,
+      "user_id" : 83119,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/8c92dc872574cb3bc5a4c200bca79804?s=256&d=identicon&r=PG",
+      "display_name" : "Peter D",
+      "link" : "https://stackoverflow.com/users/83119/peter-d"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1242759501,
+    "post_id" : 884423,
+    "comment_id" : 691243,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "Are you using JPA or generic Hibernate? What have you done to try and solve this issue?"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 29046,
+        "reputation" : 68172,
+        "user_id" : 78182,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/IHsGu.png?s=256",
+        "display_name" : "Stefan Kendall",
+        "link" : "https://stackoverflow.com/users/78182/stefan-kendall"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1242760796,
+      "post_id" : 884503,
+      "comment_id" : 691348,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I&#39;m injecting the sessionFactory, so I&#39;ll try this."
+    } ],
+    "owner" : {
+      "account_id" : 35041,
+      "reputation" : 1975,
+      "user_id" : 99131,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b5ff2a75c42b55b320ee21ef6ba3792c?s=256&d=identicon&r=PG",
+      "display_name" : "Brian Yarger",
+      "link" : "https://stackoverflow.com/users/99131/brian-yarger"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1242760131,
+    "creation_date" : 1242760131,
+    "answer_id" : 884503,
+    "question_id" : 884423,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If you can get a reference to your configured SessionFactory, you should be able to just call openSession() on it.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1273996,
+        "reputation" : 1079,
+        "user_id" : 1229627,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2bc14520c37d3b15e73a8c403fc7977d?s=256&d=identicon&r=PG",
+        "display_name" : "Karri Rasinm&#228;ki",
+        "link" : "https://stackoverflow.com/users/1229627/karri-rasinm%c3%a4ki"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1425385949,
+      "post_id" : 884551,
+      "comment_id" : 45933445,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Please include imported packages with code example so we do not need to guess which packages to import."
+    } ],
+    "owner" : {
+      "account_id" : 10893,
+      "reputation" : 49886,
+      "user_id" : 20774,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://www.gravatar.com/avatar/3e32e31d4c24c1558abd6567f2ab60ba?s=256&d=identicon&r=PG",
+      "display_name" : "James McMahon",
+      "link" : "https://stackoverflow.com/users/20774/james-mcmahon"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1242761929,
+    "last_edit_date" : 1242761929,
+    "creation_date" : 1242760780,
+    "answer_id" : 884551,
+    "question_id" : 884423,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>As a best practice, you'll want to use a session factory. Here is the one Netbeans generates.</p>\n\n<pre><code>public class HibernateUtil {\n\n    private static final SessionFactory sessionFactory;\n    private static final Configuration configuration = new Configuration().configure();\n\n    static {\n        try {\n            // Create the SessionFactory from standard (hibernate.cfg.xml) \n            // config file.\n            sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();\n        } catch (Throwable ex) {\n            // Log the exception. \n            System.err.println(\"Initial SessionFactory creation failed.\" + ex);\n            throw new ExceptionInInitializerError(ex);\n        }\n    }\n\n    public static SessionFactory getSessionFactory() {\n        return sessionFactory;\n    }\n}\n</code></pre>\n\n<p>Once you have this, you can use this code for a transaction</p>\n\n<pre><code>Session session = HibernateUtil.getSessionFactory().getCurrentSession();\nsession.beginTransaction();\n//Do something\nsession.getTransaction().commit();\n</code></pre>\n\n<p>Note that opening a transaction will open a session. I believe under pure Hibernate (unlike JPA) you need a transaction to do anything, even reads.</p>\n\n<p>At the end of the program you want to make sure you do this</p>\n\n<pre><code>HibernateUtil.getSessionFactory().close();\n</code></pre>\n\n<p>For a more sophisticated solution, you may want to look into automatic session/transaction management with Spring or EJB. Which will handle the session behind the scenes once configured properly.</p>\n\n<p><strong>EDIT:</strong><br>\nJust re-read your question and your point about IDs. I believe the sessionfactory approach will work for your purposes, unless you are doing a multiple threaded application. This is because, by default, Hibernate sessions and the ORM objects linked to that session are associated to one thread only. Let me know if I am wrong about this.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 27671,
+      "reputation" : 15818,
+      "user_id" : 73274,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/f22abfd0e934eac307239b636357ada8?s=256&d=identicon&r=PG",
+      "display_name" : "Paul Morie",
+      "link" : "https://stackoverflow.com/users/73274/paul-morie"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1242763213,
+    "last_edit_date" : 1242763213,
+    "creation_date" : 1242762310,
+    "answer_id" : 884673,
+    "question_id" : 884423,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Are you using <code>HibernateTemplate</code> and <code>HibernateDaoSupport</code> to implement your DAOs?  If so, this is why your objects are disconnected.  But, you should be able to use the <a href=\"http://static.springframework.org/spring/docs/2.0.x/api/org/springframework/orm/hibernate3/support/OpenSessionInViewInterceptor.html\" rel=\"nofollow noreferrer\"><code>OpenSessionInViewInterceptor</code></a> in that case.  Have you done anything to verify that you won't be able to use the interceptor?</p>\n\n<p>Also, if you choose to open a new <code>Session</code>, the object in memory will not be associated with the new <code>Session</code>.  You'll need to reattach the object to the session in order for the lazy loading to work. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 31142,
+      "reputation" : 29388,
+      "user_id" : 85306,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://www.gravatar.com/avatar/4283ac48d7f22118cc4e47a514b3269c?s=256&d=identicon&r=PG",
+      "display_name" : "Tano",
+      "link" : "https://stackoverflow.com/users/85306/tano"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1242840684,
+    "creation_date" : 1242840684,
+    "answer_id" : 889224,
+    "question_id" : 884423,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If you know your B objects might have their C's referenced, you should be retrieving the B's in such a way as to pre-fetch the C's.  For instance the HQL</p>\n\n<pre><code>from B as b where b.id = :ID\n</code></pre>\n\n<p>becomes</p>\n\n<pre><code>from B as b left join fetch b.c where b.id = :ID\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12658064,
+      "reputation" : 1,
+      "user_id" : 9199946,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d0d3da24648122ef7304d4e6691fdda5?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Deepak Nigam",
+      "link" : "https://stackoverflow.com/users/9199946/deepak-nigam"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1515606672,
+    "creation_date" : 1515606672,
+    "answer_id" : 48193346,
+    "question_id" : 884423,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Simply use \nSession session = new  Configuration().configure().buildSessionFactory().getCurrentSession();\nOr\nSession session = new  Configuration().configure().buildSessionFactory().getOpenSession();</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 29046,
+    "reputation" : 68172,
+    "user_id" : 78182,
+    "user_type" : "registered",
+    "accept_rate" : 94,
+    "profile_image" : "https://i.sstatic.net/IHsGu.png?s=256",
+    "display_name" : "Stefan Kendall",
+    "link" : "https://stackoverflow.com/users/78182/stefan-kendall"
+  },
+  "is_answered" : true,
+  "view_count" : 34461,
+  "accepted_answer_id" : 884503,
+  "answer_count" : 5,
+  "score" : 5,
+  "last_activity_date" : 1763007076,
+  "creation_date" : 1242759214,
+  "question_id" : 884423,
+  "link" : "https://stackoverflow.com/questions/884423/how-do-i-manually-open-a-hibernate-session",
+  "title" : "How do I manually open a hibernate session?",
+  "body" : "<p>I have a rather large project involving spring and hibernate. Right now, I'm backing certain objects out of hibernate and into memory, and I've hit a sort of snag. I have the following setup.</p>\n\n<p>Class A contains a number of primitives and a class B. B contains primitives and a class C, which was previously <strong>lazy-loaded</strong>.</p>\n\n<p>Now I have this  </p>\n\n<p>Service call 1:<br>\n   1.) create object of class A<br>\n   2.) get object of class B<br>\n   3.) set B in A<br>\n   4.) add A to memory</p>\n\n<p>Service call 2:<br>\n   1.) get A from memory<br>\n   2.) get B from A<br>\n   3.) get C from B<br>\n   4.) operate on C</p>\n\n<p>Because C is lazy loaded, it relied on a hibernate session existing to lazily load itself from B with hibernate, at least I believe this to be so. Now, however, I need to lazy load <strong>without</strong> modifying the DAO to return an ID, and there exists <strong>no current</strong> hibernate session to hijack into with OpenSessionInView. What's the best way to go about solving this problem, given the limitations? The only solutions I've found rely on unsuitable code change or an existing session, so I think that I could perhaps manually open a hibernate session. How would I go about doing this? Alternatively, is there a better solution to this problem?</p>\n"
+}

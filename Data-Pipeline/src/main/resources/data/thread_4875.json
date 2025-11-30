@@ -1,0 +1,77 @@
+{
+  "tags" : [ "java", "redis", "openshift", "netty" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 12238362,
+      "reputation" : 33,
+      "user_id" : 8932106,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/40a9051ba07cccacc6950e5d61e1f969?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sid",
+      "link" : "https://stackoverflow.com/users/8932106/sid"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1588107264,
+    "post_id" : 61384856,
+    "comment_id" : 108772841,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "This was probably because of increased load on the redis cluster as it was being shared among the number of application. As a workaround I did try with redeploy everytime and thus the connection reset happens which resolves the issue."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 12238362,
+      "reputation" : 33,
+      "user_id" : 8932106,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/40a9051ba07cccacc6950e5d61e1f969?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sid",
+      "link" : "https://stackoverflow.com/users/8932106/sid"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1588107304,
+    "creation_date" : 1588107304,
+    "answer_id" : 61489825,
+    "question_id" : 61384856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This was probably because of increased load on the redis cluster as it was being shared among the number of application. As a workaround I did try with redeploy everytime I see this and thus the connection reset happens which resolves the issue.\nAs I said this is just a workaround and the permanent solution  perhaps will be to have a dedicated redis cluster for your application  which again depends on the architecture, size of your application . </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14219716,
+      "reputation" : 347,
+      "user_id" : 10272428,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e9f65a1c546d98f003a2113d93b18caf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Kravi",
+      "link" : "https://stackoverflow.com/users/10272428/kravi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1633950192,
+    "creation_date" : 1633950192,
+    "answer_id" : 69525159,
+    "question_id" : 61384856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>you need to update your redisson version to 3.16.3 to check updated exception . So as per this , you need to increase your connection pool size.</p>\n<pre><code>        private void checkWriteFuture(ChannelFuture future, RPromise&lt;R&gt; attemptPromise, RedisConnection connection) {\n    if (future.isCancelled() || attemptPromise.isDone()) {\n        return;\n    }\n\n    if (!future.isSuccess()) {\n        exception = new WriteRedisConnectionException(\n                &quot;Unable to write command into connection! Increase connection pool size. Node source: &quot; + source + &quot;, connection: &quot; + connection +\n                        &quot;, command: &quot; + LogHelper.toString(command, params)\n                        + &quot; after &quot; + attempt + &quot; retry attempts&quot;, future.cause());\n        if (attempt == attempts) {\n            attemptPromise.tryFailure(exception);\n        }\n        return;\n    }\n\n    timeout.cancel();\n\n    scheduleResponseTimeout(attemptPromise, connection);\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12238362,
+    "reputation" : 33,
+    "user_id" : 8932106,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/40a9051ba07cccacc6950e5d61e1f969?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Sid",
+    "link" : "https://stackoverflow.com/users/8932106/sid"
+  },
+  "is_answered" : false,
+  "view_count" : 10330,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1759223085,
+  "creation_date" : 1587637406,
+  "question_id" : 61384856,
+  "link" : "https://stackoverflow.com/questions/61384856/redisson-client-exception-netty-threads",
+  "title" : "Redisson client exception Netty threads",
+  "body" : "<p>I have my application deployed in openshift and also it uses Redis. White it works most of the time , I still face issue related to redisson which is intermittent. The error trace is as below while launching the url of application :-</p>\n\n<pre><code>org.redisson.client.WriteRedisConnectionException: Unable to send command! Node source: NodeSource [slot=null, addr=null, redisClient=null, redirect=null, entry=MasterSlaveEntry [masterEntry=[freeSubscribeConnectionsAmount=0, freeSubscribeConnectionsCounter=value:49:queue:0, freeConnectionsAmount=31, freeConnectionsCounter=value:63:queue:0, freezed=false, freezeReason=null, client=[addr=redis://webapp-sessionstore.9m6hkf.ng.0001.apse2.cache.amazonaws.com:6379], nodeType=MASTER, firstFail=0]]], connection: RedisConnection@1568202974 [redisClient=[addr=redis://webapp-sessionstore.9m6hkf.ng.0001.apse2.cache.amazonaws.com:6379], channel=[id: 0xceaf7022, L:/10.103.34.74:32826 ! R:webapp-sessionstore.9m6hkf.ng.0001.apse2.cache.amazonaws.com/10.112.17.104:6379], currentCommand=CommandData [promise=RedissonPromise [promise=ImmediateEventExecutor$ImmediatePromise@68b1bc80(failure: java.util.concurrent.CancellationException)], command=(HMSET), params=[redisson:tomcat_session:306A0C0325AD2189A7FDDB695D0755D2, PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), PooledUnsafeDirectByteBuf(freed), ...], codec=org.redisson.codec.CompositeCodec@25e7216]], command: (HMSET), params: [redisson:tomcat_session:77C4BB9FC4252BFC2C8411F3A4DBB6C9, PooledUnsafeDirectByteBuf(ridx: 0, widx: 24, cap: 256), PooledUnsafeDirectByteBuf(ridx: 0, widx: 10, cap: 256), PooledUnsafeDirectByteBuf(ridx: 0, widx: 24, cap: 256), PooledUnsafeDirectByteBuf(ridx: 0, widx: 10, cap: 256)] after 3 retry attempts\n    org.redisson.command.CommandAsyncService.checkWriteFuture(CommandAsyncService.java:872)\n    org.redisson.command.CommandAsyncService.access$000(CommandAsyncService.java:97)\n    org.redisson.command.CommandAsyncService$7.operationComplete(CommandAsyncService.java:791)\n    org.redisson.command.CommandAsyncService$7.operationComplete(CommandAsyncService.java:788)\n    io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:502)\n    io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:476)\n    io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:415)\n    io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:540)\n    io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:533)\n    io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:114)\n    io.netty.channel.AbstractChannel$AbstractUnsafe.safeSetFailure(AbstractChannel.java:1018)\n    io.netty.channel.AbstractChannel$AbstractUnsafe.write(AbstractChannel.java:874)\n    io.netty.channel.DefaultChannelPipeline$HeadContext.write(DefaultChannelPipeline.java:1365)\n    io.netty.channel.AbstractChannelHandlerContext.invokeWrite0(AbstractChannelHandlerContext.java:716)\n    io.netty.channel.AbstractChannelHandlerContext.invokeWrite(AbstractChannelHandlerContext.java:708)\n    io.netty.channel.AbstractChannelHandlerContext.access$1700(AbstractChannelHandlerContext.java:56)\n    io.netty.channel.AbstractChannelHandlerContext$AbstractWriteTask.write(AbstractChannelHandlerContext.java:1102)\n    io.netty.channel.AbstractChannelHandlerContext$WriteAndFlushTask.write(AbstractChannelHandlerContext.java:1149)\n    io.netty.channel.AbstractChannelHandlerContext$AbstractWriteTask.run(AbstractChannelHandlerContext.java:1073)\n    io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)\n    io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:405)\n    io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:500)\n    io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:906)\n    io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)\n    io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)\n    java.lang.Thread.run(Thread.java:748)\nRoot Cause\n\nio.netty.channel.ExtendedClosedChannelException\n    io.netty.channel.AbstractChannel$AbstractUnsafe.write(...)(Unknown Source)\nNote The full stack trace of the root cause is available in the server logs.\n</code></pre>\n"
+}

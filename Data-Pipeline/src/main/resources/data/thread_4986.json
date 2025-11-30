@@ -1,0 +1,72 @@
+{
+  "tags" : [ "java", "spring", "jdbc", "spring-batch" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 11578036,
+      "reputation" : 151,
+      "user_id" : 8482767,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a48999319bcd43d07a0d4afaed743b4d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Alex",
+      "link" : "https://stackoverflow.com/users/8482767/alex"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1503396987,
+    "post_id" : 45813417,
+    "comment_id" : 78587248,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "okey sorry ^^ , it was genereted automatically"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user6250760"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1503397028,
+    "post_id" : 45813417,
+    "comment_id" : 78587273,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Oh... I see. Stack Overflow generate tags randomly."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5802501,
+      "reputation" : 100,
+      "user_id" : 4576256,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e8d89aa504b273fafe89fce5137d4514?s=256&d=identicon&r=PG",
+      "display_name" : "Sago78",
+      "link" : "https://stackoverflow.com/users/4576256/sago78"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1617811199,
+    "creation_date" : 1617811199,
+    "answer_id" : 66989781,
+    "question_id" : 45813417,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In Spring batch there are 3 core elements for an step</p>\n<ol>\n<li>Reader</li>\n<li>Processor (optional)</li>\n<li>Writer</li>\n</ol>\n<p>Spring batch already provides a set of <a href=\"https://docs.spring.io/spring-batch/docs/current/reference/html/appendix.html#listOfReadersAndWriters\" rel=\"nofollow noreferrer\">readers and writers</a> for most common cases, if you don't have an special scenario you can use them right out of the box</p>\n<p>From what I can see at your question you could use it as it is.</p>\n<p>Job</p>\n<pre><code>    @Bean\n    public Job jobTest(){\n        JobParametersBuilder parametersBuilder = new JobParametersBuilder();\n        Instant timestamp =LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant();\n\n        return jobBuilder.get(&quot;myJobName&quot;)\n                .next(StudentsReport())\n                .next(sendReportByEmail())\n                .incrementer( jobParameters -&gt; parametersBuilder.addJobParameters(jobParameters)\n                                                                .addDate(&quot;timeStamp&quot;\n                                                                        , Date.from( timestamp)\n                                                                 ).toJobParameters()\n                )\n                .build();\n    }\n</code></pre>\n<p>Step Definition</p>\n<pre><code>    @Bean\n    public Step studentsReport(){\n        return stepBuilder.get(&quot;getStudentsThatSomething&quot;)\n                .&lt;User,User&gt;chunk(100)\n                .reader(studentsJdbcReader())\n                .writer(studentsXMLWriter())\n                .build();\n    }\n</code></pre>\n<p>JDBC Reader Bean</p>\n<pre><code>@Autowired\nDataSource dataSource;\n\nprivate static final String QUERY_FIND_STUDENTS =\n        &quot;SELECT &quot; +\n            &quot;email_address, &quot; +\n            &quot;name, &quot; +\n            &quot;purchased_package &quot; +\n        &quot;FROM STUDENTS &quot; +\n        &quot;ORDER BY email_address ASC&quot;;\n\n@Bean\n@StepScope\nJdbcCursorItemReader&lt;StudentDTO&gt; studentsJdbcReader() {\n    JdbcCursorItemReader&lt;StudentDTO&gt; databaseReader = new \nJdbcCursorItemReader&lt;&gt;();\n\n    databaseReader.setDataSource(dataSource);\n    databaseReader.setSql(QUERY_FIND_STUDENTS);\n    databaseReader.setRowMapper(new BeanPropertyRowMapper&lt;&gt;\n(StudentDTO.class));\n\n    return databaseReader;\n}\n</code></pre>\n<p>Writer Bean</p>\n<pre><code>    @Bean\n    @StepScope\n    public ItemWriter&lt;StudentDTO&gt; studentFlatWriter(){\n        return new StudentXmlWriter(OUTPUT_FILE);\n    }\n</code></pre>\n<p>To create your custom XML writer Class you can take a look into the example provided by Alexey Saenko in his <a href=\"https://www.toptal.com/spring/spring-batch-tutorial\" rel=\"nofollow noreferrer\">Spring Batch Tutorial</a>, actually this tutorial will give you a good foundation to understand Spring Batch.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 11578036,
+    "reputation" : 151,
+    "user_id" : 8482767,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/a48999319bcd43d07a0d4afaed743b4d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Alex",
+    "link" : "https://stackoverflow.com/users/8482767/alex"
+  },
+  "is_answered" : false,
+  "view_count" : 9566,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1758970900,
+  "creation_date" : 1503393038,
+  "last_edit_date" : 1617823964,
+  "question_id" : 45813417,
+  "link" : "https://stackoverflow.com/questions/45813417/spring-batch-custom-jdbc-itemreader",
+  "title" : "spring batch custom jdbc itemreader",
+  "body" : "<p>i want to create a custom jdbc itemreader i found this solution</p>\n\n<pre><code>import org.springframework.batch.item.ItemReader;\nimport org.springframework.batch.item.database.JdbcCursorItemReader;\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.jdbc.core.BeanPropertyRowMapper;\n\nimport javax.sql.DataSource;\n\n@Configuration\npublic class DatabaseToXmlFileJobConfig {\n\nprivate static final String QUERY_FIND_STUDENTS =\n        \"SELECT \" +\n            \"email_address, \" +\n            \"name, \" +\n            \"purchased_package \" +\n        \"FROM STUDENTS \" +\n        \"ORDER BY email_address ASC\";\n\n@Bean\nItemReader&lt;StudentDTO&gt; databaseXmlItemReader(DataSource dataSource) {\n    JdbcCursorItemReader&lt;StudentDTO&gt; databaseReader = new \nJdbcCursorItemReader&lt;&gt;();\n\n    databaseReader.setDataSource(dataSource);\n    databaseReader.setSql(QUERY_FIND_STUDENTS);\n    databaseReader.setRowMapper(new BeanPropertyRowMapper&lt;&gt;\n(StudentDTO.class));\n\n    return databaseReader;\n}\n}\n</code></pre>\n\n<p>but i don't know how to use it , to create my own ItemReader ?\nis there anyway to make link between this two classes ?\nor anyway to create a custom JDBC reader?</p>\n\n<pre><code>public class DatabaseReader implements ItemReader&lt;StudentDTO&gt; {\n\n@Override\npublic StudentDTO read() throws Exception, UnexpectedInputException, \nParseException, NonTransientResourceException {\n\n    return null;\n}\n\n}\n</code></pre>\n"
+}

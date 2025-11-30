@@ -1,0 +1,130 @@
+{
+  "tags" : [ "java", "cryptography", "feistel-cipher" ],
+  "answers" : [ {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user149341"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1477845522,
+    "creation_date" : 1477845522,
+    "answer_id" : 40331251,
+    "question_id" : 40331050,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your round counters aren't symmetric.</p>\n\n<pre><code>for(int r = 0; r &lt; 3; r++)\n</code></pre>\n\n<p>counts: 0, 1, 2.</p>\n\n<pre><code>for(int r = 3; r &gt; 0; r--)\n</code></pre>\n\n<p>counts: 3, 2, 1.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3421244,
+      "reputation" : 39516,
+      "user_id" : 2868801,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3f265dbe3edef5d671947a604f7171bf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dave_thompson_085",
+      "link" : "https://stackoverflow.com/users/2868801/dave-thompson-085"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1477878353,
+    "creation_date" : 1477878353,
+    "answer_id" : 40335565,
+    "question_id" : 40331050,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Feistel works by applying a function of the right side TO the left side, i.e. left = left ^ F(right) then swap. This is equivalent to right<strong>2</strong> = left<strong>1</strong> ^ F(right1), left<strong>2</strong> = right<strong>1</strong> but that formulation works better in languages with parallel or destructuring assignment which Java doesn't have. See the picture at <a href=\"https://en.wikipedia.org/wiki/Feistel_cipher\" rel=\"nofollow\">https://en.wikipedia.org/wiki/Feistel_cipher</a> . In addition your code organization does one too many swap at the end of decrypt. Fixing both of those:</p>\n\n<pre><code>static void SO40331050Feistel (){ \n    final int KEY = 8;\n    int[] left = {1,2,3}, right = {4,5,6}, temp;\n    System.out.println (\"=====WRONG=====\");\n    for(int r = 1; r &lt;= 3; r++) {\n        for(int i = 0; i &lt; right.length; i++){\n            right[i] = left[i] ^ (scramble(right[i], KEY, r));\n        }\n        System.out.println (\"ENC\"+r +\" \"+Arrays.toString(left) +\" \"+Arrays.toString(right));\n        temp = left; left = right; right = temp;\n    }\n    temp = left; left = right; right = temp; // swap before decrypt\n    for(int r = 3; r &gt;= 1; r--) {\n        for(int i = 0; i &lt; right.length; i++) {\n            right[i] = left[i] ^ (scramble(right[i], KEY, r));\n        }\n        System.out.println (\"DEC\"+r + \" \"+Arrays.toString(left) +\" \"+Arrays.toString(right));\n        temp = left; left = right; right = temp;\n    }\n    left = new int[]{1,2,3}; right = new int[]{4,5,6}; // reset\n    System.out.println (\"=====RIGHT=====\");\n    for(int r = 1; r &lt;= 3; r++) {\n        for(int i = 0; i &lt; right.length; i++){\n            left[i] ^= (scramble(right[i], KEY, r));\n        }\n        System.out.println (\"ENC\"+r +\" \"+Arrays.toString(left) +\" \"+Arrays.toString(right));\n        temp = left; left = right; right = temp; // swap after\n    }\n    for(int r = 3; r &gt;= 1; r--) {\n        temp = left; left = right; right = temp; // swap before on decrypt\n        for(int i = 0; i &lt; right.length; i++) {\n            left[i] ^= (scramble(right[i], KEY, r));\n        }\n        System.out.println (\"DEC\"+r + \" \"+Arrays.toString(left) +\" \"+Arrays.toString(right));\n    }\n}\n</code></pre>\n\n<p>RESULTS:</p>\n\n<pre><code>=====WRONG=====\nENC1 [1, 2, 3] [0, 3, 2]\nENC2 [0, 3, 2] [2, 7, 10]\nENC3 [2, 7, 10] [3, 11, 3]\nDEC3 [2, 7, 10] [14, 0, 6]\nDEC2 [14, 0, 6] [10, 7, 1]\nDEC1 [10, 7, 1] [13, 6, 0]\n=====RIGHT=====\nENC1 [0, 3, 2] [4, 5, 6]\nENC2 [5, 13, 2] [0, 3, 2]\nENC3 [3, 4, 11] [5, 13, 2]\nDEC3 [0, 3, 2] [5, 13, 2]\nDEC2 [4, 5, 6] [0, 3, 2]\nDEC1 [1, 2, 3] [4, 5, 6]\n</code></pre>\n\n<p>Also, it is usual for F to use the whole right half and produce a result that applies to the whole left half; by doing it separately on 32-bit int pieces you are actually running three independent 32-bit block ciphers in parallel, effectively in ECB mode. Both 32-bit block and ECB would be serious weaknesses if this were a real cipher.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 434266,
+      "reputation" : 15711,
+      "user_id" : 820127,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/81f8fffeec4f2ba3e75aebe941e4e5dd?s=256&d=identicon&r=PG",
+      "display_name" : "rossum",
+      "link" : "https://stackoverflow.com/users/820127/rossum"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1478020268,
+    "creation_date" : 1478020268,
+    "answer_id" : 40365067,
+    "question_id" : 40331050,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Sometimes it is easier to see things if they are stripped down to the minimum.  This pseudocode minimal Feistel cipher may help:</p>\n\n<pre><code>function FeistelEncipher(plaintextBlock)\n\n  left &lt;- left hand half of plaintextBlock\n  right &lt;- right hand half of plaintextBlock\n\n  // Note the half-open interval.\n  for (roundNumber in [0 .. number of rounds[)\n\n    if (roundNumber != 0)\n      swap(left, right)\n    end if\n\n    right &lt;- right XOR F(left, roundNumber)\n\n  end for\n\n  // Return ciphertext block.\n  return join(left, right)\n\nend function\n\n\nfunction F(data, roundNumber)\n\n  return some combination of the data and the round key for this round\n\nend function\n</code></pre>\n\n<p>An even number of rounds is assumed, and the reversed closing '[' indicates an open ended interval.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 194308,
+        "reputation" : 80399,
+        "user_id" : 436560,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://i.sstatic.net/2GESV.jpg?s=256",
+        "display_name" : "Lajos Arpad",
+        "link" : "https://stackoverflow.com/users/436560/lajos-arpad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1739015661,
+      "post_id" : 79422425,
+      "comment_id" : 140069189,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Please explain how and why is this a correct implementation and provide test cases for illustration."
+    }, {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1739027177,
+      "post_id" : 79422425,
+      "comment_id" : 140069644,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Your answer could be improved with additional supporting information. Please <a href=\"https://stackoverflow.com/posts/79422425/edit\">edit</a> to add further details, such as citations or documentation, so that others can confirm that your answer is correct. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    } ],
+    "owner" : {
+      "account_id" : 3709412,
+      "reputation" : 11,
+      "user_id" : 3087127,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/V0A0pfth.png?s=256",
+      "display_name" : "CHan251",
+      "link" : "https://stackoverflow.com/users/3087127/chan251"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762048054,
+    "last_edit_date" : 1762048054,
+    "creation_date" : 1738974612,
+    "answer_id" : 79422425,
+    "question_id" : 40331050,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A correct implementation is the following (sorry my browser yandex is not popping out the comment dialog box to reply to your comments)</p>\n<pre><code>/*\n *  The macro definition FEISTEL_LOOP should have the floor value 4\n */\nfor( int_fast32_t i = 0 ; i &lt; FEISTEL_LOOP ; i++ )\n{\n    const uint64_t tmp = ptr[0];\n\n        // Swap the right hand with the left\n    ptr[0] = ptr[1];\n    \n        // To cipher we read the keys in the last to first \n        // and to decipher in the original order\n    const uint64_t f = keys[(encrypted ? FEISTEL_LOOP - 1 - i : i)];\n\n        // right = left(-1) EOR key EOR right\n    ptr[1] = tmp ^ f ^ ptr[1];\n}\n\n{   //  Swap for the last time\n    const uint64_t tmp = ptr[0];\n    ptr[0] = ptr[1];\n    ptr[1] = tmp;\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4108165,
+    "reputation" : 1883,
+    "user_id" : 3395619,
+    "user_type" : "registered",
+    "accept_rate" : 89,
+    "profile_image" : "https://www.gravatar.com/avatar/7b1c94bf0d8b8e12a0770084eb17ba02?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Christian",
+    "link" : "https://stackoverflow.com/users/3395619/christian"
+  },
+  "is_answered" : true,
+  "view_count" : 6948,
+  "accepted_answer_id" : 40335565,
+  "answer_count" : 4,
+  "score" : 2,
+  "last_activity_date" : 1762048054,
+  "creation_date" : 1477844177,
+  "last_edit_date" : 1477876486,
+  "question_id" : 40331050,
+  "link" : "https://stackoverflow.com/questions/40331050/small-implementation-of-a-feistel-cipher-in-java",
+  "title" : "Small implementation of a Feistel Cipher in Java",
+  "body" : "<p>I'm trying to do a small implementation of a Feistel Cipher. This is what I've been trying: </p>\n\n<pre><code>int[] left = {1,2,3};//left half of plaintext\nint[] right = {4,5,6};//right half of plaintext\nint temp[];//temp for swapping values\n\n//encrypt the plaintext (left and right arrays)\nfor(int r = 0; r &lt; 3; r++) {//the number of rounds\n    for(int i = 0; i &lt; right.length; i++){\n        right[i] = left[i] ^ (scramble(right[i], KEY, r));\n    }\n    temp = left;\n    left = right;\n    right = temp;\n}\n\n//swap left and right array before decryption\ntemp = left;\nleft = right;\nright = temp;\nfor(int r = 3; r &gt; 0; r--) {//start from the last round\n    for(int i = 0; i &lt; right.length; i++) {\n        right[i] = left[i] ^ (scramble(right[i], KEY, r));\n    }\n\n    //again, swap arrays to do the next round\n    temp = left;\n    left = right;\n    right = temp;\n}\n</code></pre>\n\n<p>The round function, <code>scramble</code> is:</p>\n\n<pre><code>private static int scramble(int character, int key, int roundNumber) {\n    return (int) Math.pow(2 * roundNumber * key, character) % 15;\n}\n</code></pre>\n\n<p>I am attempting to first encrypt the left and right halves of the plaintext, and then run it through the decryption rounds - so by the end, the array's values should be [1,2,3] and [4,5,6] (back to the plaintext). Using a key input of 8, after decryption I'm getting values of [15, 13, 0] and [8, 12, 1]. Where am I going wrong with this?</p>\n\n<p>For simplicity I'm just using a constant as the key right now as well as input of integers as opposed to reading from a file/using byte arrays.</p>\n\n<p>edit:</p>\n\n<p>counting for the loops was incorrect. Changed the \"encryption loop\" to:</p>\n\n<pre><code>for(int r = 1; r &lt; 4; r++) {//the number of rounds\n        for(int i = 0; i &lt; right.length; i++){\n            right[i] = left[i] ^ (scramble(right[i], KEY, r));\n        }\n\n        temp = left;\n        left = right;\n        right = temp;\n}\n</code></pre>\n\n<p>The loops now count rounds 1,2,3 (encryption) and 3,2,1 (decryption). However, the decryption still isn't resulting in the correct plaintext.</p>\n"
+}

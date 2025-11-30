@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "hibernate" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5514390,
+      "reputation" : 1,
+      "user_id" : 4379681,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/070013825a6635a4ac5e1e4e0e8fe091?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "C_Hoekstra",
+      "link" : "https://stackoverflow.com/users/4379681/c-hoekstra"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1485414791,
+    "last_edit_date" : 1485414791,
+    "creation_date" : 1485378677,
+    "answer_id" : 41861731,
+    "question_id" : 41599916,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I haven't tried Oracle, but I had similar issues to yours inserting into an AS400 DB2 table. </p>\n\n<p>I had to remove the identity flag on the id column on DB2 table - and instead used a custom jpa/hibernate sequence generator. This is set up on the pojo/entity annotation of the @ID entity field as you've done. </p>\n\n<p>DB2 had been giving me errors about missing SYSIBM.SYSSEQUENCES table, so evidently hibernate (version 5.2), doesn't recognize the native DB2 identity designation. A custom sequence was and effective workaround.    </p>\n\n<hr>\n\n<p>On the @ID entity field: </p>\n\n<p>@GeneratedValue(generator = \"table\", strategy=GenerationType.TABLE)</p>\n\n<p>@TableGenerator(name = \"table\", allocationSize = 20)</p>\n\n<p>This example allocates a pool of 20 sequence numbers each time it queries the table. </p>\n\n<hr>\n\n<p>Next, create the required table Hibernate needs with columns that match the hibernate5 API - must be in lower case ... so put quotes around the names to work around the auto-upper casing that DB2 defaults to. The API will error out if these names are in caps. </p>\n\n<p>Table: \n\"hibernate_sequences\"</p>\n\n<p>example of 2 Columns used: \n\"sequence_next_hi_value\" (integer, not nullable, 0 default)\n\"sequence_name\" (character, sample length 20, not nullable, natural default) </p>\n\n<hr>\n\n<p>In the configuration code for the dialect used - ex: Spring Boot programmatically, add these properties:  </p>\n\n<p>properties.put(\"hibernate.supportsSequences\",\"false\");\nproperties.put(\"hibernate.id.new_generator_mappings\",\"false\");</p>\n\n<p>and in the *.properties file: </p>\n\n<p>spring.jpa.properties.hibernate.dialect.supportsSequences=false\nspring.jpa.properties.hibernate.id.new_generator_mappings=false</p>\n\n<hr>\n\n<p>Database systems are case-sensitive for schema/table/field names. Also watch for typos everywhere, incl. property names. </p>\n\n<hr>\n\n<p>Be sure your pojo/entity only contains private fields that will be mapped to the table. Static finals such as serialVersionUID are ok.  </p>\n\n<hr>\n\n<p>I will be doing someething similar for SQL Server soon. </p>\n\n<p>For MySQL, I had no issues using an identity column as defined in a table ID field to insert records, so didn't have to make all these changes. A simpler setup since hibernate recognizes the identity designation in MySQL. \n@GeneratedValue(strategy=GenerationType.IDENTITY)\nwas all that was needed in the pojo. </p>\n\n<p>I'm a newbie at all this, so always looking for better ways ... but this worked for now. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16116971,
+      "reputation" : 1,
+      "user_id" : 11633820,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-QFFTVJKSt5A/AAAAAAAAAAI/AAAAAAAAANw/n9rXOKSnd4c/s256-rj/photo.jpg",
+      "display_name" : "Spark 2027",
+      "link" : "https://stackoverflow.com/users/11633820/spark-2027"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1593077495,
+    "last_edit_date" : 1593077495,
+    "creation_date" : 1567452470,
+    "answer_id" : 57761838,
+    "question_id" : 41599916,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I set the property like this in the hibernate.cfg.xml file and it works !</p>\n<p><code>&lt;property name=&quot;hibernate.jpa.compliance.global_id_generators&quot; value=&quot;true&quot;/&gt;</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2234543,
+    "reputation" : 1092,
+    "user_id" : 1971308,
+    "user_type" : "registered",
+    "accept_rate" : 41,
+    "profile_image" : "https://i.sstatic.net/liUII.gif?s=256",
+    "display_name" : "Micho Rizo",
+    "link" : "https://stackoverflow.com/users/1971308/micho-rizo"
+  },
+  "is_answered" : false,
+  "view_count" : 13160,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1763208350,
+  "creation_date" : 1484165625,
+  "question_id" : 41599916,
+  "link" : "https://stackoverflow.com/questions/41599916/where-to-set-hibernate-id-new-generator-mappings-property",
+  "title" : "Where to set hibernate.id.new_generator_mappings property?",
+  "body" : "<p>I've wasted too much time on this ... </p>\n\n<p>I'm using oracle and I have a sequence (MY_TABLE_SEQ) defined which increments by 1.</p>\n\n<p>In my Pojo I have:</p>\n\n<pre><code>@SequenceGenerator(name = \"MY_SEQ\", sequenceName=\"MY_TABLE_SEQ\", allocationSize=50)\n@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=\"MY_SEQ\")\n</code></pre>\n\n<p>This gives me a unique constraint issue. From my understanding I need to set the following property:</p>\n\n<pre><code>hibernate.id.new_generator_mappings=true\n</code></pre>\n\n<p>I've tried setting in my hibernate.cfg.xml file but it does not seem to make any difference. I've come across server post to place in persistance.xml but this is a standalone app, no webcontainer.</p>\n\n<p>Setting allocationSize=1 works but of course it hits the db on each insert to get the next sequence. Setting the above property is suppose to resolve it.</p>\n"
+}

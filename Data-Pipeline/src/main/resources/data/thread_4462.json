@@ -1,0 +1,170 @@
+{
+  "tags" : [ "java", "file" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1123059,
+      "reputation" : 2450,
+      "user_id" : 1110928,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YRBBi.png?s=256",
+      "display_name" : "apnorton",
+      "link" : "https://stackoverflow.com/users/1110928/apnorton"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1606233152,
+    "post_id" : 64989953,
+    "comment_id" : 114898235,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I&#39;d double-check that those were actually hyphens; on any modern operating systems I can think of, the hyphen is an allowable filename character.  (A search suggests that the hyphen only becomes a problem when burned to a CD-R.)  It may be that those characters were really some other unicode character that merely <i>looked</i> like a hyphen."
+  }, {
+    "owner" : {
+      "account_id" : 60521,
+      "reputation" : 35765,
+      "user_id" : 180719,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/AWsdT.png?s=256",
+      "display_name" : "Olivier Gr&#233;goire",
+      "link" : "https://stackoverflow.com/users/180719/olivier-gr%c3%a9goire"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1606233231,
+    "post_id" : 64989953,
+    "comment_id" : 114898273,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Sanitize your inputs. The file is a vector of attack, so sanitize its content, indeed, but also check the filename, that&#39;s another vector of attack. Do whatever is necessary in a separate method <code>sanitizeFilename(String)</code> and use it like this: <code>file.setFileName(sanitizeFilename(file.getFile().getOriginal&zwnj;&#8203;Filename()));</code>. Better: use your own naming system for your filesystem. If you want to retrieve the original filename later, store it as metadata instead of the filename itself."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 401843,
+      "reputation" : 107096,
+      "user_id" : 768644,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b13bedc5215730fbce5edff6c130988a?s=256&d=identicon&r=PG",
+      "display_name" : "rzwitserloot",
+      "link" : "https://stackoverflow.com/users/768644/rzwitserloot"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1606233183,
+    "creation_date" : 1606233183,
+    "answer_id" : 64990035,
+    "question_id" : 64989953,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use whitelisting.</p>\n<p>Make a list of characters you find acceptable. Then run the input file name through a filter. Make a <code>StringBuilder</code> and loop through each character:</p>\n<ol>\n<li>If it is on the whitelist, append the character to the builder.</li>\n<li>Otherwise, decide if you want to ignore it (append nothing), or append some placeholder such as an underscore, which is definitely fine in a filename on every major filesystem.</li>\n</ol>\n<p>If you want to get real fancy you could make a much more involved system that attempts to map any character onto a filesystem-valid character, e.g. trying to map <code>é</code> onto <code>e</code>, a non-breaking space onto nothing (no character at all, an empty string), 'ß' into 'ss', and more. But that doesn't sound like a worthwhile effort here, and is in many ways literally impossible ('ö' in german becomes 'oe', in swedish it becomes 'o'. How do you know the name in the file is swedish or german? You don't, so there is no foolproof conversion possible in the first place).</p>\n<p>NB: You could put in some effort and figure out which characters are and aren't legal on the filesystem you're on. But then you still end up with files with a name that may be acceptable on the system you're on (and many systems accept almost everything, even real bizarre characters, because filenames are mostly just bags o' bytes, and the only reason you can't put a slash in there is because various tools will interpret it as a separator) - but is hard to move around, and causes issues because browsers don't think such characters are valid for their systems even if they are. Thus, I advise whitelisting only the simple characters: Letters, digits, underscore, maybe dollars, dots, dashes, and spaces.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3364083,
+        "reputation" : 929,
+        "user_id" : 6477047,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5ac76464ffd7d06bed27f9d7cb6a3c7c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "reactFullStackDeveloper",
+        "link" : "https://stackoverflow.com/users/6477047/reactfullstackdeveloper"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1606234033,
+      "post_id" : 64990188,
+      "comment_id" : 114898701,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you - That seems like a no brainer. I will give it a try and see what happens."
+    } ],
+    "owner" : {
+      "account_id" : 60521,
+      "reputation" : 35765,
+      "user_id" : 180719,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/AWsdT.png?s=256",
+      "display_name" : "Olivier Gr&#233;goire",
+      "link" : "https://stackoverflow.com/users/180719/olivier-gr%c3%a9goire"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1606233724,
+    "creation_date" : 1606233724,
+    "answer_id" : 64990188,
+    "question_id" : 64989953,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>Your filesystem, your rules</h1>\n<p>If you want to store files, name them according to whatever rules you want, but don't let the user dictate the name. Will there be name conflicts? Does a filename contain invalid characters? You never know.</p>\n<p>So use your own naming conventions. But you say that there is some business rule to force you to keep the original filename. So just do that in another place.</p>\n<p>For instance, you get the file <code>Hello--World.txt</code>, use the name <code>20201124-000001.uploaded</code> on your filesystem, but then store in some metadata that the filename is <code>Hello--World.txt</code>. When somebody wants to download that filename, just provide the original filename as the download. This way you keep the metadata associated to your filename, but you keep your system secure.</p>\n<p>Example in your code:</p>\n<pre><code>// Name on filesystem.\nfile.setFileName(date + &quot;-&quot; + orderingNumberForDate(date) + &quot;.uploaded&quot;);     \n\n// Name in the metadata (text or db)\nfile.setOriginalFileName(file.getFile().getOriginalFilename()); \n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 194308,
+        "reputation" : 80399,
+        "user_id" : 436560,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://i.sstatic.net/2GESV.jpg?s=256",
+        "display_name" : "Lajos Arpad",
+        "link" : "https://stackoverflow.com/users/436560/lajos-arpad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760129116,
+      "post_id" : 79787040,
+      "comment_id" : 140789318,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Code-only posts are not answers. You will need to explain your code and the reasoning behind it. Even if your code works, without explanation it will not clarify the matter for the person who has asked about this."
+    } ],
+    "owner" : {
+      "account_id" : 30133861,
+      "reputation" : 1,
+      "user_id" : 23092961,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocKZ_5KFPqsH3ijnugeOpqAQ0y5B98Ma7tMtYKZfLoXxnio=k-s256",
+      "display_name" : "GOVIND GUPTA",
+      "link" : "https://stackoverflow.com/users/23092961/govind-gupta"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760076662,
+    "creation_date" : 1760076662,
+    "answer_id" : 79787040,
+    "question_id" : 64989953,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>import java.nio.file.InvalidPathException;\nimport java.nio.file.Path;\nimport java.nio.file.Paths;\nimport java.util.Locale;\nimport java.util.Set;\nimport java.util.regex.Pattern;\n\npublic class FileNameValidator {\n\n    private static final int MAX_COMPONENT_LENGTH = 255;\n    \n    // Pattern to block control, Bidi, and general unsafe characters (like +, |, &lt;, &gt;)\n    // Cntrl: ASCII 0x00-0x1F and 0x7F\n    // \\u202A-\\u202E, \\u2066-\\u2069: Unicode Bi-Directional (Bidi) characters\n    private static final Pattern UNSAFE_CHARS_PATTERN = \n        Pattern.compile(&quot;[\\\\p{Cntrl}\\\\u202A-\\\\u202E\\\\u2066-\\\\u2069+\\\\s\\&quot;*?:&lt;&gt;|\\\\\\\\/]&quot;);\n\n    // Windows Reserved Device Names (case-insensitive)\n    private static final Set&lt;String&gt; RESERVED_NAMES = Set.of(\n        &quot;CON&quot;, &quot;PRN&quot;, &quot;AUX&quot;, &quot;NUL&quot;, \n        &quot;COM1&quot;, &quot;COM2&quot;, &quot;COM3&quot;, &quot;COM4&quot;, &quot;COM5&quot;, &quot;COM6&quot;, &quot;COM7&quot;, &quot;COM8&quot;, &quot;COM9&quot;,\n        &quot;LPT1&quot;, &quot;LPT2&quot;, &quot;LPT3&quot;, &quot;LPT4&quot;, &quot;LPT5&quot;, &quot;LPT6&quot;, &quot;LPT7&quot;, &quot;LPT8&quot;, &quot;LPT9&quot;\n    );\n\n    /**\n     * Validates a string to be safely used as a single file or directory name.\n     * Throws an IllegalArgumentException if the name is invalid or unsafe.\n     *\n     * @param component The file name string to validate.\n     */\n    public static void validateFileNameForInvalidChars(String component) {\n        if (component == null || component.isBlank()) {\n            throw new IllegalArgumentException(&quot;File name must not be blank.&quot;);\n        }\n        \n        // 1. Basic Length Check\n        if (component.length() &gt; MAX_COMPONENT_LENGTH) {\n            throw new IllegalArgumentException(&quot;File name too long.&quot;);\n        }\n\n        // 2. Traversal and Control Character Checks (Pre-Normalization)\n        String lower = component.toLowerCase(Locale.ROOT);\n        // Block encoded separators and null byte\n        if (lower.contains(&quot;%2f&quot;) || lower.contains(&quot;%5c&quot;) || lower.contains(&quot;%00&quot;)) {\n            throw new IllegalArgumentException(&quot;Encoded separator/null not allowed.&quot;);\n        }\n        \n        // Block control characters, Bidi, and other unsafe characters (using regex)\n        if (UNSAFE_CHARS_PATTERN.matcher(component).find()) {\n            throw new IllegalArgumentException(&quot;File name contains unsafe characters.&quot;);\n        }\n        \n        // 3. Path Traversal and Dot Segment Check\n        Path p;\n        try {\n            // Use Paths.get to check OS validity and implicitly block many path errors\n            p = Paths.get(component);\n        } catch (InvalidPathException e) {\n            throw new IllegalArgumentException(&quot;Invalid path syntax.&quot;, e);\n        }\n        \n        // Must be a single name component (no internal slashes) and not absolute\n        if (p.isAbsolute() || p.getNameCount() != 1) {\n             throw new IllegalArgumentException(&quot;Not a single file name component.&quot;);\n        }\n        \n        // Check for '.' and '..' segments which are not resolved if used as the whole name\n        if (!p.normalize().equals(p)) { \n            throw new IllegalArgumentException(&quot;Traversal/dot segments not allowed.&quot;);\n        }\n        \n        String name = p.getFileName().toString();\n\n        // 4. Windows Compatibility and Reserved Names\n        \n        // Windows semantics: Disallow trailing space or dot\n        if (name.endsWith(&quot; &quot;) || name.endsWith(&quot;.&quot;)) {\n            throw new IllegalArgumentException(&quot;Trailing space/dot not allowed.&quot;);\n        }\n\n        // Windows reserved device names (case-insensitive check)\n        String upper = name.toUpperCase(Locale.ROOT);\n        if (RESERVED_NAMES.contains(upper)) {\n            throw new IllegalArgumentException(&quot;Reserved device name not allowed.&quot;);\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 194308,
+      "reputation" : 80399,
+      "user_id" : 436560,
+      "user_type" : "registered",
+      "accept_rate" : 87,
+      "profile_image" : "https://i.sstatic.net/2GESV.jpg?s=256",
+      "display_name" : "Lajos Arpad",
+      "link" : "https://stackoverflow.com/users/436560/lajos-arpad"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760129020,
+    "creation_date" : 1760129020,
+    "answer_id" : 79787676,
+    "question_id" : 64989953,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The first solution is to have a validation method and refuse any filename that you don't want to allow. Someplace that method you would either check against <code>--</code> or any other pattern you wish via regex or String methods and refuse any filename you don't want.</p>\n<p>The second solution is to compare the filename after</p>\n<pre><code>file.setFileName(file.getFile().getOriginalFilename());\n</code></pre>\n<p>to what <code>file.getFile().getOriginalFilename()</code> was and if they differ, then you generate your own filename and somehow let the user know about the file renaming if the internal filename is to be communicated to them. You can also combine the two.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3364083,
+    "reputation" : 929,
+    "user_id" : 6477047,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/5ac76464ffd7d06bed27f9d7cb6a3c7c?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "reactFullStackDeveloper",
+    "link" : "https://stackoverflow.com/users/6477047/reactfullstackdeveloper"
+  },
+  "is_answered" : true,
+  "view_count" : 1248,
+  "answer_count" : 4,
+  "score" : 3,
+  "last_activity_date" : 1760129020,
+  "creation_date" : 1606232892,
+  "question_id" : 64989953,
+  "link" : "https://stackoverflow.com/questions/64989953/java-programmatically-check-for-invalid-characters-in-file-name",
+  "title" : "Java - programmatically check for invalid characters in file name",
+  "body" : "<p>Recently, we had someone upload a file that contained illegal characters in the name (double hyphen) which resulted in the inability to redownload the file. In this instance the file name was <br>\n<code>Some name -- some other information</code></p>\n<p>For the upload, the file name gets set by getting the original file name which is a business rule. <br></p>\n<p><code> file.setFileName(file.getFile().getOriginalFilename());</code></p>\n<p>This resulted in the double hyphen becoming  two upside down question marks, and for whatever reason resulted in the inability to retrieve the file back from the server.</p>\n<p>I'm wondering if there is a programmatic solution to check the original file name for situation like this.</p>\n<p>For transparency, here is the code for uploading the file:</p>\n<pre><code> public void saveOpcertCeuFile(OpcertCeuFileUpload file) {\n        UmdContact user = secUtilService.getActiveUser();\n        String username = user.getEmail();\n        Date now = new Date();\n\n        file.setCreatedTs(now);\n        file.setLastUpdatedTs(now);\n        file.setCreatedBy(username);\n        file.setLastUpdatedBy(username);\n        file.setFileName(file.getFile().getOriginalFilename());\n        file.setIsApproved(Boolean.FALSE);\n        file.setIsDeleted(Boolean.FALSE);\n\n        try {\n            file.setByteContents(file.getFile().getBytes());\n        } catch (Exception ex) {\n            log.info(ex);\n            throw new RuntimeException(ex);\n        }\n        dao.insertOpcertCeuFileUpload(file);\n\n        Path path = this.getOptcertCeuFilePath(file);\n        String configF = envService.getServerUrl();\n        file.setFilePath(String.valueOf(path));\n        dao.updateOpcertCeuFilePath(file);\n\n        try {\n            File file1 = path.toFile();\n            file1.getParentFile().mkdirs();\n            Files.write(path, file.getByteContents(), StandardOpenOption.CREATE_NEW);\n        } catch (Exception ex) {\n            throw new RuntimeException(ex);\n        }\n    }\n</code></pre>\n"
+}

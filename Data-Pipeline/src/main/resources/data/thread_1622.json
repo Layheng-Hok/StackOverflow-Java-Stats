@@ -1,0 +1,170 @@
+{
+  "tags" : [ "java", "java-8", "java-time" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1101161,
+      "reputation" : 122410,
+      "user_id" : 1093528,
+      "user_type" : "registered",
+      "accept_rate" : 65,
+      "profile_image" : "https://i.sstatic.net/VjxwC.jpg?s=256",
+      "display_name" : "fge",
+      "link" : "https://stackoverflow.com/users/1093528/fge"
+    },
+    "edited" : false,
+    "score" : 9,
+    "creation_date" : 1431598915,
+    "post_id" : 30234594,
+    "comment_id" : 48571722,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Basically a <code>ZonedDateTime</code> also contains information about timezones, including DST switching etc from what I read."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : true,
+    "score" : 269,
+    "last_activity_date" : 1557542378,
+    "last_edit_date" : 1557542378,
+    "creation_date" : 1431599220,
+    "answer_id" : 30234992,
+    "question_id" : 30234594,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n  <p>Q: What's the difference between java 8 ZonedDateTime and OffsetDateTime?</p>\n</blockquote>\n\n<p>The javadocs say this:</p>\n\n<blockquote>\n  <p><em>\"<code>OffsetDateTime</code>, <code>ZonedDateTime</code> and <code>Instant</code> all store an instant on the time-line to nanosecond precision. <code>Instant</code> is the simplest, simply representing the instant. <code>OffsetDateTime</code> adds to the instant the offset from UTC/Greenwich, which allows the local date-time to be obtained. <code>ZonedDateTime</code> adds full time-zone rules.\"</em></p>\n</blockquote>\n\n<p>Source: <a href=\"https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html\" rel=\"noreferrer\">https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html</a></p>\n\n<p>Thus the difference between <code>OffsetDateTime</code> and <code>ZonedDateTime</code> is that the latter includes the rules that cover daylight saving time adjustments and various other anomalies.  </p>\n\n<p>Stated simply:</p>\n\n<blockquote>\n  <p><a href=\"https://en.wikipedia.org/wiki/Time_zone\" rel=\"noreferrer\">Time Zone</a> = ( <a href=\"https://en.wikipedia.org/wiki/UTC_offset\" rel=\"noreferrer\">Offset-From-UTC</a> + Rules-For-Anomalies ) </p>\n</blockquote>\n\n<hr>\n\n<blockquote>\n  <p>Q: According to documentation <code>OffsetDateTime</code> should be used when writing date to database, but I don't get why.</p>\n</blockquote>\n\n<p>Dates with local time offsets always represent the same instants in time, and therefore have a stable ordering.  By contrast, the meaning of dates with full timezone information is unstable in the face of adjustments to the rules for the respective timezones.  (And these do happen; e.g. for date-time values in the future.)  So if you store and then retrieve a <code>ZonedDateTime</code> the implementation has a problem:</p>\n\n<ul>\n<li><p>It can store the computed offset ... and the retrieved object may then  have an offset that is inconsistent with the current rules for the zone-id.</p></li>\n<li><p>It can discard the computed offset ... and the retrieved object then represents a different point in the absolute / universal timeline than the one that was stored.</p></li>\n</ul>\n\n<p>If you use Java object serialization, the Java 9 implementation takes the first approach.  This is arguably the \"more correct\" way to handle this, but this doesn't appear to be documented.  (JDBC drivers and ORM bindings are presumably making similar decisions, and are hopefully getting it right.)</p>\n\n<p>But if you are writing an application that manually stores date/time values, or that rely on <code>java.sql.DateTime</code>, then dealing with the complications of a zone-id is ... probably something to be avoided.  Hence the advice.</p>\n\n<p>Note that dates whose meaning / ordering is unstable over time <em>may be</em> problematic for an application.  And since changes to zone rules are an edge case, the problems are liable to emerge at unexpected times.</p>\n\n<hr>\n\n<p>A (possible) second reason for the advice is that the construction of a <code>ZonedDateTime</code> is ambiguous at the certain points.  For example in the period in time when you are \"putting the clocks back\", combining a local time and a zone-id can give you two different offsets.  The <code>ZonedDateTime</code> will consistently pick one over the other ... but this isn't always the correct choice.</p>\n\n<p>Now, this could be a problem for any applications that construct <code>ZonedDateTime</code> values that way.  But from the perspective of someone building an enterprise application is a bigger problem when the (possibly incorrect) <code>ZonedDateTime</code> values are persistent and used later.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 17835,
+        "reputation" : 309258,
+        "user_id" : 40342,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/a648ccb47bbbe9497c073315aac4d33e?s=256&d=identicon&r=PG",
+        "display_name" : "Joachim Sauer",
+        "link" : "https://stackoverflow.com/users/40342/joachim-sauer"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1621929049,
+      "post_id" : 67683745,
+      "comment_id" : 119634430,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;d go the opposite way: the correct one to use is usually <i>either</i> <code>Instant</code> or <code>ZonedDateTime</code>. IMO <code>OffsetDateTime</code> only exist because many existing systems (wrongly) treated &quot;time offset&quot; to be sufficient information about timezones (i.e. they communicate/store/handle just an offset when they should be communicating a time zone name)."
+    }, {
+      "owner" : {
+        "account_id" : 57788,
+        "reputation" : 49668,
+        "user_id" : 173149,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/e43539b3257049bef7885c9f193b364d?s=256&d=identicon&r=PG",
+        "display_name" : "gavenkoa",
+        "link" : "https://stackoverflow.com/users/173149/gavenkoa"
+      },
+      "reply_to_user" : {
+        "account_id" : 17835,
+        "reputation" : 309258,
+        "user_id" : 40342,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/a648ccb47bbbe9497c073315aac4d33e?s=256&d=identicon&r=PG",
+        "display_name" : "Joachim Sauer",
+        "link" : "https://stackoverflow.com/users/40342/joachim-sauer"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1628160307,
+      "post_id" : 67683745,
+      "comment_id" : 121349160,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@JoachimSauer When we format message for users or read their input we use <code>ZonedDateTime</code> &amp; <code>ZoneId</code>. When we store a time event to DB we convert to UTC, OffsetDateTime is basically an instant in time. UTC dates are easy comparable (avoiding TZ info lookups)."
+    } ],
+    "owner" : {
+      "account_id" : 1677099,
+      "reputation" : 11767,
+      "user_id" : 1542363,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://www.gravatar.com/avatar/9ead16da66e5a60ec00752d360fe7469?s=256&d=identicon&r=PG",
+      "display_name" : "Sam YC",
+      "link" : "https://stackoverflow.com/users/1542363/sam-yc"
+    },
+    "is_accepted" : false,
+    "score" : 36,
+    "last_activity_date" : 1621928820,
+    "creation_date" : 1621928820,
+    "answer_id" : 67683745,
+    "question_id" : 30234594,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The accepted answer give very completed explanation, perhaps below code example can provide you short and clear picture:</p>\n<pre><code>Instant instant = Instant.now();\nClock clock = Clock.fixed(instant, ZoneId.of(&quot;America/New_York&quot;));\nOffsetDateTime offsetDateTime = OffsetDateTime.now(clock);\nZonedDateTime zonedDateTime = ZonedDateTime.now(clock);\n\nSystem.out.println(offsetDateTime); // 2019-01-03T19:10:16.806-05:00\nSystem.out.println(zonedDateTime);  // 2019-01-03T19:10:16.806-05:00[America/New_York]\nSystem.out.println();\n\nOffsetDateTime offsetPlusSixMonths = offsetDateTime.plusMonths(6);\nZonedDateTime zonedDateTimePlusSixMonths = zonedDateTime.plusMonths(6);\n\nSystem.out.println(offsetPlusSixMonths); // 2019-07-03T19:10:16.806-05:00\nSystem.out.println(zonedDateTimePlusSixMonths); // 2019-07-03T19:10:16.806-04:00[America/New_York]\nSystem.out.println(zonedDateTimePlusSixMonths.toEpochSecond() - offsetPlusSixMonths.toEpochSecond()); // -3600\n\nSystem.out.println();\nSystem.out.println(zonedDateTimePlusSixMonths.toLocalDateTime()); // 2019-07-03T19:10:16.806\nSystem.out.println(offsetPlusSixMonths.toLocalDateTime()); // 2019-07-03T19:10:16.806\n</code></pre>\n<p>In short, use <code>ZonedDateTime</code> only if you want to factor in Daylight saving, typically there will be one hour difference, as you can see the example above, the offset of <code>ZonedDateTime</code> change from <code>-5:00</code> to <code>-04:00</code>, in most case, your business logic might end up with bug.</p>\n<p>(code copy from <a href=\"https://www.youtube.com/watch?v=nEQhx9hGutQ\" rel=\"noreferrer\">https://www.youtube.com/watch?v=nEQhx9hGutQ</a>)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2345376,
+      "reputation" : 3128,
+      "user_id" : 2055782,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/snbnC.jpg?s=256",
+      "display_name" : "Mohsin AR",
+      "link" : "https://stackoverflow.com/users/2055782/mohsin-ar"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1709799853,
+    "creation_date" : 1709799853,
+    "answer_id" : 78119788,
+    "question_id" : 30234594,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Apart from programming, I am giving you an example to understand <code>ZonedDateTime </code> and <code>OffsetDateTime</code> in the real world.\n<strong>ZonedDateTime</strong>:\nlet's say I am in <code>Pakistan</code> now and right now the data and time is <code>2024-03-07T13:05:00.00000</code> (13:05 == 01:05 pm), if I add <code>+03:00</code> the time would be the current time in <code>Thailand</code> (15:05 == 03:05 pm),\n<strong>OffsetDateTime</strong>:\nOffsetDateTime: start by UTC+00:00 and the current time is <code>2024-03-07T08:05:00.00000</code> (08:05 am), if I add <code>+03:00</code> the time would be current time in <code>Saudi Arabia</code> (11:05 am).</p>\n<p>So OffsetDateTime starts from UTC+00:00 and ZonedDateTime starts from your current zone time. please refer attached <a href=\"https://en.wikipedia.org/wiki/UTC%2B00:00\" rel=\"nofollow noreferrer\">wiki link</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1720390825,
+    "last_edit_date" : 1720390825,
+    "creation_date" : 1720374092,
+    "answer_id" : 78718000,
+    "question_id" : 30234594,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Moment</h2>\n<p>You have three ways to represent a moment, a specific point on the timeline.</p>\n<div class=\"s-table-container\"><table class=\"s-table\">\n<thead>\n<tr>\n<th>Concept</th>\n<th>Java</th>\n<th>SQL standard</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>A moment as seen with an offset from UTC of zero hours-minutes-seconds</td>\n<td><a href=\"https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/time/Instant.html\" rel=\"noreferrer\"><code>Instant</code></a></td>\n<td>—</td>\n</tr>\n<tr>\n<td>A moment as seen with an offset from UTC of some number of hours-minutes-seconds</td>\n<td><a href=\"https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/time/OffsetDateTime.html\" rel=\"noreferrer\"><code>OffsetDateTime</code></a></td>\n<td><code>TIMESTAMP WITH TIME ZONE</code></td>\n</tr>\n<tr>\n<td>A moment as seen through the wall-clock/calendar used by the people of a particular region</td>\n<td><a href=\"https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/time/ZonedDateTime.html\" rel=\"noreferrer\"><code>ZonedDateTime</code></a></td>\n<td>—</td>\n</tr>\n</tbody>\n</table></div>\n<pre class=\"lang-java prettyprint-override\"><code>Instant instant = Instant.now() ;               // .toString() -&gt; 2024-07-07T18:28:15.268003Z  (the `Z` is short for `+00:00`, offset of zero)\n\nZoneId z = ZoneId.of( &quot;Pacific/Auckland&quot; ) ;    // .toString() -&gt; Pacific/Auckland\nZonedDateTime zdt = instant.atZone( z ) ;       // .toString() -&gt; 2024-07-08T06:28:15.268003+12:00[Pacific/Auckland]\n\nOffsetDateTime odt = zdt.toOffsetDateTime() ;   // .toString() -&gt; 2024-07-08T06:28:15.268003+12:00\n</code></pre>\n<p>See that <a href=\"https://ideone.com/SWCG74\" rel=\"noreferrer\">code run at Ideone.com</a>.</p>\n<h2>Offset versus Time zone</h2>\n<ul>\n<li><strong>Offset</strong><br />An offset is merely a number of hours-minutes-seconds ahead or behind the temporal meridian of UTC.</li>\n<li><strong>Time Zone</strong><br />A time zone is much more. A time zone is a named history of the past, present, and future changes to the offset used by the people of a particular region as decided by their politicians.</li>\n</ul>\n<p><a href=\"https://en.wikipedia.org/wiki/List_of_tz_database_time_zones\" rel=\"noreferrer\">Time zone names</a> use the format of <code>Continent/Region</code> such as <code>Europe/Paris</code> and <code>Africa/Casablanca</code>.</p>\n<p>Example:</p>\n<ul>\n<li><code>+08:00</code> is an offset. This means &quot;eight hours ahead of UTC&quot;.</li>\n<li><code>Asia/Kuala_Lumpur</code> is the name of a time zone. At the time of this writing, <a href=\"https://time.is/Kuala_Lumpur\" rel=\"noreferrer\">that time zone</a> is using an offset of <code>+08:00</code>.</li>\n</ul>\n<h2><code>Instant</code></h2>\n<p>The <a href=\"https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/time/Instant.html\" rel=\"noreferrer\"><code>java.time.Instant</code></a> class represents a moment as seen through an offset from UTC of zero hours-minutes-seconds.</p>\n<h2><code>OffsetDateTime</code></h2>\n<p>The class <a href=\"https://docs.oracle.com/en/java/javase/22/docs/api/java.base/java/time/OffsetDateTime.html\" rel=\"noreferrer\"><code>java.time.OffsetDateTime</code></a> represents a moment, a point on the timeline, as seen through a particular offset.</p>\n<h3>SQL database</h3>\n<p>Importantly, the SQL standard defines a moment only by way of an offset. So <code>OffsetDateTime</code> is the only way to exchange a moment with a database via <a href=\"https://en.wikipedia.org/wiki/SQL\" rel=\"noreferrer\">SQL</a> and <a href=\"https://en.wikipedia.org/wiki/Java_Database_Connectivity\" rel=\"noreferrer\">JDBC</a>.</p>\n<pre><code>OffsetDateTime odt = myResultSet.getObject( … , OffsetDateTime.class ) ;\n</code></pre>\n<p>… and:</p>\n<pre><code>myPreparedStatement.setObject( … , odt ) ;\n</code></pre>\n<h2><code>ZonedDateTime</code></h2>\n<p>The class <code>java.time.ZonedDateTime</code> represent a moment as seen through the wall-clock/calendar used by the people of a particular region. The offset used by those people may change over time for various reasons (observance of <a href=\"https://en.wikipedia.org/wiki/Daylight_saving_time\" rel=\"noreferrer\">Daylight Saving Time</a>, war &amp; occupation, diplomacy, internal politics, etc.).</p>\n<pre><code>ZoneId z = ZoneId.of( &quot;Asia/Tokyo&quot; ) ;\nZonedDateTime zdt = ZonedDateTime.now( z ) ;\n</code></pre>\n<p>If doing date-time math, adding or subtracting a span of time to move forward into the future or backward into the past, use <code>ZonedDateTime</code> rather than <code>OffsetDateTime</code>. Because the politicians controlling a time may choose to alter their offset, you must use <code>ZonedDateTime</code> to account those changes in offset. And you must be using an up-to-date <a href=\"https://en.wikipedia.org/wiki/Tz_database\" rel=\"noreferrer\"><em>tzdata</em></a> file.</p>\n<hr />\n<p>Summary…</p>\n<p>In most business app scenarios, you will be using <code>Instant</code> in business logic except where business rules necessitate the context of a time zone in which case you use <code>ZonedDateTime</code>. And you would use <code>ZonedDateTime</code> for presentation to the user where they expect so. Rarely would you use <code>OffsetDateTime</code>.</p>\n<p>The <code>OffsetDateTime</code> class is generally unused, with the big exception of exchanging a moment with databases. When a database is involved, you will likely find yourself converting back and forth between <code>OffsetDateTime</code> and <code>Instant</code>/<code>ZonedDateTime</code>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1399470,
+    "reputation" : 6236,
+    "user_id" : 1328513,
+    "user_type" : "registered",
+    "accept_rate" : 53,
+    "profile_image" : "https://www.gravatar.com/avatar/7ae23c0631c6d70fb8e8cb51854a0ff4?s=256&d=identicon&r=PG",
+    "display_name" : "Zhenya",
+    "link" : "https://stackoverflow.com/users/1328513/zhenya"
+  },
+  "is_answered" : true,
+  "view_count" : 85154,
+  "accepted_answer_id" : 30234992,
+  "answer_count" : 4,
+  "score" : 222,
+  "last_activity_date" : 1720390825,
+  "creation_date" : 1431598120,
+  "last_edit_date" : 1589555373,
+  "question_id" : 30234594,
+  "link" : "https://stackoverflow.com/questions/30234594/whats-the-difference-between-zoneddatetime-and-offsetdatetime",
+  "title" : "What&#39;s the difference between ZonedDateTime and OffsetDateTime?",
+  "body" : "<p>I've read the documentation, but I still can't get when I should use one or the other: </p>\n\n<ul>\n<li><a href=\"https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html\"><code>OffsetDateTime</code></a></li>\n<li><a href=\"https://docs.oracle.com/javase/8/docs/api/java/time/ZonedDateTime.html\"><code>ZonedDateTime</code></a></li>\n</ul>\n\n<p>According to documentation <code>OffsetDateTime</code> should be used when writing date to database, but I don't get why.</p>\n"
+}

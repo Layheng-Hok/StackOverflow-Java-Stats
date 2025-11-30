@@ -1,0 +1,83 @@
+{
+  "tags" : [ "java", "logback", "slf4j" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9945599,
+        "reputation" : 919,
+        "user_id" : 7360447,
+        "user_type" : "registered",
+        "accept_rate" : 26,
+        "profile_image" : "https://www.gravatar.com/avatar/e295654419f3a4fdd0eb88811df2e5c3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alagammal P",
+        "link" : "https://stackoverflow.com/users/7360447/alagammal-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1490806051,
+      "post_id" : 42998624,
+      "comment_id" : 73280521,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks. It works well when I keep &lt;maxHistory&gt; as 240 (10 days * 24 hours)"
+    }, {
+      "owner" : {
+        "account_id" : 9945599,
+        "reputation" : 919,
+        "user_id" : 7360447,
+        "user_type" : "registered",
+        "accept_rate" : 26,
+        "profile_image" : "https://www.gravatar.com/avatar/e295654419f3a4fdd0eb88811df2e5c3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alagammal P",
+        "link" : "https://stackoverflow.com/users/7360447/alagammal-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1492513665,
+      "post_id" : 42998624,
+      "comment_id" : 73995696,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Logback does not delete the files even after 240 hours(I mean 10 days)?"
+    } ],
+    "owner" : {
+      "account_id" : 100270,
+      "reputation" : 132415,
+      "user_id" : 270371,
+      "user_type" : "registered",
+      "accept_rate" : 33,
+      "profile_image" : "https://i.sstatic.net/LSTUa.png?s=256",
+      "display_name" : "davidxxx",
+      "link" : "https://stackoverflow.com/users/270371/davidxxx"
+    },
+    "is_accepted" : true,
+    "score" : 22,
+    "last_activity_date" : 1511893585,
+    "last_edit_date" : 1511893585,
+    "creation_date" : 1490355726,
+    "answer_id" : 42998624,
+    "question_id" : 42998191,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The <code>maxHistory</code> element specifies the number of rolled files to history.<br>\nIf you choose <code>&lt;maxHistory&gt;10&lt;/maxHistory&gt;</code> it means you could have a history for 10 files.<br></p>\n\n<p>In your case you specify the hour as granularity for the rolling. It means if your application logs each hour, the history is full after 10 hours and older history logs are purged.</p>\n\n<p>With your hour rolling file configuration, having exactly 10 days as history is far from being obvious as your application could be off some hours and even some days. <br></p>\n\n<p>In fact, if you want to keep the hour rolling granularity I think you should specify the history in terms of hours and not days : you have to align both.<br></p>\n\n<p>For example, if you consider that the application is on 12 hours on day, you could specify <code>120</code> as <code>history</code> value (12 hours * 10 days) to have something close to 10 days.<br>\nIf you don't master the frequency of logs and you want ensure that you have not a history with less than 10 days, use <code>240</code> as <code>history</code> value (24 hours * 10 days).<br>\nThe single drawback : if the application doesn't log each hour of each day, you will get more history as needed.</p>\n\n<blockquote>\n  <p>If I use daily rollover then I could see the the rolled over logs are\n  maintained for the number of days mentioned in <code>&lt;maxHistory&gt;</code></p>\n</blockquote>\n\n<p>Yes because as explained, the granularity of the <code>maxHistory</code> value depends on the rolling time granularity.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 9945599,
+    "reputation" : 919,
+    "user_id" : 7360447,
+    "user_type" : "registered",
+    "accept_rate" : 26,
+    "profile_image" : "https://www.gravatar.com/avatar/e295654419f3a4fdd0eb88811df2e5c3?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Alagammal P",
+    "link" : "https://stackoverflow.com/users/7360447/alagammal-p"
+  },
+  "is_answered" : true,
+  "view_count" : 25591,
+  "accepted_answer_id" : 42998624,
+  "answer_count" : 1,
+  "score" : 10,
+  "last_activity_date" : 1762033278,
+  "creation_date" : 1490354379,
+  "last_edit_date" : 1762033278,
+  "question_id" : 42998191,
+  "link" : "https://stackoverflow.com/questions/42998191/logback-deletes-the-logs-before-the-maxhistory-during-hourly-rollback",
+  "title" : "logback deletes the logs before the MaxHistory during hourly rollback",
+  "body" : "<p>I use the below appender and I could see the roll back occurs at once in every hour.</p>\n<p>But I mentioned the <code>&lt;maxHistory&gt;</code> as 10 days. But I could see the logs are automatically deleted by logback at the end of every day.</p>\n<p>But the expectation is to keep the log files for maximum 10 days.</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;appender name=&quot;TIME_BASED_FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;\n    &lt;file&gt;c:/logs/timeBasedlogFile.log&lt;/file&gt;\n    &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;        \n        &lt;fileNamePattern&gt;c:/logs/timeBasedlogFile.%d{yyyy-MM-dd_HH}.log&lt;/fileNamePattern&gt;\n        &lt;maxHistory&gt;10&lt;/maxHistory&gt;\n    &lt;/rollingPolicy&gt;\n    &lt;encoder&gt;\n        &lt;pattern&gt;%relative [%thread] %-5level %logger{35} - %msg%n&lt;/pattern&gt;\n    &lt;/encoder&gt;\n&lt;/appender&gt;\n</code></pre>\n<p>If I use daily rollover then I could see the the rolled over logs are maintained for the number of days mentioned in <code>&lt;maxHistory&gt;</code></p>\n<p>Does the maxHistory work only for daily rollover?</p>\n"
+}

@@ -1,0 +1,105 @@
+{
+  "tags" : [ "java", "syntax", "while-loop", "compilation", "return" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 52616,
+      "reputation" : 1081540,
+      "user_id" : 157247,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/lUM5Z.jpg?s=256",
+      "display_name" : "T.J. Crowder",
+      "link" : "https://stackoverflow.com/users/157247/t-j-crowder"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1435827571,
+    "post_id" : 31050114,
+    "comment_id" : 50366016,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Not a duplicate of <a href=\"http://stackoverflow.com/questions/16789832/missing-return-statement-in-a-non-void-method-compiles\" title=\"missing return statement in a non void method compiles\">stackoverflow.com/questions/16789832/&hellip;</a>, thanks to the second half of the 2nd question."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 52616,
+      "reputation" : 1081540,
+      "user_id" : 157247,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/lUM5Z.jpg?s=256",
+      "display_name" : "T.J. Crowder",
+      "link" : "https://stackoverflow.com/users/157247/t-j-crowder"
+    },
+    "is_accepted" : true,
+    "score" : 275,
+    "last_activity_date" : 1435733161,
+    "last_edit_date" : 1495542883,
+    "creation_date" : 1435235023,
+    "answer_id" : 31050290,
+    "question_id" : 31050114,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p><strong>Question 1:</strong></p>\n  \n  <p>Why does the following code compile without having a return statement?</p>\n\n<pre><code>public int a() \n{\n    while(true);\n}\n</code></pre>\n</blockquote>\n\n<p>This is covered by <a href=\"https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.4.7\" rel=\"nofollow noreferrer\">JLS§8.4.7</a>:</p>\n\n<blockquote>\n  <p>If a method is declared to have a return type (§8.4.5), then a compile-time error occurs if the body of the method can complete normally (§14.1).</p>\n  \n  <p>In other words, a method with a return type must return only by using a return statement that provides a value return; the method is not allowed to \"drop off the end of its body\". See §14.17 for the precise rules about return statements in a method body.</p>\n  \n  <p>It is possible for a method to have a return type and yet contain no return statements. Here is one example:</p>\n\n<pre><code>class DizzyDean {\n    int pitch() { throw new RuntimeException(\"90 mph?!\"); }\n}\n</code></pre>\n</blockquote>\n\n<p>Since the compiler knows that the loop will never terminate (<code>true</code> is always true, of course), it knows the function cannot \"return normally\" (drop off the end of its body), and thus it's okay that there's no <code>return</code>.</p>\n\n<blockquote>\n  <p><strong>Question 2:</strong></p>\n  \n  <p>On the other hand, why does the following code compile,</p>\n\n<pre><code>public int a() \n{\n    while(0 == 0);\n}\n</code></pre>\n  \n  <p>even though the following does not.</p>\n\n<pre><code>public int a(int b)\n{\n    while(b == b);\n}\n</code></pre>\n</blockquote>\n\n<p>In the <code>0 == 0</code> case, the compiler knows that the loop will never terminate (that <code>0 == 0</code> will always be true). But it <strong>doesn't</strong> know that for <code>b == b</code>.</p>\n\n<p>Why not?</p>\n\n<p>The compiler understands <a href=\"https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.28\" rel=\"nofollow noreferrer\">constant expressions (§15.28)</a>. Quoting <a href=\"https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.2\" rel=\"nofollow noreferrer\">§15.2 - Forms of Expressions</a> <em>(because oddly this sentence isn't in §15.28)</em>:</p>\n\n<blockquote>\n  <p>Some expressions have a value that can be determined at compile time. These are <em>constant expressions</em> (§15.28).</p>\n</blockquote>\n\n<p>In your <code>b == b</code> example, because there is a variable involved, it isn't a constant expression and isn't specified to be determined at compilation time. <strong>We</strong> can see that it's always going to be true in this case (although if <code>b</code> were a <code>double</code>, as QBrute <a href=\"https://stackoverflow.com/questions/31050114/java-method-with-return-type-compiles-without-actually-returning-anything/31050290#comment50126058_31050290\">pointed out</a>, we could easily be fooled by <code>Double.NaN</code>, which is <a href=\"https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.2.3\" rel=\"nofollow noreferrer\">not <code>==</code> itself</a>), but the JLS only specifies that constant expressions are determined at compile time, it doesn't allow the compiler to try to evaluate non-constant expressions. bayou.io <a href=\"https://stackoverflow.com/questions/31050114/java-method-with-return-type-compiles-without-actually-returning-anything#comment50122240_31050290\">raised a good point</a> for why not: If you start going down the road of trying to determine expressions involving variables at compilation time, where do you stop? <code>b == b</code> is obvious (er, for non-<code>NaN</code> values), but what about <code>a + b == b + a</code>? Or <code>(a + b) * 2 == a * 2 + b * 2</code>? Drawing the line at constants makes sense.</p>\n\n<p>So since it doesn't \"determine\" the expression, the compiler doesn't know that the loop will never terminate, so it thinks the method can return normally&nbsp;&mdash; which it's not allowed to do, because it's required to use <code>return</code>. So it complains about the lack of a <code>return</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 935202,
+      "reputation" : 50314,
+      "user_id" : 964243,
+      "user_type" : "registered",
+      "accept_rate" : 66,
+      "profile_image" : "https://i.sstatic.net/fL1rH.png?s=256",
+      "display_name" : "Boann",
+      "link" : "https://stackoverflow.com/users/964243/boann"
+    },
+    "is_accepted" : false,
+    "score" : 35,
+    "last_activity_date" : 1757435310,
+    "last_edit_date" : 1757435310,
+    "creation_date" : 1435255275,
+    "answer_id" : 31057507,
+    "question_id" : 31050114,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It can be interesting to think of a method return type not as a promise to return a value of the specified type, but as a promise <em>not</em> to return a value that is <em>not</em> of the specified type. If you never complete the return, you are not breaking the promise, so any of the following are legal:</p>\n<ol>\n<li><p>Looping forever:</p>\n<pre><code> X foo() {\n     for (;;);\n }\n</code></pre>\n</li>\n<li><p>Recursing forever:</p>\n<pre><code> final X foo() {\n     return foo();\n }\n</code></pre>\n</li>\n<li><p>Throwing out an exception:</p>\n<pre><code> X foo() {\n     throw new Error();\n }\n</code></pre>\n</li>\n</ol>\n<p>(The recursion one pretends to return a value, but clearly it can never succeed, as there is no code present that has any idea how to create or procure an &quot;X&quot;.)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2488627,
+      "reputation" : 1167,
+      "user_id" : 2166594,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1c837edb252a805570c348f18c9ea3a6?s=256&d=identicon&r=PG",
+      "display_name" : "Philip Devine",
+      "link" : "https://stackoverflow.com/users/2166594/philip-devine"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1435701735,
+    "last_edit_date" : 1435701735,
+    "creation_date" : 1435347452,
+    "answer_id" : 31080894,
+    "question_id" : 31050114,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Looking at the byte code, if what is being returned does not match the definition, you will receive a compile error.  </p>\n\n<p><strong>Example:</strong></p>\n\n<p><code>for(;;)</code> will show the bytecodes:</p>\n\n<pre><code>L0\n    LINENUMBER 6 L0\n    FRAME SAME\n    GOTO L0\n</code></pre>\n\n<p><strong>Note the lack of any return bytecode</strong></p>\n\n<p>This does not ever hit a return, and thus does not return the wrong type.</p>\n\n<p>For comparison, a method like:</p>\n\n<pre><code>public String getBar() { \n    return bar; \n}\n</code></pre>\n\n<p>Will return the following bytecodes:</p>\n\n<pre><code>public java.lang.String getBar();\n    Code:\n      0:   aload_0\n      1:   getfield        #2; //Field bar:Ljava/lang/String;\n      4:   areturn\n</code></pre>\n\n<p>Note the \"areturn\" which means \"return a reference\"</p>\n\n<p>Now if we do the following:</p>\n\n<pre><code>public String getBar() { \n    return 1; \n}\n</code></pre>\n\n<p>Will return the following bytecodes:</p>\n\n<pre><code>public String getBar();\n  Code:\n   0:   iconst_1\n   1:   ireturn\n</code></pre>\n\n<p>Now we can see that the type in the definition does not match the return type of ireturn, which means return int.</p>\n\n<p>So really what it comes down to is that if the method has a return path, that path must match the return type.  But there are instances in the bytecode where no return path is generated at all, and thus no breaking of the rule.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1995799,
+    "reputation" : 30180,
+    "user_id" : 1788806,
+    "user_type" : "registered",
+    "accept_rate" : 94,
+    "profile_image" : "https://www.gravatar.com/avatar/0ca4c6bc08e59c34de7fc39e09de8dbe?s=256&d=identicon&r=PG",
+    "display_name" : "Willi Mentzel",
+    "link" : "https://stackoverflow.com/users/1788806/willi-mentzel"
+  },
+  "is_answered" : true,
+  "view_count" : 17780,
+  "protected_date" : 1435733167,
+  "accepted_answer_id" : 31050290,
+  "answer_count" : 3,
+  "score" : 230,
+  "last_activity_date" : 1757435310,
+  "creation_date" : 1435234497,
+  "last_edit_date" : 1474642324,
+  "question_id" : 31050114,
+  "link" : "https://stackoverflow.com/questions/31050114/java-method-with-return-type-compiles-without-return-statement",
+  "title" : "Java method with return type compiles without return statement",
+  "body" : "<p><strong>Question 1:</strong></p>\n\n<p>Why does the following code compile without having a return statement?</p>\n\n<pre><code>public int a() {\n    while(true);\n}\n</code></pre>\n\n<p>Notice: If I add return after the while then I get an <code>Unreachable Code Error</code>.</p>\n\n<p><strong>Question 2:</strong> </p>\n\n<p>On the other hand, why does the following code compile,</p>\n\n<pre><code>public int a() {\n    while(0 == 0);\n}\n</code></pre>\n\n<p>even though the following does not.</p>\n\n<pre><code>public int a(int b) {\n    while(b == b);\n}\n</code></pre>\n"
+}

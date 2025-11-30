@@ -1,0 +1,556 @@
+{
+  "tags" : [ "java", "data-masking" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 195854,
+      "reputation" : 160525,
+      "user_id" : 438992,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/QouOz.jpg?s=256",
+      "display_name" : "Dave Newton",
+      "link" : "https://stackoverflow.com/users/438992/dave-newton"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1346095675,
+    "post_id" : 12148281,
+    "comment_id" : 16253412,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What do you mean, &quot;hide a string&quot;? Can&#39;t you just display a string of &quot;<i>&quot; the same length as the original? Do you only want to hide *some</i> characters? Against a pattern? Length?"
+  }, {
+    "owner" : {
+      "account_id" : 470330,
+      "reputation" : 11119,
+      "user_id" : 877472,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/e73a159e3f7790ee019673c37da48a59?s=256&d=identicon&r=PG",
+      "display_name" : "Paul Richter",
+      "link" : "https://stackoverflow.com/users/877472/paul-richter"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1346095777,
+    "post_id" : 12148281,
+    "comment_id" : 16253452,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Yes, as Dave Newton said, there are ways to replaces portions of the string, or the entire string with whatever you please, but you&#39;ll have to be more specific about your desired result. Can you give us a specific example that shows the original string, and how you want it to look after your &#39;replacement&#39;."
+  }, {
+    "owner" : {
+      "account_id" : 1773122,
+      "reputation" : 195,
+      "user_id" : 1617498,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/b6ac5de6e91a3133c56b79eb948ef63a?s=256&d=identicon&r=PG",
+      "display_name" : "Jaun Lloyd",
+      "link" : "https://stackoverflow.com/users/1617498/jaun-lloyd"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1346096041,
+    "post_id" : 12148281,
+    "comment_id" : 16253554,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I have considered the replace char option but the I realized i would get stuck if there&#39;s two of the same chars. Basically what I&#39;m trying to explain is the hangman concept, a line of ------ that represents the word"
+  }, {
+    "owner" : {
+      "account_id" : 1416173,
+      "reputation" : 7317,
+      "user_id" : 1341806,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/QG1K2.jpg?s=256",
+      "display_name" : "Dan Ciborowski - MSFT",
+      "link" : "https://stackoverflow.com/users/1341806/dan-ciborowski-msft"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1346096526,
+    "post_id" : 12148281,
+    "comment_id" : 16253762,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What do you want preserved and what do you want to become * out of the following options: Chars, Nums, Spaces, Tabs, Just Letters, things like #$%^&amp;@"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 130645,
+      "reputation" : 82843,
+      "user_id" : 330057,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://i.sstatic.net/i6yM6.png?s=256",
+      "display_name" : "corsiKa",
+      "link" : "https://stackoverflow.com/users/330057/corsika"
+    },
+    "is_accepted" : true,
+    "score" : 10,
+    "last_activity_date" : 1346097883,
+    "last_edit_date" : 1346097883,
+    "creation_date" : 1346095966,
+    "answer_id" : 12148388,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Is this for making a password? Consider the following:</p>\n\n<pre><code>class Password {\n    final String password; // the string to mask\n    Password(String password) { this.password = password; } // needs null protection\n    // allow this to be equal to any string\n    // reconsider this approach if adding it to a map or something?\n    public boolean equals(Object o) {\n        return password.equals(o);\n    }\n    // we don't need anything special that the string doesnt\n    public int hashCode() { return password.hashCode(); }\n    // send stars if anyone asks to see the string - consider sending just\n    // \"******\" instead of the length, that way you don't reveal the password's length\n    // which might be protected information\n    public String toString() {\n        StringBuilder sb = new StringBuilder();\n        for(int i = 0; &lt; password.length(); i++) \n            sb.append(\"*\");\n        return sb.toString();\n    }\n}\n</code></pre>\n\n<p>Or for the hangman approach</p>\n\n<pre><code>class Hangman {\n    final String word;\n    final BitSet revealed;\n    public Hangman(String word) {\n        this.word = word;\n        this.revealed = new BitSet(word.length());\n        reveal(' ');\n        reveal('-');\n    }\n    public void reveal(char c) {\n        for(int i = 0; i &lt; word.length; i++) {\n            if(word.charAt(i) == c) revealed.set(i);\n        }\n    }\n    public boolean solve(String guess) {\n        return word.equals(guess);\n    }\n    public String toString() {\n         StringBuilder sb = new StringBuilder(word.length());\n         for(int i = 0; i &lt; word.length; i++) {\n             char c = revealed.isSet(i) ? word.charAt(i) : \"*\";\n         }\n         return sb.toString();\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1391229270,
+      "post_id" : 12148451,
+      "comment_id" : 32446154,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You need to check for all white space and non-whitespace characters.  So the regex would be <code>[\\s\\S]</code>"
+    }, {
+      "owner" : {
+        "account_id" : 183966,
+        "reputation" : 15278,
+        "user_id" : 419705,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+        "display_name" : "Roddy of the Frozen Peas",
+        "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+      },
+      "reply_to_user" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1391230306,
+      "post_id" : 12148451,
+      "comment_id" : 32446377,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@mrres1 No, I specifically said that using <code>replaceAll</code> with the pattern I mentioned &quot;would preserve whitespace&quot;. That is, would only replace non-whitespace characters with an asterisk. So &quot;hello world&quot; would become &quot;***** *****&quot;. The regex you provided would not preserve the whitespace."
+    }, {
+      "owner" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1391270856,
+      "post_id" : 12148451,
+      "comment_id" : 32456581,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The question is &quot;Is there a way to hide the characters in a string with either &quot;*&quot; or &quot;-&quot; and if there is can someone please explain&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 183966,
+        "reputation" : 15278,
+        "user_id" : 419705,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+        "display_name" : "Roddy of the Frozen Peas",
+        "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+      },
+      "reply_to_user" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1391276049,
+      "post_id" : 12148451,
+      "comment_id" : 32458195,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Which is why the <code>replaceAll</code> was suggested as as <i>alternative</i> which would preserve whitespace if so desired. The previous for-loop would replace all characters."
+    }, {
+      "owner" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1391822349,
+      "post_id" : 12148451,
+      "comment_id" : 32704938,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I think you are answering a question that is not even asked."
+    }, {
+      "owner" : {
+        "account_id" : 183966,
+        "reputation" : 15278,
+        "user_id" : 419705,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+        "display_name" : "Roddy of the Frozen Peas",
+        "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+      },
+      "reply_to_user" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1391829199,
+      "post_id" : 12148451,
+      "comment_id" : 32706209,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Only if the English language has changed significantly since the OP said &quot;is there a way to hide the characters in a string with either &quot;<i>*&quot;</i> or &quot;-&quot;?&quot;. The for-loop iterates through the string and replaces each character with &#39;*&#39;."
+    }, {
+      "owner" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1392006640,
+      "post_id" : 12148451,
+      "comment_id" : 32754401,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes, but if you are offering an alternative, why would you use the <code>\\S</code> pattern over the <code>[\\s\\S]</code>.  How is preserving whitespace in a password legit, when and where is that ever done?  You answer is non sense."
+    }, {
+      "owner" : {
+        "account_id" : 183966,
+        "reputation" : 15278,
+        "user_id" : 419705,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+        "display_name" : "Roddy of the Frozen Peas",
+        "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+      },
+      "reply_to_user" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1392008931,
+      "post_id" : 12148451,
+      "comment_id" : 32755003,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@mrres1 -- Please indicate where in the OP it indicates that this is a password. The OP only says that they wish to hide the characters. I provided two options -- one for hiding all characters, one for hiding the non-white-space characters. Frankly, <code>\\s\\S</code> is no more correct: to hide all characters including white space, the correct pattern to use would be <code>.</code>"
+    }, {
+      "owner" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1392075448,
+      "post_id" : 12148451,
+      "comment_id" : 32791942,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "where in the OP it indicates that this is a password: <a href=\"http://stackoverflow.com/a/12148388/1684768\">stackoverflow.com/a/12148388/1684768</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1392075914,
+      "post_id" : 12148451,
+      "comment_id" : 32792098,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It&#39;s a link to the answer, not an answer.  The OP is the only one who can mark the correct answer."
+    }, {
+      "owner" : {
+        "account_id" : 183966,
+        "reputation" : 15278,
+        "user_id" : 419705,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+        "display_name" : "Roddy of the Frozen Peas",
+        "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+      },
+      "reply_to_user" : {
+        "account_id" : 1860030,
+        "reputation" : 1155,
+        "user_id" : 1684768,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+        "display_name" : "mrres1",
+        "link" : "https://stackoverflow.com/users/1684768/mrres1"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1392076655,
+      "post_id" : 12148451,
+      "comment_id" : 32792374,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "And yet that answer provides two solutions: one that assumes it&#39;s a password (hides spaces) and one that preserves whitespace (the &quot;hangman approach&quot;)."
+    } ],
+    "owner" : {
+      "account_id" : 183966,
+      "reputation" : 15278,
+      "user_id" : 419705,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+      "display_name" : "Roddy of the Frozen Peas",
+      "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1392008828,
+    "last_edit_date" : 1392008828,
+    "creation_date" : 1346096242,
+    "answer_id" : 12148451,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Just create a string with the same number of characters as your original, with instead your \"obfuscating\" character.</p>\n\n<pre><code>String x = \"ABCD\";\n\nString output = \"\";\nfor (int i = 0; i &lt; x.length(); i++) {\n    output += \"*\";\n}\n</code></pre>\n\n<p>Alternatively you could use <code>x.replaceAll(\"\\\\S\", \"*\")</code>, which would preserve whitespace as well.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1142837,
+      "reputation" : 13853,
+      "user_id" : 1126273,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://i.sstatic.net/XqyXV.png?s=256",
+      "display_name" : "Bal&#225;zs &#201;des",
+      "link" : "https://stackoverflow.com/users/1126273/bal%c3%a1zs-%c3%89des"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1346096985,
+    "creation_date" : 1346096985,
+    "answer_id" : 12148631,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You could easily implement something like this:</p>\n\n<pre><code>public class MaskedString\n{\n    private String data;\n\n    public MaskedString(String data){this.data = data;}\n    public void append(char c){data += c;}\n    public void setData(String data){this.data = data;}\n\n    public String getMasked()\n    {\n        StringBuilder sb = new StringBuilder();\n        for(int i=0; i&lt;data.length(); i++)\n            sb.append('*');\n        return sb.toString();\n    }\n\n    public String getString()\n    {\n        return data;\n    }\n}\n</code></pre>\n\n<p>You get the idea :) </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1860030,
+      "reputation" : 1155,
+      "user_id" : 1684768,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3afd4bcec79eec82c803f3d9bd9bad9b?s=256&d=identicon&r=PG",
+      "display_name" : "mrres1",
+      "link" : "https://stackoverflow.com/users/1684768/mrres1"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1392076065,
+    "last_edit_date" : 1392076065,
+    "creation_date" : 1391271468,
+    "answer_id" : 21500432,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There are several ways to achieve this, it would depend on your application.  </p>\n\n<p>If you want to mask all characters with another character in one fell swoop you can use the <code>String#replaceAll(String regex, String replacement)</code> method: <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/String.html#replaceAll(java.lang.String,%20java.lang.String)\" rel=\"nofollow\">http://docs.oracle.com/javase/7/docs/api/java/lang/String.html#replaceAll(java.lang.String,%20java.lang.String)</a>.  </p>\n\n<p>This involves using Regular Expressions, for <code>regex</code> you would use <code>[\\s\\S]</code> which will match any whitespace or non whitespace character.  For <code>replacement</code> you use a regular string, not a RegEx.  In this case, if you wanted an asterisk, use \"*\", for hyphen \"-\", very simple.</p>\n\n<p>All the other methods here work well except the <code>@Roddy of the Frozen Pea</code> and <code>@djc391</code> ones, so that's why I answered it correctly.</p>\n\n<p>Good luck</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1755894,
+      "reputation" : 98,
+      "user_id" : 1603957,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/13c12899227d29bf43e492612f39a45f?s=256&d=identicon&r=PG",
+      "display_name" : "Jasonw",
+      "link" : "https://stackoverflow.com/users/1603957/jasonw"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1583981230,
+    "creation_date" : 1583981230,
+    "answer_id" : 60646929,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>My implementation:</p>\n\n<pre><code>public static String maskString(String s, int x) {\n    int n = s.length()/x;\n    StringBuilder sb = new StringBuilder();\n    for (int i = 0; i &lt; s.length(); i++) {\n      if (n &gt;= 1 &amp;&amp; (i &lt; n || i &gt;= (s.length() - n))) {\n        sb.append(s.charAt(i));\n      }\n      else {\n        sb.append(\"*\");\n      }\n    }\n    return sb.toString();\n  }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 207298,
+        "reputation" : 2958,
+        "user_id" : 457086,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/0c911765b8f856a110596aba4b79d146?s=256&d=identicon&r=PG",
+        "display_name" : "JBM",
+        "link" : "https://stackoverflow.com/users/457086/jbm"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1695341103,
+      "post_id" : 77079024,
+      "comment_id" : 136015042,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Though Kotlin is a cool language, this question was about Java. Would be nicer of you if you indeed converted your code to Java instead of mentioning it."
+    }, {
+      "owner" : {
+        "account_id" : 5160313,
+        "reputation" : 732,
+        "user_id" : 4132230,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/NstJ6.jpg?s=256",
+        "display_name" : "Sandeep Kumar",
+        "link" : "https://stackoverflow.com/users/4132230/sandeep-kumar"
+      },
+      "reply_to_user" : {
+        "account_id" : 207298,
+        "reputation" : 2958,
+        "user_id" : 457086,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/0c911765b8f856a110596aba4b79d146?s=256&d=identicon&r=PG",
+        "display_name" : "JBM",
+        "link" : "https://stackoverflow.com/users/457086/jbm"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1697436373,
+      "post_id" : 77079024,
+      "comment_id" : 136274714,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@JBM Provided Java implementation as well, hope it will help you."
+    } ],
+    "owner" : {
+      "account_id" : 5160313,
+      "reputation" : 732,
+      "user_id" : 4132230,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/NstJ6.jpg?s=256",
+      "display_name" : "Sandeep Kumar",
+      "link" : "https://stackoverflow.com/users/4132230/sandeep-kumar"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1697625972,
+    "last_edit_date" : 1697625972,
+    "creation_date" : 1694408654,
+    "answer_id" : 77079024,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you are looking for simple implementation, you can use below function:</p>\n<p>Kotlin:</p>\n<pre><code>fun String.mask(\n        maskString: String = &quot;x&quot;,\n        maskAfterLetters: Int = 3,\n        isFixSize: Boolean = true,\n        maxSize: Int = 10,\n        selector: String = &quot;.&quot;\n): String {\n    if(maskAfterLetters &lt; 0) throw IllegalArgumentException(&quot;Invalid masking configuration - maskAfterLetters should be greater than 0&quot;)\n    if(isFixSize &amp;&amp; maxSize &lt;= maskAfterLetters) throw IllegalArgumentException(&quot;Invalid masking configuration - maxSize must be greater than maskAfterLetters&quot;)\n    val text = if(isFixSize &amp;&amp; length &gt;= maxSize) substring(0, maxSize) else this\n    val unmaskLength = if(maskAfterLetters &lt;= length) maskAfterLetters else length\n    return text.substring(0, unmaskLength) + text.substring(unmaskLength, text.length).replace(selector.toRegex(), maskString)\n}\n</code></pre>\n<p>Java:</p>\n<pre><code>/* \nFor Java,\nAdditional input parameter named inputStringToBeMasked which is the actual string which has to be masked.\n*/\n\n    public static String mask(\n            String inputStringToBeMasked,\n            String maskString,\n            Integer maskAfterLetters,\n            Boolean isFixSize,\n            Integer maxSize,\n            String selector\n    ) {\n        //check input and set default if input parameters are not passed\n        if(null == maskString || maskString.isEmpty()) maskString = &quot;x&quot;;\n        if(null == maskAfterLetters) maskAfterLetters = 3;\n        if(null == isFixSize) isFixSize = true;\n        if(null == maxSize) maxSize = 10;\n        if(null == selector || selector.isEmpty()) selector = &quot;.&quot;;\n        if(maskAfterLetters &lt; 0) throw new IllegalArgumentException(&quot;Invalid masking configuration - maskAfterLetters should be greater than 0&quot;);\n        if(isFixSize &amp;&amp; maxSize &lt;= maskAfterLetters) throw new IllegalArgumentException(&quot;Invalid masking configuration - maxSize must be greater than maskAfterLetters&quot;);\n\n        String text = (isFixSize &amp;&amp; inputStringToBeMasked.length() &gt;= maxSize) ? inputStringToBeMasked.substring(0, maxSize) : inputStringToBeMasked;\n        Integer unmaskLength = (maskAfterLetters &lt;= inputStringToBeMasked.length()) ? maskAfterLetters : inputStringToBeMasked.length();\n        return text.substring(0, unmaskLength) + text.substring(unmaskLength, text.length()).replaceAll(selector, maskString);\n    }\n\n</code></pre>\n<p>Note: This method in Kotlin, you can covert it in Java easily.</p>\n<p>where,</p>\n<ul>\n<li><code>maskString</code>: is an string which is to be replaced with characters being masked</li>\n<li><code>maskAfterLetters</code>: initial given letters are kept original and then masking started</li>\n<li><code>isFixSize</code>: is given masked result with fixed size of based on input string size</li>\n<li><code>maxSize</code>: if <code>isFixSize</code> is true then provided the size of masked string</li>\n<li><code>selector</code>: (no change needed) used for selection of characters to be masked</li>\n</ul>\n<p>If you are looking for automated masking while serialization and deserialization, you can use <a href=\"https://github.com/javiercanillas/jackson-masker\" rel=\"nofollow noreferrer\">json-masker</a> which is an annotation based making solution.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9735171,
+      "reputation" : 2413,
+      "user_id" : 7218656,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/u87X2.jpg?s=256",
+      "display_name" : "Arun Sudhakaran",
+      "link" : "https://stackoverflow.com/users/7218656/arun-sudhakaran"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1720761811,
+    "creation_date" : 1720761811,
+    "answer_id" : 78738708,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is a generic way of masking and it can be used to mask an entire String or a particular portion of the String.</p>\n<p><strong>Parameters required</strong></p>\n<ol>\n<li><code>data</code> -&gt; The String that needs to be masked.</li>\n<li><code>from</code> -&gt; Index from where the masking should start.</li>\n<li><code>to</code> -&gt; Index till where the masking should continue.</li>\n<li><code>maskWith</code> -&gt; Character with which you want to mask.</li>\n</ol>\n<p>The first thing is to get the masked data, using a for loop starting with <code>from</code> and ending with <code>to</code>, inside the loop append the <code>maskWith</code> to a <code>StringBuilder</code>. Now, you need to get the portion from the <code>data</code> that needs to be masked, you can use the <code>substring</code> method with <code>from</code> and <code>to</code> as arguments respectively. Finally, use the <code>replace</code> method by supplying the above substring as the first argument and the masked String as the second argument.</p>\n<p><strong>Code</strong></p>\n<pre><code>public static String maskData(String data, int from, int to, char maskWith) {\n        \n    StringBuilder maskedPart = new StringBuilder();\n    for(int i=from; i&lt;to; i++)\n        maskedPart.append(maskWith);\n        \n    return data.replace(data.substring(from, to), maskedPart.toString());\n}\n</code></pre>\n<p><strong>Sample value</strong></p>\n<pre><code>public static void main(String[] args) {\n    System.out.println(maskData(&quot;9999123456789999&quot;, 4, 12, 'X'));\n}\n</code></pre>\n<p><strong>Output</strong></p>\n<pre><code>9999XXXXXXXX9999\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1761078453,
+      "post_id" : 79795959,
+      "comment_id" : 140809466,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note: <code>return</code> does not need parenthesis (and usually these are not used)"
+    } ],
+    "owner" : {
+      "account_id" : 146761,
+      "reputation" : 6044,
+      "user_id" : 357429,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/f69aa9344217f184663c2761915c0bcb?s=256&d=identicon&r=PG",
+      "display_name" : "deroby",
+      "link" : "https://stackoverflow.com/users/357429/deroby"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761058320,
+    "creation_date" : 1761058320,
+    "answer_id" : 79795959,
+    "question_id" : 12148281,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A bit late to the party but after some searching I came up with this:</p>\n<pre><code>public static String maskString(String text) {\n    if (text == null) return null;\n    return(&quot;*&quot;.repeat(text.length()));\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1773122,
+    "reputation" : 195,
+    "user_id" : 1617498,
+    "user_type" : "registered",
+    "accept_rate" : 64,
+    "profile_image" : "https://www.gravatar.com/avatar/b6ac5de6e91a3133c56b79eb948ef63a?s=256&d=identicon&r=PG",
+    "display_name" : "Jaun Lloyd",
+    "link" : "https://stackoverflow.com/users/1617498/jaun-lloyd"
+  },
+  "is_answered" : true,
+  "view_count" : 62732,
+  "closed_date" : 1761087563,
+  "accepted_answer_id" : 12148388,
+  "answer_count" : 8,
+  "score" : 5,
+  "last_activity_date" : 1761074876,
+  "creation_date" : 1346095536,
+  "last_edit_date" : 1761074876,
+  "question_id" : 12148281,
+  "link" : "https://stackoverflow.com/questions/12148281/mask-string-with-characters",
+  "closed_reason" : "Needs details or clarity",
+  "title" : "Mask String with characters",
+  "body" : "<p>I tried to find a way to hide a string, but the code that I found just work with my application. Is there a way to hide the characters in a string with either <code>*</code> or <code>-</code> and if there is can someone please explain?</p>\n"
+}

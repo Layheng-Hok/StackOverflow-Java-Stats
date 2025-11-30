@@ -1,0 +1,42 @@
+{
+  "tags" : [ "java", "oracle-database", "hibernate", "stored-procedures" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 11287750,
+      "reputation" : 5818,
+      "user_id" : 8277987,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6ki7q.jpg?s=256",
+      "display_name" : "Daniel C.",
+      "link" : "https://stackoverflow.com/users/8277987/daniel-c"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1500433966,
+    "creation_date" : 1500433966,
+    "answer_id" : 45180328,
+    "question_id" : 45179935,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>One possible solution is to use a java.sql.timestamp instead of java.sql.Date.  Also you can refer to <a href=\"https://docs.oracle.com/cd/B19306_01/java.102/b14188/datamap.htm#CHDBJAGH\" rel=\"nofollow noreferrer\">SQL and PL/SQL Mappings to Oracle and JDBC Types</a> in order to verify the correct data type mapping.</p>\n\n<p><a href=\"https://stackoverflow.com/questions/22856931/converting-java-date-to-sql-timestamp#22857114\">This is an example of how get java.sql.timestamp</a></p>\n\n<pre><code>java.util.Date utilDate = new java.util.Date();\nCalendar cal = Calendar.getInstance();\ncal.setTime(utilDate);\ncal.set(Calendar.MILLISECOND, 0);\nSystem.out.println(new java.sql.Timestamp(utilDate.getTime()));\nSystem.out.println(new java.sql.Timestamp(cal.getTimeInMillis()));\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10343412,
+    "reputation" : 1272,
+    "user_id" : 7629068,
+    "user_type" : "registered",
+    "accept_rate" : 16,
+    "profile_image" : "https://www.gravatar.com/avatar/dd8b8ae2bdd3d55e4dfab8513c76d9ea?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "sagar limbu",
+    "link" : "https://stackoverflow.com/users/7629068/sagar-limbu"
+  },
+  "is_answered" : false,
+  "view_count" : 10620,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760429020,
+  "creation_date" : 1500430947,
+  "question_id" : 45179935,
+  "link" : "https://stackoverflow.com/questions/45179935/passing-date-as-a-parameter-in-stored-procedure-oracle",
+  "title" : "passing date as a parameter in stored procedure (oracle)",
+  "body" : "<p>i am trying to perform insert operation from hibernate into the oracle table. \nmy stored procedure is:-</p>\n\n<pre><code>create or replace PROCEDURE          ADMSN_TABLE (\n  P_ID                            NUMBER,\n  P_ADMISSIONFOR                  VARCHAR2,\n  P_SUBMISSIONDATE                DATE,                            --NOT NULL\n  P_SUBMISSIONLASTDATE            DATE                          --NOT NULL\n\n)\nIS\n  v_sno number;\n\n  BEGIN\n      INSERT INTO ORACLE.ADMISSION(AMSNID,ADMISSIONFOR,SUBMISSIONDATE,\n SUBMISSIONLASTDATE)\n      VALUES (P_ID,P_ADMISSIONFOR,P_SUBMISSIONDATE,P_SUBMISSIONLASTDATE);\n\n      COMMIT;\n  END;\n</code></pre>\n\n<p>the way i am calling this procedure from hibernate:-</p>\n\n<pre><code>    public void callProc(){\n\n        Date utilDate= new Date();\n        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());\n        System.out.println(sqlDate);\n\n\n        Date date = new Date();\n        SimpleDateFormat smd = new SimpleDateFormat(\"dd-MMM-YYYY\");\n        String sdate = smd.format(date);\n        System.out.println(sdate);\n\n    try {\n    session = sessionFactory.openSession();\n    transaction = session.beginTransaction();\n    StoredProcedureQuery query = session.createStoredProcedureQuery(\"ADMSN_TABLE\");\nquery.registerStoredProcedureParameter(\"P_ID\", Number.class, \nParameterMode.IN);\nquery.registerStoredProcedureParameter(\"P_ADMISSIONFOR\", String.class, \nParameterMode.IN);\nquery.registerStoredProcedureParameter(\"P_SUBMISSIONDATE\", Date.class, \nParameterMode.IN);             \nquery.registerStoredProcedureParameter(\"P_SUBMISSIONLASTDATE\",Date.class, \nParameterMode.IN);\n\n            query.setParameter(\"P_ID\", 1);\n            query.setParameter(\"P_ADMISSIONFOR\", \"schoolfee\");\n            query.setParameter(\"P_SUBMISSIONDATE\", sqlDate);\n            query.setParameter(\"P_SUBMISSIONLASTDATE\", sqlDate);\n            query.execute();\n            System.out.println(\"excuted\");\n        }catch(Exception ex){\n            ex.printStackTrace();\n        }\n    }\n}\n</code></pre>\n\n<p>now i tried to pass date parameter as <code>new Date()</code> or <code>sqldate</code> like given above. and <code>query.setParameter(\"P_SUBMISSIONLASTDATE\", sqlDate,TemporalType.Date);</code>but all of them are throwing error:- </p>\n\n<pre><code>Caused by: org.hibernate.exception.SQLGrammarException: \nError calling CallableStatement.getMoreResults at \norg.hibernate.exception.internal.SQLStateConversionDelegate.convert\n(SQLStateConversionDelegate.java:106) at \norg.hibernate.exception.internal.StandardSQLExceptionConverter.convert\n(StandardSQLExceptionConverter.java:42) at \norg.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert\n(SqlExceptionHelper.java:111)\nat org.hibernate.result.internal.OutputsImpl.convert\nat org.hibernate.result.internal.OutputsImpl.&lt;init&gt;\n(OutputsImpl.java:55)\nat org.hibernate.procedure.internal.ProcedureOutputsImpl.&lt;init&gt;\n(ProcedureOutputsImpl.java:32)\nat org.hibernate.procedure.internal.ProcedureCallImpl.buildOutputs\n(ProcedureCallImpl.java:453)\nat org.hibernate.procedure.internal.ProcedureCallImpl.getOutputs\n(ProcedureCallImpl.java:404)\n    at org .hibernate.procedure.internal.ProcedureCallImpl.outputs\n(ProcedureCallImpl.java:663)\n    at org.hibernate.procedure.internal.ProcedureCallImpl.execute\n(ProcedureCallImpl.java:646)\n    ... 41 more\nCaused by: java.sql.SQLException: ORA-06550: line 1, column 7:\nPLS-00306: wrong number or types of arguments in call to 'ADMSN_TABLE'\nORA-06550: line 1, column 7:\nPL/SQL: Statement ignored\n</code></pre>\n"
+}

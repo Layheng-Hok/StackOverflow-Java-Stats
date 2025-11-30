@@ -1,0 +1,41 @@
+{
+  "tags" : [ "java", "spring-boot", "swagger", "springdoc-openapi-ui", "contextpath" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 25873184,
+      "reputation" : 1,
+      "user_id" : 19603722,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AItbvmlDWVtx7fRPn4Qam2y6lVg03SGTd93aORiL6AsC=k-s256",
+      "display_name" : "Alejandro Virgili",
+      "link" : "https://stackoverflow.com/users/19603722/alejandro-virgili"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1659385812,
+    "creation_date" : 1659385812,
+    "answer_id" : 73199288,
+    "question_id" : 72518942,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have been looking the same. This documentation help me:</p>\n<blockquote>\n<p>To enable the support of multiple OpenAPI definitions, a bean of type\nGroupedOpenApi needs to be defined.</p>\n<p>For the following Group definition(based on package path), the OpenAPI\ndescription URL will be : /v3/api-docs/stores</p>\n</blockquote>\n<pre><code>@Bean\npublic GroupedOpenApi storeOpenApi() {\n   String paths[] = {&quot;/store/**&quot;};\n   return GroupedOpenApi.builder().group(&quot;stores&quot;).pathsToMatch(paths)\n         .build();\n}\n</code></pre>\n<blockquote>\n<p>For the following Group definition (based on package name), the\nOpenAPI description URL will be: /v3/api-docs/users</p>\n</blockquote>\n<pre><code>@Bean\npublic GroupedOpenApi userOpenApi() {\n   String packagesToscan[] = {&quot;test.org.springdoc.api.app68.api.user&quot;};\n   return GroupedOpenApi.builder().group(&quot;users&quot;).packagesToScan(packagesToscan)\n         .build();\n}\n</code></pre>\n<blockquote>\n<p>For the following Group definition(based on path), the OpenAPI\ndescription URL will be: /v3/api-docs/pets</p>\n</blockquote>\n<pre><code>@Bean\npublic GroupedOpenApi petOpenApi() {\n   String paths[] = {&quot;/pet/**&quot;};\n   return GroupedOpenApi.builder().group(&quot;pets&quot;).pathsToMatch(paths)\n         .build();\n}\n</code></pre>\n<blockquote>\n<p>For the following Group definition (based on package name and path),\nthe OpenAPI description URL will be: /v3/api-docs/groups</p>\n</blockquote>\n<pre><code>@Bean\npublic GroupedOpenApi groupOpenApi() {\n   String paths[] = {&quot;/v1/**&quot;};\n   String packagesToscan[] = {&quot;test.org.springdoc.api.app68.api.user&quot;, &quot;test.org.springdoc.api.app68.api.store&quot;};\n   return GroupedOpenApi.builder().group(&quot;groups&quot;).pathsToMatch(paths).packagesToScan(packagesToscan)\n         .build();\n}\n</code></pre>\n<p>Source: <a href=\"https://springdoc.org/\" rel=\"nofollow noreferrer\">SPRINDOC</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 18560337,
+    "reputation" : 57,
+    "user_id" : 13524476,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/a70cf6b0ca7a44837d73ad107ba71f8d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Sachin Pandey",
+    "link" : "https://stackoverflow.com/users/13524476/sachin-pandey"
+  },
+  "is_answered" : false,
+  "view_count" : 8670,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761807670,
+  "creation_date" : 1654524557,
+  "question_id" : 72518942,
+  "link" : "https://stackoverflow.com/questions/72518942/how-to-have-custom-context-path-for-swagger-url-in-openapi3-springboot-applicati",
+  "title" : "How to have custom context Path for Swagger Url in OpenApi3 Springboot Application",
+  "body" : "<p>I am migrating from springfox to OpenApi3 in my Springboot project as we have a requirement to upgrade to latest springboot with version 2.7.0</p>\n<p>I need to configure custom contextPath for different environments like below</p>\n<p>dev - <a href=\"https://qa.swagger.com/dev/api/myApp/swagger-ui/index.html\" rel=\"nofollow noreferrer\">https://qa.swagger.com/dev/api/myApp/swagger-ui/index.html</a></p>\n<p>qa - <a href=\"https://qa.swagger.com/api/myApp/swagger-ui/index.html\" rel=\"nofollow noreferrer\">https://qa.swagger.com/api/myApp/swagger-ui/index.html</a></p>\n<p>uat - <a href=\"https://uat.swagger.com/api/myApp/swagger-ui/index.html#/\" rel=\"nofollow noreferrer\">https://uat.swagger.com/api/myApp/swagger-ui/index.html#/</a></p>\n<p>// pom.xml</p>\n<pre><code>&lt;parent&gt;\n        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\n        &lt;version&gt;2.7.0&lt;/version&gt;\n        &lt;relativePath /&gt; &lt;!-- lookup parent from repository --&gt;\n    &lt;/parent&gt;\n\n&lt;dependency&gt;\n            &lt;groupId&gt;org.springdoc&lt;/groupId&gt;\n            &lt;artifactId&gt;springdoc-openapi-ui&lt;/artifactId&gt;\n            &lt;version&gt;1.6.8&lt;/version&gt;\n        &lt;/dependency&gt;\n\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springdoc&lt;/groupId&gt;\n            &lt;artifactId&gt;springdoc-openapi-webmvc-core&lt;/artifactId&gt;\n            &lt;version&gt;1.6.8&lt;/version&gt;\n        &lt;/dependency&gt;\n</code></pre>\n<p>// SwaggerConfig class</p>\n<pre><code>@Configuration\n@Profile({ &quot;local&quot;, &quot;dev&quot;, &quot;qat&quot;, &quot;uat&quot; })\npublic class SwaggerConfig {\n\n@Bean\n    public OpenAPI openAPI() {\n\n        return new OpenAPI().info(info());\n    }\n    \n    private Info info() {\n         return new Info()\n        .title(title)\n        .version(version)\n        .license(new License().name(licenseName).url(licenseUrl));\n        }\n}\n</code></pre>\n<p>//application.properties</p>\n<pre><code>spring.application.name=myApp\nserver.servlet.context-path=/api/${spring.application.name}\n</code></pre>\n<p>With the above configuration, I am able to run swagger using below url and getting all required response from controller apis\nhttp://localhost:8082/api/myApp/swagger-ui/index.html#/</p>\n<p>For configuring the Swagger url for other environments,I tried to create a listener configuration class like below which didn't work</p>\n<pre><code>@Component\npublic class SwaggerListener implements ApplicationListener&lt;ApplicationPreparedEvent&gt; {\n\n    final ApplicationPreparedEvent event = null;\n\n    @Override\n    public void onApplicationEvent(final ApplicationPreparedEvent event) {\n\n        ConfigurableEnvironment environment = event.getApplicationContext().getEnvironment();\n\n        Properties properties = new Properties();\n        properties.put(&quot;springdoc.swagger-ui.path&quot;, swaggerPath(event));\n        environment.getPropertySources().addFirst(new PropertiesPropertySource(&quot;programmatically&quot;, properties));\n\n    }\n\n    private String swaggerPath(final ApplicationPreparedEvent event) {\n        String basePath = null;\n        String swagger = &quot;swagger-ui/index.html&quot;;\n        ConfigurableEnvironment environment = event.getApplicationContext().getEnvironment();\n        String[] profilesList = environment.getActiveProfiles();\n        List&lt;String&gt; profiles = Arrays.asList(profilesList);\n        String contextPath = environment.getProperty(&quot;server.servlet.context-path&quot;);\n        if (profiles != null &amp;&amp; (profiles.contains(&quot;local&quot;))) {\n            basePath = swagger;\n        } else if (profiles != null &amp;&amp; profiles.contains(&quot;dev&quot;)) {\n            basePath = &quot;/dev/api/myApp/&quot; + swagger;\n        } else if (profiles != null &amp;&amp; (profiles.contains(&quot;qat&quot;) || profiles.contains(&quot;uat&quot;))) {\n            basePath = &quot;/api/myApp/&quot;;\n\n        }\n        return basePath;\n    }\n\n}\n</code></pre>\n<p>Adding above listener to main class</p>\n<pre><code>@SpringBootApplication(scanBasePackages = { &quot;com.myApp.controller&quot; })\n@OpenAPIDefinition\npublic class myApi {\n\n    public static void main(String[] args) {\n        SpringApplication springApplication = new SpringApplication(myApi.class);\n        springApplication.addListeners(new SwaggerListener());      \n        springApplication.run(args);\n\n    }\n\n}\n</code></pre>\n<p>The above listener configuration is not working\nCan anyone help me out here and let me know what am I missing here ?</p>\n"
+}

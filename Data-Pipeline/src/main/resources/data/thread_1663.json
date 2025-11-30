@@ -1,0 +1,674 @@
+{
+  "tags" : [ "java", "multithreading" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 429168,
+      "reputation" : 7197,
+      "user_id" : 811918,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b1d97ae980fa563bcfa2af774786eb29?s=256&d=identicon&r=PG",
+      "display_name" : "Mathias Schwarz",
+      "link" : "https://stackoverflow.com/users/811918/mathias-schwarz"
+    },
+    "is_accepted" : false,
+    "score" : -5,
+    "last_activity_date" : 1309513275,
+    "creation_date" : 1309513275,
+    "answer_id" : 6546233,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You cannot do this, since it doesn't really make sense. If you hadn't called <code>t.join()</code> then you main thread could be anywhere in the code when the <code>t</code> thread throws an exception.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6366427,
+        "reputation" : 561,
+        "user_id" : 9229392,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6d094d141ae25e4b02410f03a9e5a6f1?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Teo J.",
+        "link" : "https://stackoverflow.com/users/9229392/teo-j"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1571391658,
+      "post_id" : 6546245,
+      "comment_id" : 103234279,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I like that! Setting the handler with the static method <code>Thread.setDefaultUncaughtExceptionHandler()</code> also catches exceptions in thread &quot;main&quot;"
+    } ],
+    "owner" : {
+      "account_id" : 446,
+      "reputation" : 73498,
+      "user_id" : 573,
+      "user_type" : "registered",
+      "accept_rate" : 65,
+      "profile_image" : "https://www.gravatar.com/avatar/07eabe24326e5c3ae83ca52ef05b9cb8?s=256&d=identicon&r=PG",
+      "display_name" : "abyx",
+      "link" : "https://stackoverflow.com/users/573/abyx"
+    },
+    "is_accepted" : false,
+    "score" : 62,
+    "last_activity_date" : 1563181760,
+    "last_edit_date" : 1563181760,
+    "creation_date" : 1309513311,
+    "answer_id" : 6546245,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>That's because exceptions are local to a thread, and your main thread doesn't actually see the <code>run</code> method. I suggest you read more about how threading works, but to quickly summarize: your call to <code>start</code> starts up a different thread, totally unrelated to your main thread. The call to <code>join</code> simply waits for it to be done. An exception that is thrown in a thread and never caught terminates it, which is why <code>join</code> returns on your main thread, but the exception itself is lost.</p>\n\n<p>If you want to be aware of these uncaught exceptions you can try this:</p>\n\n<pre><code>Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {\n    @Override\n    public void uncaughtException(Thread t, Throwable e) {\n        System.out.println(\"Caught \" + e);\n    }\n});\n</code></pre>\n\n<p>More information about uncaught exception handling can be found <a href=\"http://download.oracle.com/javase/1.5.0/docs/api/java/lang/Thread.UncaughtExceptionHandler.html\" rel=\"noreferrer\">here</a>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2007569,
+        "reputation" : 8854,
+        "user_id" : 1797006,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/b1a413ea490f70dc5d27f3d7eba6b4f6?s=256&d=identicon&r=PG",
+        "display_name" : "Kalle Richter",
+        "link" : "https://stackoverflow.com/users/1797006/kalle-richter"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1501675100,
+      "post_id" : 6546248,
+      "comment_id" : 77880448,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Note that the exception thrown inside <code>Callable.call</code> is wrapped in an <code>ExcecutionException</code> and its cause has to be evaluated."
+    } ],
+    "owner" : {
+      "account_id" : 40221,
+      "reputation" : 32465,
+      "user_id" : 116509,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/GsYqn.jpg?s=256",
+      "display_name" : "artbristol",
+      "link" : "https://stackoverflow.com/users/116509/artbristol"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1309513317,
+    "creation_date" : 1309513317,
+    "answer_id" : 6546248,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Use <code>Callable</code> instead of Thread, then you can call <code>Future#get()</code> which throws any exception that the Callable threw.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 81456,
+      "reputation" : 11815,
+      "user_id" : 229672,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6bc111047da565b44732c6cfc22dd5e9?s=256&d=identicon&r=PG",
+      "display_name" : "denis.solonenko",
+      "link" : "https://stackoverflow.com/users/229672/denis-solonenko"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1469112211,
+    "last_edit_date" : 1469112211,
+    "creation_date" : 1309513419,
+    "answer_id" : 6546276,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Please take a look at <a href=\"http://docs.oracle.com/javase/8/docs/api/java/lang/Thread.UncaughtExceptionHandler.html\" rel=\"noreferrer\">Thread.UncaughtExceptionHandler</a></p>\n\n<p>Better (alternative) way is to use <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Callable.html\" rel=\"noreferrer\">Callable</a> and <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html\" rel=\"noreferrer\">Future</a> to get the same result...</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 286432,
+      "reputation" : 66,
+      "user_id" : 585680,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a4dfc325d303627dab9ac6286b7c78ed?s=256&d=identicon&r=PG",
+      "display_name" : "Dr. Snuggles",
+      "link" : "https://stackoverflow.com/users/585680/dr-snuggles"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1309513491,
+    "creation_date" : 1309513491,
+    "answer_id" : 6546292,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Did you play around with setDefaultUncaughtExceptionHandler() and the alike methods of the Thread class? From the API: \"By setting the default uncaught exception handler, an application can change the way in which uncaught exceptions are handled (such as logging to a specific device, or file) for those threads that would already accept whatever \"default\" behavior the system provided.\"</p>\n\n<p>You might find the answer to your problem there... good luck! :-)</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9640511,
+        "reputation" : 4475,
+        "user_id" : 7154924,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/8c111adcdb9a53d603a68e9fc1c1b8ac?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "flow2k",
+        "link" : "https://stackoverflow.com/users/7154924/flow2k"
+      },
+      "edited" : false,
+      "score" : 14,
+      "creation_date" : 1533451422,
+      "post_id" : 6546295,
+      "comment_id" : 90345613,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Did you create the diagram? If not, what&#39;s the source?"
+    } ],
+    "owner" : {
+      "account_id" : 147204,
+      "reputation" : 15611,
+      "user_id" : 358163,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/B2CBQ.jpg?s=256",
+      "display_name" : "Talha Ahmed Khan",
+      "link" : "https://stackoverflow.com/users/358163/talha-ahmed-khan"
+    },
+    "is_accepted" : false,
+    "score" : 41,
+    "last_activity_date" : 1582043693,
+    "last_edit_date" : 1582043693,
+    "creation_date" : 1309513503,
+    "answer_id" : 6546295,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This explains the state transition of threads dependening on whether an exceptions occured or not:</p>\n\n<p><img src=\"https://i.sstatic.net/sfx0y.gif\" alt=\"Threads and Exception Handling\"></p>\n\n<p>Source : <a href=\"http://www-public.imtbs-tsp.eu/~gibson/Teaching/CSC7322/L8-ExceptionsAndThreads.pdf\" rel=\"nofollow noreferrer\">http://www-public.imtbs-tsp.eu/~gibson/Teaching/CSC7322/L8-ExceptionsAndThreads.pdf</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 333322,
+        "reputation" : 3815,
+        "user_id" : 659138,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/98df160e2473eb25f74aa18cd9bffd9b?s=256&d=identicon&r=PG",
+        "display_name" : "philwb",
+        "link" : "https://stackoverflow.com/users/659138/philwb"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1309539413,
+      "post_id" : 6546442,
+      "comment_id" : 7718339,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This doesn&#39;t catch the exception in the main method."
+    }, {
+      "owner" : {
+        "account_id" : 306616,
+        "reputation" : 5982,
+        "user_id" : 617466,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://i.sstatic.net/Clfi7.jpg?s=256",
+        "display_name" : "luigi7up",
+        "link" : "https://stackoverflow.com/users/617466/luigi7up"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1353342827,
+      "post_id" : 6546442,
+      "comment_id" : 18405484,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Extending the Thread class is strongly discouraged. I read this and the explanation why in the OJPC prep. book... Guess, they know what they&#39;re talking about"
+    }, {
+      "owner" : {
+        "account_id" : 3845978,
+        "reputation" : 816,
+        "user_id" : 3187521,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/83d535f1783f59bfc6efe534e9e87a0c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Amrish Pandey",
+        "link" : "https://stackoverflow.com/users/3187521/amrish-pandey"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1467366157,
+      "post_id" : 6546442,
+      "comment_id" : 63713985,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;RuntimeException from main&quot; is never printed here .. exception is not caught in main"
+    } ],
+    "owner" : {
+      "account_id" : 198697,
+      "reputation" : 18491,
+      "user_id" : 443515,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/df12f0b402df76dd587bb91c5dc178d1?s=256&d=identicon&r=PG",
+      "display_name" : "Qwerky",
+      "link" : "https://stackoverflow.com/users/443515/qwerky"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1309514358,
+    "creation_date" : 1309514358,
+    "answer_id" : 6546442,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It is almost always wrong to extend <code>Thread</code>. I cannot state this strongly enough.</p>\n\n<h2>Multithreading Rule #1: Extending <code>Thread</code> is wrong.*</h2>\n\n<p>If you implement <code>Runnable</code> instead you will see your expected behaviour.</p>\n\n<pre><code>public class Test implements Runnable {\n\n  public static void main(String[] args) {\n    Test t = new Test();\n    try {\n      new Thread(t).start();\n    } catch (RuntimeException e) {\n      System.out.println(\"** RuntimeException from main\");\n    }\n\n    System.out.println(\"Main stoped\");\n\n  }\n\n  @Override\n  public void run() {\n    try {\n      while (true) {\n        System.out.println(\"** Started\");\n\n        Thread.sleep(2000);\n\n        throw new RuntimeException(\"exception from thread\");\n      }\n    } catch (RuntimeException e) {\n      System.out.println(\"** RuntimeException from thread\");\n      throw e;\n    } catch (InterruptedException e) {\n\n    }\n  }\n}\n</code></pre>\n\n<p>produces;</p>\n\n<pre><code>Main stoped\n** Started\n** RuntimeException from threadException in thread \"Thread-0\" java.lang.RuntimeException: exception from thread\n    at Test.run(Test.java:23)\n    at java.lang.Thread.run(Thread.java:619)\n</code></pre>\n\n<p>* unless you want to change the way your application uses threads, which in 99.9% of cases you don't. If you think you are in the 0.1% of cases, please see rule #1.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6393786,
+        "reputation" : 66,
+        "user_id" : 4958920,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/iLXul.jpg?s=256",
+        "display_name" : "Gregor Valentin",
+        "link" : "https://stackoverflow.com/users/4958920/gregor-valentin"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1500461487,
+      "post_id" : 6546797,
+      "comment_id" : 77343735,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "But doesn&#39;t <code>future.get()</code> wait or block until the thread has finished execution?"
+    }, {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "reply_to_user" : {
+        "account_id" : 6393786,
+        "reputation" : 66,
+        "user_id" : 4958920,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/iLXul.jpg?s=256",
+        "display_name" : "Gregor Valentin",
+        "link" : "https://stackoverflow.com/users/4958920/gregor-valentin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1500497322,
+      "post_id" : 6546797,
+      "comment_id" : 77368680,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@GregorValentin it wait/blocks until the thread has finished the Runnable/Callable."
+    } ],
+    "owner" : {
+      "account_id" : 23121,
+      "reputation" : 535127,
+      "user_id" : 57695,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Lawrey",
+      "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+    },
+    "is_accepted" : false,
+    "score" : 35,
+    "last_activity_date" : 1446052781,
+    "last_edit_date" : 1446052781,
+    "creation_date" : 1309516348,
+    "answer_id" : 6546797,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Most likely; </p>\n\n<ul>\n<li>you don't need to pass the exception from one thread to another.</li>\n<li>if you want to handle an exception, just do it in the thread which threw it.</li>\n<li>your main thread doesn't need to wait from the background thread in this example, which actually means you don't need a background thread at all.</li>\n</ul>\n\n<p>However, lets assume you do need to handle an exception from a child thread another.  I would use an ExecutorService like this:</p>\n\n<pre><code>ExecutorService executor = Executors.newSingleThreadExecutor();\nFuture&lt;Void&gt; future = executor.submit(new Callable&lt;Void&gt;() {\n    @Override\n    public Void call() throws Exception {\n        System.out.println(\"** Started\");\n        Thread.sleep(2000);\n        throw new IllegalStateException(\"exception from thread\");\n    }\n});\ntry {\n    future.get(); // raises ExecutionException for any uncaught exception in child\n} catch (ExecutionException e) {\n    System.out.println(\"** RuntimeException from thread \");\n    e.getCause().printStackTrace(System.out);\n}\nexecutor.shutdown();\nSystem.out.println(\"** Main stopped\");\n</code></pre>\n\n<p>prints</p>\n\n<pre><code>** Started\n** RuntimeException from thread \njava.lang.IllegalStateException: exception from thread\n    at Main$1.call(Main.java:11)\n    at Main$1.call(Main.java:6)\n    at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)\n    at java.util.concurrent.FutureTask.run(FutureTask.java:138)\n    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)\n    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)\n    at java.lang.Thread.run(Thread.java:662)\n** Main stopped\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 312938,
+        "reputation" : 2282,
+        "user_id" : 627307,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/d3df9dbd89e2b09ac0d31294673175ae?s=256&d=identicon&r=PG",
+        "display_name" : "M4rk",
+        "link" : "https://stackoverflow.com/users/627307/m4rk"
+      },
+      "edited" : false,
+      "score" : 22,
+      "creation_date" : 1424863513,
+      "post_id" : 6548203,
+      "comment_id" : 45722588,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What can I do, if I want to throw the exception to an upper level?"
+    }, {
+      "owner" : {
+        "account_id" : 481416,
+        "reputation" : 392532,
+        "user_id" : 895245,
+        "user_type" : "registered",
+        "accept_rate" : 49,
+        "profile_image" : "https://i.sstatic.net/5Powi.jpg?s=256",
+        "display_name" : "Ciro Santilli OurBigBook.com",
+        "link" : "https://stackoverflow.com/users/895245/ciro-santilli-ourbigbook-com"
+      },
+      "reply_to_user" : {
+        "account_id" : 312938,
+        "reputation" : 2282,
+        "user_id" : 627307,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/d3df9dbd89e2b09ac0d31294673175ae?s=256&d=identicon&r=PG",
+        "display_name" : "M4rk",
+        "link" : "https://stackoverflow.com/users/627307/m4rk"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1426770534,
+      "post_id" : 6548203,
+      "comment_id" : 46513467,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@rodi save ex to a volatile variable that the upper level can see in the handler (e.g. member variable). Outside, check if null, otherwise throw. Or extend UEH with a new volatile field and store the exception there."
+    }, {
+      "owner" : {
+        "account_id" : 10554252,
+        "reputation" : 321,
+        "user_id" : 7775986,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1084b173b00aaa4d371f441fa8a2cc07?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Lealo",
+        "link" : "https://stackoverflow.com/users/7775986/lealo"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1502473470,
+      "post_id" : 6548203,
+      "comment_id" : 78241495,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I want to catch an exception from inside my thread - without it being stopped. Would this somehow be of use?"
+    }, {
+      "owner" : {
+        "account_id" : 422870,
+        "reputation" : 27582,
+        "user_id" : 801894,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/67f2ccd17aa6fd622152ad88fc2ae784?s=256&d=identicon&r=PG",
+        "display_name" : "Solomon Slow",
+        "link" : "https://stackoverflow.com/users/801894/solomon-slow"
+      },
+      "reply_to_user" : {
+        "account_id" : 312938,
+        "reputation" : 2282,
+        "user_id" : 627307,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/d3df9dbd89e2b09ac0d31294673175ae?s=256&d=identicon&r=PG",
+        "display_name" : "M4rk",
+        "link" : "https://stackoverflow.com/users/627307/m4rk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1638474401,
+      "post_id" : 6548203,
+      "comment_id" : 124104844,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@M4rk, Re, &quot;...I want to throw the exception to an upper level.&quot; There is no &quot;upper level&quot; to which an uncaught exception handler can throw. An exception can not be thrown across thread boundaries (see the answer by abyx, below,) and any exception thrown by the uncaught exception handler itself will simply be ignored. The best you can do in this case would be to have the handler put the uncaught exception object into a queue, and have the main thread periodically check the queue to find out whether an exception was thrown."
+    } ],
+    "owner" : {
+      "account_id" : 327461,
+      "reputation" : 15562,
+      "user_id" : 649852,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/12675379f53b6be7318d6cd8b2c691d6?s=256&d=identicon&r=PG",
+      "display_name" : "Go Dan",
+      "link" : "https://stackoverflow.com/users/649852/go-dan"
+    },
+    "is_accepted" : true,
+    "score" : 271,
+    "last_activity_date" : 1593644691,
+    "last_edit_date" : 1593644691,
+    "creation_date" : 1309524745,
+    "answer_id" : 6548203,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use a <code>Thread.UncaughtExceptionHandler</code>.</p>\n<pre><code>Thread.UncaughtExceptionHandler h = new Thread.UncaughtExceptionHandler() {\n    @Override\n    public void uncaughtException(Thread th, Throwable ex) {\n        System.out.println(&quot;Uncaught exception: &quot; + ex);\n    }\n};\nThread t = new Thread() {\n    @Override\n    public void run() {\n        System.out.println(&quot;Sleeping ...&quot;);\n        try {\n            Thread.sleep(1000);\n        } catch (InterruptedException e) {\n            System.out.println(&quot;Interrupted.&quot;);\n        }\n        System.out.println(&quot;Throwing exception ...&quot;);\n        throw new RuntimeException();\n    }\n};\nt.setUncaughtExceptionHandler(h);\nt.start();\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1874907,
+        "reputation" : 4286,
+        "user_id" : 1696314,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/fdda259dd2fae6f51e12d85da65e3b9f?s=256&d=identicon&r=PG",
+        "display_name" : "NickL",
+        "link" : "https://stackoverflow.com/users/1696314/nickl"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1426605682,
+      "post_id" : 17676601,
+      "comment_id" : 46435846,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "No need to make Throwable initException volatile, since t.join() will synchronize."
+    }, {
+      "owner" : {
+        "account_id" : 7159512,
+        "reputation" : 171,
+        "user_id" : 5470707,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-aC9m8XfSvKY/AAAAAAAAAAI/AAAAAAAAEsQ/Nqh8me0w3wE/s256-rj/photo.jpg",
+        "display_name" : "Chintan Mangukiya",
+        "link" : "https://stackoverflow.com/users/5470707/chintan-mangukiya"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1627815801,
+      "post_id" : 17676601,
+      "comment_id" : 121252164,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is an awesome approach."
+    } ],
+    "owner" : {
+      "account_id" : 1345666,
+      "reputation" : 422,
+      "user_id" : 1286484,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/3574e087bc22f36b02cabc9682003bea?s=256&d=identicon&r=PG",
+      "display_name" : "Stefano",
+      "link" : "https://stackoverflow.com/users/1286484/stefano"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1373977908,
+    "creation_date" : 1373977908,
+    "answer_id" : 17676601,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you implement Thread.UncaughtExceptionHandler in class that starts the Threads, you can set and then rethrow the exception:</p>\n\n<pre><code>public final class ThreadStarter implements Thread.UncaughtExceptionHandler{\n\nprivate volatile Throwable initException;\n\n    public void doSomeInit(){\n        Thread t = new Thread(){\n            @Override\n            public void run() {\n              throw new RuntimeException(\"UNCAUGHT\");\n            }\n        };\n        t.setUncaughtExceptionHandler(this);\n\n        t.start();\n        t.join();\n\n        if (initException != null){\n            throw new RuntimeException(initException);\n        }\n\n    }\n\n    @Override\n    public void uncaughtException(Thread t, Throwable e) {\n        initException =  e;\n    }    \n\n}\n</code></pre>\n\n<p>Which causes the following output:</p>\n\n<pre><code>Exception in thread \"main\" java.lang.RuntimeException: java.lang.RuntimeException: UNCAUGHT\n    at com.gs.gss.ccsp.enrichments.ThreadStarter.doSomeInit(ThreadStarter.java:24)\n    at com.gs.gss.ccsp.enrichments.ThreadStarter.main(ThreadStarter.java:38)\n    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)\n    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)\n    at java.lang.reflect.Method.invoke(Method.java:597)\n    at com.intellij.rt.execution.application.AppMain.main(AppMain.java:120)\nCaused by: java.lang.RuntimeException: UNCAUGHT\n    at com.gs.gss.ccsp.enrichments.ThreadStarter$1.run(ThreadStarter.java:15)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6543898,
+      "reputation" : 729,
+      "user_id" : 5060478,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7cd7a6ab8aea58febae6e3ddea8fa2c7?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jatinder Pal",
+      "link" : "https://stackoverflow.com/users/5060478/jatinder-pal"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1440568534,
+    "creation_date" : 1440568534,
+    "answer_id" : 32218955,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Exception handling in Thread : By default run() method doesn’t throw any exception, so all checked exceptions inside the run method has to be caught and handled there only and for runtime exceptions we can use UncaughtExceptionHandler. UncaughtExceptionHandler is an interface provided by Java to handle exceptions in a Thread run method. So we can implement this interface and set back our implementing class back to Thread object using setUncaughtExceptionHandler() method. But this handler has to be set before we call start() on the tread.</p>\n\n<p>if we don’t set uncaughtExceptionHandler then the Threads ThreadGroup acts as a handler.</p>\n\n<pre><code> public class FirstThread extends Thread {\n\nint count = 0;\n\n@Override\npublic void run() {\n    while (true) {\n        System.out.println(\"FirstThread doing something urgent, count : \"\n                + (count++));\n        throw new RuntimeException();\n    }\n\n}\n\npublic static void main(String[] args) {\n    FirstThread t1 = new FirstThread();\n    t1.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {\n        public void uncaughtException(Thread t, Throwable e) {\n            System.out.printf(\"Exception thrown by %s with id : %d\",\n                    t.getName(), t.getId());\n            System.out.println(\"\\n\"+e.getClass());\n        }\n    });\n    t1.start();\n}\n}\n</code></pre>\n\n<p>Nice explanation given at  <a href=\"http://coder2design.com/thread-creation/#exceptions\" rel=\"nofollow\">http://coder2design.com/thread-creation/#exceptions</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6453072,
+      "reputation" : 39149,
+      "user_id" : 4999394,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+      "display_name" : "Ravindra babu",
+      "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1462812408,
+    "last_edit_date" : 1462812408,
+    "creation_date" : 1461077605,
+    "answer_id" : 36722006,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Currently you are catching only <code>RuntimeException</code>, a sub class of <code>Exception</code>. But your application may throw other sub-classes of <a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Exception.html\" rel=\"nofollow\">Exception</a>. Catch generic <code>Exception</code> in addition to <code>RuntimeException</code></p>\n\n<p>Since many of things have been changed on Threading front, use advanced java API. </p>\n\n<p>Prefer advance java.util.concurrent <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html\" rel=\"nofollow\">API</a> for multi-threading like <code>ExecutorService</code> or <code>ThreadPoolExecutor</code>. </p>\n\n<p>You can customize your <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html\" rel=\"nofollow\">ThreadPoolExecutor</a> to handle exceptions.</p>\n\n<p>Example from oracle documentation page:</p>\n\n<p>Override </p>\n\n<pre><code>protected void afterExecute(Runnable r,\n                            Throwable t)\n</code></pre>\n\n<blockquote>\n  <p>Method invoked upon completion of execution of the given Runnable. This method is invoked by the thread that executed the task. If non-null, the Throwable is the uncaught RuntimeException or Error that caused execution to terminate abruptly.</p>\n</blockquote>\n\n<p>Example code:</p>\n\n<pre><code>class ExtendedExecutor extends ThreadPoolExecutor {\n   // ...\n   protected void afterExecute(Runnable r, Throwable t) {\n     super.afterExecute(r, t);\n     if (t == null &amp;&amp; r instanceof Future&lt;?&gt;) {\n       try {\n         Object result = ((Future&lt;?&gt;) r).get();\n       } catch (CancellationException ce) {\n           t = ce;\n       } catch (ExecutionException ee) {\n           t = ee.getCause();\n       } catch (InterruptedException ie) {\n           Thread.currentThread().interrupt(); // ignore/reset\n       }\n     }\n     if (t != null)\n       System.out.println(t);\n   }\n }\n</code></pre>\n\n<p>Usage:</p>\n\n<pre><code>ExtendedExecutor service = new ExtendedExecutor();\n</code></pre>\n\n<p>I have added one constructor on top of above code as:</p>\n\n<pre><code> public ExtendedExecutor() { \n       super(1,5,60,TimeUnit.SECONDS,new ArrayBlockingQueue&lt;Runnable&gt;(100));\n   }\n</code></pre>\n\n<p>You can change this constructor to suit your requirement on number of threads. </p>\n\n<pre><code>ExtendedExecutor service = new ExtendedExecutor();\nservice.submit(&lt;your Callable or Runnable implementation&gt;);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3557535,
+      "reputation" : 2589,
+      "user_id" : 2970890,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/KSFfC.png?s=256",
+      "display_name" : "Ascendant",
+      "link" : "https://stackoverflow.com/users/2970890/ascendant"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1482196692,
+    "creation_date" : 1482196692,
+    "answer_id" : 41233522,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>My solution with RxJava:</p>\n\n<pre><code>@Test(expectedExceptions = TestException.class)\npublic void testGetNonexistentEntry() throws Exception\n{\n    // using this to work around the limitation where the errors in onError (in subscribe method)\n    // cannot be thrown out to the main thread\n    AtomicReference&lt;Exception&gt; ex = new AtomicReference&lt;&gt;();\n    URI id = getRandomUri();\n    canonicalMedia.setId(id);\n\n    client.get(id.toString())\n        .subscribe(\n            m -&gt;\n                fail(\"Should not be successful\"),\n            e -&gt;\n                ex.set(new TestException()));\n\n    for(int i = 0; i &lt; 5; ++i)\n    {\n        if(ex.get() != null)\n            throw ex.get();\n        else\n            Thread.sleep(1000);\n    }\n    Assert.fail(\"Cannot find the exception to throw.\");\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5984464,
+      "reputation" : 107,
+      "user_id" : 4702388,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/354d6db824733a60aaa2ea812adfd09a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Java Beginner",
+      "link" : "https://stackoverflow.com/users/4702388/java-beginner"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1495543787,
+    "creation_date" : 1495543787,
+    "answer_id" : 44135350,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I faced the same issue ... little work around (only for implementation not anonymous objects ) ... we can declare the class level exception object as null ... then initialize it inside the catch block for run method ... if there was error in run method,this variable wont be null .. we can then have null check for this particular variable and if its not null then there was exception inside the thread execution.   </p>\n\n<pre><code>class TestClass implements Runnable{\n    private Exception ex;\n\n        @Override\n        public void run() {\n            try{\n                //business code\n               }catch(Exception e){\n                   ex=e;\n               }\n          }\n\n      public void checkForException() throws Exception {\n            if (ex!= null) {\n                throw ex;\n            }\n        }\n}     \n</code></pre>\n\n<p>call checkForException() after join()</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10051369,
+      "reputation" : 329,
+      "user_id" : 7431083,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6bddb64c4dac9ab8354d8441dafc643c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Andr1i",
+      "link" : "https://stackoverflow.com/users/7431083/andr1i"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1561997140,
+    "creation_date" : 1561997140,
+    "answer_id" : 56838864,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Also from Java 8 you can write Dan Cruz answer as:</p>\n\n<pre><code>Thread t = new Thread(()-&gt;{\n            System.out.println(\"Sleeping ...\");\n            try {\n                Thread.sleep(1000);\n            } catch (InterruptedException e) {\n                System.out.println(\"Interrupted.\");\n            }\n            System.out.println(\"Throwing exception ...\");\n            throw new RuntimeException(); });\n\n\nt.setUncaughtExceptionHandler((th, ex)-&gt; log(String.format(\"Exception in thread %d id: %s\", th.getId(), ex)));\nt.start();\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7407971,
+        "reputation" : 2613,
+        "user_id" : 5636313,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/igjep.jpg?s=256",
+        "display_name" : "Farid",
+        "link" : "https://stackoverflow.com/users/5636313/farid"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1643110857,
+      "post_id" : 58983001,
+      "comment_id" : 125247741,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why do you even use a new thread if you were going to join it to calling one? Your example makes no sense at all. You just create a Thread then block until it finishes which is the same as not using a thread at all."
+    }, {
+      "owner" : {
+        "account_id" : 11892387,
+        "reputation" : 364,
+        "user_id" : 8702806,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/50e63fe34775012e5e2de50b7481c961?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Uta Alexandru",
+        "link" : "https://stackoverflow.com/users/8702806/uta-alexandru"
+      },
+      "reply_to_user" : {
+        "account_id" : 7407971,
+        "reputation" : 2613,
+        "user_id" : 5636313,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/igjep.jpg?s=256",
+        "display_name" : "Farid",
+        "link" : "https://stackoverflow.com/users/5636313/farid"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1673080455,
+      "post_id" : 58983001,
+      "comment_id" : 132421044,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Is to be able to test it in a main program .  Without join , you might not see the error due to the fact that main thread will exit before finishing the execution of the &quot;new thread &quot;. However , you can sleep instead of join , for a time greater than will take new thread execution."
+    } ],
+    "owner" : {
+      "account_id" : 11892387,
+      "reputation" : 364,
+      "user_id" : 8702806,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/50e63fe34775012e5e2de50b7481c961?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Uta Alexandru",
+      "link" : "https://stackoverflow.com/users/8702806/uta-alexandru"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1574367063,
+    "creation_date" : 1574367063,
+    "answer_id" : 58983001,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>AtomicReference is also a solution to pass the error to the main thread .Is same approach like the one of Dan Cruz .</p>\n\n<pre><code>AtomicReference&lt;Throwable&gt; errorReference = new AtomicReference&lt;&gt;();\n\n    Thread thread = new Thread() {\n        public void run() {\n            throw new RuntimeException(\"TEST EXCEPTION\");\n\n        }\n    };\n    thread.setUncaughtExceptionHandler((th, ex) -&gt; {\n        errorReference.set(ex);\n    });\n    thread.start();\n    thread.join();\n    Throwable newThreadError= errorReference.get();\n    if (newThreadError!= null) {\n        throw newThreadError;\n    }  \n</code></pre>\n\n<p>The only change is that instead of creating a volatile variable you can use AtomicReference which did same thing behind the scenes. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11848499,
+      "reputation" : 44,
+      "user_id" : 8670431,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9c89f697306112b8ca01f474312b5545?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Antoine Vulcain",
+      "link" : "https://stackoverflow.com/users/8670431/antoine-vulcain"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1582860861,
+    "creation_date" : 1582860861,
+    "answer_id" : 60444889,
+    "question_id" : 6546193,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For those who needs <strong>to stop all Threads running and re-run all of them</strong> when any one of them is stopped on an Exception:</p>\n\n<pre><code>@Override\npublic void onApplicationEvent(ContextRefreshedEvent event) {\n\n     // could be any function\n     getStockHistory();\n\n}\n\n\npublic void getStockHistory() {\n\n     // fill a list of symbol to be scrapped\n     List&lt;String&gt; symbolListNYSE = stockEntityRepository\n     .findByExchangeShortNameOnlySymbol(ContextRefreshExecutor.NYSE);\n\n\n    storeSymbolList(symbolListNYSE, ContextRefreshExecutor.NYSE);\n\n}\n\n\nprivate void storeSymbolList(List&lt;String&gt; symbolList, String exchange) {\n\n    int total = symbolList.size();\n\n    // I create a list of Thread \n    List&lt;Thread&gt; listThread = new ArrayList&lt;Thread&gt;();\n\n    // For each 1000 element of my scrapping ticker list I create a new Thread\n    for (int i = 0; i &lt;= total; i += 1000) {\n        int l = i;\n\n        Thread t1 = new Thread() {\n\n            public void run() {\n\n                // just a service that store in DB my ticker list\n                storingService.getAndStoreStockPrice(symbolList, l, 1000, \n                MULTIPLE_STOCK_FILL, exchange);\n\n            }\n\n        };\n\n    Thread.UncaughtExceptionHandler h = new Thread.UncaughtExceptionHandler() {\n            public void uncaughtException(Thread thread, Throwable exception) {\n\n                // stop thread if still running\n                thread.interrupt();\n\n                // go over every thread running and stop every one of them\n                listThread.stream().forEach(tread -&gt; tread.interrupt());\n\n                // relaunch all the Thread via the main function\n                getStockHistory();\n            }\n        };\n\n        t1.start();\n        t1.setUncaughtExceptionHandler(h);\n\n        listThread.add(t1);\n\n    }\n\n}\n</code></pre>\n\n<p><strong>To sum up :</strong></p>\n\n<p>You have a main function that create multiple thread, each of them has UncaughtExceptionHandler which is trigger by any Exception inside of a thread. You add every Thread to a List. If a UncaughtExceptionHandler is trigger it will loop through the List, stop every Thread and relaunch the main function recreation all the Thread.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 303713,
+    "reputation" : 2849,
+    "user_id" : 612818,
+    "user_type" : "registered",
+    "accept_rate" : 78,
+    "profile_image" : "https://www.gravatar.com/avatar/c999d3aad65cfa97bad6c291264ec580?s=256&d=identicon&r=PG",
+    "display_name" : "NARU",
+    "link" : "https://stackoverflow.com/users/612818/naru"
+  },
+  "is_answered" : true,
+  "view_count" : 263194,
+  "accepted_answer_id" : 6548203,
+  "answer_count" : 17,
+  "score" : 219,
+  "last_activity_date" : 1593644691,
+  "creation_date" : 1309513075,
+  "last_edit_date" : 1426520260,
+  "question_id" : 6546193,
+  "link" : "https://stackoverflow.com/questions/6546193/how-to-catch-an-exception-from-a-thread",
+  "title" : "How to catch an Exception from a thread",
+  "body" : "<p>I have Java main class, in the class, I start a new thread, in the main, it waits until the thread dies. At some moment, I throw a runtime exception from the thread, but I can't catch the exception thrown from the thread in the main class. </p>\n\n<p>Here is the code:</p>\n\n<pre><code>public class Test extends Thread\n{\n  public static void main(String[] args) throws InterruptedException\n  {\n    Test t = new Test();\n\n    try\n    {\n      t.start();\n      t.join();\n    }\n    catch(RuntimeException e)\n    {\n      System.out.println(\"** RuntimeException from main\");\n    }\n\n    System.out.println(\"Main stoped\");\n  }\n\n  @Override\n  public void run()\n  {\n    try\n    {\n      while(true)\n      {\n        System.out.println(\"** Started\");\n\n        sleep(2000);\n\n        throw new RuntimeException(\"exception from thread\");\n      }\n    }\n    catch (RuntimeException e)\n    {\n      System.out.println(\"** RuntimeException from thread\");\n\n      throw e;\n    } \n    catch (InterruptedException e)\n    {\n\n    }\n  }\n}\n</code></pre>\n\n<p>Anybody knows why?</p>\n"
+}

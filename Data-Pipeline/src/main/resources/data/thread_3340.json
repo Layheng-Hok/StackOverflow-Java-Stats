@@ -1,0 +1,122 @@
+{
+  "tags" : [ "java", "spring", "spring-boot" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1528789211,
+    "post_id" : 50809116,
+    "comment_id" : 88628728,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You need an <code>ApplicationContextInitializer</code> to add property sources to the environment. Your attempt is futile as it will be added too late and thus not taken into account for the <code>@ConditionalOnProperty</code>. I would also suggest that instead of rolling your own to use <a href=\"https://github.com/spring-cloud/spring-cloud-consul\" rel=\"nofollow noreferrer\">Spring Cloud Config Consul</a> which does this already for you."
+  }, {
+    "owner" : {
+      "account_id" : 2258168,
+      "reputation" : 31530,
+      "user_id" : 1988876,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/810e652dfae6e519f042ce3db5a87a43?s=256&d=identicon&r=PG",
+      "display_name" : "brain storm",
+      "link" : "https://stackoverflow.com/users/1988876/brain-storm"
+    },
+    "reply_to_user" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1528821116,
+    "post_id" : 50809116,
+    "comment_id" : 88648873,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@M.Deinum as I mentioned, this is legacy code. I made a simple description to explain the question. If only I could use spring cloud config consul, all problem is solved for me. but unfortunately I cannot. can you give a hint on how can I leverage <code>ApplicationContextInitializer</code> to add properties. Thanks!!"
+  }, {
+    "owner" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1528868167,
+    "post_id" : 50809116,
+    "comment_id" : 88663622,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Not sure what the fact that something is legacy (already existing in my world) would prevent you from adding an additional dependency. Implement the <code>ApplicationCOntextInitializer</code> and create a property source instance that loads the properties from consul and add it to the environment."
+  }, {
+    "owner" : {
+      "account_id" : 16078449,
+      "reputation" : 1,
+      "user_id" : 11605073,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/24bd9e1fa07fb7a5dd5f832ef14bbf5f?s=256&d=identicon&r=PG",
+      "display_name" : "Jazhandis",
+      "link" : "https://stackoverflow.com/users/11605073/jazhandis"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1559750589,
+    "post_id" : 50809116,
+    "comment_id" : 99519906,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Might be the same as this: <a href=\"https://stackoverflow.com/questions/53297465/spring-conditionalonproperty-annotation-not-working-as-expected\" title=\"spring conditionalonproperty annotation not working as expected\">stackoverflow.com/questions/53297465/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5562424,
+      "reputation" : 1101,
+      "user_id" : 4411047,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c80137636cfdf62e4a3966708b618df3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Roland Roos",
+      "link" : "https://stackoverflow.com/users/4411047/roland-roos"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1649604624,
+    "last_edit_date" : 1649604624,
+    "creation_date" : 1649604142,
+    "answer_id" : 71817984,
+    "question_id" : 50809116,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This did the work for me (Kotlin, but Java works exactly the same)</p>\n<pre><code>@Configuration\nclass ConditionalBeanConfig {\n\n@Bean\n@ConditionalOnProperty(name=[&quot;modbus.modbushelper&quot;], havingValue=&quot;simulate&quot;)\nfun conditionalModBusHelper(): ModBusApi {\n   return  ModBusSimulatorImpl()\n}\n\n@Bean\n@ConditionalOnProperty(name=[&quot;modbus.modbushelper&quot;],     \nhavingValue=&quot;normal&quot;,matchIfMissing = true)\nfun conditionalModBus(): ModBusApi {\n   var modBusImpl:ModBusApi =  ModBusHelperImpl(Helper())\n    return modBusImpl\n}\n\n}\n\ninterface ModBusApi {\n\n    fun getModbusRegisterValue(startingAddress: Int, quantity: Int): String?\n\n    fun setModbusSingleRegisterValue(startingAddress: Int, value: Int)\n\n}  \n\nclass ModBusSimulatorImpl : ModBusApi {\n\n override fun getModbusRegisterValue(startingAddress: Int, quantity: Int): String? \n\n   ...\n\noverride fun setModbusSingleRegisterValue(startingAddress: Int, value: Int){\n  \n....\n</code></pre>\n<p>in combi with application.properties:</p>\n<pre><code>#simulate, normal\nmodbus.modbushelper=simulate\n</code></pre>\n<p>Make sure, you have, like always, your packaging in good health:</p>\n<p>-Application starts with rootpackage.App</p>\n<p>-All your objects/modules start with rootpackage.....</p>\n<p>Spring CDI @ComponentScan is is very picky on that, and follows security Java conventions. If you dont, you can experience wide variety of CDI problems.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2258168,
+    "reputation" : 31530,
+    "user_id" : 1988876,
+    "user_type" : "registered",
+    "accept_rate" : 73,
+    "profile_image" : "https://www.gravatar.com/avatar/810e652dfae6e519f042ce3db5a87a43?s=256&d=identicon&r=PG",
+    "display_name" : "brain storm",
+    "link" : "https://stackoverflow.com/users/1988876/brain-storm"
+  },
+  "is_answered" : false,
+  "view_count" : 11170,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1762708055,
+  "creation_date" : 1528776568,
+  "question_id" : 50809116,
+  "link" : "https://stackoverflow.com/questions/50809116/conditionalonproperty-annotation-not-working-in-spring-boot-project",
+  "title" : "@ConditionalOnProperty annotation not working in spring boot project",
+  "body" : "<p>I want to conditionally create a spring bean. I figured  <code>@ConditionalOnProperty</code> would serve that purpose.  I used it in my service class but I do not see the bean being created. </p>\n\n<p>Here is my bean that I want to be conditionally created</p>\n\n<pre><code>@Service\n@ConditionalOnProperty(value = \"polling.enabled\", havingValue = \"true\")\npublic class MessageQueueService {\n\n@Scheduled(fixedDelay = INTERVAL_MS)\n    public void execute() {\n     //sysout\n    }\n}\n</code></pre>\n\n<p>couple of thing to note.</p>\n\n<p>--  our service loads properties directly from consul(due to legacy reasons) and not through spring environment</p>\n\n<p>-- I hacked RestTemplate bean (below) to add custom propertyResource into environment. I did not know how to do it without creating another PropertySource bean instance.</p>\n\n<pre><code>@Configuration\npublic class AppConfig {\n\n@Autowired\nConfigurableEnvironment env;\n\n@Bean(name = \"consulProps\")\n public Properties properties() {\n     Properties consulProperties = new ConsulDriver(env.getConsulUrl()).loadProperties();\n    return properties;\n }\n\n@Bean\n@Autowired\npublic RestTemplate restTemplate(@Qualifier(consulProps) Properties props) {\n    MutablePropertySources sources = env.getPropertySources();\n    sources.addFirst(pollingEnabled(props));\n    return new RestTemplate();\n    }\n\nprivate MapPropertySource pollingEnabled(Properties props) {\n     String enabled = props.getProperty(\"polling.enabled\"); // line 25\n     Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();\n     if (StringUtils.isNotBlank(enabled)) {\n           map.put(\"polling.enabled\", enabled);\n     }\n     else {\n          map.put(\"polling.enabled\", \"false\");\n     }\n       return new MapPropertySource(\"polling\", map);\n    }\n\n    @Bean\n    public static PropertySourcesPlaceholderConfigurer propertyConfigIn() {\n        return new PropertySourcesPlaceholderConfigurer();\n    }\n}\n</code></pre>\n\n<p>when I run the service, it starts up. I have set up <code>polling.enabled</code> is <code>true</code> in consul. while debugging, I confirmed the value is set correctly in line 25. However, the bean is NOT created.\nif I comment-out the <code>@ConditionalOnProperty</code> from the class, bean is created and the scheduled Method is called.</p>\n\n<p>Any help to fix this is highly appreciated!!\nThanks in advance</p>\n"
+}

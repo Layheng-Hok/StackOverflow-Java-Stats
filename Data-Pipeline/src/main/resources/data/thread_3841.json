@@ -1,0 +1,215 @@
+{
+  "tags" : [ "java", "reentrancy" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 232333,
+      "reputation" : 21813,
+      "user_id" : 497106,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/f6Nuf.png?s=256",
+      "display_name" : "Patashu",
+      "link" : "https://stackoverflow.com/users/497106/patashu"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1368333803,
+    "post_id" : 16504231,
+    "comment_id" : 23691734,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Imagine if entering a method locks object X, and while in that method you call the very same method (either directly or further on in the call stack) and lock object X again. What happens? Do you wait on the lock you already hold, or is it aware that the thread holding it is also the thread calling it again, and allows it to pass? This is called re-entrancy - you enter the same method you were already in earlier."
+  }, {
+    "owner" : {
+      "account_id" : 232333,
+      "reputation" : 21813,
+      "user_id" : 497106,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/f6Nuf.png?s=256",
+      "display_name" : "Patashu",
+      "link" : "https://stackoverflow.com/users/497106/patashu"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1368334347,
+    "post_id" : 16504231,
+    "comment_id" : 23691808,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Yes, synchronized blocks and locks in Java are re-entrant, so once thread foo has lock bar, it can safely call methods that also lock bar without having to unlock it first."
+  }, {
+    "owner" : {
+      "account_id" : 330677,
+      "reputation" : 7484,
+      "user_id" : 654928,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/742f9b674d1ddff447d0fbacd96fb437?s=256&d=identicon&r=PG",
+      "display_name" : "rubixibuc",
+      "link" : "https://stackoverflow.com/users/654928/rubixibuc"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1368334505,
+    "post_id" : 16504231,
+    "comment_id" : 23691830,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "You still must consider deadlock, deadlock can occur when two threads wait on each other."
+  }, {
+    "owner" : {
+      "account_id" : 1056981,
+      "reputation" : 1149,
+      "user_id" : 1059465,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://www.gravatar.com/avatar/7dfb3c6fe5d0c1f5121d7d6d311fa8ff?s=256&d=identicon&r=PG",
+      "display_name" : "znlyj",
+      "link" : "https://stackoverflow.com/users/1059465/znlyj"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1368336274,
+    "post_id" : 16504231,
+    "comment_id" : 23692084,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "yeal, I mean my situation above."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 330677,
+      "reputation" : 7484,
+      "user_id" : 654928,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/742f9b674d1ddff447d0fbacd96fb437?s=256&d=identicon&r=PG",
+      "display_name" : "rubixibuc",
+      "link" : "https://stackoverflow.com/users/654928/rubixibuc"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1368334611,
+    "last_edit_date" : 1368334611,
+    "creation_date" : 1368333421,
+    "answer_id" : 16504247,
+    "question_id" : 16504231,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This just means once a thread has a lock it may enter the locked section of code as many times as it needs to. So if you have a synchronized section of code such as a method, only the thread which attained the lock can call that method, but can call that method as many times as it wants, including any other code held by the same lock. This is important if you have one method that calls another method, and both are synchronized by the same lock. If this wasn't the case the. The second method call would block. It would also apply to recursive method calls.</p>\n\n<pre><code>public void methodA()\n{\n     // other code\n     synchronized(this)\n     {\n          methodB();\n     } \n}\n\npublic void methodB()\n{\n     // other code\n     syncrhonized(this)\n     {\n          // it can still enter this code    \n     }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : true,
+    "score" : 83,
+    "last_activity_date" : 1508066676,
+    "last_edit_date" : 1508066676,
+    "creation_date" : 1368333637,
+    "answer_id" : 16504266,
+    "question_id" : 16504231,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p>Reentrancy means that locks are acquired on a per-thread rather than per-invocation basis.</p>\n</blockquote>\n\n<p>That is a misleading definition.  It is true (sort of), but it misses the real point.</p>\n\n<p>Reentrancy means (in general CS / IT terminology) that you do something, and while you are still doing it, you do it again.  In the case of locks it means you do something like this <em>on a single thread</em>:</p>\n\n<ol>\n<li>Acquire a lock on \"foo\".</li>\n<li>Do something</li>\n<li>Acquire a lock on \"foo\".  Note that we haven't released the lock that we previously acquired.</li>\n<li>...</li>\n<li>Release lock on \"foo\"</li>\n<li>...</li>\n<li>Release lock on \"foo\"</li>\n</ol>\n\n<p>With a reentrant lock / locking mechanism, the attempt to acquire the same lock will succeed, and will increment an internal counter belonging to the lock.  The lock will only be released when the current holder of the lock has released it twice.</p>\n\n<p>Here's a example in Java using primitive object locks / monitors ... which are reentrant:</p>\n\n<pre><code>Object lock = new Object();\n...\nsynchronized (lock) {\n    ...\n    doSomething(lock, ...)\n    ...\n}\n\npublic void doSomething(Object lock, ...) {\n    synchronized (lock) {\n        ...\n    }\n}\n</code></pre>\n\n<p>The alternative to reentrant is non-reentrant locking, where it would be an error for a thread to attempt to acquire a lock that it already holds.</p>\n\n<p>The advantage of using reentrant locks is that you don't have to worry about the possibility of failing due to accidentally acquiring a lock that you already hold.  The downside is that you can't assume that nothing you call will change the state of the variables that the lock is designed to protect.  However, that's not usually a problem.  Locks are generally used to protect against concurrent state changes made by <em>other</em> threads.</p>\n\n<hr>\n\n<blockquote>\n  <p>So I needn't consider deadlocks?</p>\n</blockquote>\n\n<p>Yes you do.</p>\n\n<p>A thread won't deadlock against itself (if the lock is reentrant).  However, you could get a deadlock if there are other threads that might have a lock on the object you are trying to lock.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 232333,
+      "reputation" : 21813,
+      "user_id" : 497106,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/f6Nuf.png?s=256",
+      "display_name" : "Patashu",
+      "link" : "https://stackoverflow.com/users/497106/patashu"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1368336612,
+    "last_edit_date" : 1368336612,
+    "creation_date" : 1368334030,
+    "answer_id" : 16504303,
+    "question_id" : 16504231,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Imagine something like this:</p>\n\n<pre><code>function A():\n   lock (X)\n       B()\n   unlock (X)\n\nfunction B():\n    A()\n</code></pre>\n\n<p>Now we call A. The following happens:</p>\n\n<ul>\n<li>We enter A, locking X</li>\n<li>We enter B</li>\n<li>We enter A again, locking X again</li>\n</ul>\n\n<p>Since we never exited the first invocation of A, X is still locked. This is called re-entrance - while function A has not yet returned, function A is called again. If A relies on some global, static state, this can cause a 're-entrance bug', where before the static state is cleaned up from the function's exit, the function is run again, and the half computed values collide with the start of the second call.</p>\n\n<p>In this case, we run into a lock we are already holding. If the lock is re-entrance aware, it will realize we are the same thread holding the lock already and let us through. Otherwise, it will deadlock forever - it will be waiting for a lock it already holds.</p>\n\n<p>In java, <code>lock</code> and <code>synchronized</code> are re-entrance aware - if a lock is held by a thread, and the thread tries to re-acquire the same lock, it is allowed. So if we wrote the above pseudocode in Java, it would not deadlock.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2784842,
+      "reputation" : 69441,
+      "user_id" : 2396539,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/nGigV.png?s=256",
+      "display_name" : "Aniket Thakur",
+      "link" : "https://stackoverflow.com/users/2396539/aniket-thakur"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1761552007,
+    "last_edit_date" : 1761552007,
+    "creation_date" : 1465272096,
+    "answer_id" : 37670241,
+    "question_id" : 16504231,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Java concurrency in practice book states:</p>\n<blockquote>\n<p>Reentrancy means that locks are acquired on a per-thread rather than per-invocation basis.</p>\n</blockquote>\n<p>Let me explain what it exactly means. First of all, intrinsic locks are reentrant by nature. The way reentrancy is achieved is by maintaining a counter for the number of locks acquired and the owner of the lock. If the count is 0 and no owner is associated to it, it means the lock is not held by any thread. When a thread acquires the lock, the JVM records the owner and sets the counter to 1. If the same thread tries to acquire the lock again, the counter is incremented. And when the owning thread exits the synchronized block, the counter is decremented. When the count reaches 0 again, the lock is released.</p>\n<p>A simple example would be:</p>\n<pre><code>public class Test {\n    public synchronized void performTest() {\n       //...\n    }\n}\n\npublic class CustomTest extends Test {\n    public synchronized void performTest() {\n       //...\n       super.performTest();\n    }\n}\n</code></pre>\n<p>without reentrancy there would be a deadlock.</p>\n<p><a href=\"https://i.sstatic.net/HnsWG.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/HnsWG.png\" alt=\"enter image description here\" /></a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1296670,
+      "reputation" : 673,
+      "user_id" : 3833423,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/5FNkP.jpg?s=256",
+      "display_name" : "G 1",
+      "link" : "https://stackoverflow.com/users/3833423/g-1"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1549786231,
+    "last_edit_date" : 1549786231,
+    "creation_date" : 1549779520,
+    "answer_id" : 54613876,
+    "question_id" : 16504231,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n  <p>Reentrancy means that locks are acquired on a per-thread rather than per-invocation basis.</p>\n</blockquote>\n\n<p>Let me explain this with an example.</p>\n\n<pre><code>class ReentrantTester {\n\n    public synchronized void methodA() {\n      System.out.println(\"Now I am inside methodA()\");\n      methodB();\n    }\n\n    public synchronized void methodB() {\n      System.out.println(\"Now I am inside methodB()\");\n    }\n\n    public static void main(String [] args) {\n        ReentrantTester rt = new ReentrantTester();\n        rt.methodA();  \n    }\n\n}\n</code></pre>\n\n<p>The out put is :</p>\n\n<pre><code>Now I am inside methodA()\nNow I am inside methodB()\n</code></pre>\n\n<p>As in the above code, the ReentrantTester contains two synchronized methods: methodA() &amp; methodB()\nThe first synchronized method methodA() calls the other synchronized method methodB().</p>\n\n<p>When execution enters the methodA(), the current thread acquires the monitor for the ReentrantTester object.\nNow when methodA() calls methodB(), because methodB() is also synchronized, the thread attempts to acquire the \nsame monitor again. Because Java supports reentrant monitors, this works. The current thread acquire the ReentrantTester's\nmonitor again and continue the execution of both methodA() and methodB().</p>\n\n<p>The Java runtime allows a thread to reacquire a monitor that it already holds, because Java monitors are\nreentrant. These reentrant monitors are important because they eliminate the possibility of a single thread\ndeadlocking itself on a monitor that it already holds.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3505152,
+      "reputation" : 2644,
+      "user_id" : 2930836,
+      "user_type" : "registered",
+      "accept_rate" : 39,
+      "profile_image" : "https://lh4.googleusercontent.com/-hOD6KYRyIY4/AAAAAAAAAAI/AAAAAAAAfv0/9V13VHORoHk/s256-rj/photo.jpg",
+      "display_name" : "igonejack",
+      "link" : "https://stackoverflow.com/users/2930836/igonejack"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1586589040,
+    "creation_date" : 1586589040,
+    "answer_id" : 61153253,
+    "question_id" : 16504231,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>it's about recurse, think about:</p>\n\n<pre><code>private lock = new ReentrantLock();\npublic void method() {\n      lock.lock();\n      method();\n}\n\n</code></pre>\n\n<p>If the lock is not re-entrant able, the thread could block itself.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1056981,
+    "reputation" : 1149,
+    "user_id" : 1059465,
+    "user_type" : "registered",
+    "accept_rate" : 43,
+    "profile_image" : "https://www.gravatar.com/avatar/7dfb3c6fe5d0c1f5121d7d6d311fa8ff?s=256&d=identicon&r=PG",
+    "display_name" : "znlyj",
+    "link" : "https://stackoverflow.com/users/1059465/znlyj"
+  },
+  "is_answered" : true,
+  "view_count" : 21000,
+  "accepted_answer_id" : 16504266,
+  "answer_count" : 6,
+  "score" : 52,
+  "last_activity_date" : 1761552007,
+  "creation_date" : 1368333242,
+  "last_edit_date" : 1568586021,
+  "question_id" : 16504231,
+  "link" : "https://stackoverflow.com/questions/16504231/what-is-the-meaning-of-reentrantlock-in-java",
+  "title" : "What is the meaning of &quot;ReentrantLock&quot; in Java?",
+  "body" : "<p>Reentrancy means that locks are acquired on a per-thread rather than per-invocation basis.</p>\n\n<p>Since an intrinsic lock is held by a thread, doesn't it mean that a thread run once equals an invocation basis?</p>\n\n<p>Thank you, it seems mean that: in a thread,if I get a lock <code>lockA</code> when process function <code>doA</code> which call function <code>doB</code>, and <code>doB</code> also need a lock <code>lockA</code>,then there wil be a reentrancy. In Java, this phenomenon is acquired per thread, so I needn't consider deadlocks?</p>\n"
+}

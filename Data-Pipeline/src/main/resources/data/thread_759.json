@@ -1,0 +1,1681 @@
+{
+  "tags" : [ "java", "performance", "instanceof" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2241,
+      "reputation" : 44856,
+      "user_id" : 3093,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/98e69195c08f2c104c37137e33b9fc59?s=256&d=identicon&r=PG",
+      "display_name" : "David L",
+      "link" : "https://stackoverflow.com/users/3093/david-l"
+    },
+    "edited" : false,
+    "score" : 89,
+    "creation_date" : 1221843054,
+    "post_id" : 103564,
+    "comment_id" : 18149,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "I think the point of the question, however, was to set aside the question of best OO practice, and examine the performance."
+  }, {
+    "owner" : {
+      "account_id" : 1108,
+      "reputation" : 9939,
+      "user_id" : 1471,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/d8591f14f65918062bcb27cc05dd0c54?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tim Frey",
+      "link" : "https://stackoverflow.com/users/1471/tim-frey"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1221843257,
+    "post_id" : 103564,
+    "comment_id" : 18160,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "@Dave L.  Normally I would agree, but the OP does mention that he&#39;s looking for some general optimization techniques and he&#39;s not sure if his problem is related to &#39;instanceof&#39;.  I think it&#39;s worth at least mentioning the &#39;correct&#39; design so he can profile both choices."
+  }, {
+    "owner" : {
+      "account_id" : 26655,
+      "reputation" : 5309,
+      "user_id" : 2453638,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/f3c72d0eb749bef33890dca8fc77e357?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "gub",
+      "link" : "https://stackoverflow.com/users/2453638/gub"
+    },
+    "edited" : false,
+    "score" : 64,
+    "creation_date" : 1273659537,
+    "post_id" : 103564,
+    "comment_id" : 2857341,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "Ugh... Why do all the answers miss the point of the question and supply the same old Knuth rhetoric about optimisation? Your question is about whether instanceof is significantly/surprisingly slower than checking the class object with ==, and I&#39;ve found that it is not."
+  }, {
+    "owner" : {
+      "account_id" : 1448228,
+      "reputation" : 3527,
+      "user_id" : 1366016,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/6ZjQr.jpg?s=256",
+      "display_name" : "Wheezil",
+      "link" : "https://stackoverflow.com/users/1366016/wheezil"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1425645462,
+    "post_id" : 103564,
+    "comment_id" : 46057085,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "The performance of instanceof and casting is quite good.  I posted some timing in Java7 around different approaches to the problem here: <a href=\"http://stackoverflow.com/questions/16320014/java-optimization-nitpick-is-it-faster-to-cast-something-and-let-it-throw-excep/28858680#28858680\" title=\"java optimization nitpick is it faster to cast something and let it throw excep\">stackoverflow.com/questions/16320014/&hellip;</a>"
+  }, {
+    "owner" : {
+      "account_id" : 261142,
+      "reputation" : 49214,
+      "user_id" : 545127,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://i.sstatic.net/RJgJM.png?s=256",
+      "display_name" : "Raedwald",
+      "link" : "https://stackoverflow.com/users/545127/raedwald"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1607374877,
+    "post_id" : 103564,
+    "comment_id" : 115248056,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "It is necessary for proper implementations of <code>equals(Object)</code> to use <code>instanceof</code>, and calls of <code>equals(Object)</code> are very common, so I would expect most JVMs can do it very efficiently."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10149,
+        "reputation" : 3571,
+        "user_id" : 19029,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7fb49e5852e4a78c7762269856a1d409?s=256&d=identicon&r=PG",
+        "display_name" : "Steve",
+        "link" : "https://stackoverflow.com/users/19029/steve"
+      },
+      "reply_to_user" : {
+        "account_id" : 82956,
+        "reputation" : 3383,
+        "user_id" : 232899,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/f9d72eed738397491682acecff2661d1?s=256&d=identicon&r=PG",
+        "display_name" : "Ravisha",
+        "link" : "https://stackoverflow.com/users/232899/ravisha"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1302290226,
+      "post_id" : 103600,
+      "comment_id" : 6375787,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I don&#39;t have specific java versions, but any JVMs released by the major players (Sun/Oracle, IBM, Apple, etc) from the last 10 years or so could probably be considered &quot;modern&quot; in this regard."
+    }, {
+      "owner" : {
+        "account_id" : 262393,
+        "reputation" : 1616,
+        "user_id" : 547223,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/yQRjJ.jpg?s=256",
+        "display_name" : "kgadek",
+        "link" : "https://stackoverflow.com/users/547223/kgadek"
+      },
+      "edited" : false,
+      "score" : 175,
+      "creation_date" : 1314866636,
+      "post_id" : 103600,
+      "comment_id" : 8747777,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Always there&#39;s someone, who cites Knuth when performance is the topic... Forgetting, that Knuth also stated (in the same article) &quot;In established engineering disciplines a 12 % improvement, easily obtained, is never considered marginal and I believe the same viewpoint should prevail in software engineering&quot;, nearly all his work was about efficiency of algorithms and he wrote algorithms in assembly to (inter alia) achieve better performance. Meh..."
+    }, {
+      "owner" : {
+        "account_id" : 280629,
+        "reputation" : 5496,
+        "user_id" : 576448,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://i.sstatic.net/hVxvC.jpg?s=256",
+        "display_name" : "peterk",
+        "link" : "https://stackoverflow.com/users/576448/peterk"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1329148277,
+      "post_id" : 103600,
+      "comment_id" : 11674715,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "An aside here but would <code>try { ObjT o = (ObjT)object } catch (e) { no not one of these }</code> would be any faster slower ??"
+    }, {
+      "owner" : {
+        "account_id" : 10149,
+        "reputation" : 3571,
+        "user_id" : 19029,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7fb49e5852e4a78c7762269856a1d409?s=256&d=identicon&r=PG",
+        "display_name" : "Steve",
+        "link" : "https://stackoverflow.com/users/19029/steve"
+      },
+      "edited" : false,
+      "score" : 40,
+      "creation_date" : 1329524844,
+      "post_id" : 103600,
+      "comment_id" : 11784634,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If &quot;object&quot; is an instance of ObjT, casting it is a little faster than doing an instanceof, but the difference my quick test found was 10-20ms over 10,000,000 iterations. If &quot;object&quot; isn&#39;t an ObjT, though, catching the exception was over 3000x slower - over 31,000ms vs ~10ms for the instanceof."
+    }, {
+      "owner" : {
+        "account_id" : 314110,
+        "reputation" : 2011,
+        "user_id" : 629122,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/E34t3.jpg?s=256",
+        "display_name" : "marcorossi",
+        "link" : "https://stackoverflow.com/users/629122/marcorossi"
+      },
+      "edited" : false,
+      "score" : 24,
+      "creation_date" : 1366241382,
+      "post_id" : 103600,
+      "comment_id" : 22940702,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "such a strong argument without any &quot;reference&quot;, is completely useless because just opinionated."
+    }, {
+      "owner" : {
+        "account_id" : 410963,
+        "reputation" : 1434,
+        "user_id" : 783116,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/ZOv9Y.jpg?s=256",
+        "display_name" : "josiah",
+        "link" : "https://stackoverflow.com/users/783116/josiah"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1422322534,
+      "post_id" : 103600,
+      "comment_id" : 44694892,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Steve: I agree with marcorossi.  I would like to know which the specific performance characteristics are, rather than rely on a blanket statement like this.  Otherwise, how would i justify using instanceof in a Code Review - because Steve on SO says so won&#39;t fly in the real world.  Kudos to your above commend about exception handling vs instanceof, though.  That at least gives me some idea of what you are talking about."
+    }, {
+      "owner" : {
+        "account_id" : 32599,
+        "reputation" : 9417,
+        "user_id" : 90575,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/9e6570a26b531e084bce72172773dd9b?s=256&d=identicon&r=PG",
+        "display_name" : "mawia",
+        "link" : "https://stackoverflow.com/users/90575/mawia"
+      },
+      "reply_to_user" : {
+        "account_id" : 280629,
+        "reputation" : 5496,
+        "user_id" : 576448,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://i.sstatic.net/hVxvC.jpg?s=256",
+        "display_name" : "peterk",
+        "link" : "https://stackoverflow.com/users/576448/peterk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1427616608,
+      "post_id" : 103600,
+      "comment_id" : 46844002,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@peterk &quot;casting vs instanceOf&quot;. Think like implementing your own virtual machine. In case of instanceOf you will refer to a class defination(object Class class) and checks for its parent reference. Compare the cost of this operation to operation involves in trying to assign the object to a variable of ObjT: VM tries to find out if object is of   type ObjT(this should involves looking into ObjT Class class), if it is not, VM should raise an exception.Your code catches the exception. All these are extra instructions being executed. Hence casting will perform much worse than instanceOf."
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "reply_to_user" : {
+        "account_id" : 32599,
+        "reputation" : 9417,
+        "user_id" : 90575,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/9e6570a26b531e084bce72172773dd9b?s=256&d=identicon&r=PG",
+        "display_name" : "mawia",
+        "link" : "https://stackoverflow.com/users/90575/mawia"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1475060862,
+      "post_id" : 103600,
+      "comment_id" : 66787809,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@mawia: the costs of type casts and the <code>instanceof</code> operator are exactly the same in the successful case, as what the JVM does is the same, the only difference is the treatment of <code>null</code> references. In either case, <a href=\"http://stackoverflow.com/a/26337040/2711488\">modern JVMs don’t traverse the type hierarchy anymore</a>. The subsequent assignment to the local variable is irrelevant, it has no effect."
+    }, {
+      "owner" : {
+        "account_id" : 3739249,
+        "reputation" : 2173,
+        "user_id" : 3109401,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://i.sstatic.net/VK6In.jpg?s=256",
+        "display_name" : "Kimi Chiu",
+        "link" : "https://stackoverflow.com/users/3109401/kimi-chiu"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1502512286,
+      "post_id" : 103600,
+      "comment_id" : 78252028,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You should always answer a question. Not just tell them don&#39;t do it."
+    }, {
+      "owner" : {
+        "account_id" : 1853477,
+        "reputation" : 4302,
+        "user_id" : 1679516,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/gxfhm.png?s=256",
+        "display_name" : "Darrell Teague",
+        "link" : "https://stackoverflow.com/users/1679516/darrell-teague"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1535739114,
+      "post_id" : 103600,
+      "comment_id" : 91192730,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Check out empirical observations in other answers and in this other question. In general, anything involving a stack trace is going to be <i>much</i> slower. <a href=\"https://stackoverflow.com/questions/299068/how-slow-are-java-exceptions\" title=\"how slow are java exceptions\">stackoverflow.com/questions/299068/how-slow-are-java-excepti&zwnj;&#8203;ons</a>"
+    }, {
+      "owner" : {
+        "account_id" : 66745,
+        "reputation" : 1983,
+        "user_id" : 195663,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/b68bab63759a3af5231e6023f6cc9f69?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Coder Guy",
+        "link" : "https://stackoverflow.com/users/195663/coder-guy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1607538283,
+      "post_id" : 103600,
+      "comment_id" : 115306958,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Due diligence is important.  The more emphasis upon making computers do all the work for us, the more we take advantage of Moore&#39;s law as a crutch rather than a gift.  While splitting hairs over use of instanceof might be fruitless, I have found in my own organization that the general stigma against thinking about high performance code while you write it has resulted in, not just a few inefficient instructions, but several hundred.  We need to load balance better between the carbon-based units and the silicon-based units."
+    }, {
+      "owner" : {
+        "account_id" : 66745,
+        "reputation" : 1983,
+        "user_id" : 195663,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/b68bab63759a3af5231e6023f6cc9f69?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Coder Guy",
+        "link" : "https://stackoverflow.com/users/195663/coder-guy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1607567238,
+      "post_id" : 103600,
+      "comment_id" : 115316156,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I should add that due diligence includes making time for performance profiling for issues like these that are not certain.  I was convinced that using Scala&#39;s <code>Either.fold</code> method would be faster than performing a pattern match on it.  The latter approach did result in more bytecode as expected, but using <code>Either.fold</code> was actually slower.  This was very unexpected."
+    }, {
+      "owner" : {
+        "account_id" : 3683805,
+        "reputation" : 9340,
+        "user_id" : 3950982,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7491f45ae073ed6bfe01b1e63fb06bf0?s=256&d=identicon&r=PG",
+        "display_name" : "Luke Hutchison",
+        "link" : "https://stackoverflow.com/users/3950982/luke-hutchison"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1622698099,
+      "post_id" : 103600,
+      "comment_id" : 119867285,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "While I&#39;m a big fan of that Don Knuth quote, there&#39;s nothing inherent about instanceof that would lend itself to a particularly fast implementation (you still have to walk up the class hierarchy and compare class pointers). And you can&#39;t just apply the Knuth quote to any language feature that is not efficient. Have you ever tried single-stepping through the Java libraries as a method is being invoked reflectively, i.e. through all the security check code etc.? There&#39;s no way that will ever be sped up with a smart JIT. Java 8 lambdas are similar, if you&#39;ve ever looked at a debug trace: bleuch!"
+    }, {
+      "owner" : {
+        "account_id" : 7062708,
+        "reputation" : 8504,
+        "user_id" : 5407270,
+        "user_type" : "registered",
+        "profile_image" : "https://lh6.googleusercontent.com/-NsKU95wNnz8/AAAAAAAAAAI/AAAAAAAAAlI/JsEGfhwPOqU/s256-rj/photo.jpg",
+        "display_name" : "Andriy Makukha",
+        "link" : "https://stackoverflow.com/users/5407270/andriy-makukha"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1724904668,
+      "post_id" : 103600,
+      "comment_id" : 139156941,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@kdadek, Knuth was clearly rhetoric about 12%. The truth is, if you need to squeeze 12% time improvement, do it. But in many cases you don&#39;t have to worry about it."
+    } ],
+    "owner" : {
+      "account_id" : 10149,
+      "reputation" : 3571,
+      "user_id" : 19029,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7fb49e5852e4a78c7762269856a1d409?s=256&d=identicon&r=PG",
+      "display_name" : "Steve",
+      "link" : "https://stackoverflow.com/users/19029/steve"
+    },
+    "is_accepted" : true,
+    "score" : 303,
+    "last_activity_date" : 1599552226,
+    "last_edit_date" : 1599552226,
+    "creation_date" : 1221842745,
+    "answer_id" : 103600,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Modern JVM/JIT compilers have removed the performance hit of most of the traditionally &quot;slow&quot; operations, including instanceof, exception handling, reflection, etc.</p>\n<p>As Donald Knuth wrote, &quot;We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.&quot;  The performance of instanceof probably won't be an issue, so don't waste your time coming up with exotic workarounds until you're sure that's the problem.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1062,
+        "reputation" : 39178,
+        "user_id" : 1409,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/2bd9e4e00647ecf35aba651054861e5e?s=256&d=identicon&r=PG",
+        "display_name" : "Herms",
+        "link" : "https://stackoverflow.com/users/1409/herms"
+      },
+      "edited" : false,
+      "score" : 15,
+      "creation_date" : 1221845375,
+      "post_id" : 103602,
+      "comment_id" : 18294,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "But sometimes you can&#39;t.  If you&#39;re implementing an interface that has you taking in an Object, and you need to tell which type it is, then instanceof is really the only option.  You could try casting, but instanceof is generally cleaner."
+    } ],
+    "owner" : {
+      "account_id" : 2397,
+      "reputation" : 183614,
+      "user_id" : 3333,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/99660662e89949a4b53cd97bc199ead1?s=256&d=identicon&r=PG",
+      "display_name" : "Paul Tomblin",
+      "link" : "https://stackoverflow.com/users/3333/paul-tomblin"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1221842765,
+    "creation_date" : 1221842765,
+    "answer_id" : 103602,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Generally the reason why the \"instanceof\" operator is frowned upon in a case like that (where the instanceof is checking for subclasses of this base class) is because what you should be doing is moving the operations into a method and overridding it for the appropriate subclasses.  For instance, if you have:</p>\n\n<pre><code>if (o instanceof Class1)\n   doThis();\nelse if (o instanceof Class2)\n   doThat();\n//...\n</code></pre>\n\n<p>You can replace that with</p>\n\n<pre><code>o.doEverything();\n</code></pre>\n\n<p>and then have the implementation of \"doEverything()\" in Class1 call \"doThis()\", and in Class2 call \"doThat()\", and so on.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1108,
+      "reputation" : 9939,
+      "user_id" : 1471,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/d8591f14f65918062bcb27cc05dd0c54?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tim Frey",
+      "link" : "https://stackoverflow.com/users/1471/tim-frey"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1221842816,
+    "creation_date" : 1221842816,
+    "answer_id" : 103611,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>'instanceof' is actually an operator, like + or -, and I believe that it has its own JVM bytecode instruction.  It should be plenty fast.</p>\n\n<p>I should not that if you have a switch where you are testing if an object is an instance of some subsclass, then your design might need to be reworked.  Consider pushing the subclass-specific behavior down into the subclasses themselves.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2466,
+      "reputation" : 35086,
+      "user_id" : 3434,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/5a484dc0812eb4542ee718d969513f66?s=256&d=identicon&r=PG",
+      "display_name" : "Apocalisp",
+      "link" : "https://stackoverflow.com/users/3434/apocalisp"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1221842974,
+    "creation_date" : 1221842974,
+    "answer_id" : 103632,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Instanceof is very fast. It boils down to a bytecode that is used for class reference comparison. Try a few million instanceofs in a loop and see for yourself.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9509,
+      "reputation" : 3236,
+      "user_id" : 17613,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/4e7d9c4210a90699daa39b34e902b81e?s=256&d=identicon&r=PG",
+      "display_name" : "Karl",
+      "link" : "https://stackoverflow.com/users/17613/karl"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1221843042,
+    "creation_date" : 1221843042,
+    "answer_id" : 103639,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You should measure/profile if it's really a performance issue in your project. If it is I'd recommend a redesign - if possible. I'm pretty sure you can't beat the platform's native implementation (written in C). You should also consider the multiple inheritance in this case.</p>\n\n<p>You should tell more about the problem, maybe you could use an associative store, e.g. a Map&lt;Class, Object> if you are only interested in the concrete types.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 28866,
+        "reputation" : 483,
+        "user_id" : 77462,
+        "user_type" : "registered",
+        "accept_rate" : 38,
+        "profile_image" : "https://www.gravatar.com/avatar/8e0641ca30dbff6d2970a4caa1f5542b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "LegendLength",
+        "link" : "https://stackoverflow.com/users/77462/legendlength"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1452133565,
+      "post_id" : 103642,
+      "comment_id" : 57038482,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "But the original poster mentioned performance was critical for this application, so it&#39;s not unreasonable to optimize early in that situation.  In other words you wouldn&#39;t write a 3d game in GWBasic and then at the end say, ok let&#39;s start optimizing this, first step is to port it to c++."
+    }, {
+      "owner" : {
+        "account_id" : 7701,
+        "reputation" : 48243,
+        "user_id" : 13447,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/q32V5.png?s=256",
+        "display_name" : "Olaf Kock",
+        "link" : "https://stackoverflow.com/users/13447/olaf-kock"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1452523586,
+      "post_id" : 103642,
+      "comment_id" : 57194252,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "GWBasic might be a great start for 3d games, if there are proper libraries available. But that aside (as it&#39;s an artificial argument): OP is not asking for a complete rewrite as optimization. It&#39;s about a single construct where we don&#39;t even know if the impact is significant (even if there&#39;s a better performing way to do the same <i>in the current version of the compiler</i>). I&#39;m firmly standing behind <a href=\"http://c2.com/cgi/wiki?ProfileBeforeOptimizing\" rel=\"nofollow noreferrer\">c2.com/cgi/wiki?ProfileBeforeOptimizing</a> and my answer. Preliminary Optimization is the root of all evil! It makes maintenance harder - and maintenance is the aspect that is worth optimizing"
+    } ],
+    "owner" : {
+      "account_id" : 7701,
+      "reputation" : 48243,
+      "user_id" : 13447,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/q32V5.png?s=256",
+      "display_name" : "Olaf Kock",
+      "link" : "https://stackoverflow.com/users/13447/olaf-kock"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1258453227,
+    "last_edit_date" : 1258453227,
+    "creation_date" : 1221843060,
+    "answer_id" : 103642,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Answering your very last question: Unless a profiler tells you, that you spend ridiculous amounts of time in an instanceof: Yes, you're nitpicking.</p>\n\n<p>Before wondering about optimizing something that never needed to be optimized: Write your algorithm in the most readable way and run it. Run it, until the jit-compiler gets a chance to optimize it itself. If you then have problems with this piece of code, use a profiler to tell you, where to gain the most and optimize this.</p>\n\n<p>In times of highly optimizing compilers, your guesses about bottlenecks will be likely to be completely wrong.</p>\n\n<p>And in true spirit of this answer (which I wholeheartly believe): I absolutely don't know how instanceof and == relate once the jit-compiler got a chance to optimize it.</p>\n\n<p>I forgot: Never measure the first run.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5059,
+        "reputation" : 8350,
+        "user_id" : 7938,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ab0683ff92f1c522ae1c5b4aaf31aa2c?s=256&d=identicon&r=PG",
+        "display_name" : "Bill Michell",
+        "link" : "https://stackoverflow.com/users/7938/bill-michell"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1222180445,
+      "post_id" : 103643,
+      "comment_id" : 26909,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "That is much less true of the more modern java garbage collection algorithms than it ever used to be. Even the simplest algorithms don&#39;t care any more how much memory you discard just after you useit - they only care how much is retained across young-generation collections."
+    }, {
+      "owner" : {
+        "account_id" : 7985,
+        "reputation" : 8052,
+        "user_id" : 14092,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/989d2ed50d09a5c071c52ea4423ccc70?s=256&d=identicon&r=PG",
+        "display_name" : "tloach",
+        "link" : "https://stackoverflow.com/users/14092/tloach"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1223425254,
+      "post_id" : 103643,
+      "comment_id" : 63386,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Great, except I&#39;m on the most recent JVM and my computer still crawls when the GC runs.  On a dual-core, 3GB ram server.  Java is not a language to use if performance actually matters."
+    }, {
+      "owner" : {
+        "account_id" : 7985,
+        "reputation" : 8052,
+        "user_id" : 14092,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/989d2ed50d09a5c071c52ea4423ccc70?s=256&d=identicon&r=PG",
+        "display_name" : "tloach",
+        "link" : "https://stackoverflow.com/users/14092/tloach"
+      },
+      "reply_to_user" : {
+        "account_id" : 13566,
+        "reputation" : 51682,
+        "user_id" : 27358,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://www.gravatar.com/avatar/fed1635f89478c88eda07e87de452bcf?s=256&d=identicon&r=PG",
+        "display_name" : "David Moles",
+        "link" : "https://stackoverflow.com/users/27358/david-moles"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1319807057,
+      "post_id" : 103643,
+      "comment_id" : 9686967,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@David: You don&#39;t need require real-time to have issues when your app goes away for a period of time.  A fun one I&#39;ve encountered is a java app that connected to a TCP stream that died when the GC ran because it didn&#39;t close the stream first and couldn&#39;t handle the overload of network traffic when it came back - it would immediately go into a loop where GC runs, when app resumes it tries to churn through a bunch of data, which made it run out of memory, which triggered the GC, etc.  Java is great for a lot of tasks, but not tasks where very strong performance is a requirement."
+    }, {
+      "owner" : {
+        "account_id" : 13566,
+        "reputation" : 51682,
+        "user_id" : 27358,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://www.gravatar.com/avatar/fed1635f89478c88eda07e87de452bcf?s=256&d=identicon&r=PG",
+        "display_name" : "David Moles",
+        "link" : "https://stackoverflow.com/users/27358/david-moles"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1320186303,
+      "post_id" : 103643,
+      "comment_id" : 9750483,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@tloach sounds to me like bad app design. you talk about &quot;performance&quot; as if it was one-dimensional. I&#39;ve worked with (and on) plenty of java apps that were, for instance, performant in providing snappy interactive statistical analysis and visualization of very large data sets, or performant in processing very large transaction volumes very quickly. &quot;performance&quot; isn&#39;t just one thing, and the fact that someone can write an application that manages memory badly and lets GC get in its own way doesn&#39;t mean anything requiring &quot;performance&quot; should be written in something else."
+    } ],
+    "owner" : {
+      "account_id" : 7985,
+      "reputation" : 8052,
+      "user_id" : 14092,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/989d2ed50d09a5c071c52ea4423ccc70?s=256&d=identicon&r=PG",
+      "display_name" : "tloach",
+      "link" : "https://stackoverflow.com/users/14092/tloach"
+    },
+    "is_accepted" : false,
+    "score" : -5,
+    "last_activity_date" : 1221843071,
+    "creation_date" : 1221843071,
+    "answer_id" : 103643,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You're focusing on the wrong thing.  The difference between instanceof and any other method for checking the same thing would probably not even be measurable.  If performance is critical then Java is probably the wrong language.  The major reason being that you can't control when the VM decides it wants to go collect garbage, which can take the CPU to 100% for several seconds in a large program (MagicDraw 10 was great for that).  Unless you are in control of every computer this program will run on you can't guarantee which version of JVM it will be on, and many of the older ones had major speed issues.  If it's a small app you may be ok with Java, but if you are constantly reading and discarding data then you <em>will</em> notice when the GC kicks in.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8211,
+        "reputation" : 24361,
+        "user_id" : 14663,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/611db642b9164a9425f953071a5939ff?s=256&d=identicon&r=PG",
+        "display_name" : "WW.",
+        "link" : "https://stackoverflow.com/users/14663/ww"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1233562081,
+      "post_id" : 103683,
+      "comment_id" : 317553,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Doesn&#39;t it have to figure out if o inherits from java.lang.String?"
+    }, {
+      "owner" : {
+        "account_id" : 8706,
+        "reputation" : 134889,
+        "user_id" : 15809,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/5NfT0.png?s=256",
+        "display_name" : "Mecki",
+        "link" : "https://stackoverflow.com/users/15809/mecki"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1233596493,
+      "post_id" : 103683,
+      "comment_id" : 318869,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "That&#39;s why I said it &quot;might&quot; be as fast. In reality it performs a loop, first checking iAmInstanceOf against the class in question, then it goes upwards the inheritance tree of o and repeating this check for every super-class of o (so it it might have to run this loop a couple of times for a match)"
+    } ],
+    "owner" : {
+      "account_id" : 8706,
+      "reputation" : 134889,
+      "user_id" : 15809,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://i.sstatic.net/5NfT0.png?s=256",
+      "display_name" : "Mecki",
+      "link" : "https://stackoverflow.com/users/15809/mecki"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1221843493,
+    "creation_date" : 1221843493,
+    "answer_id" : 103683,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>It's hard to say how a certain JVM implements instance of, but in most cases, Objects are comparable to structs and classes are as well and every object struct has a pointer to the the class struct it is an instance of. So actually instanceof for</p>\n\n<pre><code>if (o instanceof java.lang.String)\n</code></pre>\n\n<p>might be as fast as the following C code</p>\n\n<pre><code>if (objectStruct-&gt;iAmInstanceOf == &amp;java_lang_String_class)\n</code></pre>\n\n<p>assuming a JIT compiler is in place and does a decent job.</p>\n\n<p>Considering that this is only accessing a pointer, getting a pointer at a certain offset the pointer points to and comparing this to another pointer (which is basically the same as testing to 32 bit numbers being equal), I'd say the operation can actually be very fast.</p>\n\n<p>It doesn't have to, though, it depends a lot on the JVM. However, if this would turn out to be the bottleneck operation in your code, I'd consider the JVM implementation rather poor. Even one that has no JIT compiler and only interprets code should be able to make an instanceof test in virtually no time.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9538,
+        "reputation" : 18938,
+        "user_id" : 2204759,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/DqQca.jpg?s=256",
+        "display_name" : "Josh",
+        "link" : "https://stackoverflow.com/users/2204759/josh"
+      },
+      "edited" : false,
+      "score" : 63,
+      "creation_date" : 1223303721,
+      "post_id" : 103802,
+      "comment_id" : 59193,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I&#39;m aware of that. That was not what I asked."
+    }, {
+      "owner" : {
+        "account_id" : 2736,
+        "reputation" : 2101,
+        "user_id" : 3847,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/8988e0b5ba7d2e4ed2ff80a42aa1b19f?s=256&d=identicon&r=PG",
+        "display_name" : "jklp",
+        "link" : "https://stackoverflow.com/users/3847/jklp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1226448549,
+      "post_id" : 103802,
+      "comment_id" : 133287,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Unsure of whether to vote this up or not as it is a good point, but doesn&#39;t answer the question asked ..."
+    }, {
+      "owner" : {
+        "account_id" : 17713,
+        "reputation" : 7493,
+        "user_id" : 39946,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://www.gravatar.com/avatar/fa2cddbada28d8e9c30976fab69bed57?s=256&d=identicon&r=PG",
+        "display_name" : "Lena Schimmel",
+        "link" : "https://stackoverflow.com/users/39946/lena-schimmel"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1231345011,
+      "post_id" : 103802,
+      "comment_id" : 244956,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I think the code example is actually a very bad one: You cannot extend the class Double, and also you cannot derive Double from some other class. If you had used other classes for the example, it would have been ok."
+    }, {
+      "owner" : {
+        "account_id" : 8975,
+        "reputation" : 6416,
+        "user_id" : 16399,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/8237188b2f08a3f06e8d64dd1101f504?s=256&d=identicon&r=PG",
+        "display_name" : "sk.",
+        "link" : "https://stackoverflow.com/users/16399/sk"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1233081262,
+      "post_id" : 103802,
+      "comment_id" : 301107,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Also if the child classes of SomeObject are value objects, then you don&#39;t want to put the logic in them. E.g. Pie and Roast might not be the correct place for putInOven() and putInMouth() logic."
+    }, {
+      "owner" : {
+        "account_id" : 317471,
+        "reputation" : 192,
+        "user_id" : 2892102,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9c02ad2ac0e21a9142fc299b1048a84e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "binboavetonik",
+        "link" : "https://stackoverflow.com/users/2892102/binboavetonik"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1504781098,
+      "post_id" : 103802,
+      "comment_id" : 79150183,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "self cooking pie and roast would be awesome though"
+    } ],
+    "owner" : {
+      "account_id" : 5268,
+      "reputation" : 163,
+      "user_id" : 8385,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1f383cec4182656e18014540bb55d215?s=256&d=identicon&r=PG",
+      "display_name" : "Demian Krige",
+      "link" : "https://stackoverflow.com/users/8385/demian-krige"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1221844509,
+    "creation_date" : 1221844509,
+    "answer_id" : 103802,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p><strong>InstanceOf</strong> is a warning of poor Object Oriented design.</p>\n\n<p>Current JVMs do mean the <strong>instanceOf</strong> is not much of a performance worry in itself. If you are finding yourself using it a lot, especially for core functionality, it is probably time to look at the design. The performance (and simplicity/maintainability) gains of refactoring to a better design will greatly outweigh any actual processor cycles spent on the actual <strong>instanceOf</strong> call.</p>\n\n<p>To give a very small simplistic programming example.</p>\n\n<pre><code>if (SomeObject instanceOf Integer) {\n  [do something]\n}\nif (SomeObject instanceOf Double) {\n  [do something different]\n}\n</code></pre>\n\n<p>Is a poor architecture a better choice would have been to have SomeObject be the parent class of two child classes where each child class overrides a method (doSomething) so the code would look as such:</p>\n\n<pre><code>Someobject.doSomething();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7295,
+      "reputation" : 24630,
+      "user_id" : 12631,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://i.sstatic.net/waRg3.png?s=256",
+      "display_name" : "Horcrux7",
+      "link" : "https://stackoverflow.com/users/12631/horcrux7"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1221851393,
+    "creation_date" : 1221851393,
+    "answer_id" : 104633,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>In modern Java version the instanceof operator is faster as a simple method call. This means:</p>\n\n<pre><code>if(a instanceof AnyObject){\n}\n</code></pre>\n\n<p>is faster as:</p>\n\n<pre><code>if(a.getType() == XYZ){\n}\n</code></pre>\n\n<p>Another thing is if you need to cascade many instanceof. Then a switch that only call once getType() is faster.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7257,
+      "reputation" : 30730,
+      "user_id" : 12541,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Yk2vr.jpg?s=256",
+      "display_name" : "Scott Stanchfield",
+      "link" : "https://stackoverflow.com/users/12541/scott-stanchfield"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1222012276,
+    "creation_date" : 1222012276,
+    "answer_id" : 111271,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Demian and Paul mention a good point; <em>however</em>, the placement of the code to execute really depends on how you want to use the data...</p>\n\n<p>I'm a big fan of small data objects that can be used in many ways. If you follow the override (polymorphic) approach, your objects can only be used \"one way\".</p>\n\n<p>This is where patterns come in...</p>\n\n<p>You can use double-dispatch (as in the visitor pattern) to ask each object to \"call you\" passing itself -- this will resolve the type of the object. <em>However</em> (again) you'll need a class that can \"do stuff\" with all of the possible subtypes.</p>\n\n<p>I prefer to use a strategy pattern, where you can register strategies for each subtype you want to handle. Something like the following. Note that this only helps for exact type matches, but has the advantage that it's extensible - third-party contributors can add their own types and handlers. (This is good for dynamic frameworks like OSGi, where new bundles can be added)</p>\n\n<p>Hopefully this will inspire some other ideas...</p>\n\n<pre><code>package com.javadude.sample;\n\nimport java.util.HashMap;\nimport java.util.Map;\n\npublic class StrategyExample {\n    static class SomeCommonSuperType {}\n    static class SubType1 extends SomeCommonSuperType {}\n    static class SubType2 extends SomeCommonSuperType {}\n    static class SubType3 extends SomeCommonSuperType {}\n\n    static interface Handler&lt;T extends SomeCommonSuperType&gt; {\n        Object handle(T object);\n    }\n\n    static class HandlerMap {\n        private Map&lt;Class&lt;? extends SomeCommonSuperType&gt;, Handler&lt;? extends SomeCommonSuperType&gt;&gt; handlers_ =\n            new HashMap&lt;Class&lt;? extends SomeCommonSuperType&gt;, Handler&lt;? extends SomeCommonSuperType&gt;&gt;();\n        public &lt;T extends SomeCommonSuperType&gt; void add(Class&lt;T&gt; c, Handler&lt;T&gt; handler) {\n            handlers_.put(c, handler);\n        }\n        @SuppressWarnings(\"unchecked\")\n        public &lt;T extends SomeCommonSuperType&gt; Object handle(T o) {\n            return ((Handler&lt;T&gt;) handlers_.get(o.getClass())).handle(o);\n        }\n    }\n\n    public static void main(String[] args) {\n        HandlerMap handlerMap = new HandlerMap();\n\n        handlerMap.add(SubType1.class, new Handler&lt;SubType1&gt;() {\n            @Override public Object handle(SubType1 object) {\n                System.out.println(\"Handling SubType1\");\n                return null;\n            } });\n        handlerMap.add(SubType2.class, new Handler&lt;SubType2&gt;() {\n            @Override public Object handle(SubType2 object) {\n                System.out.println(\"Handling SubType2\");\n                return null;\n            } });\n        handlerMap.add(SubType3.class, new Handler&lt;SubType3&gt;() {\n            @Override public Object handle(SubType3 object) {\n                System.out.println(\"Handling SubType3\");\n                return null;\n            } });\n\n        SubType1 subType1 = new SubType1();\n        handlerMap.handle(subType1);\n        SubType2 subType2 = new SubType2();\n        handlerMap.handle(subType2);\n        SubType3 subType3 = new SubType3();\n        handlerMap.handle(subType3);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 394834,
+        "reputation" : 820,
+        "user_id" : 757479,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/7f0152d515a25965392f640be86bd711?s=256&d=identicon&r=PG",
+        "display_name" : "Chris",
+        "link" : "https://stackoverflow.com/users/757479/chris"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1308345067,
+      "post_id" : 397617,
+      "comment_id" : 7490652,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How did instanceOf compare to polymorphic function dispatch?"
+    }, {
+      "owner" : {
+        "account_id" : 387472,
+        "reputation" : 1459,
+        "user_id" : 745834,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b616c6e9cb4e2fb33ce5bc17662ecfc7?s=256&d=identicon&r=PG",
+        "display_name" : "marsbear",
+        "link" : "https://stackoverflow.com/users/745834/marsbear"
+      },
+      "edited" : false,
+      "score" : 24,
+      "creation_date" : 1321658187,
+      "post_id" : 397617,
+      "comment_id" : 10062919,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Why do you compare instanceof with a String.equals()? If you want to check the type you have to to object.getClass().equals(SomeType.class)"
+    }, {
+      "owner" : {
+        "account_id" : 13566,
+        "reputation" : 51682,
+        "user_id" : 27358,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://www.gravatar.com/avatar/fed1635f89478c88eda07e87de452bcf?s=256&d=identicon&r=PG",
+        "display_name" : "David Moles",
+        "link" : "https://stackoverflow.com/users/27358/david-moles"
+      },
+      "reply_to_user" : {
+        "account_id" : 387472,
+        "reputation" : 1459,
+        "user_id" : 745834,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b616c6e9cb4e2fb33ce5bc17662ecfc7?s=256&d=identicon&r=PG",
+        "display_name" : "marsbear",
+        "link" : "https://stackoverflow.com/users/745834/marsbear"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1393257385,
+      "post_id" : 397617,
+      "comment_id" : 33329828,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@marsbear <code>equals()</code> won&#39;t cut it, because subclassing; you need <code>isAssignableFrom()</code>."
+    }, {
+      "owner" : {
+        "account_id" : 387472,
+        "reputation" : 1459,
+        "user_id" : 745834,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b616c6e9cb4e2fb33ce5bc17662ecfc7?s=256&d=identicon&r=PG",
+        "display_name" : "marsbear",
+        "link" : "https://stackoverflow.com/users/745834/marsbear"
+      },
+      "reply_to_user" : {
+        "account_id" : 13566,
+        "reputation" : 51682,
+        "user_id" : 27358,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://www.gravatar.com/avatar/fed1635f89478c88eda07e87de452bcf?s=256&d=identicon&r=PG",
+        "display_name" : "David Moles",
+        "link" : "https://stackoverflow.com/users/27358/david-moles"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1393339179,
+      "post_id" : 397617,
+      "comment_id" : 33373912,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@DavidMoles I was refering to Dans experiment on String.equals(). As String is final subclassing won&#39;t be a problem."
+    }, {
+      "owner" : {
+        "account_id" : 13566,
+        "reputation" : 51682,
+        "user_id" : 27358,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://www.gravatar.com/avatar/fed1635f89478c88eda07e87de452bcf?s=256&d=identicon&r=PG",
+        "display_name" : "David Moles",
+        "link" : "https://stackoverflow.com/users/27358/david-moles"
+      },
+      "reply_to_user" : {
+        "account_id" : 387472,
+        "reputation" : 1459,
+        "user_id" : 745834,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b616c6e9cb4e2fb33ce5bc17662ecfc7?s=256&d=identicon&r=PG",
+        "display_name" : "marsbear",
+        "link" : "https://stackoverflow.com/users/745834/marsbear"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1393357600,
+      "post_id" : 397617,
+      "comment_id" : 33387472,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@marsbear Right, but that isn&#39;t any better test of what the OP was asking."
+    } ],
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "Dan Mihai Ile"
+    },
+    "is_accepted" : false,
+    "score" : 75,
+    "last_activity_date" : 1230552806,
+    "creation_date" : 1230552806,
+    "answer_id" : 397617,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I just made a simple test to see how instanceOf performance is comparing to a simple s.equals() call to a string object with only one letter.</p>\n\n<p>in a 10.000.000 loop the instanceOf gave me 63-96ms, and the string equals gave me 106-230ms</p>\n\n<p>I used java jvm 6.</p>\n\n<p>So in my simple test is faster to do a instanceOf instead of a one character string comparison.</p>\n\n<p>using Integer's .equals() instead of string's gave me the same result, only when I used the == i was faster than instanceOf by 20ms (in a 10.000.000 loop)</p>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "Varkhan"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1233081028,
+    "creation_date" : 1233081028,
+    "answer_id" : 484619,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>instanceof is probably going to be more costly than a simple equals in most real world implementations (that is, the ones where instanceof is really needed, and you can't just solve it by overriding a common method, like every beginner textbook as well as Demian above suggest).</p>\n\n<p>Why is that? Because what is probably going to happen is that you have several interfaces, that provide some functionality (let's say, interfaces x, y and z), and some objects to manipulate that may (or not) implement one of those interfaces... but not directly. Say, for instance, I have:</p>\n\n<p>w extends x</p>\n\n<p>A implements w</p>\n\n<p>B extends A</p>\n\n<p>C extends B, implements y</p>\n\n<p>D extends C, implements z</p>\n\n<p>Suppose I am processing an instance of D, the object d. Computing (d instanceof x) requires to take d.getClass(), loop through the interfaces it implements to know whether one is == to x, and if not do so again recursively for all of their ancestors...\nIn our case, if you do a breadth first exploration of that tree, yields at least 8 comparisons, supposing y and z don't extend anything...</p>\n\n<p>The complexity of a real-world derivation tree is likely to be higher. In some cases, the JIT can optimize most of it away, if it is able to resolve in advance d as being, in all possible cases, an instance of something that extends x. Realistically, however, you are going to go through that tree traversal most of the time.</p>\n\n<p>If that becomes an issue, I would suggest using a handler map instead, linking the concrete class of the object to a closure that does the handling. It removes the tree traversal phase in favor of a direct mapping. However, beware that if you have set a handler for C.class, my object d above will not be recognized.</p>\n\n<p>here are my 2 cents, I hope they help...</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1331049459,
+      "post_id" : 485003,
+      "comment_id" : 12158043,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Btw what do you mean by &quot;don&#39;t need instanceof for final classes&quot; ?"
+    }, {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "reply_to_user" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1331051560,
+      "post_id" : 485003,
+      "comment_id" : 12158998,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "A final class cannot have sub classes. In this case <code>x.getClass() == Class.class</code> is the same as <code>x instanceof Class</code>"
+    }, {
+      "owner" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1331052075,
+      "post_id" : 485003,
+      "comment_id" : 12159222,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Cool, assuming that x is not null, which would you prefer?"
+    }, {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "reply_to_user" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1331052163,
+      "post_id" : 485003,
+      "comment_id" : 12159255,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Good point. It would depend on whether I expect <code>x</code> to be <code>null</code> I suppose. (Or whichever is clearer)"
+    }, {
+      "owner" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1331116359,
+      "post_id" : 485003,
+      "comment_id" : 12176643,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hmm I just realised that we could use java.lang.class.isAssignableFrom as well, are you aware if <i>instanceof</i> keyword internally uses functions like these?"
+    }, {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "reply_to_user" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1331118634,
+      "post_id" : 485003,
+      "comment_id" : 12177418,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I doubt instanceof calls a method, but they may use the same underlying code."
+    } ],
+    "owner" : {
+      "account_id" : 23121,
+      "reputation" : 535127,
+      "user_id" : 57695,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Lawrey",
+      "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1233086824,
+    "creation_date" : 1233086824,
+    "answer_id" : 485003,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>instanceof is very efficient, so your performance is unlikely to suffer.\nHowever, using lots of instanceof suggests a design issue.</p>\n\n<p>If you can use xClass == String.class, this is faster.  Note: you don't need instanceof for final classes.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1235082863,
+      "post_id" : 563575,
+      "comment_id" : 378849,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "If a class is loaded by a different classloader, I don&#39;t think instanceof will match either."
+    } ],
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "Miles Elam"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1235006701,
+    "creation_date" : 1235006701,
+    "answer_id" : 563575,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>With regard to Peter Lawrey's note that you don't need instanceof for final classes and can just use a reference equality, be careful!  Even though the final classes cannot be extended, they are not guaranteed to be loaded by the same classloader.  Only use x.getClass() == SomeFinal.class or its ilk if you are absolutely positive that there is only one classloader in play for that section of code.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8011,
+      "reputation" : 29962,
+      "user_id" : 14139,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://i.sstatic.net/jolkN.png?s=256",
+      "display_name" : "brianegge",
+      "link" : "https://stackoverflow.com/users/14139/brianegge"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1257132956,
+    "creation_date" : 1257132956,
+    "answer_id" : 1659318,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The items which will determine the performance impact are:</p>\n\n<ol>\n<li>The number of possible classes for which the instanceof operator could return true</li>\n<li>The distribution of your data - are most of the instanceof operations resolved in the first or second attempt?  You'll want to put your most likely to return true operations first.</li>\n<li>The deployment environment.  Running on a Sun Solaris VM is significantly different than Sun's Windows JVM. Solaris will run in 'server' mode by default, while Windows will run in client mode.  The JIT optimizations on Solaris, will make all method access able the same.  </li>\n</ol>\n\n<p>I created a <a href=\"http://www.theeggeadventure.com/wikimedia/index.php/InstanceOf_Performance\" rel=\"noreferrer\">microbenchmark for four different methods of dispatch</a>.  The results from Solaris are as follows, with the smaller number being faster:</p>\n\n<pre><code>InstanceOf 3156\nclass== 2925 \nOO 3083 \nId 3067 \n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user719662"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1423516984,
+      "post_id" : 6716713,
+      "comment_id" : 45172334,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<i>can</i> be optimized or <i>is</i> optimized? source?"
+    }, {
+      "owner" : {
+        "account_id" : 5542034,
+        "reputation" : 581,
+        "user_id" : 4398194,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d429f326697d68118752d8632020a8c6?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "RecursiveExceptionException",
+        "link" : "https://stackoverflow.com/users/4398194/recursiveexceptionexception"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1471646102,
+      "post_id" : 6716713,
+      "comment_id" : 65446831,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@vaxquis <i>can</i> as its jvm impl specific"
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user719662"
+      },
+      "reply_to_user" : {
+        "account_id" : 5542034,
+        "reputation" : 581,
+        "user_id" : 4398194,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d429f326697d68118752d8632020a8c6?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "RecursiveExceptionException",
+        "link" : "https://stackoverflow.com/users/4398194/recursiveexceptionexception"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1471808596,
+      "post_id" : 6716713,
+      "comment_id" : 65484551,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@itzJanuary <i>sigh</i> you missed the point of my question here: everybody knows that compiler <i>can</i> optimize <code>foo</code> - but <i>is <code>foo</code> actually currently optimized by Oracle&#39;s javac/VM - or is it just possible that it&#39;ll do that in the future?</i> Also, I asked the answerer <i>does he have any backing source (be it docs, source code, dev blog) documenting that it indeed can be optimized or is optimized</i>? Without it, this answer is just some random musing about what compiler <i>can</i> possibly do."
+    }, {
+      "owner" : {
+        "account_id" : 5542034,
+        "reputation" : 581,
+        "user_id" : 4398194,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d429f326697d68118752d8632020a8c6?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "RecursiveExceptionException",
+        "link" : "https://stackoverflow.com/users/4398194/recursiveexceptionexception"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1471874377,
+      "post_id" : 6716713,
+      "comment_id" : 65510673,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@vaxquis You never mentioned the Hotspot VM but in that case I do not know if it is &quot;optimized&quot;."
+    }, {
+      "owner" : {
+        "account_id" : 3113945,
+        "reputation" : 1125,
+        "user_id" : 2635146,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/IIhYu.gif?s=256",
+        "display_name" : "simon.watts",
+        "link" : "https://stackoverflow.com/users/2635146/simon-watts"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1484678661,
+      "post_id" : 6716713,
+      "comment_id" : 70605040,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Recently read that JIT (JVM 8) will optimize a call site for 1 or 2 types by direct calls, but reverts to the vtable if more than two actual types are encountered.  So only having two concrete types passing through a call site at runtime represents a performance advantage."
+    } ],
+    "owner" : {
+      "account_id" : 76511,
+      "reputation" : 45641,
+      "user_id" : 218978,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/3fef5910b6f08682aff2ef70fefedb20?s=256&d=identicon&r=PG",
+      "display_name" : "irreputable",
+      "link" : "https://stackoverflow.com/users/218978/irreputable"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1310811206,
+    "creation_date" : 1310811206,
+    "answer_id" : 6716713,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>instanceof</code> is really fast, taking only a few CPU instructions.</p>\n\n<p>Apparently, if a class <code>X</code> has no subclasses loaded (JVM knows), <code>instanceof</code> can be optimized as:</p>\n\n<pre><code>     x instanceof X    \n==&gt;  x.getClass()==X.class  \n==&gt;  x.classID == constant_X_ID\n</code></pre>\n\n<p>The main cost is just a read!</p>\n\n<p>If <code>X</code> does have subclasses loaded, a few more reads are needed; they are likely co-located so the extra cost is very low too.</p>\n\n<p>Good news everyone!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 462905,
+      "reputation" : 7854,
+      "user_id" : 865481,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/0b2if.gif?s=256",
+      "display_name" : "Salix alba",
+      "link" : "https://stackoverflow.com/users/865481/salix-alba"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1311776023,
+    "creation_date" : 1311776023,
+    "answer_id" : 6845904,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If speed is your sole aim then using int constants to identify sub classes seems to shave a milliseconds of the time</p>\n\n<pre><code>static final int ID_A = 0;\nstatic final int ID_B = 1;\nabstract class Base {\n  final int id;\n  Base(int i) { id = i; }\n}\nclass A extends Base {\n A() { super(ID_A); }\n}\nclass B extends Base {\n B() { super(ID_B); }\n}\n...\nBase obj = ...\nswitch(obj.id) {\ncase  ID_A: .... break;\ncase  ID_B: .... break;\n}\n</code></pre>\n\n<p>terrible OO design, but if your performance analysis indicates this is where you bottleneck is then maybe. In my code the dispatch code takes 10% of total execution time and this maybe contributed to a 1% total speed improvement.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7162950,
+        "reputation" : 648,
+        "user_id" : 5473114,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/10106819686635250/picture?type=large",
+        "display_name" : "Azeroth2b",
+        "link" : "https://stackoverflow.com/users/5473114/azeroth2b"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1493039439,
+      "post_id" : 9845094,
+      "comment_id" : 74227364,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Which result was java 6 and which was java 7?  Have you revisited this under Java 8?  More significantly here, you&#39;re comparing a length if of instanceofs to what is essential a case statement on ints.  I think we would expect an int switch to be lightening fast."
+    }, {
+      "owner" : {
+        "account_id" : 1162290,
+        "reputation" : 3517,
+        "user_id" : 1141564,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/951958cc0705e2e7314f20b1d2a631f8?s=256&d=identicon&r=PG",
+        "display_name" : "Xtra Coder",
+        "link" : "https://stackoverflow.com/users/1141564/xtra-coder"
+      },
+      "reply_to_user" : {
+        "account_id" : 7162950,
+        "reputation" : 648,
+        "user_id" : 5473114,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/10106819686635250/picture?type=large",
+        "display_name" : "Azeroth2b",
+        "link" : "https://stackoverflow.com/users/5473114/azeroth2b"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1493206056,
+      "post_id" : 9845094,
+      "comment_id" : 74313578,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I can&#39;t remember exactly what was happening 5 years ago - I think both Java 6 and Java 7 had similar result, that&#39;s why there is only one result provided (provided 2 lines are for different depth of class hierarchy)... and no, i did not try comparing with Java 8. The whole code of test is provided - you may copy/paste it and check in the environments you need (note - nowadays I would use JMH test for this)."
+    }, {
+      "owner" : {
+        "account_id" : 78015,
+        "reputation" : 78,
+        "user_id" : 222326,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d4fa0b6163c86b4dc3a48a1c3bae715e?s=256&d=identicon&r=PG",
+        "display_name" : "blurryrunner",
+        "link" : "https://stackoverflow.com/users/222326/blurryrunner"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1613689640,
+      "post_id" : 9845094,
+      "comment_id" : 117161066,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This code doesn&#39;t properly warm up the VM, which will balloon the first loop. That seems to have skewed the results."
+    } ],
+    "owner" : {
+      "account_id" : 1162290,
+      "reputation" : 3517,
+      "user_id" : 1141564,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/951958cc0705e2e7314f20b1d2a631f8?s=256&d=identicon&r=PG",
+      "display_name" : "Xtra Coder",
+      "link" : "https://stackoverflow.com/users/1141564/xtra-coder"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1332529570,
+    "creation_date" : 1332529570,
+    "answer_id" : 9845094,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I have got same question, but because i did not find 'performance metrics' for use case similar to mine, i've done some more sample code. On my hardware and Java 6 &amp; 7, the difference between instanceof and switch on 10mln iterations is</p>\n\n<pre><code>for 10 child classes - instanceof: 1200ms vs switch: 470ms\nfor 5 child classes  - instanceof:  375ms vs switch: 204ms\n</code></pre>\n\n<p>So, instanceof is really slower, especially on huge number of if-else-if statements, however difference will be negligible within real application.</p>\n\n<pre><code>import java.util.Date;\n\npublic class InstanceOfVsEnum {\n\n    public static int c1, c2, c3, c4, c5, c6, c7, c8, c9, cA;\n\n    public static class Handler {\n        public enum Type { Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, TypeA }\n        protected Handler(Type type) { this.type = type; }\n        public final Type type;\n\n        public static void addHandlerInstanceOf(Handler h) {\n            if( h instanceof H1) { c1++; }\n            else if( h instanceof H2) { c2++; }\n            else if( h instanceof H3) { c3++; }\n            else if( h instanceof H4) { c4++; }\n            else if( h instanceof H5) { c5++; }\n            else if( h instanceof H6) { c6++; }\n            else if( h instanceof H7) { c7++; }\n            else if( h instanceof H8) { c8++; }\n            else if( h instanceof H9) { c9++; }\n            else if( h instanceof HA) { cA++; }\n        }\n\n        public static void addHandlerSwitch(Handler h) {\n            switch( h.type ) {\n                case Type1: c1++; break;\n                case Type2: c2++; break;\n                case Type3: c3++; break;\n                case Type4: c4++; break;\n                case Type5: c5++; break;\n                case Type6: c6++; break;\n                case Type7: c7++; break;\n                case Type8: c8++; break;\n                case Type9: c9++; break;\n                case TypeA: cA++; break;\n            }\n        }\n    }\n\n    public static class H1 extends Handler { public H1() { super(Type.Type1); } }\n    public static class H2 extends Handler { public H2() { super(Type.Type2); } }\n    public static class H3 extends Handler { public H3() { super(Type.Type3); } }\n    public static class H4 extends Handler { public H4() { super(Type.Type4); } }\n    public static class H5 extends Handler { public H5() { super(Type.Type5); } }\n    public static class H6 extends Handler { public H6() { super(Type.Type6); } }\n    public static class H7 extends Handler { public H7() { super(Type.Type7); } }\n    public static class H8 extends Handler { public H8() { super(Type.Type8); } }\n    public static class H9 extends Handler { public H9() { super(Type.Type9); } }\n    public static class HA extends Handler { public HA() { super(Type.TypeA); } }\n\n    final static int cCycles = 10000000;\n\n    public static void main(String[] args) {\n        H1 h1 = new H1();\n        H2 h2 = new H2();\n        H3 h3 = new H3();\n        H4 h4 = new H4();\n        H5 h5 = new H5();\n        H6 h6 = new H6();\n        H7 h7 = new H7();\n        H8 h8 = new H8();\n        H9 h9 = new H9();\n        HA hA = new HA();\n\n        Date dtStart = new Date();\n        for( int i = 0; i &lt; cCycles; i++ ) {\n            Handler.addHandlerInstanceOf(h1);\n            Handler.addHandlerInstanceOf(h2);\n            Handler.addHandlerInstanceOf(h3);\n            Handler.addHandlerInstanceOf(h4);\n            Handler.addHandlerInstanceOf(h5);\n            Handler.addHandlerInstanceOf(h6);\n            Handler.addHandlerInstanceOf(h7);\n            Handler.addHandlerInstanceOf(h8);\n            Handler.addHandlerInstanceOf(h9);\n            Handler.addHandlerInstanceOf(hA);\n        }\n        System.out.println(\"Instance of - \" + (new Date().getTime() - dtStart.getTime()));\n\n        dtStart = new Date();\n        for( int i = 0; i &lt; cCycles; i++ ) {\n            Handler.addHandlerSwitch(h1);\n            Handler.addHandlerSwitch(h2);\n            Handler.addHandlerSwitch(h3);\n            Handler.addHandlerSwitch(h4);\n            Handler.addHandlerSwitch(h5);\n            Handler.addHandlerSwitch(h6);\n            Handler.addHandlerSwitch(h7);\n            Handler.addHandlerSwitch(h8);\n            Handler.addHandlerSwitch(h9);\n            Handler.addHandlerSwitch(hA);\n        }\n        System.out.println(\"Switch of - \" + (new Date().getTime() - dtStart.getTime()));\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2833171,
+      "reputation" : 720,
+      "user_id" : 2434307,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/83ea32feae3173ce3387e6dbf425276e?s=256&d=identicon&r=PG",
+      "display_name" : "Jose Quijada",
+      "link" : "https://stackoverflow.com/users/2434307/jose-quijada"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1510786402,
+    "last_edit_date" : 1510786402,
+    "creation_date" : 1369951174,
+    "answer_id" : 16846539,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I'll get back to you on instanceof performance. But a way to avoid problem (or lack thereof) altogether would be to create a parent interface to all the subclasses on which you need to do instanceof. The interface will be a super set of <em>all</em> the methods in sub-classes for which you need to do instanceof check. Where a method does not apply to a specific sub-class, simply provide a dummy implementation of this method. If I didn't misunderstand the issue, this is how I've gotten around the problem in the past. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2023908,
+      "reputation" : 5075,
+      "user_id" : 1809463,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://i.sstatic.net/CNui3.jpg?s=256",
+      "display_name" : "mike",
+      "link" : "https://stackoverflow.com/users/1809463/mike"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1376408285,
+    "creation_date" : 1376408285,
+    "answer_id" : 18213428,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I also prefer an enum approach, but I would use a abstract base class to force the subclasses to implement the <code>getType()</code> method.</p>\n\n<pre><code>public abstract class Base\n{\n  protected enum TYPE\n  {\n    DERIVED_A, DERIVED_B\n  }\n\n  public abstract TYPE getType();\n\n  class DerivedA extends Base\n  {\n    @Override\n    public TYPE getType()\n    {\n      return TYPE.DERIVED_A;\n    }\n  }\n\n  class DerivedB extends Base\n  {\n    @Override\n    public TYPE getType()\n    {\n      return TYPE.DERIVED_B;\n    }\n  }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1114067,
+        "reputation" : 201056,
+        "user_id" : 1103872,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/LR4iW.jpg?s=256",
+        "display_name" : "Marko Topolnik",
+        "link" : "https://stackoverflow.com/users/1103872/marko-topolnik"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1475044951,
+      "post_id" : 26514984,
+      "comment_id" : 66777082,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The code also suffers from a clear opportunity to do Dead Code Elimination. The <code>doX()</code> method calls have no lasting effect."
+    }, {
+      "owner" : {
+        "account_id" : 2095404,
+        "reputation" : 20635,
+        "user_id" : 1864294,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://www.gravatar.com/avatar/2b93a0614502fce3ed01786e631b0cb6?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Dorner",
+        "link" : "https://stackoverflow.com/users/1864294/michael-dorner"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1475054214,
+      "post_id" : 26514984,
+      "comment_id" : 66782934,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It flips the sign?"
+    }, {
+      "owner" : {
+        "account_id" : 1874899,
+        "reputation" : 506,
+        "user_id" : 1696307,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/rHfv5.jpg?s=256",
+        "display_name" : "PeterG",
+        "link" : "https://stackoverflow.com/users/1696307/peterg"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1494248107,
+      "post_id" : 26514984,
+      "comment_id" : 74732304,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I saw in your test that for every <code>instanceof X</code> that you do <code>X</code> has no sub-types. This could (theoretically) be optimized by the JVM (similar to how it replaces <code>invokevirtual</code> with direct method call in such cases). Using deeper hierarchies and including interfaces could provide a more accurate result. But I would not expect a significantly different outcome."
+    }, {
+      "owner" : {
+        "account_id" : 184786,
+        "reputation" : 22234,
+        "user_id" : 421049,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/4b9b843fe8e233b2f70e0f2a8e7db4e8?s=256&d=identicon&r=PG",
+        "display_name" : "Garret Wilson",
+        "link" : "https://stackoverflow.com/users/421049/garret-wilson"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1531435844,
+      "post_id" : 26514984,
+      "comment_id" : 89607450,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "OK, what about string table lookup with <code>switch()</code>? That is, let&#39;s say I have to say <code>if(x instanceof Integer || x instanceof Long || x instanceof Short)</code> and I have a long list of things to check. Would it be more efficient to do a <code>switch(x.getClass().getName)</code> and have a lot of <code>case &quot;java.lang.Integer&quot;:</code>, etc.? Would the string switch be more efficient than having a lot of <code>instanceof</code> comparisons?"
+    }, {
+      "owner" : {
+        "account_id" : 1413237,
+        "reputation" : 17833,
+        "user_id" : 1339429,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/d761ca550d8a1027100e162034b065ae?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JeanValjean",
+        "link" : "https://stackoverflow.com/users/1339429/jeanvaljean"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1589215728,
+      "post_id" : 26514984,
+      "comment_id" : 109199024,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The JMH test is not well done. You are measuring a cast operation, using no Blackholes. I think your test is reporting a false truth. Especially with regards of <code>measureGETCLASS</code> that is indeed faster than"
+    }, {
+      "owner" : {
+        "account_id" : 2095404,
+        "reputation" : 20635,
+        "user_id" : 1864294,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://www.gravatar.com/avatar/2b93a0614502fce3ed01786e631b0cb6?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Dorner",
+        "link" : "https://stackoverflow.com/users/1864294/michael-dorner"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1589227934,
+      "post_id" : 26514984,
+      "comment_id" : 109205324,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I wouldn&#39;t agree on that: As far as In understood, Blackholes in JMH prevent dead code elimination. But there is no potential dead code as the sign flip is stored in the object. So it must be evaluated. Or have I misunderstood your comment?"
+    } ],
+    "owner" : {
+      "account_id" : 2095404,
+      "reputation" : 20635,
+      "user_id" : 1864294,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/2b93a0614502fce3ed01786e631b0cb6?s=256&d=identicon&r=PG",
+      "display_name" : "Michael Dorner",
+      "link" : "https://stackoverflow.com/users/1864294/michael-dorner"
+    },
+    "is_accepted" : false,
+    "score" : 356,
+    "last_activity_date" : 1633671511,
+    "last_edit_date" : 1633671511,
+    "creation_date" : 1414004080,
+    "answer_id" : 26514984,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>Approach</h1>\n<p>I wrote <a href=\"https://github.com/michaeldorner/instanceofBenchmark\" rel=\"noreferrer\">a benchmark program</a> to evaluate different implementations:</p>\n<ol>\n<li><code>instanceof</code> implementation (as reference)</li>\n<li>object-orientated via an abstract class and <code>@Override</code> a test method</li>\n<li>using an own type implementation</li>\n<li><code>getClass() == _.class</code> implementation</li>\n</ol>\n<p>I used <a href=\"http://openjdk.java.net/projects/code-tools/jmh/\" rel=\"noreferrer\">jmh</a> to run the benchmark with 100 warmup calls, 1000 iterations under measuring, and with 10 forks. So each option was measured with 10 000 times, which takes 12:18:57 to run the whole benchmark on my MacBook Pro with macOS 10.12.4 and Java 1.8. The benchmark measures the average time of each option. For more details see <a href=\"https://github.com/michaeldorner/instanceofBenchmark/blob/master/src/main/java/de/michaeldorner/MyBenchmark.java\" rel=\"noreferrer\">my implementation on GitHub</a>.</p>\n<p>For the sake of completeness: There is a <a href=\"https://stackoverflow.com/revisions/26514984/10\">previous version of this answer and my benchmark</a>.</p>\n<h1>Results</h1>\n<pre>\n| Operation  | Runtime in nanoseconds per operation | Relative to instanceof |\n|------------|--------------------------------------|------------------------|\n| INSTANCEOF | 39,598 ± 0,022 ns/op                 | 100,00 %               |\n| GETCLASS   | 39,687 ± 0,021 ns/op                 | 100,22 %               |\n| TYPE       | 46,295 ± 0,026 ns/op                 | 116,91 %               |\n| OO         | 48,078 ± 0,026 ns/op                 | 121,42 %               |\n</pre>\n<h1>tl;dr</h1>\n<p>In Java 1.8 <code>instanceof</code> is the fastest approach, although <code>getClass()</code> is very close.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3839586,
+        "reputation" : 402,
+        "user_id" : 3183076,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/59b57387017b89293d77dd6043eb0d0d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Dmytro",
+        "link" : "https://stackoverflow.com/users/3183076/dmytro"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1536136896,
+      "post_id" : 46765418,
+      "comment_id" : 91311468,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This might be because of the <code>if</code> itself. If the distribution of <code>true</code>s and <code>false</code>s is close to even, speculative execution becomes useless, which leads to significant lags."
+    } ],
+    "owner" : {
+      "account_id" : 529122,
+      "reputation" : 164963,
+      "user_id" : 415448,
+      "user_type" : "registered",
+      "accept_rate" : 33,
+      "profile_image" : "https://i.sstatic.net/P2vVZ.png?s=256",
+      "display_name" : "Michael Kay",
+      "link" : "https://stackoverflow.com/users/415448/michael-kay"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1508140433,
+    "creation_date" : 1508140433,
+    "answer_id" : 46765418,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I thought it might be worth submitting a counter-example to the general consensus on this page that \"instanceof\" is not expensive enough to worry about. I found I had some code in an inner loop that (in some historic attempt at optimization) did</p>\n\n<pre><code>if (!(seq instanceof SingleItem)) {\n  seq = seq.head();\n}\n</code></pre>\n\n<p>where calling head() on a SingleItem returns the value unchanged. Replacing the code by</p>\n\n<pre><code>seq = seq.head();\n</code></pre>\n\n<p>gives me a speed-up from 269ms to 169ms, despite the fact that there are some quite heavy things happening in the loop, like string-to-double conversion. It's possible of course that the speed-up is more due to eliminating the conditional branch than to eliminating the instanceof operator itself; but I thought it worth mentioning. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7008925,
+        "reputation" : 495,
+        "user_id" : 5372500,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/v5gg4.png?s=256",
+        "display_name" : "Alexander Terp",
+        "link" : "https://stackoverflow.com/users/5372500/alexander-terp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1591060647,
+      "post_id" : 56712753,
+      "comment_id" : 109907167,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If I was to speculate, what instanceof does is arguably more complex. A getClass() == check will do a precise 1:1 check, where instanceof checks a hierarchy i.e. myHashSet instanceof Collection would pass, but myHashSet.getClass() == Collection.class would not. Essentially, they are not equivalent operations, so I am not too surprised that the performance is different as well."
+    }, {
+      "owner" : {
+        "account_id" : 4935,
+        "reputation" : 2523,
+        "user_id" : 7666,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/059361287a963715beccbaebbf3ee504?s=256&d=identicon&r=PG",
+        "display_name" : "Arne Babenhauserheide",
+        "link" : "https://stackoverflow.com/users/7666/arne-babenhauserheide"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1706267233,
+      "post_id" : 56712753,
+      "comment_id" : 137307964,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you look at your error result, the error margins of the two measurements overlap: <code>511&#177;4</code> and <code>504&#177;6</code> means that both may be exactly the same and the difference could be purely noise. <i>as an aside: thank you for using a method that gives the error! That’s how this should be done!</i>"
+    } ],
+    "owner" : {
+      "account_id" : 9135652,
+      "reputation" : 109,
+      "user_id" : 6795424,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3e0a8d5fdcdcae0233366c98916b1a0f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "salexinx",
+      "link" : "https://stackoverflow.com/users/6795424/salexinx"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1561180052,
+    "creation_date" : 1561180052,
+    "answer_id" : 56712753,
+    "question_id" : 103564,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I write a performance test based on jmh-java-benchmark-archetype:2.21. JDK is openjdk and version is 1.8.0_212. The test machine is mac pro.\nTest result is:</p>\n\n<pre><code>Benchmark                Mode  Cnt    Score   Error   Units\nMyBenchmark.getClasses  thrpt   30  510.818 ± 4.190  ops/us\nMyBenchmark.instanceOf  thrpt   30  503.826 ± 5.546  ops/us\n</code></pre>\n\n<p>The result shows that: getClass is better than instanceOf, which is contrary with other test. However, I don't know why.</p>\n\n<p>The test code is below:</p>\n\n<pre><code>public class MyBenchmark {\n\npublic static final Object a = new LinkedHashMap&lt;String, String&gt;();\n\n@Benchmark\n@BenchmarkMode(Mode.Throughput)\n@OutputTimeUnit(TimeUnit.MICROSECONDS)\npublic boolean instanceOf() {\n    return a instanceof Map;\n}\n\n@Benchmark\n@BenchmarkMode(Mode.Throughput)\n@OutputTimeUnit(TimeUnit.MICROSECONDS)\npublic boolean getClasses() {\n    return a.getClass() == HashMap.class;\n}\n\npublic static void main(String[] args) throws RunnerException {\n    Options opt =\n        new OptionsBuilder().include(MyBenchmark.class.getSimpleName()).warmupIterations(20).measurementIterations(30).forks(1).build();\n    new Runner(opt).run();\n}\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 9538,
+    "reputation" : 18938,
+    "user_id" : 2204759,
+    "user_type" : "registered",
+    "accept_rate" : 91,
+    "profile_image" : "https://i.sstatic.net/DqQca.jpg?s=256",
+    "display_name" : "Josh",
+    "link" : "https://stackoverflow.com/users/2204759/josh"
+  },
+  "is_answered" : true,
+  "view_count" : 151422,
+  "accepted_answer_id" : 103600,
+  "answer_count" : 24,
+  "score" : 362,
+  "last_activity_date" : 1633671511,
+  "creation_date" : 1221842472,
+  "last_edit_date" : 1419845260,
+  "question_id" : 103564,
+  "link" : "https://stackoverflow.com/questions/103564/the-performance-impact-of-using-instanceof-in-java",
+  "title" : "The performance impact of using instanceof in Java",
+  "body" : "<p>I am working on an application and one design approach involves extremely heavy use of the <code>instanceof</code> operator. While I know that OO design generally tries to avoid using <code>instanceof</code>, that is a different story and this question is purely related to performance. I was wondering if there is any performance impact? Is is just as fast as <code>==</code>?</p>\n\n<p>For example, I have a base class with 10 subclasses. In a single function that takes the base class, I do checks for if the class is an instance of the subclass and carry out some routine. </p>\n\n<p>One of the other ways I thought of solving it was to use a \"type id\" integer primitive instead, and use a bitmask to represent categories of the subclasses, and then just do a bit mask comparison of the subclasses \"type id\" to a constant mask representing the category.</p>\n\n<p>Is <code>instanceof</code> somehow optimized by the JVM to be faster than that? I want to stick to Java but the performance of the app is critical. It would be cool if someone that has been down this road before could offer some advice. Am I nitpicking too much or focusing on the wrong thing to optimize?</p>\n"
+}

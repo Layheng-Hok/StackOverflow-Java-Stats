@@ -1,0 +1,230 @@
+{
+  "tags" : [ "java", "maven-2", "jar", "maven-assembly-plugin" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 184009,
+        "reputation" : 6089,
+        "user_id" : 419788,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/0accac889167441b3bd3bd411a3573ba?s=256&d=identicon&r=PG",
+        "display_name" : "Mike Cornell",
+        "link" : "https://stackoverflow.com/users/419788/mike-cornell"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1251302761,
+      "post_id" : 1335121,
+      "comment_id" : 1170290,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Working on that elaboration Rich.  Essentially, I need two classifier artifacts to be stored.  With appendAssemblyId turned on, I had 3 artifiacts, one without classifier, the classifier version, and the jar-with-dependencies version.  with appendAssemblyID turned off the uber jar is installed to the non-classifier version.  I need to have these guys use a region+full based classifier that says where they were built for.  Unfortunately adding the classifier tag does not work."
+    }, {
+      "owner" : {
+        "account_id" : 1889592,
+        "reputation" : 1905,
+        "user_id" : 1708042,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c849b9c9766120fe2e6dc0336f52d3fc?s=256&d=identicon&r=PG",
+        "display_name" : "user1708042",
+        "link" : "https://stackoverflow.com/users/1708042/user1708042"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1618998773,
+      "post_id" : 1335121,
+      "comment_id" : 118769892,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "thanks, i use &lt;finalName&gt;${artifactId}-${version}-fat&lt;/finalName&gt;, what a messy documentation"
+    } ],
+    "owner" : {
+      "account_id" : 42418,
+      "reputation" : 84338,
+      "user_id" : 123582,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/54f2e66903a4570df2e1c7727864df24?s=256&d=identicon&r=PG",
+      "display_name" : "Rich Seller",
+      "link" : "https://stackoverflow.com/users/123582/rich-seller"
+    },
+    "is_accepted" : true,
+    "score" : 287,
+    "last_activity_date" : 1251304704,
+    "last_edit_date" : 1251304704,
+    "creation_date" : 1251296885,
+    "answer_id" : 1335121,
+    "question_id" : 1334999,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You can specify the <em>finalName</em> property to give the jar the name you want, and specify that <em>appendAssemblyId</em> should be false to avoid the \"jar-with-dependencies\" suffix.</p>\n\n<p>The configuration below will output a jar called \"test.jar\"</p>\n\n<pre><code>&lt;plugin&gt;\n  &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;\n  &lt;version&gt;2.2-beta-4&lt;/version&gt;\n  &lt;executions&gt;\n    &lt;execution&gt;\n      &lt;id&gt;jar-with-dependencies&lt;/id&gt;\n      &lt;phase&gt;package&lt;/phase&gt;\n      &lt;goals&gt;\n        &lt;goal&gt;single&lt;/goal&gt;\n      &lt;/goals&gt;\n      &lt;configuration&gt;\n        &lt;descriptorRefs&gt;\n          &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;\n        &lt;/descriptorRefs&gt;\n        &lt;finalName&gt;test&lt;/finalName&gt;\n        &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;\n      &lt;/configuration&gt;\n    &lt;/execution&gt;\n  &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n\n<hr>\n\n<p>Update: based on your comments, using the built-in descriptor won't work . I believe this is down to a bug in the recent versions of the assembly-plugin - they've removed support for classifiers, but the id is fixed if you use a built-in descriptor, so you end up with a big daft name.</p>\n\n<p>As a workaround, you can copy the assembly descriptor used by the <a href=\"http://maven.apache.org/plugins/maven-assembly-plugin/descriptor-refs.html#jar-with-dependencies\" rel=\"noreferrer\">jar-with-dependencies</a> descriptor and modify the id.</p>\n\n<p>This example would result in the assembly id being appended to the finalName, so if you need to have a name of <em>region-full.jar</em>, you can specify the finalName as <em>region</em> and the assembly id as <em>full</em>. This will result in a file in target called region-full.jar, but note it will still be installed to the Maven repository as an attached artifact with <em>full</em> used as the classifier. As long as this id is different to that for your other assembly there should be no collision though.</p>\n\n<p>The pom configuration would look like this.</p>\n\n<pre><code>&lt;plugin&gt;\n  &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;\n  &lt;version&gt;2.2-beta-4&lt;/version&gt;\n  &lt;executions&gt;\n    &lt;execution&gt;\n      &lt;id&gt;jar-with-dependencies&lt;/id&gt;\n      &lt;phase&gt;prepare-package&lt;/phase&gt;\n      &lt;goals&gt;\n        &lt;goal&gt;single&lt;/goal&gt;\n      &lt;/goals&gt;\n      &lt;configuration&gt;\n        &lt;descriptors&gt;\n          &lt;descriptor&gt;src/main/assembly/jar-assembly.xml&lt;/descriptor&gt;\n        &lt;/descriptors&gt;\n        &lt;finalName&gt;region&lt;/finalName&gt;\n      &lt;/configuration&gt;\n    &lt;/execution&gt;\n  &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n\n<p>and the jar-assembly.xml in src/main/assembly like this:</p>\n\n<pre><code>&lt;assembly&gt;\n  &lt;id&gt;full&lt;/id&gt;\n  &lt;formats&gt;\n    &lt;format&gt;jar&lt;/format&gt;\n  &lt;/formats&gt;\n  &lt;includeBaseDirectory&gt;false&lt;/includeBaseDirectory&gt;\n  &lt;dependencySets&gt;\n    &lt;dependencySet&gt;\n      &lt;unpack&gt;true&lt;/unpack&gt;\n      &lt;scope&gt;runtime&lt;/scope&gt;\n    &lt;/dependencySet&gt;\n  &lt;/dependencySets&gt;\n  &lt;fileSets&gt;\n    &lt;fileSet&gt;\n      &lt;directory&gt;${project.build.outputDirectory}&lt;/directory&gt;\n    &lt;/fileSet&gt;\n  &lt;/fileSets&gt;\n&lt;/assembly&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 184009,
+      "reputation" : 6089,
+      "user_id" : 419788,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/0accac889167441b3bd3bd411a3573ba?s=256&d=identicon&r=PG",
+      "display_name" : "Mike Cornell",
+      "link" : "https://stackoverflow.com/users/419788/mike-cornell"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1251309911,
+    "creation_date" : 1251309911,
+    "answer_id" : 1336510,
+    "question_id" : 1334999,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I'm going to give Rich the credit for pointing me in the right direction, but wanted to post the solution that worked for me as Rich's was slightly off:</p>\n\n<p>My jar-assembly.xml looked like this which allowed the assembly id to change for the region which was stored as an property in my profile:</p>\n\n<pre><code>&lt;assembly&gt;\n  &lt;id&gt;${env}-full&lt;/id&gt;\n    &lt;formats&gt;\n      &lt;format&gt;jar&lt;/format&gt;\n    &lt;/formats&gt;\n    &lt;includeBaseDirectory&gt;false&lt;/includeBaseDirectory&gt;\n    &lt;dependencySets&gt;\n      &lt;dependencySet&gt;\n        &lt;unpack&gt;true&lt;/unpack&gt;\n        &lt;scope&gt;runtime&lt;/scope&gt;\n      &lt;/dependencySet&gt;\n    &lt;/dependencySets&gt;\n    &lt;fileSets&gt;\n      &lt;fileSet&gt;\n        &lt;directory&gt;${project.build.outputDirectory}&lt;/directory&gt;\n      &lt;/fileSet&gt;\n    &lt;/fileSets&gt;\n&lt;/assembly&gt;\n</code></pre>\n\n<p>I did not use the finalName parameter in the maven-assembly-plugin settings as this built my project with my project-name-version-env-full.jar name where env-full was the classifier.  </p>\n\n<p>Imagine my surprise when I learned the assembly xml could be parameterized by items in the build.  This was exactly what I was looking for.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 37063,
+      "reputation" : 1945,
+      "user_id" : 105870,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0e9b66611291eb16bfac9df4e2cf62f3?s=256&d=identicon&r=PG",
+      "display_name" : "Karl the Pagan",
+      "link" : "https://stackoverflow.com/users/105870/karl-the-pagan"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1299564649,
+    "creation_date" : 1299564649,
+    "answer_id" : 5228999,
+    "question_id" : 1334999,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Thanks to the posts here and some digging in the <a href=\"http://maven.apache.org/plugins/maven-assembly-plugin/single-mojo.html\">maven docs</a> I've come up with the following configuration for a general one-off repacked executable jar assembly with a custom name.</p>\n\n<p>In pom.xml:</p>\n\n<pre><code>&lt;plugin&gt;\n    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;\n    &lt;version&gt;2.2&lt;/version&gt;\n    &lt;executions&gt;\n        &lt;execution&gt;\n            &lt;id&gt;exe&lt;/id&gt;\n            &lt;phase&gt;package&lt;/phase&gt;\n            &lt;goals&gt;&lt;goal&gt;single&lt;/goal&gt;&lt;/goals&gt;\n            &lt;configuration&gt;\n                &lt;finalName&gt;MyJarName&lt;/finalName&gt;\n                &lt;attach&gt;false&lt;/attach&gt;\n                &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;\n                &lt;descriptors&gt;\n                    &lt;descriptor&gt;assembly.xml&lt;/descriptor&gt;\n                &lt;/descriptors&gt;\n                &lt;archive&gt;\n                    &lt;manifest&gt;\n                        &lt;mainClass&gt;karlthepagain.MyMain&lt;/mainClass&gt;\n                    &lt;/manifest&gt;\n                &lt;/archive&gt;\n            &lt;/configuration&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n\n<p>In assembly.xml:</p>\n\n<pre><code>&lt;assembly&gt;\n    &lt;id&gt;exe&lt;/id&gt;\n    &lt;formats&gt;\n        &lt;format&gt;jar&lt;/format&gt;\n    &lt;/formats&gt;\n    &lt;includeBaseDirectory&gt;false&lt;/includeBaseDirectory&gt;\n    &lt;dependencySets&gt;\n        &lt;dependencySet&gt;\n            &lt;outputDirectory&gt;/&lt;/outputDirectory&gt;\n            &lt;unpack&gt;true&lt;/unpack&gt;\n            &lt;scope&gt;runtime&lt;/scope&gt;\n        &lt;/dependencySet&gt;\n    &lt;/dependencySets&gt;\n&lt;/assembly&gt;\n</code></pre>\n\n<p>This will produce <code>MyJarName.jar</code> with all of its dependencies re-packaged into that same jar and the specified <code>Main-Class: karlthepagain.MyMain</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2264130,
+      "reputation" : 40722,
+      "user_id" : 1993366,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/dGJXl.png?s=256",
+      "display_name" : "vikingsteve",
+      "link" : "https://stackoverflow.com/users/1993366/vikingsteve"
+    },
+    "is_accepted" : false,
+    "score" : 45,
+    "last_activity_date" : 1496213143,
+    "last_edit_date" : 1496213143,
+    "creation_date" : 1358619592,
+    "answer_id" : 14417340,
+    "question_id" : 1334999,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think I've found a way to configure this directly in the pom without needing a separate jar-assembly.xml.</p>\n\n<p>It's basically the same as Rich's answer, except the finalName is specified with the artifactId and version.</p>\n\n<pre><code>&lt;plugin&gt;\n    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;\n    &lt;configuration&gt;\n        &lt;descriptorRefs&gt;\n            &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;\n        &lt;/descriptorRefs&gt;\n        &lt;finalName&gt;${project.artifactId}-${project.version}-full&lt;/finalName&gt;\n        &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;\n        &lt;archive&gt;\n            &lt;manifest&gt;\n                &lt;mainClass&gt;com.mycompany.MyMainClass&lt;/mainClass&gt;\n            &lt;/manifest&gt;\n        &lt;/archive&gt;\n    &lt;/configuration&gt;\n    &lt;executions&gt;\n        &lt;execution&gt;\n            &lt;id&gt;make-my-jar-with-dependenciess&lt;/id&gt;\n            &lt;phase&gt;package&lt;/phase&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;single&lt;/goal&gt;\n            &lt;/goals&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8866896,
+      "reputation" : 31,
+      "user_id" : 6621789,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/effbc28ed407c583eaeb5cb222a197e4?s=256&d=identicon&r=PG",
+      "display_name" : "umesh9883",
+      "link" : "https://stackoverflow.com/users/6621789/umesh9883"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1469128484,
+    "creation_date" : 1469128484,
+    "answer_id" : 38512597,
+    "question_id" : 1334999,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This worked for me</p>\n\n<pre><code>&lt;build&gt;\n    &lt;finalName&gt;anynameyoulike&lt;/finalName&gt;\n    &lt;plugins&gt;           \n        &lt;plugin&gt;\n            &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;\n            &lt;version&gt;2.6&lt;/version&gt;\n            &lt;configuration&gt;\n                &lt;descriptorRefs&gt;\n                    &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;\n                &lt;/descriptorRefs&gt;                   \n                &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;\n                &lt;archive&gt;\n                    &lt;manifest&gt;\n                        &lt;mainClass&gt;com.mycompany.MyMainClass&lt;/mainClass&gt;\n                    &lt;/manifest&gt;\n                &lt;/archive&gt;\n            &lt;/configuration&gt;\n            &lt;executions&gt;\n                &lt;execution&gt;\n                    &lt;id&gt;make-assembly&lt;/id&gt; &lt;!-- this is used for inheritance merges --&gt;\n                    &lt;phase&gt;package&lt;/phase&gt; &lt;!-- bind to the packaging phase --&gt;\n                    &lt;goals&gt;\n                        &lt;goal&gt;single&lt;/goal&gt;\n                    &lt;/goals&gt;\n                &lt;/execution&gt;\n            &lt;/executions&gt;\n        &lt;/plugin&gt;\n    &lt;/plugins&gt;\n&lt;/build&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1816343,
+        "reputation" : 921,
+        "user_id" : 1651350,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/dcf19deb773d8ae3a112f5fd0534e1dd?s=256&d=identicon&r=PG",
+        "display_name" : "Loganathan",
+        "link" : "https://stackoverflow.com/users/1651350/loganathan"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1614848044,
+      "post_id" : 56834362,
+      "comment_id" : 117511684,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This worked. Important lines to highlight is &quot;&lt;finalName&gt;${project.build.finalName}&lt;/finalName&gt; &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 54210,
+        "reputation" : 455,
+        "user_id" : 162178,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/773a92f08225054b3a01dac3bdb073fb?s=256&d=identicon&r=PG",
+        "display_name" : "MrBuBBLs",
+        "link" : "https://stackoverflow.com/users/162178/mrbubbls"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1644425409,
+      "post_id" : 56834362,
+      "comment_id" : 125605147,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It may be an &quot;anti-pattern&quot; but to answer the question here above we could use this: <code>&lt;finalName&gt;${project.build.finalName}-full&lt;&#47;finalName&gt;</code>. At least, that worked for me."
+    }, {
+      "owner" : {
+        "account_id" : 20213,
+        "reputation" : 193305,
+        "user_id" : 48082,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://www.gravatar.com/avatar/18bff049e78e8d77a620f8ac4f15b2a0?s=256&d=identicon&r=PG",
+        "display_name" : "Cheeso",
+        "link" : "https://stackoverflow.com/users/48082/cheeso"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1750638093,
+      "post_id" : 56834362,
+      "comment_id" : 140533854,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why is that an anti-pattern? ^^"
+    } ],
+    "owner" : {
+      "account_id" : 5254523,
+      "reputation" : 1004,
+      "user_id" : 4197768,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://lh3.googleusercontent.com/-gJbxzIpIppY/AAAAAAAAAAI/AAAAAAAAABY/TjCUq6QnbF4/s256-rj/photo.jpg",
+      "display_name" : "Mark Sch&#228;fer",
+      "link" : "https://stackoverflow.com/users/4197768/mark-sch%c3%a4fer"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1561978191,
+    "creation_date" : 1561978191,
+    "answer_id" : 56834362,
+    "question_id" : 1334999,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It is also possible to overwrite the original jar file by using <code>${project.build.finalName}</code> as final name:</p>\n\n<pre><code>&lt;plugin&gt;\n  &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;\n   &lt;executions&gt;\n      &lt;execution&gt;\n          &lt;phase&gt;package&lt;/phase&gt;\n          &lt;goals&gt;\n             &lt;goal&gt;single&lt;/goal&gt;\n          &lt;/goals&gt;\n      &lt;/execution&gt;\n   &lt;/executions&gt;\n   &lt;configuration&gt;\n     &lt;descriptorRefs&gt;\n       &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;\n     &lt;/descriptorRefs&gt;\n     &lt;finalName&gt;${project.build.finalName}&lt;/finalName&gt;\n     &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;\n   &lt;/configuration&gt;\n &lt;/plugin&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 184009,
+    "reputation" : 6089,
+    "user_id" : 419788,
+    "user_type" : "registered",
+    "accept_rate" : 85,
+    "profile_image" : "https://www.gravatar.com/avatar/0accac889167441b3bd3bd411a3573ba?s=256&d=identicon&r=PG",
+    "display_name" : "Mike Cornell",
+    "link" : "https://stackoverflow.com/users/419788/mike-cornell"
+  },
+  "is_answered" : true,
+  "view_count" : 106866,
+  "accepted_answer_id" : 1335121,
+  "answer_count" : 6,
+  "score" : 175,
+  "last_activity_date" : 1561978191,
+  "creation_date" : 1251295951,
+  "last_edit_date" : 1299615128,
+  "question_id" : 1334999,
+  "link" : "https://stackoverflow.com/questions/1334999/is-it-possible-to-rename-a-maven-jar-with-dependencies",
+  "title" : "Is it possible to rename a maven jar-with-dependencies?",
+  "body" : "<p>I'm currently using the jar-with-dependencies assembly to create such a jar.  However, the name of my jar is a bit long.  </p>\n\n<p>Since this jar is being used by RPG programs on an AS400, I'd like to shorten it to make life a bit easier for those developers.  But, other than by hand, I've not found a way to rename the jar from the usual <code>project-name-version-classifier-jar-with-dependencies.jar</code>.  I'd like something like <code>project-name-version-classifier-full.jar</code> </p>\n\n<p>Is there anyway to do this without basically copying the jar-with-dependencies assembly descriptor and calling it full? </p>\n\n<p>Additionally, I want to continue to have the jar without the classpath assembled stored in the repository.</p>\n\n<p>I need two artifacts.  The jar with my classifier holding the region which the build is for.  The jar with all dependencies which also includes the region.</p>\n\n<p><code>project-name-version-region-full.jar</code> and <code>project-name-version-region.jar</code> should be stored in the repository.  In the first example the classifier is region-full, in the 2nd it's region.  The latter is working.</p>\n"
+}

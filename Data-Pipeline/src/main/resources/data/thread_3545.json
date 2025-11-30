@@ -1,0 +1,77 @@
+{
+  "tags" : [ "java", "ssl", "servlets", "certificate", "jetty" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 17881132,
+        "reputation" : 237,
+        "user_id" : 12989881,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GjwVBAnPUYjpH5hSq8B-uaQW9Ykplq_mJQmQyMg=k-s256",
+        "display_name" : "CooderSK",
+        "link" : "https://stackoverflow.com/users/12989881/coodersk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1636831296,
+      "post_id" : 69955967,
+      "comment_id" : 123664072,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you, now it is showing me this error in curl:  curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake failed). More detail may be available in the Windows System event log."
+    }, {
+      "owner" : {
+        "account_id" : 17881132,
+        "reputation" : 237,
+        "user_id" : 12989881,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GjwVBAnPUYjpH5hSq8B-uaQW9Ykplq_mJQmQyMg=k-s256",
+        "display_name" : "CooderSK",
+        "link" : "https://stackoverflow.com/users/12989881/coodersk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1636831619,
+      "post_id" : 69955967,
+      "comment_id" : 123664149,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What details can I attach to this question to help with resolving this issue?"
+    } ],
+    "owner" : {
+      "account_id" : 406289,
+      "reputation" : 49715,
+      "user_id" : 775715,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/hNTz1.jpg?s=256",
+      "display_name" : "Joakim Erdfelt",
+      "link" : "https://stackoverflow.com/users/775715/joakim-erdfelt"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1636819459,
+    "creation_date" : 1636819459,
+    "answer_id" : 69955967,
+    "question_id" : 69954338,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Your <code>ServerConnector</code> doesn't do anything with the SSL, at least not directly.</p>\n<p>This line ...</p>\n<pre class=\"lang-java prettyprint-override\"><code>return new ServerConnector(server, sslContextFactory, \n    new HttpConnectionFactory(https_config));\n</code></pre>\n<p>It merely supports HTTP/1.1 normal plaintext, no SSL, and relies on the JVM <code>ServiceLoader</code> to find the appropriate <code>SslConnectionFactory</code> based on your <code>SslContextFactory.Server</code>.</p>\n<p>Since you didn't specify what the classloader/classpath is for your environment, nor the specific version of Jetty, I would encourage you to be more direct with your <code>ServerConnector</code> and your SSL/TLS desires, don't rely on the <code>ServiceLoader</code> if you don't have to.</p>\n<p>Like this ...</p>\n<pre class=\"lang-java prettyprint-override\"><code>return new ServerConnector(server, \n    new SslConnectionFactory(slContextFactory, &quot;http/1.1&quot;),\n    new HttpConnectionFactory(https_config));\n</code></pre>\n<p>This will likely improve things for you, but without more details I cannot tell you exactly what happened or how to fix it.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 17881132,
+    "reputation" : 237,
+    "user_id" : 12989881,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GjwVBAnPUYjpH5hSq8B-uaQW9Ykplq_mJQmQyMg=k-s256",
+    "display_name" : "CooderSK",
+    "link" : "https://stackoverflow.com/users/12989881/coodersk"
+  },
+  "is_answered" : false,
+  "view_count" : 9689,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1762250735,
+  "creation_date" : 1636807257,
+  "question_id" : 69954338,
+  "link" : "https://stackoverflow.com/questions/69954338/sec-e-invalid-token-0x80090308-jetty-https-servlet",
+  "title" : "SEC_E_INVALID_TOKEN (0x80090308) - Jetty HTTPS servlet",
+  "body" : "<p>I am trying to solve an issue with my Jetty servlet running over HTTPS.</p>\n<p>This is an error in the browser:</p>\n<p><a href=\"https://i.sstatic.net/AvBR0.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/AvBR0.png\" alt=\"enter image description here\" /></a></p>\n<p>This is an error in the curl:</p>\n<p><a href=\"https://i.sstatic.net/1svGu.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/1svGu.png\" alt=\"enter image description here\" /></a></p>\n<p>What I did:</p>\n<ol>\n<li><p>I created my Keystore and Truststore as is described here: <a href=\"https://stackoverflow.com/questions/47434877/how-to-generate-keystore-and-truststore\">How to generate keystore and truststore</a> and here <a href=\"https://serverfault.com/questions/488003/keytool-subjectalternativename\">https://serverfault.com/questions/488003/keytool-subjectalternativename</a></p>\n<p>This is my batch script to create Keystore and Truststore:</p>\n</li>\n</ol>\n<pre><code>keytool -keystore keystore.jks -storepass P4ssW0rd -keypass P4ssW0rd -genkey -alias example -validity 365 -dname &quot;CN=example,OU=Example,O=Example,L=Bratislava,ST=Slovakia,C=SK&quot; -ext &quot;SAN=DNS:example.com,DNS:www.example.com,DNS:test.example.com&quot;\n&quot;C:\\Program Files\\Git\\usr\\bin\\openssl.exe&quot; req -new -x509 -subj &quot;/C=SK/ST=Slovakia/L=Bratislava/O=Example/OU=Example/CN=Root-CA&quot; -keyout ca-key -out ca-cert -days 365 -passout pass:P4ssW0rd\nkeytool -keystore truststore.jks -storepass P4ssW0rd -import -alias ca-root -file ca-cert -noprompt\nkeytool -keystore keystore.jks -storepass P4ssW0rd -certreq -alias exmaple -file cert-file\necho [SAN] &gt; extFile\necho subjectAltName=DNS:example.com,DNS:www.example.com,DNS:test.example.com &gt;&gt; extFile\n&quot;C:\\Program Files\\Git\\usr\\bin\\openssl.exe&quot; x509 -req -CA ca-cert -CAkey ca-key -in cert-file -out test.pem -days 365 -CAcreateserial -passin pass:P4ssW0rd -extensions SAN -extfile extFile\nkeytool -keystore keystore.jks -storepass P4ssW0rd -import -alias ca-root -file ca-cert -noprompt\nkeytool -keystore keystore.jks -storepass P4ssW0rd -import -alias metahost -file test.pem\npause\n</code></pre>\n<ol start=\"2\">\n<li>keystore.jks and truststore.jks were copied to the directory of my project and code was written up to load these files.</li>\n</ol>\n<pre><code>package sk.cood.metahost.server;\n\nimport jakarta.servlet.ServletException;\nimport jakarta.servlet.annotation.WebServlet;\nimport jakarta.servlet.http.HttpServlet;\nimport jakarta.servlet.http.HttpServletRequest;\nimport jakarta.servlet.http.HttpServletResponse;\nimport org.eclipse.jetty.server.*;\nimport org.eclipse.jetty.servlet.ServletContextHandler;\nimport org.eclipse.jetty.servlet.ServletHolder;\nimport org.eclipse.jetty.util.ssl.SslContextFactory;\n\nimport java.io.*;\n\n@WebServlet(displayName = &quot;MetaHostServlet&quot;, urlPatterns = { &quot;/*&quot; })\npublic class MetaHostServlet extends HttpServlet {\n    private static File keyStoreFile;\n    private static File trustStoreFile;\n\n    public static void main(String[] args) throws Exception {\n        loadKeyStores();\n\n        Server server = new Server(443);\n        ServerConnector connector = createSSLConnector(server, &quot;P4ssW0rd&quot;, &quot;P4ssW0rd&quot;, false);\n        server.addConnector(connector);\n\n        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);\n        context.addServlet(new ServletHolder(new MetaHostServlet()),&quot;/*&quot;);\n        context.setContextPath(&quot;/&quot;);\n        server.setHandler(context);\n\n        server.start();\n        server.join();\n    }\n\n    private static void loadKeyStores() {\n        keyStoreFile = new File(&quot;keystore.jks&quot;);\n        trustStoreFile = new File(&quot;truststore.jks&quot;);\n        if (!keyStoreFile.exists()) {\n            throw new RuntimeException(&quot;Key store file does not exist on path '&quot;+keyStoreFile.getAbsolutePath()+&quot;'&quot;);\n        }\n        if (!trustStoreFile.exists()) {\n            throw new RuntimeException(&quot;Trust store file does not exist on path '&quot;+trustStoreFile.getAbsolutePath()+&quot;'&quot;);\n        }\n    }\n\n    private static ServerConnector createSSLConnector(Server server, String keyStorePassword, String trustStorePassword, boolean isClientAuthNeeded) {\n        SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();\n        sslContextFactory.setKeyStorePath(keyStoreFile.getAbsolutePath());\n        sslContextFactory.setKeyStorePassword(keyStorePassword);\n        sslContextFactory.setTrustStorePath(trustStoreFile.getAbsolutePath());\n        sslContextFactory.setTrustStorePassword(trustStorePassword);\n        sslContextFactory.setNeedClientAuth(isClientAuthNeeded);\n\n        HttpConfiguration https_config = new HttpConfiguration();\n        https_config.setSendServerVersion(false);\n        https_config.setRequestHeaderSize(512 * 1024);\n        https_config.setResponseHeaderSize(512 * 1024);\n\n        SecureRequestCustomizer src = new SecureRequestCustomizer();\n        https_config.addCustomizer(src);\n\n        return new ServerConnector(server, sslContextFactory, new HttpConnectionFactory(https_config));\n    }\n\n    @Override\n    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {\n        res.setContentType(&quot;text/html&quot;);\n        res.setStatus(HttpServletResponse.SC_OK);\n        res.getWriter().println(&quot;&lt;h1&gt;Hello World!&lt;/h1&gt;&quot;);\n        res.getWriter().println(&quot;session=&quot; + req.getSession(true).getId());\n    }\n}\n</code></pre>\n<ol start=\"3\">\n<li>I started my servlet with jetty and tried to connect to <a href=\"https://example.com/\" rel=\"nofollow noreferrer\">https://example.com/</a> and mentioned error appears.</li>\n</ol>\n<p>I don't know what is wrong in my case, maybe someone more experienced with jetty and certificates will help.</p>\n<p>Thank you so much!</p>\n"
+}

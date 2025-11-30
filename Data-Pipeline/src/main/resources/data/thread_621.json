@@ -1,0 +1,532 @@
+{
+  "tags" : [ "java", "multithreading", "concurrency", "synchronization", "reentrantlock" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2784842,
+      "reputation" : 69441,
+      "user_id" : 2396539,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/nGigV.png?s=256",
+      "display_name" : "Aniket Thakur",
+      "link" : "https://stackoverflow.com/users/2396539/aniket-thakur"
+    },
+    "edited" : false,
+    "score" : 6,
+    "creation_date" : 1465237050,
+    "post_id" : 11821801,
+    "comment_id" : 62806822,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "BTW all java intrinsic locks are reentrant by nature."
+  }, {
+    "owner" : {
+      "account_id" : 2784842,
+      "reputation" : 69441,
+      "user_id" : 2396539,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/nGigV.png?s=256",
+      "display_name" : "Aniket Thakur",
+      "link" : "https://stackoverflow.com/users/2396539/aniket-thakur"
+    },
+    "reply_to_user" : {
+      "account_id" : 384553,
+      "reputation" : 121,
+      "user_id" : 741147,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/46411507d4c1c1500ad09649e690647b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Gsv",
+      "link" : "https://stackoverflow.com/users/741147/gsv"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1473867405,
+    "post_id" : 11821801,
+    "comment_id" : 66306406,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@pongapundit so <code>synchronized(this){synchronized(this){&#47;&#47;some code}}</code> will not cause dead lock. For intrinsic lock if they obtain monitor on a resource and if they want it again they can get it without a dead lock."
+  }, {
+    "owner" : {
+      "account_id" : 17121470,
+      "reputation" : 467,
+      "user_id" : 12389586,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/66f3fe1d7b206ab0baf6d8f5630ccf9d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "trilocho",
+      "link" : "https://stackoverflow.com/users/12389586/trilocho"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1633362254,
+    "post_id" : 11821801,
+    "comment_id" : 122733765,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "object.lock;......;object.unlock equals synchronized(this.class) it is at class-level lock not object-level"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1663401,
+        "reputation" : 1536,
+        "user_id" : 1531271,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/vARfa.jpg?s=256",
+        "display_name" : "sushicutta",
+        "link" : "https://stackoverflow.com/users/1531271/sushicutta"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1555576736,
+      "post_id" : 11821823,
+      "comment_id" : 98161324,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "to prevent potential dead-locks because somebody else not knowingly might try to lock against your object somewhere else in the progame use a private Object instance as synchronization Monitor like this:  <code>public class MyLock {     private final Object protectedLongLockingMonitor = new Object();     private long protectedLong = 0L;     public void incrementProtectedLong() {         synchronized(protectedLongLockingMonitor) {             protectedLong++;         }     } }</code>"
+    } ],
+    "owner" : {
+      "account_id" : 24725,
+      "reputation" : 55961,
+      "user_id" : 63074,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://www.gravatar.com/avatar/e77511a13f8c53b87610e52b4b38aa43?s=256&d=identicon&r=PG",
+      "display_name" : "Mike Dinescu",
+      "link" : "https://stackoverflow.com/users/63074/mike-dinescu"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1557192332,
+    "last_edit_date" : 1557192332,
+    "creation_date" : 1344219055,
+    "answer_id" : 11821823,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><a href=\"https://docs.oracle.com/javase/9/docs/api/java/util/concurrent/locks/ReentrantReadWriteLock.html\" rel=\"nofollow noreferrer\"><code>ReentrantReadWriteLock</code></a> is a specialized lock whereas <code>synchronized(this)</code> is a general purpose lock. They are similar but not quite the same.</p>\n\n<p>You are right in that you could use <code>synchronized(this)</code> instead of <code>ReentrantReadWriteLock</code> but the opposite is not always true.</p>\n\n<p>If you'd like to better understand what makes <code>ReentrantReadWriteLock</code> special look up some information about producer-consumer thread synchronization.</p>\n\n<p>In general you can remember that whole-method synchronization and general purpose synchronization (using the <code>synchronized</code> keyword) can be used in most applications without thinking <em>too much</em> about the semantics of the synchronization but if you need to squeeze performance out of your code you may need to explore other more fine-grained, or special-purpose synchronization mechanisms.</p>\n\n<p>By the way, using <code>synchronized(this)</code> - and in general locking using a public class instance - can be problematic because it opens up your code to potential dead-locks because somebody else not knowingly might try to lock against your object somewhere else in the program.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 95764,
+        "reputation" : 12266,
+        "user_id" : 260633,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b2ee5980501f21314923f751e4740446?s=256&d=identicon&r=PG",
+        "display_name" : "Dev",
+        "link" : "https://stackoverflow.com/users/260633/dev"
+      },
+      "edited" : false,
+      "score" : 30,
+      "creation_date" : 1380573713,
+      "post_id" : 11821900,
+      "comment_id" : 28245369,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The &#39;known to be more scalable&#39; link to lycog.com should be removed. In the reentrant lock test, a new lock is created each time, thus there is no exclusive locking and the resulting data is invalid. Also, the IBM link offers no source code for the underlying benchmark so its impossible to characterize whether the test was even conducted correctly. Personally, I&#39;d just remove the whole line about scalability, as the entire claim is essentially unsupported."
+    }, {
+      "owner" : {
+        "account_id" : 290123,
+        "reputation" : 29836,
+        "user_id" : 591495,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/74a70bd517ad39fc6512f6d02c6f4ae9?s=256&d=identicon&r=PG",
+        "display_name" : "obataku",
+        "link" : "https://stackoverflow.com/users/591495/obataku"
+      },
+      "reply_to_user" : {
+        "account_id" : 95764,
+        "reputation" : 12266,
+        "user_id" : 260633,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b2ee5980501f21314923f751e4740446?s=256&d=identicon&r=PG",
+        "display_name" : "Dev",
+        "link" : "https://stackoverflow.com/users/260633/dev"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1380579541,
+      "post_id" : 11821900,
+      "comment_id" : 28247867,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I modified the post in light of your response."
+    }, {
+      "owner" : {
+        "account_id" : 1861044,
+        "reputation" : 1965,
+        "user_id" : 1901896,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/77b2651b08f4279ec5a29169d6c40c3d?s=256&d=identicon&r=PG",
+        "display_name" : "Akash5288",
+        "link" : "https://stackoverflow.com/users/1901896/akash5288"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1393481341,
+      "post_id" : 11821900,
+      "comment_id" : 33451032,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "We can achieve timed locking using wait() also, so can&#39;t we apply ReentrantLock functionality in it?"
+    }, {
+      "owner" : {
+        "account_id" : 4509047,
+        "reputation" : 4265,
+        "user_id" : 3665698,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/spUxp.png?s=256",
+        "display_name" : "mcoolive",
+        "link" : "https://stackoverflow.com/users/3665698/mcoolive"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1416926893,
+      "post_id" : 11821900,
+      "comment_id" : 42758471,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If the performance is a high concern for you, don&#39;t forget to look for a way where you need NO synchronization at all."
+    }, {
+      "owner" : {
+        "account_id" : 1810034,
+        "reputation" : 2014,
+        "user_id" : 1646298,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/f4cbd3b26e9904b80405f7b2f27db2c9?s=256&d=identicon&r=PG",
+        "display_name" : "ZZ 5",
+        "link" : "https://stackoverflow.com/users/1646298/zz-5"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1452514346,
+      "post_id" : 11821900,
+      "comment_id" : 57188129,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Worth mentioning about locking vs synchronization: <a href=\"http://mechanical-sympathy.blogspot.com/2011/11/java-lock-implementations.html\" rel=\"nofollow noreferrer\">mechanical-sympathy.blogspot.com/2011/11/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 85850,
+        "reputation" : 9384,
+        "user_id" : 239101,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://i.sstatic.net/zEXWJ.jpg?s=256",
+        "display_name" : "David Soroko",
+        "link" : "https://stackoverflow.com/users/239101/david-soroko"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1455802709,
+      "post_id" : 11821900,
+      "comment_id" : 58659453,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Regarding benchmarking <code>ReentrantLock</code> vs <code>synchronized</code>, see here: <a href=\"http://david-soroko.blogspot.co.uk/2016/02/synchronized-vs-reentrantlock.html\" rel=\"nofollow noreferrer\">david-soroko.blogspot.co.uk/2016/02/&hellip;</a>."
+    }, {
+      "owner" : {
+        "account_id" : 1691630,
+        "reputation" : 51047,
+        "user_id" : 1553851,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/ad333c218c8f2fb917cf506919fc95f4?s=256&d=identicon&r=PG",
+        "display_name" : "shmosel",
+        "link" : "https://stackoverflow.com/users/1553851/shmosel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1463553375,
+      "post_id" : 11821900,
+      "comment_id" : 62107790,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "More generally, <code>Lock</code> objects can be implemented (or overridden) with custom logic, e.g. read/write, distributed locking etc."
+    }, {
+      "owner" : {
+        "account_id" : 386444,
+        "reputation" : 1942,
+        "user_id" : 744207,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/84b797452bc43b6da71bd1d439dcf8e3?s=256&d=identicon&r=PG",
+        "display_name" : "tObi",
+        "link" : "https://stackoverflow.com/users/744207/tobi"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1485213701,
+      "post_id" : 11821900,
+      "comment_id" : 70822989,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The performance thing doesn&#39;t make sense to me at all. If reantrant lock would perform better then why wouldn&#39;t synchronzied not just be implemented the same way a reantrant lock internatlly?"
+    }, {
+      "owner" : {
+        "account_id" : 3281355,
+        "reputation" : 1591,
+        "user_id" : 2761895,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/30e5b761112e908568e7222eb3b6928e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user2761895",
+        "link" : "https://stackoverflow.com/users/2761895/user2761895"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1500395808,
+      "post_id" : 11821900,
+      "comment_id" : 77313105,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;m confused with the sentence, &quot;In the reentrant lock test, a new lock is created each time, thus there is no exclusive locking and the resulting data is invalid&quot;. If the resulting data is invalid, why do we use ReentrantLock? The reason to use ReentrantLock or synchronized is having valid data which is shared by many threads. Can someone clarify this? Maybe I misunderstand something."
+    }, {
+      "owner" : {
+        "account_id" : 290123,
+        "reputation" : 29836,
+        "user_id" : 591495,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/74a70bd517ad39fc6512f6d02c6f4ae9?s=256&d=identicon&r=PG",
+        "display_name" : "obataku",
+        "link" : "https://stackoverflow.com/users/591495/obataku"
+      },
+      "reply_to_user" : {
+        "account_id" : 3281355,
+        "reputation" : 1591,
+        "user_id" : 2761895,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/30e5b761112e908568e7222eb3b6928e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user2761895",
+        "link" : "https://stackoverflow.com/users/2761895/user2761895"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1500784397,
+      "post_id" : 11821900,
+      "comment_id" : 77486494,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@user2761895 the <code>ReentrantLockPseudoRandom</code> code in the Lycog link is using brand new, uncontended locks every invocation of <code>setSeed</code> and <code>next</code>"
+    }, {
+      "owner" : {
+        "account_id" : 8689428,
+        "reputation" : 273,
+        "user_id" : 6502722,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/fbe2eb303cec79899e31a3c318340b0d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "legend",
+        "link" : "https://stackoverflow.com/users/6502722/legend"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1536415512,
+      "post_id" : 11821900,
+      "comment_id" : 91420640,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Can we write our own Lock implementation by implementing it and providing definition to all its method"
+    } ],
+    "owner" : {
+      "account_id" : 290123,
+      "reputation" : 29836,
+      "user_id" : 591495,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/74a70bd517ad39fc6512f6d02c6f4ae9?s=256&d=identicon&r=PG",
+      "display_name" : "obataku",
+      "link" : "https://stackoverflow.com/users/591495/obataku"
+    },
+    "is_accepted" : true,
+    "score" : 574,
+    "last_activity_date" : 1740108524,
+    "last_edit_date" : 1740108524,
+    "creation_date" : 1344220188,
+    "answer_id" : 11821900,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html\" rel=\"noreferrer\">ReentrantLock</a> is <em>unstructured</em>, unlike <code>synchronized</code> constructs -- i.e.  you don't need to use a block structure for locking and can even hold a lock across methods. An example:</p>\n<pre><code>private ReentrantLock lock;\n\npublic void foo() {\n  ...\n  lock.lock();\n  ...\n}\n\npublic void bar() {\n  ...\n  lock.unlock();\n  ...\n}\n</code></pre>\n<p>Such flow is impossible to represent via a single monitor in a <code>synchronized</code> construct.</p>\n<hr />\n<p>Aside from that, <code>ReentrantLock</code> supports <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/ReentrantLock.html#tryLock()\" rel=\"noreferrer\">lock polling</a> and <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/ReentrantLock.html#tryLock(long,%20java.util.concurrent.TimeUnit)\" rel=\"noreferrer\">interruptible lock waits that support time-out</a>. <code>ReentrantLock</code> also has support for <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/ReentrantLock.html#ReentrantLock(boolean)\" rel=\"noreferrer\">configurable <em>fairness</em> policy</a>, allowing more flexible thread scheduling.</p>\n<blockquote>\n<p>The constructor for this class accepts an optional <em>fairness</em> parameter. When set <code>true</code>, under contention, locks favor granting access to the longest-waiting thread. Otherwise this lock does not guarantee any particular access order. Programs using fair locks accessed by many threads may display lower overall throughput (i.e., are slower; often much slower) than those using the default setting, but have smaller variances in times to obtain locks and guarantee lack of starvation. Note however, that fairness of locks does not guarantee fairness of thread scheduling. Thus, one of many threads using a fair lock may obtain it multiple times in succession while other active threads are not progressing and not currently holding the lock. Also note that the untimed <code>tryLock</code> method does not honor the fairness setting. It will succeed if the lock is available even if other threads are waiting.</p>\n</blockquote>\n<hr />\n<p><code>ReentrantLock</code> <strong>may</strong> also be <a href=\"http://lycog.com/concurency/performance-reentrantlock-synchronized/\" rel=\"noreferrer\"><strong>more scalable</strong></a>, performing much better under higher contention. You can read more about this <a href=\"http://www.ibm.com/developerworks/java/library/j-jtp10264/\" rel=\"noreferrer\">here</a>.</p>\n<p>This claim has been contested, however; see the following comment:</p>\n<blockquote>\n<p>In the reentrant lock test, a new lock is created each time, thus there is no exclusive locking and the resulting data is invalid. Also, the IBM link offers no source code for the underlying benchmark so its impossible to characterize whether the test was even conducted correctly.</p>\n</blockquote>\n<hr />\n<p>When should you use <code>ReentrantLock</code>s? According to that developerWorks article...</p>\n<blockquote>\n<p>The answer is pretty simple -- use it when you actually need something it provides that <code>synchronized</code> doesn't, like timed lock waits, interruptible lock waits, non-block-structured locks, multiple condition variables, or lock polling. <code>ReentrantLock</code> also has scalability benefits, and you should use it if you actually have a situation that exhibits high contention, but remember that the vast majority of <code>synchronized</code> blocks hardly ever exhibit any contention, let alone high contention. I would advise developing with synchronization until synchronization has proven to be inadequate, rather than simply assuming &quot;the performance will be better&quot; if you use <code>ReentrantLock</code>. Remember, these are advanced tools for advanced users. (And truly advanced users tend to prefer the simplest tools they can find until they're convinced the simple tools are inadequate.) As always, make it right first, and then worry about whether or not you have to make it faster.</p>\n</blockquote>\n<hr />\n<p>One final aspect that's gonna become more relevant in the near future has to do with <a href=\"http://cr.openjdk.java.net/%7Erpressler/loom/loom/sol1_part1.html#pinning\" rel=\"noreferrer\">Java 15 and Project Loom</a>. In the (new) world of virtual threads, the underlying scheduler would be able to work much better with <code>ReentrantLock</code> than it's able to do with <code>synchronized</code>, that's true at least in the initial Java 15 release but may be optimized later.</p>\n<blockquote>\n<p>In the current Loom implementation, a virtual thread can be pinned in two situations: when there is a native frame on the stack — when Java code calls into native code (JNI) that then calls back into Java — and when inside a <code>synchronized</code> block or method. In those cases, blocking the virtual thread will block the physical thread that carries it. Once the native call completes or the monitor released (the <code>synchronized</code> block/method is exited) the thread is unpinned.</p>\n</blockquote>\n<blockquote>\n<p>If you have a common I/O operation guarded by a <code>synchronized</code>, replace the monitor with a <code>ReentrantLock</code> to let your application benefit fully from Loom’s scalability boost even before we fix pinning by monitors (or, better yet, use the higher-performance <code>StampedLock</code> if you can).</p>\n</blockquote>\n<h4>Related for Java 24</h4>\n<p><a href=\"https://openjdk.org/jeps/491\" rel=\"noreferrer\">JEP 491: Synchronize Virtual Threads without Pinning</a></p>\n<blockquote>\n<p>Improve the scalability of Java code that uses synchronized methods and statements by arranging for virtual threads that block in such constructs to release their underlying platform threads for use by other virtual threads. This will eliminate nearly all cases of virtual threads being pinned to platform threads, which severely restricts the number of virtual threads available to handle an application's workload.</p>\n<p><strong>Goals</strong></p>\n<ul>\n<li>Enable existing Java libraries to scale well with virtual threads without having to change them not to use synchronized methods and statements.</li>\n</ul>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9008667,
+        "reputation" : 117,
+        "user_id" : 14467251,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kEoFpTUb.jpg?s=256",
+        "display_name" : "Tần Quảng",
+        "link" : "https://stackoverflow.com/users/14467251/t%e1%ba%a7n-qu%e1%ba%a3ng"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1739858055,
+      "post_id" : 36827191,
+      "comment_id" : 140112106,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Your example code putting <code>lock.lock()</code> in a <code>try</code> block is a mistake! Please refer to the example code on the <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html\" rel=\"nofollow noreferrer\"><code>ReentrantLock</code></a> docs. For why it is a mistake, please refer to these questions: <a href=\"https://stackoverflow.com/a/31058774/14467251\">Java locking structure best pattern</a> and <a href=\"https://stackoverflow.com/questions/10868423/lock-lock-before-try\">lock.lock() before try</a>"
+    } ],
+    "owner" : {
+      "account_id" : 6453072,
+      "reputation" : 39149,
+      "user_id" : 4999394,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+      "display_name" : "Ravindra babu",
+      "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1745559814,
+    "last_edit_date" : 1745559814,
+    "creation_date" : 1461522547,
+    "answer_id" : 36827191,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A simple example using <code>ReentrantLock</code></p>\n<pre><code>import java.util.concurrent.locks.ReentrantLock;\n\nclass ReentrantLockDemo {\n    private final ReentrantLock lock = new ReentrantLock();\n\n    public void safeMethod1() {\n        lock.lock();\n        try {\n            /* your business logic goes here */\n        } finally {\n            lock.unlock();\n        }\n     }\n}\n</code></pre>\n<p>From oracle documentation page about <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/ReentrantLock.html\" rel=\"nofollow noreferrer\">ReentrantLock</a>:</p>\n<blockquote>\n<p>A reentrant mutual exclusion Lock with the same basic behaviour and semantics as the implicit monitor lock accessed using synchronized methods and statements, but with extended capabilities.</p>\n</blockquote>\n<blockquote>\n<p>The constructor for this class accepts an optional <em>fairness</em> parameter. When set true, under contention,  <em>locks favor granting access to the longest-waiting thread</em>. Otherwise this lock does not guarantee any particular access order.</p>\n</blockquote>\n<p><em>ReentrantLock</em> key APIs, which are better over <strong>synchronized</strong></p>\n<ol>\n<li><code>lockInterruptibly()</code> : Acquires the lock unless the current thread is interrupted.</li>\n<li><code>tryLock()</code> :  Acquires the lock only if it is not held by another thread at the time of invocation</li>\n<li><code>tryLock(long timeout, TimeUnit unit)</code>\nAcquires the lock if it is not held by another thread within the given waiting time and the current thread has not been interrupted. This API avoid thread starvation, which is a drawback with <code>synchronized</code></li>\n<li><code>public ReentrantLock(boolean fair)</code> : ReentrantLock with the fairness policy.</li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 444211,
+      "reputation" : 62799,
+      "user_id" : 835883,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://i.sstatic.net/mEZxK.png?s=256",
+      "display_name" : "j2emanue",
+      "link" : "https://stackoverflow.com/users/835883/j2emanue"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1466276355,
+    "creation_date" : 1466276355,
+    "answer_id" : 37900587,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use reentrant locks with a fairness policy  or timeout to avoid thread starvation.  You can apply a  thread fairness policy.   it will help avoid a thread waiting forever to get to your resources. </p>\n\n<pre><code>private final ReentrantLock lock = new ReentrantLock(true);\n//the param true turns on the fairness policy. \n</code></pre>\n\n<p>The \"fairness policy\" picks the next runnable thread to execute. It is based on priority, time since last run, blah blah</p>\n\n<p>also,\nSynchronize can block indefinitely if it cant escape the block. Reentrantlock can have timeout set.  </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5236368,
+      "reputation" : 1119,
+      "user_id" : 4184808,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://lh6.googleusercontent.com/-5zyHHDwbgkI/AAAAAAAAAAI/AAAAAAAAAEw/KVurBvZj7Pg/s256-rj/photo.jpg",
+      "display_name" : "Sumit Kapoor",
+      "link" : "https://stackoverflow.com/users/4184808/sumit-kapoor"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1538829281,
+    "creation_date" : 1538829281,
+    "answer_id" : 52679146,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Synchronized locks</strong> does not offer any mechanism of waiting queue in which after the execution of one thread any thread running in parallel can acquire the lock. Due to which the thread which is there in the system and running for a longer period of time never gets chance to access the shared resource thus leading to starvation.</p>\n\n<p><strong>Reentrant locks</strong> are very much flexible and has a fairness policy in which if a thread is waiting for a longer time and after the completion of the currently executing thread we can make sure that the longer waiting thread gets the chance of accessing the shared resource hereby decreasing the throughput of the system and making it more time consuming. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 723954,
+        "reputation" : 1916,
+        "user_id" : 666583,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/50dbb9464ec8c21390bfadc9d9c74592?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "AndrewF",
+        "link" : "https://stackoverflow.com/users/666583/andrewf"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1597447184,
+      "post_id" : 53295187,
+      "comment_id" : 112145600,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "A <code>synchronized</code> block has exactly the same reentrance behavior (reference counting). That is not one of the advantages/features of <code>ReentrantLock</code>."
+    } ],
+    "owner" : {
+      "account_id" : 7422340,
+      "reputation" : 2586,
+      "user_id" : 5646176,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://i.sstatic.net/lmKVM.jpg?s=256",
+      "display_name" : "RonTLV",
+      "link" : "https://stackoverflow.com/users/5646176/rontlv"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1542181179,
+    "creation_date" : 1542181179,
+    "answer_id" : 53295187,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Lets assume this code is running in a thread:</p>\n\n<pre><code>private static ReentrantLock lock = new ReentrantLock();\n\nvoid accessResource() {\n    lock.lock();\n    if( checkSomeCondition() ) {\n        accessResource();\n    }\n    lock.unlock();\n}\n</code></pre>\n\n<p>Because the thread owns the lock it will allow multiple calls to lock(), so it re-enter the lock. This can be achieved with a reference count so it doesn't has to acquire lock again.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2700381,
+      "reputation" : 1625,
+      "user_id" : 2331225,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/Z040n.png?s=256",
+      "display_name" : "Dhaval D",
+      "link" : "https://stackoverflow.com/users/2331225/dhaval-d"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1558502105,
+    "creation_date" : 1558502105,
+    "answer_id" : 56249714,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>One thing to keep in mind is : <br/><br/>\nThe name '<em>ReentrantLock</em>' gives out a wrong message about other locking mechanism that they are not re-entrant. <strong>This is not true.</strong> Lock acquired via 'synchronized' is also re-entrant in Java. </p>\n\n<p>Key difference is that 'synchronized' uses intrinsic lock ( one that every Object has ) while Lock API doesn't.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1630934,
+      "reputation" : 3821,
+      "user_id" : 1505487,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/32a89e70bccdffd6f50c1ec96224ab2d?s=256&d=identicon&r=PG",
+      "display_name" : "Solubris",
+      "link" : "https://stackoverflow.com/users/1505487/solubris"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1586998937,
+    "creation_date" : 1586998937,
+    "answer_id" : 61241052,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think the wait/notify/notifyAll methods don't belong on the Object class as it pollutes all objects with methods that are rarely used.  They make much more sense on a dedicated Lock class.  So from this point of view, perhaps it's better to use a tool that is explicitly designed for the job at hand - ie ReentrantLock.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1734997056,
+    "creation_date" : 1734997056,
+    "answer_id" : 79304473,
+    "question_id" : 11821801,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Virtual Threads</h2>\n<p>One special case: In Java 21, 22, and 23, lengthy or frequent code using <code>synchronized</code> with <a href=\"https://openjdk.org/jeps/444\" rel=\"nofollow noreferrer\">virtual threads</a> would result in pinning. Pinning can defeat the performance gains expected from use of virtual threads.</p>\n<p>In such cases, <code>synchronized</code> could be replaced easily with a <code>ReentrantLock</code> to avoid pinning.</p>\n<p>The pinning-due-to-<code>synchronized</code> issue <a href=\"https://openjdk.org/jeps/491\" rel=\"nofollow noreferrer\">goes away in Java 24+</a>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 357639,
+    "reputation" : 10993,
+    "user_id" : 992600,
+    "user_type" : "registered",
+    "accept_rate" : 74,
+    "profile_image" : "https://www.gravatar.com/avatar/a07696b9e9f01acc66822c3c4a880b96?s=256&d=identicon&r=PG",
+    "display_name" : "adhg",
+    "link" : "https://stackoverflow.com/users/992600/adhg"
+  },
+  "is_answered" : true,
+  "view_count" : 206228,
+  "protected_date" : 1465237062,
+  "accepted_answer_id" : 11821900,
+  "answer_count" : 9,
+  "score" : 406,
+  "last_activity_date" : 1745559814,
+  "creation_date" : 1344218919,
+  "last_edit_date" : 1729706793,
+  "question_id" : 11821801,
+  "link" : "https://stackoverflow.com/questions/11821801/why-use-a-reentrantlock-if-one-can-use-synchronizedthis",
+  "title" : "Why use a ReentrantLock if one can use synchronized(this)?",
+  "body" : "<p>I'm trying to understand what makes the lock in concurrency so important if one can use <code>synchronized (this)</code>. In the dummy code below, I can do either:</p>\n<ol>\n<li>synchronized the entire method or synchronize the vulnerable area (<code>synchronized(this){...}</code>)</li>\n<li>OR lock the vulnerable code area with a ReentrantLock.</li>\n</ol>\n<p>Code:</p>\n<pre class=\"lang-java prettyprint-override\"><code>private final ReentrantLock lock = new ReentrantLock();\nprivate static List&lt;Integer&gt; ints;\n\npublic Integer getResult(String name) {\n    lock.lock();\n    try {\n        if (ints.size()==3) {\n            ints=null;\n            return -9;\n        }\n        \n        for (int x=0; x&lt;ints.size(); x++) {\n            System.out.println(&quot;[&quot;+name+&quot;] &quot;+x+&quot;/&quot;+ints.size()+&quot;. values &gt;&gt;&gt;&gt;&quot;+ints.get(x));\n        }\n    } finally {\n        lock.unlock();\n    }\n    return random;\n}\n</code></pre>\n"
+}

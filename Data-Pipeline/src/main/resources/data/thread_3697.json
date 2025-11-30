@@ -1,0 +1,131 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "microservices", "grpc" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 27126576,
+        "reputation" : 233,
+        "user_id" : 20669508,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/jyhR7a1F.png?s=256",
+        "display_name" : "kaanyvz",
+        "link" : "https://stackoverflow.com/users/20669508/kaanyvz"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1693899750,
+      "post_id" : 77042449,
+      "comment_id" : 135816604,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "thanks for your reply however, it&#39;s still same. Still returns null. I don&#39;t understand what&#39;s wrong."
+    }, {
+      "owner" : {
+        "account_id" : 27126576,
+        "reputation" : 233,
+        "user_id" : 20669508,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/jyhR7a1F.png?s=256",
+        "display_name" : "kaanyvz",
+        "link" : "https://stackoverflow.com/users/20669508/kaanyvz"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1693917138,
+      "post_id" : 77042449,
+      "comment_id" : 135820053,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "it&#39;s still poor. I added generated class also."
+    }, {
+      "owner" : {
+        "account_id" : 11212114,
+        "reputation" : 4430,
+        "user_id" : 8225898,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/80ec8f16ce848642489d776c19fa8935?s=256&d=identicon&r=PG",
+        "display_name" : "Sven D&#246;ring",
+        "link" : "https://stackoverflow.com/users/8225898/sven-d%c3%b6ring"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1720002185,
+      "post_id" : 77042449,
+      "comment_id" : 138757147,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;m getting the same error. Did anyone find a solution?"
+    }, {
+      "owner" : {
+        "account_id" : 11212114,
+        "reputation" : 4430,
+        "user_id" : 8225898,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/80ec8f16ce848642489d776c19fa8935?s=256&d=identicon&r=PG",
+        "display_name" : "Sven D&#246;ring",
+        "link" : "https://stackoverflow.com/users/8225898/sven-d%c3%b6ring"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1720003613,
+      "post_id" : 77042449,
+      "comment_id" : 138757320,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Got it. We have a custom AutoConfigurationFilter that filtered the Grpc AutoConfiguration classes out. Therefore, no GrpcClients have been created. After disabling that custom AutoConfigurationFilter, it worked as expected."
+    } ],
+    "owner" : {
+      "account_id" : 4739993,
+      "reputation" : 2062,
+      "user_id" : 3833111,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/kL1Bd.png?s=256",
+      "display_name" : "Mr_Thorynque",
+      "link" : "https://stackoverflow.com/users/3833111/mr-thorynque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1693915391,
+    "last_edit_date" : 1693915391,
+    "creation_date" : 1693898364,
+    "answer_id" : 77042449,
+    "question_id" : 77038845,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You have to use the client in spring context / IOC container (springboot or other stack).</p>\n<p>So LibraryService must be annotate with @Service to inject @GrpcClient(&quot;book-service&quot;).</p>\n<pre><code>@Service    \npublic class LibraryService {\n</code></pre>\n<p>You need also a factory like that :</p>\n<pre><code>@Configuration\n@GrpcClientBean(\n    clazz = BookServiceGrpc.BookServiceBlockingStub.class,\n    beanName = &quot;bookServiceStub&quot;,\n    client = @GrpcClient(&quot;book-service&quot;)\n)\npublic class LibraryCustomConfiguration {\n\n    @Bean\n    LibraryService libraryService (@Autowired BookServiceGrpc.BookServiceBlockingStub bookServiceStub...) {\n        return new LibraryService (blockingStub....);\n    }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 43829089,
+      "reputation" : 1,
+      "user_id" : 31437479,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cac31857f1d724ef9e0ee4e07f7a78e8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Domini",
+      "link" : "https://stackoverflow.com/users/31437479/domini"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761836915,
+    "creation_date" : 1761836915,
+    "answer_id" : 79804914,
+    "question_id" : 77038845,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It looks like a classic Spring dependency injection issue. The <code>NullPointerException</code> happens because your <code>LibraryService</code> class isn't being managed by the Spring container, so the <code>@GrpcClient</code> annotation is never processed, and <code>bookServiceStub</code> is never initialized.</p>\n<p>Annotate your <code>LibraryService</code> with <code>@Service</code>.</p>\n<p><code>LibraryService</code>:</p>\n<pre><code>import org.springframework.stereotype.Service;\nimport net.devh.boot.grpc.client.inject.GrpcClient;\n// ... \n\n@Service\npublic class LibraryService {\n    private final LibraryRepository libraryRepository;\n    private final LibraryMapper libraryMapper;\n\n    @GrpcClient(&quot;book-service&quot;)\n    private BookServiceGrpc.BookServiceBlockingStub bookServiceStub;\n\n    public LibraryService(LibraryRepository libraryRepository, LibraryMapper libraryMapper) {\n        this.libraryRepository = libraryRepository;\n        this.libraryMapper = libraryMapper;\n    }\n\n    public void addBookToLibrary(AddBookRequest addBookRequest){\n        BookIsbn bookId = bookServiceStub.getBookIdByIsbn(Isbn.newBuilder().setIsbn(addBookRequest.getIsbn()).build());\n\n        Library library = libraryRepository.findById(addBookRequest.getId())\n                .orElseThrow(() -&gt; new LibraryNotFoundException(&quot;Library could not found by id: &quot; + addBookRequest.getId()));\n\n        library.getUserBook().add(UUID.fromString(bookId.getBookId()));\n\n        libraryRepository.save(library);\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 27126576,
+    "reputation" : 233,
+    "user_id" : 20669508,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/jyhR7a1F.png?s=256",
+    "display_name" : "kaanyvz",
+    "link" : "https://stackoverflow.com/users/20669508/kaanyvz"
+  },
+  "is_answered" : false,
+  "view_count" : 1113,
+  "answer_count" : 2,
+  "score" : 7,
+  "last_activity_date" : 1761836915,
+  "creation_date" : 1693839676,
+  "last_edit_date" : 1693917083,
+  "question_id" : 77038845,
+  "link" : "https://stackoverflow.com/questions/77038845/grpc-blockingstub-returns-null",
+  "title" : "grpc BlockingStub returns null",
+  "body" : "<p>i am trying to use grpc in my project but i have a problem, my problem is at grpc client side i want to use blockingStub however, it turns NullPointerException. here is my classes:</p>\n<p>common-service Book.proto:</p>\n<pre><code>syntax = &quot;proto3&quot;;\noption java_multiple_files = true;\npackage com.ky;\n\nservice BookService {\n  rpc getBookIdByIsbn(Isbn) returns (BookIsbn);\n}\n\nmessage BookIsbn {\n  string bookId = 1;\n  string isbn = 2;\n  int32 stockCount = 3;\n}\n\nmessage Isbn{\n  string isbn = 1;\n}\n</code></pre>\n<p>Book-service bookServiceGrpcImpl:</p>\n<pre><code>package com.ky.bookservice.service;\nimport com.ky.BookIsbn;\nimport com.ky.BookServiceGrpc;\nimport com.ky.Isbn;\nimport com.ky.bookservice.dto.book.BookIsbnDto;\nimport com.ky.bookservice.dto.book.BookMapper;\nimport com.ky.bookservice.repository.BookRepository;\n\nimport io.grpc.stub.StreamObserver;\nimport net.devh.boot.grpc.server.service.GrpcService;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\n@GrpcService\npublic class BookGrpcServiceImpl extends BookServiceGrpc.BookServiceImplBase {\n    private static final Logger logger = LoggerFactory.getLogger(BookGrpcServiceImpl.class);\n    private final BookRepository bookRepository;\n    private final BookMapper bookMapper;\n\n    public BookGrpcServiceImpl(BookRepository bookRepository, BookMapper bookMapper) {\n        this.bookRepository = bookRepository;\n        this.bookMapper = bookMapper;\n    }\n\n    @Override\n    public void getBookIdByIsbn(Isbn request, StreamObserver&lt;BookIsbn&gt; responseObserver) {\n        logger.info(&quot;Grpc Call Received: &quot; + request.getIsbn());\n        BookIsbnDto bookIsbnDto = bookRepository\n                .findBookByIsbn(request.getIsbn())\n                .map(bookMapper::bookToBookIsbnDto)\n                .orElseThrow(() -&gt; new RuntimeException(&quot;Book could not found by isbn: &quot; + request.getIsbn()));\n        responseObserver.onNext(\n                BookIsbn.newBuilder()\n                        .setBookId(bookIsbnDto.getId().toString())\n                        .setIsbn(bookIsbnDto.getIsbn())\n                        .setStockCount(bookIsbnDto.getStockCount())\n                        .build()\n        );\n        responseObserver.onCompleted();\n    }\n}\n</code></pre>\n<p>library-service:</p>\n<pre><code>public class LibraryService {\n    private final LibraryRepository libraryRepository;\n    private final BookServiceClient bookServiceClient;\n    private final UserServiceClient userServiceClient;\n    private final LibraryMapper libraryMapper;\n\n    @GrpcClient(&quot;book-service&quot;)\n    private BookServiceGrpc.BookServiceBlockingStub bookServiceStub;\n\n    Logger logger = LoggerFactory.getLogger(LibraryService.class);\n\n    public LibraryService(LibraryRepository libraryRepository, BookServiceClient bookServiceClient, UserServiceClient userServiceClient, LibraryMapper libraryMapper) {\n        this.libraryRepository = libraryRepository;\n        this.bookServiceClient = bookServiceClient;\n        this.userServiceClient = userServiceClient;\n        this.libraryMapper = libraryMapper;\n    }\n\n    public void addBookToLibrary(AddBookRequest addBookRequest){\n        BookIsbn bookId = bookServiceStub.getBookIdByIsbn(Isbn.newBuilder().setIsbn(addBookRequest.getIsbn()).build());\n        \n\n        Library library = libraryRepository.findById(addBookRequest.getId())\n                .orElseThrow(() -&gt; new LibraryNotFoundException(&quot;Library could not found by id: &quot; + addBookRequest.getId()));\n\n        library.getUserBook().add(UUID.fromString(bookId.getBookId()));\n\n        libraryRepository.save(library);\n    }\n}\n</code></pre>\n<p>generated BookServiceBlockingStub class:</p>\n<pre><code>public static final class BookServiceBlockingStub extends io.grpc.stub.AbstractStub&lt;BookServiceBlockingStub&gt; {\n    private BookServiceBlockingStub(io.grpc.Channel channel) {\n      super(channel);\n    }\n\n    private BookServiceBlockingStub(io.grpc.Channel channel,\n        io.grpc.CallOptions callOptions) {\n      super(channel, callOptions);\n    }\n\n    @java.lang.Override\n    protected BookServiceBlockingStub build(io.grpc.Channel channel,\n        io.grpc.CallOptions callOptions) {\n      return new BookServiceBlockingStub(channel, callOptions);\n    }\n\n    /**\n     */\n    public com.ky.common.proto.BookIsbn getBookIdByIsbn(com.ky.common.proto.Isbn request) {\n      return blockingUnaryCall(\n          getChannel(), METHOD_GET_BOOK_ID_BY_ISBN, getCallOptions(), request);\n    }\n  }\n</code></pre>\n<p>when i try to use addBookToLibrary method i gave an error like that what's the problem. Thanks:</p>\n<pre><code>java.lang.NullPointerException: Cannot invoke &quot;com.ky.BookServiceGrpc$BookServiceBlockingStub.getBookIdByIsbn(com.ky.Isbn)&quot; because &quot;this.bookServiceStub&quot; is null\n    at com.ky.libraryservice.service.LibraryService.addBookToLibrary(LibraryService.java:97) ~[classes/:na]\n    at com.ky.libraryservice.controller.LibraryController.addBookToLibrary(LibraryController.java:29) ~[classes/:na]\n    at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]\n    at java.base/java.lang.reflect.Method.invoke(Method.java:578) ~[na:na]\n    at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:925) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:593) ~[tomcat-embed-core-10.1.12.jar:6.0]\n    at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.0.11.jar:6.0.11]\n    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.12.jar:6.0]\n    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.0.11.jar:6.0.11]\n    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:166) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.12.jar:10.1.12]\n    at java.base/java.lang.Thread.run(Thread.java:1589) ~[na:na]\n</code></pre>\n"
+}

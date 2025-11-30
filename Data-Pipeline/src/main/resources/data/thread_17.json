@@ -1,0 +1,1250 @@
+{
+  "tags" : [ "java", "string", "type-conversion", "integer" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 72095,
+      "reputation" : 20588,
+      "user_id" : 208273,
+      "user_type" : "moderator",
+      "profile_image" : "https://www.gravatar.com/avatar/65129b14ad4a755ba297a84f0ea03727?s=256&d=identicon&r=PG",
+      "display_name" : "Ryan M",
+      "link" : "https://stackoverflow.com/users/208273/ryan-m"
+    },
+    "edited" : false,
+    "score" : 11,
+    "creation_date" : 1677721804,
+    "post_id" : 5585779,
+    "comment_id" : 133395903,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<b>Mod note</b>: This question has <b>30 answers</b> and another <b>82 deleted answers</b>, most of which were removed for repeating existing answers.  If you are considering adding a new answer to this question, please ensure that you&#39;ve read all the existing answers and confirmed that your answer adds something new and useful."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5007360,
+        "reputation" : 2389,
+        "user_id" : 4024628,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/T0Kaw.jpg?s=256",
+        "display_name" : "Allison",
+        "link" : "https://stackoverflow.com/users/4024628/allison"
+      },
+      "edited" : false,
+      "score" : 47,
+      "creation_date" : 1516181860,
+      "post_id" : 5585800,
+      "comment_id" : 83580108,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In addition to catching a NumberFormatException, the user should also be careful about the length of the strings they&#39;re passing in; if they&#39;re long enough to overflow an integer, they might want to consider using Long::parseLong instead."
+    }, {
+      "owner" : {
+        "account_id" : 18364065,
+        "reputation" : 104,
+        "user_id" : 13375547,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/02e92f0a3fda87a561da77c2b99e0a74?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "tamegajr",
+        "link" : "https://stackoverflow.com/users/13375547/tamegajr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1680092548,
+      "post_id" : 5585800,
+      "comment_id" : 133837907,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is the most complete explanation and the comments by Allison covers the problem of Long numbers passed as a String!!!!"
+    } ],
+    "owner" : {
+      "account_id" : 14531,
+      "reputation" : 120817,
+      "user_id" : 29995,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/ffffa52ae8108fdeb2559d804051556e?s=256&d=identicon&r=PG",
+      "display_name" : "Rob Hruska",
+      "link" : "https://stackoverflow.com/users/29995/rob-hruska"
+    },
+    "is_accepted" : true,
+    "score" : 4568,
+    "last_activity_date" : 1741967592,
+    "last_edit_date" : 1741967592,
+    "creation_date" : 1302200981,
+    "answer_id" : 5585800,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>String myString = &quot;1234&quot;;\nint foo = Integer.parseInt(myString);\n</code></pre>\n<p>If you look at the <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html#parseInt(java.lang.String)\" rel=\"noreferrer\">Java documentation</a> you'll notice the &quot;catch&quot; is that this function can throw a <code>NumberFormatException</code>, which you can handle:</p>\n<pre class=\"lang-java prettyprint-override\"><code>int foo;\ntry {\n   foo = Integer.parseInt(myString);\n}\ncatch (NumberFormatException e) {\n   foo = 0;\n}\n</code></pre>\n<p>(This treatment defaults a malformed number to <code>0</code>, but you can do something else if you like.)</p>\n<p>Alternatively, you can use an <code>Ints</code> method from the Guava library, which in combination with Java 8's <code>Optional</code>, makes for a powerful and concise way to convert a string into an int:</p>\n<pre><code>import com.google.common.primitives.Ints;\n\nint foo = Optional.ofNullable(myString)\n .map(Ints::tryParse)\n .orElse(0)\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 50566,
+        "reputation" : 9984,
+        "user_id" : 150884,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/5vmQJ.jpg?s=256",
+        "display_name" : "hertzsprung",
+        "link" : "https://stackoverflow.com/users/150884/hertzsprung"
+      },
+      "edited" : false,
+      "score" : 89,
+      "creation_date" : 1368952700,
+      "post_id" : 5585876,
+      "comment_id" : 23918423,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "For the differences between the two methods, see <a href=\"http://stackoverflow.com/questions/508665/difference-between-parseint-and-valueof-in-java\">this question</a>"
+    }, {
+      "owner" : {
+        "account_id" : 223484,
+        "reputation" : 64674,
+        "user_id" : 482717,
+        "user_type" : "registered",
+        "accept_rate" : 66,
+        "profile_image" : "https://www.gravatar.com/avatar/82a1f0fb2478f517c945a53b697dd290?s=256&d=identicon&r=PG",
+        "display_name" : "Paul Verest",
+        "link" : "https://stackoverflow.com/users/482717/paul-verest"
+      },
+      "edited" : false,
+      "score" : 23,
+      "creation_date" : 1414486544,
+      "post_id" : 5585876,
+      "comment_id" : 41821241,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<code>valueOf</code> method is just <code>return valueOf(parseInt(string));</code>"
+    } ],
+    "owner" : {
+      "account_id" : 279561,
+      "reputation" : 26957,
+      "user_id" : 574799,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://i.sstatic.net/9jy55.jpg?s=256",
+      "display_name" : "lukastymo",
+      "link" : "https://stackoverflow.com/users/574799/lukastymo"
+    },
+    "is_accepted" : false,
+    "score" : 792,
+    "last_activity_date" : 1435695343,
+    "last_edit_date" : 1435695343,
+    "creation_date" : 1302201400,
+    "answer_id" : 5585876,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For example, here are two ways:</p>\n\n<pre><code>Integer x = Integer.valueOf(str);\n// or\nint y = Integer.parseInt(str);\n</code></pre>\n\n<p>There is a slight difference between these methods: </p>\n\n<ul>\n<li><code>valueOf</code> returns a new or cached instance of <code>java.lang.Integer</code></li>\n<li><code>parseInt</code> returns primitive <code>int</code>. </li>\n</ul>\n\n<p>The same is for all cases: <code>Short.valueOf</code>/<code>parseShort</code>, <code>Long.valueOf</code>/<code>parseLong</code>, etc.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 117057,
+      "reputation" : 4181,
+      "user_id" : 306711,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/1056d852b1a848d4fe3fee601b059da7?s=256&d=identicon&r=PG",
+      "display_name" : "Ali Akdurak",
+      "link" : "https://stackoverflow.com/users/306711/ali-akdurak"
+    },
+    "is_accepted" : false,
+    "score" : 274,
+    "last_activity_date" : 1455665736,
+    "last_edit_date" : 1455665736,
+    "creation_date" : 1367304895,
+    "answer_id" : 16293980,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Well, a very important point to consider is that the Integer parser throws NumberFormatException as stated in <a href=\"http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html#parseInt%28java.lang.String%29\" rel=\"noreferrer\">Javadoc</a>. </p>\n\n<pre><code>int foo;\nString StringThatCouldBeANumberOrNot = \"26263Hello\"; //will throw exception\nString StringThatCouldBeANumberOrNot2 = \"26263\"; //will not throw exception\ntry {\n      foo = Integer.parseInt(StringThatCouldBeANumberOrNot);\n} catch (NumberFormatException e) {\n      //Will Throw exception!\n      //do something! anything to handle the exception.\n}\n\ntry {\n      foo = Integer.parseInt(StringThatCouldBeANumberOrNot2);\n} catch (NumberFormatException e) {\n      //No problem this time, but still it is good practice to care about exceptions.\n      //Never trust user input :)\n      //Do something! Anything to handle the exception.\n}\n</code></pre>\n\n<p>It is important to handle this exception when trying to get integer values from split arguments or dynamically parsing something.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1042260,
+        "reputation" : 462,
+        "user_id" : 1365879,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/0161c7599073ce4de07dc6603469540a?s=256&d=identicon&r=PG",
+        "display_name" : "yohm",
+        "link" : "https://stackoverflow.com/users/1365879/yohm"
+      },
+      "edited" : false,
+      "score" : 28,
+      "creation_date" : 1413949396,
+      "post_id" : 18731580,
+      "comment_id" : 41632214,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What if the input is greater than 2^32? What if the input contains non-numeric characters?"
+    }, {
+      "owner" : {
+        "account_id" : 1085259,
+        "reputation" : 80173,
+        "user_id" : 1081110,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Fp4Pm.jpg?s=256",
+        "display_name" : "Dawood ibn Kareem",
+        "link" : "https://stackoverflow.com/users/1081110/dawood-ibn-kareem"
+      },
+      "edited" : false,
+      "score" : 100,
+      "creation_date" : 1451621777,
+      "post_id" : 18731580,
+      "comment_id" : 56849715,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "One of the things a programmer must learn on joining the workforce, if not before, is never to re-invent wheels.  This may be a fun exercise, but don&#39;t expect your code to pass code review if you do this kind of thing in a commercial setting."
+    }, {
+      "owner" : {
+        "account_id" : 1351039,
+        "reputation" : 8175,
+        "user_id" : 1290668,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://i.sstatic.net/7S0Hp.jpg?s=256",
+        "display_name" : "Billz",
+        "link" : "https://stackoverflow.com/users/1290668/billz"
+      },
+      "reply_to_user" : {
+        "account_id" : 1042260,
+        "reputation" : 462,
+        "user_id" : 1365879,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/0161c7599073ce4de07dc6603469540a?s=256&d=identicon&r=PG",
+        "display_name" : "yohm",
+        "link" : "https://stackoverflow.com/users/1365879/yohm"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1451625509,
+      "post_id" : 18731580,
+      "comment_id" : 56850266,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@yohm those are special case; you can handle with long and some regex; however, by then you can use parseInt."
+    }, {
+      "owner" : {
+        "account_id" : 305757,
+        "reputation" : 1640,
+        "user_id" : 5851520,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/3ab038947d18dcd4a7f650a9f92504af?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "SusanW",
+        "link" : "https://stackoverflow.com/users/5851520/susanw"
+      },
+      "edited" : false,
+      "score" : 53,
+      "creation_date" : 1469726823,
+      "post_id" : 18731580,
+      "comment_id" : 64669135,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "-1 Sorry, but this is a pretty poor algorithm, with lots of limitations, no error handling, and some weird anomalies (eg &quot;&quot; gives an exception, &quot;-&quot; will produce 0, and &quot;+&quot; produces -5). Why would anyone choose this over <code>Integer.parseInt(s)</code>? - I see the point about this being an interview question, but a) that doesn&#39;t imply you&#39;d do it this way (which is what the questioner asked), and b) this answer&#39;s a pretty bad example anyway."
+    }, {
+      "owner" : {
+        "account_id" : 4487142,
+        "reputation" : 1255,
+        "user_id" : 3649372,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7ba14ef1bc08a725503837607e3d8491?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Nathan Adams",
+        "link" : "https://stackoverflow.com/users/3649372/nathan-adams"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1556734626,
+      "post_id" : 18731580,
+      "comment_id" : 98534766,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "-1 because what if I want to parse a base 31 int? Integer.parseInt(str, 31) is a one liner to do that. Slightly facetious comment, but serious point underneath. Never re-invent wheels when someone else has already put the work in"
+    } ],
+    "owner" : {
+      "account_id" : 1351039,
+      "reputation" : 8175,
+      "user_id" : 1290668,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://i.sstatic.net/7S0Hp.jpg?s=256",
+      "display_name" : "Billz",
+      "link" : "https://stackoverflow.com/users/1290668/billz"
+    },
+    "is_accepted" : false,
+    "score" : 92,
+    "last_activity_date" : 1688557726,
+    "last_edit_date" : 1688557726,
+    "creation_date" : 1378865304,
+    "answer_id" : 18731580,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Do it manually:</p>\n<pre class=\"lang-java prettyprint-override\"><code>    public static int strToInt(String str) {\n        int i = 0;\n        int num = 0;\n        boolean isNeg = false;\n\n        // Check for negative sign; if it's there, set the isNeg flag\n        if (str.charAt(0) == '-') {\n            isNeg = true;\n            i = 1;\n        }\n\n        // Process each character of the string;\n        while (i &lt; str.length()) {\n            num *= 10;\n            num += str.charAt(i++) - '0'; // Minus the ASCII code of '0' to get the value of the charAt(i++).\n        }\n\n        if (isNeg)\n            num = -num;\n\n        return num;\n    }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user289086"
+      },
+      "edited" : false,
+      "score" : 21,
+      "creation_date" : 1413036014,
+      "post_id" : 19477740,
+      "comment_id" : 41296795,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This will cause <code>-42</code> to be parsed as <code>42</code>."
+    }, {
+      "owner" : {
+        "account_id" : 72095,
+        "reputation" : 20588,
+        "user_id" : 208273,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/65129b14ad4a755ba297a84f0ea03727?s=256&d=identicon&r=PG",
+        "display_name" : "Ryan M",
+        "link" : "https://stackoverflow.com/users/208273/ryan-m"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1677721336,
+      "post_id" : 19477740,
+      "comment_id" : 133395855,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This will also misparse non-integral numbers (e.g., <code>4.2</code> as <code>42</code>) if that could be in your data."
+    } ],
+    "owner" : {
+      "account_id" : 2180366,
+      "reputation" : 2633,
+      "user_id" : 1930011,
+      "user_type" : "registered",
+      "accept_rate" : 61,
+      "profile_image" : "https://i.sstatic.net/L09ta.jpg?s=256",
+      "display_name" : "Thijser",
+      "link" : "https://stackoverflow.com/users/1930011/thijser"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1574613582,
+    "last_edit_date" : 1574613582,
+    "creation_date" : 1382274709,
+    "answer_id" : 19477740,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can also begin by removing all non-numerical characters and then parsing the integer:</p>\n\n<pre><code>String mystr = mystr.replaceAll(\"[^\\\\d]\", \"\");\nint number = Integer.parseInt(mystr);\n</code></pre>\n\n<p>But be warned that this only works for non-negative numbers. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 14,
+      "creation_date" : 1457088461,
+      "post_id" : 22547555,
+      "comment_id" : 59257890,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It’s not clear what kind of problem this answer tries to solve, first, why anyone should ever have that restriction you describe, second, why you have to look at an ASCII table as you can simply use <code>&#39;0&#39;</code> for the character instead of <code>48</code> and never have to bother with its actual numeric value. Third, the entire detour with <code>double</code> values makes no sense at all as you are dividing by ten, just to multiply with ten afterwards. The result simply is <code>semilastdigit * 10 + lastdigit</code> as learnt in elementary school, when the decimal system was introduced…"
+    } ],
+    "owner" : {
+      "account_id" : 3761540,
+      "reputation" : 693,
+      "user_id" : 3126359,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/a091cdb27fd32def07f13bfb7970dd3c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Oak",
+      "link" : "https://stackoverflow.com/users/3126359/oak"
+    },
+    "is_accepted" : false,
+    "score" : 46,
+    "last_activity_date" : 1598024758,
+    "last_edit_date" : 1598024758,
+    "creation_date" : 1395359479,
+    "answer_id" : 22547555,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Currently I'm doing an assignment for college, where I can't use certain expressions, such as the ones above, and by looking at the ASCII table, I managed to do it. It's a far more complex code, but it could help others that are restricted like I was.</p>\n<p>The first thing to do is to receive the input, in this case, a string of digits; I'll call it <code>String number</code>, and in this case, I'll exemplify it using the number 12, therefore <code>String number = &quot;12&quot;;</code></p>\n<p>Another limitation was the fact that I couldn't use repetitive cycles, therefore, a <code>for</code> cycle (which would have been perfect) can't be used either. This limits us a bit, but then again, that's the goal. Since I only needed two digits (taking the last two digits), a simple <code>charAt</code>solved it:</p>\n<pre><code> // Obtaining the integer values of the char 1 and 2 in ASCII\n int semilastdigitASCII = number.charAt(number.length() - 2);\n int lastdigitASCII = number.charAt(number.length() - 1);\n</code></pre>\n<p>Having the codes, we just need to look up at the table, and make the necessary adjustments:</p>\n<pre><code> double semilastdigit = semilastdigitASCII - 48;  // A quick look, and -48 is the key\n double lastdigit = lastdigitASCII - 48;\n</code></pre>\n<p>Now, why double? Well, because of a really &quot;weird&quot; step. Currently we have two doubles, 1 and 2, but we need to turn it into 12, there isn't any mathematic operation that we can do.</p>\n<p>We're dividing the latter (lastdigit) by 10 in the fashion <code>2/10 = 0.2</code> (hence why double) like this:</p>\n<pre><code> lastdigit = lastdigit / 10;\n</code></pre>\n<p>This is merely playing with numbers. We were turning the last digit into a decimal. But now, look at what happens:</p>\n<pre><code> double jointdigits = semilastdigit + lastdigit; // 1.0 + 0.2 = 1.2\n</code></pre>\n<p>Without getting too into the math, we're simply isolating units the digits of a number. You see, since we only consider 0-9, dividing by a multiple of 10 is like creating a &quot;box&quot; where you store it (think back at when your first grade teacher explained you what a unit and a hundred were). So:</p>\n<pre><code> int finalnumber = (int) (jointdigits*10); // Be sure to use parentheses &quot;()&quot;\n</code></pre>\n<p>And there you go. You turned a String of digits (in this case, two digits), into an integer composed of those two digits, considering the following limitations:</p>\n<ul>\n<li>No repetitive cycles</li>\n<li>No &quot;Magic&quot; Expressions such as parseInt</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2495474,
+      "reputation" : 1042,
+      "user_id" : 2172026,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/TXyda.png?s=256",
+      "display_name" : "fitorec",
+      "link" : "https://stackoverflow.com/users/2172026/fitorec"
+    },
+    "is_accepted" : false,
+    "score" : 23,
+    "last_activity_date" : 1688558045,
+    "last_edit_date" : 1688558045,
+    "creation_date" : 1400859481,
+    "answer_id" : 23833311,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have a solution, but I do not know how effective it is. But it works well, and I think you could improve it. On the other hand, I did a couple of tests with <a href=\"http://en.wikipedia.org/wiki/JUnit\" rel=\"nofollow noreferrer\">JUnit</a> which step correctly. I attached the function and testing:</p>\n<pre class=\"lang-java prettyprint-override\"><code>    public static Integer str2Int(String str) {\n        Integer result = null;\n        if (null == str || 0 == str.length()) {\n            return null;\n        }\n\n        try {\n            result = Integer.parseInt(str);\n        } \n        catch (NumberFormatException e) {\n            String negativeMode = &quot;&quot;;\n            if (str.indexOf('-') != -1)\n                negativeMode = &quot;-&quot;;\n\n            str = str.replaceAll(&quot;-&quot;, &quot;&quot;);\n\n            if (str.indexOf('.') != -1) {\n                str = str.substring(0, str.indexOf('.'));\n                if (str.length() == 0) {\n                    return (Integer) 0;\n                }\n            }\n\n            String strNum = str.replaceAll(&quot;[^\\\\d]&quot;, &quot;&quot; );\n            if (0 == strNum.length()) {\n                return null;\n            }\n\n            result = Integer.parseInt(negativeMode + strNum);\n        }\n\n        return result;\n    }\n</code></pre>\n<p>Testing with JUnit:</p>\n<pre><code>@Test\npublic void testStr2Int() {\n    assertEquals(&quot;is numeric&quot;, (Integer) (-5), Helper.str2Int(&quot;-5&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) 50, Helper.str2Int(&quot;50.00&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) 20, Helper.str2Int(&quot;$ 20.90&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) 5, Helper.str2Int(&quot; 5.321&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) 1000, Helper.str2Int(&quot;1,000.50&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) 0, Helper.str2Int(&quot;0.50&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) 0, Helper.str2Int(&quot;.50&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) 0, Helper.str2Int(&quot;-.10&quot;));\n    assertEquals(&quot;is numeric&quot;, (Integer) Integer.MAX_VALUE, Helper.str2Int(&quot;&quot; + Integer.MAX_VALUE));\n    assertEquals(&quot;is numeric&quot;, (Integer) Integer.MIN_VALUE, Helper.str2Int(&quot;&quot; + Integer.MIN_VALUE));\n    assertEquals(&quot;Not is numeric&quot;, null, Helper.str2Int(&quot;czv.,xcvsa&quot;));\n\n    /**\n     * Dynamic test\n     */\n    for (Integer num = 0; num &lt; 1000; num++) {\n        for (int spaces = 1; spaces &lt; 6; spaces++) {\n            String numStr = String.format(&quot;%0&quot; + spaces + &quot;d&quot;, num);\n            Integer numNeg = num * -1;\n            assertEquals(numStr + &quot;: is numeric&quot;, num, Helper.str2Int(numStr));\n            assertEquals(numNeg + &quot;: is numeric&quot;, numNeg, Helper.str2Int(&quot;- &quot; + numStr));\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8542,
+        "reputation" : 9960,
+        "user_id" : 15464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c8c949d9223d9daaa34fd151b78979c0?s=256&d=identicon&r=PG",
+        "display_name" : "wnoise",
+        "link" : "https://stackoverflow.com/users/15464/wnoise"
+      },
+      "edited" : false,
+      "score" : 43,
+      "creation_date" : 1458659898,
+      "post_id" : 32248950,
+      "comment_id" : 59953898,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You rarely want 0 to be used when an invalid number is parsed."
+    }, {
+      "owner" : {
+        "account_id" : 3895768,
+        "reputation" : 709,
+        "user_id" : 3224854,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5308ca9c8de8a41b9fd7dc36a03406f8?s=256&d=identicon&r=PG",
+        "display_name" : "etherous",
+        "link" : "https://stackoverflow.com/users/3224854/etherous"
+      },
+      "edited" : false,
+      "score" : 15,
+      "creation_date" : 1496355945,
+      "post_id" : 32248950,
+      "comment_id" : 75641722,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Ryboflavin No, it doesn&#39;t. One of those is a well-defined language semantic, and the other is an exception"
+    }, {
+      "owner" : {
+        "account_id" : 303225,
+        "reputation" : 2021,
+        "user_id" : 5690147,
+        "user_type" : "registered",
+        "profile_image" : "https://lh6.googleusercontent.com/-FyrFt7M69pA/AAAAAAAAAAI/AAAAAAAAHWQ/Y_kHf2tOZTQ/s256-rj/photo.jpg",
+        "display_name" : "Yann Vo",
+        "link" : "https://stackoverflow.com/users/5690147/yann-vo"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1650447095,
+      "post_id" : 32248950,
+      "comment_id" : 127115983,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You can also specify your own default value with the overloaded method <a href=\"https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/org/apache/commons/lang3/math/NumberUtils.html#toInt(java.lang.String,%20int)\" rel=\"nofollow noreferrer\">NumberUtils.toInt(String, int);</a>"
+    }, {
+      "owner" : {
+        "account_id" : 6526630,
+        "reputation" : 3039,
+        "user_id" : 5049185,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5c014a8ebf8a2659bfe7faa5e6b3de42?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "syck",
+        "link" : "https://stackoverflow.com/users/5049185/syck"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1733421578,
+      "post_id" : 32248950,
+      "comment_id" : 139757574,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You would not want to return a defined and valid number for an undefined state, You still can set the result to 0 in the try/catch block, if this is appropriate for your code. If 0 is a valid result, it is senseless using it as an identifier for invalid results. If 0 is not in your range of valid numbers, you will still have to check for a 0 result outside."
+    } ],
+    "owner" : {
+      "account_id" : 2716952,
+      "reputation" : 797,
+      "user_id" : 2344115,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/eb2078464d417c2074b00b1d85ca5a39?s=256&d=identicon&r=PG",
+      "display_name" : "Ryboflavin",
+      "link" : "https://stackoverflow.com/users/2344115/ryboflavin"
+    },
+    "is_accepted" : false,
+    "score" : 66,
+    "last_activity_date" : 1457216728,
+    "last_edit_date" : 1457216728,
+    "creation_date" : 1440677269,
+    "answer_id" : 32248950,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>An alternate solution is to use <a href=\"https://en.wikipedia.org/wiki/Apache_Commons\">Apache Commons'</a> NumberUtils:</p>\n\n<pre><code>int num = NumberUtils.toInt(\"1234\");\n</code></pre>\n\n<p>The Apache utility is nice because if the string is an invalid number format then 0 is always returned. Hence saving you the try catch block.</p>\n\n<p><a href=\"https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/org/apache/commons/lang3/math/NumberUtils.html#toInt(java.lang.String)\">Apache NumberUtils API Version 3.4</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4641064,
+      "reputation" : 629,
+      "user_id" : 3760904,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://i.sstatic.net/Do5Yd.jpg?s=256",
+      "display_name" : "Giridhar Kumar",
+      "link" : "https://stackoverflow.com/users/3760904/giridhar-kumar"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1455666647,
+    "last_edit_date" : 1455666647,
+    "creation_date" : 1445334695,
+    "answer_id" : 33233407,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>We can use the <code>parseInt(String str)</code> method of the <code>Integer</code> wrapper class for converting a String value to an integer value.</p>\n\n<p>For example:</p>\n\n<pre><code>String strValue = \"12345\";\nInteger intValue = Integer.parseInt(strVal);\n</code></pre>\n\n<p>The <code>Integer</code> class also provides the <code>valueOf(String str)</code> method:</p>\n\n<pre><code>String strValue = \"12345\";\nInteger intValue = Integer.valueOf(strValue);\n</code></pre>\n\n<p>We can also use <code>toInt(String strValue)</code> of <a href=\"https://commons.apache.org/proper/commons-lang/javadocs/api-3.4/org/apache/commons/lang3/math/NumberUtils.html\">NumberUtils Utility Class</a> for the conversion:</p>\n\n<pre><code>String strValue = \"12345\";\nInteger intValue = NumberUtils.toInt(strValue);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 20963346,
+        "reputation" : 121,
+        "user_id" : 15402266,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/80d7f4fa1928343a3a13dbb4f77e4946?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Mama africa",
+        "link" : "https://stackoverflow.com/users/15402266/mama-africa"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1747572728,
+      "post_id" : 35834484,
+      "comment_id" : 140436802,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It also decodes negative numbers."
+    } ],
+    "owner" : {
+      "account_id" : 4812242,
+      "reputation" : 57032,
+      "user_id" : 3885376,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://i.sstatic.net/KzenF.png?s=256",
+      "display_name" : "ROMANIA_engineer",
+      "link" : "https://stackoverflow.com/users/3885376/romania-engineer"
+    },
+    "is_accepted" : false,
+    "score" : 52,
+    "last_activity_date" : 1688557826,
+    "last_edit_date" : 1688557826,
+    "creation_date" : 1457311369,
+    "answer_id" : 35834484,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h3><a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html#decode-java.lang.String-\" rel=\"nofollow noreferrer\"><code>Integer.decode</code></a></h3>\n<p>You can also use <code>public static Integer decode(String nm) throws NumberFormatException</code>.</p>\n<p>It also works for bases 8 and 16:</p>\n<pre class=\"lang-java prettyprint-override\"><code>    // base 10\n    Integer.parseInt(&quot;12&quot;);     // 12 - int\n    Integer.valueOf(&quot;12&quot;);      // 12 - Integer\n    Integer.decode(&quot;12&quot;);       // 12 - Integer\n\n    // base 8\n    // 10 (0,1,...,7,10,11,12)\n    Integer.parseInt(&quot;12&quot;, 8);  // 10 - int\n    Integer.valueOf(&quot;12&quot;, 8);   // 10 - Integer\n    Integer.decode(&quot;012&quot;);      // 10 - Integer\n\n    // base 16\n    // 18 (0,1,...,F,10,11,12)\n    Integer.parseInt(&quot;12&quot;, 16); // 18 - int\n    Integer.valueOf(&quot;12&quot;, 16);  // 18 - Integer\n    Integer.decode(&quot;#12&quot;);      // 18 - Integer\n    Integer.decode(&quot;0x12&quot;);     // 18 - Integer\n    Integer.decode(&quot;0X12&quot;);     // 18 - Integer\n\n    // base 2\n    Integer.parseInt(&quot;11&quot;, 2);  // 3 - int\n    Integer.valueOf(&quot;11&quot;, 2);   // 3 - Integer\n</code></pre>\n<p>If you want to get <code>int</code> instead of <code>Integer</code> you can use:</p>\n<ol>\n<li><p>Unboxing:</p>\n<pre><code> int val = Integer.decode(&quot;12&quot;); \n</code></pre>\n</li>\n<li><p><code>intValue()</code>:</p>\n<pre><code> Integer.decode(&quot;12&quot;).intValue();\n</code></pre>\n</li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4816487,
+      "reputation" : 4680,
+      "user_id" : 3888450,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/82a839a0c48474f281fbacd480900087?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Stefan Dollase",
+      "link" : "https://stackoverflow.com/users/3888450/stefan-dollase"
+    },
+    "is_accepted" : false,
+    "score" : 33,
+    "last_activity_date" : 1586711214,
+    "last_edit_date" : 1586711214,
+    "creation_date" : 1459739588,
+    "answer_id" : 36394016,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Whenever there is the slightest possibility that the given String does not contain an Integer, you have to handle this special case. Sadly, the standard Java methods <code>Integer::parseInt</code> and <code>Integer::valueOf</code> throw a <code>NumberFormatException</code> to signal this special case. Thus, you have to use exceptions for flow control, which is generally considered bad coding style.</p>\n\n<p>In my opinion, this special case should be handled by returning an empty <code>Optional&lt;Integer&gt;</code>. Since Java does not offer such a method, I use the following wrapper:</p>\n\n<pre><code>private Optional&lt;Integer&gt; tryParseInteger(String string) {\n    try {\n        return Optional.of(Integer.valueOf(string));\n    } catch (NumberFormatException e) {\n        return Optional.empty();\n    }\n}\n</code></pre>\n\n<p>Example usage:</p>\n\n<pre><code>// prints \"12\"\nSystem.out.println(tryParseInteger(\"12\").map(i -&gt; i.toString()).orElse(\"invalid\"));\n// prints \"-1\"\nSystem.out.println(tryParseInteger(\"-1\").map(i -&gt; i.toString()).orElse(\"invalid\"));\n// prints \"invalid\"\nSystem.out.println(tryParseInteger(\"ab\").map(i -&gt; i.toString()).orElse(\"invalid\"));\n</code></pre>\n\n<p>While this is still using exceptions for flow control internally, the usage code becomes very clean. Also, you can clearly distinguish the case where <code>-1</code> is parsed as a valid value and the case where an invalid String could not be parsed.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3130088,
+      "reputation" : 46062,
+      "user_id" : 2648077,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/a465e5bf1c71410211094e09a44d574a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Alireza Fattahi",
+      "link" : "https://stackoverflow.com/users/2648077/alireza-fattahi"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1567465681,
+    "last_edit_date" : 1567465681,
+    "creation_date" : 1469510787,
+    "answer_id" : 38581630,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As mentioned, Apache Commons' <code>NumberUtils</code> can do it. It returns <code>0</code> if it cannot convert a string to an int.</p>\n\n<p>You can also define your own default value:</p>\n\n<pre><code>NumberUtils.toInt(String str, int defaultValue)\n</code></pre>\n\n<p>Example:</p>\n\n<pre><code>NumberUtils.toInt(\"3244\", 1) = 3244\nNumberUtils.toInt(\"\", 1)     = 1\nNumberUtils.toInt(null, 5)   = 5\nNumberUtils.toInt(\"Hi\", 6)   = 6\nNumberUtils.toInt(\" 32 \", 1) = 1 // Space in numbers are not allowed\nNumberUtils.toInt(StringUtils.trimToEmpty(\"  32 \", 1)) = 32;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 308156,
+      "reputation" : 14810,
+      "user_id" : 619860,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/6vm1N.jpg?s=256",
+      "display_name" : "Hoa Nguyen",
+      "link" : "https://stackoverflow.com/users/619860/hoa-nguyen"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1567465591,
+    "last_edit_date" : 1567465591,
+    "creation_date" : 1470062648,
+    "answer_id" : 38701772,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Apart from the previous answers, I would like to add several functions. These are results while you use them:</p>\n\n<pre><code>public static void main(String[] args) {\n  System.out.println(parseIntOrDefault(\"123\", 0)); // 123\n  System.out.println(parseIntOrDefault(\"aaa\", 0)); // 0\n  System.out.println(parseIntOrDefault(\"aaa456\", 3, 0)); // 456\n  System.out.println(parseIntOrDefault(\"aaa789bbb\", 3, 6, 0)); // 789\n}\n</code></pre>\n\n<p>Implementation:</p>\n\n<pre><code>public static int parseIntOrDefault(String value, int defaultValue) {\n  int result = defaultValue;\n  try {\n    result = Integer.parseInt(value);\n  }\n  catch (Exception e) {\n  }\n  return result;\n}\n\npublic static int parseIntOrDefault(String value, int beginIndex, int defaultValue) {\n  int result = defaultValue;\n  try {\n    String stringValue = value.substring(beginIndex);\n    result = Integer.parseInt(stringValue);\n  }\n  catch (Exception e) {\n  }\n  return result;\n}\n\npublic static int parseIntOrDefault(String value, int beginIndex, int endIndex, int defaultValue) {\n  int result = defaultValue;\n  try {\n    String stringValue = value.substring(beginIndex, endIndex);\n    result = Integer.parseInt(stringValue);\n  }\n  catch (Exception e) {\n  }\n  return result;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 108817,
+      "reputation" : 115080,
+      "user_id" : 288671,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/33fa45af0983107b1445c604ef60a0ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vitalii Fedorenko",
+      "link" : "https://stackoverflow.com/users/288671/vitalii-fedorenko"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1722971529,
+    "last_edit_date" : 1722971529,
+    "creation_date" : 1470506189,
+    "answer_id" : 38807214,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><a href=\"https://en.wikipedia.org/wiki/Google_Guava\" rel=\"nofollow noreferrer\">Google Guava</a> has <a href=\"https://google.github.io/guava/releases/19.0/api/docs/com/google/common/primitives/Ints.html#tryParse(java.lang.String)\" rel=\"nofollow noreferrer\">Ints.tryParse(String)</a>, which returns <code>null</code> if the string couldn't be parsed, for example:</p>\n<pre><code>Integer fooInt = Ints.tryParse(fooString);\nif (fooInt != null) {\n  ...\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3750291,
+      "reputation" : 938,
+      "user_id" : 3280682,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://lh6.googleusercontent.com/-HMPjDJYZXLY/AAAAAAAAAAI/AAAAAAAAAmw/JUTi4kFxo6A/s256-rj/photo.jpg",
+      "display_name" : "Aditya",
+      "link" : "https://stackoverflow.com/users/3280682/aditya"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1688558281,
+    "last_edit_date" : 1688558281,
+    "creation_date" : 1471504044,
+    "answer_id" : 39011912,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For a normal <code>String</code>, you can use:</p>\n<pre><code>int number = Integer.parseInt(&quot;1234&quot;);\n</code></pre>\n<p>For a <code>StringBuilder</code> and <code>StringBuffer</code>, you can use:</p>\n<pre><code>Integer.parseInt(myBuilderOrBuffer.toString());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 165129,
+      "reputation" : 1468,
+      "user_id" : 388317,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://i.sstatic.net/VHy0Nith.webp?s=256",
+      "display_name" : "SyntaxSamurai",
+      "link" : "https://stackoverflow.com/users/388317/syntaxsamurai"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1488314200,
+    "creation_date" : 1488314200,
+    "answer_id" : 42518263,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use <code>new Scanner(\"1244\").nextInt()</code>. Or ask if even an int exists: <code>new Scanner(\"1244\").hasNextInt()</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2375630,
+      "reputation" : 32041,
+      "user_id" : 2815219,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d10432298a6eacf6be2f263d8fc3776b?s=256&d=identicon&r=PG",
+      "display_name" : "Raman Sahasi",
+      "link" : "https://stackoverflow.com/users/2815219/raman-sahasi"
+    },
+    "is_accepted" : false,
+    "community_owned_date" : 1493012179,
+    "score" : 11,
+    "last_activity_date" : 1688558222,
+    "last_edit_date" : 1688558222,
+    "creation_date" : 1493012179,
+    "answer_id" : 43580481,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In programming competitions, where you're assured that the number will always be a valid integer, then you can write your own method to parse the input. This will skip all validation-related code (since you don't need any of that) and will be a bit more efficient.</p>\n<ol>\n<li>For valid positive integer:</li>\n</ol>\n<pre class=\"lang-java prettyprint-override\"><code>        private static int parseInt(String str) {\n            int i, n = 0;\n\n            for (i = 0; i &lt; str.length(); i++) {\n                n *= 10;\n                n += str.charAt(i) - 48;\n            }\n\n            return n;\n        }\n</code></pre>\n<ol start=\"2\">\n<li>For both positive and negative integers:</li>\n</ol>\n<pre class=\"lang-java prettyprint-override\"><code>        private static int parseInt(String str) {\n            int i = 0, n = 0, sign = 1;\n            if (str.charAt(0) == '-') {\n                i = 1;\n                sign = -1;\n            }\n\n            for (; i &lt; str.length(); i++) {\n                n *= 10;\n                n += str.charAt(i) - 48;\n            }\n\n            return sign * n;\n        }\n</code></pre>\n<ol start=\"3\">\n<li>If you are expecting whitespace before or after these numbers,\nthen make sure to do a <code>str = str.trim()</code> before processing further.</li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2232881,
+      "reputation" : 846,
+      "user_id" : 1970059,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/b72e4b4fff42b926e2b3aab32bcc6b43?s=256&d=identicon&r=PG",
+      "display_name" : "Dmytro Shvechikov",
+      "link" : "https://stackoverflow.com/users/1970059/dmytro-shvechikov"
+    },
+    "is_accepted" : false,
+    "score" : 44,
+    "last_activity_date" : 1667572652,
+    "last_edit_date" : 1667572652,
+    "creation_date" : 1507058166,
+    "answer_id" : 46551829,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Methods to do that:</p>\n<ol>\n<li><code>Integer.parseInt(s)</code></li>\n<li><code>Integer.parseInt(s, radix)</code></li>\n<li><code>Integer.parseInt(s, beginIndex, endIndex, radix)</code></li>\n<li><code>Integer.parseUnsignedInt(s)</code></li>\n<li><code>Integer.parseUnsignedInt(s, radix)</code></li>\n<li><code>Integer.parseUnsignedInt(s, beginIndex, endIndex, radix)</code></li>\n<li><code>Integer.valueOf(s)</code></li>\n<li><code>Integer.valueOf(s, radix)</code></li>\n<li><code>Integer.decode(s)</code></li>\n<li><code>NumberUtils.toInt(s)</code></li>\n<li><code>NumberUtils.toInt(s, defaultValue)</code></li>\n</ol>\n<hr />\n<p><code>Integer.valueOf</code> produces an <code>Integer</code> object and all other methods a primitive int.</p>\n<p>The last two methods are from <a href=\"http://mvnrepository.com/artifact/org.apache.commons/commons-lang3\" rel=\"nofollow noreferrer\">commons-lang3</a> and a big article about converting <a href=\"https://codingmorning.com/convert-string-to-int-in-java/\" rel=\"nofollow noreferrer\">here</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11884664,
+      "reputation" : 513,
+      "user_id" : 8697391,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3321423d519ad52476160093782d2045?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Lukas Bauer",
+      "link" : "https://stackoverflow.com/users/8697391/lukas-bauer"
+    },
+    "is_accepted" : false,
+    "score" : 29,
+    "last_activity_date" : 1567464637,
+    "last_edit_date" : 1567464637,
+    "creation_date" : 1507316422,
+    "answer_id" : 46612299,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use <a href=\"http://docs.oracle.com/javase/9/docs/api/java/lang/Integer.html#parseInt-java.lang.String-\" rel=\"noreferrer\"><code>Integer.parseInt(yourString)</code></a>.</p>\n\n<p><strong>Remember the following things:</strong></p>\n\n<p><code>Integer.parseInt(\"1\");</code>      // ok</p>\n\n<p><code>Integer.parseInt(\"-1\");</code>     // ok</p>\n\n<p><code>Integer.parseInt(\"+1\");</code>     // ok</p>\n\n<p><code>Integer.parseInt(\" 1\");</code>     // Exception (blank space)</p>\n\n<p><code>Integer.parseInt(\"2147483648\");</code> // Exception (Integer is limited to a <a href=\"http://docs.oracle.com/javase/9/docs/api/java/lang/Integer.html#MAX_VALUE\" rel=\"noreferrer\">maximum value</a> of 2,147,483,647)</p>\n\n<p><code>Integer.parseInt(\"1.1\");</code> // Exception (<strong>.</strong> or <strong>,</strong> or whatever is not allowed)</p>\n\n<p><code>Integer.parseInt(\"\");</code> // Exception (not 0 or something)</p>\n\n<p>There is only one type of exception: <a href=\"http://docs.oracle.com/javase/9/docs/api/java/lang/NumberFormatException.html\" rel=\"noreferrer\"><code>NumberFormatException</code></a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 43022,
+        "reputation" : 24617,
+        "user_id" : 125562,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/SdIqA.png?s=256",
+        "display_name" : "Basilevs",
+        "link" : "https://stackoverflow.com/users/125562/basilevs"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1598548786,
+      "post_id" : 49989721,
+      "comment_id" : 112502428,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<a href=\"https://docs.oracle.com/javase/9/docs/api/java/lang/Integer.html#Integer(java.lang.String)\" rel=\"nofollow noreferrer\">Integer constructors are deprecated</a>"
+    } ],
+    "owner" : {
+      "account_id" : 3024120,
+      "reputation" : 3333,
+      "user_id" : 2564509,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7ee271c732af6e0cfb7ae33d2c277b4d?s=256&d=identicon&r=PG",
+      "display_name" : "djm.im",
+      "link" : "https://stackoverflow.com/users/2564509/djm-im"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1598610523,
+    "last_edit_date" : 1598610523,
+    "creation_date" : 1524516550,
+    "answer_id" : 49989721,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I am a little bit surprised that nobody mentioned the Integer constructor that takes String as a parameter.</p>\n<p>So, here it is:</p>\n<pre><code>String myString = &quot;1234&quot;;\nint i1 = new Integer(myString);\n</code></pre>\n<p><a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html#Integer-java.lang.String-\" rel=\"nofollow noreferrer\">Java 8 - Integer(String)</a>.</p>\n<p>Of course, the constructor will return type <code>Integer</code>, and an unboxing operation converts the value to <code>int</code>.</p>\n<hr />\n<p><em>Note 1: It's important to mention</em>: This constructor calls the <code>parseInt</code> method.</p>\n<pre><code>public Integer(String var1) throws NumberFormatException {\n    this.value = parseInt(var1, 10);\n}\n</code></pre>\n<p><em>Note 2: It's deprecated</em>: <code>@Deprecated(since=&quot;9&quot;)</code> - <a href=\"https://docs.oracle.com/javase/9/docs/api/java/lang/Integer.html#Integer-java.lang.String-\" rel=\"nofollow noreferrer\">JavaDoc</a>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 24885,
+        "reputation" : 31372,
+        "user_id" : 63550,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/RIZKi.png?s=256",
+        "display_name" : "Peter Mortensen",
+        "link" : "https://stackoverflow.com/users/63550/peter-mortensen"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1567463704,
+      "post_id" : 53921506,
+      "comment_id" : 101962269,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Some explanation would be in order."
+    }, {
+      "owner" : {
+        "account_id" : 72095,
+        "reputation" : 20588,
+        "user_id" : 208273,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/65129b14ad4a755ba297a84f0ea03727?s=256&d=identicon&r=PG",
+        "display_name" : "Ryan M",
+        "link" : "https://stackoverflow.com/users/208273/ryan-m"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1677720232,
+      "post_id" : 53921506,
+      "comment_id" : 133395716,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "With <code>getBytes</code> you&#39;re using the platform&#39;s default charset and risking multi-byte encodings.  There&#39;s just no reason to do this.  Also, this doesn&#39;t handle negative numbers."
+    } ],
+    "owner" : {
+      "account_id" : 5640275,
+      "reputation" : 397,
+      "user_id" : 4464360,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/ME9CE.jpg?s=256",
+      "display_name" : "Abhijeet Kale",
+      "link" : "https://stackoverflow.com/users/4464360/abhijeet-kale"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1688558718,
+    "last_edit_date" : 1688558718,
+    "creation_date" : 1545733985,
+    "answer_id" : 53921506,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>import java.util.*;\n\npublic class strToint {\n\n    public static void main(String[] args) {\n\n        String str = &quot;123&quot;;\n        byte barr[] = str.getBytes();\n\n        System.out.println(Arrays.toString(barr));\n        int result = 0;\n\n        for (int i = 0; i &lt; barr.length; i++) {\n            // System.out.print(barr[i] + &quot; &quot;);\n            int ii = barr[i];\n            char a = (char) ii;\n            int no = Character.getNumericValue(a);\n            result = result * 10 + no;\n            System.out.println(result);\n        }\n\n        System.out.println(&quot;result:&quot; + result);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10078487,
+        "reputation" : 2172,
+        "user_id" : 7449706,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/1302265936460934/picture?type=large",
+        "display_name" : "Khang Hoang Nguyen",
+        "link" : "https://stackoverflow.com/users/7449706/khang-hoang-nguyen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1567836850,
+      "post_id" : 54282976,
+      "comment_id" : 102091823,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Also, to clarify. The reason why having the power array method ran faster is that Java cached the result for this type of test code. I tested, in a real-life situation, using bit shift will work way faster."
+    }, {
+      "owner" : {
+        "account_id" : 72095,
+        "reputation" : 20588,
+        "user_id" : 208273,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/65129b14ad4a755ba297a84f0ea03727?s=256&d=identicon&r=PG",
+        "display_name" : "Ryan M",
+        "link" : "https://stackoverflow.com/users/208273/ryan-m"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1677720168,
+      "post_id" : 54282976,
+      "comment_id" : 133395713,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why do you have <code>if (c &gt; 9)</code> followed immediately by <code>if (c &gt; 2)</code> with the exact same contents?"
+    } ],
+    "owner" : {
+      "account_id" : 10078487,
+      "reputation" : 2172,
+      "user_id" : 7449706,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/1302265936460934/picture?type=large",
+      "display_name" : "Khang Hoang Nguyen",
+      "link" : "https://stackoverflow.com/users/7449706/khang-hoang-nguyen"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1567463538,
+    "last_edit_date" : 1567463538,
+    "creation_date" : 1548039520,
+    "answer_id" : 54282976,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I wrote this fast method to parse a string input into int or long. It is faster than the current JDK 11 Integer.parseInt or Long.parseLong. Although, you only asked for int, I also included the long parser. The code parser below requires that the parser's method must be small for it to operate quickly. An alternative version is below the test code. The alternative version is pretty quick and it does not depend on the size of the class.</p>\n\n<p>This class checks for overflow, and you could customize the code to adapt to your needs. An empty string will yield 0 with my method but that is intentional. You can change that to adapt your case or use as is.</p>\n\n<p>This is only the part of the class where parseInt and parseLong are needed. Note that this only deals with base 10 numbers.</p>\n\n<p>The test code for the int parser is below the code below.</p>\n\n<pre><code>/*\n * Copyright 2019 Khang Hoang Nguyen\n * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions\n * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n * THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n * @author: Khang Hoang Nguyen - kevin@fai.host.\n **/\nfinal class faiNumber{\n    private static final long[] longpow = {0L, 1L, 10L, 100L, 1000L, 10000L, 100000L, 1000000L, 10000000L, 100000000L, 1000000000L,\n                                           10000000000L, 100000000000L, 1000000000000L, 10000000000000L, 100000000000000L,\n                                           1000000000000000L, 10000000000000000L, 100000000000000000L, 1000000000000000000L,\n                                          };\n\n    private static final int[] intpow = { 0, 1, 10, 100, 1000, 10000,\n                                          100000, 1000000, 10000000, 100000000, 1000000000\n                                        };\n\n    /**\n     * parseLong(String str) parse a String into Long.\n     * All errors throw by this method is NumberFormatException.\n     * Better errors can be made to tailor to each use case.\n     **/\n    public static long parseLong(final String str) {\n        final int length = str.length();\n        if (length == 0)\n            return 0L;\n\n        char c1 = str.charAt(0);\n        int start;\n\n        if (c1 == '-' || c1 == '+') {\n            if (length == 1)\n                throw new NumberFormatException(String.format(\"Not a valid long value. Input '%s'.\", str));\n            start = 1;\n        } else {\n            start = 0;\n        }\n\n        /*\n         * Note: if length &gt; 19, possible scenario is to run through the string\n         * to check whether the string contains only valid digits.\n         * If the check had only valid digits then a negative sign meant underflow, else, overflow.\n         */\n        if (length - start &gt; 19)\n            throw new NumberFormatException(String.format(\"Not a valid long value. Input '%s'.\", str));\n\n        long c;\n        long out = 0L;\n\n        for ( ; start &lt; length; start++) {\n            c = (str.charAt(start) ^ '0');\n            if (c &gt; 9L)\n                throw new NumberFormatException( String.format(\"Not a valid long value. Input '%s'.\", str) );\n            out += c * longpow[length - start];\n        }\n\n        if (c1 == '-') {\n            out = ~out + 1L;\n            // If out &gt; 0 number underflow(supposed to be negative).\n            if (out &gt; 0L)\n                throw new NumberFormatException(String.format(\"Not a valid long value. Input '%s'.\", str));\n            return out;\n        }\n        // If out &lt; 0 number overflow (supposed to be positive).\n        if (out &lt; 0L)\n            throw new NumberFormatException(String.format(\"Not a valid long value. Input '%s'.\", str));\n        return out;\n    }\n\n    /**\n     * parseInt(String str) parse a string into an int.\n     * return 0 if string is empty.\n     **/\n    public static int parseInt(final String str) {\n        final int length = str.length();\n        if (length == 0)\n            return 0;\n\n        char c1 = str.charAt(0);\n        int start;\n\n        if (c1 == '-' || c1 == '+') {\n            if (length == 1)\n                throw new NumberFormatException(String.format(\"Not a valid integer value. Input '%s'.\", str));\n            start = 1;\n        } else {\n            start = 0;\n        }\n\n        int out = 0; int c;\n        int runlen = length - start;\n\n        if (runlen &gt; 9) {\n            if (runlen &gt; 10)\n                throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n\n            c = (str.charAt(start) ^ '0'); // &lt;- Any number from 0 - 255 ^ 48 will yield greater than 9 except 48 - 57\n            if (c &gt; 9)\n                throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n            if (c &gt; 2)\n                throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n            out += c * intpow[length - start++];\n        }\n\n        for ( ; start &lt; length; start++) {\n            c = (str.charAt(start) ^ '0');\n            if (c &gt; 9)\n                throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n            out += c * intpow[length - start];\n        }\n\n        if (c1 == '-') {\n            out = ~out + 1;\n            if (out &gt; 0)\n                throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n            return out;\n        }\n\n        if (out &lt; 0)\n            throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n        return out;\n    }\n}\n</code></pre>\n\n<p>Test Code Section. This should take around 200 seconds or so.</p>\n\n<pre><code>// Int Number Parser Test;\nlong start = System.currentTimeMillis();\nSystem.out.println(\"INT PARSER TEST\");\nfor (int i = Integer.MIN_VALUE; i != Integer.MAX_VALUE; i++){\n   if (faiNumber.parseInt(\"\"+i) != i)\n       System.out.println(\"Wrong\");\n   if (i == 0)\n       System.out.println(\"HalfWay Done\");\n}\n\nif (faiNumber.parseInt(\"\" + Integer.MAX_VALUE) != Integer.MAX_VALUE)\n    System.out.println(\"Wrong\");\nlong end = System.currentTimeMillis();\nlong result = (end - start);\nSystem.out.println(result);\n// INT PARSER END */\n</code></pre>\n\n<p>An alternative method which is also very fast. Note that array of int pow is not used, but a mathematical optimization of multiply by 10 by bit shifting.</p>\n\n<pre><code>public static int parseInt(final String str) {\n    final int length = str.length();\n    if (length == 0)\n        return 0;\n\n    char c1 = str.charAt(0);\n    int start;\n\n    if (c1 == '-' || c1 == '+') {\n        if (length == 1)\n            throw new NumberFormatException(String.format(\"Not a valid integer value. Input '%s'.\", str));\n        start = 1;\n    } else {\n        start = 0;\n    }\n\n    int out = 0;\n    int c;\n    while (start &lt; length &amp;&amp; str.charAt(start) == '0')\n        start++; // &lt;-- This to disregard leading 0. It can be\n                 // removed if you know exactly your source\n                 // does not have leading zeroes.\n    int runlen = length - start;\n\n    if (runlen &gt; 9) {\n        if (runlen &gt; 10)\n            throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n\n        c = (str.charAt(start++) ^ '0');  // &lt;- Any number from 0 - 255 ^ 48 will yield greater than 9 except 48 - 57\n        if (c &gt; 9)\n            throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n        if (c &gt; 2)\n            throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n        out = (out &lt;&lt; 1) + (out &lt;&lt; 3) + c; // &lt;- Alternatively this can just be out = c or c above can just be out;\n    }\n\n    for ( ; start &lt; length; start++) {\n        c = (str.charAt(start) ^ '0');\n        if (c &gt; 9)\n            throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n        out = (out &lt;&lt; 1) + (out &lt;&lt; 3) + c;\n    }\n\n    if (c1 == '-') {\n        out = ~out + 1;\n        if (out &gt; 0)\n            throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n        return out;\n    }\n\n    if (out &lt; 0)\n        throw new NumberFormatException(String.format(\"Not a valid integer value. Input: '%s'.\", str));\n    return out;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12511931,
+      "reputation" : 4373,
+      "user_id" : 9106684,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b7572f2a571bd2336bbf07564476721b?s=256&d=identicon&r=PG",
+      "display_name" : "duyuanchao",
+      "link" : "https://stackoverflow.com/users/9106684/duyuanchao"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1580056625,
+    "last_edit_date" : 1580056625,
+    "creation_date" : 1571747528,
+    "answer_id" : 58504383,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><a href=\"https://github.com/shellhub/Algorithms-Java/blob/master/src/main/java/maths/StringToInteger.java\" rel=\"nofollow noreferrer\">As I write on GitHub</a>:</p>\n\n<pre><code>public class StringToInteger {\n    public static void main(String[] args) {\n        assert parseInt(\"123\") == Integer.parseInt(\"123\");\n        assert parseInt(\"-123\") == Integer.parseInt(\"-123\");\n        assert parseInt(\"0123\") == Integer.parseInt(\"0123\");\n        assert parseInt(\"+123\") == Integer.parseInt(\"+123\");\n    }\n\n    /**\n     * Parse a string to integer\n     *\n     * @param s the string\n     * @return the integer value represented by the argument in decimal.\n     * @throws NumberFormatException if the {@code string} does not contain a parsable integer.\n     */\n    public static int parseInt(String s) {\n        if (s == null) {\n            throw new NumberFormatException(\"null\");\n        }\n        boolean isNegative = s.charAt(0) == '-';\n        boolean isPositive = s.charAt(0) == '+';\n        int number = 0;\n        for (int i = isNegative ? 1 : isPositive ? 1 : 0, length = s.length(); i &lt; length; ++i) {\n            if (!Character.isDigit(s.charAt(i))) {\n                throw new NumberFormatException(\"s=\" + s);\n            }\n            number = number * 10 + s.charAt(i) - '0';\n        }\n        return isNegative ? -number : number;\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3576533,
+        "reputation" : 17646,
+        "user_id" : 2985643,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/a684d7f42f3e0f4037f2b78a339ec45d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "skomisa",
+        "link" : "https://stackoverflow.com/users/2985643/skomisa"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1586662464,
+      "post_id" : 60756484,
+      "comment_id" : 108207747,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "How does this add anything? There are several older answers that have already provided these approaches. Please read existing answers before posting."
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user1644002"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1633712755,
+      "post_id" : 60756484,
+      "comment_id" : 122841769,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "He is showing the efficiency of one is greater than the efficiency of the other."
+    }, {
+      "owner" : {
+        "account_id" : 47283,
+        "reputation" : 723399,
+        "user_id" : 139985,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+        "display_name" : "Stephen C",
+        "link" : "https://stackoverflow.com/users/139985/stephen-c"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1641088524,
+      "post_id" : 60756484,
+      "comment_id" : 124718496,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@user1644002 - Well if he (and you) think that, then he is (probably) incorrect.  The JIT compiler should inline the <code>valueOf</code> -&gt; <code>parseInt</code> call making the two versions equally efficient."
+    } ],
+    "owner" : {
+      "account_id" : 16583795,
+      "reputation" : 919,
+      "user_id" : 11983766,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YxOPh.png?s=256",
+      "display_name" : "dxjuv",
+      "link" : "https://stackoverflow.com/users/11983766/dxjuv"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1598025708,
+    "last_edit_date" : 1598025708,
+    "creation_date" : 1584618053,
+    "answer_id" : 60756484,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The two main ways to do this are using the method <code>valueOf()</code> and method <code>parseInt()</code> of the <code>Integer</code> class.</p>\n<p>Suppose you are given a String like this</p>\n<pre><code>String numberInString = &quot;999&quot;;\n</code></pre>\n<p>Then you can convert it into integer by using</p>\n<pre><code>int numberInInteger = Integer.parseInt(numberInString);\n</code></pre>\n<p>And alternatively, you can use</p>\n<pre><code>int numberInInteger = Integer.valueOf(numberInString);\n</code></pre>\n<p>But the thing here is, the method <code>Integer.valueOf()</code> has the following implementation in <code>Integer</code> class:</p>\n<pre><code>public static Integer valueOf(String var0, int var1) throws NumberFormatException {\n    return parseInt(var0, var1);\n}\n</code></pre>\n<p>As you can see, the <code>Integer.valueOf()</code> internally calls <code>Integer.parseInt()</code> itself.\nAlso, <code>parseInt()</code> returns an <code>int</code>, and <code>valueOf()</code> returns an <code>Integer</code></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 24885,
+        "reputation" : 31372,
+        "user_id" : 63550,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/RIZKi.png?s=256",
+        "display_name" : "Peter Mortensen",
+        "link" : "https://stackoverflow.com/users/63550/peter-mortensen"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1598025979,
+      "post_id" : 61498228,
+      "comment_id" : 112333431,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Re <i>&quot;You need to handle NumberFormatException for the string value issue&quot;</i>: How? By <i>avoiding it happening</i> altogether by one of these three methods? Can you <a href=\"https://stackoverflow.com/posts/61498228/edit\">make it</a> more clear (<b><i>without</i></b> &quot;Update: &quot;, &quot;Edit: &quot; or similar)?"
+    }, {
+      "owner" : {
+        "account_id" : 2671330,
+        "reputation" : 192964,
+        "user_id" : 2308683,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/fb8f5877d244f223b4b6d29e0afb3a4e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "OneCricketeer",
+        "link" : "https://stackoverflow.com/users/2308683/onecricketeer"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1646054713,
+      "post_id" : 61498228,
+      "comment_id" : 126022500,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is only two ways. Introduction of an optional doesn&#39;t change that you&#39;re using parseInt"
+    }, {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1741970855,
+      "post_id" : 61498228,
+      "comment_id" : 140219925,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "also using <code>Optional</code> just to hide a <code>null</code> check is not best practice"
+    } ],
+    "owner" : {
+      "account_id" : 15035938,
+      "reputation" : 310,
+      "user_id" : 10852356,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-50NUH-GavqY/AAAAAAAAAAI/AAAAAAAAAII/vOleDtZoOgc/s256-rj/photo.jpg",
+      "display_name" : "garima garg",
+      "link" : "https://stackoverflow.com/users/10852356/garima-garg"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1646054660,
+    "last_edit_date" : 1646054660,
+    "creation_date" : 1588151691,
+    "answer_id" : 61498228,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are different ways of converting a string int value into an Integer data type value. You need to handle NumberFormatException for the string value issue.</p>\n<ol>\n<li><p>Integer.parseInt</p>\n<pre><code> foo = Integer.parseInt(myString);\n</code></pre>\n</li>\n<li><p>Integer.valueOf</p>\n<pre><code> foo = Integer.valueOf(myString);\n</code></pre>\n</li>\n<li><p>Using Java 8 Optional API</p>\n<pre><code> foo = Optional.ofNullable(myString).map(Integer::parseInt).get();\n</code></pre>\n</li>\n</ol>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 24885,
+        "reputation" : 31372,
+        "user_id" : 63550,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/RIZKi.png?s=256",
+        "display_name" : "Peter Mortensen",
+        "link" : "https://stackoverflow.com/users/63550/peter-mortensen"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1598026261,
+      "post_id" : 62871425,
+      "comment_id" : 112333543,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What are the magic numbers 48 and 57? Can&#39;t (named) constants be used?"
+    }, {
+      "owner" : {
+        "account_id" : 72095,
+        "reputation" : 20588,
+        "user_id" : 208273,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/65129b14ad4a755ba297a84f0ea03727?s=256&d=identicon&r=PG",
+        "display_name" : "Ryan M",
+        "link" : "https://stackoverflow.com/users/208273/ryan-m"
+      },
+      "reply_to_user" : {
+        "account_id" : 24885,
+        "reputation" : 31372,
+        "user_id" : 63550,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/RIZKi.png?s=256",
+        "display_name" : "Peter Mortensen",
+        "link" : "https://stackoverflow.com/users/63550/peter-mortensen"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1722971450,
+      "post_id" : 62871425,
+      "comment_id" : 139002442,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PeterMortensen <code>&#39;0&#39;</code> and <code>&#39;9&#39;</code> (<code>char</code> literals) would be far clearer; no need to even use constants."
+    } ],
+    "owner" : {
+      "account_id" : 7634898,
+      "reputation" : 65,
+      "user_id" : 5788729,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/4D973.jpg?s=256",
+      "display_name" : "Ajay Singh Meena",
+      "link" : "https://stackoverflow.com/users/5788729/ajay-singh-meena"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1598026173,
+    "last_edit_date" : 1598026173,
+    "creation_date" : 1594626691,
+    "answer_id" : 62871425,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can have your own implementations for this, like:</p>\n<pre><code>public class NumericStringToInt {\n\n    public static void main(String[] args) {\n        String str = &quot;123459&quot;;\n\n        int num = stringToNumber(str);\n        System.out.println(&quot;Number of &quot; + str + &quot; is: &quot; + num);\n    }\n\n    private static int stringToNumber(String str) {\n\n        int num = 0;\n        int i = 0;\n        while (i &lt; str.length()) {\n            char ch = str.charAt(i);\n            if (ch &lt; 48 || ch &gt; 57)\n                throw new NumberFormatException(&quot;&quot; + ch);\n            num = num * 10 + Character.getNumericValue(ch);\n            i++;\n        }\n        return num;\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2671330,
+        "reputation" : 192964,
+        "user_id" : 2308683,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/fb8f5877d244f223b4b6d29e0afb3a4e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "OneCricketeer",
+        "link" : "https://stackoverflow.com/users/2308683/onecricketeer"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1646054479,
+      "post_id" : 65108967,
+      "comment_id" : 126022419,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you aren&#39;t using JavaFX GUI framework, shouldn&#39;t use its imports"
+    } ],
+    "owner" : {
+      "account_id" : 8445753,
+      "reputation" : 173,
+      "user_id" : 6336491,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-08rOO1btHiQ/AAAAAAAAAAI/AAAAAAAAAIM/HSsILk28ewk/s256-rj/photo.jpg",
+      "display_name" : "Yogesh",
+      "link" : "https://stackoverflow.com/users/6336491/yogesh"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1641086633,
+    "last_edit_date" : 1641086633,
+    "creation_date" : 1606915500,
+    "answer_id" : 65108967,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Apart from all these answers, I found one new way, although it uses <code>Integer.parseInt()</code> internally.</p>\n<p>By using</p>\n<pre class=\"lang-java prettyprint-override\"><code>import javafx.util.converter.IntegerStringConverter;\n\nnew IntegerStringConverter().fromString(&quot;1234&quot;).intValue()\n</code></pre>\n<p>or</p>\n<pre class=\"lang-java prettyprint-override\"><code>new IntegerStringConverter().fromString(&quot;1234&quot;)\n</code></pre>\n<p>Although it is a little bit costly as new objects get created.</p>\n<p>Just go through the <code>javafx.util.StringConverter&lt;T&gt;</code> class. It helps to convert any wrapper class value to a string or vice versa.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 17330754,
+      "reputation" : 1114,
+      "user_id" : 12553922,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fc70d0bddaa4dfb4d546b4244b7a6d98?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Anis KCHAOU",
+      "link" : "https://stackoverflow.com/users/12553922/anis-kchaou"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1641086456,
+    "last_edit_date" : 1641086456,
+    "creation_date" : 1634995449,
+    "answer_id" : 69688571,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>With Java 11, there are several ways to convert an <code>int</code> to a <code>String</code> type:</p>\n<p><em><strong>1) Integer.parseInt()</strong></em></p>\n<pre><code>String str = &quot;1234&quot;;\nint result = Integer.parseInt(str);\n</code></pre>\n<p><em><strong>2) Integer.valueOf()</strong></em></p>\n<pre><code>String str = &quot;1234&quot;;\nint result = Integer.valueOf(str).intValue();\n</code></pre>\n<p><em><strong>3) Integer constructor</strong></em></p>\n<pre><code>  String str = &quot;1234&quot;;\n  Integer result = new Integer(str);\n</code></pre>\n<p><em><strong>4) Integer.decode</strong></em></p>\n<pre><code>String str = &quot;1234&quot;;\nint result = Integer.decode(str);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11726648,
+      "reputation" : 26351,
+      "user_id" : 8583692,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/joGZ9.png?s=256",
+      "display_name" : "Mahozad",
+      "link" : "https://stackoverflow.com/users/8583692/mahozad"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1758947269,
+    "last_edit_date" : 1758947269,
+    "creation_date" : 1669981331,
+    "answer_id" : 74655262,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For Android developers ending up here these are various solutions for <strong>Kotlin</strong>:</p>\n<pre class=\"lang-kotlin prettyprint-override\"><code>// Throws exception if number has bad form\nval result1 = &quot;1234&quot;.toInt()\n</code></pre>\n<pre class=\"lang-kotlin prettyprint-override\"><code>// Will be null if number has bad form\nval result2 = &quot;1234&quot;.toIntOrNull()\n</code></pre>\n<pre class=\"lang-kotlin prettyprint-override\"><code>// Will be the given default if number has bad form\nval result3 = &quot;1234&quot;.toIntOrNull() ?: -1\n</code></pre>\n<pre class=\"lang-kotlin prettyprint-override\"><code>// Will be return of the run block if number has bad form\nval result4 = &quot;1234&quot;\n    .toIntOrNull()\n    ?: run {\n        // some code\n        // return an Int\n    }\n</code></pre>\n<pre class=\"lang-kotlin prettyprint-override\"><code>// Ignores any none-digit character in string\nval result5 = &quot;12abc34&quot;\n    .filter(Char::isDigit)\n    .toIntOrNull()\n</code></pre>\n<p>Note that <code>String.toInt</code> etc. accept <a href=\"https://en.wikipedia.org/wiki/Modern_Arabic_mathematical_notation#Numeral_systems\" rel=\"nofollow noreferrer\">non-English (non-ASCII) digits</a> too (same behavior as Kotlin <a href=\"https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.text/is-digit.html\" rel=\"nofollow noreferrer\"><code>myChar.isDigit()</code></a> and Java <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Character.html#isDigit(char)\" rel=\"nofollow noreferrer\"><code>Character.isDigit(myChar)</code></a>):</p>\n<pre class=\"lang-kotlin prettyprint-override\"><code>val result = &quot;12۳۴۵&quot;.toInt() // 12345\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1741969928,
+      "post_id" : 76011732,
+      "comment_id" : 140219871,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "by the way: no need to test if it is already a <code>String</code>; just call its <code>toString</code> method // in the code comment we see &quot;more than <b>10</b> digits&quot; but the code is <code>str.length() &gt; 19</code> and <code>str.substring(0, 19)</code> -- the comment is correct // catching <code>Exception</code> instead of more specific exception is not recommended!"
+    } ],
+    "owner" : {
+      "account_id" : 17781688,
+      "reputation" : 573,
+      "user_id" : 12912762,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/IN94S.png?s=256",
+      "display_name" : "a55",
+      "link" : "https://stackoverflow.com/users/12912762/a55"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1688558644,
+    "last_edit_date" : 1688558644,
+    "creation_date" : 1681448409,
+    "answer_id" : 76011732,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This function accepts any param types as input</p>\n<ul>\n<li>then try to convert it <code>toString()</code></li>\n<li>then extract integer via regex</li>\n<li>and safe convert string to int</li>\n</ul>\n<pre class=\"lang-java prettyprint-override\"><code>    public int toInt(Object o) {\n\n        // input param is an integer :|\n        if (o instanceof Integer)\n            return (int) o;\n\n        // input param is (null) so return zero\n        if (o == null)\n            return 0;\n\n        // input param is boolean, so false = 0 \\ true = 1\n        if (o instanceof Boolean)\n            return Boolean.TRUE.equals(o) ? 1 : 0;\n\n        // convert object to string\n        String str = &quot;0&quot;;\n        if (o instanceof String) {\n            str = (String) o;\n        } else { \n            try {\n                str = o.toString();\n            } catch (Exception e) {}\n        }\n\n        // return zero if the string is empty\n        if (str == &quot;&quot;)\n            return 0;\n\n        // detect and export numbers from the string\n        try {\n            Pattern p = Pattern.compile(&quot;\\\\d+&quot;);\n            Matcher m = p.matcher(str);\n            if ( m.find() ) {\n                str = m.group(0);\n            } else { // string not contains any numbers\n                str = &quot;0&quot;;\n            }\n        } catch (Exception e) {\n            str = &quot;0&quot;;\n        }\n        \n        // java stores integers in 32-bit, so can not store more than 10 digits\n        if (str.length() &gt; 19) {\n            str = str.substring(0, 19);\n        }\n\n        // convert string to integer\n        int result = 0;\n        try {\n            result = Integer.parseInt(str);\n        } catch (Exception e) {}\n\n        return result;\n    }\n</code></pre>\n<p>You can change</p>\n<pre><code>catch (Exception e) {}\n</code></pre>\n<p>to</p>\n<pre><code>catch (Exception e) { e.printStackTrace(); }\n</code></pre>\n<p>to show more detailed data about errors in logcat</p>\n<h2>Can handle inputs such as :</h2>\n<ul>\n<li><code>false</code></li>\n<li><code>&quot;&quot;</code></li>\n<li><code>&quot;00004&quot;</code></li>\n<li><code>&quot;  51&quot;</code></li>\n<li><code>&quot;74.6ab.cd&quot;</code></li>\n<li><code>&quot;foo 654 bar&quot;</code></li>\n</ul>\n<h1>Warning</h1>\n<p>This function will change (string)<code>&quot;ab2cd3ef4&quot;</code> to (int)<code>234</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14171626,
+      "reputation" : 47,
+      "user_id" : 11792055,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/2214202558853088/picture?type=large",
+      "display_name" : "Jahedul Islam",
+      "link" : "https://stackoverflow.com/users/11792055/jahedul-islam"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1745855359,
+    "creation_date" : 1745855359,
+    "answer_id" : 79596849,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As already answered above by Rob Hruska.</p>\n<p>You can convert a String to an int in Java using Integer.parseInt(). Here's a quick example:</p>\n<pre><code>String value = &quot;1234&quot;;\nint number = Integer.parseInt(value);\n</code></pre>\n<p>Make sure the string contains a valid integer, otherwise a <strong>NumberFormatException</strong> will be thrown. If you're unsure about the input, wrap it with a <strong>try-catch</strong> block to handle errors safely.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 31180,
+      "reputation" : 29752,
+      "user_id" : 85421,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+      "display_name" : "user85421",
+      "link" : "https://stackoverflow.com/users/85421/user85421"
+    },
+    "is_accepted" : false,
+    "community_owned_date" : 1758965839,
+    "score" : 0,
+    "last_activity_date" : 1758966518,
+    "last_edit_date" : 1758966518,
+    "creation_date" : 1758965839,
+    "answer_id" : 79776655,
+    "question_id" : 5585779,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>NumberFormat</h1>\n<p>An instance of <code>NumberFormat</code> should be used to parse (and eventually format) numbers in a localized manner:</p>\n<pre class=\"lang-java prettyprint-override\"><code>var locale = Locale.of(&quot;de&quot;, &quot;DE&quot;);       // Locale.FRANCE, Locale.UK, Locale.ROOT, ...\nvar format = NumberFormat.getIntegerInstance(locale);  // getIntegerInstance() for default\n\nint i = format.parse(&quot;1234&quot;).intValue();  // parse() returns a Number instance (Long)\n</code></pre>\n<h2>Localized</h2>\n<p>That means that <code>Locale</code> specific decimal point, thousands-separator, and even digits will be parsed and used for formatting.<br />\nFor integer parsing, as asked:</p>\n<ul>\n<li>thousands-separators are ignored;</li>\n<li>decimal point and decimal values are discarded for integer formatters, but used by the other formatters (e.g. <code>getNumberInstance()</code>, <code>getPercentInstance()</code>, ...)</li>\n<li>Unicode digits are accepted</li>\n</ul>\n<p>Example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>int i;\nNumberFormat format;\n\nformat = NumberFormat.getIntegerInstance(Locale.ROOT);\ni = format.parse(&quot;123,456.789&quot;).intValue();  // i = 123456\ni = format.parse(&quot;١٢٣٤&quot;).intValue();         // i = 1234\n\nformat = NumberFormat.getIntegerInstance(Locale.GERMANY);\ni = format.parse(&quot;123.456,789&quot;).intValue();  // i = 123456 - note: changed separators\ni = format.parse(&quot;١٢٣٤&quot;).intValue();         // i = 1234\n</code></pre>\n<hr />\n<p>Formatting with <code>NumberFormat</code> will use the digits as specified by the given <code>Locale</code> (if supported):</p>\n<pre class=\"lang-java prettyprint-override\"><code>var locale = Locale.forLanguageTag(&quot;jv-ID-u-nu-java&quot;);\nvar formatter = NumberFormat.getIntegerInstance(locale);\nvar str = formatter.format(123456);  // &quot;꧑꧒꧓,꧔꧕꧖&quot;\n\nlocale = Locale.forLanguageTag(&quot;th-TH-u-nu-thai&quot;);\n//     = new Locale.Builder().setUnicodeLocaleKeyword(&quot;nu&quot;, &quot;thai&quot;).build(); // alternative\nformatter = NumberFormat.getIntegerInstance(locale);\nstr = formatter.format(123456);  // &quot;๑๒๓,๔๕๖&quot;\n</code></pre>\n<h2>Leniency</h2>\n<p><code>NumberFormat</code>, by default, is set to parse leniently. This will hide eventual <em>errors</em> in the input string. Use <code>setStrict(true)</code> to change this behaviour if needed.</p>\n<pre class=\"lang-java prettyprint-override\"><code>var format = NumberFormat.getIntegerInstance(Locale.ROOT);\nformat.parse(&quot;123xyz456&quot;);  // just 123\n\nformat.setStrict(true);\nformat.parse(&quot;123xyz456&quot;);  // throws ParseException\n</code></pre>\n<hr />\n<p>Please refer to the documentation of <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/text/NumberFormat.html\" rel=\"nofollow noreferrer\"><code>NumberFormat</code></a>, <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Locale.html\" rel=\"nofollow noreferrer\"><code>Locale</code></a> and related classes for more details.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 256928,
+    "reputation" : 45461,
+    "user_id" : 537967,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/fd0de9b7a6fdcd9368f37e71484440fb?s=256&d=identicon&r=PG",
+    "display_name" : "Unknown user",
+    "link" : "https://stackoverflow.com/users/537967/unknown-user"
+  },
+  "is_answered" : true,
+  "view_count" : 7019822,
+  "protected_date" : 1368887701,
+  "accepted_answer_id" : 5585800,
+  "answer_count" : 32,
+  "score" : 3541,
+  "last_activity_date" : 1758966518,
+  "creation_date" : 1302200874,
+  "last_edit_date" : 1697087945,
+  "question_id" : 5585779,
+  "link" : "https://stackoverflow.com/questions/5585779/how-do-i-convert-a-string-to-an-int-in-java",
+  "title" : "How do I convert a String to an int in Java?",
+  "body" : "<p>How can I convert a <code>String</code> value to an <code>int</code> type?</p>\n<pre class=\"lang-java prettyprint-override\"><code>&quot;1234&quot;  →  1234\n</code></pre>\n"
+}

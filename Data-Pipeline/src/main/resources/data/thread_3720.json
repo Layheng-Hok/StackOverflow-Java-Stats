@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "netflix-eureka", "spark-java" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 11835968,
+      "reputation" : 1,
+      "user_id" : 8661293,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/rnwll.jpg?s=256",
+      "display_name" : "centerworker",
+      "link" : "https://stackoverflow.com/users/8661293/centerworker"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1506185687,
+    "creation_date" : 1506185687,
+    "answer_id" : 46382055,
+    "question_id" : 45921685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It seems, that your config files are not found during startup. The eureka configuration files must be on the classpath. Sometimes they are not packaged to the jar file. Be sure to have the files in your jar \n<code>(try jar xf &lt;your-jar-file&gt;</code> \nto analyze the content of your jar. </p>\n\n<p>Are you building with maven? Then add a resource/include block in the build section of your pom-File to ensure the inclusion of the config files.  </p>\n\n<p>Some of the eureka properties can be set in the application.yml files which is the same as applicaiton.properties except for the format you are writing your configurations. I am not sure if there is a eureka-client.properties equivalent for yaml. First get the *.properties running, then try if it understands yaml.  </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 295561,
+      "reputation" : 916,
+      "user_id" : 3894472,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6cc2ce94a043cae569b021720a12a517?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Anurag",
+      "link" : "https://stackoverflow.com/users/3894472/anurag"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1560503381,
+    "creation_date" : 1560503381,
+    "answer_id" : 56594936,
+    "question_id" : 45921685,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>eureka-client.properties and eureka-service.properties in classpath works for me. I have put these files in resources directory of my Web Application.\nThese files are used by Eureka Client and Eureka Server.</p>\n\n<p>application.yml is used by Spring Cloud implementation and is a separate way of working with Eureka registry or any other registry for that matter.</p>\n\n<p>vipAddress is kind of a name by which your application will be registered in Eureka.</p>\n\n<p>The service which registers itself will have eureka.registration.enabled=true in eureka-client.properties. It seems all service registration properties are picked up from this file only.\nThe service which does discovery only will have eureka.registration.enabled=false in its eureka-client.properties</p>\n\n<p>Following link provides a sample application that does registration and discovery:<br/>\n<a href=\"https://github.com/Netflix/eureka/tree/master/eureka-examples\" rel=\"nofollow noreferrer\">https://github.com/Netflix/eureka/tree/master/eureka-examples</a></p>\n\n<p>Please not that there are three components involved here<br/>\n1) Eureka Server<br/>\n2) Service (Uses Eureka Client) - which does registration<br/>\n3) Client (Uses Eureka Client) - which does discovery<br/></p>\n\n<p>The above example talks about 2 and 3. To launch a Eureka service you can go through the following link which will ask you to build Eureka Server war file and drop it on a Tomcat server.<br/>\n<a href=\"https://github.com/Netflix/eureka/wiki/Building-Eureka-Client-and-Server\" rel=\"nofollow noreferrer\">https://github.com/Netflix/eureka/wiki/Building-Eureka-Client-and-Server</a></p>\n\n<p>In order to do your testing you can directly query Eureka Server using its REST interface with an http client like curl or a browser.<br/>\n<a href=\"https://github.com/Netflix/eureka/wiki/Eureka-REST-operations\" rel=\"nofollow noreferrer\">https://github.com/Netflix/eureka/wiki/Eureka-REST-operations</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 992197,
+    "reputation" : 1315,
+    "user_id" : 1009148,
+    "user_type" : "registered",
+    "accept_rate" : 44,
+    "profile_image" : "https://i.sstatic.net/96Bwd.jpg?s=256",
+    "display_name" : "melis",
+    "link" : "https://stackoverflow.com/users/1009148/melis"
+  },
+  "is_answered" : false,
+  "view_count" : 17990,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1761811265,
+  "creation_date" : 1503931459,
+  "last_edit_date" : 1504024088,
+  "question_id" : 45921685,
+  "link" : "https://stackoverflow.com/questions/45921685/how-to-configure-eureka-client-and-service-properties",
+  "title" : "How to configure Eureka Client and Service properties?",
+  "body" : "<p>I'm trying to register my Java service with Eureka - with no luck. I have an existing code base that uses Spark-Java framework, so that 'add only 2 lines of Spring annotations and voila!' examples unfortunately are not helpful for me.</p>\n\n<p>I read the <a href=\"https://github.com/Netflix/eureka/wiki/Configuring-Eureka#configuration\" rel=\"nofollow noreferrer\">Eureka Configuration</a> documentation, created a eureka-conf directory and put the following two files in eureka-conf:</p>\n\n<ul>\n<li>eureka-client.properties   </li>\n<li>eureka-service.properties</li>\n</ul>\n\n<p>I added the eureka_conf path to my $CLASSPATH variable with <code>export CLASSPATH=.:${CLASSPATH}:${EUREKA_CONF}/eureka-client.properties:${EUREKA_CONF}/eureka-service.properties</code></p>\n\n<p>I copy-pasted the content of the property files from <a href=\"https://github.com/Netflix/eureka/tree/master/eureka-examples/conf\" rel=\"nofollow noreferrer\">here</a>. So, they look like this:</p>\n\n<pre><code>#eureka-client.properties\neureka.registration.enabled=false\neureka.preferSameZone=true\neureka.shouldUseDns=false\neureka.serviceUrl.default=http://localhost:8080/eureka/v2/\neureka.decoderName=JacksonJson\n\n#eureka-service.properties\neureka.region=us-west-1\neureka.name=qb-acm\neureka.vipAddress=mysampleservice.mydomain.net\neureka.port=8001\neureka.preferSameZone=true\neureka.shouldUseDns=false\neureka.serviceUrl.default=http://localhost:8080/eureka/v2/\n</code></pre>\n\n<p>You can see, I changed the eureka.name and eureka.region to see in the logs if the properties are being found or not. They are not found.</p>\n\n<p>When I start my service I see the <code>com.netflix.discovery.internal.util.Archaius1Utils</code> throws the following warning:</p>\n\n<p><code>Cannot find the properties specified : eureka-client. This may be okay if there are other environment specific properties or the configuration is installed with a different mechanism.</code></p>\n\n<p>Followed by this: <code>INFO com.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1</code>. </p>\n\n<p>I've created an example Eureka Server and Client (with Spring) just to do an example and the Spring client is registered. Now, I'm trying to have my non-Spring Java service register with the local Eureka server. My end goal is to set this service to register and send heart beats to our remote Eureka server which is being hosted on Pivotal. </p>\n\n<p>Other errors might be useful to the reader:</p>\n\n<pre><code>[main] ERROR com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver - Cannot resolve to any endpoints from provided configuration: {defaultZone=[]}\n[main] ERROR com.netflix.discovery.shared.transport.EurekaHttpClients - Initial resolution of Eureka server endpoints failed. Check ConfigClusterResolver logs for more info\n</code></pre>\n\n<p>So, my questions are:</p>\n\n<ol>\n<li><p>What am I doing wrong setting the properties? </p></li>\n<li><p>I see in many examples they have an <code>application.yml</code> or <code>manifest.yml</code>file. What is the .yaml file\nfor in Eureka configuration? Is it an alternative to the property\nfiles?</p></li>\n</ol>\n\n<p>edit: I found <a href=\"https://stackoverflow.com/questions/35641240/configuring-catalog-items-through-manifest-yml-file\">this answer</a> explains the yaml files. Application.yml is used by Spring boot and Manifest.yml is used by cloud foundry CLI.</p>\n\n<ol start=\"3\">\n<li>What should be eureka.vipAddress on my local environment and on Pivotal?</li>\n</ol>\n\n<p>**edit: I found out, with trial and error, on local this is set to <a href=\"http://localhost:yourport\" rel=\"nofollow noreferrer\">http://localhost:yourport</a> and for PCF it should be the application name. Neither <code>localhost</code> nor <code>service-name</code> corresponds to a physical network interface. Oh well, I finally learned what a virtual ip is **</p>\n\n<p>Let me know if more information needed. Thanks in advance for any help.</p>\n"
+}

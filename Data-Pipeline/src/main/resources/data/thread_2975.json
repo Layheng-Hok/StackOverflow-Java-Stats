@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "hibernate", "annotations" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2897503,
+      "reputation" : 179,
+      "user_id" : 2484931,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/lgzkF.jpg?s=256",
+      "display_name" : "Saqib Javed",
+      "link" : "https://stackoverflow.com/users/2484931/saqib-javed"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1567065647,
+    "post_id" : 43420764,
+    "comment_id" : 101853780,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "see your solution at <a href=\"https://stackoverflow.com/questions/27215607/annotationexception-a-foreign-key-refering-has-the-wrong-number-of-column-shou#27215755\" title=\"annotationexception a foreign key refering has the wrong number of column shou%2327215755\">stackoverflow.com/questions/27215607/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1616980,
+        "reputation" : 614,
+        "user_id" : 1494395,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://i.sstatic.net/MY8OE.jpg?s=256",
+        "display_name" : "Rajith Pemabandu",
+        "link" : "https://stackoverflow.com/users/1494395/rajith-pemabandu"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1492216459,
+      "post_id" : 43420923,
+      "comment_id" : 73900871,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "yes. either use join column in both places or remove the <code>@JoinColumn(name=&quot;VIRSUALPERSON_ID&quot;)</code> from <code>VirsualPersonComment</code> class and try."
+    }, {
+      "owner" : {
+        "account_id" : 1626421,
+        "reputation" : 449,
+        "user_id" : 1501890,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3b42d9b4736048f8429e262cc48d4716?s=256&d=identicon&r=PG",
+        "display_name" : "Suneet Khurana",
+        "link" : "https://stackoverflow.com/users/1501890/suneet-khurana"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1559218358,
+      "post_id" : 43420923,
+      "comment_id" : 99356471,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "both (mappedBy and @JoinColumn) mapping could not use together as  &quot;Caused by: org.hibernate.AnnotationException: Associations marked as mappedBy must not define database mappings like @JoinTable or @JoinColumn&quot;"
+    } ],
+    "owner" : {
+      "account_id" : 430718,
+      "reputation" : 2236,
+      "user_id" : 814304,
+      "user_type" : "registered",
+      "accept_rate" : 33,
+      "profile_image" : "https://www.gravatar.com/avatar/bb5a57aef64da898ac42004c1b4054a5?s=256&d=identicon&r=PG",
+      "display_name" : "iMysak",
+      "link" : "https://stackoverflow.com/users/814304/imysak"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1492216293,
+    "creation_date" : 1492216293,
+    "answer_id" : 43420923,
+    "question_id" : 43420764,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I guess you should specify @JoinColumn here as well:</p>\n\n<pre><code>@OneToMany(fetch=FetchType.LAZY,mappedBy=\"charecter\")\nprivate Set&lt;VirsualPeopleComment&gt;comments=new HashSet&lt;VirsualPeopleComment&gt;();\n</code></pre>\n\n<p>looks like it should be </p>\n\n<pre><code>@OneToMany(fetch=FetchType.LAZY,mappedBy=\"charecter\")\n@JoinColumn(name=\"peopleCommentId\")\nprivate Set&lt;VirsualPeopleComment&gt;comments=new HashSet&lt;VirsualPeopleComment&gt;();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10690466,
+    "reputation" : 1,
+    "user_id" : 7869592,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/UGKA6.jpg?s=256",
+    "display_name" : "Fankasy",
+    "link" : "https://stackoverflow.com/users/7869592/fankasy"
+  },
+  "is_answered" : false,
+  "view_count" : 9615,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1763492795,
+  "creation_date" : 1492214895,
+  "question_id" : 43420764,
+  "link" : "https://stackoverflow.com/questions/43420764/a-foreign-key-refering-has-the-wrong-number-of-column-should-be-2",
+  "title" : "A Foreign key refering has the wrong number of column. should be 2",
+  "body" : "<p>Here is my code</p>\n\n<p>VirsualPerson</p>\n\n<pre><code>public class VirsualPerson extends Person{\n\n@Id\n@GeneratedValue(strategy=GenerationType.IDENTITY)\n@PrimaryKeyJoinColumn(name=\"VIRSUALPERSON_ID\")\nprivate long virsualPersonId;\n\n@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)\n@JoinTable(name=\"Anime_character\",catalog=\"anime\",joinColumns={\n        @JoinColumn(name=\"VIRSUALPERSON_ID\",nullable=false)},inverseJoinColumns={@JoinColumn(name=\"ANIME_ID\",nullable=false)})\nprivate Set&lt;Anime&gt;animeCharacters=new HashSet&lt;Anime&gt;();\n\n\n@OneToMany(fetch=FetchType.LAZY,mappedBy=\"charecter\")\nprivate Set&lt;VirsualPeopleComment&gt;comments=new HashSet&lt;VirsualPeopleComment&gt;();\n\npublic long getVirsualPersonId() {\n    return virsualPersonId;\n}\npublic void setVirsualPersonId(long virsualPersonId) {\n    this.virsualPersonId = virsualPersonId;\n}\npublic Set&lt;Anime&gt; getAnimeCharacters() {\n    return animeCharacters;\n}\npublic void setAnimeCharacters(Set&lt;Anime&gt; animeCharacters) {\n    this.animeCharacters = animeCharacters;\n}\npublic Set&lt;VirsualPeopleComment&gt; getComments() {\n    return comments;\n}\npublic void setComments(Set&lt;VirsualPeopleComment&gt; comments) {\n    this.comments = comments;\n}\n</code></pre>\n\n<p>}</p>\n\n<p>VirsualPersonComment</p>\n\n<pre><code>@Entity\n@Table(name=\"people_comment\")\npublic class VirsualPeopleComment {\n@Id\n@GeneratedValue(strategy=GenerationType.IDENTITY)\n@Column(name=\"peopleCommentId\")\nprivate long commentId;\n\n@Column(name=\"content\")\nprivate String commentContent;\n\n@Temporal(TemporalType.TIMESTAMP)\n@Column(name=\"POST_TIME\")\nprivate Date postTime;\n\n\n@ManyToOne(fetch=FetchType.LAZY)\n@JoinColumn(name=\"USER_ID\")\nprivate User commentUser;\n\n@ManyToOne(fetch=FetchType.LAZY)\n@JoinColumn(name=\"VIRSUALPERSON_ID\")\nprivate VirsualPerson charecter;\n\npublic long getCommentId() {\n    return commentId;\n}\npublic void setCommentId(long commentId) {\n    this.commentId = commentId;\n}\npublic String getCommentContent() {\n    return commentContent;\n}\npublic void setCommentContent(String commentContent) {\n    this.commentContent = commentContent;\n}\n\npublic Date getPostTime() {\n    return postTime;\n}\npublic void setPostTime(Date postTime) {\n    this.postTime = postTime;\n}\n\npublic User getCommentUser() {\n    return commentUser;\n}\npublic void setCommentUser(User commentUser) {\n    this.commentUser = commentUser;\n}\npublic VirsualPerson getCharecter() {\n    return charecter;\n}\npublic void setCharecter(VirsualPerson charecter) {\n    this.charecter = charecter;\n}\n</code></pre>\n\n<p>}</p>\n\n<p>And here is the error</p>\n\n<p><strong>A Foreign key refering VirsualPerson from VirsualPeopleComment has the wrong number of column. should be 2</strong>\nI want to know what's wrong with my annotations and thanks a lot</p>\n"
+}

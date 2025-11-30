@@ -1,0 +1,108 @@
+{
+  "tags" : [ "java", "grpc", "grpc-java", "proto" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3819866,
+      "reputation" : 2714,
+      "user_id" : 3168185,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/iWFTu.jpg?s=256",
+      "display_name" : "Bayu",
+      "link" : "https://stackoverflow.com/users/3168185/bayu"
+    },
+    "is_accepted" : true,
+    "score" : 18,
+    "last_activity_date" : 1593524631,
+    "last_edit_date" : 1593524631,
+    "creation_date" : 1570810008,
+    "answer_id" : 58344948,
+    "question_id" : 56580535,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In order to test gRPC server without client, we have to use <code>grpcurl</code> not <code>curl</code>. Please take a look at <a href=\"https://github.com/fullstorydev/grpcurl\" rel=\"noreferrer\">https://github.com/fullstorydev/grpcurl</a></p>\n<p>However, based on my experience there is a requirement to make it works. First, please ensure that your service support <strong>Reflection</strong>, you can read about it from <a href=\"https://github.com/sourcegraph/gophercon-2018-liveblog/issues/27\" rel=\"noreferrer\">https://github.com/sourcegraph/gophercon-2018-liveblog/issues/27</a>. There are different ways of doing <strong>Reflection</strong> across programming languages. My advice is, just do this for the development phase, otherwise, people may querying your gRPC endpoint. Maybe you can use <code>if()</code> to make a conditional block for it. For Golang, i did this</p>\n<pre><code>import &quot;google.golang.org/grpc/reflection&quot;\n\nif os.Getenv(&quot;GO_ENV&quot;) == &quot;development&quot; {\n    reflection.Register(s)\n}\n</code></pre>\n<p>then, you need to know available services in your gRPC server. There is two way you can know the structure. First You can read them from your proto file, second by executing command <code>grpcurl localhost:10000 list</code></p>\n<ul>\n<li>If you like to read from your proto file, the path should be <code>packageName.Service/rpcMethodName</code>. So, based on your proto, it should be something like <code>EchoService/Echo</code> or if you have package name it will be <code>packageName.EchoService/Echo</code></li>\n<li>If you prefer to do <code>grpcurl localhost:10000 list</code>, just type those command and it will output service path.</li>\n</ul>\n<p>The last thing to note when you test it locally and you don't setup SSL/TLS, please use <code>-plaintext</code> option, otherwise, it will tell you that TLS handshake failed.</p>\n<p>Example command, based on your proto, a call in local will looks like:</p>\n<p><code>grpcurl -plaintext -d '{&quot;Key&quot;: &quot;Value&quot;}' 127.0.0.1:10000 EchoService/Echo</code></p>\n<p>Hope it helps.</p>\n<hr />\n<p><strong>UPDATE 30 June 2020:</strong></p>\n<p>After a few months working with gRPC I found another interesting gRPC tool:</p>\n<ul>\n<li>Interactive tool: <a href=\"https://github.com/ktr0731/evans\" rel=\"noreferrer\">https://github.com/ktr0731/evans</a></li>\n<li>even easier GUI tool: <a href=\"https://github.com/uw-labs/bloomrpc\" rel=\"noreferrer\">https://github.com/uw-labs/bloomrpc</a></li>\n</ul>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3501130,
+        "reputation" : 86,
+        "user_id" : 2927875,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/A0SO1.gif?s=256",
+        "display_name" : "daniel.bavrin",
+        "link" : "https://stackoverflow.com/users/2927875/daniel-bavrin"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1739956772,
+      "post_id" : 79102778,
+      "comment_id" : 140118404,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "the fifth byte should be x07, as the length of the following buffer is 7 bytes: <code>printf &#39;\\x00\\x00\\x00\\x00\\x07\\x0a\\x05\\x56\\x61\\x6c\\x75\\x65&#39;</code> And also the name of service must contain full package name as stated in .proto file, otherwise curl will get an &quot;unknown service&quot; error: <code>localhost:10000&#47;packagename.EchoService&#47;Echo</code>"
+    }, {
+      "owner" : {
+        "account_id" : 1311122,
+        "reputation" : 58304,
+        "user_id" : 1259109,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/y7ARX.jpg?s=256",
+        "display_name" : "Dave Syer",
+        "link" : "https://stackoverflow.com/users/1259109/dave-syer"
+      },
+      "reply_to_user" : {
+        "account_id" : 3501130,
+        "reputation" : 86,
+        "user_id" : 2927875,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/A0SO1.gif?s=256",
+        "display_name" : "daniel.bavrin",
+        "link" : "https://stackoverflow.com/users/2927875/daniel-bavrin"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1759854106,
+      "post_id" : 79102778,
+      "comment_id" : 140782237,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@daniel.bavrin Thanks. I fixed the message length. The package name can be empty, so let&#39;s assume it is in this case."
+    } ],
+    "owner" : {
+      "account_id" : 1311122,
+      "reputation" : 58304,
+      "user_id" : 1259109,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/y7ARX.jpg?s=256",
+      "display_name" : "Dave Syer",
+      "link" : "https://stackoverflow.com/users/1259109/dave-syer"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1759854052,
+    "last_edit_date" : 1759854052,
+    "creation_date" : 1729266518,
+    "answer_id" : 79102778,
+    "question_id" : 56580535,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There's no obligation to use <code>grpcurl</code> (although it is a handy tool). If you're stubborn like me and want to use <code>curl</code>, or want to learn the gRPC protocol (per the spec <a href=\"https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md\" rel=\"nofollow noreferrer\">https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md</a>), here's how to do the example above:</p>\n<pre><code>printf '\\x00\\x00\\x00\\x00\\x07\\x0a\\x05\\x56\\x61\\x6c\\x75\\x65' | \\\n  curl --http2-prior-knowledge -v -H &quot;Content-Type: application/grpc&quot; --data-binary @- \\\n  localhost:10000/EchoService/Echo &gt; result.buf\n</code></pre>\n<p>The <code>result.buf</code> will be in the same format as the input, which is a 1-byte compression flag (0 or 1), 4-bytes declaring the length of the protobuf data, plus the protobuf data.</p>\n<p>You can decode it into the same format as the input with <code>xxd</code> (and some <code>awk</code> for the formatting). E.g.</p>\n<pre><code>cat result.buf | xxd -p | \\\n  awk -v FS= -v OFS= '{for(i=1;i&lt;NF;i++)if(i%2==1)$i=&quot;\\\\x&quot;$i}1'\n</code></pre>\n<p>result:</p>\n<pre><code>\\x00\\x00\\x00\\x00\\x07\\x0a\\x05\\x56\\x61\\x6c\\x75\\x65\n</code></pre>\n<p>Or you could use <code>protoc</code> to decode it (with <code>dd</code> to strip the prefix), given the <code>.proto</code> definition in <code>./echo.proto</code>:</p>\n<pre><code>cat result.buf | dd bs=5 skip=1 2&gt;/dev/null | protoc --decode=EchoMessage ./echo.proto\n</code></pre>\n<p>result:</p>\n<pre><code>Key: &quot;Value&quot;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6871209,
+    "reputation" : 1590,
+    "user_id" : 5281471,
+    "user_type" : "registered",
+    "accept_rate" : 100,
+    "profile_image" : "https://graph.facebook.com/928364253853695/picture?type=large",
+    "display_name" : "SOWMITHRA KUMAR G M",
+    "link" : "https://stackoverflow.com/users/5281471/sowmithra-kumar-g-m"
+  },
+  "is_answered" : true,
+  "view_count" : 73890,
+  "accepted_answer_id" : 58344948,
+  "answer_count" : 2,
+  "score" : 16,
+  "last_activity_date" : 1759854052,
+  "creation_date" : 1560428997,
+  "question_id" : 56580535,
+  "link" : "https://stackoverflow.com/questions/56580535/how-to-make-call-to-grpc-server-over-http-1-1-from-curl-command-or-in-internet-b",
+  "title" : "How to make call to gRPC server over HTTP/1.1 from cURL command or in internet browser",
+  "body" : "<p>I have added below new code in protobuf file and compiled to get the generated grpc_pb files.</p>\n\n<pre><code>service EchoService {\n  rpc Echo(EchoMessage) returns (EchoMessage) {\n    #-----New code start-----\n    option (google.api.http) = {\n      post: \"/v1/echo\"\n      body: \"*\"\n    };\n    #-----New code end------\n  }\n}\n</code></pre>\n\n<p>From cURL command executed below command</p>\n\n<pre><code>curl -X POST -k https://localhost:10000/v1/echo -d '{\"Key\": \"Value\"}'\n</code></pre>\n\n<p>After making above request, not able to get the proper response.</p>\n\n<p>My doubt is, any server side code changes needed to prepare the response to send back to caller? If so, Please suggest me with the code (Java) &amp; also how to make request. If not, how we need to make http request to grpc?</p>\n\n<p>Working example is much appreciated.</p>\n"
+}

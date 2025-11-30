@@ -1,0 +1,110 @@
+{
+  "tags" : [ "java", "swing", "jframe", "jbutton", "actionlistener" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6592902,
+        "reputation" : 774,
+        "user_id" : 6095204,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/6ae23fa035ec13e4d05051f3c26a46f0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Joseph K.",
+        "link" : "https://stackoverflow.com/users/6095204/joseph-k"
+      },
+      "reply_to_user" : {
+        "account_id" : 7846596,
+        "reputation" : 13,
+        "user_id" : 5931468,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/ccb24098440d3640d41cbdd29b1d3cdd?s=256&d=identicon&r=PG",
+        "display_name" : "Ivawen",
+        "link" : "https://stackoverflow.com/users/5931468/ivawen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1460053984,
+      "post_id" : 36483441,
+      "comment_id" : 60578322,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Just create another action listener and set all fields to default texts. There is not an easy way to do this."
+    }, {
+      "owner" : {
+        "account_id" : 7846596,
+        "reputation" : 13,
+        "user_id" : 5931468,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/ccb24098440d3640d41cbdd29b1d3cdd?s=256&d=identicon&r=PG",
+        "display_name" : "Ivawen",
+        "link" : "https://stackoverflow.com/users/5931468/ivawen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1460149457,
+      "post_id" : 36483441,
+      "comment_id" : 60625411,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<code>private class ResetListener implements ActionListener{     public void actionPerformed (ActionEvent e) {     if (e.getSource() == btnReset)     resultArea.setText(&quot;&quot;);&#47;&#47;reset the text in the resul area              rateField.setText(&quot;&quot;);&#47;&#47;reset the interest in the rate field area aswell         resultArea.setText(null);          }        }      }**</code>   the code is not clearing the balance it clears the text but once i put new values it picks the last balance"
+    } ],
+    "owner" : {
+      "account_id" : 6592902,
+      "reputation" : 774,
+      "user_id" : 6095204,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/6ae23fa035ec13e4d05051f3c26a46f0?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Joseph K.",
+      "link" : "https://stackoverflow.com/users/6095204/joseph-k"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1460050690,
+    "creation_date" : 1460050690,
+    "answer_id" : 36483441,
+    "question_id" : 36482397,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You are not adding close listener to your exit button. So it will not close the application.</p>\n\n<pre><code>ActionListener listener = new AddInterestListener(); \nbtnInterest.addActionListener(listener); \nbtnExit.addActionListener(listener); \n</code></pre>\n\n<p>The proper way:</p>\n\n<pre><code>btnExit.addActionListener(new CloseListener());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 24546988,
+      "reputation" : 1,
+      "user_id" : 20325382,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJwtLpZY3LiYxFQ8i6BS_ERbF8YquS9MmDjg22Vngw=k-s256",
+      "display_name" : "Иван Глазунов",
+      "link" : "https://stackoverflow.com/users/20325382/%d0%98%d0%b2%d0%b0%d0%bd-%d0%93%d0%bb%d0%b0%d0%b7%d1%83%d0%bd%d0%be%d0%b2"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761391454,
+    "last_edit_date" : 1761391454,
+    "creation_date" : 1761391316,
+    "answer_id" : 79799469,
+    "question_id" : 36482397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Swing is no longer popular, but suddenly it will be useful to someone. I found an easy way. For everything to work, graphics and business must be in a separate class and run through a separate method.</p>\n<pre><code>public class Main extends JFrame {\n    public static void main(String[] args) throws Exception {\n        MainPanel.mainPanelStart();\n}\npublic class MainPanel extends JFrame { \n    public static void mainPanelStart() { \n        JFrame mainFrame = new JFrame(); \n            mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); ......................................... \n   \n    }\n}\n</code></pre>\n<p>In the mainPanel in</p>\n<pre><code>mainPanelStart()\n</code></pre>\n<p>There should be a RESET button with an ActionListener that closes the main frame and restarts the application.</p>\n<pre><code>\n\npublic class MainPanel extends JFrame { \n    public static void mainPanelStart() { \nJFrame mainFrame = new JFrame();\n.....................        \n.....................\n    JButton buttonRESET = new JButton(&quot;RESET&quot;);\n    mainFrame.add(buttonRESET );\n    buttonRESET.addActionListener(actionRESET(mainFrame));  \n       \n}\n\nActionListener actionRESET(JFrame jFrame) {\n        return new ActionListener() {\n            @Override\n            public void actionPerformed(ActionEvent e) {\n                jFrame.dispose();\n                MainPanel.mainPanelStart();\n            }\n        };\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7846596,
+    "reputation" : 13,
+    "user_id" : 5931468,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/ccb24098440d3640d41cbdd29b1d3cdd?s=256&d=identicon&r=PG",
+    "display_name" : "Ivawen",
+    "link" : "https://stackoverflow.com/users/5931468/ivawen"
+  },
+  "is_answered" : true,
+  "view_count" : 251,
+  "answer_count" : 2,
+  "score" : -1,
+  "last_activity_date" : 1761391454,
+  "creation_date" : 1460047457,
+  "last_edit_date" : 1460053136,
+  "question_id" : 36482397,
+  "link" : "https://stackoverflow.com/questions/36482397/jframe-create-a-close-button-that-shuts-down-the-application-and-a-reset-button",
+  "title" : "Jframe Create a Close button that shuts down the application and a reset button to clear all text fields and run with new amounts",
+  "body" : "<p>need to create a close button that shuts down the app and a reset to clear the fields and starts with new amounts .\nmy close button that I added does not do much on the code it just replicate the addInterest button function .</p>\n\n<p>this is the frame </p>\n\n<pre><code>import java.awt.event.ActionEvent;\nimport java.awt.event.ActionListener; \nimport javax.swing.JButton; \nimport javax.swing.JFrame; \nimport javax.swing.JLabel; \nimport javax.swing.JOptionPane; \nimport javax.swing.JPanel; \nimport javax.swing.JScrollPane; \nimport javax.swing.JTextArea; \nimport javax.swing.JTextField; \n\npublic class InvestmentFrame extends JFrame { \n  private static final int FRAME_WIDTH = 400; \n  private static final int FRAME_HEIGHT = 250; \n  private static final int AREA_ROWS = 10; \n  private static final int AREA_COLUMNS = 30; \n  private static final double DEFAULT_RATE = 5; \n  private static final double INITIAL_BALANCE = 1000; \n  private JLabel rateLabel; \n  private JTextField rateField; \n  private JButton btnInterest, btnExit; \n  private JTextArea resultArea; \n  private double balance; \n\n\n\n  public InvestmentFrame() { \n    balance = INITIAL_BALANCE; \n    resultArea = new JTextArea(AREA_ROWS, AREA_COLUMNS); \n    resultArea.setText(balance + \"\\n\"); \n    resultArea.setEditable(false); \n    this.createTextField(); \n    this.createButton(); \n    this.createPanel(); \n\n    this.setSize(FRAME_WIDTH, FRAME_HEIGHT); \n\n  } \n\n  private void createTextField() { \n    rateLabel = new JLabel(\"Interest Rate: \"); \n    final int FIELD_WIDTH = 10; \n    rateField = new JTextField(FIELD_WIDTH); \n    rateField.setText(\"\" + DEFAULT_RATE); \n  } \n\n\n  class AddInterestListener implements ActionListener { \n    @Override \n    public void actionPerformed(ActionEvent event) { \n      try { \n        double rate = Double.parseDouble(rateField.getText()); \n        if (rate &lt; 0) { \n          throw new IllegalArgumentException(); \n        } \n        double interest = balance * rate / 100; \n        balance = balance + interest; \n        resultArea.append(balance + \"\\n\"); \n      } catch (Exception exception) { \n        JOptionPane.showMessageDialog(null, \"Rate is a positive floating-point number.\", \n                                      \"Invalid rate value entered!\", JOptionPane.ERROR_MESSAGE); \n      } \n    } \n  } \n\n  private class CloseListener implements ActionListener{\n\n    public void actionPerformed(ActionEvent e) {\n      System.exit(0);\n\n    }\n  }\n\n  private void createButton() { \n    btnInterest = new JButton(\"Add Interest\"); \n    btnExit = new JButton(\"Close\");\n\n    ActionListener listener = new AddInterestListener(); \n    btnInterest.addActionListener(listener); \n    btnExit.addActionListener(listener); \n  } \n\n  private void createPanel() { \n    JPanel panel = new JPanel(); \n    panel.add(rateLabel); \n    panel.add(rateField); \n    panel.add(btnInterest); \n    panel.add(btnExit);\n    JScrollPane scrollPane = new JScrollPane(resultArea); \n    panel.add(scrollPane); \n    this.add(panel); \n  }\n}\n</code></pre>\n\n<p>And this is the Viewer</p>\n\n<pre><code>import javax.swing.JFrame;\n\n/**\n This program shows the growth of an investment.\n */\npublic class InvestmentViewer {\n  public static void main(String[] args)\n  {\n    JFrame frame = new InvestmentFrame();\n    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n    frame.setVisible(true);\n  }\n\n}\n</code></pre>\n"
+}

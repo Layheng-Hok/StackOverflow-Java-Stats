@@ -1,0 +1,119 @@
+{
+  "tags" : [ "java", "recursion", "binary", "linked-list", "return" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1064245,
+      "reputation" : 85888,
+      "user_id" : 1065197,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/4OArJ.jpg?s=256",
+      "display_name" : "Luiggi Mendoza",
+      "link" : "https://stackoverflow.com/users/1065197/luiggi-mendoza"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1351192144,
+    "post_id" : 13075456,
+    "comment_id" : 17762947,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "You can use <code>return theList.addFirst(encodeBin(&lt;next_value));</code> or <code>theList.addList(encodeBin(&lt;next_value&gt;));return theList;</code> or similar, depending on your design."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1324014,
+        "reputation" : 5661,
+        "user_id" : 1311351,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/23d89a4200adb2d65ee7d9ba17e442b4?s=256&d=identicon&r=PG",
+        "display_name" : "Colin D",
+        "link" : "https://stackoverflow.com/users/1311351/colin-d"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1351192690,
+      "post_id" : 13075515,
+      "comment_id" : 17763193,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "fyi: the poster says the function can take only 1 argument."
+    } ],
+    "owner" : {
+      "account_id" : 1435980,
+      "reputation" : 129932,
+      "user_id" : 1357341,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/Vzjkd.jpg?s=256",
+      "display_name" : "arshajii",
+      "link" : "https://stackoverflow.com/users/1357341/arshajii"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1351192927,
+    "last_edit_date" : 1351192927,
+    "creation_date" : 1351192096,
+    "answer_id" : 13075515,
+    "question_id" : 13075456,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can't return two values separately. You can, however, return an array containing the first bit and the last bit <em>or</em> create your own class to hold this data, and return an instance of that class.</p>\n\n<hr>\n\n<p>And about the list, I see two options:</p>\n\n<ol>\n<li>Make it a <code>static</code> class variable</li>\n<li>Make it an argument of the function (although I see you said you couldn't do this).</li>\n</ol>\n\n<p>The first method would look like this:</p>\n\n<pre><code>public class MyClass {\n    private static List&lt;Integer&gt; theList = new LinkedList&lt;Integer&gt;();\n\n    // `encodeBin` method as you have it\n}\n</code></pre>\n\n<p>The second method would look like this:</p>\n\n<pre><code>public static void encodeBin(int n, List&lt;Integer&gt; theList) {\n    if(n == 0) return; //Base case\n    else {\n        if(n % 2 == 0)\n            theList.addFirst(0);\n        else\n            theList.addFirst(1);\n        encodeBin(n / 2, theList);\n    }\n}\n</code></pre>\n\n<p>You could then do something along the lines of </p>\n\n<pre><code>List&lt;Integer&gt; theList = new LinkedList&lt;Integer&gt;();\nencodeBin(14, theList);\n</code></pre>\n\n<p>and <code>theList</code> would hold the appropriate bits as desired. </p>\n\n<hr>\n\n<p>As a note, you might want to consider making this a list of <em>booleans</em> instead of <em>integers</em>, with <code>true</code> representing <code>1</code> and <code>false</code> representing <code>0</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1324014,
+      "reputation" : 5661,
+      "user_id" : 1311351,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/23d89a4200adb2d65ee7d9ba17e442b4?s=256&d=identicon&r=PG",
+      "display_name" : "Colin D",
+      "link" : "https://stackoverflow.com/users/1311351/colin-d"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1351192828,
+    "last_edit_date" : 1351192828,
+    "creation_date" : 1351192473,
+    "answer_id" : 13075602,
+    "question_id" : 13075456,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You cannot return 2 values. You are going to have to return some object that contains the 2 values. either an array or some new object, depending on your homework requirments and where this function is going to be used.</p>\n\n<p>For the linkedlist creation, what you need is a recursive helper method. Your public method will be used to initialize your objects, start the recursion, and return your result. This allows your actual recursive function to have more than 1 argument.</p>\n\n<pre><code>public static SOME_TYPE encodeBin(int n) {\n  LinkedList result = new LinkedList();\n  encodeBin_helper(result,n);\n  // return the MSB and LSB\n}\n\npublic static void encodeBin_helper(LinkedList theList, int n) {\n  if(n == 0) return; //Base case\n  else {\n    if(n % 2 == 0)\n        theList.addFirst(0);\n    else\n        theList.addFirst(1);\n    encodeBin_helper(theList, n/2);\n  }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 209644,
+      "reputation" : 1256,
+      "user_id" : 460790,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/29378c88e5cc108a2f2e1e3638a55740?s=256&d=identicon&r=PG",
+      "display_name" : "Ivan",
+      "link" : "https://stackoverflow.com/users/460790/ivan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1351199217,
+    "last_edit_date" : 1351199217,
+    "creation_date" : 1351194350,
+    "answer_id" : 13076061,
+    "question_id" : 13075456,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I suggest declaring two methods:</p>\n\n<p>(1) public static int[] encodeBin(int n)\nand\n(2) private static void encodeBin(LinkedList, int n)</p>\n\n<p>The public method merely creates an empty list and then calls the private version passing both the empty list and the orignal input n as the parameters</p>\n\n<p>something like this:</p>\n\n<pre><code>public static int[] encodeBin(int n) {\n  LinkedList&lt;Integer&gt; aList = new LinkedList&lt;Integer&gt;();\n  encodeBin(aList , n);\n  int MSB = aList.getFirst();\n  int LSB = aList.getLast();\n\n  return new int[] {MSB, LSB};\n}\n\nprivate static void encodeBin(LinkedList&lt;Integer&gt; list, n) {\n  //your recursive version here\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1863685,
+    "reputation" : 23,
+    "user_id" : 1687709,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/eae14718724af7a82ad043e909bf57de?s=256&d=identicon&r=PG",
+    "display_name" : "Gene Frank",
+    "link" : "https://stackoverflow.com/users/1687709/gene-frank"
+  },
+  "is_answered" : false,
+  "view_count" : 14085,
+  "answer_count" : 3,
+  "score" : 2,
+  "last_activity_date" : 1763482035,
+  "creation_date" : 1351191870,
+  "question_id" : 13075456,
+  "link" : "https://stackoverflow.com/questions/13075456/returning-multiple-values-from-a-recursive-function",
+  "title" : "Returning multiple values from a recursive function",
+  "body" : "<p>I have this problem where I have to convert a decimal number to binary and then store the bits in a linked list where the head node is the most significant bit and the last node is the least significant bit. Solving the problem itself is actually easy as you only need to keep taking the modulo of 2 recursively and add the result in the list until the decimal number becomes 0.</p>\n\n<p>Where I'm stuck is that I have to write the function such that it returns a pair of number, (whether an array or a list) of the most significant bit and the last significant bit. \ni.e: Inputting 14 in the function would return (1, 0), since 14 is 1110 in binary. </p>\n\n<p>I do have access to the MSB and LSB easily(getFirst(), getLast()). </p>\n\n<p>The function can only take one argument which is the decimal number.</p>\n\n<p>Currently I  have this current code:</p>\n\n<pre><code>public static void encodeBin(int n) {\n    if(n == 0) return; //Base case\n    else {\n        if(n % 2 == 0)\n            theList.addFirst(0);\n        else\n            theList.addFirst(1);\n        encodeBin(n / 2);\n    }\n    // return?\n}\n</code></pre>\n\n<p>The problem is I can't figure out how return the 2 values. Haveing a return value means I can't call encodeBin() by itself.</p>\n\n<p>Moreover, where should I create the list? If I put something like <code>List&lt;Integer&gt; = new LinkedList&lt;Integer&gt;()</code> at the very beginning of the function, then each time the function calls itself, it creates a new list and adds the bits in THAT new list not the original right?(The list created from when the function is called the first time)</p>\n\n<p>Anybody knows how to solve this?</p>\n"
+}

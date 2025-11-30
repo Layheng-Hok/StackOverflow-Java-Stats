@@ -1,0 +1,82 @@
+{
+  "tags" : [ "java", "stream", "apache-kafka", "outer-join" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4410958,
+      "reputation" : 2490,
+      "user_id" : 3854476,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://i.sstatic.net/1v62X.png?s=256",
+      "display_name" : "Reinstate Monica",
+      "link" : "https://stackoverflow.com/users/3854476/reinstate-monica"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1498746088,
+    "last_edit_date" : 1498746088,
+    "creation_date" : 1498685607,
+    "answer_id" : 44812900,
+    "question_id" : 44811384,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Ultimately I decided to create a custom lightweight joiner that avoids materialization and strictly honors the expiration time. It should be O(1) on average. It fits better with the Consumer API than with the Stream API: for each consumer, repeatedly poll and update the joiner with any received data; if the joiner returns a complete attribute set, forward it on. Here's the code:</p>\n\n<pre><code>import java.util.ArrayList;\nimport java.util.Collection;\nimport java.util.Iterator;\nimport java.util.LinkedHashMap;\nimport java.util.Map;\nimport java.util.Optional;\n\n/**\n * Inner joins multiple streams of data by key into one stream. It is assumed\n * that a key will appear in a stream exactly once. The values associated with\n * each key are collected and if all values are received within a certain\n * maximum wait time, the joiner returns all values corresponding to that key.\n * If not all values are received in time, the joiner never returns any values\n * corresponding to that key.\n * &lt;p&gt;\n * This class is not thread safe: all calls to\n * {@link #update(Object, Object, long)} must be synchronized.\n * @param &lt;K&gt; The type of key.\n * @param &lt;V&gt; The type of value.\n */\nclass StreamInnerJoiner&lt;K, V&gt; {\n\n    private final Map&lt;K, Vals&lt;V&gt;&gt; idToVals = new LinkedHashMap&lt;&gt;();\n    private final int joinCount;\n    private final long maxWait;\n\n    /**\n     * Creates a stream inner joiner.\n     * @param joinCount The number of streams being joined.\n     * @param maxWait The maximum amount of time after an item has been seen in\n     * one stream to wait for it to be seen in the remaining streams.\n     */\n    StreamInnerJoiner(final int joinCount, final long maxWait) {\n        this.joinCount = joinCount;\n        this.maxWait = maxWait;\n    }\n\n    private static class Vals&lt;A&gt; {\n        final long firstSeen;\n        final Collection&lt;A&gt; vals = new ArrayList&lt;&gt;();\n        private Vals(final long firstSeen) {\n            this.firstSeen = firstSeen;\n        }\n    }\n\n    /**\n     * Updates this joiner with a value corresponding to a key.\n     * @param key The key.\n     * @param val The value.\n     * @param now The current time.\n     * @return If all values for the specified key have been received, the\n     * complete collection of values for thaht key; otherwise\n     * {@link Optional#empty()}.\n     */\n    Optional&lt;Collection&lt;V&gt;&gt; update(final K key, final V val, final long now) {\n        expireOld(now - maxWait);\n        final Vals&lt;V&gt; curVals = getOrCreate(key, now);\n        curVals.vals.add(val);\n        return expireAndGetIffFull(key, curVals);\n    }\n\n    private Vals&lt;V&gt; getOrCreate(final K key, final long now) {\n        final Vals&lt;V&gt; existingVals = idToVals.get(key);\n        if (existingVals != null)\n            return existingVals;\n        else {\n            /*\n            Note: we assume that the item with the specified ID has not already\n            been seen and timed out, and therefore that its first seen time is\n            now. If the item has in fact already timed out, it is doomed and\n            will time out again with no ill effect.\n             */\n            final Vals&lt;V&gt; curVals = new Vals&lt;&gt;(now);\n            idToVals.put(key, curVals);\n            return curVals;\n        }\n    }\n\n    private void expireOld(final long expireBefore) {\n        final Iterator&lt;Vals&lt;V&gt;&gt; i = idToVals.values().iterator();\n        while (i.hasNext() &amp;&amp; i.next().firstSeen &lt; expireBefore)\n            i.remove();\n    }\n\n    private Optional&lt;Collection&lt;V&gt;&gt; expireAndGetIffFull(final K key, final Vals&lt;V&gt; vals) {\n        if (vals.vals.size() == joinCount) {\n            // as all expired entries were already removed, this entry is valid\n            idToVals.remove(key);\n            return Optional.of(vals.vals);\n        } else\n            return Optional.empty();\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 197900,
+        "reputation" : 4945,
+        "user_id" : 442255,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/b68baf90324df456af12d0145214be96?s=256&d=identicon&r=PG",
+        "display_name" : "Kkkev",
+        "link" : "https://stackoverflow.com/users/442255/kkkev"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1677175245,
+      "post_id" : 71869678,
+      "comment_id" : 133290814,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This works if all streams have the same value types - but this is a specific case of outer join. In the more general case, outer joins could have different value types."
+    } ],
+    "owner" : {
+      "account_id" : 2428490,
+      "reputation" : 15420,
+      "user_id" : 2119941,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/4wUhx.jpg?s=256",
+      "display_name" : "Hrvoje",
+      "link" : "https://stackoverflow.com/users/2119941/hrvoje"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1649929927,
+    "creation_date" : 1649929927,
+    "answer_id" : 71869678,
+    "question_id" : 44811384,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you merge all your streams you will get what you want.\nLook at <a href=\"https://developer.confluent.io/tutorials/merge-many-streams-into-one-stream/confluent.html\" rel=\"nofollow noreferrer\">this</a> tutorial on how to do it.</p>\n<blockquote>\n<p>Input streams are combined using the merge function, which creates a\nnew stream that represents all of the events of its inputs.</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4410958,
+    "reputation" : 2490,
+    "user_id" : 3854476,
+    "user_type" : "registered",
+    "accept_rate" : 56,
+    "profile_image" : "https://i.sstatic.net/1v62X.png?s=256",
+    "display_name" : "Reinstate Monica",
+    "link" : "https://stackoverflow.com/users/3854476/reinstate-monica"
+  },
+  "is_answered" : false,
+  "view_count" : 1187,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1763758397,
+  "creation_date" : 1498679375,
+  "last_edit_date" : 1498679838,
+  "question_id" : 44811384,
+  "link" : "https://stackoverflow.com/questions/44811384/is-there-an-efficient-way-to-outer-join-several-more-than-2-kafka-topics",
+  "title" : "Is there an efficient way to outer join several (more than 2) kafka topics?",
+  "body" : "<p>I'd like to outer join several (typically 2-10) Kafka topics by key, ideally using the streaming API. All topics will have the same key and partitions. One way to do this join is to create a <code>KStream</code> for each topic and chain calls to <code>KStream.outerJoin</code>:</p>\n\n<pre><code>stream1\n    .outerJoin(stream2, ...)\n    .outerJoin(stream3, ...)\n    .outerJoin(stream4, ...)\n</code></pre>\n\n<p>However, the <a href=\"https://kafka.apache.org/0102/javadoc/index.html?org/apache/kafka/streams/KafkaStreams.html\" rel=\"nofollow noreferrer\">documentation</a> of <code>KStream.outerJoin</code> suggests that each call to <code>outerJoin</code> will materialize its two input streams so the above example would materialize not just streams 1 to 4 but also <code>stream1.outerJoin(stream2, ...)</code> and <code>stream1.outerJoin(stream2, ...).outerJoin(stream3, ...)</code>. There would be a lot of unnecessary serialization, deserialization, and I/O compared to directly joining the 4 streams.</p>\n\n<p>Another problem with the above approach is that the <code>JoinWindow</code> would not be consistent across all 4 input streams: one <code>JoinWindow</code> would be used to join streams 1 and 2, but then a separate join window would be used to join this stream and stream 3, etc. For example, I specify a join window of 10 seconds for each join and entries with a certain key appear in stream 1 at 0 seconds, stream 2 at 6 seconds, stream 3 at 12 seconds, and stream 4 at 18 seconds, the joined item would get output after 18 seconds, causing an overly high delay. The results depend on the order of the joins, which seems unnatural.</p>\n\n<p>Is there a better approach to multi-way joins using Kafka?</p>\n"
+}

@@ -1,0 +1,671 @@
+{
+  "tags" : [ "java", "spring", "configuration", "applicationcontext" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 76076,
+        "reputation" : 22004,
+        "user_id" : 218028,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://i.sstatic.net/xLpyz.jpg?s=256",
+        "display_name" : "Dave",
+        "link" : "https://stackoverflow.com/users/218028/dave"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1345780711,
+      "post_id" : 129351,
+      "comment_id" : 16176508,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "That approach can fail if you call <code>getBean</code> from code that runs during a Unit test because the Spring context will not be set up before you ask for it.  Its a race condition I just slammed into today after 2 years of successfully using this approach."
+    }, {
+      "owner" : {
+        "account_id" : 119118,
+        "reputation" : 6340,
+        "user_id" : 310606,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://www.gravatar.com/avatar/8bb70b2553dad8a7d7515ce3d1a64e81?s=256&d=identicon&r=PG",
+        "display_name" : "John Deverall",
+        "link" : "https://stackoverflow.com/users/310606/john-deverall"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1492283699,
+      "post_id" : 129351,
+      "comment_id" : 73918300,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;m running into the same thing.. not from a unit test but from a database trigger.. any suggestions ?"
+    }, {
+      "owner" : {
+        "account_id" : 3548963,
+        "reputation" : 343,
+        "user_id" : 2964696,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XMty2.png?s=256",
+        "display_name" : "Jules Kerssemakers",
+        "link" : "https://stackoverflow.com/users/2964696/jules-kerssemakers"
+      },
+      "reply_to_user" : {
+        "account_id" : 119118,
+        "reputation" : 6340,
+        "user_id" : 310606,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://www.gravatar.com/avatar/8bb70b2553dad8a7d7515ce3d1a64e81?s=256&d=identicon&r=PG",
+        "display_name" : "John Deverall",
+        "link" : "https://stackoverflow.com/users/310606/john-deverall"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1743681505,
+      "post_id" : 129351,
+      "comment_id" : 140294546,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@JohnDeverall @Dave: The same &quot;getBean in UnitTest&quot; race condition has haunted me for two different day-jobs over multiple years. I finally found a solution in 2023, documented here: <a href=\"https://stackoverflow.com/a/77294493/2964696\">stackoverflow.com/a/77294493/2964696</a> and here <a href=\"https://gitlab.com/-/snippets/3611200\" rel=\"nofollow noreferrer\">gitlab.com/-/snippets/3611200</a> (tl;dr: <code>TestExecutionListener.beforeTestClass()</code>)"
+    } ],
+    "owner" : {
+      "account_id" : 10340,
+      "reputation" : 57581,
+      "user_id" : 19479,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/8c3227175520ab65a0a24d75e3317150?s=256&d=identicon&r=PG",
+      "display_name" : "Steve B.",
+      "link" : "https://stackoverflow.com/users/19479/steve-b"
+    },
+    "is_accepted" : false,
+    "score" : 41,
+    "last_activity_date" : 1222284787,
+    "creation_date" : 1222284787,
+    "answer_id" : 129351,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Here's a nice way (not mine, the original reference is here:\n<a href=\"http://sujitpal.blogspot.com/2007/03/accessing-spring-beans-from-legacy-code.html\" rel=\"noreferrer\">http://sujitpal.blogspot.com/2007/03/accessing-spring-beans-from-legacy-code.html</a></p>\n\n<p>I've used this approach and it works fine. Basically it's a simple bean that holds a (static) reference to the application context. By referencing it in the spring config it's initialized. </p>\n\n<p>Take a look at the original ref, it's very clear.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11089,
+      "reputation" : 404575,
+      "user_id" : 21234,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://www.gravatar.com/avatar/d5f91983a9d9cfb69981b6108a63b412?s=256&d=identicon&r=PG",
+      "display_name" : "skaffman",
+      "link" : "https://stackoverflow.com/users/21234/skaffman"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1335135684,
+    "last_edit_date" : 1335135684,
+    "creation_date" : 1222284997,
+    "answer_id" : 129376,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Take a look at <a href=\"http://static.springsource.org/spring/docs/current/javadoc-api/org/springframework/context/access/ContextSingletonBeanFactoryLocator.html\" rel=\"nofollow noreferrer\">ContextSingletonBeanFactoryLocator</a>.  It provides static accessors to get hold of Spring's contexts, assuming they have been registered in certain ways.  </p>\n\n<p>It's not pretty, and more complex than perhaps you'd like, but it works.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5100,
+        "reputation" : 30089,
+        "user_id" : 8026,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/60929e8e0445f0070e501f5ded8ad348?s=256&d=identicon&r=PG",
+        "display_name" : "MetroidFan2002",
+        "link" : "https://stackoverflow.com/users/8026/metroidfan2002"
+      },
+      "edited" : false,
+      "score" : 16,
+      "creation_date" : 1238429231,
+      "post_id" : 129999,
+      "comment_id" : 510826,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "There is also a better interface for ApplicationContexts - ApplicationContextAware.  BeanFactoryAware should work but you&#39;d have to cast it to an application context if you need app context functionality."
+    }, {
+      "owner" : {
+        "account_id" : 194740,
+        "reputation" : 950,
+        "user_id" : 437260,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/ugilU.jpg?s=256",
+        "display_name" : "Antonin",
+        "link" : "https://stackoverflow.com/users/437260/antonin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1508147137,
+      "post_id" : 129999,
+      "comment_id" : 80479890,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Don Kirkby Using the singleton pattern means instanciating your container class from a static method within your container class... once you &quot;manually&quot; instanciate an object it is not managed by Spring anymore : how did you tackle this problem ?"
+    }, {
+      "owner" : {
+        "account_id" : 3325,
+        "reputation" : 56716,
+        "user_id" : 4794,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/f90cd356f2945b284946d5743467d850?s=256&d=identicon&r=PG",
+        "display_name" : "Don Kirkby",
+        "link" : "https://stackoverflow.com/users/4794/don-kirkby"
+      },
+      "reply_to_user" : {
+        "account_id" : 194740,
+        "reputation" : 950,
+        "user_id" : 437260,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/ugilU.jpg?s=256",
+        "display_name" : "Antonin",
+        "link" : "https://stackoverflow.com/users/437260/antonin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1508171578,
+      "post_id" : 129999,
+      "comment_id" : 80495581,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "My memory is a little vague after nine years, @Antonin, but I don&#39;t think the singleton was managed within the Spring container. I think the singleton&#39;s only job was to load the container from an XML file and hold it in a static member variable. I didn&#39;t return an instance of its own class, it returned an instance of the Spring container."
+    }, {
+      "owner" : {
+        "account_id" : 194740,
+        "reputation" : 950,
+        "user_id" : 437260,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/ugilU.jpg?s=256",
+        "display_name" : "Antonin",
+        "link" : "https://stackoverflow.com/users/437260/antonin"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1508255816,
+      "post_id" : 129999,
+      "comment_id" : 80535259,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks Don Kirkby, a Spring singleton owning a static reference to itself, thus usable by non Spring objects maybe."
+    }, {
+      "owner" : {
+        "account_id" : 3325,
+        "reputation" : 56716,
+        "user_id" : 4794,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/f90cd356f2945b284946d5743467d850?s=256&d=identicon&r=PG",
+        "display_name" : "Don Kirkby",
+        "link" : "https://stackoverflow.com/users/4794/don-kirkby"
+      },
+      "reply_to_user" : {
+        "account_id" : 194740,
+        "reputation" : 950,
+        "user_id" : 437260,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/ugilU.jpg?s=256",
+        "display_name" : "Antonin",
+        "link" : "https://stackoverflow.com/users/437260/antonin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1508256854,
+      "post_id" : 129999,
+      "comment_id" : 80535893,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "That might work, @Antonin, if you told the Spring container to use the singleton&#39;s <code>instance()</code> method as a factory. However, I think I just let all the code outside the container access the container first. Then that code could request objects from the container."
+    }, {
+      "owner" : {
+        "account_id" : 10346755,
+        "reputation" : 23375,
+        "user_id" : 7631480,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/zcBMm.png?s=256",
+        "display_name" : "CryptoFool",
+        "link" : "https://stackoverflow.com/users/7631480/cryptofool"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1615075560,
+      "post_id" : 129999,
+      "comment_id" : 117580407,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I create static <code>singleton</code> variables at times to allow legacy code to gain access to by Beans.  It&#39;s easy to do this.  You just define a <code>static MyBean singleton</code> in a Bean class and then set <code>singleton = this</code> in all the constructors of that bean.  If you haven&#39;t defined a constructor yet, then just add a default constructor so that you can set the singleton.  You can make <code>singleton</code> public and access it directly.  I instead make <code>singleton</code> private and then provide a <code>public static MyBean get()</code> method on the class that returns <code>singleton</code>.  Easy as pie."
+    } ],
+    "owner" : {
+      "account_id" : 3325,
+      "reputation" : 56716,
+      "user_id" : 4794,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://www.gravatar.com/avatar/f90cd356f2945b284946d5743467d850?s=256&d=identicon&r=PG",
+      "display_name" : "Don Kirkby",
+      "link" : "https://stackoverflow.com/users/4794/don-kirkby"
+    },
+    "is_accepted" : true,
+    "score" : 185,
+    "last_activity_date" : 1238448178,
+    "last_edit_date" : 1238448178,
+    "creation_date" : 1222290520,
+    "answer_id" : 129999,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If the object that needs access to the container is a bean in the container, just implement the <a href=\"http://static.springframework.org/spring/docs/2.5.x/reference/beans.html#beans-factory-aware-beanfactoryaware\" rel=\"noreferrer\">BeanFactoryAware</a> or <a href=\"http://static.springframework.org/spring/docs/2.5.x/api/org/springframework/context/ApplicationContextAware.html\" rel=\"noreferrer\">ApplicationContextAware</a> interfaces.</p>\n\n<p>If an object outside the container needs access to the container, I've used a <a href=\"http://en.wikipedia.org/wiki/Singleton_pattern#Java\" rel=\"noreferrer\">standard GoF singleton pattern</a> for the spring container. That way, you only have one singleton in your application, the rest are all singleton beans in the container.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 11089,
+        "reputation" : 404575,
+        "user_id" : 21234,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://www.gravatar.com/avatar/d5f91983a9d9cfb69981b6108a63b412?s=256&d=identicon&r=PG",
+        "display_name" : "skaffman",
+        "link" : "https://stackoverflow.com/users/21234/skaffman"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1222504290,
+      "post_id" : 143229,
+      "comment_id" : 39301,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "A good example is JSP tags; their creation is goverened by the servlet container, so they have no choice but to obtain the context statically. Spring provides base Tag classes, and they use BeanFactoryLocators to get the contexts they need."
+    } ],
+    "owner" : {
+      "account_id" : 7678,
+      "reputation" : 4470,
+      "user_id" : 13397,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e2e3b083a6fddd49570276261a796ea9?s=256&d=identicon&r=PG",
+      "display_name" : "belugabob",
+      "link" : "https://stackoverflow.com/users/13397/belugabob"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1222504099,
+    "creation_date" : 1222504099,
+    "answer_id" : 143229,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Before you implement any of the other suggestions, ask yourself these questions...</p>\n\n<ul>\n<li>Why am I trying to get the ApplicationContext?</li>\n<li>Am I effectively using the ApplicationContext as a service locator?</li>\n<li>Can I avoid accessing the ApplicationContext at all?</li>\n</ul>\n\n<p>The answers to these questions are easier in certain types of applications (Web apps, for example) than they are in others, but are worth asking anyway.</p>\n\n<p>Accessing the ApplicationContext does kind of violate the whole dependency injection principle, but sometimes you've not got much choice.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9482,
+      "reputation" : 2914,
+      "user_id" : 17542,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/cea0566123c50ff31d8c91be72210aa1?s=256&d=identicon&r=PG",
+      "display_name" : "stian",
+      "link" : "https://stackoverflow.com/users/17542/stian"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1346072194,
+    "last_edit_date" : 1346072194,
+    "creation_date" : 1222551810,
+    "answer_id" : 144545,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I believe you could use <a href=\"http://static.springframework.org/spring/docs/2.0.x/api/org/springframework/beans/factory/access/SingletonBeanFactoryLocator.html\" rel=\"noreferrer\">SingletonBeanFactoryLocator</a>. The beanRefFactory.xml file would hold the actual applicationContext, It would go something like this:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;bean id=\"mainContext\" class=\"org.springframework.context.support.ClassPathXmlApplicationContext\"&gt;\n     &lt;constructor-arg&gt;\n        &lt;list&gt;\n            &lt;value&gt;../applicationContext.xml&lt;/value&gt;\n        &lt;/list&gt;\n     &lt;/constructor-arg&gt;\n &lt;/bean&gt;\n</code></pre>\n\n<p>And the code to get a bean from the applicationcontext from whereever would be something like this:</p>\n\n<pre><code>BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance();\nBeanFactoryReference bf = bfl.useBeanFactory(\"mainContext\");\nSomeService someService = (SomeService) bf.getFactory().getBean(\"someService\");\n</code></pre>\n\n<p>The Spring team discourage the use of this class and yadayada, but it has suited me well where I have used it.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11209,
+      "reputation" : 26136,
+      "user_id" : 21499,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://i.sstatic.net/Ykmgs.jpg?s=256",
+      "display_name" : "Dr. Hans-Peter St&#246;rr",
+      "link" : "https://stackoverflow.com/users/21499/dr-hans-peter-st%c3%b6rr"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1238509969,
+    "last_edit_date" : 1238509969,
+    "creation_date" : 1238424854,
+    "answer_id" : 697550,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If you use a web-app there is also another way to access the application context without using singletons by using a servletfilter and a ThreadLocal. In the filter you can access the application context using WebApplicationContextUtils and store either the application context or the needed beans in the TheadLocal. </p>\n\n<p>Caution: if you forget to unset the ThreadLocal you will get nasty problems when trying to undeploy the application! Thus, you should set it and immediately start a try that unsets the ThreadLocal in the finally-part.</p>\n\n<p>Of course, this still uses a singleton: the ThreadLocal. But the actual beans do not need to be anymore. The can even be request-scoped, and this solution also works if you have multiple WARs in an Application with the libaries in the EAR. Still, you might consider this use of ThreadLocal as bad as the use of plain singletons. ;-)</p>\n\n<p>Perhaps Spring already provides a similar solution? I did not find one, but I don't know for sure.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2147,
+        "reputation" : 38986,
+        "user_id" : 2961,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/d5f30c2d40341d55ba235d674d24972e?s=256&d=identicon&r=PG",
+        "display_name" : "Stu Thompson",
+        "link" : "https://stackoverflow.com/users/2961/stu-thompson"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1354031852,
+      "post_id" : 10582462,
+      "comment_id" : 18623735,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This helped a bunch.  I&#39;ve got some odd issues with an older app with Spring 2.0 and your answer was the only way I could sanely get things to work with a single ApplicationContext, with a single Spring IoC container."
+    }, {
+      "owner" : {
+        "account_id" : 257029,
+        "reputation" : 3311,
+        "user_id" : 538160,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/4b816c3331088ec95af69b0f33137ad9?s=256&d=identicon&r=PG",
+        "display_name" : "supernova",
+        "link" : "https://stackoverflow.com/users/538160/supernova"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1398641904,
+      "post_id" : 10582462,
+      "comment_id" : 35724115,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Readers..Don&#39;t forget to declare this  SpringBean in your springconfig.xml as a bean."
+    }, {
+      "owner" : {
+        "account_id" : 2386817,
+        "reputation" : 15845,
+        "user_id" : 2087628,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/376a703596079b375cd1697267a304b9?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JaskeyLam",
+        "link" : "https://stackoverflow.com/users/2087628/jaskeylam"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1414938392,
+      "post_id" : 10582462,
+      "comment_id" : 41994366,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What if this is already a Bean, and I use Application.getApplicationContext()(Singleton pattern) , which returns a instance of new XXXXApplicationContext(XXXX), why it is not work? Why Do I have to autowired it?"
+    }, {
+      "owner" : {
+        "account_id" : 3130088,
+        "reputation" : 46062,
+        "user_id" : 2648077,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/a465e5bf1c71410211094e09a44d574a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alireza Fattahi",
+        "link" : "https://stackoverflow.com/users/2648077/alireza-fattahi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1448181613,
+      "post_id" : 10582462,
+      "comment_id" : 55470184,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You can use <code>@Inject</code> too"
+    }, {
+      "owner" : {
+        "account_id" : 931121,
+        "reputation" : 22567,
+        "user_id" : 961018,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://i.sstatic.net/X5fDY.jpg?s=256",
+        "display_name" : "mjs",
+        "link" : "https://stackoverflow.com/users/961018/mjs"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1619286349,
+      "post_id" : 10582462,
+      "comment_id" : 118861430,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Without autowiring? I mean this property is a singleton, so i do&#39;t get why it is not accessible through a static method."
+    } ],
+    "owner" : {
+      "account_id" : 281486,
+      "reputation" : 9169,
+      "user_id" : 577812,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/VQVMY.jpg?s=256",
+      "display_name" : "omnomnom",
+      "link" : "https://stackoverflow.com/users/577812/omnomnom"
+    },
+    "is_accepted" : false,
+    "score" : 134,
+    "last_activity_date" : 1336995062,
+    "creation_date" : 1336995062,
+    "answer_id" : 10582462,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can implement <code>ApplicationContextAware</code> or just use <code>@Autowired</code>:</p>\n\n<pre><code>public class SpringBean {\n  @Autowired\n  private ApplicationContext appContext;\n}\n</code></pre>\n\n<p><code>SpringBean</code> will have <code>ApplicationContext</code> injected, within which this bean is instantiated. For example if you have web application with a pretty standard contexts hierarchy:</p>\n\n<pre><code>main application context &lt;- (child) MVC context\n</code></pre>\n\n<p>and <code>SpringBean</code> is declared within main context, it will have main context injected;\notherwise, if it's declared within MVC context, it will have MVC context injected.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3548963,
+        "reputation" : 343,
+        "user_id" : 2964696,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XMty2.png?s=256",
+        "display_name" : "Jules Kerssemakers",
+        "link" : "https://stackoverflow.com/users/2964696/jules-kerssemakers"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1697318041,
+      "post_id" : 21906984,
+      "comment_id" : 136265647,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You are absolutely correct, and I have been having the exact problem you describe for two years at work. I&#39;ve lost WEEKS to debugging this, and have known that <i>exactly this</i> was the problem for over a year now, fearing the day it would trigger again. There&#39;s parallel <a href=\"https://stackoverflow.com/q/37548897/2964696\">Question asking exactly how to prevent this</a>. This Weekend I finally hit upon the solution, see <a href=\"https://stackoverflow.com/a/77294493/2964696\">my answer over there</a>, and my <a href=\"https://gitlab.com/-/snippets/3611200\" rel=\"nofollow noreferrer\">GitLab snippet with more details</a>"
+    } ],
+    "owner" : {
+      "account_id" : 1719961,
+      "reputation" : 3767,
+      "user_id" : 1576149,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/177220ab3521166b33be2df60476a20c?s=256&d=identicon&r=PG",
+      "display_name" : "gogstad",
+      "link" : "https://stackoverflow.com/users/1576149/gogstad"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1392897138,
+    "creation_date" : 1392897138,
+    "answer_id" : 21906984,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Note that by storing any state from the current <code>ApplicationContext</code>, or the <code>ApplicationContext</code> itself in a static variable - for example using the singleton pattern - you will make your tests unstable and unpredictable if you're using Spring-test. This is because Spring-test caches and reuses application contexts in the same JVM. For example:</p>\n\n<ol>\n<li>Test A run and it is annotated with <code>@ContextConfiguration({\"classpath:foo.xml\"})</code>. </li>\n<li>Test B run and it is annotated with <code>@ContextConfiguration({\"classpath:foo.xml\", \"classpath:bar.xml})</code></li>\n<li>Test C run and it is annotated with <code>@ContextConfiguration({\"classpath:foo.xml\"})</code></li>\n</ol>\n\n<p>When Test A runs, an <code>ApplicationContext</code> is created, and any beans implemeting <code>ApplicationContextAware</code> or autowiring <code>ApplicationContext</code> might write to the static variable.</p>\n\n<p>When Test B runs the same thing happens, and the static variable now points to Test B's <code>ApplicationContext</code></p>\n\n<p>When Test C runs, <em>no beans are created</em> as the <code>TestContext</code> (and herein the <code>ApplicationContext</code>) from Test A is resused. Now you got a static variable pointing to another <code>ApplicationContext</code> than the one currently holding the beans for your test.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 543250,
+      "reputation" : 19350,
+      "user_id" : 912319,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/bb15dcf43c8fe4a01b9d16e93690e118?s=256&d=identicon&r=PG",
+      "display_name" : "Kanagavelu Sugumar",
+      "link" : "https://stackoverflow.com/users/912319/kanagavelu-sugumar"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1480926937,
+    "last_edit_date" : 1495541896,
+    "creation_date" : 1480923853,
+    "answer_id" : 40969417,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Please note that; the below code will create new application context instead of using the already loaded one.</p>\n\n<pre><code>private static final ApplicationContext context = \n               new ClassPathXmlApplicationContext(\"beans.xml\");\n</code></pre>\n\n<p>Also note that <code>beans.xml</code> should be part of <code>src/main/resources</code> means in war it is part of <code>WEB_INF/classes</code>, where as the real application will be loaded through <code>applicationContext.xml</code> mentioned at <code>Web.xml</code>.</p>\n\n<pre><code>&lt;context-param&gt;\n    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;\n    &lt;param-value&gt;META-INF/spring/applicationContext.xml&lt;/param-value&gt;\n&lt;/context-param&gt;\n</code></pre>\n\n<p>It is <a href=\"https://stackoverflow.com/questions/4802877/right-path-to-applicationcontext-xml-using-classpathxmlapplicationcontext\">difficult</a> to mention <code>applicationContext.xml</code> path in <code>ClassPathXmlApplicationContext</code> constructor. <code>ClassPathXmlApplicationContext(\"META-INF/spring/applicationContext.xml\")</code> wont be able to locate the file.</p>\n\n<p>So it is better to use existing applicationContext by using annotations.</p>\n\n<pre><code>@Component\npublic class OperatorRequestHandlerFactory {\n\n    public static ApplicationContext context;\n\n    @Autowired\n    public void setApplicationContext(ApplicationContext applicationContext) {\n        context = applicationContext;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1630273,
+      "reputation" : 429,
+      "user_id" : 1504977,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/aa401f29081330e33a698aadeb2ba225?s=256&d=identicon&r=PG",
+      "display_name" : "Vanessa Schissato",
+      "link" : "https://stackoverflow.com/users/1504977/vanessa-schissato"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1492762584,
+    "creation_date" : 1492762584,
+    "answer_id" : 43537419,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>SpringApplicationContext.java\n\nimport org.springframework.beans.BeansException;\nimport org.springframework.context.ApplicationContext;\nimport org.springframework.context.ApplicationContextAware;\n\n/**\n * Wrapper to always return a reference to the Spring Application \nContext from\n * within non-Spring enabled beans. Unlike Spring MVC's \nWebApplicationContextUtils\n * we do not need a reference to the Servlet context for this. All we need is\n * for this bean to be initialized during application startup.\n */\npublic class SpringApplicationContext implements \nApplicationContextAware {\n\n  private static ApplicationContext CONTEXT;\n\n  /**\n   * This method is called from within the ApplicationContext once it is \n   * done starting up, it will stick a reference to itself into this bean.\n  * @param context a reference to the ApplicationContext.\n  */\n  public void setApplicationContext(ApplicationContext context) throws BeansException {\n    CONTEXT = context;\n  }\n\n  /**\n   * This is about the same as context.getBean(\"beanName\"), except it has its\n   * own static handle to the Spring context, so calling this method statically\n   * will give access to the beans by name in the Spring application context.\n   * As in the context.getBean(\"beanName\") call, the caller must cast to the\n   * appropriate target class. If the bean does not exist, then a Runtime error\n   * will be thrown.\n   * @param beanName the name of the bean to get.\n   * @return an Object reference to the named bean.\n   */\n  public static Object getBean(String beanName) {\n    return CONTEXT.getBean(beanName);\n  }\n}\n</code></pre>\n\n<p>Source: <a href=\"http://sujitpal.blogspot.de/2007/03/accessing-spring-beans-from-legacy-code.html\" rel=\"noreferrer\">http://sujitpal.blogspot.de/2007/03/accessing-spring-beans-from-legacy-code.html</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 171586,
+      "reputation" : 4595,
+      "user_id" : 399113,
+      "user_type" : "registered",
+      "accept_rate" : 51,
+      "profile_image" : "https://www.gravatar.com/avatar/359ac6981aa690527f13b8413735c092?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "John John",
+      "link" : "https://stackoverflow.com/users/399113/john-john"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1535374150,
+    "last_edit_date" : 1535374150,
+    "creation_date" : 1530145238,
+    "answer_id" : 51073072,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I know this question is answered, but I would like to share the Kotlin code I did to retrieve the Spring Context. </p>\n\n<p>I am not a specialist, so I am open to critics, reviews and advices:</p>\n\n<p><a href=\"https://gist.github.com/edpichler/9e22309a86b97dbd4cb1ffe011aa69dd\" rel=\"nofollow noreferrer\">https://gist.github.com/edpichler/9e22309a86b97dbd4cb1ffe011aa69dd</a></p>\n\n<pre><code>package com.company.web.spring\n\nimport com.company.jpa.spring.MyBusinessAppConfig\nimport org.springframework.beans.factory.annotation.Autowired\nimport org.springframework.context.ApplicationContext\nimport org.springframework.context.annotation.AnnotationConfigApplicationContext\nimport org.springframework.context.annotation.ComponentScan\nimport org.springframework.context.annotation.Configuration\nimport org.springframework.context.annotation.Import\nimport org.springframework.stereotype.Component\nimport org.springframework.web.context.ContextLoader\nimport org.springframework.web.context.WebApplicationContext\nimport org.springframework.web.context.support.WebApplicationContextUtils\nimport javax.servlet.http.HttpServlet\n\n@Configuration\n@Import(value = [MyBusinessAppConfig::class])\n@ComponentScan(basePackageClasses  = [SpringUtils::class])\nopen class WebAppConfig {\n}\n\n/**\n *\n * Singleton object to create (only if necessary), return and reuse a Spring Application Context.\n *\n * When you instantiates a class by yourself, spring context does not autowire its properties, but you can wire by yourself.\n * This class helps to find a context or create a new one, so you can wire properties inside objects that are not\n * created by Spring (e.g.: Servlets, usually created by the web server).\n *\n * Sometimes a SpringContext is created inside jUnit tests, or in the application server, or just manually. Independent\n * where it was created, I recommend you to configure your spring configuration to scan this SpringUtils package, so the 'springAppContext'\n * property will be used and autowired at the SpringUtils object the start of your spring context, and you will have just one instance of spring context public available.\n *\n *Ps: Even if your spring configuration doesn't include the SpringUtils @Component, it will works tto, but it will create a second Spring Context o your application.\n */\n@Component\nobject SpringUtils {\n\n        var springAppContext: ApplicationContext? = null\n    @Autowired\n    set(value) {\n        field = value\n    }\n\n\n\n    /**\n     * Tries to find and reuse the Application Spring Context. If none found, creates one and save for reuse.\n     * @return returns a Spring Context.\n     */\n    fun ctx(): ApplicationContext {\n        if (springAppContext!= null) {\n            println(\"achou\")\n            return springAppContext as ApplicationContext;\n        }\n\n        //springcontext not autowired. Trying to find on the thread...\n        val webContext = ContextLoader.getCurrentWebApplicationContext()\n        if (webContext != null) {\n            springAppContext = webContext;\n            println(\"achou no servidor\")\n            return springAppContext as WebApplicationContext;\n        }\n\n        println(\"nao achou, vai criar\")\n        //None spring context found. Start creating a new one...\n        val applicationContext = AnnotationConfigApplicationContext ( WebAppConfig::class.java )\n\n        //saving the context for reusing next time\n        springAppContext = applicationContext\n        return applicationContext\n    }\n\n    /**\n     * @return a Spring context of the WebApplication.\n     * @param createNewWhenNotFound when true, creates a new Spring Context to return, when no one found in the ServletContext.\n     * @param httpServlet the @WebServlet.\n     */\n    fun ctx(httpServlet: HttpServlet, createNewWhenNotFound: Boolean): ApplicationContext {\n        try {\n            val webContext = WebApplicationContextUtils.findWebApplicationContext(httpServlet.servletContext)\n            if (webContext != null) {\n                return webContext\n            }\n            if (createNewWhenNotFound) {\n                //creates a new one\n                return ctx()\n            } else {\n                throw NullPointerException(\"Cannot found a Spring Application Context.\");\n            }\n        }catch (er: IllegalStateException){\n            if (createNewWhenNotFound) {\n                //creates a new one\n                return ctx()\n            }\n            throw er;\n        }\n    }\n}\n</code></pre>\n\n<p>Now, a spring context is publicly available, being able to call the same method independent of the context (junit tests, beans, manually instantiated classes) like on this Java Servlet:</p>\n\n<pre><code>@WebServlet(name = \"MyWebHook\", value = \"/WebHook\")\npublic class MyWebServlet extends HttpServlet {\n\n\n    private MyBean byBean\n            = SpringUtils.INSTANCE.ctx(this, true).getBean(MyBean.class);\n\n\n    public MyWebServlet() {\n\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3691447,
+      "reputation" : 7145,
+      "user_id" : 3073945,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/Dig4I.jpg?s=256",
+      "display_name" : "Md. Sajedul Karim",
+      "link" : "https://stackoverflow.com/users/3073945/md-sajedul-karim"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1557935139,
+    "last_edit_date" : 1557935139,
+    "creation_date" : 1539766338,
+    "answer_id" : 52850865,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are many way to get application context in Spring application. Those are given bellow:</p>\n\n<ol>\n<li><p><strong>Via ApplicationContextAware</strong>:</p>\n\n<pre><code>import org.springframework.beans.BeansException;\nimport org.springframework.context.ApplicationContext;\nimport org.springframework.context.ApplicationContextAware;\n\npublic class AppContextProvider implements ApplicationContextAware {\n\nprivate ApplicationContext applicationContext;\n\n@Override\npublic void setApplicationContext(ApplicationContext applicationContext) throws BeansException {\n    this.applicationContext = applicationContext;\n}\n}\n</code></pre></li>\n</ol>\n\n<p>Here <code>setApplicationContext(ApplicationContext applicationContext)</code> method you will get the applicationContext</p>\n\n<blockquote>\n  <p><strong>ApplicationContextAware</strong>:</p>\n  \n  <p>Interface to be implemented by any object that wishes to be notified\n  of the ApplicationContext that it runs in. Implementing this interface\n  makes sense for example when an object requires access to a set of\n  collaborating beans.</p>\n</blockquote>\n\n<ol start=\"2\">\n<li><p><strong>Via Autowired</strong>:</p>\n\n<pre><code>@Autowired\nprivate ApplicationContext applicationContext;\n</code></pre></li>\n</ol>\n\n<p>Here <code>@Autowired</code> keyword will provide the applicationContext. Autowired has some problem. It will create problem during unit-testing.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 49931,
+      "reputation" : 26472,
+      "user_id" : 148844,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/263aa1ae12d9757f78167b80e596c3df?s=256&d=identicon&r=PG",
+      "display_name" : "Chloe",
+      "link" : "https://stackoverflow.com/users/148844/chloe"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1545338914,
+    "creation_date" : 1545338914,
+    "answer_id" : 53875813,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Not sure how useful this will be, but you can also get the context when you initialize the app. This is the soonest you can get the context, even before an <code>@Autowire</code>. </p>\n\n<pre><code>@SpringBootApplication\npublic class Application extends SpringBootServletInitializer {\n    private static ApplicationContext context;\n\n    // I believe this only runs during an embedded Tomcat with `mvn spring-boot:run`. \n    // I don't believe it runs when deploying to Tomcat on AWS.\n    public static void main(String[] args) {\n        context = SpringApplication.run(Application.class, args);\n        DataSource dataSource = context.getBean(javax.sql.DataSource.class);\n        Logger.getLogger(\"Application\").info(\"DATASOURCE = \" + dataSource);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8587609,
+      "reputation" : 1377,
+      "user_id" : 6433161,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/40d144d75e4c05f6e33ddf0c7c0e36b9?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sandeep Jain",
+      "link" : "https://stackoverflow.com/users/6433161/sandeep-jain"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1651748164,
+    "last_edit_date" : 1651748164,
+    "creation_date" : 1551849246,
+    "answer_id" : 55015981,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Do autowire in Spring bean as below:</p>\n<pre><code>@Autowired\nprivate ApplicationContext appContext;\n</code></pre>\n<p>You will get the <code>ApplicationContext</code> object.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8876480,
+      "reputation" : 97,
+      "user_id" : 6628440,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/319f3f9b7dd8d72a72540444d96f4c2a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Aman Malhotra",
+      "link" : "https://stackoverflow.com/users/6628440/aman-malhotra"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1594132573,
+    "creation_date" : 1594132573,
+    "answer_id" : 62777726,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Even after adding @Autowire if your class is not a RestController or Configuration Class, the applicationContext object was coming as null. Tried Creating new class with below and it is working fine:</p>\n<pre><code>@Component\npublic class SpringContext implements ApplicationContextAware{\n\n   private static ApplicationContext applicationContext;\n\n   @Override\n    public void setApplicationContext(ApplicationContext applicationContext) throws \n     BeansException {\n    this.applicationContext=applicationContext;\n   }\n }\n</code></pre>\n<p>you can then implement a getter method in the same class as per your need like getting the Implemented class reference by:</p>\n<pre><code>    applicationContext.getBean(String serviceName,Interface.Class)\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3548963,
+        "reputation" : 343,
+        "user_id" : 2964696,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XMty2.png?s=256",
+        "display_name" : "Jules Kerssemakers",
+        "link" : "https://stackoverflow.com/users/2964696/jules-kerssemakers"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1697232348,
+      "post_id" : 66512158,
+      "comment_id" : 136259058,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is a heavy codesmell for me; you are mutilating <i>all</i> your beans for the benefit of non-spring legacy code. The <code>ApplicationContextAware</code> singletons above have the advantage of isolating the legacy mapping to a single point, that can be easily removed once the migration is finished (after X years..)"
+    } ],
+    "owner" : {
+      "account_id" : 10346755,
+      "reputation" : 23375,
+      "user_id" : 7631480,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/zcBMm.png?s=256",
+      "display_name" : "CryptoFool",
+      "link" : "https://stackoverflow.com/users/7631480/cryptofool"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1615077867,
+    "creation_date" : 1615077867,
+    "answer_id" : 66512158,
+    "question_id" : 129207,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I use a simple, standardized way to allow external access to any of my own singleton Spring Beans. With this method, I continue to let Spring instantiate the Bean.  Here's what I do:</p>\n<ol>\n<li>Define a private static variable of the same type as the enclosing class.</li>\n<li>Set that variable to <code>this</code> in each of the class's constructors.  If the class has no constructors, add a default constructor in which to set the variable.</li>\n<li>Define a public static getter method that returns the singleton variable.</li>\n</ol>\n<p>Here's an example:</p>\n<pre><code>@Component\npublic class MyBean {\n    ...\n\n    private static MyBean singleton = null;\n\n    public MyBean() {\n        ...\n        singleton = this;\n    }\n\n    ...\n    \n    public void someMethod() {\n        ...\n    }\n\n    ...\n\n    public static MyBean get() {\n        return singleton;\n    }\n}\n</code></pre>\n<p>I can then call <code>someMethod</code> on the singleton bean, anywhere in my code, via:</p>\n<pre><code>MyBean.get().someMethod();\n</code></pre>\n<p>If you are already subclassing your <code>ApplicationContext</code>, you can add this mechanism to it directly.  Otherwise, you could either subclass it just to do this, or add this mechanism to any bean that has access to the <code>ApplicationContext</code>, and then use it to gain access to the <code>ApplicationContext</code> from anywhere.  The important thing is that it is this mechanism that will let you get into the Spring environment.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7969,
+    "reputation" : 14941,
+    "user_id" : 14057,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/da976935e72af919ba8fc7a097a24a1f?s=256&d=identicon&r=PG",
+    "display_name" : "Joe Skora",
+    "link" : "https://stackoverflow.com/users/14057/joe-skora"
+  },
+  "is_answered" : true,
+  "view_count" : 430123,
+  "protected_date" : 1540562112,
+  "accepted_answer_id" : 129999,
+  "answer_count" : 16,
+  "score" : 245,
+  "last_activity_date" : 1651748164,
+  "creation_date" : 1222283401,
+  "last_edit_date" : 1650389311,
+  "question_id" : 129207,
+  "link" : "https://stackoverflow.com/questions/129207/getting-spring-application-context",
+  "title" : "Getting Spring Application Context",
+  "body" : "<p>Is there a way to statically/globally request a copy of the ApplicationContext in a Spring application?</p>\n\n<p>Assuming the main class starts up and initializes the application context, does it need to pass that down through the call stack to any classes that need it, or is there a way for a class to ask for the previously created context?  (Which I assume has to be a singleton?)</p>\n"
+}

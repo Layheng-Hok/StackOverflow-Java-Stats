@@ -1,0 +1,134 @@
+{
+  "tags" : [ "java", "minecraft", "mixins", "minecraft-fabric" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 21724606,
+      "reputation" : 1431,
+      "user_id" : 16034206,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/MRBdT.jpg?s=256",
+      "display_name" : "pebble unit",
+      "link" : "https://stackoverflow.com/users/16034206/pebble-unit"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1755597701,
+    "post_id" : 79739086,
+    "comment_id" : 140675874,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I got confused for a moment over the wording of the question. Anyway, the record is package-private so it&#39;s not that you cant use the type <code>ReloadableResources</code> but you need to create your class in the same package as the MinecraftServer class."
+  }, {
+    "owner" : {
+      "account_id" : 1992310,
+      "reputation" : 11519,
+      "user_id" : 1786065,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/udTpS.png?s=256",
+      "display_name" : "Rogue",
+      "link" : "https://stackoverflow.com/users/1786065/rogue"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1755609699,
+    "post_id" : 79739086,
+    "comment_id" : 140676339,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Less so using the same package, moreso that you&#39;ll need to use reflection to make the private field accessible and then retrieve it. <code>fabricmc</code> may have some (annotation-based?) api for doing just that already, but under the hood that&#39;s the primary operation to be done."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1992310,
+        "reputation" : 11519,
+        "user_id" : 1786065,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/udTpS.png?s=256",
+        "display_name" : "Rogue",
+        "link" : "https://stackoverflow.com/users/1786065/rogue"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1755872360,
+      "post_id" : 79742190,
+      "comment_id" : 140684943,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That&#39;s essentially the correct usage. I would actually allow the exceptions to bubble up (but that&#39;s a personal choice), but I&#39;d <i>definitely</i> remove the <code>$</code> from your method name (it&#39;s ambiguous with compiler-generated code)"
+    } ],
+    "owner" : {
+      "account_id" : 24810061,
+      "reputation" : 45,
+      "user_id" : 18691622,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Gh9b1aMGRFZwB2Vd83DpU8nu21hkUy9-s0i5B2G=k-s256",
+      "display_name" : "R&#233;su",
+      "link" : "https://stackoverflow.com/users/18691622/r%c3%a9su"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1755785880,
+    "last_edit_date" : 1755785880,
+    "creation_date" : 1755774149,
+    "answer_id" : 79742190,
+    "question_id" : 79739086,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For now this is my conclusion on how to access the required value from withing the <code>MinecraftServer.class</code></p>\n<pre><code>@Override\n@Nullable\npublic ReloadableServerResources codec$getResources() {\n    try {\n        Field resources = MinecraftServer.class.getDeclaredField(&quot;resources&quot;);\n        resources.setAccessible(true);\n        Method managers = resources.getType().getDeclaredMethod(&quot;managers&quot;);\n        managers.setAccessible(true);\n        Object reloadableResources = resources.get(this);\n        return (ReloadableServerResources) managers.invoke(reloadableResources);\n    } catch (Exception e) {\n        return null;\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10162,
+        "reputation" : 948570,
+        "user_id" : 19068,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1d2d3229ed1961d2bd81853242493247?s=256&d=identicon&r=PG",
+        "display_name" : "Quentin",
+        "link" : "https://stackoverflow.com/users/19068/quentin"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1761255966,
+      "post_id" : 79798177,
+      "comment_id" : 140813927,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "While this link may answer the question, it is better to include the essential parts of the answer here and provide the link for reference.  Link-only answers can become invalid if the linked page changes. - <a href=\"/review/late-answers/37025247\">From Review</a>"
+    } ],
+    "owner" : {
+      "account_id" : 29746282,
+      "reputation" : 45,
+      "user_id" : 22797261,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocJM0LEXW8y3lSckLQuDmAxH7-7pUZcRpkBAenfWk-UF=k-s256",
+      "display_name" : "GunnableScum",
+      "link" : "https://stackoverflow.com/users/22797261/gunnablescum"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1761250985,
+    "creation_date" : 1761250985,
+    "answer_id" : 79798177,
+    "question_id" : 79739086,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Since you're using Fabric, You can use an <a href=\"https://wiki.fabricmc.net/tutorial:accesswideners\" rel=\"nofollow noreferrer\"><code>accesswidener</code></a>.</p>\n<p>I don't know if they can be used for records, though.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 24810061,
+    "reputation" : 45,
+    "user_id" : 18691622,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Gh9b1aMGRFZwB2Vd83DpU8nu21hkUy9-s0i5B2G=k-s256",
+    "display_name" : "R&#233;su",
+    "link" : "https://stackoverflow.com/users/18691622/r%c3%a9su"
+  },
+  "is_answered" : true,
+  "view_count" : 134,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1761250985,
+  "creation_date" : 1755539466,
+  "last_edit_date" : 1755594179,
+  "question_id" : 79739086,
+  "link" : "https://stackoverflow.com/questions/79739086/how-to-access-a-private-nested-record",
+  "title" : "How to access a private nested record",
+  "body" : "<p>The <code>MinecraftServer.class</code> has a private Record named <code>ReloadableResources</code> that is used to hold <code>managers</code> for resource managing.</p>\n<pre class=\"lang-java prettyprint-override\"><code>...\n\nrecord ReloadableResources(CloseableResourceManager resourceManager, ReloadableServerResources managers) implements AutoCloseable {\n\n    public void close() {\n       this.resourceManager.close();\n    }\n}\n\n...\n</code></pre>\n<p>How could it be possible to get the managers from within the minecraft server? Because to get the following variable: <code>private MinecraftServer.ReloadableResources resources;</code> you would need to use\nan accessor or an invoker, which both would require the type <code>ReloadableResources</code> which I can't use.</p>\n<p>Example that would throw an error (<em>&quot;Cannot find field resources in target class&quot;</em>):</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Mixin(MinecraftServer.class)\npublic class MinecraftServerAccessor {\n    @Accessor(&quot;resources&quot;)\n    public ReloadableResourcesLike getResources() {\n    }\n}\n</code></pre>\n"
+}

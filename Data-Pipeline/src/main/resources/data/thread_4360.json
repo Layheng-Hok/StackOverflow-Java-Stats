@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "apache-spark" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 4306834,
+      "reputation" : 3947,
+      "user_id" : 3519000,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/8UkXR.jpg?s=256",
+      "display_name" : "lrnzcig",
+      "link" : "https://stackoverflow.com/users/3519000/lrnzcig"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1509969330,
+    "post_id" : 47136075,
+    "comment_id" : 81222018,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "One option is to use an outer join; your query is frankly a bit difficult to read but I&#39;d say you should be able to transform it using joins. Good luck."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 11632593,
+        "reputation" : 91,
+        "user_id" : 8520155,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/fa9dd6bd5d33e614b1f7015caf46345d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Ans8",
+        "link" : "https://stackoverflow.com/users/8520155/ans8"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1517382869,
+      "post_id" : 47138707,
+      "comment_id" : 84067995,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks @dgg. It did solve my purpose. And further added some more logic for requirement. If any one faces same issue and needs help. Pls let me know."
+    } ],
+    "owner" : {
+      "account_id" : 1732835,
+      "reputation" : 162,
+      "user_id" : 1586071,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bf588feb8b13d654ffc1c9610bd27a8d?s=256&d=identicon&r=PG",
+      "display_name" : "dgg",
+      "link" : "https://stackoverflow.com/users/1586071/dgg"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1509976981,
+    "creation_date" : 1509976981,
+    "answer_id" : 47138707,
+    "question_id" : 47136075,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The query <em>is</em> a bit hard to follow as written.  It's not clear (to me anyway) what your intentions are for the <em>stats</em> table since you don't select anything from it so I removed it.  Obviously I haven't tried this myself but at a glance, you might try something like this instead:</p>\n\n<pre><code>select\n    a.PTF_ID,\n    a.PTF_CODE,\n    a.SHARE_ID,\n    a.SHARE_CODE,\n    a.BENCH_ID,\n    a.BENCH_CODE,\n    a.L1_CALCULATION_DATE,\n    a.L1_BEGIN_DATE,\n    a.L1_END_DATE,\n    a.L1_RUNNING_DATE,\n    a.L1_FREQUENCY,\n    a.L1_CALCULATION_STEP,\n    a.L1_PERFORMANCE_CURRENCY,\n    a.L1_CONFIGURATION,\n    a.L1_VALUATION_SOURCE,\n    a.L1_NAV_VALUATION_TYPE,\n    a.L1_SETTING_REFERENCE_TYPE,\n    a.L1_SETTING_VALUATION_TYPE,\n    a.L1_SHARPE_RATIO_ANNUALIZED as VALUE,\n    b.ID_STATISTIC \nfrom \n    PARQUETFILE a\ninner join\n    PAIRRDD b\non\n    a.L1_NAV_VALUATION_TYPE = b.L1_NAV_VALUATION_TYPE and\n    a.L1_VALUATION_SOURCE = b.L1_VALUATION_SOURCE\nleft outer join (\n    select\n        e.PTF_ID\n    from\n        PAIRRDD d\n    inner join\n        PARQUETFILE e\n    on\n        d.L1_VALUATION_SOURCE = e.L1_VALUATION_SOURCE AND\n        d.L1_NAV_VALUATION_TYPE = e.L1_NAV_VALUATION_TYPE\n    where\n        b.L1_VALUATION_SOURCE = ''\n    ) x\non\n    a.PTF_ID = x.PTF_ID\nwhere\n    b.L1_PERF = 'l1_sharpe_ratio_annualized' or\n    x.PTF_ID is null\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 11632593,
+    "reputation" : 91,
+    "user_id" : 8520155,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/fa9dd6bd5d33e614b1f7015caf46345d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Ans8",
+    "link" : "https://stackoverflow.com/users/8520155/ans8"
+  },
+  "is_answered" : false,
+  "view_count" : 10330,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1760389505,
+  "creation_date" : 1509968098,
+  "last_edit_date" : 1509969550,
+  "question_id" : 47136075,
+  "link" : "https://stackoverflow.com/questions/47136075/spark-sql-not-in-or-not-exists",
+  "title" : "SPARK SQL not in or NOT EXISTS",
+  "body" : "<p>I have a scenario where there are two sheets(csv). Created two tables for it. \nWhen there s a good data I could map it with a value( id statistic value) from the second table. If I have bad data I should map it with id statistic value again (but a different value). however, I'm unable to use not exists in spark SQL. And I get the error below:</p>\n\n<p>mismatched input 'from' expecting {, 'WHERE', 'GROUP', 'ORDER', 'HAVING', 'LIMIT', 'LATERAL', 'WINDOW', 'UNION', 'EXCEPT', 'INTERSECT', 'SORT', 'CLUSTER', 'DISTRIBUTE'}(line 1, pos 386)</p>\n\n<pre><code>at org.apache.spark.sql.catalyst.parser.ParseException.withCommand(ParseDriver.scala:197)\nat org.apache.spark.sql.catalyst.parser.AbstractSqlParser.parse(ParseDriver.scala:99)\nat org.apache.spark.sql.execution.SparkSqlParser.parse(SparkSqlParser.scala:45)\n</code></pre>\n\n<hr>\n\n<p>CODE:</p>\n\n<pre><code>select\n  a.ptf_id,a.ptf_code,a.share_id,a.share_code,a.bench_id,a.bench_code\n  , a.l1_calculation_date,a.l1_begin_date,a.l1_end_date,a.l1_running_date\n  , a.l1_frequency,a.l1_calculation_step,a.l1_performance_currency\n  , a.l1_configuration,a.l1_valuation_source,a.l1_nav_valuation_type\n  , a.l1_setting_reference_type, a.l1_setting_valuation_type\n  , a.l1_sharpe_ratio_annualized as value,b.id_statistic \nfrom \n  parquetFile a, \n  pairRDD b, \n  stats c \nwhere\n  a.l1_nav_valuation_type= b.l1_nav_valuation_type \n  and a.l1_valuation_source = b.l1_valuation_source\n  and b.l1_Perf = 'l1_sharpe_ratio_annualized' \n  OR (a.ptf_id not EXISTS (\n       select e.ptf_id from pairRDD d, parquetFile e \n       where d.l1_valuation_source = e.l1_valuation_source \n       AND d.l1_nav_valuation_type = e.l1_nav_valuation_type) \n  and b.l1_valuation_source ='')\n</code></pre>\n\n<p>this query works in SQL if I use \"NOT in\"\nplease help me on what other options to use in this scenario other than not exists.</p>\n"
+}

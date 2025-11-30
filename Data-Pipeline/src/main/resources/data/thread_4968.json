@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "rest", "spring-boot", "autowired", "openfeign" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3488442,
+      "reputation" : 87,
+      "user_id" : 2918698,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/hrCSC.jpg?s=256",
+      "display_name" : "9900kf",
+      "link" : "https://stackoverflow.com/users/2918698/9900kf"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1692537087,
+    "post_id" : 59082023,
+    "comment_id" : 135634095,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "maybe try adding package name where feignclient is located in basepackages field of @enablefeignclients; and do mvn install"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 298886,
+      "reputation" : 42969,
+      "user_id" : 605153,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/771f1c4e90ceeec0060c62ff0dbb762e?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Bramnik",
+      "link" : "https://stackoverflow.com/users/605153/mark-bramnik"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1574921242,
+    "creation_date" : 1574921242,
+    "answer_id" : 59082678,
+    "question_id" : 59082023,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A couple of points that might help:</p>\n\n<p>First off:\nWhy do you use a qualifier to inject the <code>LegacyClient</code> bean into your service? Are there many? In general an interface should be wrapped into proxy and put as a single bean into the Application Context, so in my understanding Qualifier is not required here.</p>\n\n<p>Another concern:</p>\n\n<p>It looks like the <code>@FeignClient</code> annotation is not processed. Therefore the proxy is not created. In order to check this, place a breakpoint into the configuration <code>FeignConfig</code> some of beans / create a no-op constructor and check that it gets called at all (or mayble place log message just to see it works).</p>\n\n<p>You haven't posted the package structure but it's possible that this configuration is not found by the package scanning mechanism and therefore is not created.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 20582418,
+      "reputation" : 19,
+      "user_id" : 15108167,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f212b79dea460f535785d9298f1fdc14?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sergey",
+      "link" : "https://stackoverflow.com/users/15108167/sergey"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1667135190,
+    "last_edit_date" : 1667135190,
+    "creation_date" : 1666823975,
+    "answer_id" : 74214959,
+    "question_id" : 59082023,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre class=\"lang-java prettyprint-override\"><code>@SpringBootApplication\n\n@EnableFeignClients\n\npublic class Application {\n    public static void main(String[] args) {\n\n        SpringApplication.run(Application.class, args);\n    }\n\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7356571,
+    "reputation" : 1,
+    "user_id" : 5601122,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f0c63da424a4bc6af24429f7de0b40c2?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Amador",
+    "link" : "https://stackoverflow.com/users/5601122/amador"
+  },
+  "is_answered" : false,
+  "view_count" : 10264,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1759010555,
+  "creation_date" : 1574917313,
+  "last_edit_date" : 1643225906,
+  "question_id" : 59082023,
+  "link" : "https://stackoverflow.com/questions/59082023/openfeign-spring-cloud-field-required-a-bean-of-type-that-could-not-be-found",
+  "title" : "Openfeign + Spring cloud : Field required a bean of type that could not be found",
+  "body" : "<p>I have a problem with spring and openfeign in which I think you can help me.</p>\n<p>I have a pom file as follows:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;\n    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;\n    xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;\n    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n\n    &lt;groupId&gt;xx.yyy&lt;/groupId&gt;\n    &lt;artifactId&gt;component&lt;/artifactId&gt;\n    &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;name&gt;component&lt;/name&gt;\n\n    &lt;properties&gt;\n        &lt;java.version&gt;1.8&lt;/java.version&gt;\n        &lt;maven-jar-plugin.version&gt;3.1.1&lt;/maven-jar-plugin.version&gt;\n        &lt;pact.version&gt;3.6.7&lt;/pact.version&gt;\n        &lt;spring-cloud.version&gt;Greenwich.SR4&lt;/spring-cloud.version&gt;\n    &lt;/properties&gt;\n\n    &lt;parent&gt;\n        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\n        &lt;version&gt;2.1.10.RELEASE&lt;/version&gt;\n        &lt;relativePath /&gt;\n    &lt;/parent&gt;\n\n\n    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;\n            &lt;exclusions&gt;\n                &lt;exclusion&gt;\n                    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n                    &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;\n                &lt;/exclusion&gt;\n            &lt;/exclusions&gt;\n        &lt;/dependency&gt;\n\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-starter-jetty&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n......\n&lt;dependencyManagement&gt;\n        &lt;dependencies&gt;\n            &lt;dependency&gt;\n                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;\n                &lt;version&gt;${spring-cloud.version}&lt;/version&gt;\n                &lt;type&gt;pom&lt;/type&gt;\n                &lt;scope&gt;import&lt;/scope&gt;\n            &lt;/dependency&gt;\n        &lt;/dependencies&gt;\n    &lt;/dependencyManagement&gt;\n......\n</code></pre>\n<p>I have declared in the main class the following configurations:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@SpringBootApplication(scanBasePackages = {&quot;xx.yyy&quot;, &quot;xx.yyy.rest.client&quot;}, exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})\n@EnableAsync\n@Import({P2OrchestratorApplicationConfig.class})\npublic class P2OrchestratorApplication {\n\n    public static void main(String[] args) {\n        SpringApplication.run(P2OrchestratorApplication.class, args);\n    }\n}\n</code></pre>\n<p>I have a custom feign configuration class:</p>\n<pre><code>@Configuration\n@EnableFeignClients()\n@ImportAutoConfiguration({FeignAutoConfiguration.class})\npublic class FeignConfig {\n\n    @Bean\n    public OkHttpClient client() {\n        return new OkHttpClient();\n    }\n    \n    @Bean\n    public Logger.Level feignLoggerLevel() {\n        return Logger.Level.FULL;\n    }\n    \n    @Bean\n    public Contract feignContract() {\n        return new feign.Contract.Default();\n    }\n}\n</code></pre>\n<p>I have a open feign client as follow:</p>\n<pre><code>@FeignClient(name=&quot;legacyClient&quot;, value = &quot;legacyClient&quot;, url = &quot;${uri.microservice.legacy}&quot;, configuration = FeignConfig.class)\npublic interface LegacyClient {\n    \n    @PatchMapping(value = &quot;/legacy/xxx/cleanLine/{authorizationCode}&quot;, produces = { MediaType.APPLICATION_JSON_VALUE })\n    public ResponseEntity&lt;Boolean&gt; cleanLine(@PathVariable(&quot;authorizationCode&quot;) Long authorizationCode, @RequestParam(required = true) Long lineNumber);\n    \n\n}\n</code></pre>\n<p>and finally a Component in which I need to use this client:</p>\n<pre><code>@Log4j\n@Component(&quot;p2ProcessAlgorithm&quot;)\npublic class P2ProcessAlgorithm {\n\n@Autowired\n@Qualifier(&quot;legacyClient&quot;)\nprivate LegacyClient legacyClient;\n\npublic final void process(){\n\nLong authorizationCode = 123L;\nLong lineNumber = 1L;\nBoolean isClean= this.legacClient.cleanLine(authorizationCode, lineNumber);\n......\n}\n</code></pre>\n<p>But the app give me the next message:</p>\n<pre><code>***************************\nAPPLICATION FAILED TO START\n***************************\n\nDescription:\n\nField legacyClient in xxx.yyy.p2.structure.P2ProcessAlgorithm required a bean of type 'xxx.yyy.rest.client.LegacyClient' that could not be found.\n\nThe injection point has the following annotations:\n    - @org.springframework.beans.factory.annotation.Autowired(required=true)\n    - @org.springframework.beans.factory.annotation.Qualifier(value=p2AsyncOrchestratorService)\n\n\nAction:\n\nConsider defining a bean of type 'xxx.yyy.rest.client.LegacyClient' in your configuration.\n</code></pre>\n<p>I've tried several configurations but I can't get the openfeign client to be a recognized bean in the P2ProcessAlgorithm class.</p>\n<p>Do you have any idea?</p>\n<p>Thanks in advance</p>\n"
+}

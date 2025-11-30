@@ -1,0 +1,85 @@
+{
+  "tags" : [ "java", "spring-boot", "docker", "spring-cloud-feign" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 18191790,
+      "reputation" : 1546,
+      "user_id" : 13237531,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ubNK5.jpg?s=256",
+      "display_name" : "Vladimir Stanciu",
+      "link" : "https://stackoverflow.com/users/13237531/vladimir-stanciu"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1648020539,
+    "post_id" : 71572351,
+    "comment_id" : 126515068,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Try putting the containers in the same network in the docker-compose file : <a href=\"https://docs.docker.com/compose/networking/\" rel=\"nofollow noreferrer\">docs.docker.com/compose/networking</a>"
+  }, {
+    "owner" : {
+      "account_id" : 14237543,
+      "reputation" : 335,
+      "user_id" : 10284940,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-JarUhMXKXZc/AAAAAAAAAAI/AAAAAAAAAQQ/vTCwGuiQ8Qo/s256-rj/photo.jpg",
+      "display_name" : "Ismail Dogan",
+      "link" : "https://stackoverflow.com/users/10284940/ismail-dogan"
+    },
+    "reply_to_user" : {
+      "account_id" : 18191790,
+      "reputation" : 1546,
+      "user_id" : 13237531,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ubNK5.jpg?s=256",
+      "display_name" : "Vladimir Stanciu",
+      "link" : "https://stackoverflow.com/users/13237531/vladimir-stanciu"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1648023697,
+    "post_id" : 71572351,
+    "comment_id" : 126516122,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@VladimirStanciu thank you so much. I have just fixed the problem by putting the containers in the same network."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 14237543,
+      "reputation" : 335,
+      "user_id" : 10284940,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-JarUhMXKXZc/AAAAAAAAAAI/AAAAAAAAAQQ/vTCwGuiQ8Qo/s256-rj/photo.jpg",
+      "display_name" : "Ismail Dogan",
+      "link" : "https://stackoverflow.com/users/10284940/ismail-dogan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1648023801,
+    "creation_date" : 1648023801,
+    "answer_id" : 71583900,
+    "question_id" : 71572351,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This problem has been solved by putting the containers in the same network in the docker-compose file.</p>\n<pre><code>    version: &quot;3.4&quot;\n\n    services:\n\n      customerdb:\n        container_name: customerdb\n        image: postgres\n        environment:\n         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}\n         POSTGRES_USER: ${POSTGRES_USER:-postgres}\n        volumes:\n          - ./customer/postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql\n        ports:\n          - &quot;5432:5432&quot;\n        restart: unless-stopped\n        networks:\n          - host\n\n      querydb:\n        container_name: querydb\n        image: postgres\n        environment:\n          POSTGRES_USER: ${POSTGRES_USER:-postgres}\n          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}\n        volumes:\n          - ./account.query/postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql\n        ports:\n          - &quot;5433:5432&quot;\n        restart: unless-stopped\n        networks:\n          - host\n\n      rabbitmq:\n        container_name: &quot;bank_rabbitmq&quot;\n        image: &quot;rabbitmq:3.8-management&quot;\n        hostname: &quot;rabbitmq&quot;\n        environment:\n          RABBITMQ_DEFAULT_USER: &quot;guest&quot;\n          RABBITMQ_DEFAULT_PASS: &quot;guest&quot;\n          RABBITMQ_DEFAULT_VHOST: &quot;/&quot;\n        ports:\n          - &quot;15672:15672&quot;\n          - &quot;5672:5672&quot;\n        networks:\n          - host\n\n      cmddb:\n        container_name: &quot;cmddb&quot;\n        image: mongo\n        restart: always\n        ports:\n            - &quot;27017:27017&quot;\n        networks:\n          - host\n\n      customer-service:\n        image: bank/customer-service-api\n        container_name: customer-service\n        build:\n          context: ./customer\n          dockerfile: Dockerfile\n        ports:\n          - &quot;5000:5000&quot;\n        depends_on:\n          - customerdb\n        environment:\n          - SPRING_DATASOURCE_URL=jdbc:postgresql://customerdb:5432/customerdb\n          - SPRING_DATASOURCE_USERNAME=postgres\n          - SPRING_DATASOURCE_PASSWORD=postgres\n        networks:\n          - host\n\n      account-cmd:\n        image: bank/account-cmd-service-api\n        container_name: account-cmd-service\n        build:\n          context: ./account.cmd\n          dockerfile: Dockerfile\n        ports:\n          - &quot;5002:5002&quot;\n        depends_on:\n          - cmddb\n          - rabbitmq\n        environment:\n          - SPRING_DATA_MONGODB_HOST=cmddb\n          - SPRING_DATA_MONGODB_PORT=27017\n          - SPRING_DATA_MONGODB_DATABASE=accountcmdb\n          - SPRING_RABBITMQ_HOST=rabbitmq\n          - SPRING_RABBITMQ_PORT=5672\n          - SPRING_RABBITMQ_USERNAME=guest\n          - SPRING_RABBITMQ_PASSWORD=guest\n          - SPRING_FEIGN_CUSTOMER_CLIENT=http://customer-service:5000/\n        networks:\n          - host\n\n      account-query:\n        image: bank/account-query-service-api\n        container_name: account-query-service\n        build:\n          context: ./account.query\n          dockerfile: Dockerfile\n        ports:\n          - &quot;5003:5003&quot;\n        depends_on:\n          - querydb\n          - rabbitmq\n        environment:\n          - SPRING_DATASOURCE_URL=jdbc:postgresql://querydb:5432/accountingdb\n          - SPRING_DATASOURCE_USERNAME=postgres\n          - SPRING_DATASOURCE_PASSWORD=postgres\n          - SPRING_RABBITMQ_HOST=rabbitmq\n          - SPRING_RABBITMQ_PORT=5672\n          - SPRING_RABBITMQ_USERNAME=guest\n          - SPRING_RABBITMQ_PASSWORD=guest\n        networks:\n          - host\n\n      k6:\n        container_name: k6_container\n        image: loadimpact/k6:latest\n        volumes:\n          - ./load-testing:/scripts\n        ports:\n          - &quot;6565:6565&quot;\n        networks:\n          - host\n\n    networks:\n      host:\n        driver: bridge\n\n    volumes:\n      customerdb:\n      cmddb:\n      querydb:\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 14237543,
+    "reputation" : 335,
+    "user_id" : 10284940,
+    "user_type" : "registered",
+    "profile_image" : "https://lh5.googleusercontent.com/-JarUhMXKXZc/AAAAAAAAAAI/AAAAAAAAAQQ/vTCwGuiQ8Qo/s256-rj/photo.jpg",
+    "display_name" : "Ismail Dogan",
+    "link" : "https://stackoverflow.com/users/10284940/ismail-dogan"
+  },
+  "is_answered" : false,
+  "view_count" : 16101,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761177975,
+  "creation_date" : 1647953316,
+  "question_id" : 71572351,
+  "link" : "https://stackoverflow.com/questions/71572351/feign-retryableexception-connection-refused-connection-refused-executing-get",
+  "title" : "feign.RetryableException: Connection refused (Connection refused) executing GET",
+  "body" : "<p>I am working on a core banking solution. I have two microservices that are called account-cmd-service and customer-service. I have been trying to get a customer by id from customer-service by using FeignClient. There is no problem for development environment, but there is a problem for Docker side.</p>\n<p>I have been trying to override <strong>spring.feign.customer.client</strong> property in docker-compose.yml file as\n<strong>http://customer-service:5000/.</strong></p>\n<p>How can I connect customer-service?</p>\n<pre><code>    {\n      &quot;message&quot;: &quot;Error while processing - feign.RetryableException: Connection refused (Connection refused) executing GET http://localhost:5000/api/v1/customer/get/1.&quot;,\n      &quot;id&quot;: &quot;21d65b99-c85f-44ff-9763-ed82ff1c39cc&quot;\n    }\n</code></pre>\n<p>Here is my ICustomerService for getting a customer.</p>\n<pre><code>    @Service\n    @FeignClient(name = &quot;customer-service&quot;, url = &quot;${spring.feign.customer.client}&quot;)\n    public interface ICustomerService {\n\n        @GetMapping(&quot;/api/v1/customer/get/{customerId}&quot;)\n        Object getCustomerById(@PathVariable Long customerId);\n    }\n</code></pre>\n<p>Here is application.properties for account-cmd-service.</p>\n<pre><code>    server.port=5002\n\n    #Mongo Config\n    spring.data.mongodb.host=localhost\n    spring.data.mongodb.port=27017\n    spring.data.mongodb.database=accountcmdb\n\n    # RabbitMQ Setup\n    spring.rabbitmq.host=localhost\n    spring.rabbitmq.port=5672\n    spring.rabbitmq.username=guest\n    spring.rabbitmq.password=guest\n\n    feign.client.config.default.connectTimeout=160000000\n    feign.client.config.default.readTimeout=160000000\n\n    spring.feign.customer.client = http://localhost:5000/\n</code></pre>\n<p>Here is docker-compose.yml file implementations.</p>\n<pre><code>    version: &quot;3.4&quot;\n\n    services:\n\n      customerdb:\n        container_name: customerdb\n        image: postgres\n        environment:\n         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}\n         POSTGRES_USER: ${POSTGRES_USER:-postgres}\n        volumes:\n          - ./customer/postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql\n        ports:\n          - &quot;5432:5432&quot;\n        restart: unless-stopped\n\n      querydb:\n        container_name: querydb\n        image: postgres\n        environment:\n          POSTGRES_USER: ${POSTGRES_USER:-postgres}\n          POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}\n        volumes:\n          - ./account.query/postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql\n        ports:\n          - &quot;5433:5432&quot;\n        restart: unless-stopped\n\n      rabbitmq:\n        container_name: &quot;bank_rabbitmq&quot;\n        image: &quot;rabbitmq:3.8-management&quot;\n        hostname: &quot;rabbitmq&quot;\n        environment:\n          RABBITMQ_DEFAULT_USER: &quot;guest&quot;\n          RABBITMQ_DEFAULT_PASS: &quot;guest&quot;\n          RABBITMQ_DEFAULT_VHOST: &quot;/&quot;\n        ports:\n          - &quot;15672:15672&quot;\n          - &quot;5672:5672&quot;\n\n      cmddb:\n        container_name: &quot;cmddb&quot;\n        image: mongo\n        restart: always\n        ports:\n            - &quot;27017:27017&quot;\n\n      customer-service:\n        image: bank/customer-service-api\n        container_name: customer-service\n        build:\n          context: ./customer\n          dockerfile: Dockerfile\n        ports:\n          - &quot;5000:5000&quot;\n        depends_on:\n          - customerdb\n        environment:\n          - SPRING_DATASOURCE_URL=jdbc:postgresql://customerdb:5432/customerdb\n          - SPRING_DATASOURCE_USERNAME=postgres\n          - SPRING_DATASOURCE_PASSWORD=postgres\n\n      account-cmd:\n        image: bank/account-cmd-service-api\n        container_name: account-cmd-service\n        build:\n          context: ./account.cmd\n          dockerfile: Dockerfile\n        ports:\n          - &quot;5002:5002&quot;\n        depends_on:\n          - cmddb\n          - rabbitmq\n        environment:\n          - SPRING_DATA_MONGODB_HOST=cmddb\n          - SPRING_DATA_MONGODB_PORT=27017\n          - SPRING_DATA_MONGODB_DATABASE=accountcmdb\n          - SPRING_RABBITMQ_HOST=rabbitmq\n          - SPRING_RABBITMQ_PORT=5672\n          - SPRING_RABBITMQ_USERNAME=guest\n          - SPRING_RABBITMQ_PASSWORD=guest\n          - SPRING_FEIGN_CUSTOMER_CLIENT=http://customer-service:5000/\n\n      account-query:\n        image: bank/account-query-service-api\n        container_name: account-query-service\n        build:\n          context: ./account.query\n          dockerfile: Dockerfile\n        ports:\n          - &quot;5003:5003&quot;\n        depends_on:\n          - querydb\n          - rabbitmq\n        environment:\n          - SPRING_DATASOURCE_URL=jdbc:postgresql://querydb:5433/accountingdb\n          - SPRING_DATASOURCE_USERNAME=postgres\n          - SPRING_DATASOURCE_PASSWORD=postgres\n          - SPRING_RABBITMQ_HOST=rabbitmq\n          - SPRING_RABBITMQ_PORT=5672\n          - SPRING_RABBITMQ_USERNAME=guest\n          - SPRING_RABBITMQ_PASSWORD=guest\n\n    volumes:\n      customerdb:\n      cmddb:\n      querydb:\n</code></pre>\n"
+}

@@ -1,0 +1,341 @@
+{
+  "tags" : [ "java", "json", "parsing", "jackson" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 81519,
+      "reputation" : 37370,
+      "user_id" : 229792,
+      "user_type" : "registered",
+      "accept_rate" : 63,
+      "profile_image" : "https://i.sstatic.net/NIE5f.jpg?s=256",
+      "display_name" : "jameshfisher",
+      "link" : "https://stackoverflow.com/users/229792/jameshfisher"
+    },
+    "edited" : false,
+    "score" : 69,
+    "creation_date" : 1408122301,
+    "post_id" : 3653996,
+    "comment_id" : 39489391,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<code>#embarrasing</code> -- nope. If simple things aren&#39;t simple, then the API designer has failed, not you."
+  }, {
+    "owner" : {
+      "account_id" : 174556,
+      "reputation" : 8961,
+      "user_id" : 403999,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5abd04e38593e135deed25ab06bf7521?s=256&d=identicon&r=PG",
+      "display_name" : "Juan Rojas",
+      "link" : "https://stackoverflow.com/users/403999/juan-rojas"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1588920953,
+    "post_id" : 3653996,
+    "comment_id" : 109091023,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@StaxMan&#39;s answer in code: JsonFactory factory = new MappingJsonFactory();"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 444559,
+        "reputation" : 7671,
+        "user_id" : 836450,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/848c79a87762a07d9a3f45329026effd?s=256&d=identicon&r=PG",
+        "display_name" : "benathon",
+        "link" : "https://stackoverflow.com/users/836450/benathon"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1343274960,
+      "post_id" : 3654097,
+      "comment_id" : 15455676,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Is it possible to take the JsonNode, modify it a bit, and then call mapper.readValue(node, class);  and get out a class?"
+    }, {
+      "owner" : {
+        "account_id" : 23674,
+        "reputation" : 117032,
+        "user_id" : 59501,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/9a657f7990c2dafca9885dee9c647d4e?s=256&d=identicon&r=PG",
+        "display_name" : "StaxMan",
+        "link" : "https://stackoverflow.com/users/59501/staxman"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1372961956,
+      "post_id" : 3654097,
+      "comment_id" : 25396986,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes. There&#39;s even an alias for that, <code>mapper.treeToValue()</code>. But <code>readValue()</code> also works."
+    } ],
+    "owner" : {
+      "account_id" : 68828,
+      "reputation" : 25561,
+      "user_id" : 200609,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://i.sstatic.net/YSVRw.jpg?s=256",
+      "display_name" : "Richard Fearn",
+      "link" : "https://stackoverflow.com/users/200609/richard-fearn"
+    },
+    "is_accepted" : false,
+    "score" : 75,
+    "last_activity_date" : 1527521972,
+    "last_edit_date" : 1527521972,
+    "creation_date" : 1283804444,
+    "answer_id" : 3654097,
+    "question_id" : 3653996,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to use an <code>ObjectMapper</code>:</p>\n\n<pre><code>ObjectMapper mapper = new ObjectMapper();\nJsonFactory factory = mapper.getJsonFactory(); // since 2.1 use mapper.getFactory() instead\nJsonParser jp = factory.createJsonParser(\"{\\\"k1\\\":\\\"v1\\\"}\");\nJsonNode actualObj = mapper.readTree(jp);\n</code></pre>\n\n<p>Further documentation about creating parsers can be found <a href=\"https://github.com/FasterXML/jackson-docs/wiki/JacksonStreamingApi#creating-parsers\" rel=\"noreferrer\">here</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 23674,
+      "reputation" : 117032,
+      "user_id" : 59501,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/9a657f7990c2dafca9885dee9c647d4e?s=256&d=identicon&r=PG",
+      "display_name" : "StaxMan",
+      "link" : "https://stackoverflow.com/users/59501/staxman"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1381228038,
+    "last_edit_date" : 1381228038,
+    "creation_date" : 1283825075,
+    "answer_id" : 3655301,
+    "question_id" : 3653996,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Richard's answer is correct. Alternatively you can also create a <code>MappingJsonFactory</code> (in <code>org.codehaus.jackson.map</code>) which knows where to find <code>ObjectMapper</code>. The error you got was because the regular <code>JsonFactory</code> (from <code>core</code> package) has no dependency to <code>ObjectMapper</code> (which is in the <code>mapper</code> package).</p>\n\n<p>But usually you just use <code>ObjectMapper</code> and do not worry about <code>JsonParser</code> or other low level components -- they will just be needed if you want to data-bind parts of stream, or do low-level handling.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2576941,
+        "reputation" : 32333,
+        "user_id" : 2518231,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/3ea4d08629a1d5ce591b415bdb5cd365?s=256&d=identicon&r=PG",
+        "display_name" : "Matthew Herbst",
+        "link" : "https://stackoverflow.com/users/2518231/matthew-herbst"
+      },
+      "edited" : false,
+      "score" : 55,
+      "creation_date" : 1424297652,
+      "post_id" : 9599585,
+      "comment_id" : 45496594,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "For anyone who needs an <code>ObjectNode</code> rather than a <code>JsonNode</code> use <code>mapper.valueToTree(&quot;{\\&quot;k1\\&quot;:\\&quot;v1\\&quot;}&quot;)</code>"
+    }, {
+      "owner" : {
+        "account_id" : 2972580,
+        "reputation" : 866,
+        "user_id" : 2524350,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/82c5412d8d551bc9585bba66fd0fc6e3?s=256&d=identicon&r=PG",
+        "display_name" : "minexew",
+        "link" : "https://stackoverflow.com/users/2524350/minexew"
+      },
+      "reply_to_user" : {
+        "account_id" : 2576941,
+        "reputation" : 32333,
+        "user_id" : 2518231,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/3ea4d08629a1d5ce591b415bdb5cd365?s=256&d=identicon&r=PG",
+        "display_name" : "Matthew Herbst",
+        "link" : "https://stackoverflow.com/users/2518231/matthew-herbst"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1461685338,
+      "post_id" : 9599585,
+      "comment_id" : 61306468,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@MatthewHerbst In 2.5.1, this creates a new text node with the string &quot;{\\&quot;k1\\&quot;:\\&quot;v1\\&quot;}&quot; rather than parsing it as JSON."
+    } ],
+    "owner" : {
+      "account_id" : 10996,
+      "reputation" : 26639,
+      "user_id" : 21030,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/5691ff74e21c78cd1563b5123254cbd6?s=256&d=identicon&r=PG",
+      "display_name" : "slashnick",
+      "link" : "https://stackoverflow.com/users/21030/slashnick"
+    },
+    "is_accepted" : true,
+    "score" : 440,
+    "last_activity_date" : 1428093423,
+    "last_edit_date" : 1428093423,
+    "creation_date" : 1331115585,
+    "answer_id" : 9599585,
+    "question_id" : 3653996,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A slight variation on Richards answer but <code>readTree</code> can take a string so you can simplify it to:</p>\n\n<pre><code>ObjectMapper mapper = new ObjectMapper();\nJsonNode actualObj = mapper.readTree(\"{\\\"k1\\\":\\\"v1\\\"}\");\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 105891,
+        "reputation" : 14990,
+        "user_id" : 282315,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/de8a1c602987d394d29a64d482f2024f?s=256&d=identicon&r=PG",
+        "display_name" : "David",
+        "link" : "https://stackoverflow.com/users/282315/david"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1382638243,
+      "post_id" : 11581712,
+      "comment_id" : 29048043,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What did passing in JsonNode.class actually get you here?"
+    }, {
+      "owner" : {
+        "account_id" : 136350,
+        "reputation" : 1585,
+        "user_id" : 339785,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a19281bdbc5f08539cdef3d6636f7c4d?s=256&d=identicon&r=PG",
+        "display_name" : "qerub",
+        "link" : "https://stackoverflow.com/users/339785/qerub"
+      },
+      "reply_to_user" : {
+        "account_id" : 105891,
+        "reputation" : 14990,
+        "user_id" : 282315,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/de8a1c602987d394d29a64d482f2024f?s=256&d=identicon&r=PG",
+        "display_name" : "David",
+        "link" : "https://stackoverflow.com/users/282315/david"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1384626805,
+      "post_id" : 11581712,
+      "comment_id" : 29815166,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@David: Nothing, so slashnick&#39;s variant is obviously better if you just want a <code>JsonNode</code>. However, you usually don&#39;t want a <code>JsonNode</code>, so I wanted to show how to tell Jackson what kind of value of you want."
+    }, {
+      "owner" : {
+        "account_id" : 200610,
+        "reputation" : 56640,
+        "user_id" : 446554,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/2fe5bee1c3e113262b71d6d336821b13?s=256&d=identicon&r=PG",
+        "display_name" : "Cory Klein",
+        "link" : "https://stackoverflow.com/users/446554/cory-klein"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1424922246,
+      "post_id" : 11581712,
+      "comment_id" : 45753484,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "For me, passing <code>JsonNode</code> was apparently necessary to prevent Jackson from deserializing it as something else - which would have failed."
+    } ],
+    "owner" : {
+      "account_id" : 136350,
+      "reputation" : 1585,
+      "user_id" : 339785,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a19281bdbc5f08539cdef3d6636f7c4d?s=256&d=identicon&r=PG",
+      "display_name" : "qerub",
+      "link" : "https://stackoverflow.com/users/339785/qerub"
+    },
+    "is_accepted" : false,
+    "score" : 37,
+    "last_activity_date" : 1342795813,
+    "creation_date" : 1342795813,
+    "answer_id" : 11581712,
+    "question_id" : 3653996,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A third variant:</p>\n\n<pre><code>ObjectMapper mapper = new ObjectMapper();\nJsonNode actualObj = mapper.readValue(\"{\\\"k1\\\":\\\"v1\\\"}\", JsonNode.class);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 106320,
+      "reputation" : 1800,
+      "user_id" : 283260,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/057e618fbf211a3733e9fef66030c0b9?s=256&d=identicon&r=PG",
+      "display_name" : "pdxleif",
+      "link" : "https://stackoverflow.com/users/283260/pdxleif"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1412204482,
+    "creation_date" : 1412204482,
+    "answer_id" : 26152045,
+    "question_id" : 3653996,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>import com.github.fge.jackson.JsonLoader;\nJsonLoader.fromString(\"{\\\"k1\\\":\\\"v1\\\"}\")\n== JsonNode = {\"k1\":\"v1\"}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6020880,
+      "reputation" : 703,
+      "user_id" : 4727991,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-bwpQO1SlIlI/AAAAAAAAAAI/AAAAAAAAAuc/_FHep-4FT40/s256-rj/photo.jpg",
+      "display_name" : "Manuel Ortiz",
+      "link" : "https://stackoverflow.com/users/4727991/manuel-ortiz"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1593021808,
+    "creation_date" : 1593021808,
+    "answer_id" : 62561368,
+    "question_id" : 3653996,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>New approach to old question.\nA solution that works from java 9+</p>\n<pre><code>ObjectNode agencyNode = new ObjectMapper().valueToTree(Map.of(&quot;key&quot;, &quot;value&quot;));\n</code></pre>\n<p>is more readable and maintainable for complex objects. Ej</p>\n<pre><code>Map&lt;String, Object&gt; agencyMap = Map.of(\n        &quot;name&quot;, &quot;Agencia Prueba&quot;,\n        &quot;phone1&quot;, &quot;1198788373&quot;,\n        &quot;address&quot;, &quot;Larrea 45 e/ calligaris y paris&quot;,\n        &quot;number&quot;, 267,\n        &quot;enable&quot;, true,\n        &quot;location&quot;, Map.of(&quot;id&quot;, 54),\n        &quot;responsible&quot;, Set.of(Map.of(&quot;id&quot;, 405)),\n        &quot;sellers&quot;, List.of(Map.of(&quot;id&quot;, 605))\n);\nObjectNode agencyNode = new ObjectMapper().valueToTree(agencyMap);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 245509,
+      "reputation" : 4101,
+      "user_id" : 519035,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Arc3X.jpg?s=256",
+      "display_name" : "AbstractVoid",
+      "link" : "https://stackoverflow.com/users/519035/abstractvoid"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1706533432,
+    "creation_date" : 1706533432,
+    "answer_id" : 77899926,
+    "question_id" : 3653996,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "\n<p>In kotlin:</p>\n<pre class=\"lang-kt prettyprint-override\"><code>import com.fasterxml.jackson.databind.JsonNode\nimport com.fasterxml.jackson.databind.ObjectMapper\nimport com.fasterxml.jackson.module.kotlin.readValue\n\nval data = ObjectMapper().readValue&lt;JsonNode&gt;(&quot;{\\&quot;field\\&quot;:\\&quot;value\\&quot;}&quot;)\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 153480,
+    "reputation" : 3227,
+    "user_id" : 368760,
+    "user_type" : "registered",
+    "accept_rate" : 100,
+    "profile_image" : "https://www.gravatar.com/avatar/0c87a0a56c42d88432c3f5f44dbd92b2?s=256&d=identicon&r=PG",
+    "display_name" : "fadmaa",
+    "link" : "https://stackoverflow.com/users/368760/fadmaa"
+  },
+  "is_answered" : true,
+  "view_count" : 417552,
+  "accepted_answer_id" : 9599585,
+  "answer_count" : 7,
+  "score" : 281,
+  "last_activity_date" : 1706533432,
+  "creation_date" : 1283803021,
+  "last_edit_date" : 1609560239,
+  "question_id" : 3653996,
+  "link" : "https://stackoverflow.com/questions/3653996/how-to-parse-a-json-string-into-jsonnode-in-jackson",
+  "title" : "How to parse a JSON string into JsonNode in Jackson?",
+  "body" : "<p>It should be so simple, but I just cannot find it after being trying for an hour.</p>\n<p>I need to get a JSON string, for example, <code>{&quot;k1&quot;:v1,&quot;k2&quot;:v2}</code>, parsed as a <code>JsonNode</code>.</p>\n<pre><code>JsonFactory factory = new JsonFactory();\nJsonParser jp = factory.createJsonParser(&quot;{\\&quot;k1\\&quot;:\\&quot;v1\\&quot;}&quot;);\nJsonNode actualObj = jp.readValueAsTree();\n</code></pre>\n<p>gives</p>\n<blockquote>\n<p><code>java.lang.IllegalStateException: No ObjectCodec defined for the parser, can not deserialize JSON into JsonNode tree</code></p>\n</blockquote>\n"
+}

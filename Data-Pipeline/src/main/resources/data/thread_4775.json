@@ -1,0 +1,119 @@
+{
+  "tags" : [ "java", "sdkman" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 10880077,
+      "reputation" : 1446,
+      "user_id" : 7999311,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-i_YEQ80lmXY/AAAAAAAAAAI/AAAAAAAAFZo/iHJUxvkhV78/s256-rj/photo.jpg",
+      "display_name" : "Adam Ostrožl&#237;k",
+      "link" : "https://stackoverflow.com/users/7999311/adam-ostro%c5%bel%c3%adk"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1691347247,
+    "post_id" : 56479242,
+    "comment_id" : 135476208,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "If you create symlink manually, would the installation or update process override it?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1172012,
+      "reputation" : 13,
+      "user_id" : 1148977,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/04d046428f0e2ec16b0fe39e0681453c?s=256&d=identicon&r=PG",
+      "display_name" : "PeterMue",
+      "link" : "https://stackoverflow.com/users/1148977/petermue"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1701262972,
+    "creation_date" : 1701262972,
+    "answer_id" : 77571391,
+    "question_id" : 56479242,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I solves this with a custom zsh function so I just have to run <code>sdkman cacerts ~/.cacerts</code> to symlink all cacerts for all sdkman installed jdks.</p>\n<pre><code># sdkman\nsdkman() {\n    case $1 in\n        --help)\n            cat &lt;&lt;EOF\nAlias for sdk with additional custom functions.\n\nUsage: $0 &lt;subcommand&gt; [candidate] [version]\n\nAdditional Commands\n\n    $0 --help               Print this help message\n    $0 cacerts [cacerts]    Symlink all java cacerts to a custom location (default: ~/.cacerts)\n\nEOF\n            ;;\n        cacerts)\n            cacerts=&quot;${2:-$HOME/.cacerts}&quot;\n            if [[ -f &quot;$cacerts&quot; ]]; then\n                for jdk in $(sdk list java | grep installed | sed 's/^.*\\| \\(.*\\)$/\\1/g'); do\n                    jdkHome=$(sdk home java $jdk)\n                    pushd &quot;$jdkHome/lib/security&quot;\n                    mv cacerts cacerts.orginal\n                    ln -s &quot;$cacerts&quot; &quot;cacerts&quot;\n                    popd\n                done\n            else\n                echo &quot;Abort: file $cacerts not found.&quot;\n            fi\n            ;;\n        *)\n            sdk &quot;$@&quot;\n    esac\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1658378,
+      "reputation" : 2300,
+      "user_id" : 1527244,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/82b81a8c0375cf62e749e2b48fc553e6?s=256&d=identicon&r=PG",
+      "display_name" : "Danyel",
+      "link" : "https://stackoverflow.com/users/1527244/danyel"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1704900500,
+    "creation_date" : 1704900500,
+    "answer_id" : 77794494,
+    "question_id" : 56479242,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>SDKMAN has predefined post installation hooks but there doesn't seem any way to customize them or add your own. I didn't want to create a new wrapper tool like @PeterMue because it'd cause cognitive load and also the footgun of users forgetting to run that, so my solution was to hook into the shell's prompt mechanism. I installed <code>starship</code> (<a href=\"https://starship.rs\" rel=\"nofollow noreferrer\">https://starship.rs</a>) and put the <code>eval &quot;$(starship init &lt;shell&gt;)&quot;</code> <em>below</em> SDKMan, and in <code>~/.config/starship.toml</code> I defined a section for a custom command which will be run during prompt generation:</p>\n<pre class=\"lang-ini prettyprint-override\"><code>[custom.java-cacerts]\nwhen = true\nshell = &quot;sh&quot;\ncommand = &quot;&quot;&quot;\nset -xe\n[ -f /etc/ssl/certs/java/cacerts ]\nALL_CACERTS=$(find -P &quot;$SDKMAN_DIR/candidates/java&quot; -name cacerts -type f | grep .)\necho &quot;[java: symlinking cacerts]&quot;\nfor cacerts in $ALL_CACERTS; do\n  mv &quot;$cacerts&quot; &quot;$cacerts.original&quot;\n  ln -s /etc/ssl/certs/java/cacerts &quot;$cacerts&quot;\ndone 2&gt;&amp;1\n&quot;&quot;&quot;\n</code></pre>\n<p>Explanation:</p>\n<ul>\n<li><code>set -xe</code> sets the <code>e</code> flag (exit when any command errors) and the <code>x</code> flag (log commands to <code>stderr</code>)</li>\n<li>Since <code>e</code> flag is set, we can skip the <code>if</code> clause and write the condition at the top. If it fails, the script will short circuit</li>\n<li><code>find -P</code> doesn't follow symlinks, so the <code>current</code> symlink is ignored. <code>-type f</code> to only find <code>cacerts</code> which are regular files (no symlinks)</li>\n<li><code>find</code> always returns success even when no match was found. Piping that into <code>grep .</code> matches anything and causes a non-zero status when there is no input so the script will stop</li>\n<li><code>set -x</code> writes everything to <code>stderr</code>, but <code>starship</code> only captures <code>stdout</code> and ignores stderr, so I use <code>2&gt;&amp;1</code> on the <code>for</code> loop to print those 2 commands to inform the user.</li>\n</ul>\n<p>This runs very fast and on my machine the prompt delay is almost not noticeable. Also using <code>find</code> rather than a predefined path on <code>$JDK/lib/security/cacerts</code> is more backward compatible as for Java 8 the <code>cacerts</code> is under <code>$JDK/jre/lib/security/cacerts</code>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10933061,
+        "reputation" : 7067,
+        "user_id" : 8035582,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/KCMN0.png?s=256",
+        "display_name" : "burki",
+        "link" : "https://stackoverflow.com/users/8035582/burki"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1756904103,
+      "post_id" : 79276273,
+      "comment_id" : 140711857,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Excellent way to &quot;overwrite&quot; the original function and extend it. Just to add: you don&#39;t need to replace the <code>cacerts</code> file if you link the truststore to <code>lib&#47;security&#47;jssecacerts</code>. The latter is preferred over <code>cacerts</code>"
+    } ],
+    "owner" : {
+      "account_id" : 243942,
+      "reputation" : 15059,
+      "user_id" : 516433,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/c292b959ecf29c86e4c0d093a6f24e19?s=256&d=identicon&r=PG",
+      "display_name" : "Lucas",
+      "link" : "https://stackoverflow.com/users/516433/lucas"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1759423030,
+    "last_edit_date" : 1759423030,
+    "creation_date" : 1734029743,
+    "answer_id" : 79276273,
+    "question_id" : 56479242,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You could use an extension script.  If you create a file in the <code>${SDKMAN_DIR}/ext/</code> folder (ie: <code>${SDKMAN_DIR}/ext/sdk-install-then-symlink-cacerts.sh</code>) with the following code:</p>\n<pre class=\"lang-bash prettyprint-override\"><code>#!/bin/bash\n\nsource &lt;(sed 's/__sdk_install/__sdk_builtin_install/g' &quot;${SDKMAN_DIR}/src/sdkman-install.sh&quot;)\n\nfunction __sdk_install() {\n  __sdk_builtin_install &quot;$@&quot;\n  local exit_code=$?\n\n  if ((exit_code==0)); then\n    local java_home\n    # older versions may need to use\n    #   java_home=&quot;$(__sdk_home &quot;${1}&quot; &quot;${2}&quot;)&quot;\n    java_home=&quot;$(sdk home &quot;${1}&quot; &quot;${2}&quot;)&quot;\n    rm &quot;${java_home}/lib/security/cacerts&quot;\n    ln -s &quot;/etc/ssl/certs/java/cacerts&quot; &quot;${java_home}/lib/security/cacerts&quot;\n  fi\n\n  return &quot;${exit_code}&quot;\n}\n</code></pre>\n<p>It would replace the pre-packaged <code>cacerts</code> with a symlink to the <code>/etc/ssl/certs/java/cacerts</code> for each new install.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1280178,
+    "reputation" : 3320,
+    "user_id" : 2356160,
+    "user_type" : "registered",
+    "accept_rate" : 55,
+    "profile_image" : "https://i.sstatic.net/vbPHS.jpg?s=256",
+    "display_name" : "lathspell",
+    "link" : "https://stackoverflow.com/users/2356160/lathspell"
+  },
+  "is_answered" : true,
+  "view_count" : 8108,
+  "answer_count" : 3,
+  "score" : 21,
+  "last_activity_date" : 1759423030,
+  "creation_date" : 1559829766,
+  "last_edit_date" : 1559829913,
+  "question_id" : 56479242,
+  "link" : "https://stackoverflow.com/questions/56479242/sdkman-hook-to-link-etc-ssl-java-cacerts-to-the-currently-used-java-sdk",
+  "title" : "sdkman hook to link /etc/ssl/java/cacerts to the currently used Java SDK",
+  "body" : "<p>Debian has a great mechanism to compile all commonly used CA certificates from Thawte, Let's Encrypt etc. as well as locally installed ones from <code>/usr/local/share/ssl</code> into one <code>/etc/ssl/certs/java/cacerts</code> JKS file. That is usually symlinked to <code>$JAVA_HOME/lib/security/cacerts</code>.</p>\n\n<p>With sdkman I switch between different non-Debian Java versions in <code>~/.sdkman/candidates/java/current/</code> which use the <em>cacerts</em> provided by the SDK creator.</p>\n\n<p>Is there some kind of post-inst hook mechanism where I could automatically create a symlink to the Debian <em>cacerts</em> file whenever I switch sdkman Java versions?</p>\n"
+}

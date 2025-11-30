@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "netty", "minecraft" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1075943,
+      "reputation" : 23657,
+      "user_id" : 1074097,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e521627c18ed3feaf9db41e754a79483?s=256&d=identicon&r=PG",
+      "display_name" : "Norman Maurer",
+      "link" : "https://stackoverflow.com/users/1074097/norman-maurer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1582620123,
+    "post_id" : 60368330,
+    "comment_id" : 106830428,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Can you show us the code of the decoder and encoder ?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3987736,
+      "reputation" : 380,
+      "user_id" : 3287786,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ca346a729169bd0399be2b25df385b48?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "I.G.",
+      "link" : "https://stackoverflow.com/users/3287786/i-g"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1582725226,
+    "creation_date" : 1582725226,
+    "answer_id" : 60415496,
+    "question_id" : 60368330,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You handler should check if an inbound packet is of specific type, that the handler can process. If a packet is \"not yours\", handler should pass it upstream - to the next handler in pipeline (for netty 4.x - <code>ChannelHandlerContext.fireChannelRead(Object)</code>).\nMaybe this <a href=\"https://netty.io/4.0/api/io/netty/channel/ChannelPipeline.html\" rel=\"nofollow noreferrer\">documentation</a> can help.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12457705,
+    "reputation" : 78,
+    "user_id" : 9348214,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/b70061489b74d3431e89e95d25e335a3?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Tyler",
+    "link" : "https://stackoverflow.com/users/9348214/tyler"
+  },
+  "is_answered" : true,
+  "view_count" : 1313,
+  "accepted_answer_id" : 60415496,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761327439,
+  "creation_date" : 1582505437,
+  "last_edit_date" : 1761327439,
+  "question_id" : 60368330,
+  "link" : "https://stackoverflow.com/questions/60368330/decoding-and-encoding-multiple-packet-types-in-netty",
+  "title" : "Decoding and Encoding multiple packet types in Netty",
+  "body" : "<p>So I am working on a netty server that handles a specific type packet. This netty server was not made by me and I am trying to add another type of packet handler, decoder, and encoder to it. Because of poor implementation of the existing handlers, I have to add mine before like so.</p>\n<pre class=\"lang-java prettyprint-override\"><code>channel.pipeline()\n    .addLast(new custom.PacketDecoder().server())  // My Packet Decoder\n    .addLast(new custom.PacketEncoder().server())  // My Packet Encoder\n    .addLast(new custom.NetworkHandler().server()) // My Packet Handler\n    .addLast(&quot;timeout&quot;, new ReadTimeoutHandler(30)) // Not made by me\n    .addLast(&quot;legacy_query&quot;, new LegacyPingHandler(ServerConnection.this)) // Not made by me\n    .addLast(&quot;splitter&quot;, new PacketSplitter()) // Not made by me\n    .addLast(&quot;decoder&quot;, new PacketDecoder(EnumProtocolDirection.SERVERBOUND)) // Not made by me\n    .addLast(&quot;prepender&quot;, new PacketPrepender()) // Not made by me\n    .addLast(&quot;encoder&quot;, new PacketEncoder(EnumProtocolDirection.CLIENTBOUND)) // Not made by me\n    .addLast(&quot;packet_handler&quot;, networkmanager); // Not made by me\n</code></pre>\n<p>As of now this sort of works but the issue is that if it receives the packets that aren't mine that it should be able to handle, my handlers stop those packets from going through and being handled correctly. How do I pass packets that are not mine through to other handlers without touching them.</p>\n"
+}

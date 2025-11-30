@@ -1,0 +1,642 @@
+{
+  "tags" : [ "java", "multithreading", "synchronized", "java-threads" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 394615,
+        "reputation" : 4292,
+        "user_id" : 789214,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/74FkbWeK.png?s=256",
+        "display_name" : "amod",
+        "link" : "https://stackoverflow.com/users/789214/amod"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1363868205,
+      "post_id" : 15438741,
+      "comment_id" : 22029301,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I had a add on to this question. Suppose both method are static now methodA is called using Class while methodB is called using object like A.methodA() in t1 and obj.methodB() in t2. What will happen now, will they block????"
+    }, {
+      "owner" : {
+        "account_id" : 152622,
+        "reputation" : 503079,
+        "user_id" : 367273,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://www.gravatar.com/avatar/f1ed2b0c87f602ef30229f5c4b04eff6?s=256&d=identicon&r=PG",
+        "display_name" : "NPE",
+        "link" : "https://stackoverflow.com/users/367273/npe"
+      },
+      "reply_to_user" : {
+        "account_id" : 394615,
+        "reputation" : 4292,
+        "user_id" : 789214,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/74FkbWeK.png?s=256",
+        "display_name" : "amod",
+        "link" : "https://stackoverflow.com/users/789214/amod"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1363868467,
+      "post_id" : 15438741,
+      "comment_id" : 22029491,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@amod0017: <code>obj.methodB()</code> is synonymous to <code>A.methodB()</code> when <code>methodB()</code> is <code>static</code>. Therefore yes, they will block (on the class&#39;s, not the object&#39;s, monitor)."
+    }, {
+      "owner" : {
+        "account_id" : 394615,
+        "reputation" : 4292,
+        "user_id" : 789214,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/74FkbWeK.png?s=256",
+        "display_name" : "amod",
+        "link" : "https://stackoverflow.com/users/789214/amod"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1363876441,
+      "post_id" : 15438741,
+      "comment_id" : 22035220,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "will try and get back to it. :)"
+    }, {
+      "owner" : {
+        "account_id" : 199887,
+        "reputation" : 3270,
+        "user_id" : 445452,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://www.gravatar.com/avatar/5d5ebc14188f9d83cee1a3eda404f9af?s=256&d=identicon&r=PG",
+        "display_name" : "sreeprasad",
+        "link" : "https://stackoverflow.com/users/445452/sreeprasad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1430687750,
+      "post_id" : 15438741,
+      "comment_id" : 48156326,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@NPE So even if both method are static and 2 threads t1 and t2 on same object tries to call methodA() and methodB() simultaneously then only 1 (say t1) thread will execute and the other thread has to wait until t1 releases lock ?"
+    }, {
+      "owner" : {
+        "account_id" : 483424,
+        "reputation" : 1875,
+        "user_id" : 898457,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/8EOSo.jpg?s=256",
+        "display_name" : "Alex Semeniuk",
+        "link" : "https://stackoverflow.com/users/898457/alex-semeniuk"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1445241732,
+      "post_id" : 15438741,
+      "comment_id" : 54223156,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Have in mind that static methods use lock on <code>.class</code> object. So if you have <code>class A {static synchronized void m() {} }</code>. And then one thread calls <code>new A().m()</code> it acquires lock on <code>new A()</code> object. If then another thread calls <code>A.m()</code> it <b>ENTERS THE METHOD NO PROBLEM</b> because what it looks for is lock on <code>A.class</code> object while <b>NO THREADS possess this kind of lock</b>. So even though you declared method <code>synchronized</code> it actualy <b>IS accessed</b> by two different threads <b>AT THE SAME TIME</b>. Thus: <b>never use object references to call static methods</b>"
+    }, {
+      "owner" : {
+        "account_id" : 8550964,
+        "reputation" : 3480,
+        "user_id" : 6407858,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://lh5.googleusercontent.com/-u3sR4b4UZWY/AAAAAAAAAAI/AAAAAAAAABQ/A635K1ESMs8/s256-rj/photo.jpg",
+        "display_name" : "YK S",
+        "link" : "https://stackoverflow.com/users/6407858/yk-s"
+      },
+      "reply_to_user" : {
+        "account_id" : 483424,
+        "reputation" : 1875,
+        "user_id" : 898457,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/8EOSo.jpg?s=256",
+        "display_name" : "Alex Semeniuk",
+        "link" : "https://stackoverflow.com/users/898457/alex-semeniuk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540239981,
+      "post_id" : 15438741,
+      "comment_id" : 92783631,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@AlexSemeniuk if I use <code>private final Object lock = new Object();</code> and then use <code>public void m1(){synchronized(lock){}}</code> and <code>public void m2(){synchronized(lock){}}</code> and call both m1 and m2 from threads t1 and t2 created on different objects, will t1 and t2 not be able to access m1 and m2 simultaneously? IMO they should not be. Please correct me If I am wrong. Thanks."
+    }, {
+      "owner" : {
+        "account_id" : 483424,
+        "reputation" : 1875,
+        "user_id" : 898457,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/8EOSo.jpg?s=256",
+        "display_name" : "Alex Semeniuk",
+        "link" : "https://stackoverflow.com/users/898457/alex-semeniuk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540356263,
+      "post_id" : 15438741,
+      "comment_id" : 92829136,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes, it would be synchronized, since you are using the same synchronization object. My comment was related to the specifics of using <code>synchronized</code> keyword in method declarations."
+    } ],
+    "owner" : {
+      "account_id" : 152622,
+      "reputation" : 503079,
+      "user_id" : 367273,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://www.gravatar.com/avatar/f1ed2b0c87f602ef30229f5c4b04eff6?s=256&d=identicon&r=PG",
+      "display_name" : "NPE",
+      "link" : "https://stackoverflow.com/users/367273/npe"
+    },
+    "is_accepted" : false,
+    "score" : 208,
+    "last_activity_date" : 1363368993,
+    "creation_date" : 1363368993,
+    "answer_id" : 15438741,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Both methods lock the same monitor. Therefore, you can't simultaneously execute them on the same object from different threads (one of the two methods will block until the other is finished).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 362538,
+      "reputation" : 22728,
+      "user_id" : 705773,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/aMoQ5.jpg?s=256",
+      "display_name" : "Ajinkya",
+      "link" : "https://stackoverflow.com/users/705773/ajinkya"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1363369386,
+    "last_edit_date" : 1363369386,
+    "creation_date" : 1363369053,
+    "answer_id" : 15438766,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You are synchronizing it on object not on class. So they cant run simultaneously on the same object</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8547570,
+        "reputation" : 1140,
+        "user_id" : 6405628,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/e998124f91ee2f9bf530d6c2aeba20c4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Nimrod",
+        "link" : "https://stackoverflow.com/users/6405628/nimrod"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1469085576,
+      "post_id" : 15438792,
+      "comment_id" : 64394845,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "so in this example the lock is on the lockA\\lockB objects and not on the class A? Is this a <i>class level locking</i> example?"
+    }, {
+      "owner" : {
+        "account_id" : 75804,
+        "reputation" : 96727,
+        "user_id" : 217324,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://www.gravatar.com/avatar/dc91a8e29fedbd6a6d7e03a8394009ab?s=256&d=identicon&r=PG",
+        "display_name" : "Nathan Hughes",
+        "link" : "https://stackoverflow.com/users/217324/nathan-hughes"
+      },
+      "reply_to_user" : {
+        "account_id" : 8547570,
+        "reputation" : 1140,
+        "user_id" : 6405628,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/e998124f91ee2f9bf530d6c2aeba20c4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Nimrod",
+        "link" : "https://stackoverflow.com/users/6405628/nimrod"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1469103731,
+      "post_id" : 15438792,
+      "comment_id" : 64406798,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Nimrod: it&#39;s locking on lockA and on lockB objects and not on the instance of A. nothing here is locking on a class. class-level locking would mean getting the lock on a class object, using something like <code>static synchronized</code> or <code>synchronized (A.class)</code>"
+    }, {
+      "owner" : {
+        "account_id" : 41540,
+        "reputation" : 1160,
+        "user_id" : 120794,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/8814207a09d0eba49e55b21660f39951?s=256&d=identicon&r=PG",
+        "display_name" : "Alberto de Paola",
+        "link" : "https://stackoverflow.com/users/120794/alberto-de-paola"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1478713577,
+      "post_id" : 15438792,
+      "comment_id" : 68267808,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Here is the <a href=\"https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html\" rel=\"nofollow noreferrer\">link</a> to the java tutorial explaining exactly what is answered here."
+    } ],
+    "owner" : {
+      "account_id" : 75804,
+      "reputation" : 96727,
+      "user_id" : 217324,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://www.gravatar.com/avatar/dc91a8e29fedbd6a6d7e03a8394009ab?s=256&d=identicon&r=PG",
+      "display_name" : "Nathan Hughes",
+      "link" : "https://stackoverflow.com/users/217324/nathan-hughes"
+    },
+    "is_accepted" : false,
+    "score" : 158,
+    "last_activity_date" : 1547504070,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1363369163,
+    "answer_id" : 15438792,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In the example methodA and methodB are instance methods (as opposed to static methods). Putting <code>synchronized</code> on an instance method means that the thread has to acquire the lock (the &quot;intrinsic lock&quot;) on the object instance that the method is called on before the thread can start executing any code in that method.</p>\n<p>If you have two different instance methods marked synchronized and different threads are calling those methods concurrently on the same object, those threads will be contending for the same lock. Once one thread gets the lock all other threads are shut out of all synchronized instance methods on that object.</p>\n<p>In order for the two methods to run concurrently they would have to use different locks, like this:</p>\n<pre><code>class A {\n    private final Object lockA = new Object();\n    private final Object lockB = new Object();\n\n    public void methodA() {\n        synchronized(lockA) {\n            //method A\n        }\n    }\n\n    public void methodB() {\n        synchronized(lockB) {\n            //method B\n        }\n    }\n}\n</code></pre>\n<p>where the synchronized block syntax allows specifying a specific object that the executing thread needs to acquire the intrinsic lock on in order to enter the block.</p>\n<p>The important thing to understand is that even though we are putting a &quot;synchronized&quot; keyword on individual methods, the core concept is the intrinsic lock behind the scenes.</p>\n<p>Here is how <a href=\"https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html\" rel=\"noreferrer\">the Java tutorial</a> describes the relationship:</p>\n<blockquote>\n<p>Synchronization is built around an internal entity known as the intrinsic lock or monitor lock. (The API specification often refers to this entity simply as a &quot;monitor.&quot;) Intrinsic locks play a role in both aspects of synchronization: enforcing exclusive access to an object's state and establishing happens-before relationships that are essential to visibility.</p>\n<p>Every object has an intrinsic lock associated with it. By convention, a thread that needs exclusive and consistent access to an object's fields has to acquire the object's intrinsic lock before accessing them, and then release the intrinsic lock when it's done with them. A thread is said to own the intrinsic lock between the time it has acquired the lock and released the lock. As long as a thread owns an intrinsic lock, no other thread can acquire the same lock. The other thread will block when it attempts to acquire the lock.</p>\n</blockquote>\n<p>The purpose of locking is to protect shared data. You would use separate locks as shown in the example code above only if each lock protected different data members.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8550964,
+        "reputation" : 3480,
+        "user_id" : 6407858,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://lh5.googleusercontent.com/-u3sR4b4UZWY/AAAAAAAAAAI/AAAAAAAAABQ/A635K1ESMs8/s256-rj/photo.jpg",
+        "display_name" : "YK S",
+        "link" : "https://stackoverflow.com/users/6407858/yk-s"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540239594,
+      "post_id" : 15438932,
+      "comment_id" : 92783466,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "if I have two threads on two different instances of the class then they will be able to execute both methods simultaneously such that one thread calls one synchronized method and the other one calls the second synchronized method. If my understanding is correct then can i use <code>private final Object lock = new object();</code> with synchronized to allow only one thread to be able to execute either of the methods? Thanks"
+    } ],
+    "owner" : {
+      "account_id" : 1820445,
+      "reputation" : 461,
+      "user_id" : 1654630,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fabcf1ce833e076fd56be3a6c1da77cb?s=256&d=identicon&r=PG",
+      "display_name" : "Srikanth",
+      "link" : "https://stackoverflow.com/users/1654630/srikanth"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1363369630,
+    "creation_date" : 1363369630,
+    "answer_id" : 15438932,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Java Thread acquires an <strong>object level lock</strong> when it enters into an <strong><em>instance</em></strong> synchronized java method and acquires a <strong>class level lock</strong> when it enters into <strong><em>static</em></strong> synchronized java method.</p>\n\n<p>In your case, the methods(instance) are of same class. So when ever a thread enters into java synchronized method or block it acquires a lock(the object on which the method is called). So other method cannot be called at the same time on the same object until the first method is completed and lock(on object) is released.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8550964,
+        "reputation" : 3480,
+        "user_id" : 6407858,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://lh5.googleusercontent.com/-u3sR4b4UZWY/AAAAAAAAAAI/AAAAAAAAABQ/A635K1ESMs8/s256-rj/photo.jpg",
+        "display_name" : "YK S",
+        "link" : "https://stackoverflow.com/users/6407858/yk-s"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540239387,
+      "post_id" : 15438967,
+      "comment_id" : 92783387,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "what if I define a lock as <code>private final Object lock = new Object();</code> and now use <code>lock</code> with synchronized block in two methods then will your statement hold true? IMO since Object is the parent class of all the objects so even if the threads are on different instance of the class, only one can access the code inside synchronized block at a time. Thanks."
+    }, {
+      "owner" : {
+        "account_id" : 1062565,
+        "reputation" : 1525,
+        "user_id" : 1063882,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/7e2d924c587d08bb39fac36356b79844?s=256&d=identicon&r=PG",
+        "display_name" : "Oleksandr_DJ",
+        "link" : "https://stackoverflow.com/users/1063882/oleksandr-dj"
+      },
+      "reply_to_user" : {
+        "account_id" : 8550964,
+        "reputation" : 3480,
+        "user_id" : 6407858,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://lh5.googleusercontent.com/-u3sR4b4UZWY/AAAAAAAAAAI/AAAAAAAAABQ/A635K1ESMs8/s256-rj/photo.jpg",
+        "display_name" : "YK S",
+        "link" : "https://stackoverflow.com/users/6407858/yk-s"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1541634716,
+      "post_id" : 15438967,
+      "comment_id" : 93287807,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you define &quot;private final Object lock&quot; in the class and synchronize with it, you fill have lock per class instance, so, it will behaves the same as synchronized(this)."
+    }, {
+      "owner" : {
+        "account_id" : 1062565,
+        "reputation" : 1525,
+        "user_id" : 1063882,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/7e2d924c587d08bb39fac36356b79844?s=256&d=identicon&r=PG",
+        "display_name" : "Oleksandr_DJ",
+        "link" : "https://stackoverflow.com/users/1063882/oleksandr-dj"
+      },
+      "reply_to_user" : {
+        "account_id" : 8550964,
+        "reputation" : 3480,
+        "user_id" : 6407858,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://lh5.googleusercontent.com/-u3sR4b4UZWY/AAAAAAAAAAI/AAAAAAAAABQ/A635K1ESMs8/s256-rj/photo.jpg",
+        "display_name" : "YK S",
+        "link" : "https://stackoverflow.com/users/6407858/yk-s"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1541634850,
+      "post_id" : 15438967,
+      "comment_id" : 93287838,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes, Object is a parent for all classes, but &quot;lock&quot; instance in your case is &quot;instance per owning class&quot;, so, it has the same effect as &quot;this&quot; for synchronization."
+    } ],
+    "owner" : {
+      "account_id" : 1062565,
+      "reputation" : 1525,
+      "user_id" : 1063882,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/7e2d924c587d08bb39fac36356b79844?s=256&d=identicon&r=PG",
+      "display_name" : "Oleksandr_DJ",
+      "link" : "https://stackoverflow.com/users/1063882/oleksandr-dj"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1363369750,
+    "creation_date" : 1363369750,
+    "answer_id" : 15438967,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In your case you synchronized two method on the same instance of class. So, these two methods can't run simultaneously on different thread of the same instance of class A. But they can on different class A instances.</p>\n\n<pre><code>class A {\n    public synchronized void methodA() {\n        //method A\n    }\n}\n</code></pre>\n\n<p>is the same as:</p>\n\n<pre><code>class A {\n    public void methodA() {\n        synchronized(this){\n            // code of method A\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2101541,
+      "reputation" : 338,
+      "user_id" : 1869027,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/BZRrO.jpg?s=256",
+      "display_name" : "pacmanfordinner",
+      "link" : "https://stackoverflow.com/users/1869027/pacmanfordinner"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1405259707,
+    "creation_date" : 1405259707,
+    "answer_id" : 24723395,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Just to all clarity, It’s possible that both static synchronized and non static synchronized method can run simultaneously or concurrently because one is having object level lock and other class level lock.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7848783,
+      "reputation" : 662,
+      "user_id" : 5932894,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/955ebbd768a247c18a169d8399f37fed?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Aditya W",
+      "link" : "https://stackoverflow.com/users/5932894/aditya-w"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1456049181,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1456049181,
+    "answer_id" : 35534756,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>From oracle documentation <a href=\"https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html\" rel=\"noreferrer\">link</a></p>\n<p>Making methods synchronized has two effects:</p>\n<blockquote>\n<p>First, it is not possible for two invocations of synchronized methods on the same object to interleave. When one thread is executing a synchronized method for an object, all other threads that invoke synchronized methods for the same object block (suspend execution) until the first thread is done with the object.</p>\n<p>Second, when a synchronized method exits, it automatically establishes a happens-before relationship with any subsequent invocation of a synchronized method for the same object. This guarantees that changes to the state of the object are visible to all threads</p>\n</blockquote>\n<p>This will answer your question: On same object, You can't call second synchronized method when first synchronized method execution is in progress.</p>\n<p>Have a look at this documentation <a href=\"https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html\" rel=\"noreferrer\">page</a> to understand intrinsic locks and lock behavior.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1515120318,
+      "post_id" : 42098745,
+      "comment_id" : 83188729,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Please punctuate and capitalise this mess properly. There is no such word as &#39;varify&#39;."
+    } ],
+    "owner" : {
+      "account_id" : 8989419,
+      "reputation" : 27,
+      "user_id" : 6701888,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fe1a35015babecb0f81547acbb50bb27?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ankit yadav",
+      "link" : "https://stackoverflow.com/users/6701888/ankit-yadav"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1621794444,
+    "last_edit_date" : 1621794444,
+    "creation_date" : 1486497106,
+    "answer_id" : 42098745,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Two different Threads executing a common synchronized method on the single object, since the object is same, when one thread uses it with synchronized method, it will have to verify the lock, if the lock is enabled, this thread will go to wait state, if lock is disabled then it can access the object, while it will access it will enable the lock and will release the lock\nonly when it's execution is complete.\nwhen the another threads arrives, it will verify the lock, since it is enabled it will wait till the first thread completes his execution and releases the lock put on the object, once the lock is released the second thread will gain access to the object and it will enable the lock until it's execution.\nso the execution will not be not concurrent, both threads will execute one by one, when both the threads use the synchronized method on different objects, they will run concurrently.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8550964,
+        "reputation" : 3480,
+        "user_id" : 6407858,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://lh5.googleusercontent.com/-u3sR4b4UZWY/AAAAAAAAAAI/AAAAAAAAABQ/A635K1ESMs8/s256-rj/photo.jpg",
+        "display_name" : "YK S",
+        "link" : "https://stackoverflow.com/users/6407858/yk-s"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540239163,
+      "post_id" : 48106333,
+      "comment_id" : 92783311,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "what if I create Threads on two different objects of the same class? In this case If I call one method from one thread and other method from second thread won&#39;t they be executing simultaneously?"
+    }, {
+      "owner" : {
+        "account_id" : 4670897,
+        "reputation" : 181,
+        "user_id" : 3782716,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f33dcc57ba5ad11ef341db5b673af41a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Khosro Makari",
+        "link" : "https://stackoverflow.com/users/3782716/khosro-makari"
+      },
+      "reply_to_user" : {
+        "account_id" : 8550964,
+        "reputation" : 3480,
+        "user_id" : 6407858,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://lh5.googleusercontent.com/-u3sR4b4UZWY/AAAAAAAAAAI/AAAAAAAAABQ/A635K1ESMs8/s256-rj/photo.jpg",
+        "display_name" : "YK S",
+        "link" : "https://stackoverflow.com/users/6407858/yk-s"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1541593068,
+      "post_id" : 48106333,
+      "comment_id" : 93267498,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "They will because they are different objects. That is, if you want to prevent it, you can use static methods and synchronize the class or use a class variable object as a lock or make the class Singleton. @Yug Singh"
+    } ],
+    "owner" : {
+      "account_id" : 4670897,
+      "reputation" : 181,
+      "user_id" : 3782716,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f33dcc57ba5ad11ef341db5b673af41a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Khosro Makari",
+      "link" : "https://stackoverflow.com/users/3782716/khosro-makari"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1515118696,
+    "creation_date" : 1515118696,
+    "answer_id" : 48106333,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Think of your code as the below one:</p>\n\n<pre><code>class A {\n\npublic void methodA() {\n    synchronized(this){        \n      //method A body\n    }\n}\n\npublic void methodB() {\n    synchronized(this){\n      // method B body\n    }\n}\n</code></pre>\n\n<p>So, synchronized on method level simply means synchronized(this).\nif any thread runs a method of this class, it would obtain the lock before starting the execution and hold it until the execution of the method is finished.</p>\n\n<blockquote>\n  <p>But can I run methodB() on different thread while methodA() is still\n  running? (same object)</p>\n</blockquote>\n\n<p>Indeed, it is not possible!</p>\n\n<p>Hence, multiple threads will not able to run any number of synchronized methods on the same object simultaneously. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 62111,
+      "reputation" : 41273,
+      "user_id" : 184730,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://www.gravatar.com/avatar/8ec7cdaaf6fd5ee313cb6228f08cd67c?s=256&d=identicon&r=PG",
+      "display_name" : "fastcodejava",
+      "link" : "https://stackoverflow.com/users/184730/fastcodejava"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1547505862,
+    "creation_date" : 1547505862,
+    "answer_id" : 54190307,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>No it is not possible, if it were possible then both method could be updating same variable simultaneously which could easily corrupt the data.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1924499,
+      "reputation" : 789,
+      "user_id" : 1735269,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/99439d6daaf987ef640610821a3b9a13?s=256&d=identicon&r=PG",
+      "display_name" : "somshivam",
+      "link" : "https://stackoverflow.com/users/1735269/somshivam"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1554749516,
+    "creation_date" : 1554749516,
+    "answer_id" : 55579978,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <strong>key</strong> idea with synchronizing which does not sink in easily is that it will have effect only if methods are called on the <strong>same object</strong> instance - it has already been highlighted in the answers and comments - </p>\n\n<p>Below sample program is to clearly pinpoint the same - </p>\n\n<pre><code>public class Test {\n\npublic synchronized void methodA(String currentObjectName) throws InterruptedException {\n    System.out.println(Thread.currentThread().getName() + \"-&gt;\" +currentObjectName + \"-&gt;methodA in\");\n    Thread.sleep(1000);\n    System.out.println(Thread.currentThread().getName() + \"-&gt;\" +currentObjectName + \"-&gt;methodA out\");\n}\n\npublic synchronized void methodB(String currentObjectName)  throws InterruptedException {\n    System.out.println(Thread.currentThread().getName() + \"-&gt;\" +currentObjectName + \"-&gt;methodB in\");\n    Thread.sleep(1000);\n    System.out.println(Thread.currentThread().getName() + \"-&gt;\" +currentObjectName + \"-&gt;methodB out\");\n}\n\npublic static void main(String[] args){\n    Test object1 = new Test();\n    Test object2 = new Test();\n    //passing object instances to the runnable to make calls later\n    TestRunner runner = new TestRunner(object1,object2);\n    // you need to start atleast two threads to properly see the behaviour\n    Thread thread1 = new Thread(runner);\n    thread1.start();\n    Thread thread2 = new Thread(runner);\n    thread2.start();\n}\n}\n\nclass TestRunner implements Runnable {\nTest object1;\nTest object2;\n\npublic TestRunner(Test h1,Test h2) {\n    this.object1 = h1;\n    this.object2 = h2;\n}\n\n@Override\npublic void run() {\n    synchronizedEffectiveAsMethodsCalledOnSameObject(object1);\n    //noEffectOfSynchronizedAsMethodsCalledOnDifferentObjects(object1,object2);\n}\n\n// this method calls the method A and B with same object instance object1 hence simultaneous NOT possible\nprivate void synchronizedEffectiveAsMethodsCalledOnSameObject(Test object1) {\n    try {\n        object1.methodA(\"object1\");\n        object1.methodB(\"object1\");\n    } catch (InterruptedException e) {\n        e.printStackTrace();\n    }\n}\n\n// this method calls the method A and B with different object instances object1 and object2 hence simultaneous IS possible\nprivate void noEffectOfSynchronizedAsMethodsCalledOnDifferentObjects(Test object1,Test object2) {\n    try {\n        object1.methodA(\"object1\");\n        object2.methodB(\"object2\");\n    } catch (InterruptedException e) {\n        e.printStackTrace();\n    }\n}\n}\n</code></pre>\n\n<p>Notice the difference in output of how simultaneous access is allowed <em>as expected</em> if methods are called on different object instances.</p>\n\n<p>Ouput with <em>noEffectOfSynchronizedAsMethodsCalledOnDifferentObjects()</em> <strong>commented</strong> -the output is in order methodA in > methodA Out .. methodB in > methodB Out\n<a href=\"https://i.sstatic.net/2FOTF.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/2FOTF.png\" alt=\"Ouput with *noEffectOfSynchronizedAsMethodsCalledOnDifferentObjects()* commented \"></a></p>\n\n<p>and Ouput with <em>synchronizedEffectiveAsMethodsCalledOnSameObject()</em> <strong>commented</strong> - \nthe output shows simultaneous access of methodA by Thread1 and Thread0 in highlighted section - </p>\n\n<p><a href=\"https://i.sstatic.net/pCcUJ.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/pCcUJ.png\" alt=\"Ouput with *synchronizedEffectiveAsMethodsCalledOnSameObject()* commented \"></a></p>\n\n<p>Increasing the number of threads will make it even more noticeable.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6099767,
+        "reputation" : 5239,
+        "user_id" : 4759176,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://i.sstatic.net/0U1e5.jpg?s=256",
+        "display_name" : "parsecer",
+        "link" : "https://stackoverflow.com/users/4759176/parsecer"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1605586548,
+      "post_id" : 56273473,
+      "comment_id" : 114689178,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;m pretty sure they meant if both methods are called on the same object"
+    } ],
+    "owner" : {
+      "account_id" : 13794850,
+      "reputation" : 15,
+      "user_id" : 9956305,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d6462d3fb61f30966ee81dee46f70f69?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "coolts",
+      "link" : "https://stackoverflow.com/users/9956305/coolts"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1558608595,
+    "last_edit_date" : 1558608595,
+    "creation_date" : 1558608122,
+    "answer_id" : 56273473,
+    "question_id" : 15438727,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Yes, they can run simultaneously both threads. If you create 2 objects of the class as each object contains only one lock and every synchronized method requires lock.\nSo if you want to run simultaneously, create two objects and then try to run by using of those object reference.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2417870,
+    "reputation" : 3867,
+    "user_id" : 2111544,
+    "user_type" : "registered",
+    "accept_rate" : 27,
+    "profile_image" : "https://www.gravatar.com/avatar/002a19cef2ef96ce0a5c68e08a14fcd3?s=256&d=identicon&r=PG",
+    "display_name" : "Shelef",
+    "link" : "https://stackoverflow.com/users/2111544/shelef"
+  },
+  "is_answered" : true,
+  "view_count" : 105017,
+  "protected_date" : 1607490337,
+  "answer_count" : 12,
+  "score" : 232,
+  "last_activity_date" : 1621794444,
+  "creation_date" : 1363368933,
+  "last_edit_date" : 1608685015,
+  "question_id" : 15438727,
+  "link" : "https://stackoverflow.com/questions/15438727/if-i-synchronized-two-methods-on-the-same-class-can-they-run-simultaneously",
+  "title" : "If I synchronized two methods on the same class, can they run simultaneously?",
+  "body" : "<p>If I synchronized two methods on the same class, can they run simultaneously <strong>on the same object</strong>? For example:</p>\n<pre><code>class A {\n    public synchronized void methodA() {\n        //method A\n    }\n\n    public synchronized void methodB() {\n        // method B\n    }\n}\n</code></pre>\n<p>I know that I can't run <code>methodA()</code> twice on same object in two different threads. same thing in <code>methodB()</code>.</p>\n<p>But can I run <code>methodB()</code> on different thread while <code>methodA()</code> is still running? (same object)</p>\n"
+}

@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "sockets", "apache-camel", "load-balancing", "legacy-app" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2843312,
+        "reputation" : 971,
+        "user_id" : 2442396,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/22e8241f57bc87e8c890edfe0986975d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "bdsg4D",
+        "link" : "https://stackoverflow.com/users/2442396/bdsg4d"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1575755133,
+      "post_id" : 59194731,
+      "comment_id" : 104674121,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks @vikingsteve! I will explore this option."
+    } ],
+    "owner" : {
+      "account_id" : 2264130,
+      "reputation" : 40722,
+      "user_id" : 1993366,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/dGJXl.png?s=256",
+      "display_name" : "vikingsteve",
+      "link" : "https://stackoverflow.com/users/1993366/vikingsteve"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760821353,
+    "last_edit_date" : 1760821353,
+    "creation_date" : 1575547342,
+    "answer_id" : 59194731,
+    "question_id" : 59182966,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What you are describing here is a <em>service connection pool</em>.</p>\n<p>Since (I presume) your legacy system requires custom code to connect to the legacy backend, you will need to write the connection code yourself, but you can see if you can leverage off this:</p>\n<p><a href=\"https://camel.apache.org/manual/latest/servicepool.html\" rel=\"nofollow noreferrer\">https://camel.apache.org/manual/latest/servicepool.html</a></p>\n<p>You might consider writing your own Apache Camel component, in this case (once you have written the component), you can write Apache Camel endpoints like <code>direct(mylegacybackend:...)</code> and let the component do the heavy lifting (service connection pooling) for you.</p>\n<p>It also depends on if your component is a producer (push) or consumer (pull).</p>\n<p>Have a read of that link and see if it might suit.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2843312,
+    "reputation" : 971,
+    "user_id" : 2442396,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/22e8241f57bc87e8c890edfe0986975d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "bdsg4D",
+    "link" : "https://stackoverflow.com/users/2442396/bdsg4d"
+  },
+  "is_answered" : false,
+  "view_count" : 687,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760821353,
+  "creation_date" : 1575485855,
+  "last_edit_date" : 1575495867,
+  "question_id" : 59182966,
+  "link" : "https://stackoverflow.com/questions/59182966/load-balancing-among-multiple-instances-of-a-backend-application",
+  "title" : "Load balancing among multiple instances of a backend application",
+  "body" : "<p>I have a java based client application that wants to talk to multiple instances of  a legacy backend application, using \"<strong>some</strong>\" load balancing strategy. The instances' details (IP, PORT &amp; Active?) of this back-end application are stored in a DB table. For a given instance, the client application makes a socket connection, sends commands and receives response. These socket connections are long-lived. </p>\n\n<p>To be able to utilize all of the available instances, I am planning to do the following in client:</p>\n\n<ol>\n<li>Read the healthy instances to a map </li>\n<li>Open connections or use existing Socket connections in a round-robin fashion </li>\n<li>Send request on a given socket connection. If the request fails, then mark this instance as unhealthy so that\nit will not be picked up again. Also retry the request on another\nconnection  </li>\n<li>In a worker thread periodically update the map from # 1</li>\n</ol>\n\n<p>Are there any tools/libraries available to achieve this? Apache Camel came up in Google search (also Ribbon and Hystrix), but I am not entirely sure how I can fit it in this scenario. Please help. </p>\n"
+}

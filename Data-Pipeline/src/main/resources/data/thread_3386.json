@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "mysql", "xampp", "database-connection" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 7035840,
+      "reputation" : 34521,
+      "user_id" : 5389997,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/50ce1e08eea42756ffa9415a9e8df140?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Shadow",
+      "link" : "https://stackoverflow.com/users/5389997/shadow"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1491263149,
+    "post_id" : 43195912,
+    "comment_id" : 73464675,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Xampp installs an independent mysql instance that can be managed outside of xampp as well, if you wish to do so. However, mysql is usually installed as a service, so you do not need to manually start it when you start your app."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3024191,
+      "reputation" : 4104,
+      "user_id" : 2564562,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6f14702eb54ce20515ea91dc5a7325c9?s=256&d=identicon&r=PG",
+      "display_name" : "NetVicious",
+      "link" : "https://stackoverflow.com/users/2564562/netvicious"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1491289451,
+    "creation_date" : 1491289451,
+    "answer_id" : 43200442,
+    "question_id" : 43195912,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>On the root of the Xampp folder you have one <code>mysql_start.bat</code> and one <code>mysql_stop.bat</code>, for start/stop the mysql database included on the Xampp package.</p>\n\n<p>You can use they in another bat you should create to start your Java Desktop application.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15835603,
+      "reputation" : 169,
+      "user_id" : 11425543,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/oGB0a.jpg?s=256",
+      "display_name" : "A.T Rayan",
+      "link" : "https://stackoverflow.com/users/11425543/a-t-rayan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1556520557,
+    "last_edit_date" : 1556520557,
+    "creation_date" : 1556519722,
+    "answer_id" : 55898116,
+    "question_id" : 43195912,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>ProcessBuilder P1 =new ProcessBuilder(\"C:\\\\xampp\\\\mysql_start.bat\");\nP1.start();\n\nProcessBuilder P2 =new ProcessBuilder(\"C:\\\\xampp\\\\APACHE_start.bat\");\nP2.start();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11213053,
+      "reputation" : 339,
+      "user_id" : 8226584,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-GEUH4SQtdJI/AAAAAAAAAAI/AAAAAAAAAK0/gpGH7LCrxvg/s256-rj/photo.jpg",
+      "display_name" : "Mayur Patel",
+      "link" : "https://stackoverflow.com/users/8226584/mayur-patel"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1566642215,
+    "creation_date" : 1566642215,
+    "answer_id" : 57637071,
+    "question_id" : 43195912,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can do it like this -  </p>\n\n<ol>\n<li><p><strong>To connect to the Database</strong>     </p>\n\n<pre><code> import java.sql.Connection;\n import java.sql.DriverManager;\n import java.sql.Statement;\n import java.sql.Connection;\n import java.sql.DriverManager;\n import java.sql.ResultSet;\n import java.sql.SQLException;\n import java.sql.Statement;\n\n Statement statement;\n\n //function to connect to the xampp server      \n public void DatabaseConnect(){\n     try {\n        Connection conn= DriverManager.getConnection(\"jdbc:mysql://localhost/javafx\",\"root\",\"\"); \n        /*here javafx is the name of the database and root is the username of\n         your xampp server and the field which is blank is for password. \n         Because I haven't set the password. I have left it blank*/\n         statement = conn.createStatement();\n         System.out.print(\"Database Connected\");\n     } catch (Exception e) {\n         System.out.print(\"Database Not Connected\");\n     }\n  }\n</code></pre></li>\n</ol>\n\n<p><strong>Below given are the various operations you can perform after connecting to the database.</strong></p>\n\n<pre><code>//for inserting data\npublic void insert(){\n    try{\n        String insertquery = \"INSERT INTO `tablename`(`field1`, `field2`) VALUES ('value1', 'value2'\";\n        statement.executeUpdate(insertquery);\n        System.out.print(\"Inserted\");\n    } catch(Exception e){\n        System.out.print(\"Not Inserted\");\n    }\n}\n\n //for viewing data\n public void view(){\n    try {\n        String insertquery = \"select * from `table_name` where field = 'value1'\";\n        ResultSet result = statement.executeQuery(insertquery);\n        if(result.next()){\n            System.out.println(\"Value \" + result.getString(2));\n            System.out.println(\"Value \" + result.getString(3));\n        }\n    } catch (SQLException ex) {\n        System.out.println(\"Problem To Show Data\");\n    }\n }\n\n //to update data\n public void update(){\n    try {\n        String insertquery = \"UPDATE `table_name` set `field`='value',`field2`='value2' WHERE field = 'value'\";\n        statement.executeUpdate(insertquery);\n        System.out.println(\"Updated\")\n    } catch (SQLException ex) {\n        System.out.println(ex.getMessage());\n    }\n }\n\n//to delete data\npublic void delete(){\n     try {\n        String insertquery = \"DELETE FROM `table_name` WHERE field = 'value'\";\n        statement.executeUpdate(insertquery);\n        System.out.println(\"Deleted\");\n    } catch (SQLException ex) {\n        System.out.println(ex.getMessage());\n    }\n }\n</code></pre>\n\n<p>Also, don't forget to add the <code>JAR</code> file in your <strong>system library</strong>. For this example, I have used <code>mysql-connector-java-5.1.46</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8407179,
+    "reputation" : 46,
+    "user_id" : 6310319,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/27bcc55883cd47d6a65e3b003c68eeb3?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "DracoGrim",
+    "link" : "https://stackoverflow.com/users/6310319/dracogrim"
+  },
+  "is_answered" : false,
+  "view_count" : 12704,
+  "answer_count" : 3,
+  "score" : 2,
+  "last_activity_date" : 1762542240,
+  "creation_date" : 1491261911,
+  "last_edit_date" : 1491264966,
+  "question_id" : 43195912,
+  "link" : "https://stackoverflow.com/questions/43195912/how-to-use-xampp-mysql-database-with-my-java-application",
+  "title" : "How to use XAMPP MySQL database with my Java Application?",
+  "body" : "<p>I have used in the past few months XAMPP with MySQL database(s), which were created and modified with phpMyAdmin on localhost, for my university JavaEE projects. The MySQL database and Apache server are started from the XAMPP Control Panel. Everything went fine.</p>\n\n<p>Now I am developing my own Java Desktop Application using JavaFX/Scene Builder/FXML and I want to use a database to store and load various information processed by the Java Application through JDBC.</p>\n\n<p>The question is, how to start the MySQL database on localhost, without using the XAMPP Control Panel manually, when I finish my Java Application and deploy it as stand alone program and start it just from a single shortcut?</p>\n\n<p>Any way to make the shortcut of the program also start the MySQL database on my PC before/while it starts the Java Application? Or maybe there is a way to do that inside the Java code? Or maybe some other way, that is not known to me?</p>\n\n<p>I am not strictly determined on using only the XAMPP/MySQL/phpMyAdmin setup, it is just already all installed on my PC and I know how to work with it, thus the easiest solution so far. So if there is some better way/database setup for home/small applications, please feel free to suggest some :). I am not sure at all if what I want to do is possible with the XAMPP setup.</p>\n\n<p>Side note: I persist on using localhost DB instead of Serialisation/Deserialisation with Java, because I want the Application to be independent of internet connection and yet have the opportunity to have a ready DB to be transferred to an online DB, if such I decide to do it in the future. </p>\n"
+}

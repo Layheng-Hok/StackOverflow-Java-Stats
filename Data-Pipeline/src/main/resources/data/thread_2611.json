@@ -1,0 +1,42 @@
+{
+  "tags" : [ "java", "hibernate", "jpa", "spring-data-jpa" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 10647666,
+      "reputation" : 636,
+      "user_id" : 7839744,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5620e8529e488f5b162a77447afa9b08?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "smurfy",
+      "link" : "https://stackoverflow.com/users/7839744/smurfy"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1764257067,
+    "creation_date" : 1764257067,
+    "answer_id" : 79831841,
+    "question_id" : 72261294,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I know probably a bit late for you, but since i ran into a similar error, for me in kotlin implementing Serializable on the base class fixed the issue.</p>\n<p>So based on your example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>abstract class Pets implements Serializable {\n\n    private String type;\n\n    @JsonProperty(&quot;type&quot;)\n    private String type;\n\n  \n    // getters, setters, toString\n} \n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1213274,
+    "reputation" : 1423,
+    "user_id" : 1181404,
+    "user_type" : "registered",
+    "accept_rate" : 70,
+    "profile_image" : "https://i.sstatic.net/24z9t.png?s=256",
+    "display_name" : "Happy Coder",
+    "link" : "https://stackoverflow.com/users/1181404/happy-coder"
+  },
+  "is_answered" : true,
+  "view_count" : 489,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1764257067,
+  "creation_date" : 1652713140,
+  "question_id" : 72261294,
+  "link" : "https://stackoverflow.com/questions/72261294/jpa-postgres-jsonb-collection-type-with-multiple-types-fails-on-save",
+  "title" : "JPA Postgres jsonb collection type with multiple types fails on save",
+  "body" : "<p>I will use pets as data model to demonstrate my issue. Pets store has different type of pets.\nwhen store created with mix type of pets, i am getting an exception.</p>\n<p>[{&quot;type&quot;:&quot;cat&quot;,&quot;sound&quot;:&quot;lala&quot;,&quot;color&quot;:&quot;black&quot;},{&quot;type&quot;:&quot;dog&quot;,&quot;bread&quot;:&quot;pit&quot;,&quot;color&quot;:&quot;brown&quot;}]&quot;;</p>\n<blockquote>\n<p>used by: java.lang.IllegalArgumentException: The given byte array\ncannot be transformed to Json object  ... 134 more Caused by:\ncom.fasterxml.jackson.databind.exc.InvalidTypeIdException: Could not\nresolve type id 'cat' as a subtype of\n<code>com.test.Dog</code>: Class\n<code>com.test.Cat</code> not subtype of\n<code>com.test.Dog</code>  at\n[Source:\n(byte[])&quot;\nline: 1, column: 119] (through reference chain:\njava.util.ArrayList[1])   at\napp//com.fasterxml.jackson.databind.exc.InvalidTypeIdException.from(InvalidTypeIdException.java:43)</p>\n</blockquote>\n<p>i understand that postgres having some issue saving object with different types. Is there any way to solve this problem?</p>\n<p>entity class:</p>\n<pre><code>@Entity\n@NoArgsConstructor\n@Data\n@AllArgsConstructor\n@TypeDef(name = &quot;json&quot;, typeClass = JsonType.class)\n@EntityListeners({\n    AuditingEntityListener.class\n})\n@Audited\npublic class StoreEntity implements Serializable {\n\n  @Id\n  private String id;\n\n  @NotNull\n  private String name;\n    \n   \n  @Valid\n  @Type(type = &quot;json&quot;)\n  @Column(columnDefinition = &quot;jsonb&quot;)\n  private List&lt;Pets&gt; list= new ArrayList&lt;&gt;();\n\n}\n</code></pre>\n<p>data object</p>\n<pre><code>@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,\n        include = JsonTypeInfo.As.EXISTING_PROPERTY,\n        visible = true,\n        property = &quot;type&quot;)\n@JsonSubTypes({\n        @JsonSubTypes.Type(name = &quot;cat&quot;, value = Cat.class),\n        @JsonSubTypes.Type(name = &quot;dog&quot;, value = Dog.class),\n        @JsonSubTypes.Type(name = &quot;Pig&quot;, value = Pig.class)   \n})\nabstract class Pets {\n\n    private String type;\n\n    @JsonProperty(&quot;type&quot;)\n    private String type;\n\n  \n    // getters, setters, toString\n}\n\nclass Cat extends Pets {  \n}\n\nclass Dog extends Dogs {\n}\n\nRepository\npublic interface StoreEntityRepository\n    extends CrudRepository&lt;StoreEntity, String&gt;, JpaSpecificationExecutor&lt;StoreEntity&gt; {  \n}\n</code></pre>\n"
+}

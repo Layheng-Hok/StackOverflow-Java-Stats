@@ -1,0 +1,45 @@
+{
+  "tags" : [ "c#", "java", "serversocket" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 82340,
+      "reputation" : 3706,
+      "user_id" : 231592,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/afb84083a169346319315251f58f5cb7?s=256&d=identicon&r=PG",
+      "display_name" : "Task",
+      "link" : "https://stackoverflow.com/users/231592/task"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759609663,
+    "last_edit_date" : 1759609663,
+    "creation_date" : 1326288046,
+    "answer_id" : 8819978,
+    "question_id" : 8819825,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The usual problem with that kind of C# code is the synchronous receive. I always recommend doing an asynchronous read, as in <a href=\"https://stackoverflow.com/questions/3067969/net-networkstream-closed-how-to-be-sure-all-data-is-read/3111361#3111361\">this answer</a>.</p>\n<p>I'm not positive that that's the source of your problem, but if you implemented the asynchronous receive with a bit of logging there's a good chance that that will either fix your problem or make it much more obvious as to what your problem is.</p>\n<p>A hang on synchronous receive does suggest that the Java isn't sending data to the same socket that the C# is listening on, so double-checking those endpoints can also be a good idea.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1044016,
+    "reputation" : 697,
+    "user_id" : 1049382,
+    "user_type" : "registered",
+    "accept_rate" : 21,
+    "profile_image" : "https://www.gravatar.com/avatar/a06c2e6b5424fa10cea7b7c78fc2608b?s=256&d=identicon&r=PG",
+    "display_name" : "Abhay",
+    "link" : "https://stackoverflow.com/users/1049382/abhay"
+  },
+  "is_answered" : false,
+  "view_count" : 1338,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1759609663,
+  "creation_date" : 1326287397,
+  "last_edit_date" : 1326287760,
+  "question_id" : 8819825,
+  "link" : "https://stackoverflow.com/questions/8819825/error-in-receiving-data-in-c-client-socket-from-java-server-socket",
+  "title" : "Error in receiving data in C# client socket from java server socket",
+  "body" : "<p>I am creating a Socket connection with C# client socket and Java Server Socket.\nWhen i am  sending data from client socket,the server socket is properly receiving that data.\nBut when i am trying to send data back to Client socket from Server socket it is getting hanged on client side in receiving data.</p>\n\n<p>Client Side Code(In C#.net)</p>\n\n<pre><code>           clientSocket = new Socket(AddressFamily.InterNetwork,SocketType.Stream,ProtocolType.Tcp);\n\n            string hostName = System.Net.Dns.GetHostName();\n            System.Net.IPHostEntry hostEntry = System.Net.Dns.GetHostEntry(hostName);\n            System.Net.IPAddress[] ipAddresses = hostEntry.AddressList;\n            System.Net.IPEndPoint remoteEP =\n                new System.Net.IPEndPoint(ipAddresses[ipAddresses.Length - 1], port);\n            clientSocket.Connect(remoteEP);\n             string sendData = inputFilePath;\n                    byte[] byteDataSend = System.Text.Encoding.ASCII.GetBytes(sendData);\n                    clientSocket.Send(byteDataSend);\n\n                    int receivedBufferSize = clientSocket.ReceiveBufferSize;\n                    byte[] recivedData = new Byte[receivedBufferSize];\n                    int receivedDataLength = clientSocket.Receive(recivedData);\n                    string stringData = Encoding.ASCII.GetString(recivedData, 0, receivedDataLength);\n                    textFilePath = stringData;\n                    Console.Write(stringData);\n                    clientSocket.Close();\n</code></pre>\n\n<p>Server Socket Code (In Java)</p>\n\n<pre><code>           Socket connection = server.accept();\n            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream())); \n            fileName = in.readLine();\n            convertedFile =runConverter.convertDocumet(fileName);\n            byte[] sendingData = convertedFile.getBytes(\"US-ASCII\");\n            DataOutputStream dos = new DataOutputStream(connection.getOutputStream());\n            dos.write(sendingData, 0, sendingData.length);\n</code></pre>\n\n<p>Tell me what is problem??\nPlease help...</p>\n"
+}

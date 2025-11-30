@@ -1,0 +1,109 @@
+{
+  "tags" : [ "java", "servlets", "video-streaming" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2901041,
+        "reputation" : 537,
+        "user_id" : 2487737,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/d038802ec4b2dc32d1d674bff8474f78?s=256&d=identicon&r=PG",
+        "display_name" : "Prashanth",
+        "link" : "https://stackoverflow.com/users/2487737/prashanth"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1550739066,
+      "post_id" : 54802673,
+      "comment_id" : 96382307,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "thanks for replying, can you explain more about your answer and what change should I make to my server-side code."
+    }, {
+      "owner" : {
+        "account_id" : 73137,
+        "reputation" : 31341,
+        "user_id" : 210785,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a561cd4d29738e18d9e565a6265d86ac?s=256&d=identicon&r=PG",
+        "display_name" : "szatmary",
+        "link" : "https://stackoverflow.com/users/210785/szatmary"
+      },
+      "reply_to_user" : {
+        "account_id" : 2901041,
+        "reputation" : 537,
+        "user_id" : 2487737,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/d038802ec4b2dc32d1d674bff8474f78?s=256&d=identicon&r=PG",
+        "display_name" : "Prashanth",
+        "link" : "https://stackoverflow.com/users/2487737/prashanth"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1550739156,
+      "post_id" : 54802673,
+      "comment_id" : 96382371,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Look for the Range header in the request, set the reply range header, return a 206 and send the bytes for the range requested"
+    } ],
+    "owner" : {
+      "account_id" : 73137,
+      "reputation" : 31341,
+      "user_id" : 210785,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a561cd4d29738e18d9e565a6265d86ac?s=256&d=identicon&r=PG",
+      "display_name" : "szatmary",
+      "link" : "https://stackoverflow.com/users/210785/szatmary"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1550738590,
+    "creation_date" : 1550738590,
+    "answer_id" : 54802673,
+    "question_id" : 54800719,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>iPhone requires the server properly handle byte range requests. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2901041,
+      "reputation" : 537,
+      "user_id" : 2487737,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/d038802ec4b2dc32d1d674bff8474f78?s=256&d=identicon&r=PG",
+      "display_name" : "Prashanth",
+      "link" : "https://stackoverflow.com/users/2487737/prashanth"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1758972723,
+    "last_edit_date" : 1758972723,
+    "creation_date" : 1550749774,
+    "answer_id" : 54806396,
+    "question_id" : 54800719,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Thanks, @szatmary for guidance here is the implementation please do share if there is any better implementation.</p>\n<pre><code>OutputStream output;\nif (request.getHeader(&quot;range&quot;) != null) {\n    response.setStatus(206);\n    String rangeValue = request.getHeader(&quot;range&quot;).trim().substring(&quot;bytes=&quot;.length());\n    long fileLength = outputFile.length();\n    long start, end;\n    if (rangeValue.startsWith(&quot;-&quot;)) {\n        end = fileLength - 1;\n        start = fileLength - 1 - Long.parseLong(rangeValue.substring(&quot;-&quot;.length()));\n    } else {\n        String[] range = rangeValue.split(&quot;-&quot;);\n        start = Long.parseLong(range[0]);\n        end = range.length &gt; 1 ? Long.parseLong(range[1]) : fileLength - 1;\n    }\n    if (end &gt; fileLength - 1) {\n        end = fileLength - 1;\n    }\n    if (start &lt;= end) {\n        long contentLength = end - start + 1;\n        response.setHeader(&quot;Content-Length&quot;, contentLength + &quot;&quot;);\n        response.setHeader(&quot;Content-Range&quot;, &quot;bytes &quot; + start + &quot;-&quot; + end + &quot;/&quot; + fileLength);\n        response.setHeader(&quot;Content-Type&quot;, &quot;video/mp4&quot;);\n        response.setHeader(&quot;Content-Disposition&quot;, &quot;inline; filename=test.mp4&quot;);\n        RandomAccessFile raf = new RandomAccessFile(outputFile, &quot;r&quot;);\n        raf.seek(start);\n        output = response.getOutputStream();\n        byte[] buffer = new byte[2096];\n        int bytesRead = 0;\n        int totalRead = 0;\n        while (totalRead &lt; contentLength) {\n            bytesRead = raf.read(buffer);\n            totalRead += bytesRead;\n            output.write(buffer, 0, bytesRead);\n        }\n    }\n} else {\n    try (InputStream input = new FileInputStream(outputFile.getPath())) {\n        response.setContentType(&quot;video/mp4&quot;);\n        response.setHeader(&quot;Content-Disposition&quot;, &quot;inline; filename=test.mp4&quot;);\n        response.setStatus(200);\n        output = response.getOutputStream();\n        byte[] buffer = new byte[2096];\n        int read;\n        while ((read = input.read(buffer)) != -1) {\n            output.write(buffer, 0, read);\n        }\n        output.flush();\n        output.close();\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2901041,
+    "reputation" : 537,
+    "user_id" : 2487737,
+    "user_type" : "registered",
+    "accept_rate" : 62,
+    "profile_image" : "https://www.gravatar.com/avatar/d038802ec4b2dc32d1d674bff8474f78?s=256&d=identicon&r=PG",
+    "display_name" : "Prashanth",
+    "link" : "https://stackoverflow.com/users/2487737/prashanth"
+  },
+  "is_answered" : true,
+  "view_count" : 530,
+  "accepted_answer_id" : 54802673,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1758972723,
+  "creation_date" : 1550731019,
+  "question_id" : 54800719,
+  "link" : "https://stackoverflow.com/questions/54800719/video-file-streaming-from-java-server-to-iphone",
+  "title" : "Video file streaming from java server to iPhone",
+  "body" : "<p>I have this java servlet which serves video, this works fine in desktop and Android browsers but in iPhone video is not displayed.</p>\n\n<p>here is my servlet code.</p>\n\n<pre><code>    OutputStream output;\n    try (InputStream input = new FileInputStream(videoPath)) {\n    response.setContentType(\"video/mp4\");\n    response.setHeader(\"Content-Disposition\", \"inline; filename=\" + videoID);\n    output = response.getOutputStream();\n    byte[] buffer = new byte[2096];\n    int read;\n    while ((read = input.read(buffer)) != -1) {\n        output.write(buffer, 0, read);\n    }\n    output.flush();\n    output.close();\n}\n</code></pre>\n"
+}

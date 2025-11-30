@@ -1,0 +1,130 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "maven", "dependencies" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 260010,
+        "reputation" : 9745,
+        "user_id" : 543315,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://www.gravatar.com/avatar/1b1cc141d08272ff09997044dc980e8c?s=256&d=identicon&r=PG",
+        "display_name" : "Nic Cottrell",
+        "link" : "https://stackoverflow.com/users/543315/nic-cottrell"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1526486882,
+      "post_id" : 50375198,
+      "comment_id" : 87767294,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Right - so I see how it determines the spring-boot version, but where is the version for <code>mongodb-driver</code> defined? Not in the <a href=\"https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-starters/pom.xml\" rel=\"nofollow noreferrer\">parent pom</a>."
+    }, {
+      "owner" : {
+        "account_id" : 7798354,
+        "reputation" : 7171,
+        "user_id" : 5898696,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/AskSA.jpg?s=256",
+        "display_name" : "J-Alex",
+        "link" : "https://stackoverflow.com/users/5898696/j-alex"
+      },
+      "reply_to_user" : {
+        "account_id" : 260010,
+        "reputation" : 9745,
+        "user_id" : 543315,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://www.gravatar.com/avatar/1b1cc141d08272ff09997044dc980e8c?s=256&d=identicon&r=PG",
+        "display_name" : "Nic Cottrell",
+        "link" : "https://stackoverflow.com/users/543315/nic-cottrell"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1526487672,
+      "post_id" : 50375198,
+      "comment_id" : 87767714,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Nic Cottrell it&#39;s defined in <code>spring-boot-dependencies</code> module. Posted as part of the update to my answer."
+    } ],
+    "owner" : {
+      "account_id" : 5825390,
+      "reputation" : 2114,
+      "user_id" : 4591994,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-06_PxHcysZQ/AAAAAAAAAAI/AAAAAAAAAA0/aYll9NVqhT8/s256-rj/photo.jpg",
+      "display_name" : "Michael Peacock",
+      "link" : "https://stackoverflow.com/users/4591994/michael-peacock"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1526485781,
+    "creation_date" : 1526485781,
+    "answer_id" : 50375198,
+    "question_id" : 50375131,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The versions of the starter atrifacts are managed in the starter parent.  For example, if you have this in your POM:</p>\n\n<pre><code>&lt;parent&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\n    &lt;version&gt;2.0.2.RELEASE&lt;/version&gt;\n&lt;/parent&gt;\n</code></pre>\n\n<p>Then any boot starter dependency you reference will have version 2.0.2.RELEASE, unless you override the default and provide your own version for some reason.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7798354,
+      "reputation" : 7171,
+      "user_id" : 5898696,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://i.sstatic.net/AskSA.jpg?s=256",
+      "display_name" : "J-Alex",
+      "link" : "https://stackoverflow.com/users/5898696/j-alex"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1526488500,
+    "last_edit_date" : 1526488500,
+    "creation_date" : 1526486580,
+    "answer_id" : 50375419,
+    "question_id" : 50375131,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is related not only to starters, if you have many modules in your project they have different dependencies. As regular practice, there is a parent <code>pom.xml</code> with general settings. </p>\n\n<p>If you see a dependency in child maven module like below:</p>\n\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;\n    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;\n&lt;/dependency&gt;\n</code></pre>\n\n<p>There is a configured dependency in parent <code>pom</code> like:</p>\n\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;\n    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;\n    &lt;version&gt;3.5&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n\n<p>Usually, it's more flexible to configure versions with properties:</p>\n\n<pre><code>&lt;properties&gt;\n    &lt;commons-lang3.version&gt;3.5&lt;/commons-lang3.version&gt;\n&lt;/properties&gt;\n\n&lt;dependency&gt;\n    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;\n    &lt;artifactId&gt;commons-lang3&lt;/artifactId&gt;\n    &lt;version&gt;${commons-lang3.version}&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n\n<p><code>MongoDb</code> version is defined in <a href=\"https://github.com/spring-projects/spring-boot/blob/d8f9aad8d436873719df5e005050df646e99a4c1/spring-boot-project/spring-boot-dependencies/pom.xml\" rel=\"nofollow noreferrer\">spring-boot-dependencies</a> using <a href=\"https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html\" rel=\"nofollow noreferrer\">Dependency Management</a> mechanism.</p>\n\n<pre><code>&lt;properties&gt;\n    &lt;mongodb.version&gt;3.8.0-beta2&lt;/mongodb.version&gt;\n&lt;properties&gt;\n\n&lt;dependencyManagement&gt;\n    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.mongodb&lt;/groupId&gt;\n            &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;\n            &lt;version&gt;${mongodb.version}&lt;/version&gt;\n        &lt;/dependency&gt;\n    &lt;dependencies&gt;\n&lt;dependencyManagement&gt;\n</code></pre>\n\n<blockquote>\n  <p>Dependency management is a mechanism for centralizing dependency\n  information. When you have a set of projects that inherits a common\n  parent it's possible to put all information about the dependency in\n  the common POM and have simpler references to the artifacts in the\n  child POMs.</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9298689,
+      "reputation" : 17940,
+      "user_id" : 6904888,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://i.sstatic.net/Ftwrn.png?s=256",
+      "display_name" : "Penny Liu",
+      "link" : "https://stackoverflow.com/users/6904888/penny-liu"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1721913855,
+    "creation_date" : 1721913855,
+    "answer_id" : 78793576,
+    "question_id" : 50375131,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To investigate what is in the starter, most IDEs offer a dependency management or view feature, making it much easier to navigate.</p>\n<p>For IntelliJ users, simply use the menu option:<BR />\nSelect <strong>View</strong> &gt; <strong>Tool Windows</strong> &gt; <strong>Maven Projects</strong> &gt; <strong>Dependencies</strong>.</p>\n<p><a href=\"https://i.sstatic.net/650Vj4eB.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/650Vj4eB.png\" alt=\"enter image description here\" /></a></p>\n<p>This is the basic approach for exploring or finding out what is included in a given starter.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 260010,
+    "reputation" : 9745,
+    "user_id" : 543315,
+    "user_type" : "registered",
+    "accept_rate" : 61,
+    "profile_image" : "https://www.gravatar.com/avatar/1b1cc141d08272ff09997044dc980e8c?s=256&d=identicon&r=PG",
+    "display_name" : "Nic Cottrell",
+    "link" : "https://stackoverflow.com/users/543315/nic-cottrell"
+  },
+  "is_answered" : true,
+  "view_count" : 3243,
+  "accepted_answer_id" : 50375419,
+  "answer_count" : 3,
+  "score" : 4,
+  "last_activity_date" : 1763030514,
+  "creation_date" : 1526485539,
+  "last_edit_date" : 1763030514,
+  "question_id" : 50375131,
+  "link" : "https://stackoverflow.com/questions/50375131/how-is-the-maven-version-specified-in-spring-boot-starters",
+  "title" : "How is the maven version specified in Spring Boot Starters?",
+  "body" : "<p>I've read the <a href=\"https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-starter\" rel=\"nofollow noreferrer\">reference</a> but I don't understand how versionId is set in the dependency. For example the <a href=\"https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-starters/spring-boot-starter-data-mongodb/pom.xml\" rel=\"nofollow noreferrer\">MongoDB starter</a> specifies</p>\n<pre><code>&lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.mongodb&lt;/groupId&gt;\n            &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-data-mongodb&lt;/artifactId&gt;\n            &lt;exclusions&gt;\n                &lt;exclusion&gt;\n                    &lt;groupId&gt;org.mongodb&lt;/groupId&gt;\n                    &lt;artifactId&gt;mongo-java-driver&lt;/artifactId&gt;\n                &lt;/exclusion&gt;\n                &lt;exclusion&gt;\n                    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;\n                    &lt;artifactId&gt;jcl-over-slf4j&lt;/artifactId&gt;\n                &lt;/exclusion&gt;\n            &lt;/exclusions&gt;\n        &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n</code></pre>\n<p>But the <code>version</code> tag is missing. How is the version of <code>mongodb-driver</code> determined when using these starts?</p>\n"
+}

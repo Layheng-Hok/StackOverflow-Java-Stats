@@ -1,0 +1,23 @@
+{
+  "tags" : [ "java", "android", "copy", "android-4.4-kitkat" ],
+  "owner" : {
+    "account_id" : 7145153,
+    "reputation" : 21,
+    "user_id" : 5461146,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/27e213731cf7c178e49d15cba76c4b39?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Darren C",
+    "link" : "https://stackoverflow.com/users/5461146/darren-c"
+  },
+  "is_answered" : false,
+  "view_count" : 225,
+  "answer_count" : 0,
+  "score" : 2,
+  "last_activity_date" : 1759926097,
+  "creation_date" : 1445224830,
+  "last_edit_date" : 1759926097,
+  "question_id" : 33206129,
+  "link" : "https://stackoverflow.com/questions/33206129/how-to-copy-file-from-sd-to-local-storage-on-android",
+  "title" : "How to copy file from SD to local storage on Android",
+  "body" : "<p>I know with Kit Kat you can only write to your applications package specific directory on SD cards. I was however under the impression you could still copy files from an SD card to local storage with the:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;uses-permission android:name=&quot;android.permission.READ_EXTERNAL_STORAGE&quot; /&gt;\n</code></pre>\n<p>I am testing if I can copy one file.  If I am able to do that I will add the code to search the entire SD card DCIM folder.  For now I have the following code (please forgive the messiness of the code, I have written C# and vb.net but java is still very new to me):</p>\n<pre class=\"lang-java prettyprint-override\"><code>String dirPath = getFilesDir().getAbsolutePath() + File.separator + &quot;TCM&quot;;\nFile projDir = new File(dirPath);\nif (!projDir.exists())\n    projDir.mkdirs();\nString CamPath = projDir + File.separator + tv2.getText();\nFile projDir2 = new File(CamPath);\nif (!projDir2.exists())\n    projDir2.mkdirs();\nFile LocalBuck = new File(projDir2 + File.separator );\n\nString imageInSD = Environment.getExternalStorageDirectory().getAbsolutePath();\nFile directory1 = new File (sdCard.getAbsolutePath() + &quot;/DCIM&quot;);\nFile directory = new File(directory1 + &quot;/100SDCIM&quot;);\nFile Buckfile = new File(directory, &quot;/BigBuck.jpg&quot;);\n\ntry {\n    exportFile(Buckfile, LocalBuck);\n} catch (IOException e) {\n    e.printStackTrace();\n}\n</code></pre>\n<p>Here is my code for the export function/application:</p>\n<pre class=\"lang-java prettyprint-override\"><code>private File exportFile(File src, File dst) throws IOException {\n\n    //if folder does not exist\n    if (!dst.exists()) {\n        if (!dst.mkdir()) {\n            return null;\n        }\n    }\n\n    String timeStamp = new SimpleDateFormat(&quot;yyyy_MM_dd_HHmmss&quot;).format(new Date());\n    File expFile = new File(dst.getPath() + File.separator + &quot;IMG_&quot; + timeStamp + &quot;.jpg&quot;);\n    FileChannel inChannel = null;\n    FileChannel outChannel = null;\n\n    try {\n        //Straight to Error Handler\n        inChannel = new FileInputStream(src).getChannel();\n        outChannel = new FileOutputStream(expFile).getChannel();\n    } catch (FileNotFoundException e) {\n        e.printStackTrace();\n    }\n\n    try {\n        inChannel.transferTo(0, inChannel.size(), outChannel);\n    } finally {\n        if (inChannel != null)\n            inChannel.close();\n        if (outChannel != null)\n            outChannel.close();\n    }\n\n    return expFile;\n}\n</code></pre>\n<p>Here is what my emulator looks like:</p>\n<p>Looking for:</p>\n<p><a href=\"https://i.sstatic.net/bBqtq.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/bBqtq.png\" alt=\"Debug of SD Location\" /></a></p>\n<p>Should find it?:</p>\n<p><a href=\"https://i.sstatic.net/OH0r0.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/OH0r0.png\" alt=\"EmulatorShowingSd\" /></a></p>\n<p>Am I even able to copy a file from the SD card to local storage after KitKat; if so what is wrong in the code causing the exception to be thrown when it tries to access the SD card file?</p>\n"
+}

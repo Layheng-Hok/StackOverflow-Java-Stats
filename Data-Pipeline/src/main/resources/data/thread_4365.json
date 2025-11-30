@@ -1,0 +1,101 @@
+{
+  "tags" : [ "java", "hash" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1522548791,
+    "post_id" : 49592995,
+    "comment_id" : 86195800,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "It&#39;s a hex constant. This is rather basic. Why do you think you need another way?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 7770488,
+      "reputation" : 3327,
+      "user_id" : 5940860,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/fPNks.jpg?s=256",
+      "display_name" : "mooga",
+      "link" : "https://stackoverflow.com/users/5940860/mooga"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1760378380,
+    "last_edit_date" : 1760378380,
+    "creation_date" : 1522535229,
+    "answer_id" : 49593031,
+    "question_id" : 49592995,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>That's the Hexadecimal representation of the Max. Integer</p>\n<p>You can check <strong><a href=\"https://web.archive.org/web/20210621154926/https://numbermonk.com/hexadecimal/2147483647/en\" rel=\"nofollow noreferrer\">here</a></strong> or on <strong><a href=\"https://en.wikipedia.org/wiki/2147483647\" rel=\"nofollow noreferrer\">Wikipedia</a></strong></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 23121,
+      "reputation" : 535127,
+      "user_id" : 57695,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Lawrey",
+      "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1540483570,
+    "last_edit_date" : 1540483570,
+    "creation_date" : 1522543576,
+    "answer_id" : 49593790,
+    "question_id" : 49592995,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The constant <code>0x7FFFFFFF</code> is a 32-bit integer in hexadecimal with all but the highest bit set.</p>\n\n<p>Despite the name, this method isn't getting the hashCode, rather looking for which bucket the key should appear in for a hash set or map.</p>\n\n<p>When you use <code>%</code> on negative value, you get a negative value. There are no negative buckets so to avoid this you can remove the sign bit (the highest bit) and one way of doing this is to use a mask e.g. <code>x &amp; 0x7FFFFFFF</code> which keeps all the bits except the top one. Another way to do this is to shift the output <code>x &gt;&gt;&gt; 1</code> however this is slower.</p>\n\n<p>A slightly better approach is to use \"take the modulus and apply Math.abs\". This uses all the bits of the hashCode which might be better.</p>\n\n<p>e.g.</p>\n\n<pre><code>public int getBucket(K key) {\n    return Math.abs(key.hashCode() % size);\n}\n</code></pre>\n\n<p>Even this is not ideal as some hashCode() have a poor distribution resulting in a higher collision rate. You might want to agitate the hashcode before the modulus etc. </p>\n\n<pre><code>public int getBucket(K key) {\n    return Math.abs(hash(key) % size);\n}\n</code></pre>\n\n<p>HashMap in java 8 uses this </p>\n\n<pre><code>static final int hash(Object key) {\n    int h;\n    return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);\n}\n</code></pre>\n\n<p>The function is simple as it handles collisions efficiently. In Java 7 it used this function.</p>\n\n<pre><code>static int hash(int h) {\n    // This function ensures that hashCodes that differ only by\n    // constant multiples at each bit position have a bounded\n    // number of collisions (approximately 8 at default load factor).\n    h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);\n    return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 130083,
+      "reputation" : 8489,
+      "user_id" : 329082,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/f7e46f4be3566d2740ccaf4a98983935?s=256&d=identicon&r=PG",
+      "display_name" : "Victor",
+      "link" : "https://stackoverflow.com/users/329082/victor"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1522850596,
+    "creation_date" : 1522850596,
+    "answer_id" : 49653101,
+    "question_id" : 49592995,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>0x7fffffff</code> just remove the signal getting the complement of the number.</p>\n\n<p>Using <a href=\"http://www.javarepl.com/\" rel=\"nofollow noreferrer\">Java REPL</a> you can see the results of the operation</p>\n\n<pre><code>&gt; -7 &amp; 0x7fffffff\njava.lang.Integer res1 = 2147483641\n&gt; 2147483641 &amp; 0x7fffffff\njava.lang.Integer res2 = 2147483641\n&gt; 2147483641 + 6\njava.lang.Integer res3 = 2147483647\n&gt; 7 + 2147483641\njava.lang.Integer res4 = -2147483648\n</code></pre>\n\n<p>In the binary representation, the first bit is the signal. If you set it to zero you will get positive complementary if the number is negative. Or the same number if positive.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 13267540,
+    "reputation" : 117,
+    "user_id" : 9579765,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/bf69a96a182e1971e77e1fd0f2740319?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "b.alex",
+    "link" : "https://stackoverflow.com/users/9579765/b-alex"
+  },
+  "is_answered" : true,
+  "view_count" : 14597,
+  "answer_count" : 3,
+  "score" : 9,
+  "last_activity_date" : 1760378380,
+  "creation_date" : 1522534914,
+  "last_edit_date" : 1575072874,
+  "question_id" : 49592995,
+  "link" : "https://stackoverflow.com/questions/49592995/i-dont-understand-what-is-0x7fffffff-mean-is-there-any-other-way-to-code-gethas",
+  "title" : "i dont understand what is 0x7fffffff mean. is there any other way to code getHashValue method?",
+  "body" : "<pre><code>public int getHashValue(K key){\n    return (key.hashCode() &amp; 0x7fffffff) % size;\n}\n</code></pre>\n\n<p>i dont understand what is 0x7fffffff mean. is there any other way to code getHasValue method? </p>\n"
+}

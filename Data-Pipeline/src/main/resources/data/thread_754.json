@@ -1,0 +1,628 @@
+{
+  "tags" : [ "java", "regex", "escaping" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1628184,
+        "reputation" : 10230,
+        "user_id" : 1503237,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/piBNb.jpg?s=256",
+        "display_name" : "Matthias Ronge",
+        "link" : "https://stackoverflow.com/users/1503237/matthias-ronge"
+      },
+      "edited" : false,
+      "score" : 109,
+      "creation_date" : 1358342850,
+      "post_id" : 60161,
+      "comment_id" : 19964625,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Please not that this doesn’t escape the string itself, but wraps it using <code>\\Q</code> and <code>\\E</code>. This may lead to unexpected results, for example <code>Pattern.quote(&quot;*.wav&quot;).replaceAll(&quot;*&quot;,&quot;.*&quot;)</code> will result in <code>\\Q.*.wav\\E</code> and not <code>.*\\.wav</code>, as you might expect."
+    }, {
+      "owner" : {
+        "account_id" : 1628184,
+        "reputation" : 10230,
+        "user_id" : 1503237,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/piBNb.jpg?s=256",
+        "display_name" : "Matthias Ronge",
+        "link" : "https://stackoverflow.com/users/1503237/matthias-ronge"
+      },
+      "edited" : false,
+      "score" : 19,
+      "creation_date" : 1384267999,
+      "post_id" : 60161,
+      "comment_id" : 29661195,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I just wantet to point out that this way of escaping applies escaping also on expressions that you introduce <i>afterwards</i>. This may be surprising. If you do <code>&quot;mouse&quot;.toUpperCase().replaceAll(&quot;OUS&quot;,&quot;ic&quot;)</code> it will return <code>MicE</code>. You would’t expect it to return <code>MICE</code> because you didn’t apply <code>toUpperCase()</code> on <code>ic</code>. In my example <code>quote()</code> is applied on the <code>.*</code> insertet by <code>replaceAll()</code> as well. You have to do something else, perhaps <code>.replaceAll(&quot;*&quot;,&quot;\\\\E.*\\\\Q&quot;)</code> would work, but that’s counterintuitive."
+    }, {
+      "owner" : {
+        "account_id" : 1347382,
+        "reputation" : 10775,
+        "user_id" : 1287856,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/c6c6ea18f5cbad028f28bcfe7ce531e1?s=256&d=identicon&r=PG",
+        "display_name" : "Mika&#235;l Mayer",
+        "link" : "https://stackoverflow.com/users/1287856/mika%c3%abl-mayer"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1387553285,
+      "post_id" : 60161,
+      "comment_id" : 31015577,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Parameleon: The best solution to the corresponding problem is to use a split-map-mkString method. &quot;.wav&quot;.split(&quot;\\\\.&quot;).map(Pattern.quote).mkString(&quot;.&quot;).r"
+    }, {
+      "owner" : {
+        "account_id" : 4489466,
+        "reputation" : 541,
+        "user_id" : 3650944,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/dd4365d2d8b6509c6c4081cb787658ac?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Adam Jensen",
+        "link" : "https://stackoverflow.com/users/3650944/adam-jensen"
+      },
+      "reply_to_user" : {
+        "account_id" : 1628184,
+        "reputation" : 10230,
+        "user_id" : 1503237,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/piBNb.jpg?s=256",
+        "display_name" : "Matthias Ronge",
+        "link" : "https://stackoverflow.com/users/1503237/matthias-ronge"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1408510616,
+      "post_id" : 60161,
+      "comment_id" : 39611613,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Paramaeleon Results in an error for me, as the first argument in replaceAll is a regex."
+    }, {
+      "owner" : {
+        "account_id" : 1051720,
+        "reputation" : 1610,
+        "user_id" : 1055489,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/ca209d767d09e5a7c8e1bd58009b3df0?s=256&d=identicon&r=PG",
+        "display_name" : "Theodore Murdock",
+        "link" : "https://stackoverflow.com/users/1055489/theodore-murdock"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1434143957,
+      "post_id" : 60161,
+      "comment_id" : 49672723,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Paramaleon If it did work by adding individual escapes, your initial example still wouldn&#39;t do what you wanted...if it escaped characters individually, it would turn <code>*.wav</code> into the regex pattern <code>\\*\\.wav</code>, and the replaceAll would turn it into <code>\\.*\\.wav</code>, meaning it would match files whose name consists of a arbitrary number of periods followed by <code>.wav</code>. You&#39;d most likely have needed to <code>replaceAll(&quot;\\\\*&quot;, &quot;.*&quot;)</code> if they&#39;d gone with the more fragile implementation that relies on recognizing all possible active regex charachters and escaping them individually...would that be so much easier?"
+    }, {
+      "owner" : {
+        "account_id" : 1051720,
+        "reputation" : 1610,
+        "user_id" : 1055489,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/ca209d767d09e5a7c8e1bd58009b3df0?s=256&d=identicon&r=PG",
+        "display_name" : "Theodore Murdock",
+        "link" : "https://stackoverflow.com/users/1055489/theodore-murdock"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1434144264,
+      "post_id" : 60161,
+      "comment_id" : 49672839,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Or rather, combining with Adam Jensen&#39;s comment, you&#39;d have had to use <code>replaceAll(&quot;\\\\\\\\\\\\*&quot;, &quot;.*&quot;)</code>"
+    }, {
+      "owner" : {
+        "account_id" : 1674818,
+        "reputation" : 3249,
+        "user_id" : 1540600,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/iv9jm.jpg?s=256",
+        "display_name" : "sferencik",
+        "link" : "https://stackoverflow.com/users/1540600/sferencik"
+      },
+      "reply_to_user" : {
+        "account_id" : 1628184,
+        "reputation" : 10230,
+        "user_id" : 1503237,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/piBNb.jpg?s=256",
+        "display_name" : "Matthias Ronge",
+        "link" : "https://stackoverflow.com/users/1503237/matthias-ronge"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1445271838,
+      "post_id" : 60161,
+      "comment_id" : 54243056,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Paramaeleon: the use case is <code>&quot;*.wav&quot;.replaceAll(Pattern.quote(&quot;*&quot;), &quot;.*&quot;)</code>."
+    }, {
+      "owner" : {
+        "account_id" : 6939119,
+        "reputation" : 455,
+        "user_id" : 5326098,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://lh5.googleusercontent.com/-8PBWzibPVnQ/AAAAAAAAAAI/AAAAAAAAAC0/1IIslClMGpU/s256-rj/photo.jpg",
+        "display_name" : "Panther",
+        "link" : "https://stackoverflow.com/users/5326098/panther"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1502403016,
+      "post_id" : 60161,
+      "comment_id" : 78208008,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Actually none of the answers helped me, but then this came to my mind: I tried to make simple user input possible, where <code>*</code> simply means <code>.*</code> for example. User don&#39;t know anything of regex of course, so he might use regex strings like <code>.Hello*you?</code> - theoretically. It&#39;s not possible to use <code>Pattern.quote(string)</code> and then replace <code>*</code> with <code>.*</code> and the other way round, because it would quote the whole string. Just <code>split</code> the string for <code>*</code>, then quote every piece of the resulting array and put everything together again with <code>.*</code> between. Hope that helped someone who searched for the same :)"
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "reply_to_user" : {
+        "account_id" : 1628184,
+        "reputation" : 10230,
+        "user_id" : 1503237,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/piBNb.jpg?s=256",
+        "display_name" : "Matthias Ronge",
+        "link" : "https://stackoverflow.com/users/1503237/matthias-ronge"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1649771315,
+      "post_id" : 60161,
+      "comment_id" : 126956719,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@MatthiasRonge <code>Pattern.quote(&quot;*.wav&quot;).replaceAll(&quot;*&quot;,&quot;.*&quot;)</code> will result in an exception, because <code>*</code> is not a valid regex. Generally, since <code>*</code> has a meaning to regex, it must be quoted as well. So <code>Pattern.quote(&quot;*.wav&quot;)</code> may return <code>&quot;\\\\Q*.wav\\\\E&quot;</code>, <code>&quot;\\\\*\\\\.wav&quot;</code>, <code>&quot;\\\\u002a\\\\.wav&quot;</code>, or <code>&quot;[*][.]wav&quot;</code>, but you can never expect it to return <code>&quot;*\\\\.wav&quot;</code> as returning an invalid regex would be definitely off contract. No valid variant could ever meet your hypothetical expectation that you can simply replace <code>*</code> with <code>.*</code> afterwards."
+    }, {
+      "owner" : {
+        "account_id" : 7421543,
+        "reputation" : 3595,
+        "user_id" : 5645656,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/cWJZKa1g.png?s=256",
+        "display_name" : "Cardinal System",
+        "link" : "https://stackoverflow.com/users/5645656/cardinal-system"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1660274846,
+      "post_id" : 60161,
+      "comment_id" : 129499114,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<code>Pattern#quote(java.lang.String)</code> has never worked for me. Is there a way that actually escapes each special character?"
+    } ],
+    "owner" : {
+      "account_id" : 103,
+      "reputation" : 44713,
+      "user_id" : 122,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/c8ba7ccacc70a7b826184e8d717bfcd7?s=256&d=identicon&r=PG",
+      "display_name" : "Mike Stone",
+      "link" : "https://stackoverflow.com/users/122/mike-stone"
+    },
+    "is_accepted" : true,
+    "score" : 496,
+    "last_activity_date" : 1362414574,
+    "last_edit_date" : 1362414574,
+    "creation_date" : 1221262792,
+    "answer_id" : 60161,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Since <a href=\"http://download.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html#quote(java.lang.String)\" rel=\"noreferrer\">Java 1.5, yes</a>:</p>\n\n<pre><code>Pattern.quote(\"$5\");\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8709,
+        "reputation" : 5907,
+        "user_id" : 15816,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9daad991b5ae53a333abf26ae643c802?s=256&d=identicon&r=PG",
+        "display_name" : "Chris Mazzola",
+        "link" : "https://stackoverflow.com/users/15816/chris-mazzola"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1249591902,
+      "post_id" : 60164,
+      "comment_id" : 1067647,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I&#39;m curious if there&#39;s any difference between this and using the LITERAL flag, since the javadoc says there is no embedded flag to switch LITERAL on and off: <a href=\"http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html#LITERAL\" rel=\"nofollow noreferrer\">java.sun.com/j2se/1.5.0/docs/api/java/util/regex/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 35052,
+        "reputation" : 5314,
+        "user_id" : 99189,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/e85341a6b300fd04dc33b1baa28b7fd8?s=256&d=identicon&r=PG",
+        "display_name" : "Jeremy Huiskamp",
+        "link" : "https://stackoverflow.com/users/99189/jeremy-huiskamp"
+      },
+      "edited" : false,
+      "score" : 19,
+      "creation_date" : 1297649026,
+      "post_id" : 60164,
+      "comment_id" : 5572914,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Note that literally using \\Q and \\E is only fine if you know your input.  Pattern.quote(s) will also handle the case where your text actually contains these sequences."
+    } ],
+    "owner" : {
+      "account_id" : 1396,
+      "reputation" : 2975,
+      "user_id" : 1867,
+      "user_type" : "registered",
+      "accept_rate" : 29,
+      "profile_image" : "https://www.gravatar.com/avatar/f3615c8c5575a20b0999c92730006b95?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Rob Oxspring",
+      "link" : "https://stackoverflow.com/users/1867/rob-oxspring"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1380097585,
+    "last_edit_date" : 1380097585,
+    "creation_date" : 1221262936,
+    "answer_id" : 60164,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think what you're after is <code>\\Q$5\\E</code>.  Also see <code>Pattern.quote(s)</code> introduced in Java5.</p>\n\n<p>See <a href=\"http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html\" rel=\"noreferrer\">Pattern</a> javadoc for details.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 287724,
+        "reputation" : 928,
+        "user_id" : 587723,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/83eF8.jpg?s=256",
+        "display_name" : "Steven",
+        "link" : "https://stackoverflow.com/users/587723/steven"
+      },
+      "edited" : false,
+      "score" : 32,
+      "creation_date" : 1321639949,
+      "post_id" : 60172,
+      "comment_id" : 10058058,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Specifically, <code>Pattern.quote</code> replaces special characters in regex search strings, like .|+() etc, and <code>Matcher.quoteReplacement</code> replaces special characters in replacement strings, like \\1 for backreferences."
+    }, {
+      "owner" : {
+        "account_id" : 76828,
+        "reputation" : 5656,
+        "user_id" : 219658,
+        "user_type" : "registered",
+        "accept_rate" : 25,
+        "profile_image" : "https://www.gravatar.com/avatar/3cf4a05b544cce274d053d70fd6dc00d?s=256&d=identicon&r=PG",
+        "display_name" : "David Medinets",
+        "link" : "https://stackoverflow.com/users/219658/david-medinets"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1423265291,
+      "post_id" : 60172,
+      "comment_id" : 45093289,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I don&#39;t agree. Pattern.quote wraps its argument with \\Q and \\E. It does not escape special characters."
+    }, {
+      "owner" : {
+        "account_id" : 76828,
+        "reputation" : 5656,
+        "user_id" : 219658,
+        "user_type" : "registered",
+        "accept_rate" : 25,
+        "profile_image" : "https://www.gravatar.com/avatar/3cf4a05b544cce274d053d70fd6dc00d?s=256&d=identicon&r=PG",
+        "display_name" : "David Medinets",
+        "link" : "https://stackoverflow.com/users/219658/david-medinets"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1423265476,
+      "post_id" : 60172,
+      "comment_id" : 45093360,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Matcher.quoteReplacement(&quot;4$&amp;%$&quot;) produces &quot;4\\$&amp;%\\$&quot;. It escapes the special characters."
+    }, {
+      "owner" : {
+        "account_id" : 3916043,
+        "reputation" : 2182,
+        "user_id" : 3239833,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/c236ab7e51ffde017cd1bbe62fd73f80?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "SebastianH",
+        "link" : "https://stackoverflow.com/users/3239833/sebastianh"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1455444793,
+      "post_id" : 60172,
+      "comment_id" : 58485160,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In other words: <code>quoteReplacement</code> only cares about the two symbols <code>$</code> and <code>\\ </code> which can for example be used in replacement strings as backreferences <code>$1</code> or <code>\\1</code>. It therefore must not be used to escape/quote a regex."
+    }, {
+      "owner" : {
+        "account_id" : 1405869,
+        "reputation" : 11093,
+        "user_id" : 1333610,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/D8F6L.jpg?s=256",
+        "display_name" : "arun",
+        "link" : "https://stackoverflow.com/users/1333610/arun"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1456866620,
+      "post_id" : 60172,
+      "comment_id" : 59141543,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Awesome. Here is an example where we want to replace <code>$Group$</code> with <code>T$UYO$HI</code>. The <code>$</code> symbol is special both in the pattern and in the replacement: <code>&quot;$Group$ Members&quot;.replaceFirst(Pattern.quote(&quot;$Group$&quot;), Matcher.quoteReplacement(&quot;T$UYO$HI&quot;))</code>"
+    } ],
+    "owner" : {
+      "account_id" : 3785,
+      "reputation" : 4729,
+      "user_id" : 5507,
+      "user_type" : "registered",
+      "accept_rate" : 42,
+      "profile_image" : "https://www.gravatar.com/avatar/3575c78bbb4f136956fe9d33ad617ec5?s=256&d=identicon&r=PG",
+      "display_name" : "Pavel Feldman",
+      "link" : "https://stackoverflow.com/users/5507/pavel-feldman"
+    },
+    "is_accepted" : false,
+    "score" : 134,
+    "last_activity_date" : 1445814051,
+    "last_edit_date" : 1445814051,
+    "creation_date" : 1221263534,
+    "answer_id" : 60172,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Difference between <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#quote-java.lang.String-\" rel=\"noreferrer\"><code>Pattern.quote</code></a> and <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#quoteReplacement-java.lang.String-\" rel=\"noreferrer\"><code>Matcher.quoteReplacement</code></a> was not clear to me before I saw following example</p>\n\n<pre><code>s.replaceFirst(Pattern.quote(\"text to replace\"), \n               Matcher.quoteReplacement(\"replacement text\"));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 91748,
+      "reputation" : 1029,
+      "user_id" : 251767,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/93d96aa273cc5ad0c116e88582bc1cbe?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Meower68",
+      "link" : "https://stackoverflow.com/users/251767/meower68"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1344956427,
+    "creation_date" : 1344956427,
+    "answer_id" : 11955201,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>First off, if</p>\n\n<ul>\n<li>you use replaceAll()</li>\n<li>you DON'T use Matcher.quoteReplacement()</li>\n<li>the text to be substituted in includes a $1</li>\n</ul>\n\n<p>it won't put a 1 at the end.  It will look at the search regex for the first matching group and sub THAT in.  That's what $1, $2 or $3 means in the replacement text: matching groups from the search pattern.</p>\n\n<p>I frequently plug long strings of text into .properties files, then generate email subjects and bodies from those.  Indeed, this appears to be the default way to do i18n in Spring Framework.  I put XML tags, as placeholders, into the strings and I use replaceAll() to replace the XML tags with the values at runtime.</p>\n\n<p>I ran into an issue where a user input a dollars-and-cents figure, with a dollar sign.  replaceAll() choked on it, with the following showing up in a stracktrace:</p>\n\n<pre><code>java.lang.IndexOutOfBoundsException: No group 3\nat java.util.regex.Matcher.start(Matcher.java:374)\nat java.util.regex.Matcher.appendReplacement(Matcher.java:748)\nat java.util.regex.Matcher.replaceAll(Matcher.java:823)\nat java.lang.String.replaceAll(String.java:2201)\n</code></pre>\n\n<p>In this case, the user had entered \"$3\" somewhere in their input and replaceAll() went looking in the search regex for the third matching group, didn't find one, and puked.</p>\n\n<p>Given:</p>\n\n<pre><code>// \"msg\" is a string from a .properties file, containing \"&lt;userInput /&gt;\" among other tags\n// \"userInput\" is a String containing the user's input\n</code></pre>\n\n<p>replacing</p>\n\n<pre><code>msg = msg.replaceAll(\"&lt;userInput \\\\/&gt;\", userInput);\n</code></pre>\n\n<p>with </p>\n\n<pre><code>msg = msg.replaceAll(\"&lt;userInput \\\\/&gt;\", Matcher.quoteReplacement(userInput));\n</code></pre>\n\n<p>solved the problem.  The user could put in any kind of characters, including dollar signs, without issue.  It behaved exactly the way you would expect.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 439169,
+        "reputation" : 37426,
+        "user_id" : 827927,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://www.gravatar.com/avatar/ffb6ad39ce95d58890d2e7ea2cb72a04?s=256&d=identicon&r=PG",
+        "display_name" : "Erel Segal-Halevi",
+        "link" : "https://stackoverflow.com/users/827927/erel-segal-halevi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1365322888,
+      "post_id" : 13405612,
+      "comment_id" : 22573783,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You don&#39;t have to escape spaces. So you can chagne your pattern to &quot;([^a-zA-z0-9 ])&quot;."
+    }, {
+      "owner" : {
+        "account_id" : 44646,
+        "reputation" : 2851,
+        "user_id" : 131146,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/c52236c1b3f0073b92aefc25aa4ab9a1?s=256&d=identicon&r=PG",
+        "display_name" : "Zefiro",
+        "link" : "https://stackoverflow.com/users/131146/zefiro"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1432915449,
+      "post_id" : 13405612,
+      "comment_id" : 49141898,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Small typo, big consequences: &quot;([^a-zA-z0-9])&quot; does also not match (i.e. not escape) [, \\, ], ^ which you certainly want to have escaped! The typo is the second &#39;z&#39; which should be a &#39;Z&#39;, otherwise everything from ASCII 65 to ASCII 122 is included"
+    } ],
+    "owner" : {
+      "account_id" : 875339,
+      "reputation" : 1619,
+      "user_id" : 925098,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/d14e1202f8f6cecda78f99b2a4f854e8?s=256&d=identicon&r=PG",
+      "display_name" : "Moscow Boy",
+      "link" : "https://stackoverflow.com/users/925098/moscow-boy"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1468945608,
+    "last_edit_date" : 1468945608,
+    "creation_date" : 1353011250,
+    "answer_id" : 13405612,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To have protected pattern you may replace all symbols with \"\\\\\\\\\", except digits and letters.  And after that you can put in that protected pattern your special symbols to make this pattern working not like stupid quoted text, but really like a patten, but your own.  Without user special symbols.</p>\n\n<pre><code>public class Test {\n    public static void main(String[] args) {\n        String str = \"y z (111)\";\n        String p1 = \"x x (111)\";\n        String p2 = \".* .* \\\\(111\\\\)\";\n\n        p1 = escapeRE(p1);\n\n        p1 = p1.replace(\"x\", \".*\");\n\n        System.out.println( p1 + \"--&gt;\" + str.matches(p1) ); \n            //.*\\ .*\\ \\(111\\)--&gt;true\n        System.out.println( p2 + \"--&gt;\" + str.matches(p2) ); \n            //.* .* \\(111\\)--&gt;true\n    }\n\n    public static String escapeRE(String str) {\n        //Pattern escaper = Pattern.compile(\"([^a-zA-z0-9])\");\n        //return escaper.matcher(str).replaceAll(\"\\\\\\\\$1\");\n        return str.replaceAll(\"([^a-zA-Z0-9])\", \"\\\\\\\\$1\");\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4570918,
+        "reputation" : 833,
+        "user_id" : 3710640,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/t8TVg.jpg?s=256",
+        "display_name" : "mjjaniec",
+        "link" : "https://stackoverflow.com/users/3710640/mjjaniec"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1501830252,
+      "post_id" : 35991060,
+      "comment_id" : 77961203,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It&#39;s especially nice because you can combine it with <code>Pattern.CASE_INSENSITIVE</code>"
+    } ],
+    "owner" : {
+      "account_id" : 999506,
+      "reputation" : 3155,
+      "user_id" : 1014693,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/1f26603c53b4f9d51e0c75c1abf8ee71?s=256&d=identicon&r=PG",
+      "display_name" : "Androidme",
+      "link" : "https://stackoverflow.com/users/1014693/androidme"
+    },
+    "is_accepted" : false,
+    "score" : 36,
+    "last_activity_date" : 1458212981,
+    "last_edit_date" : 1458212981,
+    "creation_date" : 1457967842,
+    "answer_id" : 35991060,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It may be too late to respond, but you can also use <code>Pattern.LITERAL</code>, which would ignore all special characters while formatting:</p>\n\n<pre><code>Pattern.compile(textToFormat, Pattern.LITERAL);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4239567,
+        "reputation" : 775,
+        "user_id" : 3469861,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/77580416f2ffa4b156d8bc172a883ffd?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "BoomZilla",
+        "link" : "https://stackoverflow.com/users/3469861/boomzilla"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1605640049,
+      "post_id" : 45415931,
+      "comment_id" : 114711402,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "+1 This works pretty good for transforming a user-specified string of non-standard chars to a regex-compatible pattern. I&#39;m using it for enforcing those chars in a password. Thanks."
+    }, {
+      "owner" : {
+        "account_id" : 1047596,
+        "reputation" : 9616,
+        "user_id" : 1052284,
+        "user_type" : "registered",
+        "accept_rate" : 44,
+        "profile_image" : "https://www.gravatar.com/avatar/7032e676c9790e067cba9cb68c61ae88?s=256&d=identicon&r=PG",
+        "display_name" : "Mark Jeronimus",
+        "link" : "https://stackoverflow.com/users/1052284/mark-jeronimus"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1697924585,
+      "post_id" : 45415931,
+      "comment_id" : 136341158,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This pattern contains some redundant structures (at least for Java) and it unnecessarily escapes some innocent characters. After fixing those and reordering, I arrive at the exact pattern found in <a href=\"https://stackoverflow.com/a/6969486/1052284\">this</a> answer."
+    } ],
+    "owner" : {
+      "account_id" : 3663387,
+      "reputation" : 3785,
+      "user_id" : 3058581,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/R18py.jpg?s=256",
+      "display_name" : "Adam111p",
+      "link" : "https://stackoverflow.com/users/3058581/adam111p"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1501504738,
+    "last_edit_date" : 1501504738,
+    "creation_date" : 1501504001,
+    "answer_id" : 45415931,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Pattern.quote(\"blabla\") works nicely.</p>\n\n<p>The Pattern.quote() works nicely. It encloses the sentence with the characters \"<strong>\\Q</strong>\" and \"<strong>\\E</strong>\", and if it does escape \"\\Q\" and \"\\E\".\nHowever, if you need to do a real regular expression escaping(or custom escaping), you can use this code:</p>\n\n<pre><code>String someText = \"Some/s/wText*/,**\";\nSystem.out.println(someText.replaceAll(\"[-\\\\[\\\\]{}()*+?.,\\\\\\\\\\\\\\\\^$|#\\\\\\\\s]\", \"\\\\\\\\$0\"));\n</code></pre>\n\n<p>This method returns: <em>Some/\\s/wText*/\\,**</em></p>\n\n<p>Code for example and tests:</p>\n\n<pre><code>String someText = \"Some\\\\E/s/wText*/,**\";\nSystem.out.println(\"Pattern.quote: \"+ Pattern.quote(someText));\nSystem.out.println(\"Full escape: \"+someText.replaceAll(\"[-\\\\[\\\\]{}()*+?.,\\\\\\\\\\\\\\\\^$|#\\\\\\\\s]\", \"\\\\\\\\$0\"));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4541793,
+        "reputation" : 29621,
+        "user_id" : 3689450,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/hy0Bnl.png?s=256",
+        "display_name" : "VLAZ",
+        "link" : "https://stackoverflow.com/users/3689450/vlaz"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1604999789,
+      "post_id" : 50990732,
+      "comment_id" : 114511902,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I don&#39;t see how this addresses the question at all."
+    } ],
+    "owner" : {
+      "account_id" : 10327397,
+      "reputation" : 1,
+      "user_id" : 9717510,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-HADUS7ETVHE/AAAAAAAAAAI/AAAAAAAAA-k/5UOaOKIA1wM/s256-rj/photo.jpg",
+      "display_name" : "Akhil Kathi",
+      "link" : "https://stackoverflow.com/users/9717510/akhil-kathi"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1543440648,
+    "last_edit_date" : 1543440648,
+    "creation_date" : 1529679614,
+    "answer_id" : 50990732,
+    "question_id" : 60160,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>^(Negation) symbol is used to match something that is not in the character group.</p>\n\n<p>This is the link to <a href=\"https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference\" rel=\"nofollow noreferrer\">Regular Expressions</a></p>\n\n<p>Here is the image info about negation:</p>\n\n<p><img src=\"https://i.sstatic.net/m5cXU.png\" alt=\"Info about negation\"></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1727,
+    "reputation" : 32352,
+    "user_id" : 2338,
+    "user_type" : "registered",
+    "accept_rate" : 100,
+    "profile_image" : "https://www.gravatar.com/avatar/f1175b620c26ca0a8280600b7e679244?s=256&d=identicon&r=PG",
+    "display_name" : "Matt",
+    "link" : "https://stackoverflow.com/users/2338/matt"
+  },
+  "is_answered" : true,
+  "view_count" : 248451,
+  "accepted_answer_id" : 60161,
+  "answer_count" : 8,
+  "score" : 364,
+  "last_activity_date" : 1673712240,
+  "creation_date" : 1221262596,
+  "last_edit_date" : 1673712240,
+  "question_id" : 60160,
+  "link" : "https://stackoverflow.com/questions/60160/how-to-escape-text-for-regular-expression-in-java",
+  "title" : "How to escape text for regular expression in Java?",
+  "body" : "<p>Does Java have a built-in way to escape arbitrary text so that it can be included in a regular expression? For example, if my users enter <code>&quot;$5&quot;</code>, I'd like to match that exactly rather than a <code>&quot;5&quot;</code> after the end of input.</p>\n"
+}

@@ -1,0 +1,59 @@
+{
+  "tags" : [ "java", "xml", "jaxb" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 125029,
+        "reputation" : 428,
+        "user_id" : 682256,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2e1fbcadf1e9088c5aa70abed5d51f80?s=256&d=identicon&r=PG",
+        "display_name" : "Simon Logic",
+        "link" : "https://stackoverflow.com/users/682256/simon-logic"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1651259731,
+      "post_id" : 35409696,
+      "comment_id" : 127330411,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "jaxb:extensionBindingPrefixes=&quot;xjc annox&quot; is processed on schema element only."
+    } ],
+    "owner" : {
+      "account_id" : 3782804,
+      "reputation" : 181,
+      "user_id" : 3141736,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e7311013f12aaebdc75f0f8866cbe0e1?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "slavb18",
+      "link" : "https://stackoverflow.com/users/3141736/slavb18"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1455540152,
+    "creation_date" : 1455540152,
+    "answer_id" : 35409696,
+    "question_id" : 30879392,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><a href=\"https://github.com/highsource/jaxb2-annotate-plugin\" rel=\"nofollow\">https://github.com/highsource/jaxb2-annotate-plugin</a> could be used</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;jaxb:bindings xmlns:annox=\"http://annox.dev.java.net\"\n               xmlns:jaxb=\"http://java.sun.com/xml/ns/jaxb\"\n               jaxb:version=\"2.1\"\n               xmlns:xjc=\"http://java.sun.com/xml/ns/jaxb/xjc\"\n               jaxb:extensionBindingPrefixes=\"xjc annox\"&gt;\n\n    &lt;jaxb:bindings node=\"//xs:complexType[@name='Person']\"&gt;\n        &lt;annox:annotate&gt;\n            &lt;annox:annotate annox:class=\"javax.xml.bind.annotation.XmlRootElement\" name=\"person\"/&gt;\n        &lt;/annox:annotate&gt;\n    &lt;/jaxb:bindings&gt;\n&lt;/jaxb:bindings&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5699349,
+    "reputation" : 91,
+    "user_id" : 4504882,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/ca9ec74305f7b3c96a166796a935fbf3?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "nmetts",
+    "link" : "https://stackoverflow.com/users/4504882/nmetts"
+  },
+  "is_answered" : false,
+  "view_count" : 8801,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1763827345,
+  "creation_date" : 1434493964,
+  "question_id" : 30879392,
+  "link" : "https://stackoverflow.com/questions/30879392/jaxb-xjcsimple-binding-does-not-generate-xmlrootelement-for-base-class",
+  "title" : "JAXB xjc:simple binding does not generate @XmlRootElement for base class",
+  "body" : "<p>I am using JAXB 2.0. I have various elements and types defined in an XSD file. Here's an example:</p>\n\n<pre><code>&lt;xs:element name=\"Person\" type=\"Person\" /&gt;\n&lt;xs:complexType name=\"Person\"&gt;\n    &lt;xs:attribute name=\"name\" type=\"xs:string\"/&gt;\n&lt;/xs:complexType&gt;\n\n&lt;xs:element name=\"Musician\" type=\"Musician\"/&gt;\n&lt;xs:complexType name=\"Musician\"&gt;\n    &lt;xs:complexContent&gt;\n        &lt;xs:extension base=\"Person\"&gt;\n             &lt;xs:attribute name=\"instrument\" type=\"xs:string\"/&gt;\n        &lt;/xs:extension&gt;\n    &lt;/xs:complexContent&gt;\n&lt;/xs:complexType&gt;\n\n&lt;xs:element name=\"People\" type=\"People\"/&gt;\n&lt;xs:complexType name=\"People\"&gt;\n    &lt;xs:sequence&gt;\n        &lt;xs:element name=\"person\" type=\"Person\" minOccurs=\"0\" maxOccurs=\"Unbounded/&gt;\n    &lt;/xs:sequence&gt;\n&lt;/xs:complexType&gt;\n</code></pre>\n\n<p>So as you can see from the above schema example, we have a Person, who has a name, and a Musician, who is also a Person (though this may be subject to some debate, but that's for another forum). There is also a People element, which is essentially a collection of Person types. </p>\n\n<p>I have the following in a bindings file:</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;jaxb:bindings xmlns:jaxb=\"http://java.sun.com/xml/ns/jaxb\" \njaxb:version=\"2.0\" \nxmlns:xjc= \"http://java.sun.com/xml/ns/jaxb/xjc\" \njaxb:extensionBindingPrefixes=\"xjc\"&gt; \n    &lt;jaxb:globalBindings optionalProperty=\"wrapper\"&gt; \n            &lt;xjc:simple/&gt;\n    &lt;/jaxb:globalBindings&gt; \n</code></pre>\n\n<p></p>\n\n<p>My intended use of these objects is:</p>\n\n<ol>\n<li>A Person may appear as a solitary Marshalled element, or may be a part of a People object</li>\n<li>If a Person is part of a People object, then the xsi:type should indicate whether it's just a normal Person or a Musician.</li>\n</ol>\n\n<p>So I need the generated Java classes to contain both an @XmlRootElement annotation as well as an @XmlType annotation. The xjc:simple binding creates both annotations for a Musician, but only creates the @XmlType for Person. So when I Marshall a Person object, all I get is:</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n</code></pre>\n\n<p>Whereas what I would like to see is:</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;Person name=\"John Doe\"/&gt;\n</code></pre>\n\n<p>For a People object, I want to see:</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;People&gt;\n    &lt;person name=\"John Doe\" xsi:type=\"Person\"/&gt;\n    &lt;person name=\"Keith Richards\" xsi:type=\"Musician\"/&gt;\n&lt;/People&gt;\n</code></pre>\n\n<p>I have read about the simple binding with xjc, and it works with all the lowest levels in an inheritance hierarchy. However, the base classes end up without an @XmlRootElement annotation. For the use case I'm working on, it's imperative that base classes can be Marshalled as both a top-level element and as a member of other elements. Any suggestions would be welcome.</p>\n"
+}

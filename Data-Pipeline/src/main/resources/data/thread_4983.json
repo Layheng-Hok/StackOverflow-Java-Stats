@@ -1,0 +1,65 @@
+{
+  "tags" : [ "java", "amazon-s3", "apache-commons-compress" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1542967509,
+      "post_id" : 53444397,
+      "comment_id" : 93761922,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@gyc you don&#39;t need to cast it when upcasting. you only need to cast it when downcasting e.g. <code>(TarArchiveInputStream) inputStream</code> needs a cast."
+    } ],
+    "owner" : {
+      "account_id" : 23121,
+      "reputation" : 535127,
+      "user_id" : 57695,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Lawrey",
+      "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1758972759,
+    "last_edit_date" : 1758972759,
+    "creation_date" : 1542967127,
+    "answer_id" : 53444397,
+    "question_id" : 53444291,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><code>FileInputStream</code> only reads real files. It doesn't read data from inside an archive.</p>\n<p>There are two possible solutions</p>\n<ul>\n<li>Use <code>InputStream</code> which <code>FileInputStream</code> and <code>TarArchiveInputStream</code> implement</li>\n<li>Copy the file to disk, read using <code>FileInputStream</code>, delete afterwards.</li>\n</ul>\n<p>The purpose on the interface <code>InputStream</code> is so you don't need to know where the data is coming from, and this is the natural way to solve this.</p>\n<blockquote>\n<p>can I make an InputStream out of a TarArchiveInputStream</p>\n</blockquote>\n<p><code>TarArchiveInputStream</code> implements <code>InputStream</code> so there is nothing to do.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 461249,
+    "reputation" : 4358,
+    "user_id" : 2882236,
+    "user_type" : "registered",
+    "accept_rate" : 97,
+    "profile_image" : "https://www.gravatar.com/avatar/90b201874afd2073a53e387cb441020a?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "gyc",
+    "link" : "https://stackoverflow.com/users/2882236/gyc"
+  },
+  "is_answered" : true,
+  "view_count" : 2226,
+  "accepted_answer_id" : 53444397,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1758972759,
+  "creation_date" : 1542966777,
+  "last_edit_date" : 1542967078,
+  "question_id" : 53444291,
+  "link" : "https://stackoverflow.com/questions/53444291/get-inputstream-out-of-tararchiveinputstream",
+  "title" : "Get InputStream out of TarArchiveInputStream",
+  "body" : "<p>I'm getting files from an FTP.\nThe files I'm getting are either text files or tar.gz</p>\n\n<p>For text files I just send them to S3. If I encounter a tar.gz I want to untar it and save each file with the same method.</p>\n\n<pre><code>public void handleFile() {\n\n    try (InputStream fileStream = ftpFileService.getInputStream(file)) {\n        if (file.getName().lastIndexOf(\".TGZ\") &gt; -1) {\n            TarArchiveInputStream tar = new TarArchiveInputStream(new GzipCompressorInputStream(fileStream));\n            TarArchiveEntry entry = null;\n            while ((entry = tar.getNextTarEntry()) != null) {\n                LOGGER.info(\"fileName to save {}\", entry.getName());\n                saveStreamToS3(entry.getName(), new InputStream(tar));\n            }\n            tar.close();\n        } else {\n            LOGGER.info(\"fileName to save {}\", fileName.getName());\n            saveStreamToS3(fileName.getName(), fileStream);\n        }\n    } catch (IOException e) {\n        LOGGER.error(e.getMessage());\n    }\n}\n</code></pre>\n\n<p>I tried saving the <code>entry</code> directly using <code>new FileInputStream(entry.getFile())</code> but this returns null.</p>\n\n<p>Do I need to make a <code>saveTarStreamToS3()</code> or can I make an InputStream out of a TarArchiveInputStream?</p>\n"
+}

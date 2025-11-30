@@ -1,0 +1,42 @@
+{
+  "tags" : [ "java", "spring-boot", "security" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 441392,
+      "reputation" : 3697,
+      "user_id" : 831460,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/39b2d3cd56c112747542b68673a90508?s=256&d=identicon&r=PG",
+      "display_name" : "Marek Puchalski",
+      "link" : "https://stackoverflow.com/users/831460/marek-puchalski"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1593035293,
+    "creation_date" : 1593035293,
+    "answer_id" : 62564599,
+    "question_id" : 62563078,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It actually took a while to understand this weakness and I have read a big part of <a href=\"https://cwe.mitre.org/data/definitions/732.html\" rel=\"nofollow noreferrer\">https://cwe.mitre.org/data/definitions/732.html</a> while doing it. So, the issue is, that when you create files using Java IO, they are created without considering system access rights. We usually don't want to enable everyone on the host to access the files we create by setting a default mask like <code>rw-rw-rw-</code> in Linux.</p>\n<p>Unfortunately Java IO has little means to restrict file access rights. The good thing is, Java's NIO has better means to do so. Please look into <a href=\"https://stackoverflow.com/questions/664432/how-do-i-programmatically-change-file-permissions\">How do I programmatically change file permissions?</a> whether it solves your problem.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 17852171,
+    "reputation" : 21,
+    "user_id" : 12967690,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/a5266629cdd222cb88282045acc8c5ca?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "thomaswtx",
+    "link" : "https://stackoverflow.com/users/12967690/thomaswtx"
+  },
+  "is_answered" : false,
+  "view_count" : 12648,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1759611685,
+  "creation_date" : 1593028515,
+  "question_id" : 62563078,
+  "link" : "https://stackoverflow.com/questions/62563078/fixing-incorrect-permission-assignment-for-critical-resources-cwe-732",
+  "title" : "Fixing Incorrect Permission Assignment for Critical Resources (CWE 732)",
+  "body" : "<p>I have been looking for solutions to this issue for awhile. Some of the resources I've found have recommended using the java.nio library which hasn't corrected this issue for me. I am using Java, and this has been flagged in multiple places throughout my service. Some flagged examples...</p>\n<p><code>private Writer writer</code><br />\n<code>private FileOutputStream outputStream</code><br />\n<code>outputStream = new FileOutputStream(file.getAbsolutePath(), true)</code></p>\n<p>I found one other thread speaking about this particular vulnerability for something along the lines of...</p>\n<p><code>File file = path.toFile()</code><br />\n<code>File directory = new File(location)</code></p>\n<p>Which was solved with <code>file.setReadable(true)</code>, and <code>directory.setReadable(true, false)</code>. I can't seem to find solutions for the other types of permissions that are getting flagged for outputstreams, or FileWriters. Can someone shed some light on this issue? Ah, and the vulnerability is being flagged by code analysis software. I'm not sure if it's dynamic or static, but it is an automated process for our service that scans for vulnerabilities.</p>\n"
+}

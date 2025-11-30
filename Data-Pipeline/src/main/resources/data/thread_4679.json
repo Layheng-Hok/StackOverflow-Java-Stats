@@ -1,0 +1,121 @@
+{
+  "tags" : [ "java", "elasticsearch", "elasticsearch-rest-client" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 5843921,
+      "reputation" : 218452,
+      "user_id" : 4604579,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/reC2t.jpg?s=256",
+      "display_name" : "Val",
+      "link" : "https://stackoverflow.com/users/4604579/val"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1570188051,
+    "post_id" : 58234784,
+    "comment_id" : 102843906,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "If you had 20001 buckets you need to augment <code>search.max_buckets</code> higher than 20000."
+  }, {
+    "owner" : {
+      "account_id" : 1135800,
+      "reputation" : 1186,
+      "user_id" : 1120883,
+      "user_type" : "registered",
+      "accept_rate" : 44,
+      "profile_image" : "https://www.gravatar.com/avatar/d784ac81b109bff293fc1d7af4532bcc?s=256&d=identicon&r=PG",
+      "display_name" : "nitin tyagi",
+      "link" : "https://stackoverflow.com/users/1120883/nitin-tyagi"
+    },
+    "reply_to_user" : {
+      "account_id" : 5843921,
+      "reputation" : 218452,
+      "user_id" : 4604579,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/reC2t.jpg?s=256",
+      "display_name" : "Val",
+      "link" : "https://stackoverflow.com/users/4604579/val"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1570643494,
+    "post_id" : 58234784,
+    "comment_id" : 102980829,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@Val Thanks for the comment. Earlier it gives me error for 10000 bucket then i have increased it to 20000 then it gives me error for 20000 then i have increased it 50000 then it gives me error for 50000."
+  }, {
+    "owner" : {
+      "account_id" : 5843921,
+      "reputation" : 218452,
+      "user_id" : 4604579,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/reC2t.jpg?s=256",
+      "display_name" : "Val",
+      "link" : "https://stackoverflow.com/users/4604579/val"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1570644139,
+    "post_id" : 58234784,
+    "comment_id" : 102981104,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I suggest you look into the <a href=\"https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-composite-aggregation.html\" rel=\"nofollow noreferrer\"><code>composite</code> aggregation</a> instead of trying to retrieve all term buckets at once."
+  }, {
+    "owner" : {
+      "account_id" : 1612111,
+      "reputation" : 496,
+      "user_id" : 1490760,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ENtSd.jpg?s=256",
+      "display_name" : "mrDinkelman",
+      "link" : "https://stackoverflow.com/users/1490760/mrdinkelman"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1603438015,
+    "post_id" : 58234784,
+    "comment_id" : 114042792,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I agreed with Val about composite aggregation usage. The next wizard <a href=\"https://plnkr.co/edit/iJSFP8eRrhC7l7Hx2XOL?p=preview&amp;preview\" rel=\"nofollow noreferrer\">plnkr.co/edit/iJSFP8eRrhC7l7Hx2XOL?p=preview&amp;preview</a> might help you what type of aggregation suites best according to your needs."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 158927,
+      "reputation" : 362,
+      "user_id" : 377902,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/070298422d538ab53b520174cf2907b9?s=256&d=identicon&r=PG",
+      "display_name" : "Abhiram",
+      "link" : "https://stackoverflow.com/users/377902/abhiram"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1621291590,
+    "creation_date" : 1621291590,
+    "answer_id" : 67577884,
+    "question_id" : 58234784,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Incase you are using ES version 7.x.x then you can add <code>terminate_after</code> clause to your query to limit the number of buckets into which the data would be divided into. This happens mostly when the data your are trying to aggregate has a high degree of randomness.</p>\n<p>If your data contains text then it would better to aggregate on <code>.keyword</code> field (assuming you are using default settings).</p>\n<pre><code>POST your_index/_search\n{\n  &quot;from&quot;: 0,\n  &quot;query&quot;: {\n    &quot;match_all&quot;: {}\n  },\n  &quot;size&quot;: 0,\n  &quot;sort&quot;: [\n    {\n      &quot;your_target_field&quot;: {\n        &quot;order&quot;: &quot;desc&quot;\n      }\n    }\n  ],\n  &quot;terminate_after&quot;: 10000,\n  &quot;version&quot;: true,\n  &quot;aggs&quot;: {\n    &quot;title&quot;: {\n      &quot;terms&quot;: {\n        &quot;field&quot;: &quot;your_target_field.keyword&quot;,\n        &quot;size&quot;: 10000\n      }\n    }\n  }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1135800,
+    "reputation" : 1186,
+    "user_id" : 1120883,
+    "user_type" : "registered",
+    "accept_rate" : 44,
+    "profile_image" : "https://www.gravatar.com/avatar/d784ac81b109bff293fc1d7af4532bcc?s=256&d=identicon&r=PG",
+    "display_name" : "nitin tyagi",
+    "link" : "https://stackoverflow.com/users/1120883/nitin-tyagi"
+  },
+  "is_answered" : false,
+  "view_count" : 10712,
+  "answer_count" : 1,
+  "score" : 4,
+  "last_activity_date" : 1759647827,
+  "creation_date" : 1570185616,
+  "question_id" : 58234784,
+  "link" : "https://stackoverflow.com/questions/58234784/too-many-buckets-exception-in-elasticsearch",
+  "title" : "too_many_buckets_exception in elasticsearch",
+  "body" : "<p>I am facing an issue in ElasticSearch aggregation. We are using RestHighLevelClient for querying ElasticSearch in Java. </p>\n\n<p>Exception is -</p>\n\n<blockquote>\n  <p>ElasticsearchStatusException[Elasticsearch exception\n  [type=search_phase_execution_exception, reason=]]; nested:\n  ElasticsearchException[Elasticsearch exception\n  [type=too_many_buckets_exception, reason=Trying to create too many\n  buckets. Must be less than or equal to: [20000] but was [20001]. This\n  limit can be set by changing the [search.max_buckets] cluster level\n  setting.]];</p>\n</blockquote>\n\n<p>I have changed search.max_buckets using a PUT request but still, I am facing this issue.</p>\n\n<blockquote>\n  <p>PUT /_cluster/settings {   \"persistent\" : { \n      \"search.max_buckets\":20000   }    }</p>\n</blockquote>\n\n<p>As per our requirement first, we have to aggregate data on daily bases then hourly basis then ruleId basis. Aggregation would look like below level - </p>\n\n<pre><code>Day{\n    1:00[\n       {\n       ruleId : 1 ,\n       count : 20\n       },\n       {\n       ruleId : 2 ,\n       count : 25\n       }\n    ],\n    2:00[\n    {\n       ruleId : 1 ,\n       count : 20\n       },\n       {\n       ruleId : 2 ,\n       count : 25\n       }\n    ]\n</code></pre>\n\n<p>Now my code is - </p>\n\n<pre><code>    final List&lt;DTO&gt; violationCaseMgmtDtos = new ArrayList&lt;&gt;();\n        try {\n            RangeQueryBuilder queryBuilders =\n                (end_timestmp &gt; 0 ? customTimeRangeQueryBuilder(start_timestmp, end_timestmp, generationTime)\n                    : daysTimeRangeQueryBuilder(14, generationTime));\n\n            BoolQueryBuilder boolQuery = new BoolQueryBuilder();\n            boolQuery.must(queryBuilders);\n            boolQuery.must(QueryBuilders.matchQuery(\"pvGroupBy\", true));\n            boolQuery.must(QueryBuilders.matchQuery(\"pvInformation\", false));\n            TopHitsAggregationBuilder topHitsAggregationBuilder =\n                AggregationBuilders.topHits(\"topHits\").docValueField(policyId).sort(generationTime, SortOrder.DESC);\n\n            TermsAggregationBuilder termsAggregation = AggregationBuilders.terms(\"distinct\").field(policyId).size(10000)\n                .subAggregation(topHitsAggregationBuilder);\n\n            DateHistogramAggregationBuilder timeHistogramAggregationBuilder =\n                AggregationBuilders.dateHistogram(\"by_hour\").field(\"eventDateTime\")\n                    .fixedInterval(DateHistogramInterval.HOUR).subAggregation(termsAggregation);\n\n            DateHistogramAggregationBuilder dateHistogramAggregationBuilder =\n                AggregationBuilders.dateHistogram(\"by_day\").field(\"eventDateTime\")\n                    .fixedInterval(DateHistogramInterval.DAY).subAggregation(timeHistogramAggregationBuilder);\n\n            SearchRequest searchRequest = new SearchRequest(violationDataModel);\n            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();\n            searchSourceBuilder.aggregation(dateHistogramAggregationBuilder);\n            searchSourceBuilder.query(boolQuery);\n            searchSourceBuilder.from(offset);\n            searchSourceBuilder.size(10000);\n            searchRequest.source(searchSourceBuilder);\n            SearchResponse searchResponse = null;\n\n            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);\n\n            ParsedDateHistogram parsedDateHistogram = searchResponse.getAggregations().get(\"by_day\");\n\n            parsedDateHistogram.getBuckets().parallelStream().forEach(dayBucket -&gt; {\n\n\n                ParsedDateHistogram hourBasedData = dayBucket.getAggregations().get(\"by_hour\");\n\n                hourBasedData.getBuckets().parallelStream().forEach(hourBucket -&gt; {\n\n                    // TimeLine timeLine = new TimeLine();\n                    String dateTime = hourBucket.getKeyAsString();\n                    // long dateInLong = DateUtil.getMiliSecondFromStringDate(dateTime);\n                    // timeLine.setViolationEventTime(dateTime);\n\n                    ParsedLongTerms distinctPolicys = hourBucket.getAggregations().get(\"distinct\");\n                    distinctPolicys.getBuckets().parallelStream().forEach(policyBucket -&gt; {\n\n                        DTO violationCaseManagementDTO = new DTO();\n                        violationCaseManagementDTO.setDataAggregated(true);\n                        violationCaseManagementDTO.setEventDateTime(dateTime);\n                        violationCaseManagementDTO.setRuleId(Long.valueOf(policyBucket.getKey().toString()));\n\n                        ParsedTopHits parsedTopHits = policyBucket.getAggregations().get(\"topHits\");\n                        SearchHit[] searchHits = parsedTopHits.getHits().getHits();\n                        SearchHit searchHit = searchHits[0];\n\n                        String source = searchHit.getSourceAsString();\n                        ViolationDataModel violationModel = null;\n                        try {\n                            violationModel = objectMapper.readValue(source, ViolationDataModel.class);\n                        } catch (Exception e) {\n                            e.printStackTrace();\n                        }\n\n                        violationCaseManagementDTO.setRuleName(violationModel.getRuleName());\n                        violationCaseManagementDTO.setGenerationTime(violationModel.getGenerationTime());\n                        violationCaseManagementDTO.setPriority(violationModel.getPriority());\n                        violationCaseManagementDTO.setStatus(violationModel.getViolationStatus());\n                        violationCaseManagementDTO.setViolationId(violationModel.getId());\n                        violationCaseManagementDTO.setEntity(violationModel.getViolator());\n                        violationCaseManagementDTO.setViolationType(violationModel.getViolationEntityType());\n                        violationCaseManagementDTO.setIndicatorsOfAttack( (int)\n                            (policyBucket.getDocCount() * violationModel.getNoOfViolatedEvents()));\n                        violationCaseMgmtDtos.add(violationCaseManagementDTO);\n\n                    });\n                  //  violationCaseMgmtDtos.sort((d1,d2) -&gt; d1.getEventDateTime().compareTo(d2.getEventDateTime()));\n                });\n\n            });\n\n            List&lt;DTO&gt; realtimeViolation = findViolationWithoutGrouping(start_timestmp,  end_timestmp,  offset,  size);\n            realtimeViolation.stream().forEach(action -&gt; violationCaseMgmtDtos.add(action)); \n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n\n        if (Objects.nonNull(violationCaseMgmtDtos) &amp;&amp; violationCaseMgmtDtos.size() &gt; 0) {\n            return violationCaseMgmtDtos.stream()\n                .filter(violationDto -&gt; Objects.nonNull(violationDto))\n                .sorted((d1,d2) -&gt; d2.getEventDateTime().compareTo(d1.getEventDateTime()))\n                .collect(Collectors.toList());\n        }\n        return violationCaseMgmtDtos;\n}\n</code></pre>\n\n<p>Please help me to resolve this issue.</p>\n"
+}

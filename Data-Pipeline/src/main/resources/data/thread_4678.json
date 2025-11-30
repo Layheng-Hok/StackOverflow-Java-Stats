@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "eclipse", "maven", "spring-mvc", "tomcat7" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 6845240,
+      "reputation" : 1597,
+      "user_id" : 5291521,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://graph.facebook.com/735294193283711/picture?type=large",
+      "display_name" : "Ashwani Tiwari",
+      "link" : "https://stackoverflow.com/users/5291521/ashwani-tiwari"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1561748122,
+    "post_id" : 56810497,
+    "comment_id" : 100178168,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "you should try the port changing to 587 in servlet xml"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 12824901,
+      "reputation" : 1827,
+      "user_id" : 9278333,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7e2e5c48b01818d2746aa3862968576d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "trilogy",
+      "link" : "https://stackoverflow.com/users/9278333/trilogy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1562869777,
+    "creation_date" : 1562869777,
+    "answer_id" : 56995340,
+    "question_id" : 56810497,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><code>&lt;property name=\"port\" value=\"587\" /&gt;</code></p>\n\n<p>change to</p>\n\n<p><code>&lt;property name=\"port\" value=\"465\" /&gt;</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 16222673,
+    "reputation" : 11,
+    "user_id" : 11713875,
+    "user_type" : "registered",
+    "profile_image" : "https://lh4.googleusercontent.com/-Bs4J_pvGPBI/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rd5e-h-Dv0qsJk9eAuNzT2GcaEImQ/s256-rj/photo.jpg",
+    "display_name" : "Badoo23",
+    "link" : "https://stackoverflow.com/users/11713875/badoo23"
+  },
+  "is_answered" : false,
+  "view_count" : 8802,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1759651670,
+  "creation_date" : 1561740079,
+  "last_edit_date" : 1561760059,
+  "question_id" : 56810497,
+  "link" : "https://stackoverflow.com/questions/56810497/how-to-fix-mail-server-connection-failed-nested-exception-is-javax-mail-messag",
+  "title" : "How to fix &quot;Mail server connection failed; nested exception is javax.mail.MessagingException: Could not convert socket to TLS; &quot; using Spring-mvc?",
+  "body" : "<p>I have a crash when I tried to send messages with a web application using spring-MVC and an XML configuration file.</p>\n\n<p>The application seemed to work but when i hit the button to send the message I faced the following nested exception: </p>\n\n<p>Mail server connection failed; nested exception is javax.mail.MessagingException: Could not convert socket to TLS;nested exception is:javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target. Failed messages: javax.mail.MessagingException: Could not convert socket to TLS;nested exception is:javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target </p>\n\n<p>I used tomcat 7 and Eclipse to run this project.</p>\n\n<p>I changed the bean in the configuration.file and changed the Gmail security configuration but I still have the same problem.</p>\n\n<p>EmailController.java:</p>\n\n<pre><code>package com.jcg.spring.mvc.email;\n\nimport javax.mail.internet.MimeMessage;\nimport javax.servlet.http.HttpServletRequest;\n\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.mail.javamail.JavaMailSender;\nimport org.springframework.mail.javamail.MimeMessageHelper;\nimport org.springframework.mail.javamail.MimeMessagePreparator;\nimport org.springframework.stereotype.Controller;\nimport org.springframework.ui.ModelMap;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RequestMethod;\nimport org.springframework.web.bind.annotation.RequestParam;\nimport org.springframework.web.multipart.commons.CommonsMultipartFile;\nimport org.springframework.web.servlet.ModelAndView;\n\n@Controller\npublic class EmailController {\n\n    static String emailToRecipient, emailSubject, emailMessage;\n    static final String emailFromRecipient =\"XXXXXXXXXXXXXX\";\n\n    static ModelAndView modelViewObj;\n\n    @Autowired\n    private JavaMailSender mailSenderObj;\n\n    @RequestMapping(value = {\"/\", \"emailForm\"}, method = RequestMethod.GET)\n    public ModelAndView showEmailForm(ModelMap model) {\n        modelViewObj = new ModelAndView(\"emailForm\");\n        return  modelViewObj;       \n    }\n\n    // This Method Is Used To Prepare The Email Message And Send It To The Client\n    @RequestMapping(value = \"sendEmail\", method = RequestMethod.POST)\n    public ModelAndView sendEmailToClient(HttpServletRequest request, final @RequestParam CommonsMultipartFile attachFileObj) {\n\n        // Reading Email Form Input Parameters      \n        emailSubject = request.getParameter(\"subject\");\n        emailMessage = request.getParameter(\"message\");\n        emailToRecipient = request.getParameter(\"mailTo\");\n\n        // Logging The Email Form Parameters For Debugging Purpose\n        System.out.println(\"\\nReceipient?= \" + emailToRecipient + \", Subject?= \" + emailSubject + \", Message?= \" + emailMessage + \"\\n\");\n\n        mailSenderObj.send(new MimeMessagePreparator() {\n            public void prepare(MimeMessage mimeMessage) throws Exception {\n\n                MimeMessageHelper mimeMsgHelperObj = new MimeMessageHelper(mimeMessage, true, \"UTF-8\");             \n                mimeMsgHelperObj.setTo(emailToRecipient);\n                mimeMsgHelperObj.setFrom(emailFromRecipient);               \n                mimeMsgHelperObj.setText(emailMessage);\n                mimeMsgHelperObj.setSubject(emailSubject);\n\n            }\n        });\n        System.out.println(\"\\nMessage Send Successfully.... Hurrey!\\n\");\n\n        modelViewObj = new ModelAndView(\"success\",\"messageObj\",\"Thank You! Your Email Has Been Sent!\");\n        return  modelViewObj;   \n    }\n}\n\n</code></pre>\n\n<p>spring-servlet.xml:</p>\n\n<pre><code>  &lt;!-- Spring Email Sender Bean Configuration --&gt;\n\n    &lt;bean id=\"mailSender\" class=\"org.springframework.mail.javamail.JavaMailSenderImpl\"&gt;\n        &lt;property name=\"host\" value=\"smtp.gmail.com\" /&gt;\n        &lt;property name=\"port\" value=\"587\" /&gt;\n        &lt;property name=\"username\" value=\"XXXXXXXXXXXXX\" /&gt;\n        &lt;property name=\"password\" value=\"XXXXXXXXXXXXXX\" /&gt;\n        &lt;property name=\"javaMailProperties\"&gt;\n            &lt;props&gt;\n                &lt;prop key=\"mail.smtp.auth\"&gt;true&lt;/prop&gt;\n                &lt;prop key=\"mail.debug\"&gt;true&lt;/prop&gt;\n                &lt;prop key=\"mail.transport.protocol\"&gt;smtp&lt;/prop&gt;\n                &lt;prop key=\"mail.smtp.socketFactory.class\"&gt;javax.net.ssl.SSLSocketFactory&lt;/prop&gt;\n                &lt;prop key=\"mail.smtp.socketFactory.port\"&gt;465&lt;/prop&gt;\n                &lt;prop key=\"mail.smtp.starttls.enable\"&gt;true&lt;/prop&gt;\n\n            &lt;/props&gt;\n        &lt;/property&gt;\n    &lt;/bean&gt;\n\n</code></pre>\n\n<p>web.xml:</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;web-app version=\"2.5\" xmlns=\"http://java.sun.com/xml/ns/javaee\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://java.sun.com/xml/ns/javaee              http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd\"&gt;\n    &lt;display-name&gt;Spring Mvc Email Example&lt;/display-name&gt;\n\n    &lt;!-- Spring Configuration - Processes Application Requests --&gt;\n    &lt;servlet&gt;\n        &lt;servlet-name&gt;SpringController&lt;/servlet-name&gt;\n        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;\n        &lt;init-param&gt;\n            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;\n            &lt;param-value&gt;/WEB-INF/spring-servlet.xml&lt;/param-value&gt;\n        &lt;/init-param&gt;\n        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;\n    &lt;/servlet&gt;\n    &lt;servlet-mapping&gt;\n        &lt;servlet-name&gt;SpringController&lt;/servlet-name&gt;\n        &lt;url-pattern&gt;/&lt;/url-pattern&gt;\n    &lt;/servlet-mapping&gt;   \n\n    &lt;!-- Welcome File List --&gt;\n    &lt;welcome-file-list&gt;\n        &lt;welcome-file&gt;emailForm.jsp&lt;/welcome-file&gt;\n    &lt;/welcome-file-list&gt;\n&lt;/web-app&gt;\n\n</code></pre>\n\n<p>log :</p>\n\n<pre><code>DEBUG: JavaMail version 1.5.5\nDEBUG: successfully loaded resource: /META-INF/javamail.default.providers\nDEBUG: Tables of loaded providers\n\n....\n\nDEBUG: successfully loaded resource: /META-INF/javamail.default.address.map\nDEBUG: getProvider() returning javax.mail.Provider[TRANSPORT,smtp,com.sun.mail.smtp.SMTPTransport,Oracle]\nDEBUG SMTP: useEhlo true, useAuth true\nDEBUG SMTP: trying to connect to host \"smtp.gmail.com\", port 587, isSSL false\n220 smtp.gmail.com ESMTP l***********.22 - gsmtp\nDEBUG SMTP: connected to host \"smtp.gmail.com\", port: 587\n\n\nEHLO ********PC\n250-smtp.gmail.com at your service, [**********]\n250-SIZE 35882577\n250-8BITMIME\n250-STARTTLS\n250-ENHANCEDSTATUSCODES\n250-PIPELINING\n250 SMTPUTF8\nDEBUG SMTP: Found extension \"SIZE\", arg \"35882577\"\nDEBUG SMTP: Found extension \"8BITMIME\", arg \"\"\nDEBUG SMTP: Found extension \"STARTTLS\", arg \"\"\nDEBUG SMTP: Found extension \"ENHANCEDSTATUSCODES\", arg \"\"\nDEBUG SMTP: Found extension \"PIPELINING\", arg \"\"\nDEBUG SMTP: Found extension \"SMTPUTF8\", arg \"\"\nSTARTTLS\n220 2.0.0 Ready to start TLS\n\n</code></pre>\n\n<p>Could you help me to solve this issue ?</p>\n"
+}

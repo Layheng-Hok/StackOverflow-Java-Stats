@@ -1,0 +1,293 @@
+{
+  "tags" : [ "java", "json", "jackson" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1326772,
+        "reputation" : 1388,
+        "user_id" : 1271437,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/f82143d33889ae5ad5f34ff82e279569?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Ich",
+        "link" : "https://stackoverflow.com/users/1271437/ich"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1605732311,
+      "post_id" : 32408508,
+      "comment_id" : 114745051,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "One thing that drove me crazy: You cannot combine <code>@JsonDeserialize</code> and <code>@JsonSetter(nulls=Nulls.AS_EMPTY)</code>. You&#39;ll have to implement <code>JsonDeserializer#getNullValue()</code> and remove <code>@JsonSetter</code>"
+    } ],
+    "owner" : {
+      "account_id" : 1510989,
+      "reputation" : 22332,
+      "user_id" : 1413133,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/hqUmk.jpg?s=256",
+      "display_name" : "Manos Nikolaidis",
+      "link" : "https://stackoverflow.com/users/1413133/manos-nikolaidis"
+    },
+    "is_accepted" : true,
+    "score" : 15,
+    "last_activity_date" : 1441414827,
+    "creation_date" : 1441414827,
+    "answer_id" : 32408508,
+    "question_id" : 32398885,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I also couldn't find a Jackson property or annotation for this. So I'll have to answer no to the first question. But I would recommend a simple setter instead of the special deserializer :</p>\n\n<pre><code>public class Entity {\n\n    @JsonDeserialize(contentAs = HomeImpl.class)\n    private Collection&lt;Home&gt; homes = new ArrayList&lt;&gt;();\n\n    public void setHomes(List&lt;Home&gt; homes) {\n        if (homes != null)\n            this.homes = homes;\n    }\n}\n</code></pre>\n\n<p>This is generic as it only uses the <code>Home</code> interface instead of <code>HomeImpl</code>. You don't need <code>@JsonProperty</code> as Jackson will associate <code>setHomes</code> and <code>homes</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4854469,
+      "reputation" : 313,
+      "user_id" : 3915866,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://graph.facebook.com/599143897/picture?type=large",
+      "display_name" : "Malik Atalla",
+      "link" : "https://stackoverflow.com/users/3915866/malik-atalla"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1518565225,
+    "creation_date" : 1518565225,
+    "answer_id" : 48777460,
+    "question_id" : 32398885,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>What worked for me was simply to remove the setter and make the attribute final. jackson 2 will then use the getter to modify the list.</p>\n\n<pre><code>public class Entity {\n\n  @JsonProperty(value=\"homes\")\n  @JsonDeserialize(as=HashSet.class, contentAs=HomeImpl.class)\n  private final Collection&lt;Home&gt; homes = new ArrayList&lt;Home&gt;();\n\n  public List&lt;Home&gt; getHomes() {\n     return homes;\n  }\n}\n</code></pre>\n\n<p>The responsible feature is USE_GETTERS_AS_SETTERS which is turned on by default: <a href=\"https://github.com/FasterXML/jackson-databind/wiki/Mapper-Features\" rel=\"nofollow noreferrer\">https://github.com/FasterXML/jackson-databind/wiki/Mapper-Features</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 395827,
+        "reputation" : 5498,
+        "user_id" : 758991,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/8b8a49d5233ea23bef3a41060a129b4c?s=256&d=identicon&r=PG",
+        "display_name" : "Ruslan Stelmachenko",
+        "link" : "https://stackoverflow.com/users/758991/ruslan-stelmachenko"
+      },
+      "edited" : false,
+      "score" : 28,
+      "creation_date" : 1562752691,
+      "post_id" : 51442640,
+      "comment_id" : 100473113,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "To be clear, there is not method <code>objectMapperBuilder()</code> in Jackson 2.9. There is <code>jsonMapperBuilder()</code> in 2.10, which is just helper method in Jackson tests and it just returns <code>JsonMapper.builder()</code>, where <code>JsonMapper</code> is a new helper class introduced in 2.10.  In 2.9 the defaults can be configured using <code>ObjectMapper</code>, like this <code>mapper.setDefaultSetterInfo(JsonSetter.Value.forContentNulls&zwnj;&#8203;(Nulls.AS_EMPTY));</code> or for specific type: <code>mapper.configOverride(List.class).setSetterInfo(JsonSetter.V&zwnj;&#8203;alue.forContentNulls&zwnj;&#8203;(Nulls.AS_EMPTY));</code>."
+    }, {
+      "owner" : {
+        "account_id" : 979169,
+        "reputation" : 606,
+        "user_id" : 999367,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/eV3P7.png?s=256",
+        "display_name" : "Roman Sinyakov",
+        "link" : "https://stackoverflow.com/users/999367/roman-sinyakov"
+      },
+      "reply_to_user" : {
+        "account_id" : 395827,
+        "reputation" : 5498,
+        "user_id" : 758991,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/8b8a49d5233ea23bef3a41060a129b4c?s=256&d=identicon&r=PG",
+        "display_name" : "Ruslan Stelmachenko",
+        "link" : "https://stackoverflow.com/users/758991/ruslan-stelmachenko"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1602233800,
+      "post_id" : 51442640,
+      "comment_id" : 113661624,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "+ @RuslanStelmachenko <code>forContentNulls</code> is for null array elements, the <code>forValueNulls</code> is needed for entire null array: <code>mapper.configOverride(List.class).setSetterInfo(JsonSetter.V&zwnj;&#8203;alue.forValueNulls(N&zwnj;&#8203;ulls.AS_EMPTY));</code>"
+    }, {
+      "owner" : {
+        "account_id" : 1119690,
+        "reputation" : 23190,
+        "user_id" : 1108305,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/4c16849c5f9444a685f62cdc2a15c3ac?s=256&d=identicon&r=PG",
+        "display_name" : "M. Justin",
+        "link" : "https://stackoverflow.com/users/1108305/m-justin"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1612226606,
+      "post_id" : 51442640,
+      "comment_id" : 116695520,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note that per the Javadoc, this only works if the value is explicitly set to null, rather than omitted from the JSON.  <code>{&quot;homes&quot;: null}</code> vs. <code>{}</code>."
+    }, {
+      "owner" : {
+        "account_id" : 738442,
+        "reputation" : 944,
+        "user_id" : 871653,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/8a0e826b4975c0e04d46c1e6eea39657?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "sasynkamil",
+        "link" : "https://stackoverflow.com/users/871653/sasynkamil"
+      },
+      "reply_to_user" : {
+        "account_id" : 1119690,
+        "reputation" : 23190,
+        "user_id" : 1108305,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/4c16849c5f9444a685f62cdc2a15c3ac?s=256&d=identicon&r=PG",
+        "display_name" : "M. Justin",
+        "link" : "https://stackoverflow.com/users/1108305/m-justin"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1671696454,
+      "post_id" : 51442640,
+      "comment_id" : 132154989,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@M.Justin You are right. So question is how to get empty collection after deserialization if the attribute is completely omitted in json (reqeust)."
+    }, {
+      "owner" : {
+        "account_id" : 4897719,
+        "reputation" : 564,
+        "user_id" : 3946752,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/LClgw.jpg?s=256",
+        "display_name" : "Conrad",
+        "link" : "https://stackoverflow.com/users/3946752/conrad"
+      },
+      "reply_to_user" : {
+        "account_id" : 738442,
+        "reputation" : 944,
+        "user_id" : 871653,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/8a0e826b4975c0e04d46c1e6eea39657?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "sasynkamil",
+        "link" : "https://stackoverflow.com/users/871653/sasynkamil"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1672926276,
+      "post_id" : 51442640,
+      "comment_id" : 132386050,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@sasynkamil initialize it with new keyword on field level, it won&#39;t be overridden by jackson"
+    }, {
+      "owner" : {
+        "account_id" : 13964222,
+        "reputation" : 858,
+        "user_id" : 10084505,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7d1cf77a5c15cd178875d5220fec8157?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Walnussb&#228;r",
+        "link" : "https://stackoverflow.com/users/10084505/walnussb%c3%a4r"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1739207082,
+      "post_id" : 51442640,
+      "comment_id" : 140077929,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Also works for deserializing XML. Thank you very much!"
+    } ],
+    "owner" : {
+      "account_id" : 184894,
+      "reputation" : 5287,
+      "user_id" : 421245,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/34daa12368c10eca1ae904afa14696d2?s=256&d=identicon&r=PG",
+      "display_name" : "Mike Partridge",
+      "link" : "https://stackoverflow.com/users/421245/mike-partridge"
+    },
+    "is_accepted" : false,
+    "score" : 62,
+    "last_activity_date" : 1532089956,
+    "creation_date" : 1532089956,
+    "answer_id" : 51442640,
+    "question_id" : 32398885,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As of Jackson 2.9, it looks like null-handling for specific properties can be configured with <a href=\"http://fasterxml.github.io/jackson-annotations/javadoc/2.9/index.html?com/fasterxml/jackson/annotation/JsonSetter.html\" rel=\"noreferrer\"><code>@JsonSetter</code></a>, for example:</p>\n\n<pre><code>@JsonSetter(nulls = Nulls.AS_EMPTY)\npublic void setStrings(List&lt;String&gt; strings) {\n    this.strings = strings;\n}\n</code></pre>\n\n<p>Similar configuration can also be applied globally for collections:</p>\n\n<pre><code>ObjectMapper mapper = objectMapperBuilder()\n    .changeDefaultNullHandling(n -&gt; n.withContentNulls(Nulls.AS_EMPTY))\n    .build();\n</code></pre>\n\n<p>Or by type:</p>\n\n<pre><code>ObjectMapper mapper = objectMapperBuilder()\n    .withConfigOverride(List.class,\n        o -&gt; o.setNullHandling(JsonSetter.Value.forContentNulls(Nulls.AS_EMPTY)))\n    .build();\n</code></pre>\n\n<p>I haven't been able to try the feature out, so this is based on the <a href=\"https://github.com/FasterXML/jackson-databind/issues/1402\" rel=\"noreferrer\">feature discussion</a> and examination of <a href=\"https://github.com/FasterXML/jackson-databind/blob/master/src/test/java/com/fasterxml/jackson/databind/deser/filter/NullConversionsForContentTest.java\" rel=\"noreferrer\">unit tests</a>. YMMV.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 738442,
+      "reputation" : 944,
+      "user_id" : 871653,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/8a0e826b4975c0e04d46c1e6eea39657?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "sasynkamil",
+      "link" : "https://stackoverflow.com/users/871653/sasynkamil"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1671700016,
+    "creation_date" : 1671700016,
+    "answer_id" : 74886289,
+    "question_id" : 32398885,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think the cleanest solution in my case which is working as expected (get empty list instead of null after deserialization) in both cases:</p>\n<ol>\n<li>property is omitted in the json (request)</li>\n<li>property is explicitly set to null in the json (request)</li>\n</ol>\n<p>is:</p>\n<pre><code>@Valid // javax.validation\n@Schema(required = false) // swagger.v3 \n@JsonProperty(required = false, defaultValue = &quot;&quot;) // jackson 2.13\nprivate List&lt;@NotEmpty @Size(max = 100) String&gt; actions = new ArrayList&lt;&gt;();\n\npublic List&lt;String&gt; getActions() {\n    return actions;\n}\n\n@JsonSetter(nulls = Nulls.AS_EMPTY)\npublic void setActions(List&lt;String&gt; actions) {\n    this.actions = actions;\n}\n</code></pre>\n<p>Notes:</p>\n<ul>\n<li>when property explicitly set to null: used default annotations</li>\n<li>when property omitted: added initialization <code>= new ArrayList&lt;&gt;();</code></li>\n<li>when used e.g. java validation, then this solution is needed just for optional (<code>required = false</code>) lists</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18798959,
+      "reputation" : 416,
+      "user_id" : 13709749,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/jIHOw.png?s=256",
+      "display_name" : "wrongwrong",
+      "link" : "https://stackoverflow.com/users/13709749/wrongwrong"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1701005712,
+    "creation_date" : 1701005712,
+    "answer_id" : 77551891,
+    "question_id" : 32398885,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>At least in 2.16, this can be set by using <code>configOverride</code>.</p>\n<pre class=\"lang-java prettyprint-override\"><code>import com.fasterxml.jackson.annotation.JsonSetter;\nimport com.fasterxml.jackson.annotation.Nulls;\nimport com.fasterxml.jackson.core.JsonProcessingException;\nimport com.fasterxml.jackson.databind.ObjectMapper;\nimport com.fasterxml.jackson.databind.cfg.MutableConfigOverride;\nimport org.junit.jupiter.api.Test;\n\nimport java.util.List;\n\npublic class Temp {\n    static class Dto {\n        public List&lt;Object&gt; list;\n    }\n\n    @Test\n    void test() throws JsonProcessingException {\n        ObjectMapper mapper = new ObjectMapper();\n        MutableConfigOverride override = mapper.configOverride(List.class);\n        override.setSetterInfo(JsonSetter.Value.forValueNulls(Nulls.AS_EMPTY));\n\n        Dto temp = mapper.readValue(&quot;{\\&quot;list\\&quot;:null}&quot;, Dto.class);\n        System.out.println(temp.list.size()); // -&gt; 0\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 101503,
+      "reputation" : 740,
+      "user_id" : 273043,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a504a6bcc18a1cb99c5e65e832020989?s=256&d=identicon&r=PG",
+      "display_name" : "foal",
+      "link" : "https://stackoverflow.com/users/273043/foal"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761300895,
+    "creation_date" : 1761300895,
+    "answer_id" : 79798653,
+    "question_id" : 32398885,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In the Spring Boot you can use the following configuration to enable null to empty deserialization for standard Java collections</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Configuration\n@SuppressWarnings(&quot;static-method&quot;)\npublic class JacksonConfig {\n\n    @Bean\n    Jackson2ObjectMapperBuilderCustomizer customJson() {\n        return builder -&gt; builder.postConfigurer(mapper -&gt; {\n            mapper.configOverride(String.class)\n                .setSetterInfo(JsonSetter.Value.forValueNulls(Nulls.AS_EMPTY));\n            mapper.configOverride(List.class)\n                .setSetterInfo(JsonSetter.Value.forValueNulls(Nulls.AS_EMPTY));\n            mapper.configOverride(Map.class)\n                .setSetterInfo(JsonSetter.Value.forValueNulls(Nulls.AS_EMPTY));\n        });\n    }\n\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2363085,
+    "reputation" : 6512,
+    "user_id" : 2069368,
+    "user_type" : "registered",
+    "accept_rate" : 60,
+    "profile_image" : "https://www.gravatar.com/avatar/1cdd1e1e6ce6221286582df6a8eeef66?s=256&d=identicon&r=PG",
+    "display_name" : "pepuch",
+    "link" : "https://stackoverflow.com/users/2069368/pepuch"
+  },
+  "is_answered" : true,
+  "view_count" : 61915,
+  "accepted_answer_id" : 32408508,
+  "answer_count" : 6,
+  "score" : 44,
+  "last_activity_date" : 1761300895,
+  "creation_date" : 1441372096,
+  "last_edit_date" : 1441417511,
+  "question_id" : 32398885,
+  "link" : "https://stackoverflow.com/questions/32398885/jackson-deserializer-change-null-collection-to-empty-one",
+  "title" : "Jackson deserializer - change null collection to empty one",
+  "body" : "<p>I have an entity that contains collection as attribute:</p>\n\n<pre><code>public class Entity {\n\n    @JsonProperty(value=\"homes\")\n    @JsonDeserialize(as=HashSet.class, contentAs=HomeImpl.class)\n    private Collection&lt;Home&gt; homes = new ArrayList&lt;Home&gt;();\n\n}\n</code></pre>\n\n<p>If request contains null as request property:</p>\n\n<pre><code>{\n  \"homes\": null\n}\n</code></pre>\n\n<p>then homes is set to null. What I want to do is to set homes to empty list. Do I need to write special deserializer for this or is there one for collections? What I tried is this deserializer but it looks ugly (it's not generic and uses implementation instead of interface).</p>\n\n<pre><code>public class NotNullCollectionDeserializer extends JsonDeserializer&lt;Collection&lt;HomeImpl&gt;&gt; {\n\n  @Override\n  public Collection&lt;HomeImpl&gt; deserialize(final JsonParser jsonParser, final DeserializationContext deserializationContext) throws IOException, JsonProcessingException {\n    return jsonParser.readValueAs(new TypeReference&lt;Collection&lt;HomeImpl&gt;&gt;(){});\n  }\n\n  @Override\n  public Collection&lt;HomeImpl&gt; getNullValue() {\n    return Collections.emptyList();\n  }\n}\n</code></pre>\n\n<p>So few questions:</p>\n\n<ol>\n<li>Is there some jackson property that changes null to empty collection during deserialization?</li>\n<li>If no for the first point - do I need to write deserializer for this? If yes, can I write generic one?</li>\n</ol>\n"
+}

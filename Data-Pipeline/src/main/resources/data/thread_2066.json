@@ -1,0 +1,661 @@
+{
+  "tags" : [ "java", ".net", "sql", "performance", "postgresql" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 475939,
+      "reputation" : 711,
+      "user_id" : 886555,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/585fd9cdc3be2af2a78de86e07266699?s=256&d=identicon&r=PG",
+      "display_name" : "Morg.",
+      "link" : "https://stackoverflow.com/users/886555/morg"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1317036171,
+    "post_id" : 7510092,
+    "comment_id" : 9155731,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "The date calculations will have little to no effect at all - assuming your sql engine will indeed calculate your dates only once. having them defined in your application makes perfect sense, since they will be defined there at some point anyway, be it for report title or other things. multiplying the value by 100 in this case could be done on any tier, since you will be looping through those rows anyway for rendering and *100 is unlikely to be slower on any tier except front-end. In either case your calculations are minimal and dwarfed by the surrounding operations, not a performance concern."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 773942,
+        "reputation" : 44474,
+        "user_id" : 905902,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a18869332564b1c3dfad9586d37095b2?s=256&d=identicon&r=PG",
+        "display_name" : "wildplasser",
+        "link" : "https://stackoverflow.com/users/905902/wildplasser"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1316731350,
+      "post_id" : 7510143,
+      "comment_id" : 9111489,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Looping implicates more-or-less &quot;row-at-a-time&quot; processing. And that means 2* network latency plus four context switches round trip. Yes: that is expensive. A &quot;native&quot; DBMS operation does all the hard work to minimise disk-I/O&#39;s (system calls) but manages to fetch more than one row per system call. Row at a time takes <b>at least</b> four system calls."
+    }, {
+      "owner" : {
+        "account_id" : 11975,
+        "reputation" : 1070368,
+        "user_id" : 23354,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/CrVFH.png?s=256",
+        "display_name" : "Marc Gravell",
+        "link" : "https://stackoverflow.com/users/23354/marc-gravell"
+      },
+      "reply_to_user" : {
+        "account_id" : 773942,
+        "reputation" : 44474,
+        "user_id" : 905902,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a18869332564b1c3dfad9586d37095b2?s=256&d=identicon&r=PG",
+        "display_name" : "wildplasser",
+        "link" : "https://stackoverflow.com/users/905902/wildplasser"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1316732603,
+      "post_id" : 7510143,
+      "comment_id" : 9111699,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@wildplasser not necessary; the server could be streaming rows which you consume as they arrive - a &quot;reader&quot; metaphor is not uncommon."
+    }, {
+      "owner" : {
+        "account_id" : 773942,
+        "reputation" : 44474,
+        "user_id" : 905902,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a18869332564b1c3dfad9586d37095b2?s=256&d=identicon&r=PG",
+        "display_name" : "wildplasser",
+        "link" : "https://stackoverflow.com/users/905902/wildplasser"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1316733471,
+      "post_id" : 7510143,
+      "comment_id" : 9111836,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Marc Cavell: Well, it depends. In the case where the footprint of an application program is only one logical record, it&#39;s more or less Ok. But most of the &quot;frameworks&quot; I know tend to suck in all the records at startup, and fire them off, one by one. Locking is another pitfall."
+    }, {
+      "owner" : {
+        "account_id" : 4623,
+        "reputation" : 31312,
+        "user_id" : 7028,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/3fd9e5b2c59170ec3d74dde30d233fa4?s=256&d=identicon&r=PG",
+        "display_name" : "Sklivvz",
+        "link" : "https://stackoverflow.com/users/7028/sklivvz"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1378574770,
+      "post_id" : 7510143,
+      "comment_id" : 27507004,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I think that a good rule of thumb is: don&#39;t bring back from SQL server rows of data you don&#39;t ultimately need. For example, if you have to perform aggregate operations, they likely belong in SQL. Joins between tables or subqueries? SQL. That&#39;s also the approach we use with badges, and, so far, we are coping with scale :-)"
+    }, {
+      "owner" : {
+        "account_id" : 40037,
+        "reputation" : 2371,
+        "user_id" : 115817,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/e0ae279179f8d55b6846405ef606d2f2?s=256&d=identicon&r=PG",
+        "display_name" : "Guru",
+        "link" : "https://stackoverflow.com/users/115817/guru"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1378582511,
+      "post_id" : 7510143,
+      "comment_id" : 27509312,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "For someone who have wrote and maintained DB based applications, with years of experience in seeing complex SQL, I have to agree, maintaining complex SQL is the worst thing to do. Any SQL, that has handful of tables and joins are candidates for breaking up and done elsewhere."
+    }, {
+      "owner" : {
+        "account_id" : 486869,
+        "reputation" : 7590,
+        "user_id" : 1157100,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://i.sstatic.net/1f9W9.png?s=256",
+        "display_name" : "200_success",
+        "link" : "https://stackoverflow.com/users/1157100/200-success"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1378592348,
+      "post_id" : 7510143,
+      "comment_id" : 27511834,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If your query can be reasonably expressed as an SQL query, it probably should be.  SQL is usually so much simpler than Java/.NET code, and much faster than sending all the data to the client. If you are worried about the complexity of the calculations hogging the database server&#39;s CPU, you can replicate your database to a reporting database."
+    }, {
+      "owner" : {
+        "account_id" : 53933,
+        "reputation" : 5725,
+        "user_id" : 161289,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/KUaQL.jpg?s=256",
+        "display_name" : "zinking",
+        "link" : "https://stackoverflow.com/users/161289/zinking"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1378648201,
+      "post_id" : 7510143,
+      "comment_id" : 27522209,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;looping is alomost always the wrong thing in sql&quot; this only hold if you are narrowing down &quot;looping&quot; to how database perform joins and causing performance hit. but to me &quot;looping&quot; could be apply certain calculation to all records, in which case not wrong at all."
+    }, {
+      "owner" : {
+        "account_id" : 11975,
+        "reputation" : 1070368,
+        "user_id" : 23354,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/CrVFH.png?s=256",
+        "display_name" : "Marc Gravell",
+        "link" : "https://stackoverflow.com/users/23354/marc-gravell"
+      },
+      "reply_to_user" : {
+        "account_id" : 53933,
+        "reputation" : 5725,
+        "user_id" : 161289,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/KUaQL.jpg?s=256",
+        "display_name" : "zinking",
+        "link" : "https://stackoverflow.com/users/161289/zinking"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1378667772,
+      "post_id" : 7510143,
+      "comment_id" : 27528031,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@zinking that would be a set-based operation. In that scenario you don&#39;t write the loop code - that is an implementation detail. By &quot;looping&quot; I mean explicit loops, for example a <i>cursor</i>"
+    }, {
+      "owner" : {
+        "account_id" : 2225120,
+        "reputation" : 685,
+        "user_id" : 1964078,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/1fccb218172aa3ea43f0dc34228a859e?s=256&d=identicon&r=PG",
+        "display_name" : "allenwlee",
+        "link" : "https://stackoverflow.com/users/1964078/allenwlee"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1416673759,
+      "post_id" : 7510143,
+      "comment_id" : 42669159,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@MarcGravell can you please expand on your comment <code>sql is not the best language for complex work - especially not great for procedural work, but very good for set-based work</code>--can you direct me to an article that explains what you mean by &#39;procedural&#39; versus &#39;set-based&#39; work?"
+    }, {
+      "owner" : {
+        "account_id" : 4600810,
+        "reputation" : 23918,
+        "user_id" : 3731614,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://i.sstatic.net/j9Csa.jpg?s=256",
+        "display_name" : "Muhammad Omer Aslam",
+        "link" : "https://stackoverflow.com/users/3731614/muhammad-omer-aslam"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1556390596,
+      "post_id" : 7510143,
+      "comment_id" : 98425849,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "so should i say that transforming <code>( 3959 * acos( cos( radians(37) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(-122) ) + sin( radians(37) ) * sin( radians( lat ) ) ) )</code> from <code>mysql</code> functions to the <code>php</code> or any other server side would be a better option"
+    } ],
+    "owner" : {
+      "account_id" : 11975,
+      "reputation" : 1070368,
+      "user_id" : 23354,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/CrVFH.png?s=256",
+      "display_name" : "Marc Gravell",
+      "link" : "https://stackoverflow.com/users/23354/marc-gravell"
+    },
+    "is_accepted" : true,
+    "score" : 232,
+    "last_activity_date" : 1316670953,
+    "creation_date" : 1316670953,
+    "answer_id" : 7510143,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It depends on a lot of factors - but most crucially:</p>\n\n<ul>\n<li>complexity of calculations (prefer doing complex crunching on an app-server, since that scales <em>out</em>; rather than a db server, which scales <em>up</em>)</li>\n<li>volume of data (if you need to access/aggregate a lot of data, doing it at the db server will save bandwidth, and disk io if the aggregates can be done inside indexes)</li>\n<li>convenience (sql is not the best language for complex work - especially not great for procedural work, but very good for set-based work; lousy error-handling, though)</li>\n</ul>\n\n<p>As always, if you <em>do</em> bring the data back to the app-server, minimising the columns and rows will be to your advantage. Making sure the query is tuned and appropriately indexed will help either scenario.</p>\n\n<p>Re your note:</p>\n\n<blockquote>\n  <p>and then loop through the records </p>\n</blockquote>\n\n<p><em>Looping</em> through records is almost always the wrong thing to do in sql - writing a set-based operation is preferred.</p>\n\n<p><em>As a general rule</em>, I prefer to keep the database's job to a minimum \"store this data, fetch this data\" - however, there are always examples of scenarios where an elegant query at the server can save a lot of bandwidth.</p>\n\n<p>Also consider: if this is computationally expensive, can it be cached somewhere?</p>\n\n<p>If you want an <em>accurate</em> \"which is better\"; code it both ways and compare it (noting that a first draft of either is likely not 100% tuned). But factor in typical usage to that: if, in reality, it is being called 5 times (separately) at once, then simulate that: don't compare just a single \"1 of these vs 1 of those\".</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 475939,
+        "reputation" : 711,
+        "user_id" : 886555,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/585fd9cdc3be2af2a78de86e07266699?s=256&d=identicon&r=PG",
+        "display_name" : "Morg.",
+        "link" : "https://stackoverflow.com/users/886555/morg"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1317035599,
+      "post_id" : 7510153,
+      "comment_id" : 9155594,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Reusability can be present at any tier and is not a reason (performance wise) to put more calculations in SQL. &quot;In general the db box&quot; : this is wrong and furthermore, as marc gravell said, scaling does not work in the same fashion.  Most databases require little hardware to be ran decently, and the performance pattern has little to do with that of an application server (i.e. I&#39;d spend 2/3rds of my budget for an SQL server on godlike IO whereas I wouldn&#39;t spend more than a few hundreds for an appserver&#39;s storage stack)."
+    } ],
+    "owner" : {
+      "account_id" : 269668,
+      "reputation" : 44691,
+      "user_id" : 559144,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/b6e0481b9cd5d0bcba035d568e832608?s=256&d=identicon&r=PG",
+      "display_name" : "Davide Piras",
+      "link" : "https://stackoverflow.com/users/559144/davide-piras"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1316671029,
+    "creation_date" : 1316671029,
+    "answer_id" : 7510153,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In general do things in SQL if there are chances that also other modules or component in same or other projects will need to get those results. an atomic operation done server side is also better because you just need to invoke the stored proc from any db management tool to get final values without further processing.</p>\n\n<p>In some cases this does not apply but when it does it makes sense. also in general the db box has the best hardware and performances.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 17180,
+      "reputation" : 27546,
+      "user_id" : 38207,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/8e2c3bc8e5b3f634cc9a77606e983226?s=256&d=identicon&r=PG",
+      "display_name" : "James Anderson",
+      "link" : "https://stackoverflow.com/users/38207/james-anderson"
+    },
+    "is_accepted" : false,
+    "score" : 28,
+    "last_activity_date" : 1316671272,
+    "creation_date" : 1316671272,
+    "answer_id" : 7510194,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In this case you are <em>probably</em> slightly better off doing the calculation in SQL as the database engine is likely to have a more efficient decimal arithmetic routines than Java.</p>\n\n<p>Generally though for row level calculations there is not much difference.</p>\n\n<p>Where it does make a difference is:</p>\n\n<ul>\n<li>Aggregate calculations like SUM(), AVG(),MIN(), MAX() here the database engine will be an order of magnitude faster than a Java implementation.</li>\n<li>Anywhere the calculation is used to filter rows. Filtering at the DB is much more efficient than reading a row and then discarding it.</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 909929,
+      "reputation" : 142,
+      "user_id" : 943999,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ab7fc24932f9da1d0a4261d37304c193?s=256&d=identicon&r=PG",
+      "display_name" : "Neo",
+      "link" : "https://stackoverflow.com/users/943999/neo"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1316681223,
+    "creation_date" : 1316681223,
+    "answer_id" : 7512038,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Whether to perform calculations at the front end or at the backend is very much decided if we can determine our goal in the business implementation. At time java code might perform better than a sql code both well written or it might be vice-versa. But still if confused you can try to determine first -</p>\n\n<ol>\n<li>If you can achieve something straightforward via database sql then better go for it as db will perform much better and do computations there and then with the result fetch. However if the actual computation requires too much calculation from here and there stuff then you can go with the application code. Why? Because scenario's like looping in most cases are not best handled by sql wherease front end languages are better designed for these things.</li>\n<li>In case similar calculation is required from many places then obviously placing the calculation code at the db end will be better to keep things at the same place.</li>\n<li>If there are lots of calculations to be done to attain the final result via many different queries then also go for db end as you can place the same code in a stored procedure to perform better than retrieving results from backend and then computing them at the front end.</li>\n</ol>\n\n<p>There are many other aspects which you can think before you decide where to place the code. One perception is totally wrong - Everything can be done best in Java (app code) and/or everything is best to be done by the db (sql code).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 47903,
+        "reputation" : 15771,
+        "user_id" : 142098,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/828c34b9fc7aecab2b4404675b822400?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Doug",
+        "link" : "https://stackoverflow.com/users/142098/doug"
+      },
+      "edited" : false,
+      "score" : 22,
+      "creation_date" : 1378578048,
+      "post_id" : 7518619,
+      "comment_id" : 27507983,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;d be cautious about using this analogy to make design decisions meaningfully with other developers.  Analogies are more of a rhetorical device than a logical one.  Among other factors, it&#39;s a lot cheaper to ship data to an app server than it is to ship golden ore to a goldsmith."
+    }, {
+      "owner" : {
+        "account_id" : 71228,
+        "reputation" : 1851,
+        "user_id" : 205943,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://www.gravatar.com/avatar/a6fe3fd7c49c4cb055f1d73b7dc4fed6?s=256&d=identicon&r=PG",
+        "display_name" : "Dainius",
+        "link" : "https://stackoverflow.com/users/205943/dainius"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1378623924,
+      "post_id" : 7518619,
+      "comment_id" : 27516857,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You will send ores or gold depending of what is cheaper, if you don&#39;t have technology to convert ore to gold, or it&#39;s to expensive (because miners want to kill these other workers), you will ship it to another location, maybe in between goldsmith and miners, especially if you have more then one goldsmith."
+    }, {
+      "owner" : {
+        "account_id" : 53933,
+        "reputation" : 5725,
+        "user_id" : 161289,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/KUaQL.jpg?s=256",
+        "display_name" : "zinking",
+        "link" : "https://stackoverflow.com/users/161289/zinking"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1378648010,
+      "post_id" : 7518619,
+      "comment_id" : 27522150,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "exactly what I agree, I don&#39;t think it is always bad thing to do loop based calculation in SQL @a_horse_with_no_name, sometime this has to be done anyways, I would rather it be calculated when data fetched as Erwin&#39;s metaphor indicated. or you have to repeat this at a cost when data fetched back."
+    }, {
+      "owner" : {
+        "account_id" : 7179,
+        "reputation" : 65489,
+        "user_id" : 12349,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/5eadf00e11240f05263ec7735612cd09?s=256&d=identicon&r=PG",
+        "display_name" : "yfeldblum",
+        "link" : "https://stackoverflow.com/users/12349/yfeldblum"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1378667736,
+      "post_id" : 7518619,
+      "comment_id" : 27528019,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "-1 Because it&#39;s a one-sided argument, ignores trade-offs, and sets up a straw man for the opposing side instead of considering and refuting the best case of the opposing side. &quot;Going back and forth between app and server is expensive&quot; - absolutely: but it is not the only thing that is expensive, and the various expenses must be weighed against each other. It may turn out that &quot;sophisticated SQL&quot; queries or stored procedures are the best for the particular case; but the details of the case must generally be taken into account when making that kind of determination."
+    }, {
+      "owner" : {
+        "account_id" : 1087519,
+        "reputation" : 975,
+        "user_id" : 1082889,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/5f2f0c6589b32d4fb935524a5b2e434c?s=256&d=identicon&r=PG",
+        "display_name" : "Chris Koston",
+        "link" : "https://stackoverflow.com/users/1082889/chris-koston"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1381436986,
+      "post_id" : 7518619,
+      "comment_id" : 28591535,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Cool analogy but unfortunately it&#39;s based on wrong assumptions. Shipping gold ore is very common. Gold stripping ratio is about 1:1 (gold to waste) however it&#39;s often cheaper to process it offsite, where better equipment and quality of workmanship is available. Depending on the size of the shipment, increasing the processing efficiency by 0.1% may allow relative increase of the revenue (despite the doubled shipping price) - as the gold is quite expensive these days. Other ores, like iron for example are typically shipped too (iron&#39;s stripping ratio is about 60%!)."
+    }, {
+      "owner" : {
+        "account_id" : 904738,
+        "reputation" : 668524,
+        "user_id" : 939860,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/ed7cecf2bd835cf5670d271d0d104f51?s=256&d=identicon&r=PG",
+        "display_name" : "Erwin Brandstetter",
+        "link" : "https://stackoverflow.com/users/939860/erwin-brandstetter"
+      },
+      "reply_to_user" : {
+        "account_id" : 1087519,
+        "reputation" : 975,
+        "user_id" : 1082889,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/5f2f0c6589b32d4fb935524a5b2e434c?s=256&d=identicon&r=PG",
+        "display_name" : "Chris Koston",
+        "link" : "https://stackoverflow.com/users/1082889/chris-koston"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1481712402,
+      "post_id" : 7518619,
+      "comment_id" : 69483914,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Chris: OK, that&#39;s where the analogy does not work then, because with Postgres, the best &quot;equipment and quality of workmanship&quot; happens to be right there in the RDBMS as well, for most purposes."
+    } ],
+    "owner" : {
+      "account_id" : 904738,
+      "reputation" : 668524,
+      "user_id" : 939860,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/ed7cecf2bd835cf5670d271d0d104f51?s=256&d=identicon&r=PG",
+      "display_name" : "Erwin Brandstetter",
+      "link" : "https://stackoverflow.com/users/939860/erwin-brandstetter"
+    },
+    "is_accepted" : false,
+    "score" : 103,
+    "last_activity_date" : 1684039021,
+    "last_edit_date" : 1684039021,
+    "creation_date" : 1316710844,
+    "answer_id" : 7518619,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As far as <strong>PostgreSQL</strong> is concerned, you can do much on the server, quite efficiently. An RDBMS naturally excels at sorting, aggregating,  casting, and formatting data to begin with. (I would claim that Postgres does a particularly great job.) The RDBMS can work with original data types from original storage. After processing, typically (much) less data has to be transferred.<br />\nClients typically need (much) more data than is used / displayed eventually to perform the mentioned operations. They typically talk to the server using the &quot;text&quot; protocol, casting back and forth adds cost. Much work has to be duplicated. It's not a level playing field.</p>\n<p>For procedural needs you can choose from a variety of <a href=\"https://www.postgresql.org/docs/current/server-programming.html\" rel=\"nofollow noreferrer\">server-side script languages</a>: tcl, python, perl and many more. Mostly, <a href=\"https://www.postgresql.org/docs/current/plpgsql.html\" rel=\"nofollow noreferrer\">PL/pgSQL</a> is used, though.</p>\n<p>Let me use a <strong>metaphor</strong>: if you want to buy a <strong>golden necklace</strong> in Paris, the goldsmith could sit in Cape Town or Paris, that is a matter of skill and taste. But you would <em>never</em> ship tons of gold ore from South Africa to France for that. The ore is processed at the mining site (or at least in the general area), only the gold gets shipped. The same should be true for apps and databases.</p>\n<p><strong>Worst case</strong> scenario would be to repeatedly go to the server for every single row of a larger set. (That would be like shipping one ton of ore a time.)</p>\n<p><strong>Second in line</strong>, if you send a cascade of queries, each depending on the one before, while all of it could be done in one query or procedure on the server. (That's like shipping the gold, and each of the jewels with a separate ship, sequentially.)</p>\n<p>Going back and forth between app and server is relatively expensive. For server <em>and</em> client. Try to cut down on that, and you will win - ergo: use server side procedures and / or sophisticated SQL where necessary.</p>\n<p>We just finished a project where we packed almost all complex queries into Postgres functions. The app hands over parameters and gets the datasets it needs. Fast, clean, simple (for the app developer), I/O reduced to a minimum ... a shiny necklace with a low carbon footprint.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 247217,
+      "reputation" : 223472,
+      "user_id" : 521799,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+      "display_name" : "Lukas Eder",
+      "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1378561962,
+    "last_edit_date" : 1495540488,
+    "creation_date" : 1378561962,
+    "answer_id" : 18674012,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There's no black / white with respect to what parts of data access logic should be performed in SQL and what parts should be performed in your application. I like <a href=\"https://stackoverflow.com/a/7510143/521799\">Mark Gravell's</a> wording, distinguishing between</p>\n\n<ul>\n<li>complex calculations</li>\n<li>data-intensive calculations</li>\n</ul>\n\n<p>The power and expressivity of SQL is heavily underestimated. Since the introduction of <a href=\"https://en.wikipedia.org/wiki/Window_function_%28SQL%29#Window_function\" rel=\"noreferrer\">window functions</a>, a lot of non-strictly set-oriented calculations can be performed very easily and elegantly in the database.</p>\n\n<p>Three rules of thumb should always be followed, regardless of the overall application architecture:</p>\n\n<ul>\n<li>keep the amount of data transferred between database and application slim (in favour of calculating stuff in the DB)</li>\n<li>keep the amount of data loaded from the disk by the database slim (in favour of letting the database optimise statements to avoid unnecessary data access)</li>\n<li>don't push the database to its CPU limits with complex, concurrent calculations (in favour of pulling data into application memory and performing calculations there)</li>\n</ul>\n\n<p>In my experience, with a decent DBA and some decent knowledge about your decent database, you won't run into your DBs CPU limits very soon.</p>\n\n<p>Some further reading where these things are explained:</p>\n\n<ul>\n<li><a href=\"http://blog.jooq.org/2013/07/30/10-common-mistakes-java-developers-make-when-writing-sql/\" rel=\"noreferrer\">10 Common Mistakes Java Developers Make When Writing SQL</a></li>\n<li><a href=\"http://blog.jooq.org/2013/08/12/10-more-common-mistakes-java-developers-make-when-writing-sql/\" rel=\"noreferrer\">10 More Common Mistakes Java Developers Make When Writing SQL</a></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 62803,
+      "reputation" : 116,
+      "user_id" : 186324,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9d37d89ad4b7c3ab70f120fc838c0fca?s=256&d=identicon&r=PG",
+      "display_name" : "Ryan",
+      "link" : "https://stackoverflow.com/users/186324/ryan"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1378564741,
+    "creation_date" : 1378564741,
+    "answer_id" : 18674420,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you are writing on top of ORM or writing casual low-performance applications, use whatever pattern simplifies the application. If you are writing a high performance application and thinking carefully about scale, you will win by moving processing to data. I strongly advocate moving the processing to the data. </p>\n\n<p>Let's think about this in two steps: (1) OLTP (small number of record) transactions. (2) OLAP (long scans of many records).</p>\n\n<p>In the OLTP case, if you want to be fast (10k - 100k transactions per second), you must remove latch, lock and dead lock contention from the database. This means that you need to eliminate long stalls in transactions: round trips from client to DB to move processing to the client are one such long stall. You can't have long lived transactions (to make read/update atomic) and have very high throughput. </p>\n\n<p>Re: horizontal scaling. Modern databases scale horizontally. Those systems implement HA and fault tolerance already. Leverage that and try to simplify your application space.</p>\n\n<p>Let's look at OLAP -- in this case it should be obvious that dragging possibly terrabytes of data back to the application is a horrible idea. These systems are built specifically to operate extremely efficiently against compressed, pre-organized columnar data. Modern OLAP systems also scale horizontally and have sophisticated query planners that disperse work horizontally (internally moving processing to data).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1529600,
+      "reputation" : 934,
+      "user_id" : 1430384,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/gFsKa.jpg?s=256",
+      "display_name" : "Johannes Gehrs",
+      "link" : "https://stackoverflow.com/users/1430384/johannes-gehrs"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1378585774,
+    "creation_date" : 1378585774,
+    "answer_id" : 18677635,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Form a performance point of view: This is a very simple arithmetic operation which almost certainly can be performed much faster than actually fetching the data from the disks that underly the database. Also, calculating the values in the where clause is likely to be very fast on any runtime. In summary, the bottleneck should be disk IO, not the computation of the values.</p>\n\n<p>As per readability, I think if you use an ORM you should do it in your app server environment, because the ORM will let you work with the underlying data very easily, using set based operations. If you are going to write raw SQL anyway, there's nothing wrong with doing the computation there, Your SQL would also look a little nicer and easier to read if formatted properly.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3275581,
+      "reputation" : 1,
+      "user_id" : 2757750,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4e2cdaa506ece93ebff5e3ff1e17da6d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user2757750",
+      "link" : "https://stackoverflow.com/users/2757750/user2757750"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1378586159,
+    "creation_date" : 1378586159,
+    "answer_id" : 18677682,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Crucially, \"performance\" isn't defined.</p>\n\n<p>The one that matters to me the most is developer time.</p>\n\n<p>Write the SQL query. If it's too slow or the DB becomes a bottleneck, then reconsider. By that time, you'll be able to benchmark the two approaches and make your decision based on real data relevant to your setup (hardware and whatever stack you're on).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71228,
+        "reputation" : 1851,
+        "user_id" : 205943,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://www.gravatar.com/avatar/a6fe3fd7c49c4cb055f1d73b7dc4fed6?s=256&d=identicon&r=PG",
+        "display_name" : "Dainius",
+        "link" : "https://stackoverflow.com/users/205943/dainius"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1378624234,
+      "post_id" : 18679008,
+      "comment_id" : 27516909,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If you change from jboss to ruby, it&#39;s very likely that you will change db (and you will need to adopt these calculations anyway) and it&#39;s not that unlikely that you can change to something more different, like nosql."
+    } ],
+    "owner" : {
+      "account_id" : 207529,
+      "reputation" : 1553,
+      "user_id" : 457444,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://www.gravatar.com/avatar/942e817f99a678b35f84ab9ea6bfa4d3?s=256&d=identicon&r=PG",
+      "display_name" : "Kajetan Abt",
+      "link" : "https://stackoverflow.com/users/457444/kajetan-abt"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1378597411,
+    "creation_date" : 1378597411,
+    "answer_id" : 18679008,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I don't believe the performance differences can be reasoned about without specific examples and benchmarks, but I have another take:</p>\n\n<p>Which can you maintain better? For example, you might want to switch your front-end from Java to Flash, or HTML5, or C++, or something else. A vast number of programs have gone through such a change, or even exist in more than one language to begin with, because they need to work on multiple devices.</p>\n\n<p>Even if you have a proper middle layer (from the example given, it seems like that's not the case), that layer might change and JBoss might become Ruby/Rails.</p>\n\n<p>On the other hand, it is unlikely that you will replace the SQL-backend with something that's not a relational DB with SQL and even if you do, you will have to rewrite the front-end from scratch anyway, so the point is moot.</p>\n\n<p>My idea is that if you do calculations in the DB, it will be much easier to write a second front-end or middle-layer later, because you don't have to re-implement everything. In practise however, I think \"where can I do this with code that people will understand\" is the most important factor.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2334395,
+      "reputation" : 91,
+      "user_id" : 2047064,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/18ec41eb945095bdf37e689709e1f08c?s=256&d=identicon&r=PG",
+      "display_name" : "Donovanr",
+      "link" : "https://stackoverflow.com/users/2047064/donovanr"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1378622278,
+    "creation_date" : 1378622278,
+    "answer_id" : 18681157,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To simplify how to answer this would be to look at load balancing. You want to put the load where you have the most capacity (if it makes any sense). In most systems it is the SQL server that quickly becomes a bottleneck so the probably answer is that you don't want SQL doing one ounce of work more than it has to. </p>\n\n<p>Also in most architectures it is the SQL server(s) that make up the core of the system and outside systems that get added on. </p>\n\n<p>But the math above is so trivial that unless you are pushing your system to the limit the best place to put it is where you want to put it. If the math were not trivial such as calculating sin/cos/tan for say a distance calculation then the effort might become non-trivial and require careful planning and testing.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 73831,
+      "reputation" : 2225,
+      "user_id" : 212407,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4483aa2757d36c1d0977da4124b422f5?s=256&d=identicon&r=PG",
+      "display_name" : "Chris Schoon",
+      "link" : "https://stackoverflow.com/users/212407/chris-schoon"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1378737951,
+    "last_edit_date" : 1378737951,
+    "creation_date" : 1378737296,
+    "answer_id" : 18700707,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The other answers to this question are interesting. <strong>Surprisingly, no one has answered your question.</strong> You are wondering:</p>\n\n<ol>\n<li>Is it better to cast to Cents in the query? I don’t think the cast\nto cents adds anything in your query.</li>\n<li>Is it better to use now() in the query? I would prefer to pass dates into the query instead of calculating them in the query.</li>\n</ol>\n\n<p>More info:\nFor question one you want to be sure that aggregating the fractions\n   works without rounding errors. I think numeric  19,2 is reasonable\n   for money and in the second case the integers are OK. Using a float for money is wrong for this reason.</p>\n\n<p>For question two, I like to have full control as a programmer of what\n   date is considered “now”. It can be hard to write automatic unit\n   tests when using functions like now(). Also, when you have a longer\n   transaction script it can be good to set a variable equal to now() and use the variable so\n   that all of the logic uses the exact same value.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3683932,
+        "reputation" : 5987,
+        "user_id" : 3068157,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/463f2f17a3ffb9effd018d596a3fad0b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Lenny",
+        "link" : "https://stackoverflow.com/users/3068157/lenny"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1556774280,
+      "post_id" : 50721616,
+      "comment_id" : 98544684,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "However, If you need to do this millions of times as quickly as possible it is much easier to spawn parallel python apps than db replicas. Up until a certain scale leaning more on SQL is certainly faster / cheaper, but eventually there is a tipping point when it&#39;s better to do this calculation in your application."
+    } ],
+    "owner" : {
+      "account_id" : 7007599,
+      "reputation" : 6362,
+      "user_id" : 5371505,
+      "user_type" : "registered",
+      "accept_rate" : 48,
+      "profile_image" : "https://lh3.googleusercontent.com/-bdjlTLtK0iA/AAAAAAAAAAI/AAAAAAAAACw/-JrM5TFzjhc/s256-rj/photo.jpg",
+      "display_name" : "PirateApp",
+      "link" : "https://stackoverflow.com/users/5371505/pirateapp"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1528291391,
+    "creation_date" : 1528291391,
+    "answer_id" : 50721616,
+    "question_id" : 7510092,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Let me take a real example to address this question</p>\n\n<p>I needed to calculate a weighted moving average on my ohlc data, I have about 134000 candles with a symbol for each to do so</p>\n\n<ol>\n<li>Option 1 Do it in Python/Node etc etc</li>\n<li>Option 2 Do it in SQL itself!</li>\n</ol>\n\n<p><strong>Which one is better?</strong> </p>\n\n<ul>\n<li>If I had to do this in Python, essentially, I would have to fetch all stored records at the worst, case, perform the computation and save everything back which in my opinion is a huge wastage of IO</li>\n<li>Weighted moving average changes everytime you get a new candle meaning I would be doing massive amounts of IO at regular intervals which is not a \ngood opinion in my sign</li>\n<li>In SQL, all I have to do is probably write a trigger that computes and stores everything so only need to fetch the final WMA values for each pair every now and then and that is so much more efficient</li>\n</ul>\n\n<p><strong>Requirements</strong></p>\n\n<ul>\n<li>If I had to calculate WMA for every candle and store it, I would do it on Python</li>\n<li>But since I only need the last value, <strong>SQL is much faster than Python</strong></li>\n</ul>\n\n<p>To give you some encouragement, this is the Python version to do a weighted moving average</p>\n\n<p><strong>WMA done through code</strong></p>\n\n<pre><code>import psycopg2\nimport psycopg2.extras\nfrom talib import func\nimport timeit\nimport numpy as np\nwith psycopg2.connect('dbname=xyz user=xyz') as conn:\nwith conn.cursor() as cur:\nt0 = timeit.default_timer()\ncur.execute('select distinct symbol from ohlc_900 order by symbol')\nfor symbol in cur.fetchall():\ncur.execute('select c from ohlc_900 where symbol = %s order by ts', symbol)\nohlc = np.array(cur.fetchall(), dtype = ([('c', 'f8')]))\nwma = func.WMA(ohlc['c'], 10)\n# print(*symbol, wma[-1])\nprint(timeit.default_timer() - t0)\nconn.close()\n</code></pre>\n\n<p><strong>WMA Through SQL</strong></p>\n\n<pre><code>\"\"\"\nif the period is 10\nthen we need 9 previous candles or 15 x 9 = 135 mins on the interval department\nwe also need to start counting at row number - (count in that group - 10)\nFor example if AAPL had 134 coins and current row number was 125\nweight at that row will be weight = 125 - (134 - 10) = 1\n10 period WMA calculations\nRow no Weight c\n125 1\n126 2\n127 3\n128 4\n129 5\n130 6\n131 7\n132 8\n133 9\n134 10\n\"\"\"\nquery2 = \"\"\"\nWITH\ncondition(sym, maxts, cnt) as (\nselect symbol, max(ts), count(symbol) from ohlc_900 group by symbol\n),\ncte as (\nselect symbol, ts,\ncase when cnt &gt;= 10 and ts &gt;= maxts - interval '135 mins'\nthen (row_number() over (partition by symbol order by ts) - (cnt - 10)) * c\nelse null\nend as weighted_close\nfrom ohlc_900\nINNER JOIN condition\nON symbol = sym\nWINDOW\nw as (partition by symbol order by ts rows between 9 preceding and current row)\n)\nselect symbol, sum(weighted_close)/55 as wma\nfrom cte\nWHERE weighted_close is NOT NULL\nGROUP by symbol ORDER BY symbol\n\"\"\"\nwith psycopg2.connect('dbname=xyz user=xyz') as conn:\nwith conn.cursor() as cur:\nt0 = timeit.default_timer()\ncur.execute(query2)\n# for i in cur.fetchall():\n# print(*i)\nprint(timeit.default_timer() - t0)\nconn.close()\n</code></pre>\n\n<p>Believe it or not, <strong>the query runs faster than the Pure Python version of doing a WEIGHTED MOVING AVERAGE!!!</strong> I went step by step into writing that query so hang in there and you ll do just fine</p>\n\n<p>Speed</p>\n\n<p><strong>0.42141127300055814 seconds Python</strong></p>\n\n<p><strong>0.23801879299935536 seconds SQL</strong></p>\n\n<p>I have 134000 fake OHLC records in my database divided amongst a 1000 stocks so that is an example of where SQL can outperform your app server</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 917424,
+    "reputation" : 5104,
+    "user_id" : 949912,
+    "user_type" : "registered",
+    "accept_rate" : 67,
+    "profile_image" : "https://www.gravatar.com/avatar/1f35f9ac4e9f4a7c396815563ce7cdcd?s=256&d=identicon&r=PG",
+    "display_name" : "hellojava",
+    "link" : "https://stackoverflow.com/users/949912/hellojava"
+  },
+  "is_answered" : true,
+  "view_count" : 113788,
+  "protected_date" : 1378627660,
+  "accepted_answer_id" : 7510143,
+  "answer_count" : 13,
+  "score" : 191,
+  "last_activity_date" : 1684039021,
+  "creation_date" : 1316670590,
+  "last_edit_date" : 1424357222,
+  "question_id" : 7510092,
+  "link" : "https://stackoverflow.com/questions/7510092/what-are-the-pros-and-cons-of-performing-calculations-in-sql-vs-in-your-applica",
+  "title" : "What are the pros and cons of performing calculations in sql vs. in your application",
+  "body" : "<p><code>shopkeeper</code> table has following fields:</p>\n\n<pre><code>id (bigint),amount (numeric(19,2)),createddate (timestamp)\n</code></pre>\n\n<p>Let's say, I have the above table. I want to get the records for yesterday and \ngenerate a report by having the amount printed to cents.</p>\n\n<p><strong>One way of doing is to perform calculations in my java application and execute a simple query</strong></p>\n\n<pre><code>Date previousDate ;// $1 calculate in application\n\nDate todayDate;// $2 calculate in application\n\nselect amount where createddate between $1 and $2 \n</code></pre>\n\n<p>and then loop through the records and convert amount to cents in my java application and generate the report</p>\n\n<p><strong>Another way is like performing calculations in sql query itself:</strong></p>\n\n<pre><code>select cast(amount * 100 as int) as \"Cents\"\nfrom shopkeeper  where createddate  between date_trunc('day', now()) - interval '1 day'  and  date_trunc('day', now())\n</code></pre>\n\n<p>and then loop through the records and generate the report</p>\n\n<p>In one way , all my processing is done in java application and a simple query is fired.\nIn other case all the conversions and calculations is done in Sql query.</p>\n\n<p>The above use case is just an example, in a real scenario a table can have many columns that require processing of the similar kind.</p>\n\n<p><strong>Can you please tell me which approach is better in terms of performance and other aspects and why?</strong> </p>\n"
+}

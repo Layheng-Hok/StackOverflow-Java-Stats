@@ -1,0 +1,206 @@
+{
+  "tags" : [ "java", "network-programming", "printing", "postscript" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 15190,
+      "reputation" : 5571,
+      "user_id" : 31828,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/835888be611e37e818894e5133b005b4?s=256&d=identicon&r=PG",
+      "display_name" : "James Van Huis",
+      "link" : "https://stackoverflow.com/users/31828/james-van-huis"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1227559926,
+    "post_id" : 315209,
+    "comment_id" : 157434,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "Can you lock this down to a specific OS?"
+  }, {
+    "owner" : {
+      "account_id" : 17847,
+      "reputation" : 1072,
+      "user_id" : 40373,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7b72504be31d95ad1c636620eae7c1c5?s=256&d=identicon&r=PG",
+      "display_name" : "David Jaquay",
+      "link" : "https://stackoverflow.com/users/40373/david-jaquay"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1227563758,
+    "post_id" : 315209,
+    "comment_id" : 157606,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "Well, I&#39;m developing on Ubuntu and deploying either on Ubuntu or WinXP.  I was hoping to treat the printer as a device with an IP address, thus bypassing all O/S-specific crap."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4243,
+      "reputation" : 1359794,
+      "user_id" : 6309,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/I4fiW.jpg?s=256",
+      "display_name" : "VonC",
+      "link" : "https://stackoverflow.com/users/6309/vonc"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1227556414,
+    "creation_date" : 1227556414,
+    "answer_id" : 315238,
+    "question_id" : 315209,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I am not sure you can do it without extra library.</p>\n\n<p>This <a href=\"http://livedocs.adobe.com/livecycle/es/sdkHelp/programmer/sdkHelp/wwhelp/wwhimpl/common/html/wwhelp.htm?context=sdkHelp&amp;file=outputCreatingPrint.46.3.html\" rel=\"nofollow noreferrer\">example</a> shows you how to send the file to a network printer, but requieres an adobe library (based on commercial J2EE <a href=\"http://www.adobe.com/devnet/livecycle/trial/\" rel=\"nofollow noreferrer\">Livecycle ES</a> though, so not a generic \"free\" solution...).</p>\n\n<pre><code>import com.adobe.livecycle.output.client.*;\nimport java.util.*;    \nimport java.io.File;    \nimport java.io.FileInputStream;    \nimport com.adobe.idp.Document;    \nimport com.adobe.idp.dsc.clientsdk.ServiceClientFactory;\n\npublic class SendToPrinter {\n\n    public static void main(String[] args) {\n        try{\n            //Set LiveCycle ES service connection properties                            \n            Properties ConnectionProps = new Properties();\n            ConnectionProps.setProperty(\"DSC_DEFAULT_EJB_ENDPOINT\", \"jnp://localhost:1099\");\n            ConnectionProps.setProperty(\"DSC_TRANSPORT_PROTOCOL\",\"EJB\");          \n            ConnectionProps.setProperty(\"DSC_SERVER_TYPE\", \"JBoss\");\n            ConnectionProps.setProperty(\"DSC_CREDENTIAL_USERNAME\", \"administrator\");\n            ConnectionProps.setProperty(\"DSC_CREDENTIAL_PASSWORD\", \"password\");\n            //Create a ServiceClientFactory object\n            ServiceClientFactory myFactory = ServiceClientFactory.createInstance(ConnectionProps);\n            //Create an OutputClient object\n            OutputClient outClient = new OutputClient(myFactory); \n            //Reference XML data that represents form data\n            FileInputStream fileInputStream = new FileInputStream(\"C:\\\\Adobe\\\\Loan_data.xml\"); \n            Document inputXML = new Document(fileInputStream);\n            //Set print run-time options\n            PrintedOutputOptionsSpec printOptions = new PrintedOutputOptionsSpec(); \n            printOptions.setPrinterURI(\"\\\\\\\\Printer1\\\\Printer\");\n            printOptions.setCopies(2);\n\n            //Send a PostScript print stream to printer\n            OutputResult outputDocument = outClient.generatePrintedOutput(\n                    PrintFormat.PostScript,\n                    \"Loan.xdp\",\n                    \"C:\\\\Adobe\",\n                    \"C:\\\\Adobe\",\n                    printOptions,\n                    inputXML); \n\n            //Write the results of the operation to OutputLog.xml\n            Document resultData = outputDocument.getStatusDoc();\n            File myFile = new File(\"C:\\\\Adobe\\\\OutputLog.xml\");\n            resultData.copyToFile(myFile);\n        }\n        catch (Exception ee)\n        {\n            ee.printStackTrace();\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7836,
+      "reputation" : 17079,
+      "user_id" : 13757,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/41085512e87315f1338030adb6535f78?s=256&d=identicon&r=PG",
+      "display_name" : "nsayer",
+      "link" : "https://stackoverflow.com/users/13757/nsayer"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1227656361,
+    "creation_date" : 1227656361,
+    "answer_id" : 319278,
+    "question_id" : 315209,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Check out java.awt.print. It is the generic printing API in java.</p>\n\n<p>Unfortunately, it's not oriented around dealing with postscript content you already have. It's designed to let you \"draw\" on a piece of paper with the java 2d graphics APIs.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 22945,
+        "reputation" : 3961,
+        "user_id" : 57094,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/3a3fd1a2e939da9d186aad25383816d3?s=256&d=identicon&r=PG",
+        "display_name" : "Tony Edgecombe",
+        "link" : "https://stackoverflow.com/users/57094/tony-edgecombe"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1253521820,
+      "post_id" : 319459,
+      "comment_id" : 1300746,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Actually there is a little more to the lpr/lpd protocol than just piping the data, I wrote a Java implementation some time ago at <a href=\"http://sourceforge.net/projects/jlpr/\" rel=\"nofollow noreferrer\">sourceforge.net/projects/jlpr</a>"
+    }, {
+      "owner" : {
+        "account_id" : 3147877,
+        "reputation" : 128,
+        "user_id" : 2661988,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d03c995fbc80a3473303ce85b6e32c5e?s=256&d=identicon&r=PG",
+        "display_name" : "Franjo Markovic",
+        "link" : "https://stackoverflow.com/users/2661988/franjo-markovic"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582753603,
+      "post_id" : 319459,
+      "comment_id" : 106890365,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you really want to use LPR protocol on port 515, then the Tony&#39;s code above is needed and worked for me. However, for printers suporting raw port 9100, you really just open a socket and dump the data. Can be as simple as (on linux) nc [ip-address] 9100 &lt;something.txt"
+    } ],
+    "owner" : {
+      "account_id" : 2031,
+      "reputation" : 3764,
+      "user_id" : 2789,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/f609c97aa34e4c9b3b5ec8232f3a44db?s=256&d=identicon&r=PG",
+      "display_name" : "Tim Williscroft",
+      "link" : "https://stackoverflow.com/users/2789/tim-williscroft"
+    },
+    "is_accepted" : true,
+    "score" : 8,
+    "last_activity_date" : 1227662176,
+    "creation_date" : 1227662176,
+    "answer_id" : 319459,
+    "question_id" : 315209,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>open a TCP socket to the LPR port on the target printer.</p>\n\n<p>send your data; as long as the printer comprehends it, you're cool.</p>\n\n<p>don't forget a Line feed when you're done.</p>\n\n<p>(then close the port.)</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3348385,
+        "reputation" : 628,
+        "user_id" : 2813022,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Xo7Ho.jpg?s=256",
+        "display_name" : "George",
+        "link" : "https://stackoverflow.com/users/2813022/george"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1380719242,
+      "post_id" : 4821809,
+      "comment_id" : 28303428,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "can you please share this link again, it is broken"
+    }, {
+      "owner" : {
+        "account_id" : 219897,
+        "reputation" : 4100,
+        "user_id" : 477035,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/cYpss.jpg?s=256",
+        "display_name" : "RedGrittyBrick",
+        "link" : "https://stackoverflow.com/users/477035/redgrittybrick"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446811566,
+      "post_id" : 4821809,
+      "comment_id" : 54910703,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Most <i>low-cost</i> laser printers lack postscript support. In my experience, most business-class laser printers include postscript level 3 emulation nowadays."
+    } ],
+    "owner" : {
+      "account_id" : 60782,
+      "reputation" : 23,
+      "user_id" : 181450,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a9c17d11c0a9dc6bcf3a6cdf907faf9a?s=256&d=identicon&r=PG",
+      "display_name" : "fdubs",
+      "link" : "https://stackoverflow.com/users/181450/fdubs"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1296161999,
+    "creation_date" : 1296161999,
+    "answer_id" : 4821809,
+    "question_id" : 315209,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You can send it directly to a network printer on port 9100. I wrote a blog post about this here:</p>\n\n<p><a href=\"http://frank.zinepal.com/printing-directly-to-a-network-printer\" rel=\"nofollow\">http://frank.zinepal.com/printing-directly-to-a-network-printer</a></p>\n\n<p>The problem is that most laser printers do not support PostScript. You usually have to get a printer add-on for it.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 17847,
+    "reputation" : 1072,
+    "user_id" : 40373,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/7b72504be31d95ad1c636620eae7c1c5?s=256&d=identicon&r=PG",
+    "display_name" : "David Jaquay",
+    "link" : "https://stackoverflow.com/users/40373/david-jaquay"
+  },
+  "is_answered" : true,
+  "view_count" : 14187,
+  "accepted_answer_id" : 319459,
+  "answer_count" : 4,
+  "score" : 10,
+  "last_activity_date" : 1761943777,
+  "creation_date" : 1227555890,
+  "question_id" : 315209,
+  "link" : "https://stackoverflow.com/questions/315209/java-printing-directly-to-a-postscript-network-printer",
+  "title" : "Java printing directly to a Postscript network printer",
+  "body" : "<p>I've got Postscript code/data (?) in memory (in a Java Tomcat webapp) that I'd like to send directly to a networked PS printer.  Is there an easy way (i.e. just popping open a port and sending the text) to print this, bypassing all of the O/S-specific drivers and stuff (and hopefully not even requiring extra jars)?  A link to example code showing how to do this?</p>\n\n<p>Thanks,\nDave</p>\n"
+}

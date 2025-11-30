@@ -1,0 +1,113 @@
+{
+  "tags" : [ "java" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 4819600,
+      "reputation" : 59700,
+      "user_id" : 3890632,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/hNkgF.png?s=256",
+      "display_name" : "khelwood",
+      "link" : "https://stackoverflow.com/users/3890632/khelwood"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1606748338,
+    "post_id" : 65075820,
+    "comment_id" : 115047614,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Sounds like you might want <code>obj.getClass().getComponentType()</code>. E.g. <code>if (obj.getClass().getComponentType()==Integer.TYPE)</code>"
+  }, {
+    "owner" : {
+      "account_id" : 4331267,
+      "reputation" : 1581,
+      "user_id" : 3536729,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/IMjAq.jpg?s=256",
+      "display_name" : "stridecolossus",
+      "link" : "https://stackoverflow.com/users/3536729/stridecolossus"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1606748380,
+    "post_id" : 65075820,
+    "comment_id" : 115047628,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Perhaps <code>Class.getComponentType()</code> to determine the type of the elements?"
+  }, {
+    "owner" : {
+      "account_id" : 4819600,
+      "reputation" : 59700,
+      "user_id" : 3890632,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/hNkgF.png?s=256",
+      "display_name" : "khelwood",
+      "link" : "https://stackoverflow.com/users/3890632/khelwood"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1606748394,
+    "post_id" : 65075820,
+    "comment_id" : 115047637,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<a href=\"https://stackoverflow.com/q/212805/3890632\">In Java, how do I dynamically determine the type of an array?</a>"
+  }, {
+    "owner" : {
+      "account_id" : 1193459,
+      "reputation" : 4499,
+      "user_id" : 1165724,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/90d2570416ac5dfd1d9ee2922a96140b?s=256&d=identicon&r=PG",
+      "display_name" : "swpalmer",
+      "link" : "https://stackoverflow.com/users/1165724/swpalmer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1606749163,
+    "post_id" : 65075820,
+    "comment_id" : 115048006,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Somehow I overlooked getComponentType as it didn&#39;t trigger my brain to think of arrays.  Thank you."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 401843,
+      "reputation" : 107096,
+      "user_id" : 768644,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b13bedc5215730fbce5edff6c130988a?s=256&d=identicon&r=PG",
+      "display_name" : "rzwitserloot",
+      "link" : "https://stackoverflow.com/users/768644/rzwitserloot"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1759101539,
+    "last_edit_date" : 1759101539,
+    "creation_date" : 1606748795,
+    "answer_id" : 65076045,
+    "question_id" : 65075820,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There is only one <code>int</code> type in all of java, which therefore means there is only one <code>int[]</code> type. Thus, it is as simple as:</p>\n<pre><code>if (obj instanceof int[]) {\n   doSomethingWithIntArray((int[]) obj);\n}\n\n// or in modern java:\n\nif (obj instanceof int[] intArr) doSomethingWithIntArr(intArr);\n</code></pre>\n<p>Or if you somehow want it in terms of class: <code>if (obj.getClass() == int[].class) {</code>.</p>\n<p>If you want an enum, it's a simple matter of 8 if/elseifs. You can also make: <code>Map&lt;Class&lt;?&gt;, EnumType&gt;</code>, loading it up with a static initializer / using <code>Map.of</code>:</p>\n<pre><code>private static final Map&lt;Class&lt;?&gt;, EnumType&gt; TYPES = Map.of(\n  int[].class, EnumType.INT,\n  byte[].class, EnumType.BYTE,\n  ....);\n</code></pre>\n<p>and then you can call <code>EnumType primitiveType = TYPES.get(obj.getClass());</code> which returns null if it's not a primitive array, and the EnumType you wanted if it is.</p>\n<p>The if/elseif seems less efficient (8 steps, instead of the 1 step that TYPES.get would do), but is probably an order of magnitude or two faster. Far less overhead, CPUs pipeline, 8 chained ifs is nothing.</p>\n<p>You want 'most efficient' and then talk about JSON and XML. Two formats that are quite, to notoriously, inefficient.</p>\n<p>If you want to improve throughput and the like, you're barking up the wrong tree here. Making the java mode more efficient is going to speed up the process by at most 0.00000001%. Use a protocol designed for fast throughput (such as protobuf or something else binary oriented) if efficiency is what you're after.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1193459,
+    "reputation" : 4499,
+    "user_id" : 1165724,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/90d2570416ac5dfd1d9ee2922a96140b?s=256&d=identicon&r=PG",
+    "display_name" : "swpalmer",
+    "link" : "https://stackoverflow.com/users/1165724/swpalmer"
+  },
+  "is_answered" : true,
+  "view_count" : 83,
+  "accepted_answer_id" : 65076045,
+  "answer_count" : 1,
+  "score" : -1,
+  "last_activity_date" : 1759101539,
+  "creation_date" : 1606748034,
+  "last_edit_date" : 1606762601,
+  "question_id" : 65075820,
+  "link" : "https://stackoverflow.com/questions/65075820/given-an-object-that-is-a-primitive-array-what-is-the-most-efficient-way-to-det",
+  "title" : "Given an Object that is a primitive array, what is the most efficient way to determine the primitive type of the array elements",
+  "body" : "<p>I have a method that needs to operate on a very general message.  It receives an Object.  I can determine if the Object is an array with:</p>\n<pre><code>obj.getClass().isArray()\n</code></pre>\n<p>but after that I need to find what the type of the array elements are.</p>\n<p>My code will ultimately be passing data one element at a time to a system that will be re-building it's own data structure and I need to tell it what type it should be using.  E.g. imagine a JSON or XML message to something else and I need to tell that service how it should treat the data that was given to it in the message:</p>\n<pre><code>long [] data = { 42 };\nprocessObject(data);\n\nvoid processObject(Object obj) { ... }\n</code></pre>\n<p>will produce something like:</p>\n<pre><code>&lt;msg&gt;\n   &lt;value&gt;42&lt;/value&gt;\n   &lt;type&gt;LONG&lt;/type&gt;\n&lt;/msg&gt;\n</code></pre>\n"
+}

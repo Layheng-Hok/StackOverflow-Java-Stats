@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "spring", "unit-testing", "jms" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2974557,
+      "reputation" : 331,
+      "user_id" : 2525895,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/067482f97dd698fd3332ed2be91d2737?s=256&d=identicon&r=PG",
+      "display_name" : "Ueslei Lima",
+      "link" : "https://stackoverflow.com/users/2525895/ueslei-lima"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1629288856,
+    "post_id" : 68080623,
+    "comment_id" : 121646252,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I&#39;m struggling with the very same issue here. By any chance do you have an update on this topic?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 2974557,
+      "reputation" : 331,
+      "user_id" : 2525895,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/067482f97dd698fd3332ed2be91d2737?s=256&d=identicon&r=PG",
+      "display_name" : "Ueslei Lima",
+      "link" : "https://stackoverflow.com/users/2525895/ueslei-lima"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1629367748,
+    "creation_date" : 1629367748,
+    "answer_id" : 68845902,
+    "question_id" : 68080623,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Spring Beans with methods annotated with <code>@JmsListener</code> are injecting beans leaked from previous test executions when activated by a secondary thread. A practical workaround is to configure the test executor to use an isolated VM for each class to avoid this issue.</p>\n<p>For Maven executions you can configure the <code>maven-failsafe-plugin</code> or <code>maven-surefire-plugin</code> by setting the <code>reuseForks</code> option. e.g:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;plugin&gt;\n    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n    &lt;artifactId&gt;maven-failsafe-plugin&lt;/artifactId&gt;\n    &lt;configuration&gt;\n        &lt;reuseForks&gt;false&lt;/reuseForks&gt;\n    &lt;/configuration&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>You can also easily change the <code>Fork mode</code> to <code>Class</code> in JUnit IDE tools for multiple tests execution. Example for IntelliJ:</p>\n<p><a href=\"https://i.sstatic.net/ag1o2.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/ag1o2.png\" alt=\"IntelliJ JUnit Fork mode\" /></a></p>\n<p>Using <code>@DirtiesContext</code> does not work, and unfortunately, I still couldn't find the root cause for this - My hunch is that it could be something related to using an in-memory instance of the ActiveMQ broker, which lives in the VM instance shared by the executions.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12264055,
+      "reputation" : 56,
+      "user_id" : 8951043,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-tje7sKeCLME/AAAAAAAAAAI/AAAAAAAACpo/jG-HZtRHnMc/s256-rj/photo.jpg",
+      "display_name" : "Piotr Papierski",
+      "link" : "https://stackoverflow.com/users/8951043/piotr-papierski"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1638454465,
+    "last_edit_date" : 1638454465,
+    "creation_date" : 1638454155,
+    "answer_id" : 70200977,
+    "question_id" : 68080623,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>We had a similar issue when using the <code>@JmsListener</code> annotation in combination with <code>@MockBean</code>/<code>@SpyBean</code>. In our case using a separate destination for each test class solved this problem:</p>\n<pre><code>@JmsListener(destination = &quot;${my.mq.topic.name}&quot;)\nvoid consume(TextMessage message){\n...\n}\n\n@SpringBootTest\n@TestPropertySource(properties = &quot;my.mq.topic.name=UniqueTopicName&quot;})\nclass MyConsumerIT{\n...\n}\n</code></pre>\n<p>As far as I understand Spring has to create a separate JMS Consumer for each topic/queue. This configuration forces Spring to create a separate JMS Consumer for this class and Inject it correctly into the TestContext.\nIn comparison without this configuration, Spring reuses the once created Consumer for all test classes.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1384974,
+      "reputation" : 133,
+      "user_id" : 1317202,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ac5a4396c75dc2d7d79b6f9842dcba69?s=256&d=identicon&r=PG",
+      "display_name" : "M4veR1K",
+      "link" : "https://stackoverflow.com/users/1317202/m4ver1k"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1760515688,
+    "creation_date" : 1760515688,
+    "answer_id" : 79790923,
+    "question_id" : 68080623,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I've struggled with a similar issue for a week.</p>\n<p>An integration test using <code>JmsTemplate</code> and some <code>MockitoBean</code> (previously <code>MockBean</code>), that works if started in isolation, but failed when executed as part of a test suite.</p>\n<p>The root cause was indeed related to Spring test context caching — multiple application contexts were being created during the suite, and some of them still had stale <code>@JmsListener</code> beans actively listening.\nThese leftover listeners consumed JMS messages that were meant for the active test context, leading to confusing test failures (e.g. “<em>zero interactions with this mock</em>”).</p>\n<p>I've found my salvation in this answer: <a href=\"https://stackoverflow.com/a/79296915/1317202\">https://stackoverflow.com/a/79296915/1317202</a></p>\n<p>Inspired by that, here’s a simple JUnit 5 extension that cleanly activates and deactivates JMS listeners at the beginning and end of each test class, ensuring only the listeners of the current context are active:</p>\n<pre class=\"lang-java prettyprint-override\"><code>/**\n * JUnit 5 extension to control the lifecycle of Spring JMS listener containers around each test.\n *\n * &lt;p&gt;This extension addresses flaky integration tests with JMS listeners by ensuring that only the JMS\n * listener containers from the current Spring test context are active during test execution. This prevents\n * interference between concurrently cached application contexts where listeners from stale contexts might\n * consume messages intended for the active test.&lt;/p&gt;\n *\n * &lt;p&gt;Without this extension, tests may fail intermittently due to using the wrong instance of a mocked bean\n * when stale listener containers from cached contexts consume test messages instead of the active context's\n * listeners.&lt;/p&gt;\n */\npublic final class JmsLifecycleExtension implements BeforeAllCallback, AfterAllCallback {\n\n    @Override\n    public void beforeEach(ExtensionContext context) {\n        JmsListenerEndpointRegistry registry = SpringExtension.getApplicationContext(context).getBean(JmsListenerEndpointRegistry.class);\n        registry.getListenerContainers()\n            .stream()\n            .filter(not(Lifecycle::isRunning))\n            .forEach(Lifecycle::start);\n    }\n\n    @Override\n    public void afterEach(ExtensionContext context) {\n        JmsListenerEndpointRegistry registry = SpringExtension.getApplicationContext(context).getBean(JmsListenerEndpointRegistry.class);\n        registry.getListenerContainers()\n            .stream()\n            .filter(Lifecycle::isRunning)\n            .forEach(Lifecycle::stop);\n    }\n}\n</code></pre>\n<p>You might want to use it on a meta-annotation or on your base test class (if you use inheritance), for example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Retention(RetentionPolicy.RUNTIME)\n@SpringBootTest(classes = {IntegrationTestConfig.class, TestCacheConfig.class})\n@ActiveProfiles(&quot;test&quot;)\n@AutoConfigureMockMvc\n@MockitoBean(types = {MockedBean1.class, MockedBean2.class})\n@ExtendWith(JmsLifecycleExtension.class)\npublic @interface IntegrationTest {\n\n}\n</code></pre>\n<p>This approach avoids the need for <code>@DirtiesContext</code> or random JMS destinations.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 465196,
+    "reputation" : 374,
+    "user_id" : 1945334,
+    "user_type" : "registered",
+    "accept_rate" : 69,
+    "profile_image" : "https://www.gravatar.com/avatar/168473ac5788485a2eb16d951584ad37?s=256&d=identicon&r=PG",
+    "display_name" : "Patrick Zinner",
+    "link" : "https://stackoverflow.com/users/1945334/patrick-zinner"
+  },
+  "is_answered" : true,
+  "view_count" : 1364,
+  "answer_count" : 3,
+  "score" : 3,
+  "last_activity_date" : 1760515688,
+  "creation_date" : 1624352622,
+  "question_id" : 68080623,
+  "link" : "https://stackoverflow.com/questions/68080623/mockbean-uses-different-instance-in-jms-listener-when-running-multiple-spring-b",
+  "title" : "@MockBean uses different instance in JMS listener when running multiple Spring Boot tests",
+  "body" : "<p>I've written a Spring Boot Test, that writes into a JMS queue and is expecting some processing via an JMS listener. In the listener, I'm trying to read an object from S3. The <code>AmazonS3</code> class should be replaced by a MockBean. In my test I set up the mock like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@SpringBootTest\npublic class MyTest {\n\n    @Autowired\n    MyJmsPublisher jmsPlublisher;\n    @MockBean\n    AmazonS3 amazonS3;\n\n    @Test\n    public void test() {\n        final S3Object s3Object = mock(S3Object.class);\n        when(s3Object.getObjectContent()).thenReturn(mock(S3ObjectInputStream.class));\n        when(amazonS3.getObject(anyString(), anyString())).thenReturn(s3Object);\n        \n        jmsPlublisher.publishMessage(&quot;mymessage&quot;);\n        Awaitility.await().untilAsserted(() -&gt; {\n            //wait for something here\n        });\n    }\n}\n\n\n@Component\n@RequiredArgsConstructor\npublic class MyJmsPublisher {\n\n    private final JmsTemplate jmsTemplate;\n\n    public void publishMessage(String message) {\n        jmsTemplate.convertAndSend(&quot;destination&quot;, message);\n    }\n}\n\n@Component\n@RequiredArgsConstructor\npublic class MyJmsListener {\n\n    private final AmazonS3 amazonS3;\n\n    @JmsListener(destination = &quot;destination&quot;)\n    public void onMessageReceived(String message) {\n        final S3ObjectInputStream objectContent = amazonS3.getObject(&quot;a&quot;, &quot;b&quot;).getObjectContent();\n        // some logic here\n    }\n}\n\n</code></pre>\n<p>But the issue is that when running <strong>multiple Spring Boot tests</strong> , the <code>MyJmsListener</code> class contains a mock that is different from the one created in the Test. It's a mock, but for example the <code>getObjectContent()</code> returns null. <strong>But</strong> when I run the test alone, everything works fine.</p>\n<p>I've tried to inject the <code>AmazonS3</code> bean into the <code>MyJmsPublisher</code> and call the mocked method there and it worked. So I suspect, that it's because the JMS listener operates in a different thread.</p>\n<p>I've found <a href=\"https://stackoverflow.com/questions/66712011/why-does-bean-returning-a-mock-work-but-mockbean-doesnt-work-when-it-comes-to\">this thread</a> and also set the <code>reset</code> to all available options, but does not make any difference. I also tried this OP's approach that worked for them, where I create a mock via the <code>@Bean</code> annotation like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Configuration\npublic class MyConfig {\n   @Bean\n   @Primary\n   public AmazonS3 amazonS3() {\n      return Mockito.mock(AmazonS3.class);\n   }\n}\n</code></pre>\n<p>But this just has the same behavior as mentioned above.</p>\n<p>So can you actually use the <code>@MockBean</code> annotation when using different Threads like using a <code>@JMSListener</code>? Or am I missing something?</p>\n"
+}

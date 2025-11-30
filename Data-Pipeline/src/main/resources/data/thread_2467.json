@@ -1,0 +1,335 @@
+{
+  "tags" : [ "java", "exception", "try-catch" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2915411,
+      "reputation" : 14416,
+      "user_id" : 2498729,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://i.sstatic.net/8wdJC.jpg?s=256",
+      "display_name" : "But I&#39;m Not A Wrapper Class",
+      "link" : "https://stackoverflow.com/users/2498729/but-im-not-a-wrapper-class"
+    },
+    "edited" : false,
+    "score" : 8,
+    "creation_date" : 1375901431,
+    "post_id" : 18097496,
+    "comment_id" : 26516439,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "+1 Ahh man, I knew this answer.  I was asked this in an interview. It&#39;s a very good question for understanding how try/catch/finally works on the stack."
+  }, {
+    "owner" : {
+      "account_id" : 18313,
+      "reputation" : 14000,
+      "user_id" : 41861,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/7bd0c374500f093ebb7bac16a7b164cd?s=256&d=identicon&r=PG",
+      "display_name" : "Adrian Pronk",
+      "link" : "https://stackoverflow.com/users/41861/adrian-pronk"
+    },
+    "edited" : false,
+    "score" : 10,
+    "creation_date" : 1376008936,
+    "post_id" : 18097496,
+    "comment_id" : 26564412,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "There&#39;s only one print statement that could print a number (the last: <code>print(e.getMessage())</code>). You thought the output would be <code>AB2C3</code>: did you think the outermost <code>catch</code> block would be executed twice?"
+  }, {
+    "owner" : {
+      "account_id" : 1650309,
+      "reputation" : 4360,
+      "user_id" : 1521049,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/60b5a4c5b9ef83aeb0d83f5d3b4afdd0?s=256&d=identicon&r=PG",
+      "display_name" : "Thomas",
+      "link" : "https://stackoverflow.com/users/1521049/thomas"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1376560532,
+    "post_id" : 18097496,
+    "comment_id" : 26760852,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "In java, before an instruction that transfer control out of the catch block is executed, the finally block is executed provided it exists. If only the code in finally block doesn&#39;t transfer control to outside, the delayed instruction from catch block gets executed."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1251686,
+      "reputation" : 29444,
+      "user_id" : 1531054,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/FpS9p.png?s=256",
+      "display_name" : "s.d",
+      "link" : "https://stackoverflow.com/users/1531054/s-d"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1375950373,
+    "last_edit_date" : 1375950373,
+    "creation_date" : 1375861651,
+    "answer_id" : 18097561,
+    "question_id" : 18097496,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Exceptions thrown in finally block suppress the exception thrown earlier in try or catch block.</p>\n\n<p>Java 7 example: <a href=\"http://ideone.com/0YdeZo\" rel=\"noreferrer\">http://ideone.com/0YdeZo</a></p>\n\n<p>From <a href=\"http://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html#suppressed-exceptions\" rel=\"noreferrer\">Javadoc's</a> example:</p>\n\n<hr>\n\n<pre><code>static String readFirstLineFromFileWithFinallyBlock(String path)\n                                                     throws IOException {\n    BufferedReader br = new BufferedReader(new FileReader(path));\n    try {\n        return br.readLine();\n    } finally {\n        if (br != null) br.close();\n    }\n}\n</code></pre>\n\n<blockquote>\n  <p>However, in this example, if the methods readLine and close both throw\n  exceptions, then the method readFirstLineFromFileWithFinallyBlock\n  throws the exception thrown from the finally block; the exception\n  thrown from the try block is suppressed.</p>\n</blockquote>\n\n<hr>\n\n<p>The new <code>try-with</code> syntax of Java 7 adds another step of exception suppression: Exceptions thrown in try block  suppress those thrown earlier in try-with part.</p>\n\n<p>from same example:</p>\n\n<pre><code>try (\n        java.util.zip.ZipFile zf = new java.util.zip.ZipFile(zipFileName);\n        java.io.BufferedWriter writer = java.nio.file.Files.newBufferedWriter(outputFilePath, charset)\n    ) {\n        for (java.util.Enumeration entries = zf.entries(); entries.hasMoreElements();) {\n            String newLine = System.getProperty(\"line.separator\");\n            String zipEntryName = ((java.util.zip.ZipEntry)entries.nextElement()).getName() + newLine;\n            writer.write(zipEntryName, 0, zipEntryName.length());\n        }\n    }\n</code></pre>\n\n<blockquote>\n  <p>An exception can be thrown from the block of code associated with the\n  try-with-resources statement. In the above example, an exception can\n  be thrown from the try block, and up to two exceptions can be thrown\n  from the try-with-resources statement when it tries to close the\n  ZipFile and BufferedWriter objects. If an exception is thrown from the\n  try block and one or more exceptions are thrown from the\n  try-with-resources statement, then those exceptions thrown from the\n  try-with-resources statement are suppressed, and the exception thrown\n  by the block is the one that is thrown by the\n  writeToFileZipFileContents method. You can retrieve these suppressed\n  exceptions by calling the Throwable.getSuppressed method from the\n  exception thrown by the try block.</p>\n</blockquote>\n\n<hr>\n\n<p>In code from question, each block is plainly discarding the old exception, not even logging it, not good when you are trying to resolve some bugs: </p>\n\n<p><a href=\"http://en.wikipedia.org/wiki/Error_hiding\" rel=\"noreferrer\">http://en.wikipedia.org/wiki/Error_hiding</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 301230,
+        "reputation" : 30200,
+        "user_id" : 608820,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/aGmg7.jpg?s=256",
+        "display_name" : "Augusto",
+        "link" : "https://stackoverflow.com/users/608820/augusto"
+      },
+      "edited" : false,
+      "score" : 73,
+      "creation_date" : 1375862192,
+      "post_id" : 18097580,
+      "comment_id" : 26491703,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This even holds true for <code>return</code> statements. If your finally block has a return, it will override any return in a <code>try</code> or <code>catch</code> block. Because of these &quot;features&quot;, a good practice is that finally block should <b>never</b> throw an exception or have a return statement."
+    }, {
+      "owner" : {
+        "account_id" : 1134168,
+        "reputation" : 882,
+        "user_id" : 1119595,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5809fb9263004516a60f579c04877ab3?s=256&d=identicon&r=PG",
+        "display_name" : "w25r",
+        "link" : "https://stackoverflow.com/users/1119595/w25r"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1376429244,
+      "post_id" : 18097580,
+      "comment_id" : 26707737,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is also the inherit advantage try-with-resources has in Java 7.  It preserves the initial exception if a secondary exception is generated when closing resources, typically making debugging easier."
+    } ],
+    "owner" : {
+      "account_id" : 2719313,
+      "reputation" : 16069,
+      "user_id" : 2345933,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://i.sstatic.net/b2BbE.jpg?s=256",
+      "display_name" : "Adam Siemion",
+      "link" : "https://stackoverflow.com/users/2345933/adam-siemion"
+    },
+    "is_accepted" : true,
+    "score" : 197,
+    "last_activity_date" : 1453035671,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1375861690,
+    "answer_id" : 18097580,
+    "question_id" : 18097496,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>From the <a href=\"http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.20.2\" rel=\"noreferrer\">Java Language Specification 14.20.2.</a>:</p>\n<blockquote>\n<p>If the catch block completes abruptly for reason R, then the finally block is executed. Then there is a choice:</p>\n<ul>\n<li><p>If the finally block completes normally, then the try statement completes abruptly for reason R.</p>\n</li>\n<li><p><strong>If the finally block completes abruptly for reason S, then the try statement completes abruptly for reason S (and reason R is discarded)</strong>.</p>\n</li>\n</ul>\n</blockquote>\n<p>So, when there is a catch block that throws an exception:</p>\n<pre><code>try {\n    // ...\n} catch (Exception e) {\n    throw new Exception(&quot;2&quot;);\n}\n</code></pre>\n<p>but there is also a finally block that also throws an exception:</p>\n<pre><code>} finally {\n    throw new Exception(&quot;3&quot;);\n}\n</code></pre>\n<p><code>Exception(&quot;2&quot;)</code> will be discarded and only <code>Exception(&quot;3&quot;)</code> will be propagated.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1085171,
+        "reputation" : 3157,
+        "user_id" : 1081036,
+        "user_type" : "registered",
+        "accept_rate" : 59,
+        "profile_image" : "https://www.gravatar.com/avatar/628ac742acd95679504dd5c5345a02c0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Kousalik",
+        "link" : "https://stackoverflow.com/users/1081036/kousalik"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1375862227,
+      "post_id" : 18097588,
+      "comment_id" : 26491722,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "yes that&#39;s right, I see this is happening, but i was looking for explanation - why it is behaving this way"
+    } ],
+    "owner" : {
+      "account_id" : 1924671,
+      "reputation" : 96342,
+      "user_id" : 1735406,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/IF9uS.png?s=256",
+      "display_name" : "Maroun",
+      "link" : "https://stackoverflow.com/users/1735406/maroun"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1375945239,
+    "last_edit_date" : 1375945239,
+    "creation_date" : 1375861705,
+    "answer_id" : 18097588,
+    "question_id" : 18097496,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Since <code>throw new Exception(\"2\");</code> is thrown from <code>catch</code> block and not <code>try</code>, it won't be caught again.<br>\n<strong>See <a href=\"http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.20.2\" rel=\"nofollow\">14.20.2. Execution of try-finally and try-catch-finally</a></strong>.</p>\n\n<p>This is what happening:</p>\n\n<pre><code>try {\n    try {\n        System.out.print(\"A\");         //Prints A\n        throw new Exception(\"1\");   \n    } catch (Exception e) { \n        System.out.print(\"B\");         //Caught from inner try, prints B\n        throw new Exception(\"2\");   \n    } finally {\n        System.out.print(\"C\");         //Prints C (finally is always executed)\n        throw new Exception(\"3\");  \n    }\n} catch (Exception e) {\n    System.out.print(e.getMessage());  //Prints 3 since see (very detailed) link\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1085171,
+        "reputation" : 3157,
+        "user_id" : 1081036,
+        "user_type" : "registered",
+        "accept_rate" : 59,
+        "profile_image" : "https://www.gravatar.com/avatar/628ac742acd95679504dd5c5345a02c0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Kousalik",
+        "link" : "https://stackoverflow.com/users/1081036/kousalik"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1375862342,
+      "post_id" : 18097640,
+      "comment_id" : 26491798,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "yes, I know throwing Exception output nothing by itself, but i didn&#39;t see reason, why Exception 2 should be dropped. I&#39;m a little bit smarter again :-)"
+    }, {
+      "owner" : {
+        "account_id" : 71228,
+        "reputation" : 1851,
+        "user_id" : 205943,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://www.gravatar.com/avatar/a6fe3fd7c49c4cb055f1d73b7dc4fed6?s=256&d=identicon&r=PG",
+        "display_name" : "Dainius",
+        "link" : "https://stackoverflow.com/users/205943/dainius"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1375945052,
+      "post_id" : 18097640,
+      "comment_id" : 26530573,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "always is very long time and in very long time anything can happen (check puzzle <a href=\"http://wouter.coekaerts.be/2012/puzzle-dreams\" rel=\"nofollow noreferrer\">wouter.coekaerts.be/2012/puzzle-dreams</a>)"
+    } ],
+    "owner" : {
+      "account_id" : 402018,
+      "reputation" : 16808,
+      "user_id" : 768935,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/bcc2feb498803cb059f8f217a5f5e3a7?s=256&d=identicon&r=PG",
+      "display_name" : "allprog",
+      "link" : "https://stackoverflow.com/users/768935/allprog"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1375861868,
+    "creation_date" : 1375861868,
+    "answer_id" : 18097640,
+    "question_id" : 18097496,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The <code>finally</code> block always runs. Either you <code>return</code> from inside the try block or an exception is thrown. The exception thrown in the <code>finally</code> block will override the one thrown in the catch branch.</p>\n\n<p>Additionally, throwing an exception will not cause any output by itself. The line <code>throw new Exception(\"2\");</code> will not write anything out.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3146420,
+      "reputation" : 904,
+      "user_id" : 2660820,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/FV9ud.png?s=256",
+      "display_name" : "Bharat",
+      "link" : "https://stackoverflow.com/users/2660820/bharat"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1375883821,
+    "creation_date" : 1375883821,
+    "answer_id" : 18105393,
+    "question_id" : 18097496,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your Question is very obvious, and the answer is simple to the same extent..\n<strong>The Exception object with message as \"2\" is overwritten by the Exception object with message as \"3\" .</strong></p>\n\n<p><em><strong>Explanation :</em></strong>\nWhen an Exception occur, its object it thrown to catch block to handle. But when exception occur in catch block itself, its object is transferred to OUTER CATCH Block(if any) for exception Handling. And Same happened Here. The Exception Object with  message \"2\" is transferred to OUTER catch Block . <strong>But wait</strong>.. Before leaving inner try-catch block it HAS TO EXECUTE FINALLY. Here occurred the change we are concerned about. A new EXCEPTION object(with message \"3\") is thrown out or this finally block which replaced the already thrown Exception object(with message \"2\").As a result of which, when the message of Exception object is printed , we got overridden value i.e. \"3\" and not \"2\".</p>\n\n<p>Keep Remember :Only one exception object can be handled by on CATCH block.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2277268,
+        "reputation" : 497,
+        "user_id" : 2003208,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1c7f57b36c56dc127f40baade0b09c7f?s=256&d=identicon&r=PG",
+        "display_name" : "Black Maggie",
+        "link" : "https://stackoverflow.com/users/2003208/black-maggie"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1378192236,
+      "post_id" : 18220438,
+      "comment_id" : 27350644,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Sorry, Exception(&quot;1&quot;) is not omitted, but is successfully catched"
+    }, {
+      "owner" : {
+        "account_id" : 1622089,
+        "reputation" : 18758,
+        "user_id" : 1498427,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/cNxIm.png?s=256",
+        "display_name" : "catch32",
+        "link" : "https://stackoverflow.com/users/1498427/catch32"
+      },
+      "reply_to_user" : {
+        "account_id" : 2277268,
+        "reputation" : 497,
+        "user_id" : 2003208,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1c7f57b36c56dc127f40baade0b09c7f?s=256&d=identicon&r=PG",
+        "display_name" : "Black Maggie",
+        "link" : "https://stackoverflow.com/users/2003208/black-maggie"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1378200637,
+      "post_id" : 18220438,
+      "comment_id" : 27354801,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Black Maggie It&#39;s cached and thrown new exception =&gt; this isn&#39;t cached and program terminated. And before this block finally is execute."
+    } ],
+    "owner" : {
+      "account_id" : 1622089,
+      "reputation" : 18758,
+      "user_id" : 1498427,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://i.sstatic.net/cNxIm.png?s=256",
+      "display_name" : "catch32",
+      "link" : "https://stackoverflow.com/users/1498427/catch32"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1376433624,
+    "creation_date" : 1376433624,
+    "answer_id" : 18220438,
+    "question_id" : 18097496,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>According to your code:</p>\n\n<pre><code>try {\n    try {\n        System.out.print(\"A\");\n        throw new Exception(\"1\");   // 1\n    } catch (Exception e) {\n        System.out.print(\"B\");      // 2\n        throw new Exception(\"2\");\n    } finally {                     // 3\n        System.out.print(\"C\");      // 4 \n        throw new Exception(\"3\");\n    }\n} catch (Exception e) {             // 5\n    System.out.print(e.getMessage());\n}\n</code></pre>\n\n<p>As you can see here:   </p>\n\n<ol>\n<li>print A and throws exception <code># 1</code>;   </li>\n<li>this exception has caught by catch statement and print <code>B - # 2</code>;   </li>\n<li>block finally <code># 3</code> executes after try-catch (or only try, if hadn't occurred any exception) statement and  prints <code>C - # 4</code> and thrown new exception;</li>\n<li>this one has caught by external catch statement <code># 5</code>;</li>\n</ol>\n\n<p>Result is <code>ABC3</code>. And <code>2</code> is omitted at the same way as <code>1</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1085171,
+    "reputation" : 3157,
+    "user_id" : 1081036,
+    "user_type" : "registered",
+    "accept_rate" : 59,
+    "profile_image" : "https://www.gravatar.com/avatar/628ac742acd95679504dd5c5345a02c0?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Kousalik",
+    "link" : "https://stackoverflow.com/users/1081036/kousalik"
+  },
+  "is_answered" : true,
+  "view_count" : 19991,
+  "protected_date" : 1382962017,
+  "accepted_answer_id" : 18097580,
+  "answer_count" : 6,
+  "score" : 170,
+  "last_activity_date" : 1453035671,
+  "creation_date" : 1375861445,
+  "last_edit_date" : 1375947264,
+  "question_id" : 18097496,
+  "link" : "https://stackoverflow.com/questions/18097496/java-exception-not-caught",
+  "title" : "Java exception not caught?",
+  "body" : "<p>I have a small <strong>theoretical</strong> problem with try-catch constructions.</p>\n\n<p>I took a practical exam yesterday about Java and I don't understand following example:</p>\n\n<pre><code>try {\n    try {\n        System.out.print(\"A\");\n        throw new Exception(\"1\");\n    } catch (Exception e) {\n        System.out.print(\"B\");\n        throw new Exception(\"2\");\n    } finally {\n        System.out.print(\"C\");\n        throw new Exception(\"3\");\n    }\n} catch (Exception e) {\n    System.out.print(e.getMessage());\n}\n</code></pre>\n\n<p>The question was \"what the output will look like?\"</p>\n\n<p>I was pretty sure it would be AB2C3, BUT suprise suprise, it's not true.</p>\n\n<p>The right answer is ABC3 (tested and really it's like that).</p>\n\n<p>My question is, where did the Exception(\"2\") go?</p>\n"
+}

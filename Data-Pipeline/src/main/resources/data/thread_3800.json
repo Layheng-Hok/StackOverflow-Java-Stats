@@ -1,0 +1,145 @@
+{
+  "tags" : [ "java", "generics", "reflection" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 371054,
+      "reputation" : 24782,
+      "user_id" : 719363,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/76ca4397a6ec4aa8fcf85dc53e1cbab6?s=256&d=identicon&r=PG",
+      "display_name" : "Alex Gitelman",
+      "link" : "https://stackoverflow.com/users/719363/alex-gitelman"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1319169869,
+    "creation_date" : 1319169869,
+    "answer_id" : 7844848,
+    "question_id" : 7844610,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I could not figure a way to determine base type parameter in case of interface implementation (which does not mean there is none). But this is as close as it gets to it.</p>\n\n<pre><code>import java.lang.reflect.*;\npublic class Foo {\n  static class Bar&lt;T&gt; {\n  }\n  static class SubBar extends Bar&lt;Integer&gt; {\n  }\n\n  public static void main(String argv[]) {\n    ParameterizedType pt = (ParameterizedType)SubBar.class.getGenericSuperclass();\n    Type[] t = pt.getActualTypeArguments();\n    for (int i=0;i&lt;t.length;i++) {\n       System.out.println(t[i]);\n    }\n  }\n}\n</code></pre>\n\n<p>Result:\n<code>class java.lang.Integer</code></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 371054,
+        "reputation" : 24782,
+        "user_id" : 719363,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/76ca4397a6ec4aa8fcf85dc53e1cbab6?s=256&d=identicon&r=PG",
+        "display_name" : "Alex Gitelman",
+        "link" : "https://stackoverflow.com/users/719363/alex-gitelman"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1319171503,
+      "post_id" : 7844900,
+      "comment_id" : 9566145,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I read about interface in doc, but if class implements parameterized interface as in question (and does not extend any class explicitly), you will get <code>java.lang.Object</code> and cast exception when casting to <code>ParameterizedType</code>."
+    }, {
+      "owner" : {
+        "account_id" : 201448,
+        "reputation" : 4142,
+        "user_id" : 447894,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/IbE02.png?s=256",
+        "display_name" : "Chris Hannon",
+        "link" : "https://stackoverflow.com/users/447894/chris-hannon"
+      },
+      "reply_to_user" : {
+        "account_id" : 371054,
+        "reputation" : 24782,
+        "user_id" : 719363,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/76ca4397a6ec4aa8fcf85dc53e1cbab6?s=256&d=identicon&r=PG",
+        "display_name" : "Alex Gitelman",
+        "link" : "https://stackoverflow.com/users/719363/alex-gitelman"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1319172344,
+      "post_id" : 7844900,
+      "comment_id" : 9566234,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If you call <code>getGenericSuperclass()</code> and you don&#39;t explicitly extend anything or you extend non-generic classes, that&#39;s true, but if you call <code>getGenericInterfaces()</code> then the class heirarchy doesn&#39;t matter because it&#39;s only dealing with interfaces."
+    } ],
+    "owner" : {
+      "account_id" : 201448,
+      "reputation" : 4142,
+      "user_id" : 447894,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/IbE02.png?s=256",
+      "display_name" : "Chris Hannon",
+      "link" : "https://stackoverflow.com/users/447894/chris-hannon"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1319170418,
+    "creation_date" : 1319170418,
+    "answer_id" : 7844900,
+    "question_id" : 7844610,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can get the generic type for both interfaces and direct subclasses, but only for the concrete implementation. For example, if you have a <code>List&lt;T&gt;</code> instance, you have no way of knowing what it's been parameterized to because of type erasure. If the class definition includes parameterized types that are known at compile time (for example, <code>class StringList extends List&lt;String&gt;</code>) then you <em>can</em> retrieve that information.</p>\n\n<pre><code>ParameterizedType pt = (ParameterizedType)AtomEntryHandler.class.getGenericInterfaces()[0];\nClass atomEntryClass = (Class)pt.getActualTypeArguments()[0];\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 396682,
+        "reputation" : 1082,
+        "user_id" : 760373,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/3a8e44a48200d586ccc6eec87ee96439?s=256&d=identicon&r=PG",
+        "display_name" : "ekj",
+        "link" : "https://stackoverflow.com/users/760373/ekj"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1319715979,
+      "post_id" : 7896201,
+      "comment_id" : 9667117,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yeah I had a play around with it, and it just makes the code more complicated than it needs to be. It would have just avoided some duplication if it was simple."
+    } ],
+    "owner" : {
+      "account_id" : 13566,
+      "reputation" : 51682,
+      "user_id" : 27358,
+      "user_type" : "registered",
+      "accept_rate" : 76,
+      "profile_image" : "https://www.gravatar.com/avatar/fed1635f89478c88eda07e87de452bcf?s=256&d=identicon&r=PG",
+      "display_name" : "David Moles",
+      "link" : "https://stackoverflow.com/users/27358/david-moles"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1319578634,
+    "creation_date" : 1319578634,
+    "answer_id" : 7896201,
+    "question_id" : 7844610,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you happen to know <code>ConsumingHandler</code> is the only interface <code>AtomEntryHandler</code> implements, and you happen to know it takes just one type argument, you can do this:</p>\n\n<pre><code>interface ConsumingHandler&lt;T&gt; {}\n\nclass AtomEntry {}\n\nclass AtomEntryHandler implements ConsumingHandler&lt;AtomEntry&gt;\n{\n    public static void main( String[] args )\n    {\n        Type[] interfaces = AtomEntryHandler.class.getGenericInterfaces();\n        ParameterizedType firstInterface = (ParameterizedType) interfaces[0];\n        Class c = (Class) firstInterface.getActualTypeArguments()[0];\n        System.out.println(c.getName()); // prints \"AtomEntry\"\n    }\n}\n</code></pre>\n\n<p>Otherwise, you can poke around in <code>getGenericInterfaces()</code> and their <code>actualTypeArguments</code> until you find something that looks like what you're looking for.</p>\n\n<p>But if you find yourself needing to do this in real code, either something's probably gone badly wrong in your design, or you're writing some mad genius mock object library and you shouldn't need us to answer these questions.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 396682,
+    "reputation" : 1082,
+    "user_id" : 760373,
+    "user_type" : "registered",
+    "accept_rate" : 83,
+    "profile_image" : "https://www.gravatar.com/avatar/3a8e44a48200d586ccc6eec87ee96439?s=256&d=identicon&r=PG",
+    "display_name" : "ekj",
+    "link" : "https://stackoverflow.com/users/760373/ekj"
+  },
+  "is_answered" : true,
+  "view_count" : 14723,
+  "answer_count" : 3,
+  "score" : 9,
+  "last_activity_date" : 1761653983,
+  "creation_date" : 1319167267,
+  "question_id" : 7844610,
+  "link" : "https://stackoverflow.com/questions/7844610/java-reflection-get-concrete-type-of-implemented-generic-interface",
+  "title" : "Java reflection: Get concrete type of implemented generic interface",
+  "body" : "<p>Say I have a class like the following</p>\n\n<pre><code>public class AtomEntryHandler implements ConsumingHandler&lt;AtomEntry&gt;\n{\n...\n}\n</code></pre>\n\n<p>Is it possible to get the class object AtomEntry.class from the class object of AtomEntryHandler.class ?</p>\n\n<p>I didn't think it was possible due to erasure, but a friend said it is.</p>\n"
+}

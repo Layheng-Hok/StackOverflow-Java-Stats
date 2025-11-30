@@ -1,0 +1,570 @@
+{
+  "tags" : [ "java", "multithreading", "concurrency", "runnable" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2386817,
+        "reputation" : 15845,
+        "user_id" : 2087628,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/376a703596079b375cd1697267a304b9?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JaskeyLam",
+        "link" : "https://stackoverflow.com/users/2087628/jaskeylam"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1417858716,
+      "post_id" : 8579695,
+      "comment_id" : 43118582,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Couuld I consider that before we call Thread#start() ,nothing really relative to os thread happens? It is only a java object."
+    }, {
+      "owner" : {
+        "account_id" : 383107,
+        "reputation" : 51080,
+        "user_id" : 738746,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/5252d061371ebb5944acc4447b455d87?s=256&d=identicon&r=PG",
+        "display_name" : "Bhesh Gurung",
+        "link" : "https://stackoverflow.com/users/738746/bhesh-gurung"
+      },
+      "reply_to_user" : {
+        "account_id" : 2386817,
+        "reputation" : 15845,
+        "user_id" : 2087628,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/376a703596079b375cd1697267a304b9?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JaskeyLam",
+        "link" : "https://stackoverflow.com/users/2087628/jaskeylam"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1432824268,
+      "post_id" : 8579695,
+      "comment_id" : 49095163,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "That&#39;s correct according to the documentation. Check the thread object initialization code, which conforms to the documentation. Also in the source code, it&#39;s the <code>start()</code>, which is calling a natvie method, which must be making the os thread related things happen."
+    }, {
+      "owner" : {
+        "account_id" : 383107,
+        "reputation" : 51080,
+        "user_id" : 738746,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/5252d061371ebb5944acc4447b455d87?s=256&d=identicon&r=PG",
+        "display_name" : "Bhesh Gurung",
+        "link" : "https://stackoverflow.com/users/738746/bhesh-gurung"
+      },
+      "reply_to_user" : {
+        "account_id" : 2386817,
+        "reputation" : 15845,
+        "user_id" : 2087628,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/376a703596079b375cd1697267a304b9?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JaskeyLam",
+        "link" : "https://stackoverflow.com/users/2087628/jaskeylam"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1432824446,
+      "post_id" : 8579695,
+      "comment_id" : 49095312,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thread constructor docs is <a href=\"https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html#Thread(java.lang.ThreadGroup,%20java.lang.Runnable,%20java.lang.String)\" rel=\"nofollow noreferrer\">here</a>. Thread object initialization source is <a href=\"http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Thread.java#Thread.init%28java.lang.ThreadGroup%2Cjava.lang.Runnable%2Cjava.lang.String%2Clong%29\" rel=\"nofollow noreferrer\">here</a>. <code>start()</code> method source is <a href=\"http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Thread.java#Thread.start%28%29\" rel=\"nofollow noreferrer\">here</a>."
+    } ],
+    "owner" : {
+      "account_id" : 383107,
+      "reputation" : 51080,
+      "user_id" : 738746,
+      "user_type" : "registered",
+      "accept_rate" : 97,
+      "profile_image" : "https://www.gravatar.com/avatar/5252d061371ebb5944acc4447b455d87?s=256&d=identicon&r=PG",
+      "display_name" : "Bhesh Gurung",
+      "link" : "https://stackoverflow.com/users/738746/bhesh-gurung"
+    },
+    "is_accepted" : true,
+    "score" : 340,
+    "last_activity_date" : 1558177396,
+    "last_edit_date" : 1558177396,
+    "creation_date" : 1324403442,
+    "answer_id" : 8579695,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>First example:</strong> No multiple threads. Both execute in single (existing) thread. No thread creation.</p>\n\n<pre><code>R1 r1 = new R1();\nR2 r2 = new R2();\n</code></pre>\n\n<p><code>r1</code> and <code>r2</code> are just two different objects of classes that implement the <code>Runnable</code> interface and thus implement the <code>run()</code> method.  When you call <code>r1.run()</code> you are executing it in the current thread.</p>\n\n<p><strong>Second example:</strong> Two separate threads.</p>\n\n<pre><code>Thread t1 = new Thread(r1);\nThread t2 = new Thread(r2);\n</code></pre>\n\n<p><code>t1</code> and <code>t2</code> are objects of the class <a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html\" rel=\"noreferrer\"><code>Thread</code></a>.  When you call <code>t1.start()</code>, it starts a new thread and calls the <code>run()</code> method of <code>r1</code> internally to execute it within that new thread.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4032106,
+        "reputation" : 17268,
+        "user_id" : 3317808,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/e994384ec6d3ec1c6d576b9478132544?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "overexchange",
+        "link" : "https://stackoverflow.com/users/3317808/overexchange"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1506535767,
+      "post_id" : 8579702,
+      "comment_id" : 79864577,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In Hotspot JVM, there is a direct mapping between java thread and native thread. <code>Thread.start()</code> invocation make thread state move from <i>new</i> state to <i>Runnable</i> state. Runnable does not mean thread is running. Once the native thread has initialized, native thread invokes the <code>run()</code> method in the Java thread, which makes thread state change from <i>Runnable</i> to <i>Running</i>. When the thread terminates all resources for both the native and Java thread are released."
+    }, {
+      "owner" : {
+        "account_id" : 2738449,
+        "reputation" : 14778,
+        "user_id" : 2360535,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/bxuKR.jpg?s=256",
+        "display_name" : "twlkyao",
+        "link" : "https://stackoverflow.com/users/2360535/twlkyao"
+      },
+      "reply_to_user" : {
+        "account_id" : 4032106,
+        "reputation" : 17268,
+        "user_id" : 3317808,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/e994384ec6d3ec1c6d576b9478132544?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "overexchange",
+        "link" : "https://stackoverflow.com/users/3317808/overexchange"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1517470908,
+      "post_id" : 8579702,
+      "comment_id" : 84110925,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@overexchange Where can I find the material about state changing."
+    } ],
+    "owner" : {
+      "account_id" : 30243,
+      "reputation" : 8642,
+      "user_id" : 82344,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/1c8392cc231785957b9f4200eb37fd3c?s=256&d=identicon&r=PG",
+      "display_name" : "Mike Daniels",
+      "link" : "https://stackoverflow.com/users/82344/mike-daniels"
+    },
+    "is_accepted" : false,
+    "score" : 104,
+    "last_activity_date" : 1324403478,
+    "creation_date" : 1324403478,
+    "answer_id" : 8579702,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you just invoke <code>run()</code> directly, it's executed on the calling thread, just like any other method call. <code>Thread.start()</code> is required to actually create a new thread so that the runnable's <code>run</code> method is executed in parallel.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 50396,
+        "reputation" : 38002,
+        "user_id" : 150339,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/55fd8ebbdc83c65f2d0fd26b4899df0a?s=256&d=identicon&r=PG",
+        "display_name" : "Bruno Reis",
+        "link" : "https://stackoverflow.com/users/150339/bruno-reis"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1324529077,
+      "post_id" : 8579705,
+      "comment_id" : 10669409,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Actually, start() won&#39;t call run(): if it did, then the run() method would get executed by the same thread that called start(). What start() will do is create a thread which will call the run() method."
+    } ],
+    "owner" : {
+      "account_id" : 426173,
+      "reputation" : 18701,
+      "user_id" : 807231,
+      "user_type" : "registered",
+      "accept_rate" : 38,
+      "profile_image" : "https://i.sstatic.net/rMoCe.jpg?s=256",
+      "display_name" : "Marsellus Wallace",
+      "link" : "https://stackoverflow.com/users/807231/marsellus-wallace"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1533403006,
+    "last_edit_date" : 1533403006,
+    "creation_date" : 1324403509,
+    "answer_id" : 8579705,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In the first case you are just invoking the <code>run()</code> method of the <code>r1</code> and <code>r2</code> objects.</p>\n\n<p>In the second case you're actually creating 2 new Threads!</p>\n\n<p><code>start()</code> will call <code>run()</code> at some point!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 207202,
+      "reputation" : 647,
+      "user_id" : 456935,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://www.gravatar.com/avatar/ffc5afddee294730a92dee4ecc83f383?s=256&d=identicon&r=PG",
+      "display_name" : "CHANDRAHAS",
+      "link" : "https://stackoverflow.com/users/456935/chandrahas"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1337593122,
+    "last_edit_date" : 1337593122,
+    "creation_date" : 1324962984,
+    "answer_id" : 8641412,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>Thread.start()</code> code registers the Thread with scheduler and the scheduler calls the <code>run()</code> method. Also, <code>Thread</code> is class while <code>Runnable</code> is an interface.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 256311,
+      "reputation" : 505,
+      "user_id" : 536961,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/1e8c1dc636ad5dd0cebefddf5e71100c?s=256&d=identicon&r=PG",
+      "display_name" : "aditya",
+      "link" : "https://stackoverflow.com/users/536961/aditya"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1471961560,
+    "last_edit_date" : 1471961560,
+    "creation_date" : 1351580813,
+    "answer_id" : 13134221,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Actually <code>Thread.start()</code> creates a new thread and have its own execution scenario.</p>\n\n<p><code>Thread.start()</code> calls the <code>run()</code> method asynchronously,which changes the state of new Thread to Runnable.</p>\n\n<p>But <code>Thread.run()</code> does not create any new thread. Instead it execute the run method in the current running thread synchronously.</p>\n\n<p>If you are using <code>Thread.run()</code> then you are not using the features of multi threading at all. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1382952335,
+      "post_id" : 19629304,
+      "comment_id" : 29144859,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The &#39;main method&#39; has nothing to do with it."
+    }, {
+      "owner" : {
+        "account_id" : 406614,
+        "reputation" : 2527,
+        "user_id" : 776237,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/b684c1a575668cbb58a1df21e1962b8e?s=256&d=identicon&r=PG",
+        "display_name" : "dom_beau",
+        "link" : "https://stackoverflow.com/users/776237/dom-beau"
+      },
+      "reply_to_user" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1394199973,
+      "post_id" : 19629304,
+      "comment_id" : 33794595,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@EJP, by <code>main</code> the writer meant the calling method. His answer is quite good. +1 ;-)"
+    }, {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "reply_to_user" : {
+        "account_id" : 406614,
+        "reputation" : 2527,
+        "user_id" : 776237,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/b684c1a575668cbb58a1df21e1962b8e?s=256&d=identicon&r=PG",
+        "display_name" : "dom_beau",
+        "link" : "https://stackoverflow.com/users/776237/dom-beau"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1432643270,
+      "post_id" : 19629304,
+      "comment_id" : 48997721,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@dom_beau If that&#39;s what he meant he should have said so. What he did say was incorrect. There is nothing &#39;quite good&#39; about this answer. It&#39;s just a confused mess."
+    } ],
+    "owner" : {
+      "account_id" : 3500238,
+      "reputation" : 89,
+      "user_id" : 2927161,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5251980d95e0e7230c983a242b7fe553?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Rohith",
+      "link" : "https://stackoverflow.com/users/2927161/rohith"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1472535719,
+    "last_edit_date" : 1472535719,
+    "creation_date" : 1382945754,
+    "answer_id" : 19629304,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you do <code>run()</code> in main method, the thread of main method will invoke the <code>run</code> method instead of the thread you require to run.</p>\n\n<p>The <code>start()</code> method creates new thread and for which the <code>run()</code> method has to be done</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "is_accepted" : false,
+    "score" : 82,
+    "last_activity_date" : 1530600724,
+    "last_edit_date" : 1530600724,
+    "creation_date" : 1382952279,
+    "answer_id" : 19631064,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The difference is that <code>Thread.start()</code> starts a thread that calls the <code>run()</code> method, while <code>Runnable.run()</code> just calls the <code>run()</code> method on the current thread.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2697635,
+      "reputation" : 1348,
+      "user_id" : 2329241,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/3YCcl.jpg?s=256",
+      "display_name" : "Narendra Jaggi",
+      "link" : "https://stackoverflow.com/users/2329241/narendra-jaggi"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1471964511,
+    "last_edit_date" : 1471964511,
+    "creation_date" : 1412249644,
+    "answer_id" : 26159918,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>invoke <code>run()</code> is  executing on the calling thread, like any other method call. whereas  <code>Thread.start()</code> creates a new thread.\ninvoking <code>run()</code> is a programmatic bug. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7890992,
+        "reputation" : 761,
+        "user_id" : 5961135,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-fTMWQ4NZrgE/AAAAAAAAAAI/AAAAAAAAAfk/lJjdHuxMHao/s256-rj/photo.jpg",
+        "display_name" : "AndroidLearner",
+        "link" : "https://stackoverflow.com/users/5961135/androidlearner"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1518953449,
+      "post_id" : 28073707,
+      "comment_id" : 84705677,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "nicely explanation of run() method with help of an example about Runnable - an interface and Thread - a class"
+    } ],
+    "owner" : {
+      "account_id" : 5662142,
+      "reputation" : 49,
+      "user_id" : 4479462,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/3172a3160cbd14298b66acb1bc9044c3?s=256&d=identicon&r=PG",
+      "display_name" : "pommoisel",
+      "link" : "https://stackoverflow.com/users/4479462/pommoisel"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1421862810,
+    "creation_date" : 1421862810,
+    "answer_id" : 28073707,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The points, that the members made are all right so I just want to add something. The thing is that JAVA supports no Multi-inheritance. But What is if you want to derive a class B from another class A, but you can only derive from one Class. The problem now is how to \"derive\" from both classes: A and Thread. Therefore you can use the Runnable Interface.</p>\n\n<pre><code>public class ThreadTest{\n   public void method(){\n      Thread myThread = new Thread(new B());\n      myThread.start;\n   }\n}\n\npublic class B extends A implements Runnable{...\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1471942971,
+      "post_id" : 30297034,
+      "comment_id" : 65540328,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Calling `run()&#39; is not a way to create threaded programs. There is only one way."
+    } ],
+    "owner" : {
+      "account_id" : 5937510,
+      "reputation" : 1197,
+      "user_id" : 4669968,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/Bi8kN.png?s=256",
+      "display_name" : "gtzinos",
+      "link" : "https://stackoverflow.com/users/4669968/gtzinos"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1431932906,
+    "creation_date" : 1431932906,
+    "answer_id" : 30297034,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The separate start() and run() methods in the Thread class provide two ways to create threaded programs. The start() method starts the execution of the new thread and calls the run() method. The start() method returns immediately and the new thread normally continues until the run() method returns.</p>\n\n<p>The Thread class' run() method does nothing, so sub-classes should override the method with code to execute in the second thread. If a Thread is instantiated with a Runnable argument, the thread's run() method executes the run() method of the Runnable object in the new thread instead.</p>\n\n<p>Depending on the nature of your threaded program, calling the Thread run() method directly can give the same output as calling via the start() method, but in the latter case the code is actually executed in a new thread.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 422870,
+      "reputation" : 27582,
+      "user_id" : 801894,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/67f2ccd17aa6fd622152ad88fc2ae784?s=256&d=identicon&r=PG",
+      "display_name" : "Solomon Slow",
+      "link" : "https://stackoverflow.com/users/801894/solomon-slow"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1589502096,
+    "last_edit_date" : 1589502096,
+    "creation_date" : 1445969830,
+    "answer_id" : 33375616,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><code>t.start()</code> is the method that the library provides for your code to call when you want a new thread.</p>\n\n<p><code>r.run()</code> is the method that <em>you</em> provide for the <em>library</em> to call <em>in</em> the new thread.</p>\n\n<hr>\n\n<p>Most of these answers miss the big picture, which is that, as far as the Java language is concerned, there is no more difference between <code>t.start()</code> and <code>r.run()</code> than there is between any other two methods.</p>\n\n<p>They're both just methods.  They both run <em>in the thread that called them</em>.  They both do whatever they were coded to do, and then they both return, still in the same thread, to their callers.</p>\n\n<p>The biggest difference is that most of the code for <code>t.start()</code> is <em>native</em> code while, in most cases, the code for <code>r.run()</code> is going to be pure Java.  But that's not much of a difference.  Code is code.  Native code is harder to find, and harder to understand when you find it, but it's still just code that tells the computer what to do.</p>\n\n<p>So, what does <code>t.start()</code> do?</p>\n\n<p>It creates a new native thread, it arranges for that thread to call <code>t.run()</code>, and then it tells the OS to let the new thread run.  Then it returns.</p>\n\n<p>And what does <code>r.run()</code> do?</p>\n\n<p>The funny thing is, the person asking this question is the person who <em>wrote it</em>.  <code>r.run()</code> does whatever <em>you</em> (i.e., the developer who wrote it) designed it to do.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1597017411,
+      "post_id" : 35264580,
+      "comment_id" : 111989166,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Ravindrababu Please lay off the boldface. It doesn&#39;t help."
+    } ],
+    "owner" : {
+      "account_id" : 4141733,
+      "reputation" : 4637,
+      "user_id" : 3396808,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WmXUL.jpg?s=256",
+      "display_name" : "Jaimin Patel",
+      "link" : "https://stackoverflow.com/users/3396808/jaimin-patel"
+    },
+    "is_accepted" : false,
+    "score" : 46,
+    "last_activity_date" : 1597017398,
+    "last_edit_date" : 1597017398,
+    "creation_date" : 1454917433,
+    "answer_id" : 35264580,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The difference is that when program calls <code>start()</code> method, a <em>new</em> thread is created and code inside <code>run()</code> is executed in the new thread: while if you call <code>run()</code> method directly, no new thread will be created and code inside <code>run()</code> will execute in the current thread directly.</p>\n<p>Another difference between <code>start()</code> and <code>run()</code> in Java thread is that you cannot call <code>start()</code> twice. Once started, second <code>start()</code> call will throw <code>IllegalStateException</code> in Java while you can call <code>run()</code> method several times since it's just an ordinary method.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6453072,
+      "reputation" : 39149,
+      "user_id" : 4999394,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+      "display_name" : "Ravindra babu",
+      "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1471942926,
+    "last_edit_date" : 1471942926,
+    "creation_date" : 1457663262,
+    "answer_id" : 35931153,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you directly call <code>run()</code> method, you are not using multi-threading feature since <code>run()</code> method is executed as part of caller thread. </p>\n\n<p>If you call <code>start()</code> method on Thread, the Java Virtual Machine will call run() method and two threads will run concurrently - Current Thread (<code>main()</code> in your example) and Other Thread (Runnable <code>r1</code> in your example).</p>\n\n<p>Have a look at source code of <code>start()</code> method in <a href=\"http://grepcode.com/file_/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/lang/Thread.java/?v=source\" rel=\"nofollow\">Thread class</a></p>\n\n<pre><code> /**\n     * Causes this thread to begin execution; the Java Virtual Machine\n     * calls the &lt;code&gt;run&lt;/code&gt; method of this thread.\n     * &lt;p&gt;\n     * The result is that two threads are running concurrently: the\n     * current thread (which returns from the call to the\n     * &lt;code&gt;start&lt;/code&gt; method) and the other thread (which executes its\n     * &lt;code&gt;run&lt;/code&gt; method).\n     * &lt;p&gt;\n     * It is never legal to start a thread more than once.\n     * In particular, a thread may not be restarted once it has completed\n     * execution.\n     *\n     * @exception  IllegalThreadStateException  if the thread was already\n     *               started.\n     * @see        #run()\n     * @see        #stop()\n     */\n    public synchronized void start() {\n        /**\n         * This method is not invoked for the main method thread or \"system\"\n         * group threads created/set up by the VM. Any new functionality added\n         * to this method in the future may have to also be added to the VM.\n         *\n         * A zero status value corresponds to state \"NEW\".\n         */\n        if (threadStatus != 0)\n            throw new IllegalThreadStateException();\n        group.add(this);\n        start0();\n        if (stopBeforeStart) {\n            stop0(throwableFromStop);\n        }\n    }\n\n    private native void start0();\n</code></pre>\n\n<p>In above code, you can't see invocation to <code>run()</code> method. </p>\n\n<p><code>private native void start0()</code> is responsible for calling <code>run()</code> method. JVM executes this native method.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8091203,
+      "reputation" : 2885,
+      "user_id" : 6097074,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://lh4.googleusercontent.com/-mSfEFWH3WXQ/AAAAAAAAAAI/AAAAAAAAAEo/TMbrT6TDns0/s256-rj/photo.jpg",
+      "display_name" : "ankit",
+      "link" : "https://stackoverflow.com/users/6097074/ankit"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1513856636,
+    "creation_date" : 1513856636,
+    "answer_id" : 47924271,
+    "question_id" : 8579657,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Start() method call run override method of Thread extended class and Runnable implements interface.</p>\n\n<p>But by calling run() it search for run method but if class implementing Runnable interface then it call run() override method of Runnable.</p>\n\n<p>ex.:  </p>\n\n<p>`</p>\n\n<pre><code>public class Main1\n{\nA a=new A();\nB b=new B();\na.run();//This call run() of Thread because run() of Thread only call when class \n        //implements with Runnable not when class extends Thread.\nb.run();//This not run anything because no run method found in class B but it \n        //didn't show any error.\n\na.start();//this call run() of Thread\nb.start();//this call run() of Thread\n}\n\nclass A implements Runnable{\n@Override\n    public void run() {\n            System.out.println(\"A \");\n    }\n}\n\nclass B extends Thread {\n\n    @Override\n    public void run() {\n            System.out.println(\"B \");\n    }\n}\n</code></pre>\n\n<p>`</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 32915,
+    "reputation" : 10722,
+    "user_id" : 1038182,
+    "user_type" : "registered",
+    "accept_rate" : 78,
+    "profile_image" : "https://i.sstatic.net/0lPeX.jpg?s=256",
+    "display_name" : "Ori Popowski",
+    "link" : "https://stackoverflow.com/users/1038182/ori-popowski"
+  },
+  "is_answered" : true,
+  "view_count" : 211995,
+  "accepted_answer_id" : 8579695,
+  "answer_count" : 14,
+  "score" : 255,
+  "last_activity_date" : 1597017398,
+  "creation_date" : 1324403257,
+  "last_edit_date" : 1473281871,
+  "question_id" : 8579657,
+  "link" : "https://stackoverflow.com/questions/8579657/whats-the-difference-between-thread-start-and-runnable-run",
+  "title" : "What&#39;s the difference between Thread start() and Runnable run()",
+  "body" : "<p>Say we have these two Runnables:</p>\n\n<pre><code>class R1 implements Runnable {\n    public void run() { … }\n    …\n}\n\nclass R2 implements Runnable {\n    public void run() { … }\n    …\n}\n</code></pre>\n\n<p>Then what's the difference between this:</p>\n\n<pre><code>public static void main() {\n    R1 r1 = new R1();\n    R2 r2 = new R2();\n\n    r1.run();\n    r2.run();\n}\n</code></pre>\n\n<p>And this:</p>\n\n<pre><code>public static void main() {\n    R1 r1 = new R1();\n    R2 r2 = new R2();\n    Thread t1 = new Thread(r1);\n    Thread t2 = new Thread(r2);\n\n    t1.start();\n    t2.start();\n}\n</code></pre>\n"
+}

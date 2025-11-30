@@ -1,0 +1,125 @@
+{
+  "tags" : [ "java", "java-11" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1631872845,
+    "post_id" : 68380968,
+    "comment_id" : 122346275,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<i>Anyone please suggest a solution.</i> - Create a new <code>URLClassLoader</code> for the new JAR url.  (See the duplink!!)  If that doesn&#39;t work, show us your attempt at creating / using a new classloader so that we can see what is going wrong.  And include the full (new) stacktrace."
+  }, {
+    "owner" : {
+      "account_id" : 3045329,
+      "reputation" : 1597,
+      "user_id" : 2581174,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/h3r2m.jpg?s=256",
+      "display_name" : "Valsaraj Viswanathan",
+      "link" : "https://stackoverflow.com/users/2581174/valsaraj-viswanathan"
+    },
+    "reply_to_user" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1631876954,
+    "post_id" : 68380968,
+    "comment_id" : 122347980,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I have created URLClassLoader child class as per the dupe link but not worked in my application. Updated the question with scenario, error details and code."
+  }, {
+    "owner" : {
+      "account_id" : 1192266,
+      "reputation" : 116,
+      "user_id" : 1164767,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8ZMb5.jpg?s=256",
+      "display_name" : "Kishor Raskar",
+      "link" : "https://stackoverflow.com/users/1164767/kishor-raskar"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1631897624,
+    "post_id" : 68380968,
+    "comment_id" : 122356716,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@ValsarajViswanathan Please check if this works. I am not sure if it serves your purpose.  ClassLoader classloader = SecureClassLoader.getSystemClassLoader(); URLClassLoader urlClassLoader = URLClassLoader.newInstance(urls, classloader); Thread.currentThread().setContextClassLoader(urlClassLoader)&zwnj;&#8203;;"
+  }, {
+    "owner" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1637754722,
+    "post_id" : 68380968,
+    "comment_id" : 123909555,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I think, this approach won’t work in general. I <a href=\"https://stackoverflow.com/questions/60764/how-to-load-jar-files-dynamically-at-runtime#comment123909471_59743937\">added a comment</a> at the original post."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 21851467,
+      "reputation" : 974,
+      "user_id" : 16143492,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/PMrGU.png?s=256",
+      "display_name" : "nineninesevenfour",
+      "link" : "https://stackoverflow.com/users/16143492/nineninesevenfour"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1761739442,
+    "last_edit_date" : 1761739442,
+    "creation_date" : 1761738951,
+    "answer_id" : 79803761,
+    "question_id" : 68380968,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Please let me suggest a slightly different approach for your problem. I hope it is working for you. The solution is specific to the Java Plugin Framework, not a silver bullet for any other dynamic class loading attempts.</p>\n<p>Spoiler: While trying to reproduce your problem, I found something that I think is missing in <code>PluginClassLoader</code> for handling dynamically loaded jars: It adds all URLs of the jars shipped as dependency with the plugin, but not the URL of the jar itself. This can be fixed. Let me show you how:</p>\n<p>First my code to reproduce your problem. You didn't share your actual code, but I used the description from here to start: <a href=\"https://alef1.org/jean/jpf/\" rel=\"nofollow noreferrer\">https://alef1.org/jean/jpf/</a></p>\n<p>I created a simple plugin, which does actually nothing, just log messages when started and stopped.</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class SamplePlugin extends Plugin {\n\n    @Override\n    protected void doStart() {\n        System.out.println(&quot;Plugin started&quot;);\n    }\n\n    @Override\n    protected void doStop() {\n        System.out.println(&quot;Plugin stopped&quot;);\n    }\n}\n</code></pre>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;?xml version=&quot;1.0&quot; ?&gt;\n&lt;!DOCTYPE plugin PUBLIC &quot;-//JPF//Java Plug-in Manifest 1.0&quot; &quot;http://jpf.sourceforge.net/plugin_1_0.dtd&quot;&gt;\n&lt;plugin id=&quot;org.example.string&quot; version=&quot;0.0.4&quot;\n        class=&quot;org.example.SamplePlugin&quot;&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>And a Main class, which loads that plugin from a jar file in my case located under <code>maven-pg-plugin/target</code>:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class Main {\n\n    public static void main(String[] args) throws IOException, JpfException {\n        ObjectFactory objectFactory = ObjectFactory.newInstance();\n        PluginManager pluginManager = objectFactory.createManager();\n        File pluginDir = new File(&quot;./maven-pg-plugin/target&quot;);\n        File[] plugins = pluginDir.listFiles((dir, name) -&gt; name.endsWith(&quot;.jar&quot;));\n        if (plugins != null) {\n            PluginManager.PluginLocation[] locations = Arrays.stream(plugins).map(Main::createPluginLocation)\n                    .toArray(PluginManager.PluginLocation[]::new);\n            Map&lt;String, Identity&gt; result = pluginManager.publishPlugins(locations);\n            for (Map.Entry&lt;String, Identity&gt; entry : result.entrySet()) {\n                Identity identity = entry.getValue();\n                String pluginId = identity.getId();\n                pluginManager.activatePlugin(pluginId);\n                pluginManager.deactivatePlugin(pluginId);\n            }\n        }\n\n    }\n\n    private static PluginManager.PluginLocation createPluginLocation(File file) {\n        try {\n            return StandardPluginLocation.create(file);\n        } catch (MalformedURLException e) {\n            // replace RuntimeException with something more suitable\n            throw new RuntimeException(e);\n        }\n    }\n}\n</code></pre>\n<p>When running, the output of the sample plugin should be seen on the console.</p>\n<p>That code works when the jar is also on the classpath, but stops working when removed from the classpath. The behaviour is the same with Java 8 as well as with newer versions.</p>\n<p>Since <code>PluginClassLoader</code> is also an instance of <code>URLClassLoader</code>, i could fix it by calling <code>addURL</code> (which is protected) via reflection and add the jar of the plugin itself:</p>\n<pre class=\"lang-java prettyprint-override\"><code>    private static void fixPluginClassLoader(PluginManager pluginManager, String pluginId) {\n        PluginDescriptor descriptor = pluginManager.getRegistry().getPluginDescriptor(pluginId);\n        // retrieve the URL to the plugin jar through JPF\n        URL url = pluginManager.getPathResolver().resolvePath(descriptor, &quot;&quot;);\n        PluginClassLoader pluginClassLoader = pluginManager.getPluginClassLoader(descriptor);\n        try {\n            Method method = URLClassLoader.class.getDeclaredMethod(&quot;addURL&quot;, URL.class);\n            method.setAccessible(true);\n            method.invoke(pluginClassLoader, url);\n\n        } catch (ReflectiveOperationException e) {\n            // replace RuntimeException with something more suitable\n            throw new RuntimeException(e);\n        }\n    }\n</code></pre>\n<p>And insert the call to that method before using the plugin:</p>\n<pre class=\"lang-java prettyprint-override\"><code>            for (Map.Entry&lt;String, Identity&gt; entry : result.entrySet()) {\n                Identity identity = entry.getValue();\n                String pluginId = identity.getId();\n                fixPluginClassLoader(pluginManager, pluginId); // &lt;-- addition here\n                pluginManager.activatePlugin(identity.getId());\n                pluginManager.deactivatePlugin(identity.getId());\n            }\n</code></pre>\n<p>Tadaa! \uD83C\uDF89\nFor Java 11 this fix works out of the box, the jar doesn't need to be on the classpath and no extra command line arguments.</p>\n<p>However with newer Java versions with extended module checks the command line argument <code>--add-opens</code> needs to be added to access the protected method of <code>URLClassLoader</code>:</p>\n<pre><code>--add-opens java.base/java.net=ALL-UNNAMED\n</code></pre>\n<p>(using <code>ALL-UNNAMED</code> assuming you are not actively creating Java modules)</p>\n<p>Two notes of warning:</p>\n<ul>\n<li>It is a hack.</li>\n<li>The Java Plugin Framework is old an unmaintained. While I don't see any CVEs (critical vulnerabilities) on <code>jpf-1.5.jar</code>, but I see eight of them on <code>jpf-boot-1.5.jar</code>. If you need it for production code, please consider migrating to something better maintained, e.g. an <a href=\"https://de.wikipedia.org/wiki/OSGi\" rel=\"nofollow noreferrer\">OSGi</a> implementation.</li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3045329,
+    "reputation" : 1597,
+    "user_id" : 2581174,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://i.sstatic.net/h3r2m.jpg?s=256",
+    "display_name" : "Valsaraj Viswanathan",
+    "link" : "https://stackoverflow.com/users/2581174/valsaraj-viswanathan"
+  },
+  "is_answered" : true,
+  "view_count" : 4913,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761739442,
+  "creation_date" : 1626276550,
+  "last_edit_date" : 1637753600,
+  "question_id" : 68380968,
+  "link" : "https://stackoverflow.com/questions/68380968/java-11-issue-with-adding-dependency-jars-at-runtime",
+  "title" : "Java 11 issue with adding dependency jars at runtime",
+  "body" : "<p>When migrated from Java 8 to Java 11, got the following error:</p>\n<pre><code>Caused by: java.lang.ClassCastException: class jdk.internal.loader.ClassLoaders$AppClassLoader cannot be cast to class java.net.URLClassLoader (jdk.internal.loader.ClassLoaders$AppClassLoader and java.net.URLClassLoader are in module java.base of loader 'bootstrap')\n</code></pre>\n<p>Code that thrown error:</p>\n<pre><code>URLClassLoader urlClassLoader = (URLClassLoader) Thread.currentThread().getContextClassLoader();\n...\n//URLClassLoader urlClassLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();\n...\ngetMethod().invoke(urlClassLoader, new Object[] { url });\n</code></pre>\n<p>The above error fixed when loaded jars by creating a ClassLoader as per this link:\n<a href=\"https://stackoverflow.com/questions/46694600/java-9-compatability-issue-with-classloader-getsystemclassloader\">Java 9, compatability issue with ClassLoader.getSystemClassLoader</a></p>\n<p>Here is the code:</p>\n<pre><code>public class DynamicClassLoader extends URLClassLoader {\n\npublic DynamicClassLoader(URL[] urls, ClassLoader parent) {\n    super(urls, parent);\n}\n\npublic void addURL(URL url) {\n    super.addURL(url);\n}\n\npublic DynamicClassLoader(String name, ClassLoader parent) {\n    super(name, new URL[0], parent);\n}\n\n/*\n * Required when this classloader is used as the system classloader\n */\npublic DynamicClassLoader(ClassLoader parent) {\n    this(&quot;classpath&quot;, parent);\n}\n\npublic DynamicClassLoader() {\n    this(Thread.currentThread().getContextClassLoader());\n}\n\npublic static DynamicClassLoader findAncestor(ClassLoader cl) {\n    do {\n\n        if (cl instanceof DynamicClassLoader)\n            return (DynamicClassLoader) cl;\n\n        cl = cl.getParent();\n    } while (cl != null);\n\n    return null;\n}\n\n/*\n *  Required for Java Agents when this classloader is used as the system classloader\n */\n@SuppressWarnings(&quot;unused&quot;)\nprivate void appendToClassPathForInstrumentation(String jarfile) throws IOException {\n    addURL(Paths.get(jarfile).toRealPath().toUri().toURL());\n}\n</code></pre>\n<p>}</p>\n<p>Loaded the jars using:</p>\n<pre><code>urlClassLoader.addURL(url);\n</code></pre>\n<p>Run the jar with</p>\n<pre><code>-Djava.system.class.loader=com.ltchie.util.DynamicClassLoader \n</code></pre>\n<p>But the utility jar (jpf.jar - Java plugin framework) added at compile time unable to find the class in dynamically loaded jar at runtime and got ClassNotFoundException.\nCode:</p>\n<pre><code>Plugin plugin = pluginManager.getPlugin(pluginDescriptor.getId());\n</code></pre>\n<p>Error:</p>\n<pre class=\"lang-none prettyprint-override\"><code>15:25:54,015 INFO  [AppApplication] &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; loadLibraries() - ClassLoader: com.app.util.DynamicClassLoader@2f67b837  ... \n    \njava.lang.NoClassDefFoundError: org/app/plugin/AppCommandPlugin\n    at java.base/java.lang.ClassLoader.defineClass1(Native Method) \n    at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:1016) \n    at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:174) \n    at java.base/java.net.URLClassLoader.defineClass(URLClassLoader.java:550) \n    at java.base/java.net.URLClassLoader$1.run(URLClassLoader.java:458) \n    at java.base/java.net.URLClassLoader$1.run(URLClassLoader.java:452) \n    at java.base/java.security.AccessController.doPrivileged(Native Method) \n    at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:451) \n    at org.java.plugin.standard.StandardPluginClassLoader.loadLocalClass(StandardPluginClassLoader.java:395) \n    at org.java.plugin.standard.StandardPluginClassLoader.loadPluginClass(StandardPluginClassLoader.java:464) \n    at org.java.plugin.standard.StandardPluginClassLoader.loadClass(StandardPluginClassLoader.java:372) \n    at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521) \n    at org.java.plugin.standard.StandardPluginLifecycleHandler.createPluginInstance(StandardPluginLifecycleHandler.java:113) \n    at org.java.plugin.standard.StandardPluginManager.activatePlugin(StandardPluginManager.java:402) \n    at org.java.plugin.standard.StandardPluginManager.getPlugin(StandardPluginManager.java:217) \n    at org.app.command.AppApplication.getPlugin(AppApplication.java:253) \n    at org.app.command.AppApplication.execute(AppApplication.java:228) \n    at org.app.command.AppApplication.execute(AppApplication.java:221) \n    at org.app.command.AppApplication.startApplication(AppApplication.java:113) \n    at org.java.plugin.boot.Boot.boot(Boot.java:346) \n    at org.java.plugin.boot.Boot.main(Boot.java:243) \n    at org.app.plugin.boot.TPFBoot.main(TPFBoot.java:112)\n Caused by: java.lang.ClassNotFoundException: org.app.plugin.AppCommandPlugin \n    at org.java.plugin.standard.StandardPluginClassLoader.loadClass(StandardPluginClassLoader.java:378) \n    at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)\n    ... 22 more\n</code></pre>\n<p>When I add this jar in the manifest of my jar, it works. But I need to load at runtime since this java command line application is based on JPF and there are a lot of jars we need to load when we run the application jar which uses JPF.</p>\n<p>While checking further, noticed that pluginManager class is with another class loader:</p>\n<pre><code>16:57:14,000 INFO  [AppApplication] ############ pluginManager.getPlugin: jdk.internal.loader.ClassLoaders$AppClassLoader@799f7e29\n</code></pre>\n<p>This pluginManager instance is from the parent class available in jpf.jar which is defined in the compile-time jar dependency of my application jar manifest. So my application is running with class loader DynamicClassLoader and loads run time jars into that. But the dependency jar added in the manifest is using the default AppClassLoader which causes this unable to find my class.</p>\n<p>Anyone, please suggest a solution.</p>\n"
+}

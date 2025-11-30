@@ -1,0 +1,256 @@
+{
+  "tags" : [ "java", "excel", "apache-poi" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2589626,
+      "reputation" : 1335,
+      "user_id" : 2244608,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/e25612003729293dcd164eb2fee5355e?s=256&d=identicon&r=PG",
+      "display_name" : "Binayaka Chakraborty",
+      "link" : "https://stackoverflow.com/users/2244608/binayaka-chakraborty"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1394101963,
+    "post_id" : 22221700,
+    "comment_id" : 33739988,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "AFAIK, getCell always returns float values. Have you tried parsing to Integer and then doing Math.round() on the value?"
+  }, {
+    "owner" : {
+      "account_id" : 213468,
+      "reputation" : 110270,
+      "user_id" : 466862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Rotteveel",
+      "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1394102037,
+    "post_id" : 22221700,
+    "comment_id" : 33740046,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "All numeric values in Excel are (64 bit) doubles."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 350017,
+        "reputation" : 48546,
+        "user_id" : 685641,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/598aa6e391b96b1ec24f1c34b58edcd9?s=256&d=identicon&r=PG",
+        "display_name" : "Gagravarr",
+        "link" : "https://stackoverflow.com/users/685641/gagravarr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1423842493,
+      "post_id" : 22222325,
+      "comment_id" : 45325737,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Apache POI does have such a method though! It&#39;s <a href=\"http://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/DataFormatter.html#formatCellValue%28org.apache.poi.ss.usermodel.Cell%29\" rel=\"nofollow noreferrer\">DataFormatter.formatCellValue(Cell)</a>"
+    } ],
+    "owner" : {
+      "account_id" : 4128226,
+      "reputation" : 82,
+      "user_id" : 3386760,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/803d7247fcac9454001c8312447c0b52?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "jantonio.aguilera",
+      "link" : "https://stackoverflow.com/users/3386760/jantonio-aguilera"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1394103316,
+    "creation_date" : 1394103316,
+    "answer_id" : 22222325,
+    "question_id" : 22221700,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>POI should have a cell.getRawValueAsString() method, but AFAIK that's not the case. The displayed text you see in excel is the sum of value + format. So if you want to recover it \"as displayed\":</p>\n\n<ul>\n<li>Retrieve cell value from cell object</li>\n<li>Retrieve cell format using associated CellStyle.</li>\n<li>apply format to value using DataFormatter</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3309393,
+      "reputation" : 8627,
+      "user_id" : 2783244,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/V4exP.jpg?s=256",
+      "display_name" : "StoopidDonut",
+      "link" : "https://stackoverflow.com/users/2783244/stoopiddonut"
+    },
+    "is_accepted" : true,
+    "score" : 11,
+    "last_activity_date" : 1760091826,
+    "last_edit_date" : 1760091826,
+    "creation_date" : 1394103535,
+    "answer_id" : 22222425,
+    "question_id" : 22221700,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Change:</p>\n<pre class=\"lang-java prettyprint-override\"><code>System.out.println(resultRow.getCell(0));\n</code></pre>\n<p>To:</p>\n<pre class=\"lang-java prettyprint-override\"><code>System.out.println(new DataFormatter().formatCellValue(resultRow.getCell(0)));\n</code></pre>\n<p><strong>Explanation:</strong></p>\n<p>Apache POI provides for <a href=\"https://i.sstatic.net/ibM5W.png\" rel=\"nofollow noreferrer\"><code>DataFormatter</code></a> class as utility to leverage the format of the content <em>as it appears</em> in Excel. You can choose custom formats too, a simple example would be (cell is reference to your <code>XSSFCell</code> object):</p>\n<p><strong>Excel sheet looks like:</strong></p>\n<p><img src=\"https://i.sstatic.net/ibM5W.png\" alt=\"enter image description here\" /></p>\n<p><strong>Code:</strong></p>\n<pre class=\"lang-java prettyprint-override\"><code>System.out.println(new DataFormatter().formatCellValue(cell));\n</code></pre>\n<p>The above line would print:</p>\n<pre class=\"lang-none prettyprint-override\"><code>50%\n$ 1,200\n12/21/14\n9886605446\n</code></pre>\n<p>Whereas your normal print would interpret it differently:</p>\n<pre class=\"lang-none prettyprint-override\"><code>0.5\n1200.0\n21-Dec-2014\n9.886605446E9\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 350017,
+        "reputation" : 48546,
+        "user_id" : 685641,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/598aa6e391b96b1ec24f1c34b58edcd9?s=256&d=identicon&r=PG",
+        "display_name" : "Gagravarr",
+        "link" : "https://stackoverflow.com/users/685641/gagravarr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1423842541,
+      "post_id" : 22222559,
+      "comment_id" : 45325765,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If you look at the <a href=\"https://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/Cell.html#setCellType%28int%29\" rel=\"nofollow noreferrer\">Apache POI Javadocs for setCellType</a>, they&#39;re very explicit that this is <i>not</i> the right way to do that!"
+    }, {
+      "owner" : {
+        "account_id" : 2041227,
+        "reputation" : 95,
+        "user_id" : 1822361,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/6c8ab0c6c8013b4b03b5e7c626af5bb8?s=256&d=identicon&r=PG",
+        "display_name" : "Bogdan Niculeasa",
+        "link" : "https://stackoverflow.com/users/1822361/bogdan-niculeasa"
+      },
+      "reply_to_user" : {
+        "account_id" : 350017,
+        "reputation" : 48546,
+        "user_id" : 685641,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/598aa6e391b96b1ec24f1c34b58edcd9?s=256&d=identicon&r=PG",
+        "display_name" : "Gagravarr",
+        "link" : "https://stackoverflow.com/users/685641/gagravarr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1424110043,
+      "post_id" : 22222559,
+      "comment_id" : 45408246,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes, this is not the right way, but is a way;) A simple to use one. Make it work and after that make it clean ;)"
+    } ],
+    "owner" : {
+      "account_id" : 2041227,
+      "reputation" : 95,
+      "user_id" : 1822361,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6c8ab0c6c8013b4b03b5e7c626af5bb8?s=256&d=identicon&r=PG",
+      "display_name" : "Bogdan Niculeasa",
+      "link" : "https://stackoverflow.com/users/1822361/bogdan-niculeasa"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1760091867,
+    "last_edit_date" : 1760091867,
+    "creation_date" : 1394103866,
+    "answer_id" : 22222559,
+    "question_id" : 22221700,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Apache POI interprets your numerical cell values as double, in order to avoid this, try to set the cell type. Maybe this will help you:</p>\n<pre class=\"lang-java prettyprint-override\"><code>for (int i = 1; i &lt;= iRowCount; i++) {\n    Row resultRow = xssfResultSheet.getRow(i);\n    resultRow.getCell(i).setCellType(Cell.CELL_TYPE_STRING);\n    System.out.println(Integer.parseInt(resultRow.getCell(0).toString()));\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3658649,
+        "reputation" : 1601,
+        "user_id" : 3049036,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://i.sstatic.net/lbHwY.jpg?s=256",
+        "display_name" : "Suresh",
+        "link" : "https://stackoverflow.com/users/3049036/suresh"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1532340638,
+      "post_id" : 28499762,
+      "comment_id" : 89920844,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This works flawlessly when the cell value to be taken as int"
+    }, {
+      "owner" : {
+        "account_id" : 1262326,
+        "reputation" : 1436,
+        "user_id" : 1220291,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/fa34b6c967a1d055d89997cb90423320?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Nagarajan S R",
+        "link" : "https://stackoverflow.com/users/1220291/nagarajan-s-r"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1575525019,
+      "post_id" : 28499762,
+      "comment_id" : 104597574,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Just casting the returned value to int will work.                                                     (int) row.getCell(&lt;CellPostion&gt;).getNumericCellValue()"
+    } ],
+    "owner" : {
+      "account_id" : 3725061,
+      "reputation" : 945,
+      "user_id" : 3099168,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/zcDIi.jpg?s=256",
+      "display_name" : "ramakrishna",
+      "link" : "https://stackoverflow.com/users/3099168/ramakrishna"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1423830932,
+    "creation_date" : 1423830932,
+    "answer_id" : 28499762,
+    "question_id" : 22221700,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>try this,</p>\n\n<pre><code>System.out.println((int)Math.round(cell.getNumericCellValue()));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4937049,
+      "reputation" : 11,
+      "user_id" : 3974865,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ce7a0238ade49a93de342b4bceb7610b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Hamid Raza Abdul",
+      "link" : "https://stackoverflow.com/users/3974865/hamid-raza-abdul"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1524605396,
+    "last_edit_date" : 1524605396,
+    "creation_date" : 1524604262,
+    "answer_id" : 50010775,
+    "question_id" : 22221700,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>See if this helps:</p>\n\n<p>Try parseInt, after converting the cell's value to string using toString. </p>\n\n<pre><code>Cell cell=row.getCell(n);\n</code></pre>\n\n<p>First, convert cell's value to String using toString()</p>\n\n<pre><code>String cell_value = cell.toString()\n</code></pre>\n\n<p>Use parseInt to convert the same into integer:</p>\n\n<pre><code>int waitTime = Integer.parseInt(cell_value);\n</code></pre>\n\n<p>Now test whether the parseInt has done it's job or not.</p>\n\n<pre><code>System.out.print(waitTime+1);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4129306,
+    "reputation" : 83,
+    "user_id" : 3387609,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/674e3e13d23c9473cddd4dc69b56e950?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3387609",
+    "link" : "https://stackoverflow.com/users/3387609/user3387609"
+  },
+  "is_answered" : true,
+  "view_count" : 18069,
+  "accepted_answer_id" : 22222425,
+  "answer_count" : 5,
+  "score" : 4,
+  "last_activity_date" : 1760091867,
+  "creation_date" : 1394101779,
+  "last_edit_date" : 1760091749,
+  "question_id" : 22221700,
+  "link" : "https://stackoverflow.com/questions/22221700/retrieve-integer-values-from-excel-using-java",
+  "title" : "Retrieve integer values from Excel using Java",
+  "body" : "<p>My aim is to read an Excel file using POI and print the values present in it. If the value is 5, then my output must be 5, but it is returning as 5.0.</p>\n<p>Below is the code that I have tried:</p>\n<pre class=\"lang-java prettyprint-override\"><code>FileInputStream fileInputStream = null;\nXSSFSheet xssfResultSheet = null;\nString filePath = &quot;C:\\\\MyXcel.xlsx&quot;;\nfileInputStream = new FileInputStream(new File(filePath));\nXSSFWorkbook workbook = null;\nworkbook = new XSSFWorkbook(fileInputStream);\nxssfResultSheet = workbook.getSheet(&quot;Sheet1&quot;);\nint iRowCount = xssfResultSheet.getLastRowNum();\n\nfor (int i = 1; i &lt;= iRowCount; i++) {\n    Row resultRow = xssfResultSheet.getRow(i);\n    System.out.println(resultRow.getCell(0));\n}\n</code></pre>\n<p>My Excel sheet has values 1, 2, 3 but my output is 1.0, 2.0, 3.0. Instead my output should also be 1, 2, 3.</p>\n"
+}

@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "random", "thread-local" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 431570,
+      "reputation" : 33088,
+      "user_id" : 815724,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/18e378d17d0ad50e9feee63ff98f54cf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Peter O.",
+      "link" : "https://stackoverflow.com/users/815724/peter-o"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1665110852,
+    "post_id" : 73980550,
+    "comment_id" : 130627874,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Related (not intended to answer this question): <a href=\"https://stackoverflow.com/questions/15765399/should-i-prefer-threadlocalrandom-over-threadlocalrandom?r=SearchResults&amp;s=1%7C105.0149\" title=\"should i prefer threadlocalrandom over threadlocalrandom\">stackoverflow.com/questions/15765399/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 43365398,
+      "reputation" : 31,
+      "user_id" : 31209962,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a763e54e14030a0262daa2d2c63ed1a6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "eyesoflight",
+      "link" : "https://stackoverflow.com/users/31209962/eyesoflight"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1759645371,
+    "creation_date" : 1759645371,
+    "answer_id" : 79782819,
+    "question_id" : 73980550,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Jose Paumard's warning about <code>ThreadLocal</code> being &quot;evil&quot; with virtual threads refers to arbitrary <code>ThreadLocal</code> usage, which would cause memory bloat with millions of virtual threads. But <code>ThreadLocalRandom</code> is safe. Each virtual thread gets one tiny <code>ThreadLocalRandom</code> instance (just 16 bytes of state), and it avoids contention (unlike shared <code>Random</code>), and has lower overhead than creating new <code>Random</code> instances repeatedly (as your tests show: 60MB vs 323MB).</p>\n<p>Using <code>new Random()</code> in tight loops (like your <code>useNewRandom</code> test) creates massive GC pressure. Even <code>ReUseRandom</code> (108MB) underperforms vs <code>ThreadLocalRandom</code> (60MB) because it serializes access via synchronization.</p>\n<p>Keep using <code>ThreadLocalRandom.current()</code>. It's the correct choice for virtual threads. Your tests accidentally prove this: the lowest memory usage comes from reusing <code>ThreadLocalRandom</code> (60MB), while <code>new Random()</code> is 5x worse.</p>\n<pre><code>void generateRandoms() {\n    // Reuse the thread-local instance (no per-call overhead)\n    var random = ThreadLocalRandom.current();\n    IntStream.range(0, 100).forEach(j -&gt; \n        random.nextFloat()\n    );\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1927984,
+    "reputation" : 753,
+    "user_id" : 1738007,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/PqYoh.jpg?s=256",
+    "display_name" : "Tugalsan Karabacak",
+    "link" : "https://stackoverflow.com/users/1738007/tugalsan-karabacak"
+  },
+  "is_answered" : true,
+  "view_count" : 462,
+  "answer_count" : 1,
+  "score" : 8,
+  "last_activity_date" : 1759645371,
+  "creation_date" : 1665094712,
+  "last_edit_date" : 1665129545,
+  "question_id" : 73980550,
+  "link" : "https://stackoverflow.com/questions/73980550/does-threadlocalrandom-proper-to-use-in-virtualthread-in-java-loom",
+  "title" : "Does ThreadLocalRandom proper to use in VirtualThread in Java Loom",
+  "body" : "<p>In <a href=\"https://www.youtube.com/watch?v=_fRN7tpLyPk\" rel=\"noreferrer\">video</a> [1:23] Jose Paumard talks about why using ThreadLocal is evil; especially, if the code creates countless (virtual) threads.<br></p>\n<ul>\n<li>Can we say the same thing for ThreadLocalRandom?<br></li>\n<li>Should people use Random over ThreadLocalRandom in (virtual) threads? <br></li>\n<li>Or is it just name similarity that we should stick with ThreadLocalRandom?<br>\n<br>\n<br>\nAdditional notes...<br>\nAccording to <a href=\"https://github.com/tugalsan/com.tugalsan.tst.thread\" rel=\"noreferrer\">simple tests</a>, Both Random and ThreadLocalRandom works:</li>\n</ul>\n<pre><code>public static void threadLocalRandomTest() {\n        enum TestType {\n            useNewThreadLocalRandom, useNewRandom,\n            ReUseThreadLocal, ReUseRandom,\n            ReUseGlobalRandom,\n            customThreadLocalRandom, customRandom\n        }\n        var testType = TestType.useNewThreadLocalRandom;\n        var rg = new Random();\n        IntStream.range(0, 1_000_000).forEach(i -&gt; {\n            if (testType == TestType.useNewThreadLocalRandom) {//63mb-&gt;60mb\n                IntStream.range(0, 100).forEach(j -&gt; {\n                    ThreadLocalRandom.current().nextFloat(1);\n                });\n            }\n            if (testType == TestType.useNewRandom) {//326mb-&gt;323mb\n                IntStream.range(0, 100).forEach(j -&gt; {\n                    new Random().nextFloat(1);\n                });\n            }\n            if (testType == TestType.ReUseThreadLocal) {//65mb-&gt;61mb\n                var r = ThreadLocalRandom.current();\n                IntStream.range(0, 100).forEach(j -&gt; {\n                    r.nextFloat(1);\n                });\n            }\n            if (testType == TestType.ReUseRandom) {//111mb-&gt;108mb\n                var r = new Random();\n                IntStream.range(0, 100).forEach(j -&gt; {\n                    r.nextFloat(1);\n                });\n            }\n            if (testType == TestType.ReUseGlobalRandom) {//64mb-&gt;61mb\n                IntStream.range(0, 100).forEach(j -&gt; {\n                    rg.nextFloat(1);\n                });\n            }\n        });\n    }\n</code></pre>\n"
+}

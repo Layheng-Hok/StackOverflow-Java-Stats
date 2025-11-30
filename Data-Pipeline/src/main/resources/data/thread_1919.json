@@ -1,0 +1,340 @@
+{
+  "tags" : [ "java", "multithreading", "concurrency", "executorservice", "threadpoolexecutor" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 39563,
+        "reputation" : 4068,
+        "user_id" : 114194,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://www.gravatar.com/avatar/33470dd59cd4fc37d96a9ac2bd45c3da?s=256&d=identicon&r=PG",
+        "display_name" : "hakish",
+        "link" : "https://stackoverflow.com/users/114194/hakish"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1244118161,
+      "post_id" : 949463,
+      "comment_id" : 758226,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "yes i have gone through the docs..the problem is...fixedThreadPool is causing a out of memory error @ 3 threads.. where as cachedPool is internally creating only a single thread..on increasing the heap size  i am getting the same performance for both..is there anything else i am missing!!"
+    }, {
+      "owner" : {
+        "account_id" : 14954,
+        "reputation" : 48295,
+        "user_id" : 31136,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/2c4d219e169610bd0ab7a4bcf5762e3a?s=256&d=identicon&r=PG",
+        "display_name" : "bruno conde",
+        "link" : "https://stackoverflow.com/users/31136/bruno-conde"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1244120783,
+      "post_id" : 949463,
+      "comment_id" : 758503,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Are you providing any Threadfactory to the ThreadPool? My guess is that might be storing some state in the threads that is not being garbage collected. If not, maybe your program is running so close to the heap limit size that with the creation of 3 threads it causes an OutOfMemory. Also, if cachedPool is internally creating only a single thread then this possible indicates that your tasks are running syncronhized."
+    }, {
+      "owner" : {
+        "account_id" : 2739457,
+        "reputation" : 7886,
+        "user_id" : 2361308,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/99484dc9d142352778e01ac0c4948c1d?s=256&d=identicon&r=PG",
+        "display_name" : "Hearen",
+        "link" : "https://stackoverflow.com/users/2361308/hearen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1525923977,
+      "post_id" : 949463,
+      "comment_id" : 87548298,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@brunoconde Just as @Louis F. points out the <code>newCachedThreadPool</code> might cause some <b>serious</b> issues because you leave all control to the <code>thread pool</code> and when the <b>service</b> is working with others in the same <b>host</b>, which might cause the others crash due to long-time CPU waiting. So I think <code>newFixedThreadPool</code> can be more secure in this kind of scenario. Also this <a href=\"https://stackoverflow.com/questions/29620591/newfixedthreadpool-vs-newcachedthreadpool\">post</a> clarifies the most outstanding differences between them."
+    } ],
+    "owner" : {
+      "account_id" : 14954,
+      "reputation" : 48295,
+      "user_id" : 31136,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/2c4d219e169610bd0ab7a4bcf5762e3a?s=256&d=identicon&r=PG",
+      "display_name" : "bruno conde",
+      "link" : "https://stackoverflow.com/users/31136/bruno-conde"
+    },
+    "is_accepted" : true,
+    "score" : 239,
+    "last_activity_date" : 1469109359,
+    "last_edit_date" : 1469109359,
+    "creation_date" : 1244107525,
+    "answer_id" : 949463,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think the docs explain the difference and usage of these two functions pretty well: </p>\n\n<p><a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool%28int%29\" rel=\"noreferrer\"><code>newFixedThreadPool</code></a></p>\n\n<blockquote>\n  <p>Creates a thread pool that reuses a\n  fixed number of threads operating off\n  a shared unbounded queue. At any\n  point, at most nThreads threads will\n  be active processing tasks. If\n  additional tasks are submitted when\n  all threads are active, they will wait\n  in the queue until a thread is\n  available. If any thread terminates\n  due to a failure during execution\n  prior to shutdown, a new one will take\n  its place if needed to execute\n  subsequent tasks. The threads in the\n  pool will exist until it is explicitly\n  shutdown. </p>\n</blockquote>\n\n<p><a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool()\" rel=\"noreferrer\"><code>newCachedThreadPool</code></a></p>\n\n<blockquote>\n  <p>Creates a thread pool that creates new\n  threads as needed, but will reuse\n  previously constructed threads when\n  they are available. These pools will\n  typically improve the performance of\n  programs that execute many short-lived\n  asynchronous tasks. Calls to execute\n  will reuse previously constructed\n  threads if available. If no existing\n  thread is available, a new thread will\n  be created and added to the pool.\n  Threads that have not been used for\n  sixty seconds are terminated and\n  removed from the cache. Thus, a pool\n  that remains idle for long enough will\n  not consume any resources. Note that\n  pools with similar properties but\n  different details (for example,\n  timeout parameters) may be created\n  using ThreadPoolExecutor constructors.</p>\n</blockquote>\n\n<p>In terms of resources, the <code>newFixedThreadPool</code> will keep all the threads running until they are explicitly terminated. In the <code>newCachedThreadPool</code> Threads that have not been used for sixty seconds are terminated and removed from the cache.</p>\n\n<p>Given this, the resource consumption will depend very much in the situation. For instance, If you have a huge number of long running tasks I would suggest the <code>FixedThreadPool</code>. As for the <code>CachedThreadPool</code>, the docs say that \"These pools will typically improve the performance of programs that execute many short-lived asynchronous tasks\".</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1934485,
+      "reputation" : 664,
+      "user_id" : 1743094,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/92db7ae7bef3a1c7848112c2cd70773a?s=256&d=identicon&r=PG",
+      "display_name" : "Dhanaraj Durairaj",
+      "link" : "https://stackoverflow.com/users/1743094/dhanaraj-durairaj"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1442318647,
+    "last_edit_date" : 1442318647,
+    "creation_date" : 1399574599,
+    "answer_id" : 23550046,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You must use newCachedThreadPool only when you have short-lived asynchronous tasks as stated in Javadoc, if you submit tasks which takes longer time to process, you will end up creating too many threads. You may hit 100% CPU if you submit long running tasks at faster rate to newCachedThreadPool (<a href=\"http://rashcoder.com/be-careful-while-using-executors-newcachedthreadpool/\" rel=\"nofollow\">http://rashcoder.com/be-careful-while-using-executors-newcachedthreadpool/</a>). </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6623450,
+      "reputation" : 629,
+      "user_id" : 5114375,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-lhByhQkGAg4/AAAAAAAAAAI/AAAAAAAAALg/LCLVLYDIkEc/s256-rj/photo.jpg",
+      "display_name" : "Prashant Gautam",
+      "link" : "https://stackoverflow.com/users/5114375/prashant-gautam"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1473075805,
+    "last_edit_date" : 1473075805,
+    "creation_date" : 1440489147,
+    "answer_id" : 32198421,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>That’s right, <code>Executors.newCachedThreadPool()</code> isn't a great choice for server code that's servicing multiple clients and concurrent requests.</p>\n\n<p>Why? There are basically two (related) problems with it:</p>\n\n<ol>\n<li><p>It's unbounded, which means that you're opening the door for anyone to cripple your JVM by simply injecting more work into the service (DoS attack). Threads consume a non-negligible amount of memory and also increase memory consumption based on their work-in-progress, so it's quite easy to topple a server this way (unless you have other circuit-breakers in place).</p></li>\n<li><p>The unbounded problem is exacerbated by the fact that the Executor is fronted by a <code>SynchronousQueue</code> which means there's a direct handoff between the task-giver and the thread pool. Each new task will create a new thread if all existing threads are busy. This is generally a bad strategy for server code. When the CPU gets saturated, existing tasks take longer to finish. Yet more tasks are being submitted and more threads created, so tasks take longer and longer to complete. When the CPU is saturated, more threads is definitely not what the server needs.</p></li>\n</ol>\n\n<p>Here are my recommendations:</p>\n\n<p>Use a fixed-size thread pool <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-\" rel=\"noreferrer\">Executors.newFixedThreadPool</a> or a  <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html\" rel=\"noreferrer\">ThreadPoolExecutor.</a> with a set maximum number of threads;</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 230261,
+        "reputation" : 791,
+        "user_id" : 493759,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c28651cc42b824155c6bc9a15a300fd8?s=256&d=identicon&r=PG",
+        "display_name" : "Agoston Horvath",
+        "link" : "https://stackoverflow.com/users/493759/agoston-horvath"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1460117584,
+      "post_id" : 32426412,
+      "comment_id" : 60606016,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Exactly, a cached thread executor with a sane upper limit and say, 5-10 minutes of idle reaping is just perfect for most occasions."
+    }, {
+      "owner" : {
+        "account_id" : 1088735,
+        "reputation" : 4596,
+        "user_id" : 1083855,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/93fa537cb535181c440f752815a244d8?s=256&d=identicon&r=PG",
+        "display_name" : "tigrou",
+        "link" : "https://stackoverflow.com/users/1083855/tigrou"
+      },
+      "reply_to_user" : {
+        "account_id" : 230261,
+        "reputation" : 791,
+        "user_id" : 493759,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c28651cc42b824155c6bc9a15a300fd8?s=256&d=identicon&r=PG",
+        "display_name" : "Agoston Horvath",
+        "link" : "https://stackoverflow.com/users/493759/agoston-horvath"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1706993294,
+      "post_id" : 32426412,
+      "comment_id" : 137393106,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@AgostonHorvath : using SynchronousQueue and a upper limit will result RejectedExecutionException if some tasks are submitted to the thread pool while all threads are already active (tasks will not be queued as someone would expect)."
+    }, {
+      "owner" : {
+        "account_id" : 85671,
+        "reputation" : 42266,
+        "user_id" : 238704,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/VgOZI.png?s=256",
+        "display_name" : "President James K. Polk",
+        "link" : "https://stackoverflow.com/users/238704/president-james-k-polk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1710085819,
+      "post_id" : 32426412,
+      "comment_id" : 137751378,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@bobo: Please stop making edits until you learn what kinds of edits are appropriate. Look for information on meta.stackoverflow.com on how to make good edits."
+    } ],
+    "owner" : {
+      "account_id" : 3127182,
+      "reputation" : 7259,
+      "user_id" : 2645833,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://www.gravatar.com/avatar/7e1b623528d25dd53603e5800e55e983?s=256&d=identicon&r=PG",
+      "display_name" : "Manish Kumar",
+      "link" : "https://stackoverflow.com/users/2645833/manish-kumar"
+    },
+    "is_accepted" : false,
+    "score" : 28,
+    "last_activity_date" : 1657735322,
+    "last_edit_date" : 1657735322,
+    "creation_date" : 1441561260,
+    "answer_id" : 32426412,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you see the code in the grepcode, you will see, they are calling <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html\" rel=\"noreferrer\">ThreadPoolExecutor.</a> internally and setting their properties. You can create your one to have a better control of your requirement.</p>\n<pre><code>public static ExecutorService newFixedThreadPool(int nThreads) {\n   return new ThreadPoolExecutor(nThreads, nThreads,0L, TimeUnit.MILLISECONDS,\nnew LinkedBlockingQueue&lt;Runnable&gt;());\n}\n\npublic static ExecutorService newCachedThreadPool() {\n        return new ThreadPoolExecutor(0, Integer.MAX_VALUE,\n                                      60L, TimeUnit.SECONDS,\n                                      new SynchronousQueue&lt;Runnable&gt;());\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6453072,
+      "reputation" : 39149,
+      "user_id" : 4999394,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+      "display_name" : "Ravindra babu",
+      "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1683541461,
+    "last_edit_date" : 1683541461,
+    "creation_date" : 1448729513,
+    "answer_id" : 33973860,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you are not worried about an unbounded queue of <em>Callable/Runnable</em> tasks, you can use one of them. As suggested by bruno, I too prefer <code>newFixedThreadPool</code> to <code>newCachedThreadPool</code> over these two.</p>\n<p>But unbounded queue size is always dangerous. If you have some unexpected turbulence in the system and current threads are stuck, the queue size is going to increase and it may go out of bounds by causing OutOfMemory error OR degraded performance in the system.</p>\n<p>But <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html\" rel=\"nofollow noreferrer\">ThreadPoolExecutor</a>   provides more flexible features compared to either <code>newFixedThreadPool</code> or <code>newCachedThreadPool</code>. It provides more granular control on various attributes.</p>\n<pre><code>ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, \nTimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory,\nRejectedExecutionHandler handler)\n</code></pre>\n<p><em>Advantages:</em></p>\n<ol>\n<li><p>You have full control of <em>BlockingQueue</em> size. It's not un-bounded, unlike the earlier two options. I won't get an out of memory error due to a huge pile-up of pending Callable/Runnable tasks when there is unexpected turbulence in the system.</p>\n</li>\n<li><p>You can implement custom <em>Rejection handling</em> policy OR use one of the policies:</p>\n<blockquote>\n<ol>\n<li>In the default <code>ThreadPoolExecutor.AbortPolicy</code>, the handler throws a runtime RejectedExecutionException upon rejection.</li>\n</ol>\n</blockquote>\n<blockquote>\n<ol start=\"2\">\n<li>In <code>ThreadPoolExecutor.CallerRunsPolicy</code>, the thread that invokes execute itself runs the task. This provides a simple feedback control mechanism that will slow down the rate that new tasks are submitted.</li>\n</ol>\n</blockquote>\n<blockquote>\n<ol start=\"3\">\n<li>In <code>ThreadPoolExecutor.DiscardPolicy</code>, a task that cannot be executed is simply dropped.</li>\n</ol>\n</blockquote>\n<blockquote>\n<ol start=\"4\">\n<li>In <code>ThreadPoolExecutor.DiscardOldestPolicy</code>, if the executor is not shut down, the task at the head of the work queue is dropped, and then execution is retried (which can fail again, causing this to be repeated.)</li>\n</ol>\n</blockquote>\n</li>\n<li><p>You can implement a custom Thread factory for the below use cases:</p>\n<blockquote>\n<p>By supplying a different ThreadFactory, you can alter the thread's name, thread group, priority, daemon status, etc</p>\n</blockquote>\n</li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2728592,
+      "reputation" : 2068,
+      "user_id" : 2352924,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/e06b60059a7df0fe466187c5911a15fa?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Louis F.",
+      "link" : "https://stackoverflow.com/users/2352924/louis-f"
+    },
+    "is_accepted" : false,
+    "score" : 95,
+    "last_activity_date" : 1450171304,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1450171304,
+    "answer_id" : 34285268,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Just to complete the other answers, I would like to quote Effective Java, 2nd Edition, by Joshua Bloch, chapter 10, Item 68 :</p>\n<blockquote>\n<p>&quot;Choosing the executor service for a particular application can be tricky. If you’re writing a <strong>small program</strong>, or a <strong>lightly loaded server</strong>, using <strong>Executors.new- CachedThreadPool is</strong> generally a <strong>good choice</strong>, as it demands no configuration and generally “does the right thing.” But a cached thread pool is <strong>not a good choice</strong> for a <strong>heavily loaded production server</strong>!</p>\n<p>In a <strong>cached thread pool</strong>, <strong>submitted tasks are not queued</strong> but immediately handed off to a thread for execution. <strong>If no threads are available, a new one is created</strong>. If a server is so heavily loaded that all of its CPUs are fully utilized, and more tasks arrive, more threads will be created, which will only make matters worse.</p>\n<p>Therefore, <strong>in a heavily loaded production server</strong>, you are much better off using <strong>Executors.newFixedThreadPool</strong>, which gives you a pool with a fixed number of threads, or using the ThreadPoolExecutor class directly, <strong>for maximum control.</strong>&quot;</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2188097,
+      "reputation" : 77,
+      "user_id" : 1935980,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e6131c702a4ecbc661b7d937f6b4552a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Mike",
+      "link" : "https://stackoverflow.com/users/1935980/mike"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1520889538,
+    "creation_date" : 1520889538,
+    "answer_id" : 49244551,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I do some quick tests and have the following findings:</p>\n\n<p>1) if using SynchronousQueue:</p>\n\n<p>After the threads reach the maximum size, any new work will be rejected with the exception like below.</p>\n\n<blockquote>\n  <p>Exception in thread \"main\" java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.FutureTask@3fee733d rejected from java.util.concurrent.ThreadPoolExecutor@5acf9800[Running, pool size = 3, active threads = 3, queued tasks = 0, completed tasks = 0]</p>\n  \n  <p>at java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2047)</p>\n</blockquote>\n\n<p>2) if using LinkedBlockingQueue:</p>\n\n<p>The threads never increase from minimum size to maximum size, meaning the thread pool is fixed size as the minimum size.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1227430,
+        "reputation" : 30414,
+        "user_id" : 1192728,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/481baa815383ed3970e726842195f73f?s=256&d=identicon&r=PG",
+        "display_name" : "hqt",
+        "link" : "https://stackoverflow.com/users/1192728/hqt"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1605947388,
+      "post_id" : 58771345,
+      "comment_id" : 114813470,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks for this post. I hope this post will have more votes so it can go up ^^^ Understand the mechanism behind always better when taking a decision."
+    }, {
+      "owner" : {
+        "account_id" : 6608940,
+        "reputation" : 730,
+        "user_id" : 5483731,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/c7804d31372ede1ab6c4c3a6b850fdef?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "linuxNoob",
+        "link" : "https://stackoverflow.com/users/5483731/linuxnoob"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1664852027,
+      "post_id" : 58771345,
+      "comment_id" : 130560028,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great explanation. Can you give some examples of short-running tasks? I&#39;m thinking that making network/REST calls to APIs or database retrieval will not come under them?"
+    } ],
+    "owner" : {
+      "account_id" : 1477692,
+      "reputation" : 48419,
+      "user_id" : 1393484,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/nJ3m0.jpg?s=256",
+      "display_name" : "Ali Dehghani",
+      "link" : "https://stackoverflow.com/users/1393484/ali-dehghani"
+    },
+    "is_accepted" : false,
+    "score" : 35,
+    "last_activity_date" : 1573235161,
+    "last_edit_date" : 1573235161,
+    "creation_date" : 1573234480,
+    "answer_id" : 58771345,
+    "question_id" : 949355,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <a href=\"https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ThreadPoolExecutor.html\" rel=\"noreferrer\"><code>ThreadPoolExecutor</code></a> class is the base implementation for the executors that are returned from many of the <code>Executors</code> factory methods. So let's approach <em>Fixed</em> and <em>Cached</em> thread pools from <code>ThreadPoolExecutor</code>'s perspective.</p>\n\n<h2>ThreadPoolExecutor</h2>\n\n<p>The <a href=\"https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ThreadPoolExecutor.html#ThreadPoolExecutor(int,%20int,%20long,%20java.util.concurrent.TimeUnit,%20java.util.concurrent.BlockingQueue,%20java.util.concurrent.ThreadFactory,%20java.util.concurrent.RejectedExecutionHandler)\" rel=\"noreferrer\">main constructor</a> of this class looks like this:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public ThreadPoolExecutor(\n                  int corePoolSize,\n                  int maximumPoolSize,\n                  long keepAliveTime,\n                  TimeUnit unit,\n                  BlockingQueue&lt;Runnable&gt; workQueue,\n                  ThreadFactory threadFactory,\n                  RejectedExecutionHandler handler\n)\n</code></pre>\n\n<h2>Core Pool Size</h2>\n\n<p><strong>The <code>corePoolSize</code> determines the minimum size of the target thread pool.</strong> The implementation would maintain a pool of that size even if there are no tasks to execute.</p>\n\n<h2>Maximum Pool Size</h2>\n\n<p><strong>The <code>maximumPoolSize</code> is the maximum number of threads that can be active at once.</strong> </p>\n\n<p>After the thread pool grows and becomes bigger than the <code>corePoolSize</code> threshold, the executor can terminate idle threads and reach to the <code>corePoolSize</code> again.\nIf <code>allowCoreThreadTimeOut</code> is true, then the executor can even terminate core pool threads if they were idle more than <code>keepAliveTime</code> threshold.</p>\n\n<p>So the bottom line is if threads remain idle more than <code>keepAliveTime</code> threshold, they may get terminated since there is no demand for them.</p>\n\n<h2>Queuing</h2>\n\n<p><strong>What happens when a new task comes in and all core threads are occupied?</strong> The new tasks will be queued inside that <code>BlockingQueue&lt;Runnable&gt;</code> instance. When a thread becomes free, one of those queued tasks can be processed.</p>\n\n<p>There are different implementations of the <code>BlockingQueue</code> interface in Java, so we can implement different queuing approaches like:</p>\n\n<ol>\n<li><p><strong>Bounded Queue</strong>: New tasks would be queued inside a bounded task queue.</p></li>\n<li><p><strong>Unbounded Queue</strong>: New tasks would be queued inside an unbounded task queue. So this queue can grow as much as the heap size allows.</p></li>\n<li><p><strong>Synchronous Handoff</strong>: We can also use the <code>SynchronousQueue</code> to queue the new tasks. In that case, when queuing a new task, another thread must already be waiting for that task.</p></li>\n</ol>\n\n<h2>Work Submission</h2>\n\n<p>Here's how the <code>ThreadPoolExecutor</code> executes a new task:</p>\n\n<ol>\n<li>If fewer than <code>corePoolSize</code> threads are running, tries to start a\nnew thread with the given task as its first job.</li>\n<li>Otherwise, it tries to enqueue the new task using the\n<code>BlockingQueue#offer</code> method. The <code>offer</code> method won't block if the queue is full and immediately returns <code>false</code>.</li>\n<li><strong>If it fails to queue the new task (i.e. <code>offer</code> returns <code>false</code>), then it tries to add a new thread to the thread pool with this task as its first job.</strong></li>\n<li>If it fails to add the new thread, then the executor is either shut down or saturated. Either way, the new task would be rejected using the provided <code>RejectedExecutionHandler</code>.</li>\n</ol>\n\n<p><strong>The main difference between the fixed and cached thread pools boils down to these three factors:</strong></p>\n\n<ol>\n<li>Core Pool Size</li>\n<li>Maximum Pool Size</li>\n<li>Queuing</li>\n</ol>\n\n<pre>\n\n+-----------+-----------+-------------------+---------------------------------+\n| Pool Type | Core Size |    Maximum Size   |         Queuing Strategy        |\n+-----------+-----------+-------------------+---------------------------------+\n|   Fixed   | n (fixed) |     n (fixed)     | Unbounded `LinkedBlockingQueue` |\n+-----------+-----------+-------------------+---------------------------------+\n|   Cached  |     0     | Integer.MAX_VALUE |        `SynchronousQueue`       |\n+-----------+-----------+-------------------+---------------------------------+\n</pre>\n\n<p><hr></p>\n\n<h2>Fixed Thread Pool</h2>\n\n<p><hr>\nHere's how the <code>Excutors.newFixedThreadPool(n)</code> works:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public static ExecutorService newFixedThreadPool(int nThreads) {\n    return new ThreadPoolExecutor(nThreads, nThreads,\n                                  0L, TimeUnit.MILLISECONDS,\n                                  new LinkedBlockingQueue&lt;Runnable&gt;());\n}\n</code></pre>\n\n<p>As you can see:</p>\n\n<ul>\n<li>The thread pool size is fixed. </li>\n<li>If there is high demand, it won't grow.</li>\n<li>If threads are idle for quite some time, it won't shrink.</li>\n<li>Suppose all those threads are occupied with some long-running tasks and the arrival rate is still pretty high. Since the executor is using an unbounded queue, it may consume a huge part of the heap. Being unfortunate enough, we may experience an <code>OutOfMemoryError</code>.</li>\n</ul>\n\n<blockquote>\n  <p>When should I use one or the other? Which strategy is better in terms of resource utilization?</p>\n</blockquote>\n\n<p><strong>A fixed-size thread pool seems to be a good candidate when we're going to limit the number of concurrent tasks for resource management purposes</strong>. </p>\n\n<p>For example, if we're going to use an executor to handle web server requests, a fixed executor can handle the request bursts more reasonably. </p>\n\n<p><strong>For even better resource management, it's highly recommended to create a custom <code>ThreadPoolExecutor</code> with a bounded <code>BlockingQueue&lt;T&gt;</code> implementation coupled with reasonable <code>RejectedExecutionHandler</code>.</strong></p>\n\n<p><hr></p>\n\n<h2>Cached Thread Pool</h2>\n\n<hr>\n\n<p>Here's how the <code>Executors.newCachedThreadPool()</code> works:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public static ExecutorService newCachedThreadPool() {\n    return new ThreadPoolExecutor(0, Integer.MAX_VALUE,\n                                  60L, TimeUnit.SECONDS,\n                                  new SynchronousQueue&lt;Runnable&gt;());\n}\n</code></pre>\n\n<p>As you can see:</p>\n\n<ul>\n<li>The thread pool can grow from zero threads to <code>Integer.MAX_VALUE</code>. Practically, the thread pool is unbounded.</li>\n<li>If any thread is idle for more than 1 minute, it may get terminated. So the pool can shrink if threads remain too much idle.</li>\n<li>If all allocated threads are occupied while a new task comes in, then it creates a new thread, as offering a new task to a <code>SynchronousQueue</code> always fails when there is no one on the other end to accept it! </li>\n</ul>\n\n<blockquote>\n  <p>When should I use one or the other? Which strategy is better in terms of resource utilization?</p>\n</blockquote>\n\n<p>Use it when you have a lot of predictable short-running tasks.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 39563,
+    "reputation" : 4068,
+    "user_id" : 114194,
+    "user_type" : "registered",
+    "accept_rate" : 70,
+    "profile_image" : "https://www.gravatar.com/avatar/33470dd59cd4fc37d96a9ac2bd45c3da?s=256&d=identicon&r=PG",
+    "display_name" : "hakish",
+    "link" : "https://stackoverflow.com/users/114194/hakish"
+  },
+  "is_answered" : true,
+  "view_count" : 143086,
+  "protected_date" : 1573234812,
+  "closed_date" : 1709943570,
+  "accepted_answer_id" : 949463,
+  "answer_count" : 8,
+  "score" : 200,
+  "last_activity_date" : 1683541461,
+  "creation_date" : 1244105740,
+  "last_edit_date" : 1500998986,
+  "question_id" : 949355,
+  "link" : "https://stackoverflow.com/questions/949355/executors-newcachedthreadpool-versus-executors-newfixedthreadpool",
+  "closed_reason" : "Opinion-based",
+  "title" : "Executors.newCachedThreadPool() versus Executors.newFixedThreadPool()",
+  "body" : "<p><a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool--\" rel=\"noreferrer\"><code>newCachedThreadPool()</code></a> versus <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-\" rel=\"noreferrer\"><code>newFixedThreadPool()</code></a></p>\n\n<p>When should I use one or the other? Which strategy is better in terms of resource utilization?</p>\n"
+}

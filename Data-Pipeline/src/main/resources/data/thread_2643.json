@@ -1,0 +1,131 @@
+{
+  "tags" : [ "java", "android", "android-volley", "android-workmanager" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 5697996,
+      "reputation" : 428,
+      "user_id" : 4503952,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ac3c227138f2a48c9015aa1df37ab129?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "barotia",
+      "link" : "https://stackoverflow.com/users/4503952/barotia"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1576755516,
+    "post_id" : 59408932,
+    "comment_id" : 105005168,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You have to wait for the response, this can be easily accomplished with kotlin and coroutines."
+  }, {
+    "owner" : {
+      "account_id" : 14322442,
+      "reputation" : 1987,
+      "user_id" : 10345402,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-VmYAKhOYmOM/AAAAAAAAAAI/AAAAAAAABFQ/AkCHLmBTtHM/s256-rj/photo.jpg",
+      "display_name" : "Afsar Ahamad",
+      "link" : "https://stackoverflow.com/users/10345402/afsar-ahamad"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1576756679,
+    "post_id" : 59408932,
+    "comment_id" : 105005728,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You can use Callback interface, Register your listener with worker before start,  onCompletion of putData() you can notify your listener with object of result."
+  }, {
+    "owner" : {
+      "account_id" : 40946,
+      "reputation" : 6546,
+      "user_id" : 118862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3dfa913cbcfe896af79e0484084c316b?s=256&d=identicon&r=PG",
+      "display_name" : "pfmaggi",
+      "link" : "https://stackoverflow.com/users/118862/pfmaggi"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1576762648,
+    "post_id" : 59408932,
+    "comment_id" : 105008775,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "A <code>Worker</code> class can only execute synchronous code. If you want to execute an asynchronous operation you need to use a <code>CoroutineWorker</code> or a <code>ListenableWorker</code>."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6993660,
+        "reputation" : 9854,
+        "user_id" : 5361964,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://i.sstatic.net/mh6DJ.jpg?s=256",
+        "display_name" : "Zohab Ali",
+        "link" : "https://stackoverflow.com/users/5361964/zohab-ali"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1613990237,
+      "post_id" : 59412262,
+      "comment_id" : 117237523,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "official doc: <a href=\"https://developer.android.com/topic/libraries/architecture/workmanager/advanced/listenableworker\" rel=\"nofollow noreferrer\">developer.android.com/topic/libraries/architecture/workmanag&zwnj;&#8203;er/&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 8914436,
+      "reputation" : 1159,
+      "user_id" : 6655192,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/lIVNa.jpg?s=256",
+      "display_name" : "nivla360",
+      "link" : "https://stackoverflow.com/users/6655192/nivla360"
+    },
+    "is_accepted" : true,
+    "score" : 4,
+    "last_activity_date" : 1576767674,
+    "creation_date" : 1576767674,
+    "answer_id" : 59412262,
+    "question_id" : 59408932,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Thanks to @pfmaggi I was able to do this</p>\n\n<pre><code>interface MyCallback{\n    void onSuccess();\n    void onError();\n}\n\npublic class MyWorker extends ListenableWorker {\n    private Context context;\n\n    public MyWorker(\n            @NonNull Context context,\n            @NonNull WorkerParameters params) {\n        super(context, params);\n        this.context = context;\n    }\n\n     @NonNull\n@Override\npublic ListenableFuture&lt;Result&gt; startWork() {\n    return CallbackToFutureAdapter.getFuture(completer -&gt; {\n        MyCallback callback = new MyCallback() {\n            @Override\n            public void onSuccess() {\n                completer.set(Result.success());\n            }\n\n            @Override\n            public void onError() {\n                completer.set(Result.retry());\n            }\n        };\n        putData(callback);\n        return callback;\n    });\n\n}\n\n    private void putData(MyCallback callback) {\n        String url = \"https://www.myurl.com\";\n        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest\n                (Request.Method.PUT, url, null, new Response.Listener&lt;JSONObject&gt;() {\n\n                    @Override\n                    public void onResponse(JSONObject response) {\n                        if(response == null)\n                            callback.onError();\n                        else\n                            callback.onSuccess();\n                    }\n                }, new Response.ErrorListener() {\n\n                    @Override\n                    public void onErrorResponse(VolleyError error) {\n                        // TODO: Handle error\n                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {\n                            callback.onError();\n                        } else if (error instanceof AuthFailureError) {\n                            //TODO\n                        } else if (error instanceof ServerError) {\n                            //TODO\n                            callback.onError();\n                        } else if (error instanceof NetworkError) {\n                            //TODO\n                            callback.onError();\n                        } else if (error instanceof ParseError) {\n                            //TODO\n                        }\n                    }\n                }) {\n            @Override\n            public Map&lt;String, String&gt; getHeaders() throws AuthFailureError {\n                return params;\n            }\n\n            @Override\n            protected Map&lt;String, String&gt; getParams() throws AuthFailureError {\n                return super.getParams();\n            }\n        };\n\n        VolleyHelper.getInstance(context).addToRequestQueue(jsonObjectRequest);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9071647,
+      "reputation" : 68,
+      "user_id" : 6754621,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/mVIYO.jpg?s=256",
+      "display_name" : "ADEBAYO OSIPITAN",
+      "link" : "https://stackoverflow.com/users/6754621/adebayo-osipitan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764178880,
+    "creation_date" : 1764178880,
+    "answer_id" : 79831006,
+    "question_id" : 59408932,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Ok, i know i'm 5 years late but for anyone who's having trouble with CoroutineWorker (i.e coroutine work manager) and working with flows e.g. uploading to a server here's a solution for u.</p>\n<p>Api repo:</p>\n<pre><code>Class UploadRepo{\n\n    suspend fun upload(): Flow&lt;Response&lt;T&gt;&gt;\n}\n</code></pre>\n<p>coroutine worker:</p>\n<pre><code>//Worker class\nclass UploadWorker @AssistedInject constructor(\n    @Assisted val appContext: Context,\n    @Assisted val workerParams: WorkerParameters,\n    private val repo: UploadRepo\n): CoroutineWorker(appContext, workerParams) {\n\n override suspend fun doWork(): Result {\n        var workerResult: Result\n        try {\n            workerResult = repo.upload().map{ response -&gt;\n            if(response.isSuccesful){\n                val outputData = Data.Builder()\n                    .putString(MESSAGE_KEY, Messages.UPLOAD_SUCCESS)\n                    .build()\n                Result.success(outputData)\n            }else{\n                val outputData = Data.Builder()\n                .putString(MESSAGE_KEY, Messages.UPLOAD_FAILURE)\n                .build()\n                Result.failure(outputData)\n            }\n        }.toList().last() //Map your response flow to a flow of ListenableWorker.Result, then change to list and get the last value emitted as result\n    } catch (e: Exception) {\n            e.printStackTrace()\n            val outputData = Data.Builder()\n                .putString(MESSAGE_KEY, Messages.UPLOAD_FAILURE)\n                .build()\n            return Result.failure(outputData)\n        }\n    }\n}\n</code></pre>\n<p>Then call the worker as u would in your viewmodel or activity etc.</p>\n<pre><code>\nval manager = WorkManager.getInstance(context)\n.getWorkInfoByIdFlow(id) // myWorkRequestId is the ID of your WorkRequest\n                ?.collectLatest { workInfo: WorkInfo? -&gt;\n                    if (workInfo != null) {\n        Log.d(&quot;worker msg&quot;, workInfo.outputData.getString(MESSAGE_KEY))\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8914436,
+    "reputation" : 1159,
+    "user_id" : 6655192,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/lIVNa.jpg?s=256",
+    "display_name" : "nivla360",
+    "link" : "https://stackoverflow.com/users/6655192/nivla360"
+  },
+  "is_answered" : true,
+  "view_count" : 5365,
+  "accepted_answer_id" : 59412262,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1764178880,
+  "creation_date" : 1576755184,
+  "question_id" : 59408932,
+  "link" : "https://stackoverflow.com/questions/59408932/work-manager-how-to-return-result-only-when-network-request-is-done",
+  "title" : "Work Manager: How to return result only when network request is done",
+  "body" : "<p>This is my worker class and I have tried it but doesn't seem to work the way I want it to. I only want to return the result of <code>doWork()</code> only when the PUT request is done. Any help would be appreciated, thanks.</p>\n\n<pre><code>public class MyWorker extends Worker {\nprivate Context context;\n\npublic MyWorker(\n        @NonNull Context context,\n        @NonNull WorkerParameters params) {\n    super(context, params);\n    this.context = context;\n}\n\n@NonNull\n@Override\npublic Result doWork() {\n    return putData();\n}\n\nprivate Result putData() {\n    final Result[] result = new Result[1];\n    String url = \"https://www.myurl.com\";\n    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest\n            (Request.Method.PUT, url, null, new Response.Listener&lt;JSONObject&gt;() {\n\n                @Override\n                public void onResponse(JSONObject response) {\n                    if(response == null)\n                        result[0] = Result.retry();\n                    else\n                        result[0] = Result.success();\n                }\n            }, new Response.ErrorListener() {\n\n                @Override\n                public void onErrorResponse(VolleyError error) {\n                    // TODO: Handle error\n                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {\n                        result[0] = Result.retry();\n                    } else if (error instanceof AuthFailureError) {\n                        //TODO\n                    } else if (error instanceof ServerError) {\n                        //TODO\n                        result[0] = Result.retry();\n                    } else if (error instanceof NetworkError) {\n                        //TODO\n                        result[0] = Result.retry();\n                    } else if (error instanceof ParseError) {\n                        //TODO\n                    }\n                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();\n                }\n            }) {\n        @Override\n        public Map&lt;String, String&gt; getHeaders() throws AuthFailureError {\n            return params;\n        }\n\n        @Override\n        protected Map&lt;String, String&gt; getParams() throws AuthFailureError {\n            return super.getParams();\n        }\n    };\n\n    VolleyHelper.getInstance(context).addToRequestQueue(jsonObjectRequest);\n    return result[0];\n}\n</code></pre>\n\n<p>}</p>\n"
+}

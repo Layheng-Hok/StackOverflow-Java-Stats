@@ -1,0 +1,41 @@
+{
+  "tags" : [ "java", "kotlin", "gradle", "avro", "avsc" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 20896246,
+      "reputation" : 1,
+      "user_id" : 15350415,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cc6412d063be42d7652cfd802d2cb9c8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "LACCI",
+      "link" : "https://stackoverflow.com/users/15350415/lacci"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761857271,
+    "creation_date" : 1761857271,
+    "answer_id" : 79805204,
+    "question_id" : 79326821,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>My team is also using shared records for avdl based schema definitions.\nI have two different solutions, both of them are working with avdl schema (not protocol) definitions.</p>\n<h2>Shared records in one file</h2>\n<p>Lets say that I have the <code>SharedRecords.avdl</code> file:</p>\n<pre class=\"lang-none prettyprint-override\"><code>namespace public.schemas;\n\nrecord FirstSharedRecord {\n    string? name;\n    array&lt;int&gt; someArray;\n}\n\nrecord SecondSharedRecord {\n    @logicalType(&quot;timestamp-nanos&quot;)\n    long someNonAvdlSupportedLogicalTypeField;\n    decimal(10, 2) decimalField;\n}\n</code></pre>\n<p>Then you could import it into your schema by the file name and use the namespace to qualify the named types:</p>\n<pre class=\"lang-none prettyprint-override\"><code>namespace my.schema;\nschema MyRecord;\nimport idl &quot;SharedRecords.avdl&quot;;\n\nenum ExampleEnum {\n    ONE,\n    TWO,\n    THREE\n} = THREE;\n\nrecord MyRecord {\n    string name;\n    ExampleEnum enumField;\n    public.schemas.FirstSharedRecord sharedRecordField;\n}\n</code></pre>\n<p>Then if you copy the two files to the same destination, you could call the <code>java -jar avro-tools.jar idl MySchema.avdl MySchema.avsc</code> to convert the avdl to avsc. This will result the following avsc:</p>\n<pre><code>{\n  &quot;type&quot; : &quot;record&quot;,\n  &quot;name&quot; : &quot;MyRecord&quot;,\n  &quot;namespace&quot; : &quot;my.schema&quot;,\n  &quot;fields&quot; : [ {\n    &quot;name&quot; : &quot;name&quot;,\n    &quot;type&quot; : &quot;string&quot;\n  }, {\n    &quot;name&quot; : &quot;enumField&quot;,\n    &quot;type&quot; : {\n      &quot;type&quot; : &quot;enum&quot;,\n      &quot;name&quot; : &quot;ExampleEnum&quot;,\n      &quot;symbols&quot; : [ &quot;ONE&quot;, &quot;TWO&quot;, &quot;THREE&quot; ],\n      &quot;default&quot; : &quot;THREE&quot;\n    }\n  }, {\n    &quot;name&quot; : &quot;sharedRecordField&quot;,\n    &quot;type&quot; : {\n      &quot;type&quot; : &quot;record&quot;,\n      &quot;name&quot; : &quot;FirstSharedRecord&quot;,\n      &quot;namespace&quot; : &quot;public.schemas&quot;,\n      &quot;fields&quot; : [ {\n        &quot;name&quot; : &quot;name&quot;,\n        &quot;type&quot; : [ &quot;null&quot;, &quot;string&quot; ]\n      }, {\n        &quot;name&quot; : &quot;someArray&quot;,\n        &quot;type&quot; : {\n          &quot;type&quot; : &quot;array&quot;,\n          &quot;items&quot; : &quot;int&quot;\n        }\n      } ]\n    }\n  } ]\n}\n</code></pre>\n<p>As you can see the SharedRecords schema does not have a <code>schema &lt;record name&gt;</code> line, so technically you can not convert it to an avsc but still you can import it and the final avsc will contain only the records used from that schema.<br />\nThe other solution (which is not that general) is to define an own avdl file for each shared record/other named schema, then import the ones your concrete schema is using.</p>\n<p>These solutions will contain the snapshot of the imported records at the generation time, so they are not updating as you are updating the shared schema file, but I think confluent schema registry doesnt supporting that aswell - how'd you version your schema otherwise?</p>\n<p>Note that avro idl schemas are relatievely new (I think it was added with avro 1.12), so protocols were used before which were not suitable for clean schema generation.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6210495,
+    "reputation" : 1,
+    "user_id" : 4836919,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/8c4c81e5ade26ca46271f1f6384a86b3?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "khir404",
+    "link" : "https://stackoverflow.com/users/4836919/khir404"
+  },
+  "is_answered" : false,
+  "view_count" : 68,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761857271,
+  "creation_date" : 1735915542,
+  "question_id" : 79326821,
+  "link" : "https://stackoverflow.com/questions/79326821/trouble-sharing-schemas-between-schemas-when-converting-from-avdl-to-avsc",
+  "title" : "Trouble sharing schemas between schemas when converting from avdl to avsc",
+  "body" : "<p>We have a big avro model currently written using IDL (avdl). We create a shared.avdl file with shared records, and then we're using <code>import idl</code> functionality to import the records into other records. We are converting the file to an avsc file, and then it looks like each shared record get's recreated as their own record inside the avsc file.\nIn <a href=\"https://deeptimittalblogger.medium.com/defining-reusable-schemas-in-avro-991f2e21d1ca\" rel=\"nofollow noreferrer\">this</a> tutorial, they say to just use the full declaration of the shared record;\n<code>&quot;type&quot;:&quot;com.deepti.sample.avro.schema.Author&quot;</code>.\nBut this is not the case when auto-generating the avsc file.</p>\n<p>For those of you who also writes your avro model using avdl, how do you define shared records which is used in other records?</p>\n<p>I can add that we are sharing our schemas through SchemaRegistry, and right now we only upload the main avsc files, since they contain all shared records. I saw some suggestions which suggested us to write the model in avsc, but if I'm correct we then need to upload every shared record to SchemaRegistry, and then make every consumer read each individual shared schema? This seems like hazzle... There must be a better way?</p>\n<p>We are currently using the following plugins to convert the avdl file into avsc file;\n<code>com.github.davidmc24.gradle.plugin.avro</code>. This converts the avdl into avpr, and then takes the avpr files and convert them into avsc.</p>\n<p><a href=\"https://stackoverflow.com/questions/48100575/avro-multiple-record-of-same-type-in-single-schema\">Avro multiple record of same type in single schema</a> :\nThis post is about using the same schema multiple times in the same record. I want to use the same schema in different records.</p>\n"
+}

@@ -1,0 +1,1394 @@
+{
+  "tags" : [ "java", "loops", "nested-loops" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 11683,
+        "reputation" : 1520502,
+        "user_id" : 22656,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+        "display_name" : "Jon Skeet",
+        "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+      },
+      "edited" : false,
+      "score" : 322,
+      "creation_date" : 1242810925,
+      "post_id" : 886979,
+      "comment_id" : 693885,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "This <i>does</i> jump to directly after the loop. Try it! Yes, the label comes before the loop, but that&#39;s because it&#39;s labeling the loop, rather than the place you want to exit to. (You can continue with a label too.)"
+    }, {
+      "owner" : {
+        "account_id" : 3690751,
+        "reputation" : 643,
+        "user_id" : 3073383,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/AvXHZ.jpg?s=256",
+        "display_name" : "Graeme Gill",
+        "link" : "https://stackoverflow.com/users/3073383/graeme-gill"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1662945740,
+      "post_id" : 886979,
+      "comment_id" : 130116236,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Breaking it up into different methods is only a win if the state is small, or is kept in a form that can be passed by reference. If the state the loops is referring to/manipulating is larger, then an elegant way of breaking out of/continuing the loops becomes a necessity."
+    }, {
+      "owner" : {
+        "account_id" : 34472934,
+        "reputation" : 19,
+        "user_id" : 26588922,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1cd8d003f7c64077c1e7f1c972f3ce07?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Imtiaz U",
+        "link" : "https://stackoverflow.com/users/26588922/imtiaz-u"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760496580,
+      "post_id" : 886979,
+      "comment_id" : 140796169,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This seems like a clean way to do this, but I wonder why people are averse to this solution or &quot;goto&quot; in general? Is there anything computationally inefficient about this?"
+    }, {
+      "owner" : {
+        "account_id" : 11683,
+        "reputation" : 1520502,
+        "user_id" : 22656,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+        "display_name" : "Jon Skeet",
+        "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+      },
+      "reply_to_user" : {
+        "account_id" : 34472934,
+        "reputation" : 19,
+        "user_id" : 26588922,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1cd8d003f7c64077c1e7f1c972f3ce07?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Imtiaz U",
+        "link" : "https://stackoverflow.com/users/26588922/imtiaz-u"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760510095,
+      "post_id" : 886979,
+      "comment_id" : 140796369,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ImtiazU: The objection is mostly about readability - how easy it is to understand the code. It&#39;s not a matter of efficiency."
+    } ],
+    "owner" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "is_accepted" : true,
+    "score" : 2781,
+    "last_activity_date" : 1543994850,
+    "last_edit_date" : 1543994850,
+    "creation_date" : 1242810682,
+    "answer_id" : 886979,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Like other answerers, I'd definitely <em>prefer</em> to put the loops in a different method, at which point you can just return to stop iterating completely. This answer just shows how the requirements in the question can be met.</p>\n\n<p>You can use <code>break</code> with a label for the outer loop. For example:</p>\n\n<pre><code>public class Test {\n    public static void main(String[] args) {\n        outerloop:\n        for (int i=0; i &lt; 5; i++) {\n            for (int j=0; j &lt; 5; j++) {\n                if (i * j &gt; 6) {\n                    System.out.println(\"Breaking\");\n                    break outerloop;\n                }\n                System.out.println(i + \" \" + j);\n            }\n        }\n        System.out.println(\"Done\");\n    }\n}\n</code></pre>\n\n<p>This prints:</p>\n\n<pre><code>0 0\n0 1\n0 2\n0 3\n0 4\n1 0\n1 1\n1 2\n1 3\n1 4\n2 0\n2 1\n2 2\n2 3\nBreaking\nDone\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 876304,
+      "reputation" : 3268,
+      "user_id" : 108892,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3b31dabea2db14e7f942877acb144d09?s=256&d=identicon&r=PG",
+      "display_name" : "simon622",
+      "link" : "https://stackoverflow.com/users/108892/simon622"
+    },
+    "is_accepted" : false,
+    "score" : 128,
+    "last_activity_date" : 1524241826,
+    "last_edit_date" : 1524241826,
+    "creation_date" : 1242810716,
+    "answer_id" : 886982,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use labels:</p>\n\n<pre><code>label1: \nfor (int i = 0;;) {\n    for (int g = 0;;) {\n      break label1;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11822,
+      "reputation" : 18397,
+      "user_id" : 22992,
+      "user_type" : "registered",
+      "accept_rate" : 76,
+      "profile_image" : "https://www.gravatar.com/avatar/6e2f04f0d299f3f05133b879c7b111ed?s=256&d=identicon&r=PG",
+      "display_name" : "Miguel Ping",
+      "link" : "https://stackoverflow.com/users/22992/miguel-ping"
+    },
+    "is_accepted" : false,
+    "score" : 24,
+    "last_activity_date" : 1242810719,
+    "creation_date" : 1242810719,
+    "answer_id" : 886983,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You can use a temporary variable:</p>\n\n<pre><code>boolean outerBreak = false;\nfor (Type type : types) {\n   if(outerBreak) break;\n    for (Type t : types2) {\n         if (some condition) {\n             // Do something and break...\n             outerBreak = true;\n             break; // Breaks out of the inner loop\n         }\n    }\n}\n</code></pre>\n\n<p>Depending on your function, you can also exit/return from the inner loop:</p>\n\n<pre><code>for (Type type : types) {\n    for (Type t : types2) {\n         if (some condition) {\n             // Do something and break...\n             return;\n         }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 11683,
+        "reputation" : 1520502,
+        "user_id" : 22656,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+        "display_name" : "Jon Skeet",
+        "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+      },
+      "edited" : false,
+      "score" : 45,
+      "creation_date" : 1242810799,
+      "post_id" : 886984,
+      "comment_id" : 693876,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "You don&#39;t need to create a new block to use a label."
+    }, {
+      "owner" : {
+        "account_id" : 18835,
+        "reputation" : 84379,
+        "user_id" : 43582,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/3e5ac1db48e4a7ef1b192cc6b5e7fbf0?s=256&d=identicon&r=PG",
+        "display_name" : "Bombe",
+        "link" : "https://stackoverflow.com/users/43582/bombe"
+      },
+      "edited" : false,
+      "score" : 98,
+      "creation_date" : 1242811447,
+      "post_id" : 886984,
+      "comment_id" : 693917,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "No, but it makes the intent a lot clearer. See the first comment on the accepted answer."
+    } ],
+    "owner" : {
+      "account_id" : 27626,
+      "reputation" : 356714,
+      "user_id" : 73070,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/d54ed51c0f03cb461741c3ec77a837b2?s=256&d=identicon&r=PG",
+      "display_name" : "Joey",
+      "link" : "https://stackoverflow.com/users/73070/joey"
+    },
+    "is_accepted" : false,
+    "score" : 242,
+    "last_activity_date" : 1242810732,
+    "creation_date" : 1242810732,
+    "answer_id" : 886984,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You can use a named block around the loops:</p>\n\n<pre><code>search: {\n    for (Type type : types) {\n        for (Type t : types2) {\n            if (some condition) {\n                // Do something and break...\n                break search;\n            }\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 38309,
+      "reputation" : 19710,
+      "user_id" : 109880,
+      "user_type" : "registered",
+      "accept_rate" : 76,
+      "profile_image" : "https://i.sstatic.net/KCtEx.png?s=256",
+      "display_name" : "Fortega",
+      "link" : "https://stackoverflow.com/users/109880/fortega"
+    },
+    "is_accepted" : false,
+    "score" : 47,
+    "last_activity_date" : 1546680156,
+    "last_edit_date" : 1546680156,
+    "creation_date" : 1242819780,
+    "answer_id" : 887443,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use a function:</p>\n\n<pre><code>public void doSomething(List&lt;Type&gt; types, List&lt;Type&gt; types2){\n  for(Type t1 : types){\n    for (Type t : types2) {\n      if (some condition) {\n         // Do something and return...\n         return;\n      }\n    }\n  }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6085,
+        "reputation" : 13976,
+        "user_id" : 10088,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/2620fde7c69e1d711525469ffb8abaf1?s=256&d=identicon&r=PG",
+        "display_name" : "Haoest",
+        "link" : "https://stackoverflow.com/users/10088/haoest"
+      },
+      "edited" : false,
+      "score" : 39,
+      "creation_date" : 1323220554,
+      "post_id" : 8126271,
+      "comment_id" : 10385866,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Sometimes you use several local variables that&#39;s outside of the inner loop, passing them all in can feel clunky."
+    } ],
+    "owner" : {
+      "account_id" : 881180,
+      "reputation" : 15465,
+      "user_id" : 246394,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/69da6796966bffd0213c61027fad1d08?s=256&d=identicon&r=PG",
+      "display_name" : "Zo72",
+      "link" : "https://stackoverflow.com/users/246394/zo72"
+    },
+    "is_accepted" : false,
+    "score" : 444,
+    "last_activity_date" : 1338719501,
+    "last_edit_date" : 1338719501,
+    "creation_date" : 1321295213,
+    "answer_id" : 8126271,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Technically the correct answer is to label the outer loop. In practice if you want to exit at any point inside an inner loop then you would be better off externalizing the code into a method (a static method if needs be) and then call it.</p>\n\n<p>That would pay off for readability. </p>\n\n<p>The code would become something like that: </p>\n\n<pre><code>private static String search(...) \n{\n    for (Type type : types) {\n        for (Type t : types2) {\n            if (some condition) {\n                // Do something and break...\n                return search;\n            }\n        }\n    }\n    return null; \n}\n</code></pre>\n\n<p>Matching the example for the accepted answer:</p>\n\n<pre><code> public class Test {\n    public static void main(String[] args) {\n        loop();\n        System.out.println(\"Done\");\n    }\n\n    public static void loop() {\n        for (int i = 0; i &lt; 5; i++) {\n            for (int j = 0; j &lt; 5; j++) {\n                if (i * j &gt; 6) {\n                    System.out.println(\"Breaking\");\n                    return;\n                }\n                System.out.println(i + \" \" + j);\n            }\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 102583,
+        "reputation" : 2561,
+        "user_id" : 275280,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/WxIFyPyw.png?s=256",
+        "display_name" : "vytaux",
+        "link" : "https://stackoverflow.com/users/275280/vytaux"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1694540906,
+      "post_id" : 8420080,
+      "comment_id" : 135903703,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "So you&#39;re allowing extra loops just so you wouldn&#39;t have to label &quot;for&quot;?"
+    }, {
+      "owner" : {
+        "account_id" : 34472934,
+        "reputation" : 19,
+        "user_id" : 26588922,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1cd8d003f7c64077c1e7f1c972f3ce07?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Imtiaz U",
+        "link" : "https://stackoverflow.com/users/26588922/imtiaz-u"
+      },
+      "reply_to_user" : {
+        "account_id" : 102583,
+        "reputation" : 2561,
+        "user_id" : 275280,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/WxIFyPyw.png?s=256",
+        "display_name" : "vytaux",
+        "link" : "https://stackoverflow.com/users/275280/vytaux"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760496368,
+      "post_id" : 8420080,
+      "comment_id" : 140796168,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@vytaux how this is allowing extra loops? I am curious, because I would do something like this as well and just want to know whether this is better or worse?"
+    }, {
+      "owner" : {
+        "account_id" : 102583,
+        "reputation" : 2561,
+        "user_id" : 275280,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/WxIFyPyw.png?s=256",
+        "display_name" : "vytaux",
+        "link" : "https://stackoverflow.com/users/275280/vytaux"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1761503088,
+      "post_id" : 8420080,
+      "comment_id" : 140818170,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Look at the answer by RusJaI"
+    } ],
+    "owner" : {
+      "account_id" : 411253,
+      "reputation" : 2267,
+      "user_id" : 783601,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3af0e93d9dc98e38472212296255d45f?s=256&d=identicon&r=PG",
+      "display_name" : "Elle Mundy",
+      "link" : "https://stackoverflow.com/users/783601/elle-mundy"
+    },
+    "is_accepted" : false,
+    "score" : 166,
+    "last_activity_date" : 1680986528,
+    "last_edit_date" : 1680986528,
+    "creation_date" : 1323280346,
+    "answer_id" : 8420080,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I never use labels. It seems like a bad practice to get into. Here's what I would do:</p>\n<pre><code>boolean finished = false;\nfor (int i = 0; i &lt; 5 &amp;&amp; !finished; i++) {\n    for (int j = 0; j &lt; 5; j++) {\n        if (i * j &gt; 6) {\n            finished = true;\n            break;\n        }\n    }\n}\n</code></pre>\n<p>By having flag variable ,We can easily control execution of any number of loops ,Just we need to keep this flag value check at loop condition statement as done in main loop-&gt;i &lt; 5 &amp;&amp; !finished.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8396,
+        "reputation" : 24679,
+        "user_id" : 15108,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+        "display_name" : "boutta",
+        "link" : "https://stackoverflow.com/users/15108/boutta"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1454054285,
+      "post_id" : 9147282,
+      "comment_id" : 57880939,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I don&#39;t find it cool to iterate all the items after the condition is broken. Thus I would add a break in the else case."
+    }, {
+      "owner" : {
+        "account_id" : 334731,
+        "reputation" : 2667,
+        "user_id" : 1951442,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://www.gravatar.com/avatar/8cfe418ece3f950aa1f91f47712565e2?s=256&d=identicon&r=PG",
+        "display_name" : "Swifty McSwifterton",
+        "link" : "https://stackoverflow.com/users/1951442/swifty-mcswifterton"
+      },
+      "reply_to_user" : {
+        "account_id" : 8396,
+        "reputation" : 24679,
+        "user_id" : 15108,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+        "display_name" : "boutta",
+        "link" : "https://stackoverflow.com/users/15108/boutta"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1469984009,
+      "post_id" : 9147282,
+      "comment_id" : 64751660,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@boutta I&#39;m not sure how you&#39;re reaching this conclusion.  Once the condition is true, both loops are exited."
+    }, {
+      "owner" : {
+        "account_id" : 8396,
+        "reputation" : 24679,
+        "user_id" : 15108,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+        "display_name" : "boutta",
+        "link" : "https://stackoverflow.com/users/15108/boutta"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1478768206,
+      "post_id" : 9147282,
+      "comment_id" : 68287317,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "OK, I didn&#39;t get the part with the manipulation of the &#39;s&#39; var. But I find that kind of bad style since s is representing the size. Then I prefer the answer from ddyer with explicit vars: <a href=\"http://stackoverflow.com/a/25124317/15108\">stackoverflow.com/a/25124317/15108</a>"
+    }, {
+      "owner" : {
+        "account_id" : 137055,
+        "reputation" : 1627,
+        "user_id" : 340992,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d56929f509b19b2aec8a1b62648260db?s=256&d=identicon&r=PG",
+        "display_name" : "Zsolti",
+        "link" : "https://stackoverflow.com/users/340992/zsolti"
+      },
+      "reply_to_user" : {
+        "account_id" : 8396,
+        "reputation" : 24679,
+        "user_id" : 15108,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+        "display_name" : "boutta",
+        "link" : "https://stackoverflow.com/users/15108/boutta"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1506516276,
+      "post_id" : 9147282,
+      "comment_id" : 79851975,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@boutta You can change <code>s</code> to a value which is lower than <code>i</code> or change <code>i</code> to a value greater or equal than <code>s</code>, both should do the trick. You&#39;re right about changing <code>s</code>, because it can be used elsewhere later, but changing <code>i</code> won&#39;t harm, just will make sure the first <code>for</code> won&#39;t continue looping."
+    } ],
+    "owner" : {
+      "account_id" : 334731,
+      "reputation" : 2667,
+      "user_id" : 1951442,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://www.gravatar.com/avatar/8cfe418ece3f950aa1f91f47712565e2?s=256&d=identicon&r=PG",
+      "display_name" : "Swifty McSwifterton",
+      "link" : "https://stackoverflow.com/users/1951442/swifty-mcswifterton"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1478768090,
+    "last_edit_date" : 1478768090,
+    "creation_date" : 1328421870,
+    "answer_id" : 9147282,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I needed to do a similar thing, but I chose not to use the enhanced for loop to do it.</p>\n\n<pre><code>int s = type.size();\nfor (int i = 0; i &lt; s; i++) {\n    for (int j = 0; j &lt; t.size(); j++) {\n        if (condition) {\n            // do stuff after which you want \n            // to completely break out of both loops\n            s = 0; // enables the _main_ loop to terminate\n            break;\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user1482450"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1351154383,
+    "last_edit_date" : 1351154383,
+    "creation_date" : 1350474649,
+    "answer_id" : 12933669,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You just use label for breaking inner loops</p>\n\n<pre><code>public class Test {\npublic static void main(String[] args) {\n    outerloop:\nfor (int i=0; i &lt; 5; i++) {\n  for (int j=0; j &lt; 5; j++) {\n    if (i * j &gt; 6) {\n      System.out.println(\"Breaking\");\n      break outerloop;\n    }\n    System.out.println(i + \" \" + j);\n  }\n}\nSystem.out.println(\"Done\");\n}\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1410679,
+      "reputation" : 3577,
+      "user_id" : 1337338,
+      "user_type" : "registered",
+      "accept_rate" : 38,
+      "profile_image" : "https://www.gravatar.com/avatar/c4720bd523de6f16b07b8edd28ae230e?s=256&d=identicon&r=PG",
+      "display_name" : "voidMainReturn",
+      "link" : "https://stackoverflow.com/users/1337338/voidmainreturn"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1546680213,
+    "last_edit_date" : 1546680213,
+    "creation_date" : 1367125713,
+    "answer_id" : 16259831,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Even creating a flag for the outer loop and checking that after each execution of the inner loop can be the answer.</p>\n\n<p>Like this:</p>\n\n<pre><code>for (Type type : types) {\n    boolean flag=false;\n    for (Type t : types2) {\n        if (some condition) {\n            // Do something and break...\n            flag=true;\n            break; // Breaks out of the inner loop\n        }\n    }\n    if(flag)\n        break;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2737225,
+      "reputation" : 19,
+      "user_id" : 2359640,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/805a7689196e050d6e1f817fdfe69f93?s=256&d=identicon&r=PG",
+      "display_name" : "Edd",
+      "link" : "https://stackoverflow.com/users/2359640/edd"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1367953040,
+    "creation_date" : 1367953040,
+    "answer_id" : 16426527,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Check if the inner loop is exited with an if statement, by checking the inner loop's variable. You could also create another variable such as a boolean to check if the inner loop is exited. </p>\n\n<p>In this example it uses the inner loop's variable to check if it has been exited:</p>\n\n<pre><code>int i, j;\nfor(i = 0; i &lt; 7; i++){\n\nfor(j = 0; j &lt; 5; j++) {\n\n     if (some condition) {\n         // Do something and break...\n         break; // Breaks out of the inner loop\n     }\n}\n     if(j &lt; 5){    // Checks if inner loop wasn't finished\n     break;    // Breaks out of the outer loop   \n     } \n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 104387,
+      "reputation" : 4770,
+      "user_id" : 279112,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/M0IaD.jpg?s=256",
+      "display_name" : "Panzercrisis",
+      "link" : "https://stackoverflow.com/users/279112/panzercrisis"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1378937699,
+    "creation_date" : 1378937699,
+    "answer_id" : 18752196,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>boolean broken = false; // declared outside of the loop for efficiency\nfor (Type type : types) {\n    for (Type t : types2) {\n        if (some condition) {\n            broken = true;\n            break;\n        }\n    }\n\n    if (broken) {\n        break;\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13546471,
+        "reputation" : 3578,
+        "user_id" : 9772691,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/NRRPE.jpg?s=256",
+        "display_name" : "John McClane",
+        "link" : "https://stackoverflow.com/users/9772691/john-mcclane"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1543968045,
+      "post_id" : 20724432,
+      "comment_id" : 94106782,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Not suitable to foreach loops."
+    }, {
+      "owner" : {
+        "account_id" : 4257652,
+        "reputation" : 1114,
+        "user_id" : 3482890,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/vW8z6.png?s=256",
+        "display_name" : "Quintec",
+        "link" : "https://stackoverflow.com/users/3482890/quintec"
+      },
+      "reply_to_user" : {
+        "account_id" : 13546471,
+        "reputation" : 3578,
+        "user_id" : 9772691,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/NRRPE.jpg?s=256",
+        "display_name" : "John McClane",
+        "link" : "https://stackoverflow.com/users/9772691/john-mcclane"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1544144609,
+      "post_id" : 20724432,
+      "comment_id" : 94182006,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@JohnMcClane And you&#39;re spamming this on many answers on a 9+ year old question because...?"
+    } ],
+    "owner" : {
+      "account_id" : 2765505,
+      "reputation" : 4833,
+      "user_id" : 2381321,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c927b813ead9cd423f4f7189379a4b53?s=256&d=identicon&r=PG",
+      "display_name" : "zord",
+      "link" : "https://stackoverflow.com/users/2381321/zord"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1387666594,
+    "creation_date" : 1387666594,
+    "answer_id" : 20724432,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you don't like <code>break</code>s and <code>goto</code>s, you can use a \"traditional\" for loop instead the for-in, with an extra abort condition:</p>\n\n<pre><code>int a, b;\nbool abort = false;\nfor (a = 0; a &lt; 10 &amp;&amp; !abort; a++) {\n    for (b = 0; b &lt; 10 &amp;&amp; !abort; b++) {\n        if (condition) {\n            doSomeThing();\n            abort = true;\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1995799,
+        "reputation" : 30180,
+        "user_id" : 1788806,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/0ca4c6bc08e59c34de7fc39e09de8dbe?s=256&d=identicon&r=PG",
+        "display_name" : "Willi Mentzel",
+        "link" : "https://stackoverflow.com/users/1788806/willi-mentzel"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1436008720,
+      "post_id" : 23786300,
+      "comment_id" : 50440182,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How would I use this with for-each loops? ;)"
+    }, {
+      "owner" : {
+        "account_id" : 5397431,
+        "reputation" : 6028,
+        "user_id" : 4298200,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://lh5.googleusercontent.com/-HcKtiretO2g/AAAAAAAAAAI/AAAAAAAAAH0/IXGAL7MX8sQ/s256-rj/photo.jpg",
+        "display_name" : "Georg Plaz",
+        "link" : "https://stackoverflow.com/users/4298200/georg-plaz"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1445828790,
+      "post_id" : 23786300,
+      "comment_id" : 54472306,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This doesn&#39;t work if you have a more sophisticated loop condition, like list.size()&gt;5. Also it is really just a hack. It&#39;s hard to read and bad practice!"
+    }, {
+      "owner" : {
+        "account_id" : 3116542,
+        "reputation" : 1387,
+        "user_id" : 3450840,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://i.sstatic.net/okH8Y.jpg?s=256",
+        "display_name" : "Florian F",
+        "link" : "https://stackoverflow.com/users/3450840/florian-f"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1535227646,
+      "post_id" : 23786300,
+      "comment_id" : 90992080,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It is error-prone.  Imagine you changed the inner loop to <code>(int k = 0; k &lt; 10; k++)</code> and you didn&#39;t fix all of the <code>k = 9</code> to <code>k = 10</code>.  You might get into an infinite loop."
+    } ],
+    "owner" : {
+      "account_id" : 3206700,
+      "reputation" : 4939,
+      "user_id" : 2707648,
+      "user_type" : "registered",
+      "accept_rate" : 33,
+      "profile_image" : "https://i.sstatic.net/7F0iI.jpg?s=256",
+      "display_name" : "Hitendra Solanki",
+      "link" : "https://stackoverflow.com/users/2707648/hitendra-solanki"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1430001878,
+    "last_edit_date" : 1430001878,
+    "creation_date" : 1400682786,
+    "answer_id" : 23786300,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can break from all loops without using any label: and flags.</p>\n\n<p>It's just tricky solution.</p>\n\n<p>Here condition1 is the condition which is used to break from loop K and J.\nAnd condition2 is the condition which is used to break from loop K , J and I.</p>\n\n<p>For example:</p>\n\n<pre><code>public class BreakTesting {\n    public static void main(String[] args) {\n        for (int i = 0; i &lt; 9; i++) {\n            for (int j = 0; j &lt; 9; j++) {\n                for (int k = 0; k &lt; 9; k++) {\n                    if (condition1) {\n                        System.out.println(\"Breaking from Loop K and J\");\n                        k = 9;\n                        j = 9;\n                    }\n                    if (condition2) {\n                        System.out.println(\"Breaking from Loop K, J and I\");\n                        k = 9;\n                        j = 9;\n                        i = 9;\n                    }\n                }\n            }\n        }\n        System.out.println(\"End of I , J , K\");\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5055718,
+        "reputation" : 868,
+        "user_id" : 4059017,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/1066844b364f50893cc2feba11f6587d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Gothiquo",
+        "link" : "https://stackoverflow.com/users/4059017/gothiquo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1674481964,
+      "post_id" : 23979976,
+      "comment_id" : 132716810,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "link doesn&#39;t work"
+    } ],
+    "owner" : {
+      "account_id" : 2070174,
+      "reputation" : 2576,
+      "user_id" : 1844843,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/xsRNE.png?s=256",
+      "display_name" : "Rumesh Eranga Hapuarachchi",
+      "link" : "https://stackoverflow.com/users/1844843/rumesh-eranga-hapuarachchi"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1524242063,
+    "last_edit_date" : 1524242063,
+    "creation_date" : 1401626493,
+    "answer_id" : 23979976,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Use Labels.</p>\n\n<pre><code>INNER:for(int j = 0; j &lt; numbers.length; j++) {\n    System.out.println(\"Even number: \" + i + \", break  from INNER label\");\n    break INNER;\n}\n</code></pre>\n\n<p>Refer to <a href=\"http://[http://javarevisited.blogspot.com/2012/05/break-continue-and-lablel-in-loop-java.html][1]\" rel=\"nofollow noreferrer\">this article</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1565422,
+      "reputation" : 1255,
+      "user_id" : 1454347,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/0ab969fb53e623ba6527ab5cdc1d67a1?s=256&d=identicon&r=PG",
+      "display_name" : "astryk",
+      "link" : "https://stackoverflow.com/users/1454347/astryk"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1546680270,
+    "last_edit_date" : 1546680270,
+    "creation_date" : 1405097188,
+    "answer_id" : 24702701,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>boolean condition = false;\nfor (Type type : types) {\n    for (int i = 0; i &lt; otherTypes.size &amp;&amp; !condition; i ++) {\n        condition = true; // If your condition is satisfied\n    }\n}\n</code></pre>\n\n<p>Use <code>condition</code> as a flag for when you are done processing. Then the inner loop only continues on while the condition has not been met. Either way, the outer loop will keep on chuggin'.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 57685,
+      "reputation" : 1804,
+      "user_id" : 172821,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/cf505c9af73357aad874f83044c8551c?s=256&d=identicon&r=PG",
+      "display_name" : "ddyer",
+      "link" : "https://stackoverflow.com/users/172821/ddyer"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1524242013,
+    "last_edit_date" : 1524242013,
+    "creation_date" : 1407173372,
+    "answer_id" : 25124317,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I prefer to add an explicit \"exit\" to the loop tests.  It makes it clear to \nany casual reader that the loop may terminate early.</p>\n\n<pre><code>boolean earlyExit = false;\nfor(int i = 0 ; i &lt; 10 &amp;&amp; !earlyExit; i++) {\n     for(int j = 0 ; i &lt; 10 &amp;&amp; !earlyExit; j++) { earlyExit = true; }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 213709,
+      "reputation" : 8682,
+      "user_id" : 467240,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://i.sstatic.net/NqFMH.jpg?s=256",
+      "display_name" : "mtyson",
+      "link" : "https://stackoverflow.com/users/467240/mtyson"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1524241987,
+    "last_edit_date" : 1524241987,
+    "creation_date" : 1410634817,
+    "answer_id" : 25826609,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Like @1800 INFORMATION suggestion, use the condition that breaks the inner loop as a condition on the outer loop:</p>\n\n<pre><code>boolean hasAccess = false;\nfor (int i = 0; i &lt; x &amp;&amp; hasAccess == false; i++){\n    for (int j = 0; j &lt; y; j++){\n        if (condition == true){\n            hasAccess = true;\n            break;\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2937730,
+        "reputation" : 7500,
+        "user_id" : 2516301,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/2Tl2O.jpg?s=256",
+        "display_name" : "vefthym",
+        "link" : "https://stackoverflow.com/users/2516301/vefthym"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1412950154,
+      "post_id" : 26301177,
+      "comment_id" : 41271422,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It has been mentioned actually, in an answer getting -23 votes... <a href=\"http://stackoverflow.com/a/886980/2516301\">stackoverflow.com/a/886980/2516301</a> . It will do the work, but it is a very bad programming practice..."
+    }, {
+      "owner" : {
+        "account_id" : 2375368,
+        "reputation" : 4701,
+        "user_id" : 2078908,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/aebe36cee92d87d6192bd09774c0f536?s=256&d=identicon&r=PG",
+        "display_name" : "ursa",
+        "link" : "https://stackoverflow.com/users/2078908/ursa"
+      },
+      "reply_to_user" : {
+        "account_id" : 2937730,
+        "reputation" : 7500,
+        "user_id" : 2516301,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/2Tl2O.jpg?s=256",
+        "display_name" : "vefthym",
+        "link" : "https://stackoverflow.com/users/2516301/vefthym"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1412950958,
+      "post_id" : 26301177,
+      "comment_id" : 41271888,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "indeed. however I saw such legacy code - 4-levels nested loops with several breaking conditions. and it was more readable with exceptions rather than with inlined code. -23 votes is mostly emotional rating, but yes - this approach should be used carefully."
+    }, {
+      "owner" : {
+        "account_id" : 7445,
+        "reputation" : 62917,
+        "user_id" : 12943,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/d6a9924b767fe91c46def7edc7bce035?s=256&d=identicon&r=PG",
+        "display_name" : "Bill K",
+        "link" : "https://stackoverflow.com/users/12943/bill-k"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1512175045,
+      "post_id" : 26301177,
+      "comment_id" : 82165567,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It would have been even more readable if it had been broken out into a separate function call with a center-return.  Often made even better by a little refactor so it makes sense as a stand-alone (often reusable) function."
+    } ],
+    "owner" : {
+      "account_id" : 2375368,
+      "reputation" : 4701,
+      "user_id" : 2078908,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/aebe36cee92d87d6192bd09774c0f536?s=256&d=identicon&r=PG",
+      "display_name" : "ursa",
+      "link" : "https://stackoverflow.com/users/2078908/ursa"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1524246474,
+    "last_edit_date" : 1524246474,
+    "creation_date" : 1412949450,
+    "answer_id" : 26301177,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Another one solution, mentioned without example (it actually works in prod code).</p>\n\n<pre><code>try {\n    for (Type type : types) {\n        for (Type t : types2) {\n            if (some condition #1) {\n                // Do something and break the loop.\n                throw new BreakLoopException();\n            }\n        }\n    }\n}\ncatch (BreakLoopException e) {\n    // Do something on look breaking.\n}\n</code></pre>\n\n<p>Of course <code>BreakLoopException</code> should be internal, private and accelerated with no-stack-trace:</p>\n\n<pre><code>private static class BreakLoopException extends Exception {\n    @Override\n    public StackTraceElement[] getStackTrace() {\n        return new StackTraceElement[0];\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3430964,
+      "reputation" : 3288,
+      "user_id" : 2875404,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://www.gravatar.com/avatar/792531c18b7dcc9ef15d8e128b32a5f4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user2875404",
+      "link" : "https://stackoverflow.com/users/2875404/user2875404"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1524241929,
+    "last_edit_date" : 1524241929,
+    "creation_date" : 1429999266,
+    "answer_id" : 29871230,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Rather unusual approach but in terms of code length (<strong>not performance</strong>) this is the easiest thing you could do:</p>\n\n<pre><code>for(int i = 0; i++; i &lt; j) {\n    if(wanna exit) {\n        i = i + j; // if more nested, also add the \n                   // maximum value for the other loops\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5397431,
+        "reputation" : 6028,
+        "user_id" : 4298200,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://lh5.googleusercontent.com/-HcKtiretO2g/AAAAAAAAAAI/AAAAAAAAAH0/IXGAL7MX8sQ/s256-rj/photo.jpg",
+        "display_name" : "Georg Plaz",
+        "link" : "https://stackoverflow.com/users/4298200/georg-plaz"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1445828703,
+      "post_id" : 32171521,
+      "comment_id" : 54472286,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "These examples of breaking are imho not very helpful, because even without the label they would break at the same point. Also it&#39;s always nice to have code which you can actually execute, which is not the case with your code, since the innerloop can never be reached.."
+    }, {
+      "owner" : {
+        "account_id" : 7458238,
+        "reputation" : 6351,
+        "user_id" : 5670752,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/3TSWf.jpg?s=256",
+        "display_name" : "Taslim Oseni",
+        "link" : "https://stackoverflow.com/users/5670752/taslim-oseni"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1515753402,
+      "post_id" : 32171521,
+      "comment_id" : 83430358,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I was going to type the same thing. The labels are somewhat useless in this case."
+    } ],
+    "owner" : {
+      "account_id" : 6828915,
+      "reputation" : 130,
+      "user_id" : 5253714,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6xKkF.jpg?s=256",
+      "display_name" : "Keshav bansal",
+      "link" : "https://stackoverflow.com/users/5253714/keshav-bansal"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1524241893,
+    "last_edit_date" : 1524241893,
+    "creation_date" : 1440363880,
+    "answer_id" : 32171521,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Best and Easy Method..</p>\n\n<pre><code>outerloop:\nfor(int i=0; i&lt;10; i++){\n    // here we can break Outer loop by \n    break outerloop;\n\n    innerloop:\n    for(int i=0; i&lt;10; i++){\n        // here we can break innerloop by \n        break innerloop;\n     }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2078662,
+      "reputation" : 2360,
+      "user_id" : 1851286,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/703908f1fadd02fe86f0a713fa674325?s=256&d=identicon&r=PG",
+      "display_name" : "Oleksii Kyslytsyn",
+      "link" : "https://stackoverflow.com/users/1851286/oleksii-kyslytsyn"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1563693087,
+    "last_edit_date" : 1563693087,
+    "creation_date" : 1454007235,
+    "answer_id" : 35069676,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Usually in such cases, it is coming in scope of more meaningful logic, let's say some searching or manipulating over some of the iterated 'for'-objects in question, so I usually use the functional approach:</p>\n\n<pre><code>public Object searching(Object[] types) { // Or manipulating\n    List&lt;Object&gt; typesReferences = new ArrayList&lt;Object&gt;();\n    List&lt;Object&gt; typesReferences2 = new ArrayList&lt;Object&gt;();\n\n    for (Object type : typesReferences) {\n        Object o = getByCriterion(typesReferences2, type);\n        if(o != null) return o;\n    }\n    return null;\n}\n\nprivate Object getByCriterion(List&lt;Object&gt; typesReferences2, Object criterion) {\n    for (Object typeReference : typesReferences2) {\n        if(typeReference.equals(criterion)) {\n             // here comes other complex or specific logic || typeReference.equals(new Object())\n             return typeReference;\n        }\n    }\n    return null;\n}\n</code></pre>\n\n<p>Major cons:</p>\n\n<ul>\n<li>roughly twice more lines</li>\n<li>more consumption of computing cycles, meaning it is slower from algorithmic point-of-view</li>\n<li>more typing work</li>\n</ul>\n\n<p>The pros:</p>\n\n<ul>\n<li>the higher ratio to separation of concerns because of functional granularity</li>\n<li>the higher ratio of re-usability and control of\nsearching/manipulating logic without</li>\n<li>the methods are not long, thus they are more compact and easier to comprehend</li>\n<li>higher ratio of readability</li>\n</ul>\n\n<p>So it is just handling the case via a different approach.</p>\n\n<p>Basically a question to the author of this question: what do you consider of this approach?</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8396,
+        "reputation" : 24679,
+        "user_id" : 15108,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+        "display_name" : "boutta",
+        "link" : "https://stackoverflow.com/users/15108/boutta"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1459492969,
+      "post_id" : 36341074,
+      "comment_id" : 60320043,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Using Exceptions for control flow is not exactly a best practice. So, no it is no option."
+    }, {
+      "owner" : {
+        "account_id" : 5397431,
+        "reputation" : 6028,
+        "user_id" : 4298200,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://lh5.googleusercontent.com/-HcKtiretO2g/AAAAAAAAAAI/AAAAAAAAAH0/IXGAL7MX8sQ/s256-rj/photo.jpg",
+        "display_name" : "Georg Plaz",
+        "link" : "https://stackoverflow.com/users/4298200/georg-plaz"
+      },
+      "reply_to_user" : {
+        "account_id" : 8396,
+        "reputation" : 24679,
+        "user_id" : 15108,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+        "display_name" : "boutta",
+        "link" : "https://stackoverflow.com/users/15108/boutta"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1524241802,
+      "post_id" : 36341074,
+      "comment_id" : 86908517,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@boutta what makes you think so?"
+    }, {
+      "owner" : {
+        "account_id" : 8396,
+        "reputation" : 24679,
+        "user_id" : 15108,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+        "display_name" : "boutta",
+        "link" : "https://stackoverflow.com/users/15108/boutta"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1524403129,
+      "post_id" : 36341074,
+      "comment_id" : 86948317,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Lots of reading and the opinion of some widely trusted people like uncle Bob oder Martin Fowler."
+    }, {
+      "owner" : {
+        "account_id" : 1918019,
+        "reputation" : 12097,
+        "user_id" : 1730172,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://www.gravatar.com/avatar/841533e1d504ab31c67ea092b4a288cf?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alvaro",
+        "link" : "https://stackoverflow.com/users/1730172/alvaro"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1556544607,
+      "post_id" : 36341074,
+      "comment_id" : 98464375,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I know this question is for java specifically but some people have made the decision to do this <i>in the language design</i>, this is exactly what python&#39;s <code>StopIteration</code> is for"
+    } ],
+    "owner" : {
+      "account_id" : 400676,
+      "reputation" : 463,
+      "user_id" : 766778,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/df77a54d17ba11fe9629cc9653a22d75?s=256&d=identicon&r=PG",
+      "display_name" : "Dhawan Gayash",
+      "link" : "https://stackoverflow.com/users/766778/dhawan-gayash"
+    },
+    "is_accepted" : false,
+    "score" : -10,
+    "last_activity_date" : 1546680537,
+    "last_edit_date" : 1546680537,
+    "creation_date" : 1459449194,
+    "answer_id" : 36341074,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I feel using labels makes the code seem very much like a goto statement. This is just a thought.</p>\n\n<p>Instead, throw an exception at the inner <code>for</code> loop and encapsulate the two <code>for</code> loops with a try catch block.</p>\n\n<p>Something like</p>\n\n<pre><code>try {\n  // ...\n  for(Object outerForLoop : objectsOuter) {\n     // ...\n     for (Object innerForLoop : objectsInner) {\n        // ...\n        if (isConditionTrue)\n             throw new WrappedException(\"With some useful message. Probably some logging as well.\");\n     }\n  }\n  catch (WrappedException) {\n        // Do something awesome or just don't do anything to swallow the exception.\n  }\n</code></pre>\n\n<p>Just a thought. I prefer this code since it gives me better loggability (like that's a word) for me when this is being run in production or something.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5694623,
+      "reputation" : 6934,
+      "user_id" : 4501480,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://i.sstatic.net/dr48P.jpg?s=256",
+      "display_name" : "Vikrant Kashyap",
+      "link" : "https://stackoverflow.com/users/4501480/vikrant-kashyap"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1524241711,
+    "last_edit_date" : 1524241711,
+    "creation_date" : 1460089798,
+    "answer_id" : 36491552,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>for (int j = 0; j &lt; 5; j++) //inner loop</code> should be replaced with \n    <code>for (int j = 0; j &lt; 5 &amp;&amp; !exitloops; j++)</code>.</p>\n\n<p>Here, in this case complete nested loops should be exit if condition is <code>True</code> . But if we use  <code>exitloops</code> only to the upper <code>loop</code> </p>\n\n<pre><code> for (int i = 0; i &lt; 5 &amp;&amp; !exitloops; i++) //upper loop\n</code></pre>\n\n<p>Then inner loop will continues, because there is no extra flag that notify this inner loop to exit. </p>\n\n<blockquote>\n  <p>Example : if <code>i = 3</code> and <code>j=2</code> then condition is <code>false</code>.  But in next iteration of inner loop <code>j=3</code>  then condition <code>(i*j)</code> become <code>9</code> which is <code>true</code> but inner loop will be continue till <code>j</code> become <code>5</code>.</p>\n</blockquote>\n\n<p>So, it must use <code>exitloops</code> to the inner loops too.</p>\n\n<pre><code>boolean exitloops = false;\nfor (int i = 0; i &lt; 5 &amp;&amp; !exitloops; i++) { //here should exitloops as a Conditional Statement to get out from the loops if exitloops become true. \n    for (int j = 0; j &lt; 5 &amp;&amp; !exitloops; j++) { //here should also use exitloops as a Conditional Statement. \n        if (i * j &gt; 6) {\n            exitloops = true;\n            System.out.println(\"Inner loop still Continues For i * j is =&gt; \"+i*j);\n            break;\n        }\n        System.out.println(i*j);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7445,
+        "reputation" : 62917,
+        "user_id" : 12943,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/d6a9924b767fe91c46def7edc7bce035?s=256&d=identicon&r=PG",
+        "display_name" : "Bill K",
+        "link" : "https://stackoverflow.com/users/12943/bill-k"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1512174841,
+      "post_id" : 39143991,
+      "comment_id" : 82165536,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I prefer this pattern.  It has often caused me to break out the loops into a separate function.  My code has always been better after doing so, so for this reason I really like this answer."
+    } ],
+    "owner" : {
+      "account_id" : 7006242,
+      "reputation" : 850,
+      "user_id" : 5370518,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://www.gravatar.com/avatar/f405eb94c274832db63ade12667b5f5d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Chit Khine",
+      "link" : "https://stackoverflow.com/users/5370518/chit-khine"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1472124358,
+    "creation_date" : 1472124358,
+    "answer_id" : 39143991,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If it is inside some function why don't you just return it: </p>\n\n<pre><code>for (Type type : types) {\n    for (Type t : types2) {\n         if (some condition) {\n            return value;\n         }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8210379,
+      "reputation" : 41,
+      "user_id" : 6178741,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-EgS-RR44jy4/AAAAAAAAAAI/AAAAAAAAAAA/pczMEdFGYgs/s256-rj/photo.jpg",
+      "display_name" : "Dharmik Patel",
+      "link" : "https://stackoverflow.com/users/6178741/dharmik-patel"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1524241695,
+    "last_edit_date" : 1524241695,
+    "creation_date" : 1490319821,
+    "answer_id" : 42990008,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For some cases, We can use <code>while</code> loop effectively here.</p>\n\n<pre><code>Random rand = new Random();\n// Just an example\nfor (int k = 0; k &lt; 10; ++k) {\n    int count = 0;\n    while (!(rand.nextInt(200) == 100)) {\n       count++;\n    }\n\n    results[k] = count;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3412746,
+      "reputation" : 2616,
+      "user_id" : 2862341,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9b47330aa26f09e1756b4cd2df92af4d?s=256&d=identicon&r=PG",
+      "display_name" : "Ravindra HV",
+      "link" : "https://stackoverflow.com/users/2862341/ravindra-hv"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1546680713,
+    "last_edit_date" : 1546680713,
+    "creation_date" : 1491076447,
+    "answer_id" : 43161331,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If it's a new implementation, you can try rewriting the logic as if-else_if-else statements.</p>\n\n<pre><code>while(keep_going) {\n\n    if(keep_going &amp;&amp; condition_one_holds) {\n        // Code\n    }\n    if(keep_going &amp;&amp; condition_two_holds) {\n        // Code\n    }\n    if(keep_going &amp;&amp; condition_three_holds) {\n        // Code\n    }\n    if(keep_going &amp;&amp; something_goes_really_bad) {\n        keep_going=false;\n    }\n    if(keep_going &amp;&amp; condition_four_holds) {\n        // Code\n    }\n    if(keep_going &amp;&amp; condition_five_holds) {\n        // Code\n    }\n}\n</code></pre>\n\n<p>Otherwise you can try setting a flag when that special condition has occured and check for that flag in each of your loop-conditions.</p>\n\n<pre><code>something_bad_has_happened = false;\nwhile(something is true &amp;&amp; !something_bad_has_happened){\n    // Code, things happen\n    while(something else &amp;&amp; !something_bad_has_happened){\n        // Lots of code, things happens\n        if(something happened){\n            -&gt; Then control should be returned -&gt;\n            something_bad_has_happened=true;\n            continue;\n        }\n    }\n    if(something_bad_has_happened) { // The things below will not be executed\n        continue;\n    }\n\n    // Other things may happen here as well, but they will not be executed\n    //  once control is returned from the inner cycle.\n}\n</code></pre>\n\n<p>HERE! So, while a simple break will not work, it can be made to work using <code>continue</code>.</p>\n\n<p>If you are simply porting the logic from one programming language to Java and just want to get the thing working you can try using <a href=\"https://stackoverflow.com/questions/26430630/how-to-use-goto-statement-correctly\">labels</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3188586,
+      "reputation" : 1268,
+      "user_id" : 2693502,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/74ae6ca0f2998f1ac9af1627911a505d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Bill",
+      "link" : "https://stackoverflow.com/users/2693502/bill"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1546680903,
+    "last_edit_date" : 1546680903,
+    "creation_date" : 1493883673,
+    "answer_id" : 43776772,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Demo for <code>break</code>, <code>continue</code>, and <code>label</code>:</p>\n\n<p>Java keywords <code>break</code> and <code>continue</code> have a default value. It's the \"nearest loop\", and today, after a few years of using Java, I just got it!</p>\n\n<p>It's seem used rare, but useful.</p>\n\n<pre><code>import org.junit.Test;\n\n/**\n * Created by cui on 17-5-4.\n */\n\npublic class BranchLabel {\n    @Test\n    public void test() {\n        System.out.println(\"testBreak\");\n        testBreak();\n\n        System.out.println(\"testBreakLabel\");\n        testBreakLabel();\n\n        System.out.println(\"testContinue\");\n        testContinue();\n        System.out.println(\"testContinueLabel\");\n        testContinueLabel();\n    }\n\n    /**\n     testBreak\n     a=0,b=0\n     a=0,b=1\n     a=1,b=0\n     a=1,b=1\n     a=2,b=0\n     a=2,b=1\n     a=3,b=0\n     a=3,b=1\n     a=4,b=0\n     a=4,b=1\n     */\n    public void testBreak() {\n        for (int a = 0; a &lt; 5; a++) {\n            for (int b = 0; b &lt; 5; b++) {\n                if (b == 2) {\n                    break;\n                }\n                System.out.println(\"a=\" + a + \",b=\" + b);\n            }\n        }\n    }\n\n    /**\n     testContinue\n     a=0,b=0\n     a=0,b=1\n     a=0,b=3\n     a=0,b=4\n     a=1,b=0\n     a=1,b=1\n     a=1,b=3\n     a=1,b=4\n     a=2,b=0\n     a=2,b=1\n     a=2,b=3\n     a=2,b=4\n     a=3,b=0\n     a=3,b=1\n     a=3,b=3\n     a=3,b=4\n     a=4,b=0\n     a=4,b=1\n     a=4,b=3\n     a=4,b=4\n     */\n    public void testContinue() {\n        for (int a = 0; a &lt; 5; a++) {\n            for (int b = 0; b &lt; 5; b++) {\n                if (b == 2) {\n                    continue;\n                }\n                System.out.println(\"a=\" + a + \",b=\" + b);\n            }\n        }\n    }\n\n    /**\n     testBreakLabel\n     a=0,b=0,c=0\n     a=0,b=0,c=1\n     * */\n    public void testBreakLabel() {\n        anyName:\n        for (int a = 0; a &lt; 5; a++) {\n            for (int b = 0; b &lt; 5; b++) {\n                for (int c = 0; c &lt; 5; c++) {\n                    if (c == 2) {\n                        break anyName;\n                    }\n                    System.out.println(\"a=\" + a + \",b=\" + b + \",c=\" + c);\n                }\n            }\n        }\n    }\n\n    /**\n     testContinueLabel\n     a=0,b=0,c=0\n     a=0,b=0,c=1\n     a=1,b=0,c=0\n     a=1,b=0,c=1\n     a=2,b=0,c=0\n     a=2,b=0,c=1\n     a=3,b=0,c=0\n     a=3,b=0,c=1\n     a=4,b=0,c=0\n     a=4,b=0,c=1\n     */\n    public void testContinueLabel() {\n        anyName:\n        for (int a = 0; a &lt; 5; a++) {\n            for (int b = 0; b &lt; 5; b++) {\n                for (int c = 0; c &lt; 5; c++) {\n                    if (c == 2) {\n                        continue anyName;\n                    }\n                    System.out.println(\"a=\" + a + \",b=\" + b + \",c=\" + c);\n                }\n            }\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10201069,
+        "reputation" : 5667,
+        "user_id" : 8625512,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/e76c212fa09bc87bb26ac280fd224c39?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Andrei",
+        "link" : "https://stackoverflow.com/users/8625512/andrei"
+      },
+      "reply_to_user" : {
+        "account_id" : 3109932,
+        "reputation" : 1286,
+        "user_id" : 2631925,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://i.sstatic.net/w35kw.png?s=256",
+        "display_name" : "Tvde1",
+        "link" : "https://stackoverflow.com/users/2631925/tvde1"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1555389166,
+      "post_id" : 45127457,
+      "comment_id" : 98082688,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Tvde1 and still useful for other users, so new methods and solutions are always welcome"
+    } ],
+    "owner" : {
+      "account_id" : 7667256,
+      "reputation" : 3329,
+      "user_id" : 5810648,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/xtgSv.jpg?s=256",
+      "display_name" : "Ihor Rybak",
+      "link" : "https://stackoverflow.com/users/5810648/ihor-rybak"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1524246418,
+    "last_edit_date" : 1524246418,
+    "creation_date" : 1500200666,
+    "answer_id" : 45127457,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Java 8 <a href=\"https://docs.oracle.com/javase/8/docs/api/?java/util/stream/Stream.html\" rel=\"noreferrer\"><code>Stream</code></a> solution:</p>\n\n<pre><code>List&lt;Type&gt; types1 = ...\nList&lt;Type&gt; types2 = ...\n\ntypes1.stream()\n      .flatMap(type1 -&gt; types2.stream().map(type2 -&gt; new Type[]{type1, type2}))\n      .filter(types -&gt; /**some condition**/)\n      .findFirst()\n      .ifPresent(types -&gt; /**do something**/);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7907855,
+      "reputation" : 1139,
+      "user_id" : 5972784,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/2af679a90c5d6d78ad8d1267d0525e3e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Siddharth Choudhary",
+      "link" : "https://stackoverflow.com/users/5972784/siddharth-choudhary"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1524241608,
+    "last_edit_date" : 1524241608,
+    "creation_date" : 1505799711,
+    "answer_id" : 46292644,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can do the following:</p>\n\n<ol>\n<li><p>set a local variable to <code>false</code></p></li>\n<li><p>set that variable <code>true</code> in the first loop, when you want to break</p></li>\n<li><p>then you can check in the outer loop, that whether the condition is set then break from the outer loop as well.</p>\n\n<pre><code>boolean isBreakNeeded = false;\nfor (int i = 0; i &lt; some.length; i++) {\n    for (int j = 0; j &lt; some.lengthasWell; j++) {\n        //want to set variable if (){\n        isBreakNeeded = true;\n        break;\n    }\n\n    if (isBreakNeeded) {\n        break; //will make you break from the outer loop as well\n    }\n}\n</code></pre></li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6060889,
+      "reputation" : 149,
+      "user_id" : 4732645,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/356333774572934/picture?type=large",
+      "display_name" : "Harsh Vardhan",
+      "link" : "https://stackoverflow.com/users/4732645/harsh-vardhan"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1533383984,
+    "last_edit_date" : 1533383984,
+    "creation_date" : 1533382715,
+    "answer_id" : 51685197,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Java does not have a goto feature like there is in C++. But still, <code>goto</code> is a reserved keyword in Java. They might implement it in the future. For your question, the answer is that there is something called label in Java to which you can apply a <code>continue</code> and <code>break</code> statement. Find the code below:</p>\n\n<pre><code>public static void main(String ...args) {\n    outerLoop: for(int i=0;i&lt;10;i++) {\n    for(int j=10;j&gt;0;j--) {\n        System.out.println(i+\" \"+j);\n        if(i==j) {\n            System.out.println(\"Condition Fulfilled\");\n            break outerLoop;\n        }\n    }\n    }\n    System.out.println(\"Got out of the outer loop\");\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10897577,
+      "reputation" : 1923,
+      "user_id" : 8010985,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-3_K-Hz0wx08/AAAAAAAAAAI/AAAAAAAAAIA/s_q_R_cB93I/s256-rj/photo.jpg",
+      "display_name" : "Bishal Jaiswal",
+      "link" : "https://stackoverflow.com/users/8010985/bishal-jaiswal"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1554372917,
+    "creation_date" : 1554372917,
+    "answer_id" : 55513397,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Labeled break</strong> concept is used to break out nested loops in java, by using labeled break you can break nesting of loops at any position. \nExample 1:</p>\n\n<pre><code>loop1:\n for(int i= 0; i&lt;6; i++){\n    for(int j=0; j&lt;5; j++){\n          if(i==3)\n            break loop1;\n        }\n    }\n</code></pre>\n\n<p>suppose there are 3 loops and you want to terminate the loop3:\nExample 2:</p>\n\n<pre><code>loop3: \nfor(int i= 0; i&lt;6; i++){\nloop2:\n  for(int k= 0; k&lt;6; k++){\nloop1:\n    for(int j=0; j&lt;5; j++){\n          if(i==3)\n            break loop3;\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10411975,
+      "reputation" : 679,
+      "user_id" : 7677111,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ed6e566784050d08917f3d77558d6486?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Deb",
+      "link" : "https://stackoverflow.com/users/7677111/deb"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1557310832,
+    "creation_date" : 1557310832,
+    "answer_id" : 56038465,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Below is an example where \"break\" statement pushes the cursor out of the for loop whenever the condition is met.</p>\n\n<pre><code>public class Practice3_FindDuplicateNumber {\n\n    public static void main(String[] args) {\n        Integer[] inp = { 2, 3, 4, 3, 3 };\n        Integer[] aux_arr = new Integer[inp.length];\n        boolean isduplicate = false;\n        for (int i = 0; i &lt; aux_arr.length; i++) {\n\n            aux_arr[i] = -1;\n\n        }\n        outer: for (int i = 0; i &lt; inp.length; i++) {\n            if (aux_arr[inp[i]] == -200) {\n                System.out.println(\"Duplicate Found at index: \" + i + \" Carrying value: \" + inp[i]);\n                isduplicate = true;\n                break outer;\n            } else {\n                aux_arr[inp[i]] = -200;\n            }\n        }\n\n        for (Integer integer : aux_arr) {\n            System.out.println(integer);\n        }\n\n        if (isduplicate == false) {\n            System.out.println(\"No Duplicates!!!!!\");\n        } else {\n            System.out.println(\"Duplicates!!!!!\");\n        }\n    }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12511931,
+      "reputation" : 4373,
+      "user_id" : 9106684,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b7572f2a571bd2336bbf07564476721b?s=256&d=identicon&r=PG",
+      "display_name" : "duyuanchao",
+      "link" : "https://stackoverflow.com/users/9106684/duyuanchao"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1566821493,
+    "creation_date" : 1566821493,
+    "answer_id" : 57657716,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Demo</strong></p>\n\n<pre><code>public static void main(String[] args) {\n    outer:\n    while (true) {\n        while (true) {\n            break outer;\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11178690,
+      "reputation" : 9089,
+      "user_id" : 8203357,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/c7WIdDgY.jpg?s=256",
+      "display_name" : "Kiran Maniya",
+      "link" : "https://stackoverflow.com/users/8203357/kiran-maniya"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1568979609,
+    "creation_date" : 1568979609,
+    "answer_id" : 58027674,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It's fairly easy to use <code>label</code>, You can break the outer loop from inner loop using the label, Consider the example below,</p>\n\n<pre><code>public class Breaking{\n    public static void main(String[] args) {\n        outerscope:\n        for (int i=0; i &lt; 5; i++) {\n            for (int j=0; j &lt; 5; j++) {\n                if (condition) {\n                    break outerscope;\n                }\n            }\n        }\n    }\n}\n</code></pre>\n\n<p>Another approach is to use the breaking variable/flag to keep track of required break. consider the following example.</p>\n\n<pre><code>public class Breaking{ \n    public static void main(String[] args) {\n        boolean isBreaking = false;\n        for (int i=0; i &lt; 5; i++) {\n            for (int j=0; j &lt; 5; j++) {\n                if (condition) {\n                    isBreaking = true;\n                    break;\n                }\n            }\n            if(isBreaking){\n                break;\n            }\n        }\n    }\n}\n</code></pre>\n\n<p>However, I prefer using the first approach.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15282082,
+      "reputation" : 832,
+      "user_id" : 11026123,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/345c7feda9fe59a43d35612f8d18d4fb?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "RusJaI",
+      "link" : "https://stackoverflow.com/users/11026123/rusjai"
+    },
+    "is_accepted" : false,
+    "score" : 26,
+    "last_activity_date" : 1602925870,
+    "last_edit_date" : 1602925870,
+    "creation_date" : 1602925379,
+    "answer_id" : 64400751,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using 'break' keyword alone is not the appropriate way when you need to exit from more than one loops.\nYou can exit from immediate loop\nNo matter with how many loops your statement is surrounded with.\nYou can use 'break' with a label!\nHere I've used the label &quot;abc&quot;\nYou can write your code as following, within any function in Java</p>\n<p>This code shows how to exit from the most outer loop</p>\n<pre><code> abc: \n    for (int i = 0; i &lt; 10; i++) { \n        for (int j = 0; j &lt; 10; j++) { \n           for (int k = 0; k &lt; 10; k++) { \n              if (k == 1){\n                 break abc;\n              } \n        } \n    } \n}\n</code></pre>\n<p>Also you can use break statement to exit from any loop in a nested loop.</p>\n<pre><code>    for (int i = 0; i &lt; 10; i++) { \n       abc:for (int j = 0; j &lt; 10; j++) { \n           for (int k = 0; k &lt; 10; k++) { \n              if (k == 1){\n                 break abc;\n              } \n        } \n    } \n}\n</code></pre>\n<p>The following code shows an example of exiting from the innermost loop.\nIn other works,after executing the following code, you are at the outside of the loop of 'k' variables and still inside the loop of 'j' and 'i' variables.</p>\n<pre><code>    for (int i = 0; i &lt; 10; i++) { \n        for (int j = 0; j &lt; 10; j++) { \n           for (int k = 0; k &lt; 10; k++) { \n              if (k == 1){\n                 break;\n              } \n        } \n    } \n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2010126,
+        "reputation" : 1009,
+        "user_id" : 1798786,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/9f5f80f6b0a71a3982a08aa7d103095d?s=256&d=identicon&r=PG",
+        "display_name" : "skwisgaar",
+        "link" : "https://stackoverflow.com/users/1798786/skwisgaar"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1705794458,
+      "post_id" : 74262966,
+      "comment_id" : 137250180,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "as you can see nobody does :)"
+    } ],
+    "owner" : {
+      "account_id" : 18955587,
+      "reputation" : 194,
+      "user_id" : 13832244,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-43Zjcc7h9yg/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucl2oMQQ-NWtiFSQXcIuQkh0cPIWig/s256-rj/photo.jpg",
+      "display_name" : "Sanket Bhangale",
+      "link" : "https://stackoverflow.com/users/13832244/sanket-bhangale"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1667217639,
+    "creation_date" : 1667217639,
+    "answer_id" : 74262966,
+    "question_id" : 886955,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If someone is looking for the kotlin way of adding labeled loops</p>\n<pre><code>loop@ for (i in 1..100) {\n    for (j in 1..100) {\n        if (...) break@loop\n    }\n}\n</code></pre>\n<p><a href=\"https://kotlinlang.org/docs/returns.html#break-and-continue-labels\" rel=\"nofollow noreferrer\">Source</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8396,
+    "reputation" : 24679,
+    "user_id" : 15108,
+    "user_type" : "registered",
+    "accept_rate" : 89,
+    "profile_image" : "https://www.gravatar.com/avatar/9ca9e0c0bf07d39f1c29776e766ba4cc?s=256&d=identicon&r=PG",
+    "display_name" : "boutta",
+    "link" : "https://stackoverflow.com/users/15108/boutta"
+  },
+  "is_answered" : true,
+  "view_count" : 1463661,
+  "protected_date" : 1375117442,
+  "accepted_answer_id" : 886979,
+  "answer_count" : 37,
+  "score" : 2099,
+  "last_activity_date" : 1680986528,
+  "creation_date" : 1242810463,
+  "last_edit_date" : 1638772530,
+  "question_id" : 886955,
+  "link" : "https://stackoverflow.com/questions/886955/how-do-i-break-out-of-nested-loops-in-java",
+  "title" : "How do I break out of nested loops in Java?",
+  "body" : "<p>I've got a nested loop construct like this:</p>\n<pre><code>for (Type type : types) {\n    for (Type t : types2) {\n         if (some condition) {\n             // Do something and break...\n             break; // Breaks out of the inner loop\n         }\n    }\n}\n</code></pre>\n<p>Now how can I break out of both loops? I've looked at similar questions, but none concerns Java specifically. I couldn't apply these solutions because most used gotos.</p>\n<p>I don't want to put the inner loop in a different method.</p>\n<p>I don't want to return the loops. When breaking I'm finished with the execution of the loop block.</p>\n"
+}

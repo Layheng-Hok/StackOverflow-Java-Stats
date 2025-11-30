@@ -1,0 +1,64 @@
+{
+  "tags" : [ "java", "jquery", "validation", "jakarta-validation" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3068738,
+        "reputation" : 672,
+        "user_id" : 2599884,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/1290bc9a01fb4d07e276b52f92536947?s=256&d=identicon&r=PG",
+        "display_name" : "buzzsawddog",
+        "link" : "https://stackoverflow.com/users/2599884/buzzsawddog"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1374501501,
+      "post_id" : 17749986,
+      "comment_id" : 25950216,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It can be amazing how simple the answer is when you over think things...  Thanks for answering my question.  I would like to not that I am going to do things slightly different (to conform with coding conventions with my department) but your solution works nicely for me."
+    } ],
+    "owner" : {
+      "account_id" : 1820003,
+      "reputation" : 50409,
+      "user_id" : 1654265,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/5ad106352f4025af8fb0aff6a27fe1d2?s=256&d=identicon&r=PG",
+      "display_name" : "Andrea Ligios",
+      "link" : "https://stackoverflow.com/users/1654265/andrea-ligios"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1374247988,
+    "creation_date" : 1374247988,
+    "answer_id" : 17749986,
+    "question_id" : 17749633,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Use a Constant from a generic purpose Class or Interface. \nInject it into JSP jQuery Script with Struts <code>&lt;s:property/&gt;</code> tag.</p>\n\n<p>This way, when you will change the constant value, the new value will be automatically read by all the Java classes and all the JSP pages with no need to alter the code or replace something.</p>\n\n<p>Base Class, Interface, or whatever containing the Constants</p>\n\n<pre><code>public static final int MIN_LENGHT = 20;\npublic static final int MAX_LENGHT = 4000;\n</code></pre>\n\n<p>Action (that implements / extends the class above with the constants)</p>\n\n<pre><code>@Entity\npublic class Checklist{\n  @Size(min = MIN_LENGHT, max = MAX_LENGHT, message = \"{Checklist.size}\")\n  private String notes;\n}\n</code></pre>\n\n<p>JSP</p>\n\n<pre><code>$(\"#someForm\").validate({\n  rules:{\n    'checklist.notes':{\n      minlength:&lt;s:property value=\"@my.package.constantClass@MIN_LENGHT\" /&gt;,\n      maxlength:&lt;s:property value=\"@my.package.constantClass@MAX_LENGHT\" /&gt;\n    }\n  }\n});\n</code></pre>\n\n<p>Remember to set <code>struts.ognl.allowStaticMethodAccess</code> to <code>true</code> in <code>struts.xml</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3068738,
+    "reputation" : 672,
+    "user_id" : 2599884,
+    "user_type" : "registered",
+    "accept_rate" : 86,
+    "profile_image" : "https://www.gravatar.com/avatar/1290bc9a01fb4d07e276b52f92536947?s=256&d=identicon&r=PG",
+    "display_name" : "buzzsawddog",
+    "link" : "https://stackoverflow.com/users/2599884/buzzsawddog"
+  },
+  "is_answered" : true,
+  "view_count" : 307,
+  "accepted_answer_id" : 17749986,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1763254945,
+  "creation_date" : 1374246928,
+  "last_edit_date" : 1763254945,
+  "question_id" : 17749633,
+  "link" : "https://stackoverflow.com/questions/17749633/java-beanvalidation-spring",
+  "title" : "Java BeanValidation Spring",
+  "body" : "<p>Background.  Using spring for dependency injection and struts2 running on a tomcat server.</p>\n<p>When doing bean validation (now known as <a href=\"https://jakarta.ee/specifications/bean-validation/\" rel=\"nofollow noreferrer\"><em>Jakarta Validation</em></a>) I like to take a two-layer approach.</p>\n<ol>\n<li>Run validation on the client side (for now using jQuery Validation Plugin) before the form is even submitted to the server to check for well formed/complete forms.</li>\n<li>Run bean validation at the server using annotations on the Beans them-self to stop database blowups in the event that someone circumvents the client side validation.</li>\n</ol>\n<p>The problem:</p>\n<p>Keeping track of two sets of validation criteria gets to be a bit of a pain...  An error message is easy to keep track of because I can stick them into a messages.properties file and do a message lookup for both my bean and JSP page.  The real problem is the numbers.</p>\n<p>For example, let say I have a Checklist with a String variable notes.  The min size is 10 max size is 2000 at release.  Three months down the road I see that 2000 is just not cutting it and I need to increase the size limit to 4000 as a max.  I now have two places to go and change the number.</p>\n<p>Java Bean Validation with annotation:</p>\n<pre><code>@Entity\npublic class Checklist{\n  @Size(min = 10, max = 2000, message = &quot;{Checklist.size}&quot;)\n  private String notes;\n}\n</code></pre>\n<p>jQuery form Validation:</p>\n<pre><code>$(&quot;#someForm&quot;).validate({\n  rules:{\n    'checklist.notes':{\n      minlength:10,\n      maxlength:2000\n    }\n  }\n});\n</code></pre>\n<p>Is there some way that I can reuse the number in the same way that I can reuse the message?</p>\n"
+}

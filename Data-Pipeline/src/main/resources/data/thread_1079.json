@@ -1,0 +1,410 @@
+{
+  "tags" : [ "java", "mapreduce", "java-8", "java-stream", "collectors" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 74,
+      "creation_date" : 1411033754,
+      "post_id" : 25903190,
+      "comment_id" : 40554180,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You can replace <code>e -&gt; e.getKey()</code> with <code>Map.Entry::getKey</code>. But that’s a matter of taste/programming style."
+    }, {
+      "owner" : {
+        "account_id" : 251934,
+        "reputation" : 83,
+        "user_id" : 529634,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4af0d8c62ad110b0b56ecddd57807ad5?s=256&d=identicon&r=PG",
+        "display_name" : "Jon Burgin",
+        "link" : "https://stackoverflow.com/users/529634/jon-burgin"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1492720529,
+      "post_id" : 25903190,
+      "comment_id" : 74111713,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Actually it is a matter of performance, your suggesting being slightly superior to the lambda &#39;style&#39;"
+    } ],
+    "owner" : {
+      "account_id" : 26377,
+      "reputation" : 364518,
+      "user_id" : 68587,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://www.gravatar.com/avatar/7d9fd158e03cbde94f7e0b33b78222af?s=256&d=identicon&r=PG",
+      "display_name" : "John Kugelman",
+      "link" : "https://stackoverflow.com/users/68587/john-kugelman"
+    },
+    "is_accepted" : true,
+    "score" : 520,
+    "last_activity_date" : 1444143333,
+    "last_edit_date" : 1444143333,
+    "creation_date" : 1411006877,
+    "answer_id" : 25903190,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>Map&lt;String, String&gt; x;\nMap&lt;String, Integer&gt; y =\n    x.entrySet().stream()\n        .collect(Collectors.toMap(\n            e -&gt; e.getKey(),\n            e -&gt; Integer.parseInt(e.getValue())\n        ));\n</code></pre>\n\n<p>It's not quite as nice as the list code. You can't construct new <code>Map.Entry</code>s in a <code>map()</code> call so the work is mixed into the <code>collect()</code> call.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 195331,
+      "reputation" : 281010,
+      "user_id" : 438154,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://www.gravatar.com/avatar/4ec21df1e55febf8deb2e3b24b9cb39b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sotirios Delimanolis",
+      "link" : "https://stackoverflow.com/users/438154/sotirios-delimanolis"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1689776787,
+    "last_edit_date" : 1689776787,
+    "creation_date" : 1411007031,
+    "answer_id" : 25903212,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A generic solution like so</p>\n<pre><code>public static &lt;X, Y, Z&gt; Map&lt;X, Z&gt; transform(Map&lt;X, Y&gt; input,\n        Function&lt;Y, Z&gt; function) {\n    return input\n            .entrySet()\n            .stream()\n            .collect(\n                    Collectors.toMap((entry) -&gt; entry.getKey(),\n                            (entry) -&gt; function.apply(entry.getValue())));\n}\n</code></pre>\n<p>Used like so</p>\n<pre><code>Map&lt;String, String&gt; input = new HashMap&lt;String, String&gt;();\ninput.put(&quot;string1&quot;, &quot;42&quot;);\ninput.put(&quot;string2&quot;, &quot;41&quot;);\nMap&lt;String, Integer&gt; output = transform(input,\n            (val) -&gt; Integer.parseInt(val));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1411033999,
+      "post_id" : 25905196,
+      "comment_id" : 40554358,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<code>Function.identity()</code> might look cool but since the first solution requires a map/hash lookup for every entry whereas all other solution don’t, I would not recommend it."
+    } ],
+    "owner" : {
+      "account_id" : 1548079,
+      "reputation" : 133461,
+      "user_id" : 1441122,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+      "display_name" : "Stuart Marks",
+      "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+    },
+    "is_accepted" : false,
+    "score" : 38,
+    "last_activity_date" : 1411020011,
+    "last_edit_date" : 1495540510,
+    "creation_date" : 1411020011,
+    "answer_id" : 25905196,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Here are some variations on <a href=\"https://stackoverflow.com/a/25903212/1441122\">Sotirios Delimanolis' answer</a>, which was pretty good to begin with (+1). Consider the following:</p>\n\n<pre><code>static &lt;X, Y, Z&gt; Map&lt;X, Z&gt; transform(Map&lt;? extends X, ? extends Y&gt; input,\n                                     Function&lt;Y, Z&gt; function) {\n    return input.keySet().stream()\n        .collect(Collectors.toMap(Function.identity(),\n                                  key -&gt; function.apply(input.get(key))));\n}\n</code></pre>\n\n<p>A couple points here. First is the use of wildcards in the generics; this makes the function somewhat more flexible. A wildcard would be necessary if, for example, you wanted the output map to have a key that's a superclass of the input map's key:</p>\n\n<pre><code>Map&lt;String, String&gt; input = new HashMap&lt;String, String&gt;();\ninput.put(\"string1\", \"42\");\ninput.put(\"string2\", \"41\");\nMap&lt;CharSequence, Integer&gt; output = transform(input, Integer::parseInt);\n</code></pre>\n\n<p>(There is also an example for the map's values, but it's really contrived, and I admit that having the bounded wildcard for Y only helps in edge cases.)</p>\n\n<p>A second point is that instead of running the stream over the input map's <code>entrySet</code>, I ran it over the <code>keySet</code>. This makes the code a little cleaner, I think, at the cost of having to fetch values out of the map instead of from the map entry. Incidentally, I initially had <code>key -&gt; key</code> as the first argument to <code>toMap()</code> and this failed with a type inference error for some reason. Changing it to <code>(X key) -&gt; key</code> worked, as did <code>Function.identity()</code>.</p>\n\n<p>Still another variation is as follows:</p>\n\n<pre><code>static &lt;X, Y, Z&gt; Map&lt;X, Z&gt; transform1(Map&lt;? extends X, ? extends Y&gt; input,\n                                      Function&lt;Y, Z&gt; function) {\n    Map&lt;X, Z&gt; result = new HashMap&lt;&gt;();\n    input.forEach((k, v) -&gt; result.put(k, function.apply(v)));\n    return result;\n}\n</code></pre>\n\n<p>This uses <code>Map.forEach()</code> instead of streams. This is even simpler, I think, because it dispenses with the collectors, which are somewhat clumsy to use with maps. The reason is that <code>Map.forEach()</code> gives the key and value as separate parameters, whereas the stream has only one value -- and you have to choose whether to use the key or the map entry as that value. On the minus side, this lacks the rich, streamy goodness of the other approaches. :-)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 247217,
+      "reputation" : 223472,
+      "user_id" : 521799,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+      "display_name" : "Lukas Eder",
+      "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1689759568,
+    "last_edit_date" : 1689759568,
+    "creation_date" : 1452116339,
+    "answer_id" : 34643302,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Does it absolutely have to be 100% functional and fluent? If not, how about this, which is about as short as it gets:</p>\n<pre><code>Map&lt;String, Integer&gt; output = new HashMap&lt;&gt;();\ninput.forEach((k, v) -&gt; output.put(k, Integer.valueOf(v));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6243460,
+      "reputation" : 100904,
+      "user_id" : 4856258,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tagir Valeev",
+      "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1454043124,
+    "creation_date" : 1454043124,
+    "answer_id" : 35077129,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>My <a href=\"https://github.com/amaembo/streamex\" rel=\"noreferrer\">StreamEx</a> library which enhances standard stream API provides an <a href=\"http://amaembo.github.io/streamex/javadoc/one/util/streamex/EntryStream.html\" rel=\"noreferrer\"><code>EntryStream</code></a> class which suits better for transforming maps:</p>\n\n<pre><code>Map&lt;String, Integer&gt; output = EntryStream.of(input).mapValues(Integer::valueOf).toMap();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5914036,
+      "reputation" : 5303,
+      "user_id" : 4653367,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/0sRMy.png?s=256",
+      "display_name" : "John McClean",
+      "link" : "https://stackoverflow.com/users/4653367/john-mcclean"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1456231522,
+    "last_edit_date" : 1456231522,
+    "creation_date" : 1456228739,
+    "answer_id" : 35577034,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you don't mind using 3rd party libraries, my <a href=\"https://github.com/aol/cyclops-react\" rel=\"nofollow\">cyclops-react</a> lib has extensions for all <a href=\"https://medium.com/@johnmcclean/extending-jdk-8-collections-8ae8d43dd75e#.j5lxtrqze\" rel=\"nofollow\">JDK Collection</a> types, including <a href=\"http://static.javadoc.io/com.aol.simplereact/cyclops-react/1.0.0-RC1/com/aol/cyclops/data/collections/extensions/standard/MapX.html\" rel=\"nofollow\">Map</a>. We can just transform the map directly using the 'map' operator (by default map acts on the values in the map).</p>\n\n<pre><code>   MapX&lt;String,Integer&gt; y = MapX.fromMap(HashMaps.of(\"hello\",\"1\"))\n                                .map(Integer::parseInt);\n</code></pre>\n\n<p>bimap can be used to transform the keys and values at the same time</p>\n\n<pre><code>  MapX&lt;String,Integer&gt; y = MapX.fromMap(HashMaps.of(\"hello\",\"1\"))\n                               .bimap(this::newKey,Integer::parseInt);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 353458,
+        "reputation" : 222,
+        "user_id" : 691154,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/f797ab84fea29ae70fbb095d7c25374a?s=256&d=identicon&r=PG",
+        "display_name" : "user691154",
+        "link" : "https://stackoverflow.com/users/691154/user691154"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1481708497,
+      "post_id" : 38034761,
+      "comment_id" : 69481499,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I started with this custom collector as a base and wanted to add that, at least when using parallelStream() instead of stream(), the binaryOperator should be rewritten to something more akin to <code>map2.entrySet().forEach(entry -&gt; { if (map1.containsKey(entry.getKey())) { map1.get(entry.getKey()).merge(entry.getValue()); } else { map1.put(entry.getKey(),entry.getValue()); } }); return map1</code> or values will be lost when reducing."
+    } ],
+    "owner" : {
+      "account_id" : 3176681,
+      "reputation" : 764,
+      "user_id" : 3299647,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/96d47e3894bf8e8fc649b09618faa201?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ira",
+      "link" : "https://stackoverflow.com/users/3299647/ira"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1466909975,
+    "last_edit_date" : 1495540976,
+    "creation_date" : 1466908758,
+    "answer_id" : 38034761,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>An alternative that always exists for learning purpose is to build your custom collector through Collector.of() though toMap() JDK collector here is succinct (+1 <a href=\"https://stackoverflow.com/a/25903190/3299647\">here</a>) .</p>\n\n<pre><code>Map&lt;String,Integer&gt; newMap = givenMap.\n                entrySet().\n                stream().collect(Collector.of\n               ( ()-&gt; new HashMap&lt;String,Integer&gt;(),\n                       (mutableMap,entryItem)-&gt; mutableMap.put(entryItem.getKey(),Integer.parseInt(entryItem.getValue())),\n                       (map1,map2)-&gt;{ map1.putAll(map2); return map1;}\n               ));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 19079,
+        "reputation" : 3412,
+        "user_id" : 44390,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/9d94e885a0f4ea815305eaf29313cf84?s=256&d=identicon&r=PG",
+        "display_name" : "mskfisher",
+        "link" : "https://stackoverflow.com/users/44390/mskfisher"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1519910168,
+      "post_id" : 44936883,
+      "comment_id" : 85105335,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I like this approach, but be careful not to pass it a java.util.Function.  Since it expects com.google.common.base.Function, Eclipse gives an unhelpful error - it says Function is not applicable for Function, which can be confusing: &quot;The method transformValues(Map&lt;K,V1&gt;, Function&lt;? super V1,V2&gt;) in the type Maps is not applicable for the arguments (Map&lt;Foo,Bar&gt;, Function&lt;Bar,Baz&gt;)&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 14860,
+        "reputation" : 3700,
+        "user_id" : 30900,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/348583dd70cb44a27774b0245495e4ab?s=256&d=identicon&r=PG",
+        "display_name" : "Joe",
+        "link" : "https://stackoverflow.com/users/30900/joe"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1522215174,
+      "post_id" : 44936883,
+      "comment_id" : 86059039,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If you must pass a <code>java.util.Function</code>, you have two options.  1. Avoid the issue by using a lambda to let Java type inference figure it out.  2. Use a method reference like javaFunction::apply to produce a new lambda that type inference can figure out."
+    }, {
+      "owner" : {
+        "account_id" : 73330,
+        "reputation" : 4426,
+        "user_id" : 211234,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9634e192b6d7e0f790ae48dd65b481c6?s=256&d=identicon&r=PG",
+        "display_name" : "Lawrence Kesteloot",
+        "link" : "https://stackoverflow.com/users/211234/lawrence-kesteloot"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1601427995,
+      "post_id" : 44936883,
+      "comment_id" : 113403002,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Also note that, unlike other solutions on this page, this solution returns a <i>view</i> to the underlying map, not a copy."
+    }, {
+      "owner" : {
+        "account_id" : 1119690,
+        "reputation" : 23190,
+        "user_id" : 1108305,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/4c16849c5f9444a685f62cdc2a15c3ac?s=256&d=identicon&r=PG",
+        "display_name" : "M. Justin",
+        "link" : "https://stackoverflow.com/users/1108305/m-justin"
+      },
+      "reply_to_user" : {
+        "account_id" : 19079,
+        "reputation" : 3412,
+        "user_id" : 44390,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/9d94e885a0f4ea815305eaf29313cf84?s=256&d=identicon&r=PG",
+        "display_name" : "mskfisher",
+        "link" : "https://stackoverflow.com/users/44390/mskfisher"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1740418317,
+      "post_id" : 44936883,
+      "comment_id" : 140141872,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Guava 21, released in 2017, updated <code>com.google.common.base.Function</code> to extend <code>java.util.function.Function</code>.  So @mskfisher&#39;s warning about not passing in <code>java.util.function.Function</code> is no longer applicable to current versions of Guava."
+    } ],
+    "owner" : {
+      "account_id" : 1115422,
+      "reputation" : 10663,
+      "user_id" : 1104870,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/fe76e258ce32209153e67d540f9232fd?s=256&d=identicon&r=PG",
+      "display_name" : "Alex Krauss",
+      "link" : "https://stackoverflow.com/users/1104870/alex-krauss"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1499293153,
+    "creation_date" : 1499293153,
+    "answer_id" : 44936883,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Guava's function <a href=\"http://google.github.io/guava/releases/snapshot/api/docs/com/google/common/collect/Maps.html#transformValues-java.util.Map-com.google.common.base.Function-\" rel=\"noreferrer\"><code>Maps.transformValues</code></a> is what you are looking for, and it works nicely with lambda expressions:</p>\n\n<pre><code>Maps.transformValues(originalMap, val -&gt; ...)\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1999698,
+        "reputation" : 147,
+        "user_id" : 1920108,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/864f4636f3505ae474e53ead1756c635?s=256&d=identicon&r=PG",
+        "display_name" : "bladefist",
+        "link" : "https://stackoverflow.com/users/1920108/bladefist"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1663573901,
+      "post_id" : 48721070,
+      "comment_id" : 130263121,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "1. please wrap code in code block. 2. it&#39;s usually not good practice to modify input. always better to create a new object"
+    } ],
+    "owner" : {
+      "account_id" : 245024,
+      "reputation" : 310,
+      "user_id" : 1937041,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5782e616f05d082e04bec2202fe2a9a6?s=256&d=identicon&r=PG",
+      "display_name" : "Breton F.",
+      "link" : "https://stackoverflow.com/users/1937041/breton-f"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1672884618,
+    "last_edit_date" : 1672884618,
+    "creation_date" : 1518267720,
+    "answer_id" : 48721070,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A declarative and simpler Java8+ solution would be :</p>\n<p>yourMap.replaceAll((key, val) -&gt; computeNewVal);</p>\n<p>Cheers to :\n<a href=\"http://www.deadcoderising.com/2017-02-14-java-8-declarative-ways-of-modifying-a-map-using-compute-merge-and-replace/\" rel=\"nofollow noreferrer\">http://www.deadcoderising.com/2017-02-14-java-8-declarative-ways-of-modifying-a-map-using-compute-merge-and-replace/</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1119690,
+        "reputation" : 23190,
+        "user_id" : 1108305,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/4c16849c5f9444a685f62cdc2a15c3ac?s=256&d=identicon&r=PG",
+        "display_name" : "M. Justin",
+        "link" : "https://stackoverflow.com/users/1108305/m-justin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1740418479,
+      "post_id" : 75004577,
+      "comment_id" : 140141884,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I think this is a good technique to have available, though doing the mapping in <code>collect</code> (per e.g. <a href=\"https://stackoverflow.com/a/25903190/1108305\">stackoverflow.com/a/25903190/1108305</a>) saves on creating an additional interim <code>Entry</code> object for each element in the stream."
+    } ],
+    "owner" : {
+      "account_id" : 9107988,
+      "reputation" : 4077,
+      "user_id" : 6777695,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/82120153a9fce415fd4983897d45d441?s=256&d=identicon&r=PG",
+      "display_name" : "Hakan54",
+      "link" : "https://stackoverflow.com/users/6777695/hakan54"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1672831096,
+    "last_edit_date" : 1672831096,
+    "creation_date" : 1672830746,
+    "answer_id" : 75004577,
+    "question_id" : 25903137,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Although it is possible to remap the key or/and value in the <code>collect</code> part of the stream as shown in other answers, I think it should belong in the <code>map</code> part as that function is designed to transform the data within the stream. Next to that it should be easily repeatable without introducing additional complexity. The <code>SimpleEntry</code> object can be used which is already available since Java 6.</p>\n<p><strong>With Java 8</strong></p>\n<pre class=\"lang-java prettyprint-override\"><code>import java.util.AbstractMap.SimpleEntry;\nimport java.util.Map;\nimport java.util.Map.Entry;\nimport java.util.stream.Collectors;\n\npublic class App {\n\n    public static void main(String[] args) {\n        Map&lt;String, String&gt; x;\n        Map&lt;String, Integer&gt; y = x.entrySet().stream()\n                .map(entry -&gt; new SimpleEntry&lt;&gt;(entry.getKey(), Integer.parseInt(entry.getValue())))\n                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));\n    }\n\n}\n</code></pre>\n<p><strong>With Java 9+</strong></p>\n<p>With the release of Java 9 a static method within the Map interface was introduced to make it easier to just create an entry without to instantiate a new SimpleEntry as shown in the previous example.</p>\n<pre class=\"lang-java prettyprint-override\"><code>import java.util.Map;\nimport java.util.Map.Entry;\nimport java.util.stream.Collectors;\n\npublic class App {\n\n    public static void main(String[] args) {\n        Map&lt;String, String&gt; x;\n        Map&lt;String, Integer&gt; y = x.entrySet().stream()\n                .map(entry -&gt; Map.entry((entry.getKey(), Integer.parseInt(entry.getValue())))\n                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));\n    }\n\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1390639,
+    "reputation" : 24677,
+    "user_id" : 1321564,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://www.gravatar.com/avatar/f61fbcc7c59e134d888f2e34cd216658?s=256&d=identicon&r=PG",
+    "display_name" : "Benjamin M",
+    "link" : "https://stackoverflow.com/users/1321564/benjamin-m"
+  },
+  "is_answered" : true,
+  "view_count" : 273661,
+  "accepted_answer_id" : 25903190,
+  "answer_count" : 10,
+  "score" : 294,
+  "last_activity_date" : 1689776787,
+  "creation_date" : 1411006443,
+  "last_edit_date" : 1620110977,
+  "question_id" : 25903137,
+  "link" : "https://stackoverflow.com/questions/25903137/java8-hashmapx-y-to-hashmapx-z-using-stream-map-reduce-collector",
+  "title" : "Java8: HashMap&lt;X, Y&gt; to HashMap&lt;X, Z&gt; using Stream / Map-Reduce / Collector",
+  "body" : "<p>I know how to &quot;transform&quot; a simple Java <code>List</code> from <code>Y</code> -&gt; <code>Z</code>, i.e.:</p>\n<pre><code>List&lt;String&gt; x;\nList&lt;Integer&gt; y = x.stream()\n        .map(s -&gt; Integer.parseInt(s))\n        .collect(Collectors.toList());\n</code></pre>\n<p>Now I'd like to do basically the same with a Map, i.e.:</p>\n<pre><code>INPUT:\n{\n  &quot;key1&quot; -&gt; &quot;41&quot;,    // &quot;41&quot; and &quot;42&quot;\n  &quot;key2&quot; -&gt; &quot;42&quot;      // are Strings\n}\n\nOUTPUT:\n{\n  &quot;key1&quot; -&gt; 41,      // 41 and 42\n  &quot;key2&quot; -&gt; 42       // are Integers\n}\n</code></pre>\n<p>The solution should not be limited to <code>String</code> -&gt; <code>Integer</code>. Just like in the <code>List</code> example above, I'd like to call any method (or constructor).</p>\n"
+}

@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "modulo", "circular-queue" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 13429972,
+      "reputation" : 1877,
+      "user_id" : 9690075,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1f698e72460b5a8c716a0c1cea91b81e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "zysaaa",
+      "link" : "https://stackoverflow.com/users/9690075/zysaaa"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1639117807,
+    "creation_date" : 1639117807,
+    "answer_id" : 70300567,
+    "question_id" : 70300026,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><code>isFull</code> judgment is problematic. Suppose you initialize your queue with a size of 1, and then perform an <code>enqueue</code> operation. At this time, <code>isFull</code> will return true, cause you to be unable to enqueue this item.</p>\n<pre><code>public boolean isFull() {\n    if((rear + 1)% size == front) {\n        return true;\n    }\n    else\n        return false;\n}\n</code></pre>\n<p>The simple solution is using an extra <code>size</code> field to record the number of elements in the array:</p>\n<pre><code>public class MyQueue {\n    public int queue[];\n    public int size;\n    public int rear;\n    public int front;\n    public int actualSize;\n\n    public MyQueue(int mySize) {\n        size = mySize;\n        queue = new int[size];\n        rear = 0;\n        front = 0;\n        actualSize = 0;\n    }\n\n    public boolean isEmpty() {\n        return actualSize == 0;\n    }\n\n    public boolean isFull() {\n        return actualSize == size;\n    }\n\n    public void enqueueMod(int item) {\n        if (this.isFull()) {\n            return;\n        } else {\n            queue[rear] = item;\n            rear = (rear + 1) % (size);\n            actualSize++;\n        }\n    }\n\n    public int dequeueMod() {\n        int item = -99; //-99 so i know its empty\n        if (isEmpty())\n            return item;\n        else {\n            item = queue[front];\n            queue[front] = 0;\n            front = (front + 1) % size;\n            actualSize--;\n        }\n        return item;\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22999554,
+    "reputation" : 23,
+    "user_id" : 17123715,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f99cf4a8470f04045033a0dafcacba61?s=256&d=identicon&r=PG",
+    "display_name" : "ihill",
+    "link" : "https://stackoverflow.com/users/17123715/ihill"
+  },
+  "is_answered" : true,
+  "view_count" : 241,
+  "accepted_answer_id" : 70300567,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1762294551,
+  "creation_date" : 1639113171,
+  "last_edit_date" : 1762294551,
+  "question_id" : 70300026,
+  "link" : "https://stackoverflow.com/questions/70300026/why-is-my-circular-array-queue-not-adding-the-very-last-inputted-value",
+  "title" : "Why is my Circular Array Queue not adding the very last inputted value?",
+  "body" : "<p>I'm having some difficulty with fully implementing my Circular Array Queue with Java. Specifically, my enqueue is failing to queue the very last value inputted in my queue. I've tested dequeuing and re-enqueuing values and it worked fine until I tried inserting the last value, in which it would insert nothing.</p>\n<p>I've already consulted with some TAs about what might be going wrong and have searched StackOverflow previous questions, and both yielded no positive results.</p>\n<p>Any help would be greatly appreciated.</p>\n<pre><code>public class MyQueue {\npublic int queue[];\npublic int size;\npublic int rear;\npublic int front;\n\npublic MyQueue(int mySize) {\n    size = mySize;\n    queue = new int[size];\n    rear = 0;\n    front = 0;\n    }\npublic boolean isEmpty() {\n    if(rear == front || rear == -1) {\n        return true;  \n    }\n    else {\n        return false; \n    }\n}\npublic boolean isFull() {\n    if((rear + 1)% size == front) {\n        return true;\n    }\n    else\n        return false;\n}\npublic void enqueueMod(int item) {  \n    if (this.isFull()) {\n        return;\n    }\n    else {\n        queue[rear] = item;\n        rear = (rear + 1) % (size);     \n    }\n}\npublic int dequeueMod() {\n    int item = -99; //-99 so i know its empty\n    if(front == rear)\n        return item;\n    else {\n        item = queue[front];\n        queue[front] = 0;\n        front = (front +1 ) %size;\n    }\n    return item;\n}\n</code></pre>\n"
+}

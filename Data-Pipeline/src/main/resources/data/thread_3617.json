@@ -1,0 +1,101 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "logback" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 376706,
+        "reputation" : 833,
+        "user_id" : 728345,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/8f7d217f56d38e468c5300e3d8336b48?s=256&d=identicon&r=PG",
+        "display_name" : "obesechicken13",
+        "link" : "https://stackoverflow.com/users/728345/obesechicken13"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1452706285,
+      "post_id" : 34772706,
+      "comment_id" : 57291517,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;d like to comment that the timeBasedRollingPolicy derives your units and days is valid. But you are right. The implementation causes rollover on a new day. I tried setting the system click and discovered this. Thanks!"
+    }, {
+      "owner" : {
+        "account_id" : 376706,
+        "reputation" : 833,
+        "user_id" : 728345,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/8f7d217f56d38e468c5300e3d8336b48?s=256&d=identicon&r=PG",
+        "display_name" : "obesechicken13",
+        "link" : "https://stackoverflow.com/users/728345/obesechicken13"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1452706360,
+      "post_id" : 34772706,
+      "comment_id" : 57291567,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Also, at least for me, cleanHistoryOnStart does nothing"
+    }, {
+      "owner" : {
+        "account_id" : 2736964,
+        "reputation" : 1167,
+        "user_id" : 2359435,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/5b2b590aa9ecc21c22583c4b336d8a42?s=256&d=identicon&r=PG",
+        "display_name" : "Max",
+        "link" : "https://stackoverflow.com/users/2359435/max"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1526975859,
+      "post_id" : 34772706,
+      "comment_id" : 87938135,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "maxHistory is not not necessarily based on months. If your fileNamePattern looks like %d{yyyy-MM-dd} the maxhistory will be measured in days. <a href=\"https://logback.qos.ch/manual/appenders.html\" rel=\"nofollow noreferrer\">logback.qos.ch/manual/appenders.html</a>"
+    } ],
+    "owner" : {
+      "account_id" : 2234108,
+      "reputation" : 2889,
+      "user_id" : 1970990,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://i.sstatic.net/2ociD.jpg?s=256",
+      "display_name" : "raulk",
+      "link" : "https://stackoverflow.com/users/1970990/raulk"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1576777900,
+    "last_edit_date" : 1576777900,
+    "creation_date" : 1452704615,
+    "answer_id" : 34772706,
+    "question_id" : 34772372,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The Logback documentation for <a href=\"http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy\" rel=\"nofollow noreferrer\">TimeBasedRollingPolicy</a> specifies that the unit of <code>maxHistory</code> is <strong>months, not days</strong> (if your rolling pattern is a monthly one).</p>\n\n<p>With regards to the creation of an empty log file (size 0) for days where no logs were created, I recall that log4j didn't create them. OOTB log rotation in log4j was <em>passive</em> and the triggered only when a log statement was sent to log4j in a new day. </p>\n\n<p>I would assume that Logback behaves similarly, but I'm checking and I will update this answer soon.</p>\n\n<p><strong>EDIT:</strong> <strong>Confirmed</strong>. The <code>TimeBasedRollingPolicy</code> does not create zero-sized files for any fully elapsed intermediate days between the last log statement and the current log statement.</p>\n\n<p>That is, if your last log statement with daily rotation was on <em>2015-01-01</em> and your next statement is on <em>2015-01-13</em>, when the latter statement is processed, at that point Logback still would have the file for <em>2015-01-01</em> open. It would notice and it would trigger a rollover, which basically consists of:</p>\n\n<ol>\n<li><a href=\"https://github.com/qos-ch/logback/blob/master/logback-core/src/main/java/ch/qos/logback/core/rolling/TimeBasedRollingPolicy.java#L153\" rel=\"nofollow noreferrer\">renaming the current file with the archival pattern</a> – and –</li>\n<li><a href=\"https://github.com/qos-ch/logback/blob/master/logback-core/src/main/java/ch/qos/logback/core/rolling/RollingFileAppender.java#L137-L138\" rel=\"nofollow noreferrer\">opening a new file</a>.</li>\n</ol>\n\n<p>But it won't create any intermediate zero-byte files.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 376706,
+    "reputation" : 833,
+    "user_id" : 728345,
+    "user_type" : "registered",
+    "accept_rate" : 63,
+    "profile_image" : "https://www.gravatar.com/avatar/8f7d217f56d38e468c5300e3d8336b48?s=256&d=identicon&r=PG",
+    "display_name" : "obesechicken13",
+    "link" : "https://stackoverflow.com/users/728345/obesechicken13"
+  },
+  "is_answered" : true,
+  "view_count" : 4506,
+  "accepted_answer_id" : 34772706,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762031119,
+  "creation_date" : 1452703703,
+  "last_edit_date" : 1762031119,
+  "question_id" : 34772372,
+  "link" : "https://stackoverflow.com/questions/34772372/logback-rollingfileappender-xml-not-rolling-over-or-deleting-old-archived-logs",
+  "title" : "Logback rollingFileAppender xml not rolling over or deleting old archived logs",
+  "body" : "<p>Here's a part of the <code>logback.xml</code>:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;appender name=&quot;APP_LOG&quot;\n          class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;\n    &lt;file&gt;${APP_HOME}/loader.log&lt;/file&gt;\n    &lt;encoder class=&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;&gt;\n        &lt;pattern&gt;\n            %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n\n        &lt;/pattern&gt;\n    &lt;/encoder&gt;\n    &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;\n        &lt;!-- rollover daily --&gt;\n        &lt;fileNamePattern&gt;${APP_HOME}/archived/loader.%d{yyyy-MM-dd}.%i.log&lt;/fileNamePattern&gt;\n        &lt;timeBasedFileNamingAndTriggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&quot;&gt;\n            &lt;maxFileSize&gt;10MB&lt;/maxFileSize&gt;\n        &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;\n        &lt;!-- Keep logs max for x days --&gt;\n        &lt;maxHistory&gt;1&lt;/maxHistory&gt;\n        &lt;cleanHistoryOnStart&gt;true&lt;/cleanHistoryOnStart&gt;\n    &lt;/rollingPolicy&gt;\n&lt;/appender&gt;\n</code></pre>\n<p>This should create a new log file every day. Today is Jan-13-2016, therefore if there is no log for Jan-12-2016 it should just put the current log into loader.2016-01-12.0.log and then create a new log file right? It's not doing that.</p>\n<p>It should also be deleting the files loader.2015-12-30.0.log and loader.2016-01-11.0.log but it's not doing that either.</p>\n<p>All I'm doing is starting the application in an Eclipse based IDE, and I can verify that the log file loader.log is changing every time the application runs. Which means logback is starting, but for some reason it's not cleaning up old files properly. Please help?</p>\n"
+}

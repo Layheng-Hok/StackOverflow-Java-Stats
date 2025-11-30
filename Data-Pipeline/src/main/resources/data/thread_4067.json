@@ -1,0 +1,90 @@
+{
+  "tags" : [ "java", "spring-mvc" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 152408,
+        "reputation" : 6298,
+        "user_id" : 366916,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/d3205fdb2f61393c63f788c8198e1ce2?s=256&d=identicon&r=PG",
+        "display_name" : "bharathi",
+        "link" : "https://stackoverflow.com/users/366916/bharathi"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1536217628,
+      "post_id" : 52192122,
+      "comment_id" : 91345765,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Is there any solution for for the above issue."
+    }, {
+      "owner" : {
+        "account_id" : 4205783,
+        "reputation" : 3,
+        "user_id" : 3444717,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/27b6afab17faa3a8876e6c66dae95ab3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Kush Khandelwal",
+        "link" : "https://stackoverflow.com/users/3444717/kush-khandelwal"
+      },
+      "reply_to_user" : {
+        "account_id" : 152408,
+        "reputation" : 6298,
+        "user_id" : 366916,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/d3205fdb2f61393c63f788c8198e1ce2?s=256&d=identicon&r=PG",
+        "display_name" : "bharathi",
+        "link" : "https://stackoverflow.com/users/366916/bharathi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1536307816,
+      "post_id" : 52192122,
+      "comment_id" : 91384737,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Although I have never tried it but, you&#39;ll have to create a custom ThreadPoolTaskExecutor for your application. See this -  <a href=\"https://stackoverflow.com/questions/23732089/how-to-enable-request-scope-in-async-task-executor#33337838\" title=\"how to enable request scope in async task executor%2333337838\">stackoverflow.com/questions/23732089/&hellip;</a> And if there are not that many objects, you can pass them around your code."
+    } ],
+    "owner" : {
+      "account_id" : 4205783,
+      "reputation" : 3,
+      "user_id" : 3444717,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/27b6afab17faa3a8876e6c66dae95ab3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Kush Khandelwal",
+      "link" : "https://stackoverflow.com/users/3444717/kush-khandelwal"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1536175388,
+    "creation_date" : 1536175388,
+    "answer_id" : 52192122,
+    "question_id" : 52189445,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In my case it happened when I created a bean at request level and tried to access it from another thread created using @Async annotation. The bean information was stored in the thread local of the original thread only.</p>\n\n<p>Are you using something created and stored in the thread local of the base thread in the function or subsequent functions after @Async notification?</p>\n\n<p>@Async creates another thread but doesn't copy the thread local of the original thread which causes the issue.</p>\n\n<p>See this - <a href=\"https://jira.spring.io/browse/SPR-6873\" rel=\"nofollow noreferrer\">https://jira.spring.io/browse/SPR-6873</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 152408,
+    "reputation" : 6298,
+    "user_id" : 366916,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/d3205fdb2f61393c63f788c8198e1ce2?s=256&d=identicon&r=PG",
+    "display_name" : "bharathi",
+    "link" : "https://stackoverflow.com/users/366916/bharathi"
+  },
+  "is_answered" : false,
+  "view_count" : 12571,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761019605,
+  "creation_date" : 1536163710,
+  "question_id" : 52189445,
+  "link" : "https://stackoverflow.com/questions/52189445/getting-java-lang-illegalstateexception-no-thread-bound-request-found",
+  "title" : "Getting java.lang.IllegalStateException: No thread-bound request found",
+  "body" : "<p>I am getting below error when I try to use @Async annotation.</p>\n\n<pre><code>java.lang.IllegalStateException: No thread-bound request found: Are you referring to request attributes outside of an actual web request, or processing a request outside of the originally receiving thread? If you are actually operating within a web request and still receive this message, your code is probably running outside of DispatcherServlet/DispatcherPortlet: In this case, use RequestContextListener or RequestContextFilter to expose the current request.\n</code></pre>\n\n<p>Code:</p>\n\n<pre><code>@Async\n@Override\n@Transactional\npublic void triggerEmailCommunication(List&lt;String&gt; eventCode, Integer authorizationId, Integer claimId,\n        boolean callMethod) {\n    Map&lt;String, Object&gt; emailBody = new HashMap&lt;&gt;();\n    try {\n\n        if (callMethod) {\n            LOGGER.info(\"Communication async flow triggerEmailCommunication method starts.\");\n            emailBody = emailBodyObject(authorizationId, claimId, eventCode);\n  }\n\n\nprivate Map&lt;String, Object&gt; emailBodyObject(Integer authorizationId, Integer claimId, List&lt;String&gt; eventCode)\n        throws CareBusinessServiceException {\n    LOGGER.info(\"EmailBodyObject method starts.\");\n    Map&lt;String, Object&gt; emailBody = new HashMap&lt;String, Object&gt;();\n    EmailClaimDetailsVO emailClaimDetails = new EmailClaimDetailsVO();\n    ClaimAuthorizationVO claimAuthVO = new ClaimAuthorizationVO();\n    Claim claim = new Claim();\n    Authorization authorization = new Authorization();\n    List&lt;String&gt; rejectReasonList = new ArrayList&lt;&gt;();\n    Provider provider = new Provider();\n    String providerName = null;\n    String claimIntimationNbr = null;\n    String authorizationNbr = null;\n    SimpleDateFormat formatter = new SimpleDateFormat(AmhiConstants.DATE_FORMAT_DD_MM_YYYY);\n    try {\n        Integer claimIntimationId = null;\n        if (null != claimId) {\n            claim = enableBusinessService.retrieveClaimDetails(claimId);\n     } catch(Exception e) {\n     }\n}\n</code></pre>\n\n<p>DAO Layer</p>\n\n<pre><code>@Override\npublic Claim retrieveClaimIdRecord(Integer claimId) {\n    CriteriaBuilder builder = manager.getCriteriaBuilder();\n    CriteriaQuery&lt;Claim&gt; criteriaQuery = builder.createQuery(Claim.class);\n    Root&lt;Claim&gt; root = criteriaQuery.from(Claim.class);\n    ArrayList&lt;Predicate&gt; conditions = new ArrayList&lt;&gt;();\n    conditions.add(builder.equal(root.get(Claim_.claimId), claimId));\n    criteriaQuery.select(root).where(conditions.toArray(new Predicate[] {}));\n    javax.persistence.Query query = manager.createQuery(criteriaQuery);\n    List&lt;Claim&gt; claims = query.getResultList();\n    if(CollectionUtils.isNotEmpty(claims)){\n        return claims.get(0);\n    }\n    return new Claim();\n}\n</code></pre>\n\n<p>The value is getting retrieved from DB. But I am getting above exception as mentioned.</p>\n"
+}

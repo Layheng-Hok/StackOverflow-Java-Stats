@@ -1,0 +1,363 @@
+{
+  "tags" : [ "java", "spring", "spring-mvc", "spring-security" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1540216,
+        "reputation" : 4912,
+        "user_id" : 1435070,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://www.gravatar.com/avatar/073bfc735c0f903009ba8578776eac3b?s=256&d=identicon&r=PG",
+        "display_name" : "Chinmay",
+        "link" : "https://stackoverflow.com/users/1435070/chinmay"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1382530873,
+      "post_id" : 19538526,
+      "comment_id" : 28993507,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thank you for your help. Hierarchy looks to be something else. The way I&#39;m thinking of doing it now (if i have to use Spring Security) is store both the role and the authority in the same list and use the hasRole predicate to perform the checks for both. Thinking more about it- this is probably left intentional by the guys at Spring Security? Is there a possibility to use the intercept-url other than checking using hasRole on the complete list of Roles AND Privileges/Authorities - or other authorization applications. Also, what is the need to prefix ROLE_? Is it convention?"
+    } ],
+    "owner" : {
+      "account_id" : 1503255,
+      "reputation" : 4456,
+      "user_id" : 1407222,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/04ba79cb1ce68a1e48de1fb1a9b0b5a1?s=256&d=identicon&r=PG",
+      "display_name" : "coder",
+      "link" : "https://stackoverflow.com/users/1407222/coder"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1382534128,
+    "last_edit_date" : 1382534128,
+    "creation_date" : 1382522267,
+    "answer_id" : 19538526,
+    "question_id" : 19525380,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>AFAIK GrantedAuthority and roles are same in spring security. GrantedAuthority's getAuthority() string is the role (as per default implementation SimpleGrantedAuthority).</p>\n\n<p>For your case may be you can use Hierarchical Roles</p>\n\n<pre><code>&lt;bean id=\"roleVoter\" class=\"org.springframework.security.access.vote.RoleHierarchyVoter\"&gt;\n    &lt;constructor-arg ref=\"roleHierarchy\" /&gt;\n&lt;/bean&gt;\n&lt;bean id=\"roleHierarchy\"\n        class=\"org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl\"&gt;\n    &lt;property name=\"hierarchy\"&gt;\n        &lt;value&gt;\n            ROLE_ADMIN &gt; ROLE_createSubUsers\n            ROLE_ADMIN &gt; ROLE_deleteAccounts \n            ROLE_USER &gt; ROLE_viewAccounts\n        &lt;/value&gt;\n    &lt;/property&gt;\n&lt;/bean&gt;\n</code></pre>\n\n<p>Not the exact sol you looking for, but hope it helps</p>\n\n<p><strong>Edit</strong>: Reply to your comment</p>\n\n<p>Role is like a permission in spring-security. using intercept-url with hasRole provides a very fine grained control of what operation is allowed for which role/permission.</p>\n\n<p>The way we handle in our application is, we define permission (i.e. role) for each operation (or rest url) for e.g. view_account, delete_account, add_account etc. Then we create logical profiles for each user like admin, guest_user, normal_user. The profiles are just logical grouping of permissions, independent of spring-security.\nWhen a new user is added, a profile is assigned to it (having all permissible permissions). Now when ever user try to perform some action, permission/role for that action is checked against user grantedAuthorities.</p>\n\n<p>Also the defaultn RoleVoter uses prefix ROLE_, so any authority starting with ROLE_ is considered as role, you can change this default behavior by using a custom RolePrefix in role voter and using it in spring security.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2314267,
+        "reputation" : 893,
+        "user_id" : 2031645,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://www.gravatar.com/avatar/17d0a341d05315edeabda1efd60f629b?s=256&d=identicon&r=PG",
+        "display_name" : "J&#248;rgen Sk&#229;r Fischer",
+        "link" : "https://stackoverflow.com/users/2031645/j%c3%b8rgen-sk%c3%a5r-fischer"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1454109637,
+      "post_id" : 19542316,
+      "comment_id" : 57913316,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thank you! I&#39;ve been searching everywhere for why &quot;hasRole(&#39;rolename&#39;)&quot; was not working in Spring 4 -&gt; Their documentation was not exactly quick to skim through.  Just a quick &quot;find and replace&quot; and i am back on track!"
+    }, {
+      "owner" : {
+        "account_id" : 1507676,
+        "reputation" : 590,
+        "user_id" : 1410671,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/vvM0S.jpg?s=256",
+        "display_name" : "randal4",
+        "link" : "https://stackoverflow.com/users/1410671/randal4"
+      },
+      "edited" : false,
+      "score" : 25,
+      "creation_date" : 1457408123,
+      "post_id" : 19542316,
+      "comment_id" : 59382018,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is a great answer.  One thing to make clear to explain a little differently, the <code>hasRole(&#39;xyz&#39;)</code> in Spring Security 4 expects you to have the <b>ROLE_</b> prefix whereas the <code>hasAuthority(&#39;xyz&#39;)</code> does not expect the prefix and evaluates exactly what is passed in.  I used this solution, but was running into problems with <code>hasRole(&#39;OP_MY_PERMISSION&#39;)</code> since the <b>ROLE_</b> prefix was needed.  Instead, I should have been using the <code>hasAuthority(&#39;OP_MY_PERMISSION&#39;)</code> since I didn&#39;t have the prefix."
+    }, {
+      "owner" : {
+        "account_id" : 6241436,
+        "reputation" : 3273,
+        "user_id" : 4854931,
+        "user_type" : "registered",
+        "accept_rate" : 33,
+        "profile_image" : "https://www.gravatar.com/avatar/8554ce4e2c007be9ccebcc8389704470?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alex78191",
+        "link" : "https://stackoverflow.com/users/4854931/alex78191"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1495486339,
+      "post_id" : 19542316,
+      "comment_id" : 75263201,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In JSTL springframework.org/security/tags <code>&lt;sec:authorize access=&quot;hasRole(&#39;ADMIN&#39;)&quot;&gt;</code> is the same as <code>&lt;sec:authorize access=&quot;hasRole(&#39;ROLE_ADMIN&#39;)&quot;&gt;</code>"
+    }, {
+      "owner" : {
+        "account_id" : 21425,
+        "reputation" : 10991,
+        "user_id" : 52070,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/04d8ea8891106e00c746d31da92351c8?s=256&d=identicon&r=PG",
+        "display_name" : "David Newcomb",
+        "link" : "https://stackoverflow.com/users/52070/david-newcomb"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1496412875,
+      "post_id" : 19542316,
+      "comment_id" : 75666018,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You started adding <code>OP_</code> to your examples, but this is your convention and is not enforce by the framework isn&#39;t it? ie <code>ROLE_</code> has special meaning and behaviour where <code>OP_</code> is just made up and means nothing?"
+    }, {
+      "owner" : {
+        "account_id" : 107251,
+        "reputation" : 12312,
+        "user_id" : 285288,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://www.gravatar.com/avatar/321b2437e25c1885cb0edbde62bbf530?s=256&d=identicon&r=PG",
+        "display_name" : "James",
+        "link" : "https://stackoverflow.com/users/285288/james"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1496695990,
+      "post_id" : 19542316,
+      "comment_id" : 75755966,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes. OP_ is just an arbitrary prefix. ROLE_ has its special meaning in some spring implementations."
+    }, {
+      "owner" : {
+        "account_id" : 6099767,
+        "reputation" : 5239,
+        "user_id" : 4759176,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://i.sstatic.net/0U1e5.jpg?s=256",
+        "display_name" : "parsecer",
+        "link" : "https://stackoverflow.com/users/4759176/parsecer"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1583194492,
+      "post_id" : 19542316,
+      "comment_id" : 107026518,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why <code>@OneToMany private final List&lt;Role&gt; roles = new ArrayList&lt;&gt;();</code>  is <code>@OneToMany</code>? So one <code>User</code> can have many <code>Role</code>, but one <code>Role</code> can only have one <code>User</code>? So there could only be one <code>User</code> with <code>ROLE_ADMIN</code> and one <code>User</code> with <code>ROLE_USER</code>?"
+    }, {
+      "owner" : {
+        "account_id" : 1580109,
+        "reputation" : 139,
+        "user_id" : 1465639,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/bd2dd60dc359e41c68947bcbe8c4633d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "KennyXu",
+        "link" : "https://stackoverflow.com/users/1465639/kennyxu"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1589507781,
+      "post_id" : 19542316,
+      "comment_id" : 109329495,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "what about group? Spring security default jdbc implementation. there are user and group, and both can have authorities"
+    }, {
+      "owner" : {
+        "account_id" : 4294116,
+        "reputation" : 154,
+        "user_id" : 3509606,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/FMfA7.jpg?s=256",
+        "display_name" : "Gautam Tyagi",
+        "link" : "https://stackoverflow.com/users/3509606/gautam-tyagi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1615629839,
+      "post_id" : 19542316,
+      "comment_id" : 117754038,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "agree with randal4 - @James u hv explained in great detail indeed!. One small edit u should be doing that in Spring security 4 @PreAuthorize(&quot;hasRole(&#39;ROLE_XYZ&#39;)&quot;) is the same as @PreAuthorize(&quot;hasAuthority(&#39;XYZ&#39;)&quot;). But, u have reversed the params there in ur explanation."
+    }, {
+      "owner" : {
+        "account_id" : 107251,
+        "reputation" : 12312,
+        "user_id" : 285288,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://www.gravatar.com/avatar/321b2437e25c1885cb0edbde62bbf530?s=256&d=identicon&r=PG",
+        "display_name" : "James",
+        "link" : "https://stackoverflow.com/users/285288/james"
+      },
+      "reply_to_user" : {
+        "account_id" : 4294116,
+        "reputation" : 154,
+        "user_id" : 3509606,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/FMfA7.jpg?s=256",
+        "display_name" : "Gautam Tyagi",
+        "link" : "https://stackoverflow.com/users/3509606/gautam-tyagi"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1615646976,
+      "post_id" : 19542316,
+      "comment_id" : 117758594,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@gautam: No no, it&#39;s correct. <code>@PreAuthorize(&quot;hasRole(&#39;ROLE_XYZ&#39;)&quot;)</code> would actually check if there&#39;s an authority called <code>ROLE_ROLE_XYZ</code> because it adds the <code>ROLE_</code> prefix for you."
+    }, {
+      "owner" : {
+        "account_id" : 11116560,
+        "reputation" : 575,
+        "user_id" : 8160730,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-4RHE8UrUmv4/AAAAAAAAAAI/AAAAAAAAAJI/2qd3EI48a5s/s256-rj/photo.jpg",
+        "display_name" : "daniel rubambura",
+        "link" : "https://stackoverflow.com/users/8160730/daniel-rubambura"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1663668618,
+      "post_id" : 19542316,
+      "comment_id" : 130288831,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "At the end of the day, the difference between roles and permissions for spirng is only semantic. It&#39;s up to the developer to give a sens to them."
+    }, {
+      "owner" : {
+        "account_id" : 2378682,
+        "reputation" : 949,
+        "user_id" : 2081279,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3468f40f1339abb4439ccc7eb38b8f6c?s=256&d=identicon&r=PG",
+        "display_name" : "Thomas Sch&#252;tt",
+        "link" : "https://stackoverflow.com/users/2081279/thomas-sch%c3%bctt"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1673604062,
+      "post_id" : 19542316,
+      "comment_id" : 132541250,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "&quot;You normally do that by implementing your own UserDetailsService that returns a UserDetails implementation that returns the needed GrantedAuthorities.&quot; This is one line of this valuable answer, that I want to highlight for others, who  have same problems seeing the connection."
+    } ],
+    "owner" : {
+      "account_id" : 107251,
+      "reputation" : 12312,
+      "user_id" : 285288,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/321b2437e25c1885cb0edbde62bbf530?s=256&d=identicon&r=PG",
+      "display_name" : "James",
+      "link" : "https://stackoverflow.com/users/285288/james"
+    },
+    "is_accepted" : true,
+    "score" : 505,
+    "last_activity_date" : 1583332725,
+    "last_edit_date" : 1583332725,
+    "creation_date" : 1382532949,
+    "answer_id" : 19542316,
+    "question_id" : 19525380,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Think of a GrantedAuthority as being a \"permission\" or a \"right\". Those \"permissions\" are (normally) expressed as strings (with the <code>getAuthority()</code> method). Those strings let you identify the permissions and let your voters decide if they grant access to something.</p>\n\n<p>You can grant different GrantedAuthoritys (permissions) to users by putting them into the security context. You normally do that by implementing your own UserDetailsService that returns a UserDetails implementation that returns the needed GrantedAuthorities.</p>\n\n<p>Roles (as they are used in many examples) are just \"permissions\" with a naming convention that says that a role is a GrantedAuthority that starts with the prefix <code>ROLE_</code>. There's nothing more. A role is just a GrantedAuthority - a \"permission\" - a \"right\". You see a lot of places in spring security where the role with its <code>ROLE_</code> prefix is handled specially as e.g. in the RoleVoter, where the <code>ROLE_</code> prefix is used as a default. This allows you to provide the role names withtout the <code>ROLE_</code> prefix. Prior to Spring security 4, this special handling of \"roles\" has not been followed very consistently and authorities and roles were often treated the same (as you e.g. can see in the implementation of the <code>hasAuthority()</code> method in <a href=\"https://github.com/spring-projects/spring-security/blob/3.2.x/core/src/main/java/org/springframework/security/access/expression/SecurityExpressionRoot.java\" rel=\"noreferrer\">SecurityExpressionRoot</a> - which simply calls <code>hasRole()</code>). With Spring Security 4, the treatment of roles is more consistent and code that deals with \"roles\" (like the <code>RoleVoter</code>, the <code>hasRole</code> expression etc.) always adds the <code>ROLE_</code> prefix for you. So <code>hasAuthority('ROLE_ADMIN')</code> means the the same as <code>hasRole('ADMIN')</code> because the <code>ROLE_</code> prefix gets added automatically. See the spring security 3 to 4 <a href=\"http://docs.spring.io/spring-security/site/migrate/current/3-to-4/html5/migrate-3-to-4-jc.html#m3to4-role-prefixing\" rel=\"noreferrer\">migration guide</a> for futher information.</p>\n\n<p>But still: a role is just an authority with a special <code>ROLE_</code> prefix. So in Spring security 3 <code>@PreAuthorize(\"hasRole('ROLE_XYZ')\")</code> is the same as <code>@PreAuthorize(\"hasAuthority('ROLE_XYZ')\")</code> and in Spring security 4 <code>@PreAuthorize(\"hasRole('XYZ')\")</code> is the same as <code>@PreAuthorize(\"hasAuthority('ROLE_XYZ')\")</code>.</p>\n\n<p>Regarding your use case:</p>\n\n<blockquote>\n  <p>Users have roles and roles can perform certain operations.</p>\n</blockquote>\n\n<p>You could end up in <code>GrantedAuthorities</code> for the roles a user belongs to and the operations a role can perform. The <code>GrantedAuthorities</code> for the roles have the prefix <code>ROLE_</code> and the operations have the prefix <code>OP_</code>. An example for operation authorities could be <code>OP_DELETE_ACCOUNT</code>, <code>OP_CREATE_USER</code>, <code>OP_RUN_BATCH_JOB</code>etc. Roles can be <code>ROLE_ADMIN</code>, <code>ROLE_USER</code>, <code>ROLE_OWNER</code> etc.</p>\n\n<p>You could end up having your entities implement <code>GrantedAuthority</code> like in this (pseudo-code) example:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>@Entity\nclass Role implements GrantedAuthority {\n    @Id\n    private String id;\n\n    @ManyToMany\n    private final List&lt;Operation&gt; allowedOperations = new ArrayList&lt;&gt;();\n\n    @Override\n    public String getAuthority() {\n        return id;\n    }\n\n    public Collection&lt;GrantedAuthority&gt; getAllowedOperations() {\n        return allowedOperations;\n    }\n}\n\n@Entity\nclass User {\n    @Id\n    private String id;\n\n    @ManyToMany\n    private final List&lt;Role&gt; roles = new ArrayList&lt;&gt;();\n\n    public Collection&lt;Role&gt; getRoles() {\n        return roles;\n    }\n}\n\n@Entity\nclass Operation implements GrantedAuthority {\n    @Id\n    private String id;\n\n    @Override\n    public String getAuthority() {\n        return id;\n    }\n}\n</code></pre>\n\n<p>The ids of the roles and operations you create in your database would be the GrantedAuthority representation, e.g. <code>ROLE_ADMIN</code>, <code>OP_DELETE_ACCOUNT</code> etc. When a user is authenticated, make sure that all GrantedAuthorities of all its roles and the corresponding operations are returned from the UserDetails.getAuthorities() method.</p>\n\n<p>Example:\nThe admin role with id <code>ROLE_ADMIN</code> has the operations <code>OP_DELETE_ACCOUNT</code>, <code>OP_READ_ACCOUNT</code>, <code>OP_RUN_BATCH_JOB</code> assigned to it. \nThe user role with id <code>ROLE_USER</code> has the operation <code>OP_READ_ACCOUNT</code>.</p>\n\n<p>If an admin logs in the resulting security context will have the GrantedAuthorities:\n<code>ROLE_ADMIN</code>, <code>OP_DELETE_ACCOUNT</code>, <code>OP_READ_ACCOUNT</code>, <code>OP_RUN_BATCH_JOB</code></p>\n\n<p>If a user logs it, it will have:\n<code>ROLE_USER</code>, <code>OP_READ_ACCOUNT</code></p>\n\n<p>The UserDetailsService would take care to collect all roles and all operations of those roles and make them available by the method getAuthorities() in the returned UserDetails instance.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10085501,
+      "reputation" : 1086,
+      "user_id" : 7454264,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-hhh9dq-bF6s/AAAAAAAAAAI/AAAAAAAAABA/9RurfD8E-iI/s256-rj/photo.jpg",
+      "display_name" : "softjake",
+      "link" : "https://stackoverflow.com/users/7454264/softjake"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1526339580,
+    "creation_date" : 1526339580,
+    "answer_id" : 50340264,
+    "question_id" : 19525380,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Another way to understand the relationship between these concepts is to interpret a ROLE as a container of Authorities.</p>\n\n<p>Authorities are fine-grained permissions targeting a specific action coupled sometimes with specific data scope or context. For instance, Read, Write, Manage, can represent various levels of permissions to a given scope of information. </p>\n\n<p>Also, authorities are enforced deep in the processing flow of a request while ROLE are filtered by request filter way before reaching the Controller. Best practices prescribe implementing the authorities enforcement past the Controller in the business layer.</p>\n\n<p>On the other hand, ROLES are coarse grained representation of an set of permissions. A ROLE_READER would only have Read or View authority while a ROLE_EDITOR would have both Read and Write. Roles are mainly used for a first screening at the outskirt of the request processing such as\nhttp.\n  ...\n .antMatcher(...).hasRole(ROLE_MANAGER) </p>\n\n<p>The Authorities being enforced deep in the request's process flow allows a finer grained application of the permission. For instance, a user may have Read Write permission to first level a resource but only Read to a sub-resource. Having a ROLE_READER would restrain his right to edit the first level resource as he needs the Write permission to edit this resource but a @PreAuthorize interceptor could block his tentative to edit the sub-resource.</p>\n\n<p>Jake</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1374386,
+      "reputation" : 3638,
+      "user_id" : 1308685,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://www.gravatar.com/avatar/75314cc72c47bf6df9e0f540a1af869b?s=256&d=identicon&r=PG",
+      "display_name" : "Jeremy",
+      "link" : "https://stackoverflow.com/users/1308685/jeremy"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1581880202,
+    "creation_date" : 1581880202,
+    "answer_id" : 60252182,
+    "question_id" : 19525380,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Like others have mentioned, I think of roles as containers for more granular permissions.  </p>\n\n<p>Although I found the Hierarchy Role implementation to be lacking fine control of these granular permission.<br>\nSo I created a library to manage the relationships and inject the permissions as granted authorities in the security context.  </p>\n\n<p>I may have a set of permissions in the app, something like CREATE, READ, UPDATE, DELETE, that are then associated with the user's Role.  </p>\n\n<p>Or more specific permissions like READ_POST, READ_PUBLISHED_POST, CREATE_POST, PUBLISH_POST </p>\n\n<p>These permissions are relatively static, but the relationship of roles to them may be dynamic.</p>\n\n<p>Example - </p>\n\n<pre><code>@Autowired \nRolePermissionsRepository repository;\n\npublic void setup(){\n  String roleName = \"ROLE_ADMIN\";\n  List&lt;String&gt; permissions = new ArrayList&lt;String&gt;();\n  permissions.add(\"CREATE\");\n  permissions.add(\"READ\");\n  permissions.add(\"UPDATE\");\n  permissions.add(\"DELETE\");\n  repository.save(new RolePermissions(roleName, permissions));\n}\n</code></pre>\n\n<p>You may create APIs to manage the relationship of these permissions to a role.</p>\n\n<p>I don't want to copy/paste another answer, so here's the link to a more complete explanation on SO.<br>\n<a href=\"https://stackoverflow.com/a/60251931/1308685\">https://stackoverflow.com/a/60251931/1308685</a></p>\n\n<p>To re-use my implementation, I created a repo. Please feel free to contribute!<br>\n<a href=\"https://github.com/savantly-net/spring-role-permissions\" rel=\"noreferrer\">https://github.com/savantly-net/spring-role-permissions</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 30634939,
+      "reputation" : 22,
+      "user_id" : 23484564,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocJS8vVPC_yGAksWUTyhoZHj7OnkBwLHsHyRVnNjEiiu=k-s256",
+      "display_name" : "Ajit Saha",
+      "link" : "https://stackoverflow.com/users/23484564/ajit-saha"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1717834827,
+    "last_edit_date" : 1717834827,
+    "creation_date" : 1717229362,
+    "answer_id" : 78563157,
+    "question_id" : 19525380,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There is a subtle but significant differences between the Role and a GrantedAuthority in Spring Security. In Spring Security each GrantedAuthority is defined as individual privilege. A role is assign to a user in the form of GrantedAuthority.</p>\n<p>Similarly we can think of role is a name of coarse-grained GrantedAuthority that is represented as a String. When using Role directly such as through an expression like hasRole('ADMIN'). we are restricting access in a coarse-grained way.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4418975,
+      "reputation" : 467,
+      "user_id" : 3599627,
+      "user_type" : "registered",
+      "accept_rate" : 29,
+      "profile_image" : "https://graph.facebook.com/100002091045674/picture?type=large",
+      "display_name" : "Darshan",
+      "link" : "https://stackoverflow.com/users/3599627/darshan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1717824753,
+    "creation_date" : 1717824753,
+    "answer_id" : 78594817,
+    "question_id" : 19525380,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In Simple way we can tell that\nRole is a set of permission like ROLE_ADMIN which have a previlegd permission such as READ,WRITE etc</p>\n<p>Where as granted authority is like individual permission</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1540216,
+    "reputation" : 4912,
+    "user_id" : 1435070,
+    "user_type" : "registered",
+    "accept_rate" : 61,
+    "profile_image" : "https://www.gravatar.com/avatar/073bfc735c0f903009ba8578776eac3b?s=256&d=identicon&r=PG",
+    "display_name" : "Chinmay",
+    "link" : "https://stackoverflow.com/users/1435070/chinmay"
+  },
+  "is_answered" : true,
+  "view_count" : 190233,
+  "accepted_answer_id" : 19542316,
+  "answer_count" : 6,
+  "score" : 336,
+  "last_activity_date" : 1717834827,
+  "creation_date" : 1382465869,
+  "last_edit_date" : 1570086904,
+  "question_id" : 19525380,
+  "link" : "https://stackoverflow.com/questions/19525380/difference-between-role-and-grantedauthority-in-spring-security",
+  "title" : "Difference between Role and GrantedAuthority in Spring Security",
+  "body" : "<p>There are concepts and implementations in Spring Security, such as the <code>GrantedAuthority</code> interface to get an <em>authority</em> to authorize/control an access. </p>\n\n<p>I would like that to permissible operations, such as <em>createSubUsers</em>, or <em>deleteAccounts</em>, which I would allow to an <em>admin</em> (with role <code>ROLE_ADMIN</code>). </p>\n\n<p>I am getting confused as the tutorials/demos I see online. I try to connect what I read, but I think we treat the two interchangeably.</p>\n\n<p>I see <code>hasRole</code> consuming a <code>GrantedAuthority</code> string? I most definitely am doing it wrong in understanding. What are these conceptually in Spring Security? </p>\n\n<p>How do I store the role of a user, separate from the authorities for that role?</p>\n\n<p>I'm also looking at the <code>org.springframework.security.core.userdetails.UserDetails</code> interface which is used in the authentication-provider referenced DAO, which consumes a <code>User</code> (note last GrantedAuthority):</p>\n\n<pre><code>public User(String username, \n            String password, \n            boolean enabled, \n            boolean accountNonExpired,\n            boolean credentialsNonExpired, \n            boolean accountNonLocked, \n            Collection&lt;? extends GrantedAuthority&gt; authorities)\n</code></pre>\n\n<p>Or is there any other way to differentiate the other two? Or is it not supported and we have to make our own?</p>\n"
+}

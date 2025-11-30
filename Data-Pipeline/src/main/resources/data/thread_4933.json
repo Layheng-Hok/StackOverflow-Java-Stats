@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "locale", "number-formatting", "opencsv" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1096470,
+        "reputation" : 29415,
+        "user_id" : 1089967,
+        "user_type" : "registered",
+        "accept_rate" : 59,
+        "profile_image" : "https://www.gravatar.com/avatar/1f256b904ff621d678598d8fa49f86c5?s=256&d=identicon&r=PG",
+        "display_name" : "lance-java",
+        "link" : "https://stackoverflow.com/users/1089967/lance-java"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1759133780,
+      "post_id" : 79777747,
+      "comment_id" : 140765990,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Looking at the latest <a href=\"https://opencsv.sourceforge.net/apidocs/com/opencsv/bean/CsvToBeanBuilder.html\" rel=\"nofollow noreferrer\">CsvToBeanBuilder javadoc</a> I can&#39;t see a &quot;withNumberLocale&quot; method. The closest I can see is &quot;withErrorLocale&quot;"
+    } ],
+    "owner" : {
+      "account_id" : 43365398,
+      "reputation" : 31,
+      "user_id" : 31209962,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a763e54e14030a0262daa2d2c63ed1a6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "eyesoflight",
+      "link" : "https://stackoverflow.com/users/31209962/eyesoflight"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759120821,
+    "creation_date" : 1759120821,
+    "answer_id" : 79777747,
+    "question_id" : 71644306,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Yes, you can set a default locale globally in OpenCSV instead of repeating it on every field, by using <code>CsvToBeanBuilder.withNumberLocale()</code>—this sets the default locale for <strong>all</strong> <code>@CsvNumber</code> fields in your bean.</p>\n<pre><code>Locale csvLocale = Locale.UK; \n\nCsvToBean&lt;MyRowBackingBean&gt; csvToBean = new CsvToBeanBuilder&lt;&gt;(csvReader)\n    .withMappingStrategy(mappingStrategy)\n    .withNumberLocale(csvLocale) \n    .build();\n</code></pre>\n<p>Your bean fields simplify to:</p>\n<pre><code>public class MyRowBackingBean {\n    @CsvBindByName(column = &quot;Quantity&quot;)\n    @CsvNumber(&quot;#0.0#&quot;)\n    private BigDecimal quantity;\n\n    @CsvBindByName(column = &quot;Amount&quot;)\n    @CsvNumber(&quot;#0.0#&quot;)\n    private BigDecimal amount;\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1096470,
+    "reputation" : 29415,
+    "user_id" : 1089967,
+    "user_type" : "registered",
+    "accept_rate" : 59,
+    "profile_image" : "https://www.gravatar.com/avatar/1f256b904ff621d678598d8fa49f86c5?s=256&d=identicon&r=PG",
+    "display_name" : "lance-java",
+    "link" : "https://stackoverflow.com/users/1089967/lance-java"
+  },
+  "is_answered" : false,
+  "view_count" : 3648,
+  "answer_count" : 1,
+  "score" : 9,
+  "last_activity_date" : 1759120821,
+  "creation_date" : 1648455390,
+  "last_edit_date" : 1648457076,
+  "question_id" : 71644306,
+  "link" : "https://stackoverflow.com/questions/71644306/opencsv-can-i-specify-the-locale-once-instead-of-repeating-it-in-every-csvbind",
+  "title" : "OpenCsv: Can I specify the locale once instead of repeating it in every @CsvBindByName?",
+  "body" : "<p>I'm using <a href=\"http://opencsv.sourceforge.net/\" rel=\"noreferrer\">OpenCSV</a> to parse csv files which needs to work when run in both the UK and Germany. When parsing numbers we need to specify the locale so that OpenCSV knows which decimal separator ('.' for UK, ',' for DE) and thousands separator (',' for UK, '.' for DE)</p>\n<p>One option for doing this is specifying the locale on every <a href=\"http://opencsv.sourceforge.net/apidocs/com/opencsv/bean/CsvBindByName.html\" rel=\"noreferrer\">@CsvBindByName</a> instance</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class MyRowBackingBean {\n    @CsvBindByName(column = &quot;Quantity&quot;, locale = &quot;en-GB&quot;)\n    @CsvNumber(&quot;#0.0#&quot;)\n    private BigDecimal quantity;\n\n    @CsvBindByName(column = &quot;Amount&quot;, locale = &quot;en-GB&quot;)\n    @CsvNumber(&quot;#0.0#&quot;)\n    private BigDecimal amount;\n}\n</code></pre>\n<p>I'd like to avoid repeating the locale for every field so I'd like a global way of doing this.</p>\n<p>The code to parse the csv looks something like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>char seperator = ';';\nCSVParser parser = new CSVParserBuilder().withSeparator(separator).build();\nMappingStrategy&lt;R&gt; mappingStrategy = new HeaderColumnNameMappingStrategy&lt;&gt;();\nmappingStrategy.setType(MyRowBackingBean.class);\ntry (Reader reader = ...) {\n   CSVReader csvReader = new CSVReaderBuilder(reader).withCSVParser(csvParser).build();\n   CsvToBean&lt;R&gt; csvToBean = new CsvToBeanBuilder&lt;R&gt;(csvReader)\n      .withMappingStrategy(mappingStrategy)\n      .withFilter(...)\n      .build();\n   List&lt;MyRowBackingBean&gt; beans = csvToBean.parse()\n   ...\n}\n</code></pre>\n<p>I've looked through the following classes but can't find a setDefaultLocale(...) method or similar</p>\n<ul>\n<li><a href=\"http://opencsv.sourceforge.net/apidocs/com/opencsv/CSVParser.html\" rel=\"noreferrer\">CSVParser</a></li>\n<li><a href=\"http://opencsv.sourceforge.net/apidocs/com/opencsv/CSVParserBuilder.html\" rel=\"noreferrer\">CSVParserBuilder</a></li>\n<li><a href=\"http://opencsv.sourceforge.net/apidocs/com/opencsv/bean/HeaderColumnNameMappingStrategyBuilder.html\" rel=\"noreferrer\">HeaderColumnNameMappingStrategy</a></li>\n<li><a href=\"http://opencsv.sourceforge.net/apidocs/com/opencsv/CSVReader.html\" rel=\"noreferrer\">CSVReader</a></li>\n<li><a href=\"http://opencsv.sourceforge.net/apidocs/com/opencsv/bean/CsvToBeanBuilder.html\" rel=\"noreferrer\">CsvToBeanBuilder </a></li>\n<li><a href=\"http://opencsv.sourceforge.net/apidocs/com/opencsv/bean/CsvToBeanFilter.html\" rel=\"noreferrer\">CsvToBean</a></li>\n</ul>\n"
+}

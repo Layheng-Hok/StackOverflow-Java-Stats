@@ -1,0 +1,77 @@
+{
+  "tags" : [ "java", "json", "spring-boot", "arraylist", "spring-webclient" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 19294703,
+        "reputation" : 77,
+        "user_id" : 14103879,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/640a9d914ca875bc20b549c6de1dbb6c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "groot",
+        "link" : "https://stackoverflow.com/users/14103879/groot"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1617271307,
+      "post_id" : 66901998,
+      "comment_id" : 118260412,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "and its getting truncated, how to frame it above JSON body"
+    }, {
+      "owner" : {
+        "account_id" : 19294703,
+        "reputation" : 77,
+        "user_id" : 14103879,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/640a9d914ca875bc20b549c6de1dbb6c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "groot",
+        "link" : "https://stackoverflow.com/users/14103879/groot"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1617272910,
+      "post_id" : 66901998,
+      "comment_id" : 118261055,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I am getting a request body in the form of this [Workspaces(workspaces=[6eret123,b129078v,ngy66553,erfc1153.&zwnj;&#8203;..truncated]]"
+    } ],
+    "owner" : {
+      "account_id" : 21071159,
+      "reputation" : 103,
+      "user_id" : 15487369,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qzwUO.jpg?s=256",
+      "display_name" : "Daniel",
+      "link" : "https://stackoverflow.com/users/15487369/daniel"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1617269651,
+    "creation_date" : 1617269651,
+    "answer_id" : 66901998,
+    "question_id" : 66901518,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>try something like this:</p>\n<pre><code>import org.springframework.web.reactive.function.client.WebClient;\n\n\npublic class Testclass{\n\n@Autowired\nprivate WebClient.Builder webClientBuilder;//webclient builder instance\n\npublic void testMethod(){\n\nClass&lt;Object&gt; cls = Object.class;//object class of the request body\n//Object obj is also the object of the request body\nObject obj = webClientBuilder.build().post().uri(&quot;{{url}}&quot;)\n                    .accept(MediaType.APPLICATION_JSON).header(&quot;Authorization&quot;, &quot;{{authtoken}}&quot;)\n                    .bodyValue(user).retrieve().bodyToMono(clazz).block();\n}\n}\n</code></pre>\n<p>hope something on it might help.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 19294703,
+    "reputation" : 77,
+    "user_id" : 14103879,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/640a9d914ca875bc20b549c6de1dbb6c?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "groot",
+    "link" : "https://stackoverflow.com/users/14103879/groot"
+  },
+  "is_answered" : false,
+  "view_count" : 10235,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761062550,
+  "creation_date" : 1617267723,
+  "last_edit_date" : 1716539143,
+  "question_id" : 66901518,
+  "link" : "https://stackoverflow.com/questions/66901518/post-request-in-webclient-to-add-a-request-body-in-json",
+  "title" : "POST request in webclient to add a request body in JSON",
+  "body" : "<p>I am trying to make API POST Request with WebClient in Spring Boot. But I cannot make a request with JSON body as I want and receive response as JSONObject.</p>\n<p>JSON BODY :</p>\n<pre><code>{\n&quot;workspaces&quot;: [\n&quot;6eret123&quot;,\n&quot;b129078v&quot;,\n&quot;ngy66553&quot;,\n&quot;erfc1153&quot;\n]\n}\n</code></pre>\n<p>Service class-</p>\n<pre><code>Workspaces workspace = new Workspaces(mw);\nFlux&lt;Workspaces&gt; modifiedWorkspace = \n     webClient.post()\n     .uri(URIDetails.MODIFIEDWORKSPACE)\n     .header(&quot;Authorization&quot;, bearerToken)\n     .body(Mono.just(mw), Workspaces.class)\n     .retrieve()\n     .bodyToFlux(Workspaces.class);\nmodifiedWorkspace.doOnNext(System.out::println).blockLast();\nreturn null;\n</code></pre>\n<p>Workspaces model-</p>\n<pre><code>public class Workspaces {\n    private List&lt;String&gt; workspaces;\n}\n</code></pre>\n<p>Main call-</p>\n<pre><code>Flux&lt;ScanIDModel&gt; modifiedWorkspaces;\nfinal List&lt;String&gt; mw = new ArrayList&lt;&gt;();\nfor (Workspace w : modifiedWorkspaces) {\nmw.add(w.getId());\n}\nmodifiedWorkspaces = scanRespone(mw);\n</code></pre>\n<p>I need to send a list of JSON body mentioned as a body post request.\nPlease help me to do the post request\nThanks in advance</p>\n"
+}

@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "hibernate", "annotations", "aes" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 9162680,
+      "reputation" : 3944,
+      "user_id" : 6813506,
+      "user_type" : "registered",
+      "accept_rate" : 22,
+      "profile_image" : "https://i.sstatic.net/5KpU0.png?s=256",
+      "display_name" : "Rohit Gaikwad",
+      "link" : "https://stackoverflow.com/users/6813506/rohit-gaikwad"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1476382251,
+    "creation_date" : 1476382251,
+    "answer_id" : 40028090,
+    "question_id" : 40027474,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You have an exception related to <strong>Incorrect parameter count</strong> in the call to native function <code>encrypt</code>.  </p>\n\n<p>Check the number of parameters for <code>decrypt</code> and <code>encrypt</code> functions, I guess it should be <strong>two</strong> and not three as you used for password column.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5971839,
+      "reputation" : 57,
+      "user_id" : 6330443,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a418d8f49da7350a005c4268d16fafc0?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Swapnil Hadge",
+      "link" : "https://stackoverflow.com/users/6330443/swapnil-hadge"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1659374717,
+    "creation_date" : 1659374717,
+    "answer_id" : 73197438,
+    "question_id" : 40027474,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>you have used :</p>\n<pre><code>@org.hibernate.annotations.ColumnTransformer(\n        read = &quot;decrypt( 'AES', '00', password)&quot;,\n        write = &quot;encrypt('AES', '00', ?)&quot;\n    )\n</code></pre>\n<p>where decrypt and encrypt are the db functions. Please check if these functions exist and have the same method signature as you used in the entity class.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 9327675,
+    "reputation" : 287,
+    "user_id" : 6924354,
+    "user_type" : "registered",
+    "accept_rate" : 29,
+    "profile_image" : "https://www.gravatar.com/avatar/99d6329942e534e4c9ab6671db7bb1d6?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Luis Veliz",
+    "link" : "https://stackoverflow.com/users/6924354/luis-veliz"
+  },
+  "is_answered" : false,
+  "view_count" : 9758,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1759874625,
+  "creation_date" : 1476380016,
+  "question_id" : 40027474,
+  "link" : "https://stackoverflow.com/questions/40027474/hibernate-columntransformer-read-write-gives-some-errors-how",
+  "title" : "Hibernate @ColumnTransformer( read = &quot;...&quot;, write=&quot;...&quot;) gives some errors, how can I solve it?",
+  "body" : "<p>I was trying to use AES with hibernate columnTransformer annotation but gives me some errors.</p>\n\n<hr>\n\n<ul>\n<li>The database was generated with Hibernate.</li>\n<li>Only appears when I try to use AES on read and write parameters on @org.hibernate.annotations.ColumnTransformer.</li>\n</ul>\n\n<hr>\n\n<blockquote>\n  <p>My Employeeclass </p>\n</blockquote>\n\n<pre><code>import java.io.Serializable;\n\nimport javax.persistence.Id;\nimport javax.persistence.Table;\nimport javax.persistence.Column;\nimport javax.persistence.Entity;\n\n@Entity()\n@Table(name = \"EMPLOYEE\")\npublic class Employee implements Serializable {\n\n    private static final long serialVesionUID = 1L;\n\n    @Id\n    private Integer employeeId;\n\n    @org.hibernate.annotations.NaturalId\n    private String userName;\n\n    @Column(name = \"password\")\n    @org.hibernate.annotations.ColumnTransformer(\n        read = \"decrypt( 'AES', '00', password)\",\n        write = \"encrypt('AES', '00', ?)\"\n    )\n    private String password;\n\n    private int accessLevel;\n\n    public Employee(Integer employeeId, String userName, String password, int accessLevel) {\n        this.employeeId = employeeId;\n        this.userName = userName;\n        this.password = password;\n        this.accessLevel = accessLevel;\n    }\n\n    //Getters and Setters\n\n}\n</code></pre>\n\n<blockquote>\n  <p>My Main class</p>\n</blockquote>\n\n<pre><code>import javax.persistence.Persistence;\nimport javax.persistence.EntityManager;\nimport javax.persistence.EntityManagerFactory;\nimport hibernate.examples.columntransformers.readandwriteexpressions.Employee;\n\npublic class App {\n\n    private static EntityManagerFactory emf;\n    private static EntityManager em;\n\n    public static void main(String[] args) {\n\n        emf = Persistence.createEntityManagerFactory(\"LAVM\");\n        em = emf.createEntityManager();\n\n        try {\n\n            em.getTransaction().begin();            \n\n            Employee emp = new Employee(123, \"someUserName\", \"somePassword\", 1);\n\n            em.persist(emp);\n            em.getTransaction().commit();\n\n        } catch (Exception e) {                \n            e.printStackTrace();\n        } finally {\n            em.close();\n            emf.close();\n        }\n    }\n}\n</code></pre>\n\n<blockquote>\n  <p>Gives me these errors</p>\n</blockquote>\n\n<pre><code>javax.persistence.RollbackException: Error while committing the transaction\nat org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:94)\nat hibernate.examples.main.App.main(App.java:38)\nCaused by: javax.persistence.PersistenceException: org.hibernate.exception.SQLGrammarException: could not execute statement\nat org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1763)\nat org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1677)\nat org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:82)\n... 1 more\n\n\nCaused by: org.hibernate.exception.SQLGrammarException: could not execute statement\nat org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:80)\nat org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:49)\nat org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:126)\nat org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:112)\nat org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:190)\nat org.hibernate.engine.jdbc.batch.internal.NonBatchingBatch.addToBatch(NonBatchingBatch.java:62)\nat org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3124)\nat org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3587)\nat org.hibernate.action.internal.EntityInsertAction.execute(EntityInsertAction.java:103)\nat org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:453)\nat org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:345)\nat org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:350)\nat org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:56)\nat org.hibernate.internal.SessionImpl.flush(SessionImpl.java:1218)\nat org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:421)\nat org.hibernate.engine.transaction.internal.jdbc.JdbcTransaction.beforeTransactionCommit(JdbcTransaction.java:101)\nat org.hibernate.engine.transaction.spi.AbstractTransactionImpl.commit(AbstractTransactionImpl.java:177)\nat org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:77)\n... 1 more\n\n\nCaused by: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Incorrect parameter count in the call to native function 'encrypt'\nat sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)\nat sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)\nat sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)\nat java.lang.reflect.Constructor.newInstance(Constructor.java:423)\nat com.mysql.jdbc.Util.handleNewInstance(Util.java:411)\nat com.mysql.jdbc.Util.getInstance(Util.java:386)\nat com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1053)\nat com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4120)\nat com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4052)\nat com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2503)\nat com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2664)\nat com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2794)\nat com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2155)\nat com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2458)\nat com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2375)\nat com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2359)\nat org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:187)\n... 14 more\n\n\noct 13, 2016 11:08:31 AM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl stop\nINFO: HHH000030: Cleaning up connection pool [jdbc:mysql://localhost:3306/hibernate]\n</code></pre>\n"
+}

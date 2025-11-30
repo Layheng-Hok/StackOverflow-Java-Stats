@@ -1,0 +1,146 @@
+{
+  "tags" : [ "java", "multithreading", "thread-safety", "immutability" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2053598,
+      "reputation" : 44936,
+      "user_id" : 1831987,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/38b1c37530189ec4471a43a618e33f67?s=256&d=identicon&r=PG",
+      "display_name" : "VGR",
+      "link" : "https://stackoverflow.com/users/1831987/vgr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1449095113,
+    "post_id" : 34053380,
+    "comment_id" : 55862764,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Immutable objects are never modified.  Just as concatenating two Strings does not change either String, but instead produces a brand new String object, a <code>transfer</code> method in an immutable Accounts class would need to create and return a completely new Accounts object containing the new values."
+  }, {
+    "owner" : {
+      "account_id" : 2709823,
+      "reputation" : 11069,
+      "user_id" : 2338547,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/QT3fG.png?s=256",
+      "display_name" : "markspace",
+      "link" : "https://stackoverflow.com/users/2338547/markspace"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1449095630,
+    "post_id" : 34053380,
+    "comment_id" : 55863017,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Immutability is probably the first thing you should try when dealing with thread-safety.  However, it&#39;s not always the best approach.  For something like this bank account, which does seem to require mutability, you have to use locks or the <code>synchronized</code> keyword to get the correct behavior.  Immutability is good, but not a panacea."
+  }, {
+    "owner" : {
+      "account_id" : 1203571,
+      "reputation" : 8403,
+      "user_id" : 1173755,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://i.sstatic.net/yXOys.png?s=256",
+      "display_name" : "riccardo.cardin",
+      "link" : "https://stackoverflow.com/users/1173755/riccardo-cardin"
+    },
+    "reply_to_user" : {
+      "account_id" : 2053598,
+      "reputation" : 44936,
+      "user_id" : 1831987,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/38b1c37530189ec4471a43a618e33f67?s=256&d=identicon&r=PG",
+      "display_name" : "VGR",
+      "link" : "https://stackoverflow.com/users/1831987/vgr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1449123004,
+    "post_id" : 34053380,
+    "comment_id" : 55871722,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@VGR I&#39;ve edited my question to focus better my needs :)"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1203571,
+        "reputation" : 8403,
+        "user_id" : 1173755,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://i.sstatic.net/yXOys.png?s=256",
+        "display_name" : "riccardo.cardin",
+        "link" : "https://stackoverflow.com/users/1173755/riccardo-cardin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1449123170,
+      "post_id" : 34055791,
+      "comment_id" : 55871785,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Your answer is clearly a possible solution to the problem. However I do not expected to have to disturb the Actor Model to satisfy my needs. I&#39;ve edited my question to add some focus."
+    } ],
+    "owner" : {
+      "account_id" : 2048321,
+      "reputation" : 18178,
+      "user_id" : 1827903,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://www.gravatar.com/avatar/a65afd5c01a3afa2e75e2cb866fc02d0?s=256&d=identicon&r=PG",
+      "display_name" : "Zim-Zam O&#39;Pootertoot",
+      "link" : "https://stackoverflow.com/users/1827903/zim-zam-opootertoot"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1449103271,
+    "last_edit_date" : 1449103271,
+    "creation_date" : 1449102912,
+    "answer_id" : 34055791,
+    "question_id" : 34053380,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your <code>Account</code> values are inherently mutable (a bank account with an immutable balance isn't very useful), however you can reduce the complexity by encapsulating the mutable state using something like the <a href=\"https://en.wikipedia.org/wiki/Actor_model\" rel=\"nofollow\">Actor Model</a>.  Your <code>Account</code> class implements <a href=\"https://docs.oracle.com/javase/7/docs/api/java/lang/Runnable.html\" rel=\"nofollow\">Runnable</a>, and each <code>Account</code> object is responsible for updating its <code>value</code>.</p>\n\n<pre><code>public class Bank {\n    // use a ConcurrentMap so that all threads will see updates to it\n    private final ConcurrentMap&lt;Integer, Account&gt; accounts;\n    private final ExecutorService executor = Executors.newCachedThreadPool();\n\n    public void newAccount(int acctNumber) {\n        Account newAcct = new Account();\n        executor.execute(newAcct);\n        accounts.put(acctNumber, newAcct);\n    }\n\n    public void transfer(int from, int to, double amount) {\n        Account fromAcct = accounts.get(from);\n        Account toAcct = accounts.get(to);\n        if(fromAcct == null || toAcct == null) throw new IllegalArgumentException();\n        fromAcct.transfer(amount, toAcct);\n    }\n}\n\npublic interface Message {\n    public double getAmount();\n}\n\npublic class Transfer implements Message {\n    // initialize in constructor, implement getters\n    private final double amount;\n    private final Account toAcct;\n}\n\npublic class Credit implements Message {\n    // initialize in constructor, implement getters\n    private final double amount;\n}\n\npublic class Account implements Runnable {\n    private volatile double value;\n    private final BlockingQueue&lt;Message&gt; queue = new ArrayBlockingQueue&lt;&gt;(8);\n\n    public void transfer(double amount, Account toAcct) {\n        queue.put(new Transfer(amount, toAcct));\n    }\n\n    public void credit(double amount) {\n        queue.put(new Credit(amount));\n    }\n\n    public void run() {\n        try {\n            while(true) {\n                Message message = queue.take();\n                if(message instanceof Transfer) {\n                    Transfer transfer = (Transfer)message;\n                    if(value &gt;= transfer.getAmount()) {\n                        value -= transfer.getAmount();\n                        transfer.getToAcct().credit(transfer.getAmount());\n                    } else { /* log failure */ }\n                } else if(message instanceof Credit) {\n                    value += message.getAmount();\n                } else { /* log unrecognized message */ }\n            }\n        } catch(InterruptedException e) {\n            return;\n        }\n    }\n}\n</code></pre>\n\n<p>The <code>Account#transfer</code> and <code>Account#credit</code> methods can be safely called from any thread because the <code>BlockingQueue</code> is thread-safe.  The <code>value</code> field is only modified from within the account's <code>run</code> method and so there's no risk of concurrent modification; the <code>value</code> needs to be <code>volatile</code> so that updates are visible to all threads (you're using a <code>ThreadPoolExecutor</code> to execute all of the <code>Accounts</code> so there's no guarantee that an <code>Account's</code> <code>run</code> method will execute on the same <code>Thread</code> every time).</p>\n\n<p>You should also log the transfer in the <code>Bank</code> class before executing it so that you can recover from a system failure - if the server crashes after the from account is debited but before the to account is credited then you'll need a way to reestablish consistency after the server comes back up.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1758996145,
+    "last_edit_date" : 1758996145,
+    "creation_date" : 1758955761,
+    "answer_id" : 79776568,
+    "question_id" : 34053380,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The race condition in your updated version is here:</p>\n<pre><code>public void transfer(int from, int to, double amount) {\n    this.accounts = new Accounts(this.accounts, from, to, amount); // HERE\n}\n</code></pre>\n<p>Declaring <code>this.accounts</code> as <code>volatile</code>, doesn't make the HERE <strong>statement</strong> atomic.</p>\n<p>There is nothing to prevent two threads from calling <code>transfer</code> simultaneously to (say) transfer 10.0 from account 1 to account 2.  In that scenario, we can have an execution like this:</p>\n<pre><code>Thread A: copy this.accounts -&gt; accounts-a\nThread B: copy this.accounts -&gt; accounts-b\nThread A: transfer 10.0 from accounts-a[1] to accounts-a[2]\nThread B: transfer 10.0 from accounts-b[1] to accounts-b[2]\nThread A: this.accounts &lt;- new Accounts(accounts-a)\nThread B: this.accounts &lt;- new Accounts(accounts-b)\n</code></pre>\n<p>There are at least<sup>1</sup> two race conditions here:</p>\n<ol>\n<li>The transfers performed by threads A and B are operating on different copies of the list of <code>Double</code>s.</li>\n<li>One of the assignments <code>this.accounts = ...</code> will overwrite the other, meaning that the transfer performed by one thread's <code>transfer</code> call will be lost.</li>\n</ol>\n<hr />\n<p><sup>1 - ... and possibly more.  But you only need one race condition to cause problems.</sup></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1203571,
+    "reputation" : 8403,
+    "user_id" : 1173755,
+    "user_type" : "registered",
+    "accept_rate" : 96,
+    "profile_image" : "https://i.sstatic.net/yXOys.png?s=256",
+    "display_name" : "riccardo.cardin",
+    "link" : "https://stackoverflow.com/users/1173755/riccardo-cardin"
+  },
+  "is_answered" : true,
+  "view_count" : 1826,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1758996145,
+  "creation_date" : 1449091805,
+  "last_edit_date" : 1758919634,
+  "question_id" : 34053380,
+  "link" : "https://stackoverflow.com/questions/34053380/immutability-and-synchronization-in-java",
+  "title" : "Immutability and synchronization in Java",
+  "body" : "<p>Since I've read the book <a href=\"https://rads.stackoverflow.com/amzn/click/com/0321349601\" rel=\"nofollow noreferrer\" rel=\"nofollow noreferrer\">Java Concurrency in Practice</a> I was wondering how I could use <strong>immutability</strong> to simplify synchronization problems between threads.</p>\n<p>I perfectly understand that an immutable object is <em>thread-safe</em>. Its state cannot change after initialization, so there cannot be &quot;shared mutable states&quot; at all. But immutable object have to be use properly to be considered useful in synchronization problems.</p>\n<p>Take for example this piece of code, that describes a bank which owns many accounts and that exposes a method through which we can transfer money among accounts.</p>\n<pre><code>public class Bank {\n\n    public static final int NUMBER_OF_ACCOUNT = 100;\n\n    private double[] accounts = new double[NUMBER_OF_ACCOUNT];\n\n    private Lock lock;\n    private Condition sufficientFunds;\n\n    public Bank(double total) {\n        double singleAmount = total / 100D;\n        for (int i = 0; i &lt; NUMBER_OF_ACCOUNT; i++) {\n            accounts[i] = singleAmount;\n        }\n        lock = new ReentrantLock();\n        sufficientFunds = lock.newCondition();\n    }\n\n    private double getAdditionalAmount(double amount) throws InterruptedException {\n        Thread.sleep(1000);\n        return amount * 0.04D;\n    }\n\n    public void transfer(int from, int to, double amount) {\n        try {\n            // Not synchronized operation\n            double additionalAmount = getAdditionalAmount(amount);\n            // Acquiring lock\n            lock.lock();\n            // Verifying condition\n            while (amount + additionalAmount &gt; accounts[from]) {\n                sufficientFunds.await();\n            }\n            // Transferring funds\n            accounts[from] -= amount + additionalAmount;\n            accounts[to] += amount + additionalAmount;\n            // Signaling that something has changed\n            sufficientFunds.signalAll();\n        } catch (InterruptedException e) {\n            e.printStackTrace();\n        } finally {\n            lock.unlock();\n        }\n   }   \n\n   public double getTotal() {\n       double total = 0.0D;\n       lock.lock();\n       try {\n           for (int i = 0; i &lt; NUMBER_OF_ACCOUNT; i++) {\n               total += accounts[i];\n           }\n       } finally {\n           lock.unlock();\n       } \n       return total;\n    }\n\n    public static void main(String[] args) {\n        Bank bank = new Bank(100000D);\n\n        for (int i = 0; i &lt; 1000; i++) {\n            new Thread(new TransferRunnable(bank)).start();\n        }\n    }\n}\n</code></pre>\n<p>In the above example, that comes from the book <a href=\"https://rads.stackoverflow.com/amzn/click/com/0137081898\" rel=\"nofollow noreferrer\" rel=\"nofollow noreferrer\">Core Java Volume I</a>, it is used synchronization through explicit locks. The code is clearly difficult to read and error prone.</p>\n<p>How can we use immutability to simplify the above code? I've tried to create an immutable <code>Accounts</code> class to hold the accounts value, giving to the <code>Bank</code> class a <code>volatile</code> instance of <code>Accounts</code>. However I've not reach my goal.</p>\n<p>Can anybody explain me if it is possible to simplify synchronization using immutability?</p>\n<p><strong>---EDIT---</strong></p>\n<p>Probably I did not explain myself well. I know that an immutable object cannot change its state once it was created. And I know that for the rules implemented in the <a href=\"https://www.cs.umd.edu/%7Epugh/java/memoryModel/jsr-133-faq.html#finalRight\" rel=\"nofollow noreferrer\">Java Memory Model</a> (JSR-133), immutable objects are guaranteed to be seen fully constructed after their initialization (with some <em>distingua</em>).</p>\n<p>Then I've try to use these concepts to delete explicit synchronization from the <code>Bank</code> class. I developed this immutable <code>Accounts</code> class:</p>\n<pre><code>class Accounts {\n    private final List&lt;Double&gt; accounts;\n\n    public Accounts(List&lt;Double&gt; accounts) {\n        this.accounts = new CopyOnWriteArrayList&lt;&gt;(accounts);\n    }\n\n    public Accounts(Accounts accounts, int from, int to, double amount) {\n        this(accounts.getList());\n        this.accounts.set(from, -amount);\n        this.accounts.set(to, amount);\n    }\n\n    public double get(int account) {\n        return this.accounts.get(account);\n    }\n\n    private List&lt;Double&gt; getList() {\n        return this.accounts;\n    }\n}\n</code></pre>\n<p>The accounts attribute of the <code>Bank</code> class have to be published using a <code>volatile</code> variable:</p>\n<pre><code>private volatile Accounts accounts;\n</code></pre>\n<p>Clearly, the transfer method of the <code>Bank</code> class will be changed accordingly:</p>\n<pre><code>public void transfer(int from, int to, double amount) {\n    this.accounts = new Accounts(this.accounts, from, to, amount);\n}\n</code></pre>\n<p>Using an immutable object (<code>Accounts</code>) to store the state of a class (<code>Bank</code>) should be a publishing pattern, that is described at paragraph 3.4.2 of the book JCIP.</p>\n<p>However, there is still a <em>race condition</em> somewhere and I can't figure out where (and why!!!).</p>\n"
+}

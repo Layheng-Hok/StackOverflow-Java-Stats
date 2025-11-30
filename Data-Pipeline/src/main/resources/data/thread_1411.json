@@ -1,0 +1,248 @@
+{
+  "tags" : [ "java", "multithreading" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1367112,
+        "reputation" : 2041,
+        "user_id" : 1303323,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://i.sstatic.net/RSofj.png?s=256",
+        "display_name" : "Stelios Adamantidis",
+        "link" : "https://stackoverflow.com/users/1303323/stelios-adamantidis"
+      },
+      "edited" : false,
+      "score" : 27,
+      "creation_date" : 1454593942,
+      "post_id" : 4906814,
+      "comment_id" : 58121293,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In <a href=\"https://docs.oracle.com/javase/tutorial/essential/concurrency/interrupt.html\" rel=\"nofollow noreferrer\">documentation</a> it&#39;s stated that <i>&quot;By convention, any method that exits by throwing an <code>InterruptedException</code> <b>clears interrupt status</b> when it does so.</i> I think that this makes the answer clearer in terms of <i>why</i> you need to preserve interrupt status."
+    }, {
+      "owner" : {
+        "account_id" : 4774551,
+        "reputation" : 4609,
+        "user_id" : 3858142,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/496db2e1e919e5cf7e4042e18f0d8e56?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "sevo",
+        "link" : "https://stackoverflow.com/users/3858142/sevo"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1554758717,
+      "post_id" : 4906814,
+      "comment_id" : 97862214,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It&#39;s also worth noting that <code>interrupt()</code> call is the only way to <i>set</i> the interrupted flag once you received notification about this state through the other &quot;delivery mechanism&quot; - the <code>InterruptedException</code> and wish or cannot re-throw it."
+    }, {
+      "owner" : {
+        "account_id" : 4604899,
+        "reputation" : 5860,
+        "user_id" : 3734640,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/Bcu5F.jpg?s=256",
+        "display_name" : "Govinda Sakhare",
+        "link" : "https://stackoverflow.com/users/3734640/govinda-sakhare"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1640690934,
+      "post_id" : 4906814,
+      "comment_id" : 124633610,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "what do you mean by <code>higher-level methods&#47;thread groups</code>?"
+    } ],
+    "owner" : {
+      "account_id" : 97818,
+      "reputation" : 116642,
+      "user_id" : 265143,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://i.sstatic.net/q3JFs.jpg?s=256",
+      "display_name" : "P&#233;ter T&#246;r&#246;k",
+      "link" : "https://stackoverflow.com/users/265143/p%c3%a9ter-t%c3%b6r%c3%b6k"
+    },
+    "is_accepted" : true,
+    "score" : 242,
+    "last_activity_date" : 1629199462,
+    "last_edit_date" : 1629199462,
+    "creation_date" : 1296908931,
+    "answer_id" : 4906814,
+    "question_id" : 4906799,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is done to <em>keep state</em>.</p>\n<p>When you catch the <code>InterruptedException</code> and swallow it, you essentially prevent any higher-level methods/thread groups from noticing the interrupt. Which may cause problems.</p>\n<p>By calling <code>Thread.currentThread().interrupt()</code>, you set the interrupt flag of the thread, so higher-level interrupt handlers will notice it and can handle it appropriately.</p>\n<p><a href=\"https://rads.stackoverflow.com/amzn/click/com/0321349601\" rel=\"noreferrer\" rel=\"nofollow noreferrer\">Java Concurrency in Practice</a> discusses this in more detail in <em>Chapter 7.1.3: Responding to Interruption</em>. Its rule is:</p>\n<blockquote>\n<p>Only code that implements a thread's interruption policy may swallow an interruption request. General-purpose task and library code should never swallow interruption requests.</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25463,
+      "reputation" : 20940,
+      "user_id" : 65458,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/Nm7Is.png?s=256",
+      "display_name" : "Piotr Findeisen",
+      "link" : "https://stackoverflow.com/users/65458/piotr-findeisen"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1296909234,
+    "creation_date" : 1296909234,
+    "answer_id" : 4906840,
+    "question_id" : 4906799,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I would consider it a bad practice or at least a bit risky.\nUsually higher level methods do not perform blocking operations and they will never see <code>InterruptedException</code> there. If you mask it in every place you perform interruptible operation, you will never get it.</p>\n\n<p>The only rationale for <code>Thread.currentThread.interrupt()</code> and not raising any other exception or signaling interrupt request in any other way (e.g. setting <code>interrupted</code> local variable variable in a thread's main loop) is the situation where you really can't do anything with the exception, like in the <code>finally</code> blocks.</p>\n\n<p>See Péter Török's answer, if you want to better understand implications of the <code>Thread.currentThread.interrupt()</code> call.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6664,
+      "reputation" : 87953,
+      "user_id" : 11296,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f421285f45fc6d8d679b198dd318f35f?s=256&d=identicon&r=PG",
+      "display_name" : "Bert F",
+      "link" : "https://stackoverflow.com/users/11296/bert-f"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1296909513,
+    "creation_date" : 1296909513,
+    "answer_id" : 4906853,
+    "question_id" : 4906799,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Note:</p>\n\n<p><a href=\"http://download.oracle.com/javase/7/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html\" rel=\"noreferrer\">http://download.oracle.com/javase/7/docs/technotes/guides/concurrency/threadPrimitiveDeprecation.html</a></p>\n\n<p><strong>How do I stop a thread that waits for long periods (e.g., for input)?</strong></p>\n\n<blockquote>\n  <p>For this technique to work, it's critical that any method that catches an interrupt exception and is not prepared to deal with it immediately reasserts the exception. We say reasserts rather than rethrows, because it is not always possible to rethrow the exception. <strong><em>If the method that catches the InterruptedException is not declared to throw this (checked) exception, then it should \"reinterrupt itself\" with the following incantation:</em></strong></p>\n</blockquote>\n\n<pre><code>Thread.currentThread().interrupt();\n</code></pre>\n\n<p><strong><em>This ensures that the Thread will reraise the InterruptedException as soon as it is able.</em></strong></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1274862,
+        "reputation" : 2332,
+        "user_id" : 1230329,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/29c8143c0fed1a8f7aba688250cfffb5?s=256&d=identicon&r=PG",
+        "display_name" : "Scott 混合理论",
+        "link" : "https://stackoverflow.com/users/1230329/scott-%e6%b7%b7%e5%90%88%e7%90%86%e8%ae%ba"
+      },
+      "edited" : false,
+      "score" : 33,
+      "creation_date" : 1500191174,
+      "post_id" : 6746934,
+      "comment_id" : 77222614,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "so the conclusion is ??"
+    }, {
+      "owner" : {
+        "account_id" : 40774,
+        "reputation" : 29853,
+        "user_id" : 118228,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/f2tOS.jpg?s=256",
+        "display_name" : "djangofan",
+        "link" : "https://stackoverflow.com/users/118228/djangofan"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1526339958,
+      "post_id" : 6746934,
+      "comment_id" : 87696776,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks.  I see what you mean now:  <a href=\"https://repl.it/@djangofan/InterruptedThreadExample\" rel=\"nofollow noreferrer\">repl.it/@djangofan/InterruptedThreadExample</a>"
+    }, {
+      "owner" : {
+        "account_id" : 3608976,
+        "reputation" : 473,
+        "user_id" : 3010484,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d6ab9f53649206b63200210748be6490?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "hipokito",
+        "link" : "https://stackoverflow.com/users/3010484/hipokito"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1614607518,
+      "post_id" : 6746934,
+      "comment_id" : 117428721,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I think he means that <code>Thread.currentThread().interrupt();</code> allows you to exit out of thread faster, hence when <code>InterruptedException e</code> is caught, the thread is stopped then and there. Whereas if <code>Thread.currentThread().interrupt();</code> is not used, thread keeps executing.."
+    }, {
+      "owner" : {
+        "account_id" : 5032748,
+        "reputation" : 2602,
+        "user_id" : 4042468,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/jlfMH.jpg?s=256",
+        "display_name" : "kerry",
+        "link" : "https://stackoverflow.com/users/4042468/kerry"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1656591478,
+      "post_id" : 6746934,
+      "comment_id" : 128613581,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That&#39;s not what the example depicts. If you swallow interrupt, the outside function will not exit and will continue doing <code>sleepBabySleep</code>"
+    } ],
+    "owner" : {
+      "account_id" : 314004,
+      "reputation" : 11895,
+      "user_id" : 628943,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/ff9287e79ce8ba4f3544b9d46d86546b?s=256&d=identicon&r=PG",
+      "display_name" : "Ajay George",
+      "link" : "https://stackoverflow.com/users/628943/ajay-george"
+    },
+    "is_accepted" : false,
+    "score" : 82,
+    "last_activity_date" : 1600509016,
+    "last_edit_date" : 1600509016,
+    "creation_date" : 1311077641,
+    "answer_id" : 6746934,
+    "question_id" : 4906799,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think this code sample makes things a bit clear.\nThe class which does the job :</p>\n<pre><code>public class InterruptedSleepingRunner implements Runnable {\n    @Override\n    public void run() {\n        doAPseudoHeavyWeightJob();\n    }\n\n    private void doAPseudoHeavyWeightJob() {\n        for (int i = 0; i &lt; Integer.MAX_VALUE; i++) {\n            // You are kidding me\n            System.out.println(i + &quot; &quot; + i * 2);\n            // Let me sleep &lt;evil grin&gt;\n            if (Thread.currentThread().isInterrupted()) {\n                System.out.println(&quot;Thread interrupted\\n Exiting...&quot;);\n                break;\n            } else {\n                sleepBabySleep();\n            }\n        }\n    }\n\n    protected void sleepBabySleep() {\n        try {\n            Thread.sleep(1000);\n        } catch (InterruptedException e) {\n            Thread.currentThread().interrupt();\n        }\n    }\n}\n</code></pre>\n<p>The <code>Main</code> class:</p>\n<pre><code>public class InterruptedSleepingThreadMain {\n    public static void main(String[] args) throws InterruptedException {\n        Thread thread = new Thread(new InterruptedSleepingRunner());\n        thread.start();\n        // Giving 10 seconds to finish the job.\n        Thread.sleep(10000);\n        // Let me interrupt\n        thread.interrupt();\n    }\n}\n</code></pre>\n<p>Try calling interrupt without setting the status back.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9135083,
+      "reputation" : 1827,
+      "user_id" : 6795054,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ZlZmp.jpg?s=256",
+      "display_name" : "Michael Ouyang",
+      "link" : "https://stackoverflow.com/users/6795054/michael-ouyang"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1589944987,
+    "creation_date" : 1589944987,
+    "answer_id" : 61904524,
+    "question_id" : 4906799,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Refer from java doc</p>\n\n<blockquote>\n  <p>If this thread is blocked in an invocation of the wait(), join(),\n  sleep(long), then its interrupt status will be cleared and it will\n  receive an InterruptedException.</p>\n  \n  <p>If this thread is blocked in an I/O operation, the thread's interrupt\n  status will be set, and the thread will receive a\n  ClosedByInterruptException.</p>\n  \n  <p>If this thread is blocked in a Selector then the thread's interrupt\n  status will be set and it will return immediately from the selection\n  operation.</p>\n  \n  <p>If none of the previous conditions hold then this thread's interrupt\n  status will be set.</p>\n</blockquote>\n\n<p>So, if you change the sleepBabySleep() method in @Ajay George Answer to I/O operation or just a sysout, you don't have to set the status back to stop the program. (BTW, they don't even throw InterruptedException)</p>\n\n<p>Just like @Péter Török said => This is done to keep state. (And particular for method that will throw InterruptedException)</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 289238,
+    "reputation" : 5307,
+    "user_id" : 590091,
+    "user_type" : "registered",
+    "accept_rate" : 57,
+    "profile_image" : "https://www.gravatar.com/avatar/ad2761d3a84a1b29276b995d7719e694?s=256&d=identicon&r=PG",
+    "display_name" : "Hesey",
+    "link" : "https://stackoverflow.com/users/590091/hesey"
+  },
+  "is_answered" : true,
+  "view_count" : 104072,
+  "accepted_answer_id" : 4906814,
+  "answer_count" : 5,
+  "score" : 243,
+  "last_activity_date" : 1668109797,
+  "creation_date" : 1296908734,
+  "last_edit_date" : 1610273694,
+  "question_id" : 4906799,
+  "link" : "https://stackoverflow.com/questions/4906799/why-invoke-thread-currentthread-interrupt-in-a-catch-interruptexception-block",
+  "title" : "Why invoke Thread.currentThread.interrupt() in a catch InterruptException block?",
+  "body" : "<p>Why invoke the method <code>Thread.currentThread.interrupt()</code> in the catch block?</p>\n"
+}

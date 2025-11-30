@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "timezone", "java-time" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 6651855,
+      "reputation" : 291770,
+      "user_id" : 5133585,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://i.sstatic.net/dfqcw.png?s=256",
+      "display_name" : "Sweeper",
+      "link" : "https://stackoverflow.com/users/5133585/sweeper"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1713521068,
+    "post_id" : 78352837,
+    "comment_id" : 138133963,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Looking at <code>TzdbZoneRulesProvider.class</code>, the links between the zone IDs are non-public, so probably not."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4464206,
+      "reputation" : 385,
+      "user_id" : 4138353,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6354bb3005e15e97f85f93be9bf566ec?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Kirill Gagarski",
+      "link" : "https://stackoverflow.com/users/4138353/kirill-gagarski"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1763585661,
+    "last_edit_date" : 1763585661,
+    "creation_date" : 1762780794,
+    "answer_id" : 79815638,
+    "question_id" : 78352837,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As Sweeper mentioned in the comment, non-public class <code>TzdbZoneRulesProvider</code> parses the timezone information shipped with JDK.</p>\n<p>If you look throgh the code of it, you'll see that you only can do only the third &quot;thing you've tried&quot;, i.e. detect that <code>Europe/Belgrade</code>, <code>Europe/Skopje</code>, and <code>Europe/Zagreb</code> are linked to the same rules (the linking is done by rule index:</p>\n<pre class=\"lang-java prettyprint-override\"><code>        for (int i = 0; i &lt; versionCount; i++) {\n            int versionRegionCount = dis.readShort();\n            regionToRules.clear();\n            for (int j = 0; j &lt; versionRegionCount; j++) {\n                String region = regionArray[dis.readShort()];\n                Object rule = ruleArray[dis.readShort() &amp; 0xffff];\n                regionToRules.put(region, rule);\n            }\n        }\n</code></pre>\n<p>So, as of now, unlike Sweeper said, links between timezones are not even processed in this code (only the fact that timezones are linked to the same set of rules).</p>\n<p><strong>BUT:</strong></p>\n<p>If you browse OpenJDK code for <a href=\"https://github.com/openjdk/jdk/blob/jdk-17%2B35/make/jdk/src/classes/build/tools/tzdb/TzdbZoneRulesCompiler.java\" rel=\"nofollow noreferrer\">tzdb compiler</a>, you'll find out that alias info is actually written into <code>tzdb.dat</code> file. The format is the same as for &quot;zone -&gt; rules&quot; map: size (as short number), followed by pairs of time zone indices (alias index, then target canonical timezone.</p>\n<p>So, if you're really desperate, you can try parsing this file yourself and implement your own &quot;alias resolver&quot;, yet <strong>I'm not sure how much you can rely on the file format and how implementation-specific it is</strong>. So, <strong>do not consider it portable or reliable way to do what you want</strong>.</p>\n<p><strong>EDIT</strong></p>\n<p>I don't know your use case, but let's take a glance on alternative approaches.</p>\n<p>Previously I managed to solve it by filtering out alias timezones in the browser. So, if you want to just display a reasonable list  of timezones to display to the user, you can try this approach&gt; <a href=\"https://www.npmjs.com/package/tzdata\" rel=\"nofollow noreferrer\">tzdata</a> library seems to be well-maintained, but it's third-party (yet the data is generated automatically from IANAs tzdata). Obvious downsides are that you need to keep backend and frontend timezones in sync and you have to trust your client (but the worst that can happen, somebody can POST alias TZ using curl, but is this a really big deal, your server can still handle it properly)</p>\n<p>Or technically you can bring official IANA tzdata files to you Java app and parse them, but, again, you'd have to keep the data in sync.</p>\n<p>UPD: I ended up pulling IANA data to my project and building auxillary alias database. You can compare TXDB version provided by Java (<code>ZoneRulesProvider.getVersions(&quot;Etc/UTC&quot;)</code>) with <code>version</code> file provided by IANA files. You can log a warning in case of mismatch, but even in a cese of slight mismatch, you still have pretty good alias mapping.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1976694,
+    "reputation" : 797,
+    "user_id" : 1774334,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f0aa045b933208e6b2790596d40720d5?s=256&d=identicon&r=PG",
+    "display_name" : "Malcolm Rowe",
+    "link" : "https://stackoverflow.com/users/1774334/malcolm-rowe"
+  },
+  "is_answered" : true,
+  "view_count" : 155,
+  "answer_count" : 1,
+  "score" : 5,
+  "last_activity_date" : 1763585661,
+  "creation_date" : 1713520363,
+  "question_id" : 78352837,
+  "link" : "https://stackoverflow.com/questions/78352837/is-there-a-way-to-canonicalize-time-zone-ids-using-the-java-time-apis",
+  "title" : "Is there a way to canonicalize time zone IDs using the java.time APIs?",
+  "body" : "<p>Some time zones are aliases for other time zones. For example, at the time of writing, Europe/Skopje and Europe/Zagreb are linked to Europe/Belgrade.</p>\n<p>In Joda Time, these aliases can be resolved by using <code>DateTimeZone.forID(id).getID()</code>, since <code>DateTimeZone.forID()</code> follows these links to return the canonical time zone.</p>\n<p>Is it possible to do something similar with the <code>java.time</code> APIs?</p>\n<p>Some things I've tried:</p>\n<ul>\n<li><p><code>ZoneId.of(id)</code> will throw an exception if the ID does not exist, but will not resolve links: <code>ZoneId.of(&quot;Europe/Skopje&quot;).getId()</code> returns <code>&quot;Europe/Skopje&quot;</code>, not <code>&quot;Europe/Belgrade&quot;</code>.</p>\n</li>\n<li><p><code>ZoneId.of(id).normalized()</code> only canonicalizes fixed-offset time zones, so does nothing useful here that I can see.</p>\n</li>\n<li><p>All these time zones are returned by <code>ZoneId.getAvailableZoneIds()</code>, and it's possible to ask for each one's rules via <code>ZoneId.getRules()</code>, so given that the rules will be equal for a canonical zone and all linked zones, it's possible to identify that, say, Europe/Belgrade, Europe/Skopje, and Europe/Zagreb are all equivalent, but not to work out which one is canonical. (I'm also not completely sure that it's necessarily true that having equal rules means that the two time zones are necessary linked.)</p>\n</li>\n</ul>\n"
+}

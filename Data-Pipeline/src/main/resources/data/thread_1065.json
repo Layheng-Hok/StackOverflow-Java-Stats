@@ -1,0 +1,639 @@
+{
+  "tags" : [ "java", "concurrency", "atomic" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 79742,
+        "reputation" : 19665,
+        "user_id" : 225899,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/2d205a5ec26e812c3694335b819d68c9?s=256&d=identicon&r=PG",
+        "display_name" : "James P.",
+        "link" : "https://stackoverflow.com/users/225899/james-p"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1296144714,
+      "post_id" : 4818753,
+      "comment_id" : 5343756,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I think I understand the first use. This is to make sure the counter has been incremented before an attribute is accessed again. Correct? Could you give a short example for the second use?"
+    }, {
+      "owner" : {
+        "account_id" : 19462,
+        "reputation" : 104083,
+        "user_id" : 45664,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/YPWiu.png?s=256",
+        "display_name" : "Andrzej Doyle",
+        "link" : "https://stackoverflow.com/users/45664/andrzej-doyle"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1296145340,
+      "post_id" : 4818753,
+      "comment_id" : 5343921,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Your understanding of the first use is kind of true - it simply ensures that if another thread modifies the counter between the <code>read</code> and <code>write that value + 1</code> operations, this is detected rather than overwriting the old update (avoiding the &quot;lost update&quot; problem).  This is actually a special case of <code>compareAndSet</code> - if the old value was <code>2</code>, the class actually calls <code>compareAndSet(2, 3)</code> - so if another thread has modified the value in the meantime, the increment method effectively restarts from the beginning."
+    }, {
+      "owner" : {
+        "account_id" : 111515,
+        "reputation" : 6530,
+        "user_id" : 294552,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/570db31e9220b04f17fd6b5e80ede80b?s=256&d=identicon&r=PG",
+        "display_name" : "sandeepkunkunuru",
+        "link" : "https://stackoverflow.com/users/294552/sandeepkunkunuru"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1455898843,
+      "post_id" : 4818753,
+      "comment_id" : 58710851,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;remainder &gt; 0 ? remainder : remainder + n;&quot; in this expression is there a reason to add remainder to n when it is 0?"
+    } ],
+    "owner" : {
+      "account_id" : 36208,
+      "reputation" : 243304,
+      "user_id" : 103154,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2a48823f3303f6c34f30574b9cb68e48?s=256&d=identicon&r=PG",
+      "display_name" : "axtavt",
+      "link" : "https://stackoverflow.com/users/103154/axtavt"
+    },
+    "is_accepted" : true,
+    "score" : 233,
+    "last_activity_date" : 1296145748,
+    "last_edit_date" : 1296145748,
+    "creation_date" : 1296144559,
+    "answer_id" : 4818753,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>There are two main uses of <code>AtomicInteger</code>:</p>\n\n<ul>\n<li><p>As an atomic counter (<code>incrementAndGet()</code>, etc) that can be used by many threads concurrently</p></li>\n<li><p>As a primitive that supports <a href=\"http://en.wikipedia.org/wiki/Compare-and-swap\" rel=\"noreferrer\">compare-and-swap</a> instruction (<code>compareAndSet()</code>) to implement non-blocking algorithms. </p>\n\n<p>Here is an example of non-blocking random number generator from <a href=\"https://rads.stackoverflow.com/amzn/click/com/0321349601\" rel=\"noreferrer\" rel=\"nofollow noreferrer\">Brian Göetz's Java Concurrency In Practice</a>:</p>\n\n<pre><code>public class AtomicPseudoRandom extends PseudoRandom {\n    private AtomicInteger seed;\n    AtomicPseudoRandom(int seed) {\n        this.seed = new AtomicInteger(seed);\n    }\n\n    public int nextInt(int n) {\n        while (true) {\n            int s = seed.get();\n            int nextSeed = calculateNext(s);\n            if (seed.compareAndSet(s, nextSeed)) {\n                int remainder = s % n;\n                return remainder &gt; 0 ? remainder : remainder + n;\n            }\n        }\n    }\n    ...\n}\n</code></pre>\n\n<p>As you can see, it basically works almost the same way as <code>incrementAndGet()</code>, but performs arbitrary calculation (<code>calculateNext()</code>) instead of increment (and processes the result before return).</p></li>\n</ul>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 79742,
+        "reputation" : 19665,
+        "user_id" : 225899,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/2d205a5ec26e812c3694335b819d68c9?s=256&d=identicon&r=PG",
+        "display_name" : "James P.",
+        "link" : "https://stackoverflow.com/users/225899/james-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1296144820,
+      "post_id" : 4818772,
+      "comment_id" : 5343781,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I see. Is this in cases where an attribute or instance acts as a sort of global variable inside an application. Or are there other cases that you can think of?"
+    } ],
+    "owner" : {
+      "account_id" : 264830,
+      "reputation" : 72797,
+      "user_id" : 551406,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/asxye.jpg?s=256",
+      "display_name" : "Michael Berry",
+      "link" : "https://stackoverflow.com/users/551406/michael-berry"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1296144649,
+    "creation_date" : 1296144649,
+    "answer_id" : 4818772,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The key is that they allow concurrent access and modification safely. They're commonly used as counters in a multithreaded environment - before their introduction this had to be a user written class that wrapped up the various methods in synchronized blocks.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 79742,
+        "reputation" : 19665,
+        "user_id" : 225899,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/2d205a5ec26e812c3694335b819d68c9?s=256&d=identicon&r=PG",
+        "display_name" : "James P.",
+        "link" : "https://stackoverflow.com/users/225899/james-p"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1296144898,
+      "post_id" : 4818783,
+      "comment_id" : 5343802,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks for this clear explanation. What would be the advantages of using an AtomicInteger over a class where methods are all synchronized? Would the latter be considered as &quot;heavier&quot;?"
+    }, {
+      "owner" : {
+        "account_id" : 19462,
+        "reputation" : 104083,
+        "user_id" : 45664,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/YPWiu.png?s=256",
+        "display_name" : "Andrzej Doyle",
+        "link" : "https://stackoverflow.com/users/45664/andrzej-doyle"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1296145693,
+      "post_id" : 4818783,
+      "comment_id" : 5344000,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "From my perspective, it&#39;s mainly the encapsulation you get with AtomicIntegers - synchronization happens on exactly what you need, and you get descriptive methods that are in the public API to explain what the intended result is.  (Plus to some extent you&#39;re right, often one would end up simply synchronizing all methods in a class which is likely too coarse-grained, though with HotSpot performing lock optimisations and the rules against premature optimisation, I consider the readability to be a greater benefit than performance.)"
+    }, {
+      "owner" : {
+        "account_id" : 1861044,
+        "reputation" : 1965,
+        "user_id" : 1901896,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/77b2651b08f4279ec5a29169d6c40c3d?s=256&d=identicon&r=PG",
+        "display_name" : "Akash5288",
+        "link" : "https://stackoverflow.com/users/1901896/akash5288"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1499338909,
+      "post_id" : 4818783,
+      "comment_id" : 76869072,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is very clear and precise explaination, Thanks !!"
+    }, {
+      "owner" : {
+        "account_id" : 197528,
+        "reputation" : 11591,
+        "user_id" : 441662,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/22257d22ebb7beace9749845a034325c?s=256&d=identicon&r=PG",
+        "display_name" : "Benny Bottema",
+        "link" : "https://stackoverflow.com/users/441662/benny-bottema"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1560518235,
+      "post_id" : 4818783,
+      "comment_id" : 99773958,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Finally an explanation that properly cleared it up for me."
+    } ],
+    "owner" : {
+      "account_id" : 19462,
+      "reputation" : 104083,
+      "user_id" : 45664,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/YPWiu.png?s=256",
+      "display_name" : "Andrzej Doyle",
+      "link" : "https://stackoverflow.com/users/45664/andrzej-doyle"
+    },
+    "is_accepted" : false,
+    "score" : 134,
+    "last_activity_date" : 1296145050,
+    "last_edit_date" : 1296145050,
+    "creation_date" : 1296144704,
+    "answer_id" : 4818783,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The absolute simplest example I can think of is to make incrementing an atomic operation.</p>\n\n<p>With standard ints:</p>\n\n<pre><code>private volatile int counter;\n\npublic int getNextUniqueIndex() {\n    return counter++; // Not atomic, multiple threads could get the same result\n}\n</code></pre>\n\n<p>With AtomicInteger:</p>\n\n<pre><code>private AtomicInteger counter;\n\npublic int getNextUniqueIndex() {\n    return counter.getAndIncrement();\n}\n</code></pre>\n\n<p>The latter is a very simple way to perform simple mutations effects (especially counting, or unique-indexing), without having to resort to synchronizing all access.</p>\n\n<p>More complex synchronization-free logic can be employed by using <code>compareAndSet()</code> as a type of optimistic locking - get the current value, compute result based on this, set this result <em>iff</em> value is still the input used to do the calculation, else start again - but the counting examples are very useful, and I'll often use <code>AtomicIntegers</code> for counting and VM-wide unique generators if there's any hint of multiple threads being involved, because they're so easy to work with I'd almost consider it premature optimisation to use plain <code>ints</code>.</p>\n\n<p>While you can almost always achieve the same synchronization guarantees with <code>ints</code> and appropriate <code>synchronized</code> declarations, the beauty of <code>AtomicInteger</code> is that the thread-safety is built into the actual object itself, rather than you needing to worry about the possible interleavings, and monitors held, of every method that happens to access the <code>int</code> value.  It's much harder to accidentally violate threadsafety when calling <code>getAndIncrement()</code> than when returning <code>i++</code> and remembering (or not) to acquire the correct set of monitors beforehand.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 79742,
+        "reputation" : 19665,
+        "user_id" : 225899,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/2d205a5ec26e812c3694335b819d68c9?s=256&d=identicon&r=PG",
+        "display_name" : "James P.",
+        "link" : "https://stackoverflow.com/users/225899/james-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1296145000,
+      "post_id" : 4818802,
+      "comment_id" : 5343831,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks for sharing this practical example. This sounds like something I should use as I need to have unique id for each file I import into my program :)"
+    } ],
+    "owner" : {
+      "account_id" : 258256,
+      "reputation" : 24959,
+      "user_id" : 540312,
+      "user_type" : "registered",
+      "accept_rate" : 87,
+      "profile_image" : "https://i.sstatic.net/MD7FS.jpg?s=256",
+      "display_name" : "Sergei Tachenov",
+      "link" : "https://stackoverflow.com/users/540312/sergei-tachenov"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1296144811,
+    "creation_date" : 1296144811,
+    "answer_id" : 4818802,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>For example, I have a library that generates instances of some class. Each of these instances must have a unique integer ID, as these instances represent commands being sent to a server, and each command must have a unique ID. Since multiple threads are allowed to send commands concurrently, I use an AtomicInteger to generate those IDs. An alternative approach would be to use some sort of lock and a regular integer, but that's both slower and less elegant.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 19462,
+        "reputation" : 104083,
+        "user_id" : 45664,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/YPWiu.png?s=256",
+        "display_name" : "Andrzej Doyle",
+        "link" : "https://stackoverflow.com/users/45664/andrzej-doyle"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1296145882,
+      "post_id" : 4818916,
+      "comment_id" : 5344055,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I don&#39;t think I&#39;d want to use <code>AtomicInteger</code> as a map key, because it uses the default <code>equals()</code> implementation, which is almost certainly not what you&#39;d expect the semantics to be if used in a map."
+    }, {
+      "owner" : {
+        "account_id" : 273624,
+        "reputation" : 7878,
+        "user_id" : 565342,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/5a9a33e6c0397ed112a7c955728f3a1f?s=256&d=identicon&r=PG",
+        "display_name" : "gabuzo",
+        "link" : "https://stackoverflow.com/users/565342/gabuzo"
+      },
+      "reply_to_user" : {
+        "account_id" : 19462,
+        "reputation" : 104083,
+        "user_id" : 45664,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/YPWiu.png?s=256",
+        "display_name" : "Andrzej Doyle",
+        "link" : "https://stackoverflow.com/users/45664/andrzej-doyle"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1296148008,
+      "post_id" : 4818916,
+      "comment_id" : 5344633,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@Andrzej sure, not as key which are required to be unmutable but a value."
+    }, {
+      "owner" : {
+        "account_id" : 7525670,
+        "reputation" : 13088,
+        "user_id" : 5715934,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://i.sstatic.net/yXPze.jpg?s=256",
+        "display_name" : "Supun Wijerathne",
+        "link" : "https://stackoverflow.com/users/5715934/supun-wijerathne"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1510207925,
+      "post_id" : 4818916,
+      "comment_id" : 81338955,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@gabuzo Any idea why atomic integer performs well over synchronized?"
+    }, {
+      "owner" : {
+        "account_id" : 273624,
+        "reputation" : 7878,
+        "user_id" : 565342,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/5a9a33e6c0397ed112a7c955728f3a1f?s=256&d=identicon&r=PG",
+        "display_name" : "gabuzo",
+        "link" : "https://stackoverflow.com/users/565342/gabuzo"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1511370630,
+      "post_id" : 4818916,
+      "comment_id" : 81835623,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The test are quite old now (more than 6 years) it might me interesting to retest with a recent JRE. I didn&#39;t went deep enough in the AtomicInteger to answer but as this is a very specific task it&#39;ll use synchronization techniques that are only working in this specific case. Also mind that the test is monothreaded and making a similar test in a heaviliy loaded environment might not give such a clear victory for AtomicInteger"
+    }, {
+      "owner" : {
+        "account_id" : 352721,
+        "reputation" : 6447,
+        "user_id" : 689956,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/fdc9740e5b7e8a10c83fcd06cfd99ac5?s=256&d=identicon&r=PG",
+        "display_name" : "Sathesh",
+        "link" : "https://stackoverflow.com/users/689956/sathesh"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1532388384,
+      "post_id" : 4818916,
+      "comment_id" : 89945816,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I believe its 3 ms and 5.5 ms"
+    }, {
+      "owner" : {
+        "account_id" : 273624,
+        "reputation" : 7878,
+        "user_id" : 565342,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/5a9a33e6c0397ed112a7c955728f3a1f?s=256&d=identicon&r=PG",
+        "display_name" : "gabuzo",
+        "link" : "https://stackoverflow.com/users/565342/gabuzo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1535527412,
+      "post_id" : 4818916,
+      "comment_id" : 91093081,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I don&#39;t remember as it&#39;s has been done more that 7 years ago but as I put calls in the loop I guess I probably set NUM high enough to last a couple of seconds."
+    }, {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "reply_to_user" : {
+        "account_id" : 7525670,
+        "reputation" : 13088,
+        "user_id" : 5715934,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://i.sstatic.net/yXPze.jpg?s=256",
+        "display_name" : "Supun Wijerathne",
+        "link" : "https://stackoverflow.com/users/5715934/supun-wijerathne"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1655178220,
+      "post_id" : 4818916,
+      "comment_id" : 128264025,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@SupunWijerathne: This only tested the no-contention case where no other threads ever take the lock.  I wouldn&#39;t be surprised if that JVM version used an atomic RMW both to take the lock (for <code>synchronized</code>) and to release it.  Although in that case you&#39;d expect exactly a factor of 2, assuming a typical x86 where <code>lock add [mem], 1</code> is the same latency as <code>xchg [mem], reg</code> or <code>lock cmpxchg [mem], reg</code>. (<a href=\"https://uops.info/\" rel=\"nofollow noreferrer\">uops.info</a>).  Maybe just the extra store/reload of the non-atomic <code>++</code> between atomic RMWs and release-store to unlock were a factor."
+    }, {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1655178231,
+      "post_id" : 4818916,
+      "comment_id" : 128264027,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "(Assuming of course that the atomic RMW JITed to a loop with no memory accesses except for <code>lock add [mem], 1</code>, or maybe <code>lock xadd [mem], eax</code> if the JIT doesn&#39;t take advantage of the return value being unused.)"
+    }, {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1655178341,
+      "post_id" : 4818916,
+      "comment_id" : 128264049,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If this had been a multi-threaded test: Threads have to contend for a lock, and then after getting ownership of the lock, actually access the <code>int</code> which is probably in a different cache line.  The store part of the <code>notAtomic++</code> increment has to commit to cache before it can unlock the lock.  So it wouldn&#39;t be surprising to nearly doubles the latency from getting exclusive ownership to releasing exclusive ownership.  Or worse, since some threads would ping-pong the cache line to themselves <i>without</i> getting lock ownership, delaying unlock."
+    }, {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1655178547,
+      "post_id" : 4818916,
+      "comment_id" : 128264086,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In a real-world case where you have multiple threads all doing not much besides hammering on a shared counter, 1. your design sucks, a single thread with non-atomic variables would probably be faster, even if it did have to write-only store each incremented value to its L1d cache.  2. yes, AtomicInteger is probably faster since each hardware step succeeds at doing an increment.  (Except sometimes with LL/SC machines, unlike x86)."
+    } ],
+    "owner" : {
+      "account_id" : 273624,
+      "reputation" : 7878,
+      "user_id" : 565342,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/5a9a33e6c0397ed112a7c955728f3a1f?s=256&d=identicon&r=PG",
+      "display_name" : "gabuzo",
+      "link" : "https://stackoverflow.com/users/565342/gabuzo"
+    },
+    "is_accepted" : false,
+    "score" : 45,
+    "last_activity_date" : 1296149466,
+    "last_edit_date" : 1296149466,
+    "creation_date" : 1296145314,
+    "answer_id" : 4818916,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The primary use of <code>AtomicInteger</code> is when you are in a multithreaded context and you need to perform thread safe operations on an integer without using <code>synchronized</code>. The assignation and retrieval on the primitive type <code>int</code> are already atomic but <code>AtomicInteger</code> comes with many operations which are not atomic on <code>int</code>.</p>\n\n<p>The simplest are the <code>getAndXXX</code> or <code>xXXAndGet</code>. For instance <code>getAndIncrement()</code> is an atomic equivalent to <code>i++</code> which is not atomic because it is actually a short cut for three operations: retrieval, addition and assignation. <code>compareAndSet</code> is very useful to implements semaphores, locks, latches, etc.</p>\n\n<p>Using the <code>AtomicInteger</code> is faster and more readable than performing the same using synchronization.</p>\n\n<p>A simple test:</p>\n\n<pre><code>public synchronized int incrementNotAtomic() {\n    return notAtomic++;\n}\n\npublic void performTestNotAtomic() {\n    final long start = System.currentTimeMillis();\n    for (int i = 0 ; i &lt; NUM ; i++) {\n        incrementNotAtomic();\n    }\n    System.out.println(\"Not atomic: \"+(System.currentTimeMillis() - start));\n}\n\npublic void performTestAtomic() {\n    final long start = System.currentTimeMillis();\n    for (int i = 0 ; i &lt; NUM ; i++) {\n        atomic.getAndIncrement();\n    }\n    System.out.println(\"Atomic: \"+(System.currentTimeMillis() - start));\n}\n</code></pre>\n\n<p>On my PC with Java 1.6 the atomic test runs in 3 seconds while the synchronized one runs in about 5.5 seconds. The problem here is that the operation to synchronize (<code>notAtomic++</code>) is really short. So the cost of the synchronization is really important compared to the operation.</p>\n\n<p>Beside atomicity AtomicInteger can be use as a mutable version of <code>Integer</code> for instance in <code>Map</code>s as values.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8732,
+      "reputation" : 89041,
+      "user_id" : 15880,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/7618ff7a4952a494b8f41bd0df646790?s=256&d=identicon&r=PG",
+      "display_name" : "Powerlord",
+      "link" : "https://stackoverflow.com/users/15880/powerlord"
+    },
+    "is_accepted" : false,
+    "score" : 75,
+    "last_activity_date" : 1296146250,
+    "creation_date" : 1296146250,
+    "answer_id" : 4819109,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If you look at the methods AtomicInteger has, you'll notice that they tend to correspond to common operations on ints.  For instance:</p>\n\n<pre><code>static AtomicInteger i;\n\n// Later, in a thread\nint current = i.incrementAndGet();\n</code></pre>\n\n<p>is the thread-safe version of this:</p>\n\n<pre><code>static int i;\n\n// Later, in a thread\nint current = ++i;\n</code></pre>\n\n<p>The methods map like this:<br>\n<code>++i</code> is <code>i.incrementAndGet()</code><br>\n<code>i++</code> is <code>i.getAndIncrement()</code><br>\n<code>--i</code> is <code>i.decrementAndGet()</code><br>\n<code>i--</code> is <code>i.getAndDecrement()</code><br>\n<code>i = x</code> is <code>i.set(x)</code><br>\n<code>x = i</code> is <code>x = i.get()</code>  </p>\n\n<p>There are other convenience methods as well, like <code>compareAndSet</code> or <code>addAndGet</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1078945,
+      "reputation" : 7614,
+      "user_id" : 1076480,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/20ece207370374a27be0bedc56c3b3a3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "David Ehrmann",
+      "link" : "https://stackoverflow.com/users/1076480/david-ehrmann"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1331022022,
+    "last_edit_date" : 1331022022,
+    "creation_date" : 1323153354,
+    "answer_id" : 8396197,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Like gabuzo said, sometimes I use AtomicIntegers when I want to pass an int by reference.  It's a built-in class that has architecture-specific code, so it's easier and likely more optimized than any MutableInteger I could quickly code up.  That said, it feels like an abuse of the class.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 130318,
+      "reputation" : 6937,
+      "user_id" : 329496,
+      "user_type" : "registered",
+      "accept_rate" : 66,
+      "profile_image" : "https://www.gravatar.com/avatar/92ab9af5b2597efeee9eab0f0d782409?s=256&d=identicon&r=PG",
+      "display_name" : "simbo1905",
+      "link" : "https://stackoverflow.com/users/329496/simbo1905"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1347913576,
+    "last_edit_date" : 1347913576,
+    "creation_date" : 1347913245,
+    "answer_id" : 12466533,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can implement non-blocking locks using compareAndSwap (CAS) on atomic integers or longs. The <a href=\"http://labs.oracle.com/scalable/pubs/DISC2006.pdf\" rel=\"nofollow\">\"Tl2\" Software Transactional Memory</a> paper describes this:</p>\n\n<blockquote>\n  <p>We associate a special versioned write-lock with every transacted\n  memory location. In its simplest form, the versioned write-lock is a\n  single word spinlock that uses a CAS operation to acquire the lock and\n  a store to release it. Since one only needs a single bit to indicate\n  that the lock is taken, we use the rest of the lock word to hold a\n  version number.</p>\n</blockquote>\n\n<p>What it is describing is first read the atomic integer. Split this up into an ignored lock-bit and the version number. Attempt to CAS write it as the lock-bit cleared with the current version number to the lock-bit set and the next version number. Loop until you succeed and your are the thread which owns the lock. Unlock by setting the current version number with the lock-bit cleared. The paper describes using the version numbers in the locks to coordinate that threads have a consistent set of reads when they write.</p>\n\n<p><a href=\"http://www.e-zest.net/blog/writing-thread-safe-programs-using-atomic-variables/\" rel=\"nofollow\">This article</a> describes that processors have hardware support for compare and swap operations making the very efficient. It also claims:</p>\n\n<blockquote>\n  <p>non-blocking CAS-based counters using atomic variables have better\n  performance than lock-based counters in low to moderate contention</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2493980,
+      "reputation" : 358,
+      "user_id" : 2170885,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/9235ad8a307921fa1174dcd3773751b7?s=256&d=identicon&r=PG",
+      "display_name" : "DguezTorresEmmanuel",
+      "link" : "https://stackoverflow.com/users/2170885/dgueztorresemmanuel"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1364324498,
+    "creation_date" : 1364324498,
+    "answer_id" : 15645288,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I usually use AtomicInteger when I need to give Ids to objects that can be accesed or created from multiple threads, and i usually use it as an static attribute on the class that i access in the constructor of the objects.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 56001,
+      "reputation" : 392,
+      "user_id" : 3348552,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/475fe385c3cbaf92551995b09f7b0286?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "pwojnowski",
+      "link" : "https://stackoverflow.com/users/3348552/pwojnowski"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1449134459,
+    "creation_date" : 1449134459,
+    "answer_id" : 34062042,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In Java 8 atomic classes have been extended with two interesting functions:</p>\n\n<ul>\n<li>int getAndUpdate(IntUnaryOperator updateFunction)</li>\n<li>int updateAndGet(IntUnaryOperator updateFunction)</li>\n</ul>\n\n<p>Both are using the updateFunction to perform update of the atomic value. The difference is that the first one returns old value and the second one return the new value. The updateFunction may be implemented to do more complex \"compare and set\" operations than the standard one. For example it can check that atomic counter doesn't go below zero, normally it would require synchronization, and here the code is lock-free:</p>\n\n<pre><code>    public class Counter {\n\n      private final AtomicInteger number;\n\n      public Counter(int number) {\n        this.number = new AtomicInteger(number);\n      }\n\n      /** @return true if still can decrease */\n      public boolean dec() {\n        // updateAndGet(fn) executed atomically:\n        return number.updateAndGet(n -&gt; (n &gt; 0) ? n - 1 : n) &gt; 0;\n      }\n    }\n</code></pre>\n\n<p>The code is taken from <a href=\"http://farenda.com/java/java-atomic-example/\" rel=\"noreferrer\">Java Atomic Example</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9213389,
+      "reputation" : 143,
+      "user_id" : 6845625,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a7415b9eb749c74fde23008aba1e253e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Rodrigo Gomez",
+      "link" : "https://stackoverflow.com/users/6845625/rodrigo-gomez"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1545445566,
+    "creation_date" : 1545445566,
+    "answer_id" : 53892600,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I used AtomicInteger to solve the Dining Philosopher's problem.</p>\n\n<p>In my solution, AtomicInteger instances were used to represent the forks, there are two needed per philosopher. Each Philosopher is identified as an integer, 1 through 5. When a fork is used by a philosopher, the AtomicInteger holds the value of the philosopher, 1 through 5, otherwise the fork is not being used so the value of the AtomicInteger is -1. </p>\n\n<p>The AtomicInteger then allows to check if a fork is free, value==-1, and set it to the owner of the fork if free, in one atomic operation. See code below.</p>\n\n<pre><code>AtomicInteger fork0 = neededForks[0];//neededForks is an array that holds the forks needed per Philosopher\nAtomicInteger fork1 = neededForks[1];\nwhile(true){    \n    if (Hungry) {\n        //if fork is free (==-1) then grab it by denoting who took it\n        if (!fork0.compareAndSet(-1, p) || !fork1.compareAndSet(-1, p)) {\n          //at least one fork was not succesfully grabbed, release both and try again later\n            fork0.compareAndSet(p, -1);\n            fork1.compareAndSet(p, -1);\n            try {\n                synchronized (lock) {//sleep and get notified later when a philosopher puts down one fork                    \n                    lock.wait();//try again later, goes back up the loop\n                }\n            } catch (InterruptedException e) {}\n\n        } else {\n            //sucessfully grabbed both forks\n            transition(fork_l_free_and_fork_r_free);\n        }\n    }\n}\n</code></pre>\n\n<p>Because the compareAndSet method does not block, it should increase throughput, more work done. As you may know, the Dining Philosophers problem is used when controlled accessed to resources is needed, i.e. forks, are needed, like a process needs resources to continue doing work. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6263188,
+      "reputation" : 449,
+      "user_id" : 11583351,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d1d213222009fd24ab80a48d8ca9e358?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "M Shafaei N",
+      "link" : "https://stackoverflow.com/users/11583351/m-shafaei-n"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1573146489,
+    "creation_date" : 1573146489,
+    "answer_id" : 58753816,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Simple example for compareAndSet() function:</p>\n\n<pre><code>import java.util.concurrent.atomic.AtomicInteger; \n\npublic class GFG { \n    public static void main(String args[]) \n    { \n\n        // Initially value as 0 \n        AtomicInteger val = new AtomicInteger(0); \n\n        // Prints the updated value \n        System.out.println(\"Previous value: \"\n                           + val); \n\n        // Checks if previous value was 0 \n        // and then updates it \n        boolean res = val.compareAndSet(0, 6); \n\n        // Checks if the value was updated. \n        if (res) \n            System.out.println(\"The value was\"\n                               + \" updated and it is \"\n                           + val); \n        else\n            System.out.println(\"The value was \"\n                               + \"not updated\"); \n      } \n  } \n</code></pre>\n\n<p>The printed is: \nprevious value: 0\nThe value was updated and it is 6\nAnother simple example:</p>\n\n<pre><code>    import java.util.concurrent.atomic.AtomicInteger; \n\npublic class GFG { \n    public static void main(String args[]) \n    { \n\n        // Initially value as 0 \n        AtomicInteger val \n            = new AtomicInteger(0); \n\n        // Prints the updated value \n        System.out.println(\"Previous value: \"\n                           + val); \n\n         // Checks if previous value was 0 \n        // and then updates it \n        boolean res = val.compareAndSet(10, 6); \n\n          // Checks if the value was updated. \n          if (res) \n            System.out.println(\"The value was\"\n                               + \" updated and it is \"\n                               + val); \n        else\n            System.out.println(\"The value was \"\n                               + \"not updated\"); \n    } \n} \n</code></pre>\n\n<p>The printed is: \nPrevious value: 0\nThe value was not updated</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14538770,
+      "reputation" : 1,
+      "user_id" : 10501196,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-eyWZDIRQY7A/AAAAAAAAAAI/AAAAAAAAAAo/Z9evAgGEDUc/s256-rj/photo.jpg",
+      "display_name" : "Chinni Achari",
+      "link" : "https://stackoverflow.com/users/10501196/chinni-achari"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1655176341,
+    "creation_date" : 1655176341,
+    "answer_id" : 72611135,
+    "question_id" : 4818699,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Atomic classes are not general purpose replacements for java.lang.Integer and related classes. They do not define methods such as equals, hashCode and compareTo. (Because atomic variables are expected to be mutated, they are poor choices for hash table keys.) Additionally, classes are provided only for those types that are commonly useful in intended applications. For example, there is no atomic class for representing byte. In those infrequent cases where you would like to do so, you can use an AtomicInteger to hold byte values, and cast appropriately. You can also hold floats using Float.floatToRawIntBits(float) and Float.intBitsToFloat(int) conversions, and doubles using Double.doubleToRawLongBits(double) and Double.longBitsToDouble(long) conversions.</p>\n<p>Reference: <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/package-summary.html\" rel=\"nofollow noreferrer\">https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/package-summary.html</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 79742,
+    "reputation" : 19665,
+    "user_id" : 225899,
+    "user_type" : "registered",
+    "accept_rate" : 85,
+    "profile_image" : "https://www.gravatar.com/avatar/2d205a5ec26e812c3694335b819d68c9?s=256&d=identicon&r=PG",
+    "display_name" : "James P.",
+    "link" : "https://stackoverflow.com/users/225899/james-p"
+  },
+  "is_answered" : true,
+  "view_count" : 293586,
+  "accepted_answer_id" : 4818753,
+  "answer_count" : 13,
+  "score" : 296,
+  "last_activity_date" : 1655176341,
+  "creation_date" : 1296144271,
+  "last_edit_date" : 1382356638,
+  "question_id" : 4818699,
+  "link" : "https://stackoverflow.com/questions/4818699/practical-uses-for-atomicinteger",
+  "title" : "Practical uses for AtomicInteger",
+  "body" : "<p>I sort of understand that AtomicInteger and other Atomic variables allow concurrent accesses. In what cases is this class typically used though?</p>\n"
+}

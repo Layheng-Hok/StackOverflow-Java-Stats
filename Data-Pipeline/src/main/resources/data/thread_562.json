@@ -1,0 +1,1779 @@
+{
+  "tags" : [ "java", "multithreading" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 23121,
+      "reputation" : 535127,
+      "user_id" : 57695,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Lawrey",
+      "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+    },
+    "edited" : false,
+    "score" : 6,
+    "creation_date" : 1274419986,
+    "post_id" : 37026,
+    "comment_id" : 2926313,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "The useful libraries to use for concurrency are in the concurrency libraries.  I suggest these are a better choice in almost every case.  The Concurency library pre date Java 5.0 (in which is were they were added as standard in 2004)"
+  }, {
+    "owner" : {
+      "account_id" : 1896959,
+      "reputation" : 2956,
+      "user_id" : 1713695,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/c63KV.png?s=256",
+      "display_name" : "Alexander Ryzhov",
+      "link" : "https://stackoverflow.com/users/1713695/alexander-ryzhov"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1371512032,
+    "post_id" : 37026,
+    "comment_id" : 24839764,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I disagree with Peter. The concurrency library is implemented in Java, and there is a lot of Java code executed every time you call lock(), unlock(), etc. You can shoot yourself in the foot by using concurrency library instead of good old <code>synchronized</code>, except for certain, rather rare use cases."
+  }, {
+    "owner" : {
+      "account_id" : 50030,
+      "reputation" : 66339,
+      "user_id" : 149138,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/cfd457233c8ebbab383475fc097442d9?s=256&d=identicon&r=PG",
+      "display_name" : "BeeOnRope",
+      "link" : "https://stackoverflow.com/users/149138/beeonrope"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1508348509,
+    "post_id" : 37026,
+    "comment_id" : 80579468,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "The key misunderstanding seems to be this: <i>... only one thread is always selected for further monitor acquisition; in the first case the one selected by the VM, in the second case the one selected by the system thread scheduler.</i> The implication being that the are essentially the same. While the behavior as described is correct, what&#39;s missing is that in the <code>notifyAll()</code> case, _the other threads after the first remain awake and will acquire the monitor, one-by-one. In the <code>notify</code> case, none of the other threads are even woken. So functionally they are very different!"
+  }, {
+    "owner" : {
+      "account_id" : 3311832,
+      "reputation" : 410,
+      "user_id" : 2785156,
+      "user_type" : "registered",
+      "accept_rate" : 17,
+      "profile_image" : "https://graph.facebook.com/100000161364149/picture?type=large",
+      "display_name" : "Chetan Gowda",
+      "link" : "https://stackoverflow.com/users/2785156/chetan-gowda"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1527847778,
+    "post_id" : 37026,
+    "comment_id" : 88292078,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "1) If many threads are waiting on an object, and notify() is called only once on that object. Except one of the waiting threads the remaining threads wait forever ? 2) If notify() is used only one of many waiting thread starts executing. If notifyall() is used all waiting threads are notified but only one of them starts executing, so what is the use of notifyall() here ?"
+  }, {
+    "owner" : {
+      "account_id" : 3408167,
+      "reputation" : 690,
+      "user_id" : 2859238,
+      "user_type" : "registered",
+      "accept_rate" : 32,
+      "profile_image" : "https://www.gravatar.com/avatar/73d78ef40af34ea5811f0704eacd2f25?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user104309",
+      "link" : "https://stackoverflow.com/users/2859238/user104309"
+    },
+    "reply_to_user" : {
+      "account_id" : 3311832,
+      "reputation" : 410,
+      "user_id" : 2785156,
+      "user_type" : "registered",
+      "accept_rate" : 17,
+      "profile_image" : "https://graph.facebook.com/100000161364149/picture?type=large",
+      "display_name" : "Chetan Gowda",
+      "link" : "https://stackoverflow.com/users/2785156/chetan-gowda"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1531001109,
+    "post_id" : 37026,
+    "comment_id" : 89434509,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@ChetanGowda Notifying all threads vs Notify exactly only one arbitrary thread actually has significant difference until that seemingly subtle but important difference strikes us.When you notify() only 1 thread,all the other threads will be in waiting state until it receives an explicit notification/signal. Notifying all, all the threads will be executed and completed in some order one after the other without any further notification - here we should say the threads are <code>blocked</code> and not <code>waiting</code>.When <code>blocked</code> its exec is suspended temporarily until another thread is inside the <code>sync</code> block."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 2648,
+      "reputation" : 122128,
+      "user_id" : 3713,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://www.gravatar.com/avatar/dc374f99f92956f128ef79df36d819e9?s=256&d=identicon&r=PG",
+      "display_name" : "Spoike",
+      "link" : "https://stackoverflow.com/users/3713/spoike"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1220210361,
+    "creation_date" : 1220210361,
+    "answer_id" : 37038,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p><code>notify()</code> will wake up one thread while <code>notifyAll()</code> will wake up all. As far as I know there is no middle ground. But if you are not sure what <code>notify()</code> will do to your threads, use <code>notifyAll()</code>. Works like a charm everytime.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1573,
+      "reputation" : 39308,
+      "user_id" : 2108,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://www.gravatar.com/avatar/4fc95d68cf44ac7227efbba05308f3f7?s=256&d=identicon&r=PG",
+      "display_name" : "andyuk",
+      "link" : "https://stackoverflow.com/users/2108/andyuk"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1220210710,
+    "creation_date" : 1220210710,
+    "answer_id" : 37045,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I think it depends on how resources are produced and consumed. If 5 work objects are available at once and you have 5 consumer objects, it would make sense to wake up all threads using notifyAll() so each one can process 1 work object.</p>\n\n<p>If you have just one work object available, what is the point in waking up all consumer objects to race for that one object? The first one checking for available work will get it and all other threads will check and find they have nothing to do.</p>\n\n<p>I found a <a href=\"http://www.javamex.com/tutorials/notifyall.shtml\" rel=\"noreferrer\">great explanation here</a>. In short: </p>\n\n<blockquote>\n  <p>The notify() method is generally used\n  for <strong>resource pools</strong>, where there\n  are an arbitrary number of \"consumers\"\n  or \"workers\" that take resources, but\n  when a resource is added to the pool,\n  only one of the waiting consumers or\n  workers can deal with it. The\n  notifyAll() method is actually used in\n  most other cases. Strictly, it is\n  required to notify waiters of a\n  condition that could allow multiple\n  waiters to proceed. But this is often\n  difficult to know. So as a general\n  rule, <strong>if you have no particular\n  logic for using notify(), then you\n  should probably use notifyAll()</strong>,\n  because it is often difficult to know\n  exactly what threads will be waiting\n  on a particular object and why.</p>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1378614,
+        "reputation" : 31738,
+        "user_id" : 1312080,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://i.sstatic.net/ORKi0.jpg?s=256",
+        "display_name" : "amphibient",
+        "link" : "https://stackoverflow.com/users/1312080/amphibient"
+      },
+      "edited" : false,
+      "score" : 36,
+      "creation_date" : 1374469363,
+      "post_id" : 37046,
+      "comment_id" : 25934300,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "if you notify just one thread but multiple are waiting on an object, how does the VM determine which one to notify?"
+    }, {
+      "owner" : {
+        "account_id" : 678,
+        "reputation" : 10389,
+        "user_id" : 890,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/ca7b97ac1c6eed7a3b0e13d9f65e27ae?s=256&d=identicon&r=PG",
+        "display_name" : "Liedman",
+        "link" : "https://stackoverflow.com/users/890/liedman"
+      },
+      "reply_to_user" : {
+        "account_id" : 1378614,
+        "reputation" : 31738,
+        "user_id" : 1312080,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://i.sstatic.net/ORKi0.jpg?s=256",
+        "display_name" : "amphibient",
+        "link" : "https://stackoverflow.com/users/1312080/amphibient"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1377000180,
+      "post_id" : 37046,
+      "comment_id" : 26910673,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I can&#39;t say for certain about the Java spec, but generally you should avoid making assumptions about such details. I think you can assume that the VM will do it in a sane and mostly fair way, though."
+    }, {
+      "owner" : {
+        "account_id" : 1189417,
+        "reputation" : 31567,
+        "user_id" : 1162620,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://www.gravatar.com/avatar/f8bd1c472fe5832e125fd4008578608a?s=256&d=identicon&r=PG",
+        "display_name" : "Ravi",
+        "link" : "https://stackoverflow.com/users/1162620/ravi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1436250864,
+      "post_id" : 37046,
+      "comment_id" : 50518269,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<i>Do you want to tell one of the waiting threads that something happened, or do you want to tell all of them at the same time?</i> Good Explanation"
+    }, {
+      "owner" : {
+        "account_id" : 6559317,
+        "reputation" : 2092,
+        "user_id" : 5070990,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/1189375871091032/picture?type=large",
+        "display_name" : "Yann TM",
+        "link" : "https://stackoverflow.com/users/5070990/yann-tm"
+      },
+      "edited" : false,
+      "score" : 17,
+      "creation_date" : 1442853241,
+      "post_id" : 37046,
+      "comment_id" : 53243544,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Liedman is severely wrong, the Java specification explicitly states that the notify() is not guaranteed to be fair. i.e. each call to notify might wake the same thread again (the thread queue in the monitor is NOT FAIR or FIFO). However the scheduler is guaranteed to be fair.  Which is why in most cases where you have more than 2 threads you should prefer notifyAll."
+    }, {
+      "owner" : {
+        "account_id" : 678,
+        "reputation" : 10389,
+        "user_id" : 890,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/ca7b97ac1c6eed7a3b0e13d9f65e27ae?s=256&d=identicon&r=PG",
+        "display_name" : "Liedman",
+        "link" : "https://stackoverflow.com/users/890/liedman"
+      },
+      "reply_to_user" : {
+        "account_id" : 6559317,
+        "reputation" : 2092,
+        "user_id" : 5070990,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/1189375871091032/picture?type=large",
+        "display_name" : "Yann TM",
+        "link" : "https://stackoverflow.com/users/5070990/yann-tm"
+      },
+      "edited" : false,
+      "score" : 51,
+      "creation_date" : 1443033235,
+      "post_id" : 37046,
+      "comment_id" : 53334678,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@YannTM I&#39;m all for constructive critisism, but I think your tone is a bit unfair. I explicitly said &quot;can&#39;t say for certain&quot; and &quot;I think&quot;. Ease up, did you ever write something seven years ago that wasn&#39;t 100% correct?"
+    }, {
+      "owner" : {
+        "account_id" : 6559317,
+        "reputation" : 2092,
+        "user_id" : 5070990,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/1189375871091032/picture?type=large",
+        "display_name" : "Yann TM",
+        "link" : "https://stackoverflow.com/users/5070990/yann-tm"
+      },
+      "edited" : false,
+      "score" : 14,
+      "creation_date" : 1494018917,
+      "post_id" : 37046,
+      "comment_id" : 74667100,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The problem is that this is the accepted answer, it&#39;s not a question of personal pride. If you know you were wrong now, please edit your answer to say it, and point to e.g.  xagyg pedagogic and correct answer below."
+    }, {
+      "owner" : {
+        "account_id" : 1936900,
+        "reputation" : 569,
+        "user_id" : 1744146,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/7a77b5bde17de1e75806636ab967cbd2?s=256&d=identicon&r=PG",
+        "display_name" : "MrSham",
+        "link" : "https://stackoverflow.com/users/1744146/mrsham"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1496899631,
+      "post_id" : 37046,
+      "comment_id" : 75852460,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Liedman Your answer sounds good, but based on that another question arrises. If I do notifyall() and it wakes up all the thread that was in waiting queue you agree that only one thread can access the lock and enter in the that synchronized block or method and based on that naturally other thread wont get chances to enter the locked section, so they end up being in waiting state. Dont you think eventually its same thing?I am just trying to clarify it. As of now every where it says notify wakes one and notifyAll wakes up all but in both cases only one thread can get locks. So whats the diff?"
+    }, {
+      "owner" : {
+        "account_id" : 1418041,
+        "reputation" : 1168,
+        "user_id" : 1343232,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/0beacf1e8ca5b112b5724ee6ebe9e991?s=256&d=identicon&r=PG",
+        "display_name" : "umesh",
+        "link" : "https://stackoverflow.com/users/1343232/umesh"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1499332138,
+      "post_id" : 37046,
+      "comment_id" : 76864334,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks for the explanation, (in this case acquire the lock) is the main difference I guess."
+    }, {
+      "owner" : {
+        "account_id" : 3408167,
+        "reputation" : 690,
+        "user_id" : 2859238,
+        "user_type" : "registered",
+        "accept_rate" : 32,
+        "profile_image" : "https://www.gravatar.com/avatar/73d78ef40af34ea5811f0704eacd2f25?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user104309",
+        "link" : "https://stackoverflow.com/users/2859238/user104309"
+      },
+      "reply_to_user" : {
+        "account_id" : 1936900,
+        "reputation" : 569,
+        "user_id" : 1744146,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/7a77b5bde17de1e75806636ab967cbd2?s=256&d=identicon&r=PG",
+        "display_name" : "MrSham",
+        "link" : "https://stackoverflow.com/users/1744146/mrsham"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1531027912,
+      "post_id" : 37046,
+      "comment_id" : 89437908,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@MrA The difference is, in notifyAll() other threads do not go to <code>waiting</code> state, it goes to <code>blocked</code> state. <code>waiting</code> - you &quot;wait&quot; for a notification from another thread and it is a communication between the threads, <code>blocked</code> - once a thread finishes the critical section/synchronized block, an OS scheduler decides to run the next thread and all the threads see their completion in some order in a synchronized manner (unless you make the other threads go to <code>waiting</code> state again)."
+    }, {
+      "owner" : {
+        "account_id" : 3408167,
+        "reputation" : 690,
+        "user_id" : 2859238,
+        "user_type" : "registered",
+        "accept_rate" : 32,
+        "profile_image" : "https://www.gravatar.com/avatar/73d78ef40af34ea5811f0704eacd2f25?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user104309",
+        "link" : "https://stackoverflow.com/users/2859238/user104309"
+      },
+      "reply_to_user" : {
+        "account_id" : 1936900,
+        "reputation" : 569,
+        "user_id" : 1744146,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/7a77b5bde17de1e75806636ab967cbd2?s=256&d=identicon&r=PG",
+        "display_name" : "MrSham",
+        "link" : "https://stackoverflow.com/users/1744146/mrsham"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1531027938,
+      "post_id" : 37046,
+      "comment_id" : 89437911,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@MrA In notify() threads may end up waiting endlessly for a notification because some thread is notified which cannot make any progress instead of a thread which can make progress and if there is a possibility that it can happen in your system/implementation and if you find that your application may not work or proceed as intended if that happens, then <code>notifyAll()</code> is the correct construct."
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "reply_to_user" : {
+        "account_id" : 6559317,
+        "reputation" : 2092,
+        "user_id" : 5070990,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/1189375871091032/picture?type=large",
+        "display_name" : "Yann TM",
+        "link" : "https://stackoverflow.com/users/5070990/yann-tm"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1548178743,
+      "post_id" : 37046,
+      "comment_id" : 95447361,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@YannTM where in the specification did you find the statement “the scheduler is guaranteed to be fair”? There’s no such fairness guaranty, and therefore, using <code>notifyAll</code> just for that purpose is pointless."
+    } ],
+    "owner" : {
+      "account_id" : 678,
+      "reputation" : 10389,
+      "user_id" : 890,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/ca7b97ac1c6eed7a3b0e13d9f65e27ae?s=256&d=identicon&r=PG",
+      "display_name" : "Liedman",
+      "link" : "https://stackoverflow.com/users/890/liedman"
+    },
+    "is_accepted" : true,
+    "score" : 272,
+    "last_activity_date" : 1540480781,
+    "last_edit_date" : 1540480781,
+    "creation_date" : 1220210722,
+    "answer_id" : 37046,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n  <p>However (if I do understand the difference between these methods right), only one thread is always selected for further monitor acquisition.</p>\n</blockquote>\n\n<p>That is not correct.  <code>o.notifyAll()</code> wakes <em>all</em> of the threads that are blocked in <code>o.wait()</code> calls.  The threads are only allowed to return from <code>o.wait()</code> one-by-one, but they each <em>will</em> get their turn.</p>\n\n<hr>\n\n<p>Simply put, it depends on why your threads are waiting to be notified. Do you want to tell one of the waiting threads that something happened, or do you want to tell all of them at the same time?</p>\n\n<p>In some cases, all waiting threads can take useful action once the wait finishes. An example would be a set of threads waiting for a certain task to finish; once the task has finished, all waiting threads can continue with their business. In such a case you would use <b>notifyAll()</b> to wake up all waiting threads at the same time.</p>\n\n<p>Another case, for example mutually exclusive locking, only one of the waiting threads can do something useful after being notified (in this case acquire the lock). In such a case, you would rather use <b>notify()</b>. Properly implemented, you <i>could</i> use <b>notifyAll()</b> in this situation as well, but you would unnecessarily wake threads that can't do anything anyway.</p>\n\n<hr>\n\n<p>In many cases, the code to await a condition will be written as a loop:</p>\n\n<pre><code>synchronized(o) {\n    while (! IsConditionTrue()) {\n        o.wait();\n    }\n    DoSomethingThatOnlyMakesSenseWhenConditionIsTrue_and_MaybeMakeConditionFalseAgain();\n}\n</code></pre>\n\n<p>That way, if an <code>o.notifyAll()</code> call wakes more than one waiting thread, and the first one to return from the <code>o.wait()</code> makes leaves the condition in the false state, then the other threads that were awakened will go back to waiting.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2025,
+      "reputation" : 16307,
+      "user_id" : 2783,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c7780a1286f7205ed3d51739552a8a8d?s=256&d=identicon&r=PG",
+      "display_name" : "David Crow",
+      "link" : "https://stackoverflow.com/users/2783/david-crow"
+    },
+    "is_accepted" : false,
+    "score" : 50,
+    "last_activity_date" : 1220211688,
+    "creation_date" : 1220211688,
+    "answer_id" : 37050,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Useful differences:</p>\n\n<ul>\n<li><p>Use <strong>notify()</strong> if all your waiting threads are interchangeable (the order they wake up doesn't matter), or if you only ever have one waiting thread. A common example is a thread pool used to execute jobs from a queue--when a job is added, one of threads is notified to wake up, execute the next job and go back to sleep.</p></li>\n<li><p>Use <strong>notifyAll()</strong> for other cases where the waiting threads may have different purposes and should be able to run concurrently. An example is a maintenance operation on a shared resource, where multiple threads are waiting for the operation to complete before accessing the resource.</p></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "S&amp;#248;ren Mors"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1220212258,
+    "creation_date" : 1220212258,
+    "answer_id" : 37058,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>All the above answers are correct, as far as I can tell, so I'm going to tell you something else. For production code you really should use the classes in java.util.concurrent. There is very little they cannot do for you, in the area of concurrency in java.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 18,
+      "creation_date" : 1407653432,
+      "post_id" : 41788,
+      "comment_id" : 39293285,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The <b>why</b> is more important than the source."
+    }, {
+      "owner" : {
+        "account_id" : 157194,
+        "reputation" : 1473,
+        "user_id" : 374977,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://www.gravatar.com/avatar/af4b0124848c81be7e927b16cec35f5b?s=256&d=identicon&r=PG",
+        "display_name" : "rahul",
+        "link" : "https://stackoverflow.com/users/374977/rahul"
+      },
+      "reply_to_user" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1491331215,
+      "post_id" : 41788,
+      "comment_id" : 73501887,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Pacerier Well said. I would be more interested in finding out the reasons as well. One possible reason could be that wait and notify in the object class are based on an implicit condition variable. So in the standard producer and consumer example.....both producer and consumer will wait on the same condition which could lead to a deadlock as explained by xagyg in his answer. So a better approach is to use 2 condition variables as explained in <a href=\"https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/Condition.html\" rel=\"nofollow noreferrer\">docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks&zwnj;&#8203;/&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 2146,
+      "reputation" : 52558,
+      "user_id" : 2959,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/1bf77682e06e19438854c1ea3ec5f5fa?s=256&d=identicon&r=PG",
+      "display_name" : "Steve McLeod",
+      "link" : "https://stackoverflow.com/users/2959/steve-mcleod"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1220451972,
+    "creation_date" : 1220451972,
+    "answer_id" : 41788,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>From Joshua Bloch, the Java Guru himself in Effective Java 2nd edition:</p>\n\n<p>\"Item 69: Prefer concurrency utilities to wait and notify\".</p>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "Robert Klemme"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1336410334,
+    "last_edit_date" : 1336410334,
+    "creation_date" : 1245238897,
+    "answer_id" : 1006498,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Note that with concurrency utilities you also have the choice between <code>signal()</code> and <code>signalAll()</code> as these methods are called there.  So the question remains valid even with <code>java.util.concurrent</code>.</p>\n\n<p>Doug Lea brings up an interesting point in his <a href=\"http://www.informit.com/store/product.aspx?isbn=0201310090\" rel=\"noreferrer\">famous book</a>: if a <code>notify()</code> and <code>Thread.interrupt()</code> happen at the same time, the notify might actually get lost.  If this can happen and has dramatic implications <code>notifyAll()</code> is a safer choice even though you pay the price of overhead (waking too many threads most of the time).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 575370,
+      "reputation" : 1,
+      "user_id" : 231084,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/e310fe6746d7a903442083d6f638fe75?s=256&d=identicon&r=PG",
+      "display_name" : "Abhay Bansal",
+      "link" : "https://stackoverflow.com/users/231084/abhay-bansal"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1260778641,
+    "creation_date" : 1260778641,
+    "answer_id" : 1899610,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Waking up all does not make much significance here. \nwait notify and notifyall, all these are put after owning the object's monitor. If a thread is in the waiting stage and notify is called, this thread will take up the lock and no other thread at that point can take up that lock. So concurrent access can not take place at all. As far as i know any call to wait notify and notifyall can be made only after taking the lock on the object. Correct me if i am wrong.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 615047,
+      "reputation" : 101,
+      "user_id" : 346719,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/707af7343ccdf0f056b17352e29c8831?s=256&d=identicon&r=PG",
+      "display_name" : "Erik",
+      "link" : "https://stackoverflow.com/users/346719/erik"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1438791085,
+    "last_edit_date" : 1438791085,
+    "creation_date" : 1274412899,
+    "answer_id" : 2879412,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Here is an example. Run it. Then change one of the notifyAll() to notify() and see what happens.</p>\n\n<p><strong>ProducerConsumerExample class</strong></p>\n\n<pre><code>public class ProducerConsumerExample {\n\n    private static boolean Even = true;\n    private static boolean Odd = false;\n\n    public static void main(String[] args) {\n        Dropbox dropbox = new Dropbox();\n        (new Thread(new Consumer(Even, dropbox))).start();\n        (new Thread(new Consumer(Odd, dropbox))).start();\n        (new Thread(new Producer(dropbox))).start();\n    }\n}\n</code></pre>\n\n<p><strong>Dropbox class</strong></p>\n\n<pre><code>public class Dropbox {\n\n    private int number;\n    private boolean empty = true;\n    private boolean evenNumber = false;\n\n    public synchronized int take(final boolean even) {\n        while (empty || evenNumber != even) {\n            try {\n                System.out.format(\"%s is waiting ... %n\", even ? \"Even\" : \"Odd\");\n                wait();\n            } catch (InterruptedException e) { }\n        }\n        System.out.format(\"%s took %d.%n\", even ? \"Even\" : \"Odd\", number);\n        empty = true;\n        notifyAll();\n\n        return number;\n    }\n\n    public synchronized void put(int number) {\n        while (!empty) {\n            try {\n                System.out.println(\"Producer is waiting ...\");\n                wait();\n            } catch (InterruptedException e) { }\n        }\n        this.number = number;\n        evenNumber = number % 2 == 0;\n        System.out.format(\"Producer put %d.%n\", number);\n        empty = false;\n        notifyAll();\n    }\n}\n</code></pre>\n\n<p><strong>Consumer class</strong></p>\n\n<pre><code>import java.util.Random;\n\npublic class Consumer implements Runnable {\n\n    private final Dropbox dropbox;\n    private final boolean even;\n\n    public Consumer(boolean even, Dropbox dropbox) {\n        this.even = even;\n        this.dropbox = dropbox;\n    }\n\n    public void run() {\n        Random random = new Random();\n        while (true) {\n            dropbox.take(even);\n            try {\n                Thread.sleep(random.nextInt(100));\n            } catch (InterruptedException e) { }\n        }\n    }\n}\n</code></pre>\n\n<p><strong>Producer class</strong></p>\n\n<pre><code>import java.util.Random;\n\npublic class Producer implements Runnable {\n\n    private Dropbox dropbox;\n\n    public Producer(Dropbox dropbox) {\n        this.dropbox = dropbox;\n    }\n\n    public void run() {\n        Random random = new Random();\n        while (true) {\n            int number = random.nextInt(10);\n            try {\n                Thread.sleep(random.nextInt(100));\n                dropbox.put(number);\n            } catch (InterruptedException e) { }\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7052,
+        "reputation" : 48809,
+        "user_id" : 12048,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/1d329f562180503bd1e91997f57fcaff?s=256&d=identicon&r=PG",
+        "display_name" : "finnw",
+        "link" : "https://stackoverflow.com/users/12048/finnw"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1279212535,
+      "post_id" : 3186336,
+      "comment_id" : 3367675,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "There is an alternative: if the woken thread (P3 in your example) does not detect the condition it is interested in then it calls <code>notify()</code> again.  That way <code>notify()</code> is called as many times as necessary until one thread is able to proceed."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1279234269,
+      "post_id" : 3186336,
+      "comment_id" : 3371207,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "finnw - P3 must re-check the condition because the <code>notify</code> causes P3 (the selected thread in this example) to proceed from the point it was waiting (i.e. within the <code>while</code> loop). There are other examples that do not cause deadlock, however, in this case the use of <code>notify</code> does not guarantee deadlock-free code. The use of <code>notifyAll</code> does."
+    }, {
+      "owner" : {
+        "account_id" : 7052,
+        "reputation" : 48809,
+        "user_id" : 12048,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/1d329f562180503bd1e91997f57fcaff?s=256&d=identicon&r=PG",
+        "display_name" : "finnw",
+        "link" : "https://stackoverflow.com/users/12048/finnw"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1279265025,
+      "post_id" : 3186336,
+      "comment_id" : 3373734,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@xagyg, the condition must be repeatedly checked until there is a char in the buffer, but it can either be the same thread (in a wait/check loop) or a cycle of threads notifying each other until one finds a char in the buffer."
+    }, {
+      "owner" : {
+        "account_id" : 188605,
+        "reputation" : 5254,
+        "user_id" : 427413,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/7aa95b4699d949a475ddbab66c950f52?s=256&d=identicon&r=PG",
+        "display_name" : "marcus",
+        "link" : "https://stackoverflow.com/users/427413/marcus"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1307473756,
+      "post_id" : 3186336,
+      "comment_id" : 7316959,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Let me see if I understand it: there are 2 places where a thread may get stuck: waiting in wait(), or trying to acquire the lock after it wakes up from wait(). After a notifyAll(), all threads wake up, but only 1 will be able to reacquire the lock. After a notify(), only 1 thread wakes up, and others continue to wait for another notify()."
+    }, {
+      "owner" : {
+        "account_id" : 91076,
+        "reputation" : 6687,
+        "user_id" : 250304,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/e12032d7b77e41490803c34ae66d6d5d?s=256&d=identicon&r=PG",
+        "display_name" : "codeObserver",
+        "link" : "https://stackoverflow.com/users/250304/codeobserver"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1309635260,
+      "post_id" : 3186336,
+      "comment_id" : 7730409,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hi @xagyg , Would calling notifyAll() lead to multiple waiting thread checking the while() condition at the same time .. and hence there is a possibility that before the while gets saitsfied, 2 threads are already out of it causing outOfBound exception ?. Also I modified my small code based on your solution, I will appreciate if you can please review it :<a href=\"http://codereview.stackexchange.com/questions/3157/bounded-blocking-queue\" title=\"bounded blocking queue\">codereview.stackexchange.com/questions/3157/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 13062,
+        "reputation" : 22170,
+        "user_id" : 26039,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/15aacb48f4c894a6341e1013e9b5a42f?s=256&d=identicon&r=PG",
+        "display_name" : "Eran",
+        "link" : "https://stackoverflow.com/users/26039/eran"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1319633906,
+      "post_id" : 3186336,
+      "comment_id" : 9648990,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@xagyg, The example sequence is incomplete. &quot;NO MORE THREADS TO CALL NOTIFY&quot; is not true, given only p3, c2 and c3 are waiting - p1, p2 and c1 can still call <code>put</code> and <code>get</code>, and notify the others. To complete the deadlocking sequence: p1 and p2 should try to put, and wait because the buffer is full. c1 should then get a char, and notify c2. Next, c1 and c2 should try to get another char, and wait because the buffer is empty. Only then will you have 3 producers and 3 consumers waiting, with no-one to call notify."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 188605,
+        "reputation" : 5254,
+        "user_id" : 427413,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/7aa95b4699d949a475ddbab66c950f52?s=256&d=identicon&r=PG",
+        "display_name" : "marcus",
+        "link" : "https://stackoverflow.com/users/427413/marcus"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1322992452,
+      "post_id" : 3186336,
+      "comment_id" : 10334305,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@marcus Very close. With notifyAll, each thread will reacquire the lock (one at a time), but note that after one thread has reacquired the lock and executed the method (and then exited) ... the next thread reacquires the lock, checks the &quot;while&quot; and will go back to &quot;wait&quot; (depending on what the condition is of course). So, notify wakes one thread - as you correctly state. notifyAll wakes all threads and each thread reacquires the lock one at a time - checks the condition of the &quot;while&quot; and either executes the method or &quot;waits&quot; again."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 13062,
+        "reputation" : 22170,
+        "user_id" : 26039,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/15aacb48f4c894a6341e1013e9b5a42f?s=256&d=identicon&r=PG",
+        "display_name" : "Eran",
+        "link" : "https://stackoverflow.com/users/26039/eran"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1322992542,
+      "post_id" : 3186336,
+      "comment_id" : 10334317,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@eran your description is incorrect. For one, p1 has already completed. I won&#39;t go on."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 7052,
+        "reputation" : 48809,
+        "user_id" : 12048,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/1d329f562180503bd1e91997f57fcaff?s=256&d=identicon&r=PG",
+        "display_name" : "finnw",
+        "link" : "https://stackoverflow.com/users/12048/finnw"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1322992630,
+      "post_id" : 3186336,
+      "comment_id" : 10334329,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@finnw I think not. Good luck with your programming. Thanks for the time you spent to look at it though. If anyone wants further information on this, I can send some very detailed formal specification of how Java multithreading works. There seems to be much misconception about it."
+    }, {
+      "owner" : {
+        "account_id" : 13062,
+        "reputation" : 22170,
+        "user_id" : 26039,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/15aacb48f4c894a6341e1013e9b5a42f?s=256&d=identicon&r=PG",
+        "display_name" : "Eran",
+        "link" : "https://stackoverflow.com/users/26039/eran"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1323003059,
+      "post_id" : 3186336,
+      "comment_id" : 10335584,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@xagyg, are you talking about a scenario in which every producer has only one single char to store? If so, your example is correct, but not very interesting IMO. With the additional steps I suggest, you can deadlock the same system, but with an unbounded amount of input - which is how such patterns are usually being used in reality."
+    }, {
+      "owner" : {
+        "account_id" : 46134,
+        "reputation" : 185,
+        "user_id" : 136216,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/e19f71e48bb44d302c57abc3c516e924?s=256&d=identicon&r=PG",
+        "display_name" : "Ovidiu Lupas",
+        "link" : "https://stackoverflow.com/users/136216/ovidiu-lupas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1334919840,
+      "post_id" : 3186336,
+      "comment_id" : 13166660,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The usage of notify vs notifyall in 2nd example does not cause deadlock. Is thread starvation"
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 46134,
+        "reputation" : 185,
+        "user_id" : 136216,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/e19f71e48bb44d302c57abc3c516e924?s=256&d=identicon&r=PG",
+        "display_name" : "Ovidiu Lupas",
+        "link" : "https://stackoverflow.com/users/136216/ovidiu-lupas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1350730963,
+      "post_id" : 3186336,
+      "comment_id" : 17617010,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Ovidiu it depends on your definition. The type of deadlock described in the example could be more specifically termed &quot;dormancy&quot; (after Doug Lea). Another common type of deadlock is &quot;deadly embrace&quot; (a different problem to the one in the example). People generally use the term deadlock for liveness failures.  I reserve the term &quot;starvation&quot; for situations involving contention (and specifically the way the JVM can cause starvation through its non-deterministic provision of locks to threads entering critical sections)."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 91076,
+        "reputation" : 6687,
+        "user_id" : 250304,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/e12032d7b77e41490803c34ae66d6d5d?s=256&d=identicon&r=PG",
+        "display_name" : "codeObserver",
+        "link" : "https://stackoverflow.com/users/250304/codeobserver"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1354372071,
+      "post_id" : 3186336,
+      "comment_id" : 18746605,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@codeObserver You asked: &quot;Would calling notifyAll() lead to multiple waiting thread checking the while() condition at the same time .. and hence there is a possibility that before the while gets saitsfied, 2 threads are already out of it causing outOfBound exception ?.&quot; No, this is not possible, since although multiple threads would wake up, they cannot check the while condition at the same time. They are each required to re-attain the lock (immediately after the wait) before they can re-enter the code section and re-check the while. Therefore, one at a time."
+    }, {
+      "owner" : {
+        "account_id" : 2140178,
+        "reputation" : 396,
+        "user_id" : 1899032,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/636644970d8579bec58e908e08aee39f?s=256&d=identicon&r=PG",
+        "display_name" : "Jay",
+        "link" : "https://stackoverflow.com/users/1899032/jay"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1355955123,
+      "post_id" : 3186336,
+      "comment_id" : 19259950,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@xagyg nice example. This is off topic from the original question; just for sake of discussion. The deadlock is a design problem imo (correct me if I am wrong). Because you have one lock shared by both put and get. And JVM is not smart enough to call put after a get release the lock and vice verse. The dead lock happens because put wakes up another put, which put itself back to wait() because of while(). Would making two classes (and two locks) work? So put{synchonized(get)}, get{(synchonized(put)}. In other words, get will wake put only, and put will wake get only."
+    }, {
+      "owner" : {
+        "account_id" : 309077,
+        "reputation" : 24721,
+        "user_id" : 621338,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/81bb1356d45abf5998209087420dae3f?s=256&d=identicon&r=PG",
+        "display_name" : "necromancer",
+        "link" : "https://stackoverflow.com/users/621338/necromancer"
+      },
+      "reply_to_user" : {
+        "account_id" : 2140178,
+        "reputation" : 396,
+        "user_id" : 1899032,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/636644970d8579bec58e908e08aee39f?s=256&d=identicon&r=PG",
+        "display_name" : "Jay",
+        "link" : "https://stackoverflow.com/users/1899032/jay"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1371521387,
+      "post_id" : 3186336,
+      "comment_id" : 24841650,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Jay what if there are no consumers waiting? producers still need to guard against each other, so if there is a lot of contention only from producers then they will need to notify each other on the producer lock. under other circumstances there could be consumers waiting, so you would need to notify them too in general ..... it seems like 3 locks are needed, a producer first acquires the producer lock then exactly 1 producer waits for the joint producer-consumer lock, similarly, a consumer first acquires the consumer lock and then exactly 1 consumer waits for the joint lock. works?"
+    }, {
+      "owner" : {
+        "account_id" : 2736147,
+        "reputation" : 9510,
+        "user_id" : 2358786,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/66aa6312c6944e931f7e3060360e83da?s=256&d=identicon&r=PG",
+        "display_name" : "kiruwka",
+        "link" : "https://stackoverflow.com/users/2358786/kiruwka"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1387291733,
+      "post_id" : 3186336,
+      "comment_id" : 30890246,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@xagyg Thanks for explanation, the problem is clearly explained. I still think that you could safely use <code>notify</code> in your example if you use two separate locks: one for blocking on empty queue, another for blocking on full queue. Am I missing something ?"
+    }, {
+      "owner" : {
+        "account_id" : 1073013,
+        "reputation" : 3602,
+        "user_id" : 1071840,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/26d2a4d67f24f306427f359252b4a9eb?s=256&d=identicon&r=PG",
+        "display_name" : "user1071840",
+        "link" : "https://stackoverflow.com/users/1071840/user1071840"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1405878069,
+      "post_id" : 3186336,
+      "comment_id" : 38593000,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Is there any way we can get rid of the while loop and maybe double check the condition? I don&#39;t think it&#39;s possible and that&#39;s what I answered in the interview but I wanted to confirm."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 1073013,
+        "reputation" : 3602,
+        "user_id" : 1071840,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/26d2a4d67f24f306427f359252b4a9eb?s=256&d=identicon&r=PG",
+        "display_name" : "user1071840",
+        "link" : "https://stackoverflow.com/users/1071840/user1071840"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1439622334,
+      "post_id" : 3186336,
+      "comment_id" : 51946705,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@user1071840 You are correct. There is no way to remove the while loop."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 2736147,
+        "reputation" : 9510,
+        "user_id" : 2358786,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/66aa6312c6944e931f7e3060360e83da?s=256&d=identicon&r=PG",
+        "display_name" : "kiruwka",
+        "link" : "https://stackoverflow.com/users/2358786/kiruwka"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1439624076,
+      "post_id" : 3186336,
+      "comment_id" : 51947010,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@kiruwka The approach you are proposing is common for concurrency systems designed to wait or signal on a condition. Java does not provide the necessary mechanisms to support this approach. Using two locks to solve this problem won&#39;t work with Java."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 2140178,
+        "reputation" : 396,
+        "user_id" : 1899032,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/636644970d8579bec58e908e08aee39f?s=256&d=identicon&r=PG",
+        "display_name" : "Jay",
+        "link" : "https://stackoverflow.com/users/1899032/jay"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1439624790,
+      "post_id" : 3186336,
+      "comment_id" : 51947139,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Jay intuitively it seems that two locks may work ... because we were taught this way at university. However, that wasn&#39;t using Java, that was using concurrent systems that support waiting/signalling on a condition. Java doesn&#39;t support this. You cannot wait on a condition in Java and then signal threads waiting on that condition. As we know Java signal wakes all threads. So, no, two locks will not work and you&#39;ll run into race conditions with gets and puts trying to get/put to the same queue/buffer."
+    }, {
+      "owner" : {
+        "account_id" : 3291773,
+        "reputation" : 3864,
+        "user_id" : 2769917,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://www.gravatar.com/avatar/d80b98090a1a8ee43ac56ce5caf64d07?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Asif Mushtaq",
+        "link" : "https://stackoverflow.com/users/2769917/asif-mushtaq"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1444288890,
+      "post_id" : 3186336,
+      "comment_id" : 53842183,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@xagyg I&#39;m confused about your C1 and C2 entering point on X and Y. How two thread can be entered to synchronized block/method?"
+    }, {
+      "owner" : {
+        "account_id" : 4189265,
+        "reputation" : 341,
+        "user_id" : 3432246,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/ae30172e2a6c2f62b70d3e4c1ae6d819?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JManish",
+        "link" : "https://stackoverflow.com/users/3432246/jmanish"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1452688353,
+      "post_id" : 3186336,
+      "comment_id" : 57278500,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@xagyg Is not the case that notifyAll() can also lead to deadlock. Ultimately, after notifyAll() only one thread is going to run. What if even after using notifyAll() all the conditions that you have shown is met then in that case also deadlock happens."
+    }, {
+      "owner" : {
+        "account_id" : 4317888,
+        "reputation" : 658,
+        "user_id" : 3527156,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/c73d43fde218db87456888f4ed8f043e?s=256&d=identicon&r=PG",
+        "display_name" : "Nier",
+        "link" : "https://stackoverflow.com/users/3527156/nier"
+      },
+      "reply_to_user" : {
+        "account_id" : 3291773,
+        "reputation" : 3864,
+        "user_id" : 2769917,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://www.gravatar.com/avatar/d80b98090a1a8ee43ac56ce5caf64d07?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Asif Mushtaq",
+        "link" : "https://stackoverflow.com/users/2769917/asif-mushtaq"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1458281619,
+      "post_id" : 3186336,
+      "comment_id" : 59799726,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@UnKnown When C1 calls <code>wait()</code>, it will release the lock, thus C2 can enter the synchronized block."
+    }, {
+      "owner" : {
+        "account_id" : 4317888,
+        "reputation" : 658,
+        "user_id" : 3527156,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/c73d43fde218db87456888f4ed8f043e?s=256&d=identicon&r=PG",
+        "display_name" : "Nier",
+        "link" : "https://stackoverflow.com/users/3527156/nier"
+      },
+      "reply_to_user" : {
+        "account_id" : 4189265,
+        "reputation" : 341,
+        "user_id" : 3432246,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/ae30172e2a6c2f62b70d3e4c1ae6d819?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JManish",
+        "link" : "https://stackoverflow.com/users/3432246/jmanish"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1458281920,
+      "post_id" : 3186336,
+      "comment_id" : 59799848,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@JManish <code>notifyAll()</code> will wake all threads, but only 1 thread can get the lock and run. If that thread is leaving the synchronized block or go to <code>wait()</code> again, other threads may have chance to gain the lock and begin to run."
+    }, {
+      "owner" : {
+        "account_id" : 5942931,
+        "reputation" : 1263,
+        "user_id" : 4673476,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/Omlfj.jpg?s=256",
+        "display_name" : "black",
+        "link" : "https://stackoverflow.com/users/4673476/black"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486119858,
+      "post_id" : 3186336,
+      "comment_id" : 71219467,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@xagyg You write that we cannot have a thread waiting in the put method as well as a thread waiting in the get method. But this is not true, right?. Look at your own example, where producer as well as consumer are waiting."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 5942931,
+        "reputation" : 1263,
+        "user_id" : 4673476,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/Omlfj.jpg?s=256",
+        "display_name" : "black",
+        "link" : "https://stackoverflow.com/users/4673476/black"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486346274,
+      "post_id" : 3186336,
+      "comment_id" : 71291212,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@black No. I said it &quot;looks like&quot; that. I explain in the example how it is possible."
+    }, {
+      "owner" : {
+        "account_id" : 6718247,
+        "reputation" : 989,
+        "user_id" : 5179352,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/a85637346a237b96da4a7256d7d64366?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Mike76",
+        "link" : "https://stackoverflow.com/users/5179352/mike76"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1517253469,
+      "post_id" : 3186336,
+      "comment_id" : 84011597,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "So the issue is that a Producer calling wake may wake up another Producer, which is a pointless wake-up. (or vice versa, a Consumer might wake up another Consumer). This could be also fixed by using two separate condition variables."
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 6718247,
+        "reputation" : 989,
+        "user_id" : 5179352,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/a85637346a237b96da4a7256d7d64366?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Mike76",
+        "link" : "https://stackoverflow.com/users/5179352/mike76"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1517362263,
+      "post_id" : 3186336,
+      "comment_id" : 84061826,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Mike76 yes, if notify is called, in certain cases, it is not only pointless, but potentially blocking (as described in the example)."
+    }, {
+      "owner" : {
+        "account_id" : 373862,
+        "reputation" : 971,
+        "user_id" : 9009404,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/062755b1ade465627624ccf6a625aaa8?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Uprooted",
+        "link" : "https://stackoverflow.com/users/9009404/uprooted"
+      },
+      "reply_to_user" : {
+        "account_id" : 7052,
+        "reputation" : 48809,
+        "user_id" : 12048,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/1d329f562180503bd1e91997f57fcaff?s=256&d=identicon&r=PG",
+        "display_name" : "finnw",
+        "link" : "https://stackoverflow.com/users/12048/finnw"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1635941234,
+      "post_id" : 3186336,
+      "comment_id" : 123424761,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@finnw calling notify would prevent deadlock in this case, but imagine there&#39;s P4 also waiting alongside P3, it&#39;s possible you wake P4 instead of consumer and it&#39;s possible P3 and P4 would be waking each other indefinitely, so it doen&#39;t solve deadlock. Besides if there are no consumers two waiting producers will keep waking each other wasting cpu time."
+    }, {
+      "owner" : {
+        "account_id" : 373862,
+        "reputation" : 971,
+        "user_id" : 9009404,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/062755b1ade465627624ccf6a625aaa8?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Uprooted",
+        "link" : "https://stackoverflow.com/users/9009404/uprooted"
+      },
+      "reply_to_user" : {
+        "account_id" : 13062,
+        "reputation" : 22170,
+        "user_id" : 26039,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/15aacb48f4c894a6341e1013e9b5a42f?s=256&d=identicon&r=PG",
+        "display_name" : "Eran",
+        "link" : "https://stackoverflow.com/users/26039/eran"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1635942873,
+      "post_id" : 3186336,
+      "comment_id" : 123425447,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@eran &quot;are you talking about a scenario in which every producer has only one single char to store?&quot; - it could be a scenario where producers are temporary by nature, e.g. thread serving HTTP request, your app can do some HTTP exchange, then stay dormant for say 1 hour, all this time having stalled unserved request in queue. Even if it breaks deadlock eventually, it&#39;s still a nasty bug."
+    }, {
+      "owner" : {
+        "account_id" : 373862,
+        "reputation" : 971,
+        "user_id" : 9009404,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/062755b1ade465627624ccf6a625aaa8?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Uprooted",
+        "link" : "https://stackoverflow.com/users/9009404/uprooted"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1635944151,
+      "post_id" : 3186336,
+      "comment_id" : 123425987,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great explanation, yet I wonder what&#39;s required for deadlocking queue of realistic size, 20 for example. Say queue is full, we have 21 producers waiting, then 20 consumers come, take 20 elements, notify 20 producers, then 21st consumer comes, sees empty queue and starts waiting, then 20 notified producers put their element each time notifying 21st producer or each other, queue is full again and we have 21 producers and one consumer sleeping. Is this an impossible coincedence?"
+    }, {
+      "owner" : {
+        "account_id" : 162781,
+        "reputation" : 9771,
+        "user_id" : 384464,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xagyg",
+        "link" : "https://stackoverflow.com/users/384464/xagyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 373862,
+        "reputation" : 971,
+        "user_id" : 9009404,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/062755b1ade465627624ccf6a625aaa8?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Uprooted",
+        "link" : "https://stackoverflow.com/users/9009404/uprooted"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1636077168,
+      "post_id" : 3186336,
+      "comment_id" : 123467493,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Uprooted Ultimately we need a situation (at a minimum) where there is at least one producer and one consumer thread waiting. The example uses a capacity of 1 for simplicity (but any size can be used). In your example scenario, if 21 producers put to a buffer of 20, then 1 producer will be waiting, which satisfies part of the condition for deadlock to occur. In my example, two producers &quot;put&quot;, therefore one producer waiting, would partially satisfy the condition. The number of puts/gets to get to that condition is really the only difference."
+    }, {
+      "owner" : {
+        "account_id" : 23959668,
+        "reputation" : 29274,
+        "user_id" : 17949945,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/KeHyQ.jpg?s=256",
+        "display_name" : "Alexander Ivanchenko",
+        "link" : "https://stackoverflow.com/users/17949945/alexander-ivanchenko"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1725283529,
+      "post_id" : 3186336,
+      "comment_id" : 139183703,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "There will be no deadlock while using <code>notify()</code> if we (<i>keep synchronization in place and</i>) introduce two separate monitors to represent these two semantically different conditions: <i>buffer is empty</i>, <i>buffer is full</i>. So that attempt to notify a consumer will never wake up a producer and vice versa. And with Java 5 <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/locks/Lock.html\" rel=\"nofollow noreferrer\"><i>explicit locks</i></a> we can leverage <code>Lock</code>s and <code>Condition</code>s for that matter."
+    } ],
+    "owner" : {
+      "account_id" : 162781,
+      "reputation" : 9771,
+      "user_id" : 384464,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4053b8ea49df2ab4d79beb8d13cb2c21?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "xagyg",
+      "link" : "https://stackoverflow.com/users/384464/xagyg"
+    },
+    "is_accepted" : false,
+    "score" : 385,
+    "last_activity_date" : 1297914350,
+    "last_edit_date" : 1297914350,
+    "creation_date" : 1278421116,
+    "answer_id" : 3186336,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Clearly, <code>notify</code> wakes (any) one thread in the wait set, <code>notifyAll</code> wakes all threads in the waiting set. The following discussion should clear up any doubts. <code>notifyAll</code> should be used most of the time. If you are not sure which to use, then use <code>notifyAll</code>.Please see explanation that follows.</p>\n\n<p>Read very carefully and understand. Please send me an email if you have any questions.</p>\n\n<p>Look at producer/consumer (assumption is a ProducerConsumer class with two methods). IT IS BROKEN (because it uses <code>notify</code>) - yes it MAY work - even most of the time, but it may also cause deadlock - we will see why:</p>\n\n<pre><code>public synchronized void put(Object o) {\n    while (buf.size()==MAX_SIZE) {\n        wait(); // called if the buffer is full (try/catch removed for brevity)\n    }\n    buf.add(o);\n    notify(); // called in case there are any getters or putters waiting\n}\n\npublic synchronized Object get() {\n    // Y: this is where C2 tries to acquire the lock (i.e. at the beginning of the method)\n    while (buf.size()==0) {\n        wait(); // called if the buffer is empty (try/catch removed for brevity)\n        // X: this is where C1 tries to re-acquire the lock (see below)\n    }\n    Object o = buf.remove(0);\n    notify(); // called if there are any getters or putters waiting\n    return o;\n}\n</code></pre>\n\n<p>FIRSTLY,</p>\n\n<p><strong>Why do we need a while loop surrounding the wait?</strong></p>\n\n<p>We need a <code>while</code> loop in case we get this situation:</p>\n\n<p>Consumer 1 (C1) enter the synchronized block and the buffer is empty, so C1 is put in the wait set (via the <code>wait</code> call). Consumer 2 (C2) is about to enter the synchronized method (at point Y above), but Producer P1 puts an object in the buffer, and subsequently calls <code>notify</code>. The only waiting thread is C1, so it is woken and now attempts to re-acquire the object lock at point X (above).</p>\n\n<p>Now C1 and C2 are attempting to acquire the synchronization lock. One of them (nondeterministically) is chosen and enters the method, the other is blocked (not waiting - but blocked, trying to acquire the lock on the method). Let's say C2 gets the lock first. C1 is still blocking (trying to acquire the lock at X). C2 completes the method and releases the lock. Now, C1 acquires the lock. Guess what, lucky we have a <code>while</code> loop, because, C1 performs the loop check (guard) and is prevented from removing a non-existent element from the buffer (C2 already got it!). If we didn't have a <code>while</code>, we would get an <code>IndexArrayOutOfBoundsException</code> as C1 tries to remove the first element from the buffer!</p>\n\n<p>NOW,</p>\n\n<p><strong>Ok, now why do we need notifyAll?</strong></p>\n\n<p>In the producer/consumer example above it looks like we can get away with <code>notify</code>. It seems this way, because we can prove that the guards on the <em>wait</em> loops for producer and consumer are mutually exclusive. That is, it looks like we cannot have a thread waiting in the <code>put</code> method as well as the <code>get</code> method, because, for that to be true, then the following would have to be true:</p>\n\n<p><code>buf.size() == 0 AND buf.size() == MAX_SIZE</code> (assume MAX_SIZE is not 0)</p>\n\n<p>HOWEVER, this is not good enough, we NEED to use <code>notifyAll</code>. Let's see why ...</p>\n\n<p>Assume we have a buffer of size 1 (to make the example easy to follow). The following steps lead us to deadlock. Note that ANYTIME a thread is woken with notify, it can be non-deterministically selected by the JVM - that is any waiting thread can be woken. Also note that when multiple threads are blocking on entry to a method (i.e. trying to acquire a lock), the order of acquisition can be non-deterministic. Remember also that a thread can only be in one of the methods at any one time - the synchronized methods allow only one thread to be executing (i.e. holding the lock of) any (synchronized) methods in the class. If the following sequence of events occurs - deadlock results:</p>\n\n<p><strong>STEP 1:</strong><BR>\n- P1 puts 1 char into the buffer</p>\n\n<p><strong>STEP 2:</strong><BR>\n- P2 attempts <code>put</code> - checks wait loop - already a char - waits</p>\n\n<p><strong>STEP 3:</strong><BR>\n- P3 attempts <code>put</code> - checks wait loop - already a char - waits</p>\n\n<p><strong>STEP 4:</strong><BR>\n- C1 attempts to get 1 char <BR>\n- C2 attempts to get 1 char - blocks on entry to the <code>get</code> method<BR>\n- C3 attempts to get 1 char - blocks on entry to the <code>get</code> method</p>\n\n<p><strong>STEP 5:</strong><BR>\n- C1 is executing the <code>get</code> method - gets the char, calls <code>notify</code>, exits method<BR>\n- The <code>notify</code> wakes up P2<BR>\n- BUT, C2 enters method before P2 can (P2 must reacquire the lock), so P2 blocks on entry to the <code>put</code> method<BR>\n- C2 checks wait loop, no more chars in buffer, so waits<BR>\n- C3 enters method after C2, but before P2, checks wait loop, no more chars in buffer, so waits</p>\n\n<p><strong>STEP 6:</strong><BR>\n- NOW: there is P3, C2, and C3 waiting!<BR>\n- Finally P2 acquires the lock, puts a char in the buffer, calls notify, exits method</p>\n\n<p><strong>STEP 7:</strong><BR>\n- P2's notification wakes P3 (remember any thread can be woken)<BR>\n- P3 checks the wait loop condition, there is already a char in the buffer, so waits.<BR>\n- NO MORE THREADS TO CALL NOTIFY and THREE THREADS PERMANENTLY SUSPENDED!</p>\n\n<p>SOLUTION: Replace <code>notify</code> with <code>notifyAll</code> in the producer/consumer code (above).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 383107,
+        "reputation" : 51080,
+        "user_id" : 738746,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/5252d061371ebb5944acc4447b455d87?s=256&d=identicon&r=PG",
+        "display_name" : "Bhesh Gurung",
+        "link" : "https://stackoverflow.com/users/738746/bhesh-gurung"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1323115224,
+      "post_id" : 8390277,
+      "comment_id" : 10358884,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In case of <code>notify()</code> it&#39;s not exactly &quot;<b>the first thread</b>&quot;."
+    }, {
+      "owner" : {
+        "account_id" : 912782,
+        "reputation" : 39656,
+        "user_id" : 946224,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/j3vlZ.png?s=256",
+        "display_name" : "Serhii Shevchyk",
+        "link" : "https://stackoverflow.com/users/946224/serhii-shevchyk"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1339770766,
+      "post_id" : 8390277,
+      "comment_id" : 14459413,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "you cannot predict which one will be chosen by VM. Only God knows."
+    }, {
+      "owner" : {
+        "account_id" : 2094629,
+        "reputation" : 5476,
+        "user_id" : 1863694,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/0E0lR.jpg?s=256",
+        "display_name" : "Ivan Voroshilin",
+        "link" : "https://stackoverflow.com/users/1863694/ivan-voroshilin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1411498497,
+      "post_id" : 8390277,
+      "comment_id" : 40722548,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "There&#39;s no guarantee who will be the first (no fairness)"
+    }, {
+      "owner" : {
+        "account_id" : 2986490,
+        "reputation" : 1389,
+        "user_id" : 3897333,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/51d784367ca82572dea0a2c43217770b?s=256&d=identicon&r=PG",
+        "display_name" : "Paul Stelian",
+        "link" : "https://stackoverflow.com/users/3897333/paul-stelian"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1549119334,
+      "post_id" : 8390277,
+      "comment_id" : 95793766,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It will only wake up the first thread if the OS guarantees that, and it&#39;s likely that it doesn&#39;t. It really defers to the OS (and its scheduler) to determine which thread to wake."
+    } ],
+    "owner" : {
+      "account_id" : 960943,
+      "reputation" : 1748,
+      "user_id" : 985306,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://i.sstatic.net/4rEsL.png?s=256",
+      "display_name" : "Kshitij Banerjee",
+      "link" : "https://stackoverflow.com/users/985306/kshitij-banerjee"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1323115097,
+    "last_edit_date" : 1323115097,
+    "creation_date" : 1323110955,
+    "answer_id" : 8390277,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>notify()</code> wakes up the first thread that called <code>wait()</code> on the same object.</p>\n\n<p><code>notifyAll()</code> wakes up all the threads that called <code>wait()</code> on the same object.</p>\n\n<p>The highest priority thread will run first.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1355588,
+      "reputation" : 21,
+      "user_id" : 1294054,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/962ecd91e19a7687911a99844a988752?s=256&d=identicon&r=PG",
+      "display_name" : "alxlevin",
+      "link" : "https://stackoverflow.com/users/1294054/alxlevin"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1354109069,
+    "last_edit_date" : 1354109069,
+    "creation_date" : 1332798356,
+    "answer_id" : 9880331,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Take a look at the code posted by @xagyg.  </p>\n\n<p>Suppose two different threads are waiting for two different conditions:<br>\nThe <strong>first thread</strong> is waiting for <code>buf.size() != MAX_SIZE</code>, and the <strong>second thread</strong> is waiting for <code>buf.size() != 0</code>.  </p>\n\n<p>Suppose at some point <code>buf.size()</code> <strong>is not equal to 0</strong>. JVM calls <code>notify()</code> instead of <code>notifyAll()</code>, and the first thread is notified (not the second one).   </p>\n\n<p>The first thread is woken up, checks for <code>buf.size()</code> which might return <code>MAX_SIZE</code>, and goes back to waiting. The second thread is not woken up, continues to wait and does not call <code>get()</code>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1773616,
+        "reputation" : 1656,
+        "user_id" : 1617892,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/0536665cab6c955e8e1bf2ac17fd125a?s=256&d=identicon&r=PG",
+        "display_name" : "NickV",
+        "link" : "https://stackoverflow.com/users/1617892/nickv"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1347728444,
+      "post_id" : 12439274,
+      "comment_id" : 16726157,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "My apologies, xagyg explains it in detail. The name for the problem is &quot;lost wakeup&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 1773616,
+        "reputation" : 1656,
+        "user_id" : 1617892,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/0536665cab6c955e8e1bf2ac17fd125a?s=256&d=identicon&r=PG",
+        "display_name" : "NickV",
+        "link" : "https://stackoverflow.com/users/1617892/nickv"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1347728637,
+      "post_id" : 12439274,
+      "comment_id" : 16726184,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Abhay Bansal: I think you are missing the fact that condition.wait() releases the lock and it gets reacquired by the thread that wakes up."
+    } ],
+    "owner" : {
+      "account_id" : 1773616,
+      "reputation" : 1656,
+      "user_id" : 1617892,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/0536665cab6c955e8e1bf2ac17fd125a?s=256&d=identicon&r=PG",
+      "display_name" : "NickV",
+      "link" : "https://stackoverflow.com/users/1617892/nickv"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1347727848,
+    "creation_date" : 1347727848,
+    "answer_id" : 12439274,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I am very surprised that no one mentioned the infamous \"lost wakeup\" problem (google it).</p>\n\n<p>Basically:</p>\n\n<ol>\n<li>if you have multiple threads waiting on a same condition and, </li>\n<li>multiple threads that can make you transition from state A to state B and,</li>\n<li>multiple threads that can make you transition from state B to state A (usually the same threads as in 1.) and,</li>\n<li>transitioning from state A to B should notify threads in 1.  </li>\n</ol>\n\n<p>THEN you should use notifyAll unless you have provable guarantees that lost wakeups are impossible.</p>\n\n<p>A common example is a concurrent FIFO queue where:\nmultiple enqueuers (1. and 3. above) can transition your queue from empty to non-empty \nmultiple dequeuers (2. above) can wait for the condition \"the queue is not empty\"\nempty -> non-empty should notify dequeuers</p>\n\n<p>You can easily write an interleaving of operations in which, starting from an empty queue, 2 enqueuers and 2 dequeuers interact and 1 enqueuer will remain sleeping.</p>\n\n<p>This is a problem arguably comparable with the deadlock problem.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1896959,
+      "reputation" : 2956,
+      "user_id" : 1713695,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/c63KV.png?s=256",
+      "display_name" : "Alexander Ryzhov",
+      "link" : "https://stackoverflow.com/users/1713695/alexander-ryzhov"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1371511404,
+    "creation_date" : 1371511404,
+    "answer_id" : 17158435,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>notify()</code> lets you write more efficient code than <code>notifyAll()</code>.</p>\n\n<p>Consider the following piece of code that's executed from multiple parallel threads:\n</p>\n\n<pre><code>synchronized(this) {\n    while(busy) // a loop is necessary here\n        wait();\n    busy = true;\n}\n...\nsynchronized(this) {\n    busy = false;\n    notifyAll();\n}\n</code></pre>\n\n<p>It can be made more efficient by using <code>notify()</code>:\n</p>\n\n<pre><code>synchronized(this) {\n    if(busy)   // replaced the loop with a condition which is evaluated only once\n        wait();\n    busy = true;\n}\n...\nsynchronized(this) {\n    busy = false;\n    notify();\n}\n</code></pre>\n\n<p>In the case if you have a large number of threads, or if the wait loop condition is costly to evaluate, <code>notify()</code> will be significantly faster than <code>notifyAll()</code>. For example, if you have 1000 threads then 999 threads will be awakened and evaluated after the first <code>notifyAll()</code>, then 998, then 997, and so on. On the contrary, with the <code>notify()</code> solution, only one thread will be awakened. </p>\n\n<p>Use <code>notifyAll()</code> when you need to choose which thread will do the work next:\n</p>\n\n<pre><code>synchronized(this) {\n    while(idx != last+1)  // wait until it's my turn\n        wait();\n}\n...\nsynchronized(this) {\n    last = idx;\n    notifyAll();\n}\n</code></pre>\n\n<p>Finally, it's important to understand that in case of <code>notifyAll()</code>, the code inside <code>synchronized</code> blocks that have been awakened will be executed sequentially, not all at once. Let's say there are three threads waiting in the above example, and the fourth thread calls <code>notifyAll()</code>. All three threads will be awakened but only one will start execution and check the condition of the <code>while</code> loop. If the condition is <code>true</code>, it will call <code>wait()</code> again, and only then the second thread will start executing and will check its <code>while</code> loop condition, and so on.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3408167,
+        "reputation" : 690,
+        "user_id" : 2859238,
+        "user_type" : "registered",
+        "accept_rate" : 32,
+        "profile_image" : "https://www.gravatar.com/avatar/73d78ef40af34ea5811f0704eacd2f25?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user104309",
+        "link" : "https://stackoverflow.com/users/2859238/user104309"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1530992338,
+      "post_id" : 17287218,
+      "comment_id" : 89432938,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Very clear explanation. The result of this behavior of notify() can lead to &quot;Missed Signal&quot;/&quot;Missed Notification&quot; leading to deadlock/no progress situation of the application state.P-Producer,C-Consumer P1, P2 and C2 are waiting for C1. C1 calls notify() and is meant for a producer but C2 can be woken up and so both P1 and P2 missed the notification and ll be waiting for further explicit &quot;notification&quot; (a notify() call)."
+    } ],
+    "owner" : {
+      "account_id" : 227656,
+      "reputation" : 1033,
+      "user_id" : 489457,
+      "user_type" : "registered",
+      "accept_rate" : 20,
+      "profile_image" : "https://www.gravatar.com/avatar/2f5c28ecfca02f114691d0bd44b709ce?s=256&d=identicon&r=PG",
+      "display_name" : "Steve",
+      "link" : "https://stackoverflow.com/users/489457/steve"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1372119528,
+    "creation_date" : 1372119528,
+    "answer_id" : 17287218,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Here's a simpler explanation:</p>\n\n<p>You're correct that whether you use notify() or notifyAll(), the immediate result is that exactly one other thread will acquire the monitor and begin executing. (Assuming some threads were in fact blocked on wait() for this object, other unrelated threads aren't soaking up all available cores, etc.) The impact comes later.</p>\n\n<p>Suppose thread A, B, and C were waiting on this object, and thread A gets the monitor. The difference lies in what happens once A releases the monitor. If you used notify(), then B and C are still blocked in wait(): they are not waiting on the monitor, they are waiting to be notified. When A releases the monitor, B and C will still be sitting there, waiting for a notify().</p>\n\n<p>If you used notifyAll(), then B and C have both advanced past the \"wait for notification\" state and are both waiting to acquire the monitor. When A releases the monitor, either B or C will acquire it (assuming no other threads are competing for that monitor) and begin executing.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1840178,
+      "reputation" : 1433,
+      "user_id" : 1669747,
+      "user_type" : "registered",
+      "accept_rate" : 53,
+      "profile_image" : "https://www.gravatar.com/avatar/641cf17f1135ccbc3d35d954942ccde3?s=256&d=identicon&r=PG",
+      "display_name" : "AKS",
+      "link" : "https://stackoverflow.com/users/1669747/aks"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1378445662,
+    "creation_date" : 1378445662,
+    "answer_id" : 18650599,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I would like to mention what is explained in Java Concurrency in Practice:</p>\n\n<p><strong>First point, whether Notify or NotifyAll?</strong></p>\n\n<pre><code>It will be NotifyAll, and reason is that it will save from signall hijacking.\n</code></pre>\n\n<blockquote>\n  <p>If two threads A and B are waiting on different condition predicates\n  of same condition queue and notify is called, then it is upto JVM to\n  which thread JVM will notify.</p>\n  \n  <p>Now if notify was meant for thread A and JVM notified thread B, then\n  thread B will wake up and see that this notification is not useful so\n  it will wait again. And Thread A will never come to know about this\n  missed signal and someone hijacked it's notification.</p>\n  \n  <p>So, calling notifyAll will resolve this issue, but again it will have\n  performance impact as it will notify all threads and all threads will\n  compete for same lock and it will involve context switch and hence\n  load on CPU. But we should care about performance only if it is\n  behaving correctly, if it's behavior itself is not correct then\n  performance is of no use.</p>\n</blockquote>\n\n<p><strong>This problem can be solved with using Condition object of explicit locking Lock, provided in jdk 5, as it provides different wait for each condition predicate. Here it will behave correctly and there will not be performance issue as it will call signal and make sure that only one thread is waiting for that condition</strong></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 241606,
+      "reputation" : 11,
+      "user_id" : 2377539,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1ba927c154aae76af004bf491ed0e80c?s=256&d=identicon&r=PG",
+      "display_name" : "Saurabh",
+      "link" : "https://stackoverflow.com/users/2377539/saurabh"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1406053548,
+    "creation_date" : 1406053548,
+    "answer_id" : 24894963,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>notify will notify only one thread which are in waiting state, while notify all will notify all the threads in the waiting state now all the notified threads and all the blocked threads are eligible for the lock, out of which only one will get the lock and all others (including those who are in waiting state earlier) will be in blocked state.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 173119,
+      "reputation" : 888,
+      "user_id" : 401598,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/3d7dd4232cb043d2a3efd99e08ff0983?s=256&d=identicon&r=PG",
+      "display_name" : "KingCode",
+      "link" : "https://stackoverflow.com/users/401598/kingcode"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1444578380,
+    "creation_date" : 1444578380,
+    "answer_id" : 33066887,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To summarize the excellent detailed explanations above, and in the simplest way I can think of, this is due to the limitations of the JVM built-in monitor, which 1) is acquired on the entire synchronization unit (block or object) and 2) does not discriminate about the specific condition being waited/notified on/about. </p>\n\n<p>This means that if multiple threads are waiting on different conditions and notify() is used, the selected thread may not be the one which would make progress on the newly fulfilled condition - causing that thread (and other currently still waiting threads which would be able to fulfill the condition, etc..) not to be able to make progress, and eventually starvation or program hangup. </p>\n\n<p>In contrast, notifyAll() enables all waiting threads to eventually re-acquire the lock and check for their respective condition, thereby eventually allowing progress to be made. </p>\n\n<p>So notify() can be used safely only if any waiting thread is guaranteed to allow progress to be made should it be selected, which in general is satisfied when all threads within the same monitor check for only one and the same condition - a fairly rare case in real world applications. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6397156,
+      "reputation" : 490,
+      "user_id" : 4961112,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/RrmK1.jpg?s=256",
+      "display_name" : "ansd",
+      "link" : "https://stackoverflow.com/users/4961112/ansd"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1445779728,
+    "last_edit_date" : 1445779728,
+    "creation_date" : 1445771457,
+    "answer_id" : 33329002,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>Short summary:</strong></p>\n\n<p>Always prefer <strong>notifyAll()</strong> over <strong>notify()</strong> unless you have a massively parallel application where a large number of threads all do the same thing.</p>\n\n<p><strong>Explanation:</strong></p>\n\n<blockquote>\n  <p><strong>notify()</strong> [...] wakes up a single\n  thread. Because <strong>notify()</strong> doesn't allow you to specify the thread that is\n  woken up, it is useful only in massively parallel applications — that\n  is, programs with a large number of threads, all doing similar chores.\n  In such an application, you don't care which thread gets woken up.</p>\n</blockquote>\n\n<p>source: <a href=\"https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html\" rel=\"noreferrer\">https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html</a></p>\n\n<p>Compare <strong>notify()</strong> with <strong>notifyAll()</strong> in the above described situation: a massively parallel application where threads are doing the same thing. If you call <strong>notifyAll()</strong> in that case, <strong>notifyAll()</strong> will induce the waking up (i.e. scheduling) of a huge number of threads, many of them unnecessarily (since only one thread can actually proceed, namely the thread which will be granted the monitor for the object <strong>wait()</strong>, <strong>notify()</strong>, or <strong>notifyAll()</strong> was called on), therefore wasting computing resources.</p>\n\n<p>Thus, if you don't have an application where a huge number of threads do the same thing concurrently, prefer <strong>notifyAll()</strong> over <strong>notify()</strong>. Why? Because, as other users have already answered in this forum, <strong>notify()</strong> </p>\n\n<blockquote>\n  <p>wakes up a single thread that is waiting on this object's monitor. [...] The\n  choice is <em>arbitrary</em> and occurs at the discretion of the\n  implementation.</p>\n</blockquote>\n\n<p>source: Java SE8 API (<a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notify--\" rel=\"noreferrer\">https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#notify--</a>)</p>\n\n<p>Imagine you have a producer consumer application where consumers are ready (i.e. <strong>wait()</strong> ing) to consume, producers are ready (i.e. <strong>wait()</strong> ing) to produce and the queue of items (to be produced / consumed) is empty. In that case, <strong>notify()</strong> might wake up only consumers and never producers because the choice who is waken up is <em>arbitrary</em>. The producer consumer cycle wouldn't make any progress although producers and consumers are ready to produce and consume, respectively. Instead, a consumer is woken up (i.e. leaving the <strong>wait()</strong> status), doesn't take an item out of the queue because it's empty, and <strong>notify()</strong> s another consumer to proceed.</p>\n\n<p>In contrast, <strong>notifyAll()</strong> awakens both producers and consumers. The choice who is scheduled depends on the scheduler. Of course, depending on the scheduler's implementation, the scheduler might also only schedule consumers (e.g. if you assign consumer threads a very high priority). However, the assumption here is that the danger of the scheduler scheduling only consumers is lower than the danger of the JVM only waking up consumers because any reasonably implemented scheduler doesn't make just <em>arbitrary</em> decisions. Rather, most scheduler implementations make at least some effort to prevent starvation.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5390644,
+      "reputation" : 113,
+      "user_id" : 4673384,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-wBLzqycl96Y/AAAAAAAAAAI/AAAAAAAAAqg/qNDSQdzE-5I/s256-rj/photo.jpg",
+      "display_name" : "fireboy91",
+      "link" : "https://stackoverflow.com/users/4673384/fireboy91"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1445779271,
+    "last_edit_date" : 1445779271,
+    "creation_date" : 1445777817,
+    "answer_id" : 33329952,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>notify()</code> - Selects a random thread from the wait set of the object and puts it in the <code>BLOCKED</code> state. The rest of the threads in the wait set of the object are still in the <code>WAITING</code> state.</p>\n\n<p><code>notifyAll()</code> - Moves all the threads from the wait set of the object to <code>BLOCKED</code> state. After you use <code>notifyAll()</code>, there are no threads remaining in the wait set of the shared object because all of them are now in <code>BLOCKED</code> state and not in <code>WAITING</code> state. </p>\n\n<p><code>BLOCKED</code> - blocked for lock acquisition.\n<code>WAITING</code> - waiting for notify ( or blocked for join completion ).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2887548,
+      "reputation" : 79,
+      "user_id" : 2477031,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2b7a4bda71e249730e3ac02b5dbdd2b7?s=256&d=identicon&r=PG",
+      "display_name" : "Deepak sai",
+      "link" : "https://stackoverflow.com/users/2477031/deepak-sai"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1461263521,
+    "creation_date" : 1461263521,
+    "answer_id" : 36777757,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When you call the wait() of the \"object\"(expecting the object lock is acquired),intern this will release the lock on that object and help's the other threads to have lock on this \"object\", in this scenario there will be more than 1 thread waiting for the \"resource/object\"(considering the other threads also issued the wait on the same above object and down the way there will be a thread that fill the resource/object and invokes notify/notifyAll). </p>\n\n<p>Here when you issue the notify of the same object(from the same/other side of the process/code),this will release a blocked and waiting single thread (not all the waiting threads  -- this released thread will be picked by JVM Thread Scheduler and all the lock obtaining process on the object is same as regular).</p>\n\n<p>If you have Only one thread that will be sharing/working on this object , it is ok to use the notify() method alone in your wait-notify implementation.</p>\n\n<h2>if you are in situation where more than one thread read's and writes on resources/object  based on your business logic,then you should go for notifyAll()</h2>\n\n<p>now i am looking how exactly the jvm is identifying and breaking the waiting thread when we issue notify() on a object ...</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2055196,
+      "reputation" : 513,
+      "user_id" : 1833142,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/f91d8400c8fc4d565902a545e11d6325?s=256&d=identicon&r=PG",
+      "display_name" : "S_R",
+      "link" : "https://stackoverflow.com/users/1833142/s-r"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1603780806,
+    "last_edit_date" : 1603780806,
+    "creation_date" : 1483861618,
+    "answer_id" : 41530610,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are three states for a thread.</p>\n<ol>\n<li>WAIT - The thread is not using any CPU cycle</li>\n<li>BLOCKED - The thread is blocked trying to acquire a monitor. It might still be using the CPU cycles</li>\n<li>RUNNING - The thread is running.</li>\n</ol>\n<p>Now, when a notify() is called, JVM picks one thread and move them to the BLOCKED state and hence to the RUNNING state as there is no competition for the monitor object.</p>\n<p>When a notifyAll() is called, JVM picks all the threads and move all of them to BLOCKED state. All these threads will get the lock of the object on a priority basis. Thread which is able to acquire the monitor first will be able to go to the RUNNING state first and so on.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2056278,
+        "reputation" : 25176,
+        "user_id" : 1833961,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://i.sstatic.net/WzG31.png?s=256",
+        "display_name" : "bvdb",
+        "link" : "https://stackoverflow.com/users/1833961/bvdb"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1498036540,
+      "post_id" : 41910658,
+      "comment_id" : 76327859,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "in my experience, the use of wait/notify is often used in queue mechanisms where a thread (<code>Runnable</code> implementation) processing the content of a queue. The <code>wait()</code> is then used whenever the queue is empty. And the <code>notify()</code> is called when information is added. --&gt; in such a case there&#39;s only 1 thread that ever calls the <code>wait()</code> , then doesn&#39;t it look a bit silly to use a <code>notifyAll()</code> if you know there&#39;s only 1 waiting thread."
+    } ],
+    "owner" : {
+      "account_id" : 2547563,
+      "reputation" : 365,
+      "user_id" : 2212042,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/572332b0de97ff90e51971a1e3840456?s=256&d=identicon&r=PG",
+      "display_name" : "jzl106",
+      "link" : "https://stackoverflow.com/users/2212042/jzl106"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1603848778,
+    "last_edit_date" : 1603848778,
+    "creation_date" : 1485612185,
+    "answer_id" : 41910658,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>While there are some solid answers above, I am surprised by the number of confusions and misunderstandings I have read. This probably proves the idea that one should use java.util.concurrent as much as possible instead of trying to write their own broken concurrent code.</p>\n<p>Back to the question: to summarize, the best practice today is to AVOID notify() in ALL situations due to the lost wakeup problem. Anyone who doesn't understand this should not be allowed to write mission critical concurrency code. If you are worried about the herding problem, one safe way to achieve waking one thread up at a time is to:</p>\n<ol>\n<li>Build an explicit waiting queue for the waiting threads;</li>\n<li>Have each of the thread in the queue wait for its predecessor;</li>\n<li>Have each thread call notifyAll() when done.</li>\n</ol>\n<p>Or you can use Java.util.concurrent.*, which have already implemented this.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1116124,
+      "reputation" : 499,
+      "user_id" : 3721542,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/bs2Md.jpg?s=256",
+      "display_name" : "Marco",
+      "link" : "https://stackoverflow.com/users/3721542/marco"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1509704163,
+    "last_edit_date" : 1509704163,
+    "creation_date" : 1495700236,
+    "answer_id" : 44175631,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This answer is a graphical rewriting and simplification of the excellent answer by <a href=\"https://stackoverflow.com/users/384464/xagyg\">xagyg</a>, including comments by <a href=\"https://stackoverflow.com/users/26039/eran\">eran</a>.</p>\n\n<p><strong>Why use notifyAll, even when each product is intended for a single consumer?</strong></p>\n\n<p>Consider producers and consumers, simplified as follows.</p>\n\n<p>Producer:</p>\n\n<pre><code>while (!empty) {\n   wait() // on full\n}\nput()\nnotify()\n</code></pre>\n\n<p>Consumer:</p>\n\n<pre><code>while (empty) {\n   wait() // on empty\n}\ntake()\nnotify()\n</code></pre>\n\n<p>Assume 2 producers and 2 consumers, sharing a buffer of size 1. The following picture depicts a scenario leading to a <strong>deadlock</strong>, which would be avoided if all threads used <strong>notifyAll</strong>.</p>\n\n<p>Each notify is labeled with the thread being woken up.</p>\n\n<p><img src=\"https://i.sstatic.net/IJ5b7.png\" alt=\"deadlock due to notify\"></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 53919,
+      "reputation" : 1131,
+      "user_id" : 161243,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/6f0020af3ba3c0c7ec0d8dac2503fc26?s=256&d=identicon&r=PG",
+      "display_name" : "rajya vardhan",
+      "link" : "https://stackoverflow.com/users/161243/rajya-vardhan"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1506376065,
+    "creation_date" : 1506376065,
+    "answer_id" : 46414690,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><em>Taken from <a href=\"http://jtechies.blogspot.in/2012/07/item-69-prefer-concurrency-utilities-to.html\" rel=\"nofollow noreferrer\">blog</a> on Effective Java:</em></p>\n\n<pre><code>The notifyAll method should generally be used in preference to notify. \n\nIf notify is used, great care must be taken to ensure liveness.\n</code></pre>\n\n<p>So, what i understand is (from aforementioned blog, comment by \"Yann TM\" on <a href=\"https://stackoverflow.com/a/37046/161243\">accepted answer</a> and Java <a href=\"https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#notify()\" rel=\"nofollow noreferrer\">docs</a>):</p>\n\n<ul>\n<li>notify() : JVM awakens one of the waiting threads on this object. Thread selection is made arbitrarily without fairness. So same thread can be awakened again and again. So system's state changes but no real progress is made. Thus creating a <a href=\"https://stackoverflow.com/a/6155978/161243\">livelock</a>.</li>\n<li>notifyAll() : JVM awakens all threads and then all threads race for the lock on this object. Now, CPU scheduler selects a thread which acquires lock on this object. This selection process would be much better than selection by JVM. Thus, ensuring liveness.</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15494779,
+      "reputation" : 1407,
+      "user_id" : 12824504,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AAuE7mAOothLOP4GljRNL3sAyDfb4N6AeHrvVJsvApFE=k-s256",
+      "display_name" : "haoyu wang",
+      "link" : "https://stackoverflow.com/users/12824504/haoyu-wang"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1603001395,
+    "last_edit_date" : 1603001395,
+    "creation_date" : 1602992301,
+    "answer_id" : 64409492,
+    "question_id" : 37026,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Waiting queue and blocked queue</h2>\n<p>You can assume there are two kinds of queues associated with each lock object. One is blocked queue containing thread waiting for the monitor lock, other is waiting queue containing thread waiting to be notified. (Thread will be put into waiting queue when they call <code>Object.wait</code>).</p>\n<p>Each time the lock is available, the scheduler choose one thread from blocked queue to execute.</p>\n<p>When <code>notify</code> is called, there will only be one thread in waiting queue are put into blocked queue to contend for the lock, while <code>notifyAll</code> will put all thread in waiting queue into blocked queue.</p>\n<p>Now can you see the difference?<br />\nAlthough in both case there will only be one thread get executed, but with <code>notifyAll</code>, other threads still get a change to be executed(Because they are in the blocked queue) even if they failed to contend the lock.</p>\n<h2>some guidline</h2>\n<p>I basically recommend use <code>notifyAll</code> all the time althrough there may be a little performance penalty.<br />\nAnd use <code>notify</code> only if :</p>\n<ol>\n<li>Any waked thread can make the programe proceed.</li>\n<li>performance is important.</li>\n</ol>\n<p><strong>For example:</strong><br />\n@xagyg 's answer gives a example which <code>notify</code> will cause deadlock. In his example, both producer and consumer are related with the same lock object. So when a producer calls <code>notify</code>, either a producer or a consumer can be notified. But if a producer is woken up it can not make the programe proceed because the buffer is already full.So a deadlock happens.<br />\nThere are two ways to solve it :</p>\n<ol>\n<li>use <code>notifyALl</code> as @xagyg suggests.</li>\n<li>Make procuder and consumer related with different lock object and procuder can only wake up consumer, consumer can only wake up producer. In that case, no matter which consumer is waked, it can consumer the buffer and make the programe proceed.</li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2769,
+    "reputation" : 8988,
+    "user_id" : 3894,
+    "user_type" : "registered",
+    "accept_rate" : 81,
+    "profile_image" : "https://www.gravatar.com/avatar/c3419dd796f66b5aa4193bc135ff6303?s=256&d=identicon&r=PG",
+    "display_name" : "Sergey Mikhanov",
+    "link" : "https://stackoverflow.com/users/3894/sergey-mikhanov"
+  },
+  "is_answered" : true,
+  "view_count" : 239325,
+  "protected_date" : 1518023389,
+  "accepted_answer_id" : 37046,
+  "answer_count" : 26,
+  "score" : 428,
+  "last_activity_date" : 1603848778,
+  "creation_date" : 1220208432,
+  "last_edit_date" : 1325184584,
+  "question_id" : 37026,
+  "link" : "https://stackoverflow.com/questions/37026/java-notify-vs-notifyall-all-over-again",
+  "title" : "Java: notify() vs. notifyAll() all over again",
+  "body" : "<p>If one Googles for \"difference between <code>notify()</code> and <code>notifyAll()</code>\" then a lot of explanations will pop up (leaving apart the javadoc paragraphs). It all boils down to the number of waiting threads being waken up: one in <code>notify()</code> and all in <code>notifyAll()</code>.</p>\n\n<p>However (if I do understand the difference between these methods right), only one thread is always selected for further monitor acquisition; in the first case the one selected by the VM, in the second case the one selected by the system thread scheduler. The exact selection procedures for both of them (in the general case) are not known to the programmer.</p>\n\n<p>What's the <strong>useful</strong> difference between <a href=\"http://download.oracle.com/javase/6/docs/api/java/lang/Object.html#notify%28%29\" rel=\"noreferrer\">notify()</a> and <a href=\"http://download.oracle.com/javase/6/docs/api/java/lang/Object.html#notifyAll%28%29\" rel=\"noreferrer\">notifyAll()</a> then? Am I missing something?</p>\n"
+}

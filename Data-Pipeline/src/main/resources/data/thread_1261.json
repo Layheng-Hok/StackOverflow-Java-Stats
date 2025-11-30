@@ -1,0 +1,296 @@
+{
+  "tags" : [ "java", "java-8", "functional-programming", "java-stream" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 57402,
+        "reputation" : 30286,
+        "user_id" : 171950,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/ccee38944752d481128936450ddb687e?s=256&d=identicon&r=PG",
+        "display_name" : "Muhammad Hewedy",
+        "link" : "https://stackoverflow.com/users/171950/muhammad-hewedy"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1408691062,
+      "post_id" : 25441208,
+      "comment_id" : 39693545,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Perfect! ... from javadoc <code>and then performing a reduction operation on the values associated with a given key using the specified downstream Collector</code>"
+    }, {
+      "owner" : {
+        "account_id" : 2648879,
+        "reputation" : 4764,
+        "user_id" : 2291056,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/gyXUJ.jpg?s=256",
+        "display_name" : "Kuchi",
+        "link" : "https://stackoverflow.com/users/2291056/kuchi"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1444606605,
+      "post_id" : 25441208,
+      "comment_id" : 53960604,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Using Function.identity() (with static import) instead of e -&gt; e makes it a little nicer to read:  Map&lt;String, Long&gt; counted = list.stream().collect(groupingBy(identity(), counting()));"
+    } ],
+    "owner" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "is_accepted" : true,
+    "score" : 518,
+    "last_activity_date" : 1448718958,
+    "last_edit_date" : 1448718958,
+    "creation_date" : 1408690551,
+    "answer_id" : 25441208,
+    "question_id" : 25441088,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think you're just looking for the <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#groupingBy-java.util.function.Function-java.util.stream.Collector-\" rel=\"noreferrer\">overload</a> which takes another <code>Collector</code> to specify what to do with each group... and then <code>Collectors.counting()</code> to do the counting:</p>\n\n<pre><code>import java.util.*;\nimport java.util.stream.*;\n\nclass Test {\n    public static void main(String[] args) {\n        List&lt;String&gt; list = new ArrayList&lt;&gt;();\n\n        list.add(\"Hello\");\n        list.add(\"Hello\");\n        list.add(\"World\");\n\n        Map&lt;String, Long&gt; counted = list.stream()\n            .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));\n\n        System.out.println(counted);\n    }\n}\n</code></pre>\n\n<p>Result:</p>\n\n<pre><code>{Hello=2, World=1}\n</code></pre>\n\n<p>(There's also the possibility of using <code>groupingByConcurrent</code> for more efficiency. Something to bear in mind for your real code, if it would be safe in your context.)</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 357783,
+        "reputation" : 5376,
+        "user_id" : 698168,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b81aac86149a52c3ebed2aa59e98d4b7?s=256&d=identicon&r=PG",
+        "display_name" : "Julien Kronegg",
+        "link" : "https://stackoverflow.com/users/698168/julien-kronegg"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1738138298,
+      "post_id" : 40591504,
+      "comment_id" : 140017349,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Keeping the list of objects is not useful when counting Strings. However, it can make sense if the grouping criteria is not the object itself, e.g. the String&#39;s first letter."
+    } ],
+    "owner" : {
+      "account_id" : 1805783,
+      "reputation" : 354,
+      "user_id" : 1642895,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/aa89dc5fe5854d39919c485f0712c1de?s=256&d=identicon&r=PG",
+      "display_name" : "Sivakumar",
+      "link" : "https://stackoverflow.com/users/1642895/sivakumar"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1562064129,
+    "last_edit_date" : 1562064129,
+    "creation_date" : 1479134960,
+    "answer_id" : 40591504,
+    "question_id" : 25441088,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();\n\nlist.add(\"Hello\");\nlist.add(\"Hello\");\nlist.add(\"World\");\n\nMap&lt;String, List&lt;String&gt;&gt; collect = list.stream()\n                                        .collect(Collectors.groupingBy(o -&gt; o));\ncollect.entrySet()\n       .forEach(e -&gt; System.out.println(e.getKey() + \" - \" + e.getValue().size()));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2559426,
+        "reputation" : 1104,
+        "user_id" : 2220759,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/KfXEx.png?s=256",
+        "display_name" : "Torsten Ojaperv",
+        "link" : "https://stackoverflow.com/users/2220759/torsten-ojaperv"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1563276411,
+      "post_id" : 44378079,
+      "comment_id" : 100638137,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What&#39;s the reason to use it over Java8 streams?"
+    }, {
+      "owner" : {
+        "account_id" : 1119690,
+        "reputation" : 23190,
+        "user_id" : 1108305,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/4c16849c5f9444a685f62cdc2a15c3ac?s=256&d=identicon&r=PG",
+        "display_name" : "M. Justin",
+        "link" : "https://stackoverflow.com/users/1108305/m-justin"
+      },
+      "reply_to_user" : {
+        "account_id" : 2559426,
+        "reputation" : 1104,
+        "user_id" : 2220759,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/KfXEx.png?s=256",
+        "display_name" : "Torsten Ojaperv",
+        "link" : "https://stackoverflow.com/users/2220759/torsten-ojaperv"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1604444999,
+      "post_id" : 44378079,
+      "comment_id" : 114349303,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@TorstenOjaperv The only real reason is that it&#39;s more concise (it reduces boilerplate)."
+    } ],
+    "owner" : {
+      "account_id" : 4120139,
+      "reputation" : 1324,
+      "user_id" : 3380739,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/711282833/picture?type=large",
+      "display_name" : "user_3380739",
+      "link" : "https://stackoverflow.com/users/3380739/user-3380739"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1604444813,
+    "last_edit_date" : 1604444813,
+    "creation_date" : 1496698647,
+    "answer_id" : 44378079,
+    "question_id" : 25441088,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is the simple solution by <a href=\"https://github.com/amaembo/streamex\" rel=\"nofollow noreferrer\">StreamEx</a>:</p>\n<pre class=\"lang-java prettyprint-override\"><code>StreamEx.of(list).groupingBy(Function.identity(), MoreCollectors.countingInt());\n</code></pre>\n<p>This has the advantage of reducing the Java stream boilerplate code: <code>collect(Collectors.</code></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 357783,
+        "reputation" : 5376,
+        "user_id" : 698168,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b81aac86149a52c3ebed2aa59e98d4b7?s=256&d=identicon&r=PG",
+        "display_name" : "Julien Kronegg",
+        "link" : "https://stackoverflow.com/users/698168/julien-kronegg"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1738135077,
+      "post_id" : 51106247,
+      "comment_id" : 140017129,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The proposed answer is a generalization from String (what the OP asked) to an Object (in this case: a custom <code>Requirement</code> class, which contains a <code>requirementType</code> field). The answer is correct, but goes beyond the scope of the original question (so a comment on the accepted answer should have been sufficient)."
+    } ],
+    "owner" : {
+      "account_id" : 1829075,
+      "reputation" : 1464,
+      "user_id" : 2502267,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/ae9c565115694f2babbd6619f4426936?s=256&d=identicon&r=PG",
+      "display_name" : "fjkjava",
+      "link" : "https://stackoverflow.com/users/2502267/fjkjava"
+    },
+    "is_accepted" : false,
+    "score" : 39,
+    "last_activity_date" : 1530290748,
+    "creation_date" : 1530290748,
+    "answer_id" : 51106247,
+    "question_id" : 25441088,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is example for list of Objects</p>\n\n<pre><code>Map&lt;String, Long&gt; requirementCountMap = requirements.stream().collect(Collectors.groupingBy(Requirement::getRequirementType, Collectors.counting()));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7743155,
+      "reputation" : 56599,
+      "user_id" : 5862071,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/II4q8.jpg?s=256",
+      "display_name" : "Ousmane D.",
+      "link" : "https://stackoverflow.com/users/5862071/ousmane-d"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1562064231,
+    "last_edit_date" : 1562064231,
+    "creation_date" : 1532616834,
+    "answer_id" : 51541841,
+    "question_id" : 25441088,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here are slightly different options to accomplish the task at hand.</p>\n\n<p>using <code>toMap</code>:</p>\n\n<pre><code>list.stream()\n    .collect(Collectors.toMap(Function.identity(), e -&gt; 1, Math::addExact));\n</code></pre>\n\n<p>using <code>Map::merge</code>:</p>\n\n<pre><code>Map&lt;String, Integer&gt; accumulator = new HashMap&lt;&gt;();\nlist.forEach(s -&gt; accumulator.merge(s, 1, Math::addExact));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1712726,
+      "reputation" : 6836,
+      "user_id" : 1570415,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Scl35.jpg?s=256",
+      "display_name" : "Donald Raab",
+      "link" : "https://stackoverflow.com/users/1570415/donald-raab"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1537849234,
+    "last_edit_date" : 1537849234,
+    "creation_date" : 1537837068,
+    "answer_id" : 52489180,
+    "question_id" : 25441088,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you're open to using a third-party library, you can use the <code>Collectors2</code> class in <a href=\"https://github.com/eclipse/eclipse-collections\" rel=\"nofollow noreferrer\">Eclipse Collections</a> to convert the <code>List</code> to a <code>Bag</code> using a <code>Stream</code>. A <a href=\"https://www.eclipse.org/collections/javadoc/9.2.0/org/eclipse/collections/api/bag/Bag.html\" rel=\"nofollow noreferrer\"><code>Bag</code></a> is a data structure that is <a href=\"https://medium.com/oracledevs/bag-the-counter-2689e901aadb\" rel=\"nofollow noreferrer\">built for counting</a>.</p>\n\n<pre><code>Bag&lt;String&gt; counted =\n        list.stream().collect(Collectors2.countBy(each -&gt; each));\n\nAssert.assertEquals(1, counted.occurrencesOf(\"World\"));\nAssert.assertEquals(2, counted.occurrencesOf(\"Hello\"));\n\nSystem.out.println(counted.toStringOfItemToCount());\n</code></pre>\n\n<p>Output:</p>\n\n<pre><code>{World=1, Hello=2}\n</code></pre>\n\n<p>In this particular case, you can simply <code>collect</code> the <code>List</code> directly into a <code>Bag</code>.</p>\n\n<pre><code>Bag&lt;String&gt; counted = \n        list.stream().collect(Collectors2.toBag());\n</code></pre>\n\n<p>You can also create the <code>Bag</code> without using a <code>Stream</code> by adapting the <code>List</code> with the Eclipse Collections protocols.</p>\n\n<pre><code>Bag&lt;String&gt; counted = Lists.adapt(list).countBy(each -&gt; each);\n</code></pre>\n\n<p>or in this particular case:</p>\n\n<pre><code>Bag&lt;String&gt; counted = Lists.adapt(list).toBag();\n</code></pre>\n\n<p>You could also just create the Bag directly.</p>\n\n<pre><code>Bag&lt;String&gt; counted = Bags.mutable.with(\"Hello\", \"Hello\", \"World\");\n</code></pre>\n\n<p>A <code>Bag&lt;String&gt;</code> is like a <code>Map&lt;String, Integer&gt;</code> in that it internally keeps track of keys and their counts.  But, if you ask a <code>Map</code> for a key it doesn't contain, it will return <code>null</code>.  If you ask a <code>Bag</code> for a key it doesn't contain using <code>occurrencesOf</code>, it will return 0.</p>\n\n<p><strong>Note:</strong> I am a committer for Eclipse Collections.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 357783,
+        "reputation" : 5376,
+        "user_id" : 698168,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b81aac86149a52c3ebed2aa59e98d4b7?s=256&d=identicon&r=PG",
+        "display_name" : "Julien Kronegg",
+        "link" : "https://stackoverflow.com/users/698168/julien-kronegg"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1738134435,
+      "post_id" : 79086230,
+      "comment_id" : 140017089,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "There is an accepted answer with high score since 10 years. I think you should explain what is wrong with the accepted answer and explain why your solution is better."
+    } ],
+    "owner" : {
+      "account_id" : 4610145,
+      "reputation" : 19,
+      "user_id" : 3738497,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/bZ9zOeBU.png?s=256",
+      "display_name" : "sandbox",
+      "link" : "https://stackoverflow.com/users/3738497/sandbox"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1728910275,
+    "creation_date" : 1728910275,
+    "answer_id" : 79086230,
+    "question_id" : 25441088,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>import java.util.*;\nimport java.util.stream.Stream;\n\nimport static java.util.function.Function.identity;\nimport static java.util.stream.Collectors.counting;\nimport static java.util.stream.Collectors.groupingBy;\nimport static java.util.stream.Collectors.summingInt;\n\n/**\n * Utility-Class to build a counting-map from the {@link Stream} of any objects\n * that have properly implemented {@link Object#equals(Object)} and {@link Object#hashCode()}\n * (and {@link Comparable#compareTo(Object) for sorted counting-maps}.\n */\npublic class CountingUtils {\n\n    public static &lt;V&gt; Map&lt;V, Long&gt; countingMapLong(Stream&lt;V&gt; valuesStream) {\n        return valuesStream.collect(groupingBy(identity(), counting()));\n    }\n    public static &lt;V&gt; Map&lt;V, Integer&gt; countingMap(Stream&lt;V&gt; valuesStream) {\n        return valuesStream.collect(groupingBy(identity(), summingInt(v -&gt; 1)));\n    }\n    public static &lt;V&gt; NavigableMap&lt;V, Integer&gt; countingSortedMap(Stream&lt;V&gt; valuesStream) {\n        return valuesStream.collect(groupingBy(identity(), TreeMap::new, summingInt(v -&gt; 1)));\n    }\n    public static &lt;V&gt; LinkedHashMap&lt;V, Integer&gt; countingLinkedMap(Stream&lt;V&gt; valuesStream) {\n        return valuesStream.collect(groupingBy(identity(), LinkedHashMap::new, summingInt(v -&gt; 1)));\n    }\n\n    private CountingUtils() {\n        // prohibit the creation of utility-class instance\n        throw new UnsupportedOperationException(&quot;Cannot instantiate a utility-class &quot; + getClass().getName());\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 57402,
+    "reputation" : 30286,
+    "user_id" : 171950,
+    "user_type" : "registered",
+    "accept_rate" : 55,
+    "profile_image" : "https://www.gravatar.com/avatar/ccee38944752d481128936450ddb687e?s=256&d=identicon&r=PG",
+    "display_name" : "Muhammad Hewedy",
+    "link" : "https://stackoverflow.com/users/171950/muhammad-hewedy"
+  },
+  "is_answered" : true,
+  "view_count" : 236542,
+  "protected_date" : 1564491899,
+  "accepted_answer_id" : 25441208,
+  "answer_count" : 7,
+  "score" : 263,
+  "last_activity_date" : 1742880099,
+  "creation_date" : 1408689981,
+  "last_edit_date" : 1742880099,
+  "question_id" : 25441088,
+  "link" : "https://stackoverflow.com/questions/25441088/how-can-i-count-occurrences-with-groupby",
+  "title" : "How can I count occurrences with groupBy?",
+  "body" : "<p>I want to collect the items in a stream into a map which groups equal objects together, and maps to the number of occurrences.</p>\n<pre><code>List&lt;String&gt; list = Arrays.asList(&quot;Hello&quot;, &quot;Hello&quot;, &quot;World&quot;);\nMap&lt;String, Long&gt; wordToFrequency = // what goes here?\n</code></pre>\n<p>So in this case, I would like the map to consist of these entries:</p>\n<pre class=\"lang-none prettyprint-override\"><code>Hello -&gt; 2\nWorld -&gt; 1\n</code></pre>\n<p>How can I do that?</p>\n"
+}

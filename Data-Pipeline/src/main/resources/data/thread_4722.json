@@ -1,0 +1,226 @@
+{
+  "tags" : [ "java", "protocol-buffers", "proto3" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 11975,
+      "reputation" : 1070368,
+      "user_id" : 23354,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/CrVFH.png?s=256",
+      "display_name" : "Marc Gravell",
+      "link" : "https://stackoverflow.com/users/23354/marc-gravell"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1534692114,
+    "post_id" : 51918871,
+    "comment_id" : 90787938,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "AFAIK, that simply isn&#39;t tracked in the default proto3 implementations. Fields are either zero (and not sent) or are non-zero (and are sent), and <i>that&#39;s it</i>."
+  }, {
+    "owner" : {
+      "account_id" : 5784993,
+      "reputation" : 2939,
+      "user_id" : 4564515,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2d46f329904dfffed745f91c646b885b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "jschultz410",
+      "link" : "https://stackoverflow.com/users/4564515/jschultz410"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1582315749,
+    "post_id" : 51918871,
+    "comment_id" : 106748832,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Yeah, proto3 screwed up with their optimization that scalars with default value aren&#39;t serialized.  Now, a reader can&#39;t distinguish between &quot;field not specified&quot; and &quot;field specified but with default value.&quot;  You can claw back this functionality by wrapping your scalar inside a oneof or inside a submessage with the attendant cruftiness that incurs in your preferred language."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5784993,
+        "reputation" : 2939,
+        "user_id" : 4564515,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2d46f329904dfffed745f91c646b885b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "jschultz410",
+        "link" : "https://stackoverflow.com/users/4564515/jschultz410"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582315559,
+      "post_id" : 51924737,
+      "comment_id" : 106748763,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yeah, if you want presence / absence for scalars then you either need to wrap them in a oneof or inside a message (e.g. - google.protobuf.wrappers.proto)."
+    } ],
+    "owner" : {
+      "account_id" : 13892778,
+      "reputation" : 26948,
+      "user_id" : 10190237,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2c154d0312cf2e9a4ce2388286a0902e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "P.W",
+      "link" : "https://stackoverflow.com/users/10190237/p-w"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1534743950,
+    "creation_date" : 1534743950,
+    "answer_id" : 51924737,
+    "question_id" : 51918871,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>One of the suggested approaches is given <a href=\"https://github.com/GoogleCloudPlatform/google-cloud-python/issues/1402\" rel=\"noreferrer\">here</a>:</p>\n\n<pre><code># NOTE: As of proto3, HasField() only works for message fields, not for\n#       singular (non-message) fields. First try to use HasField and\n#       if it fails (with a ValueError) we manually consult the fields.\ntry:\n    return message_pb.HasField(property_name)\nexcept ValueError:\n    all_fields = set([field.name for field in message_pb._fields])\n    return property_name in all_fields\n</code></pre>\n\n<p>Also, from the same page:</p>\n\n<blockquote>\n  <p>In proto3, field presence for scalar fields simply doesn't exist. Your mental model for proto3 should be that it's a C++ or Go struct. For integers and strings, there is no such thing as being set or not, it always has a value. For submessages, it's a pointer to the submessage instance which can be NULL, that's why you can test presence for it.</p>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1559571,
+        "reputation" : 22743,
+        "user_id" : 1880339,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/0PkGx.png?s=256",
+        "display_name" : "artless-noise-bye-due2AI",
+        "link" : "https://stackoverflow.com/users/1880339/artless-noise-bye-due2ai"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1570402440,
+      "post_id" : 55292089,
+      "comment_id" : 102892089,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This can work.  You can also wrap it in <code>oneof</code>.  <code>oneof test_string { string name = 1; }</code>.  That also has some pitfalls."
+    } ],
+    "owner" : {
+      "account_id" : 8398535,
+      "reputation" : 160,
+      "user_id" : 6304695,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9779f1e3b9712c1a5beaf4d2bab859bc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Gigi",
+      "link" : "https://stackoverflow.com/users/6304695/gigi"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1553222165,
+    "creation_date" : 1553222165,
+    "answer_id" : 55292089,
+    "question_id" : 51918871,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think the recommended approach, which is not ideal because of design decisions made in proto3, is to check standard values. You cannot explicitly check whether a field is set or not. As access to <code>msg._fields</code> is not recommended as described <a href=\"https://github.com/googleapis/google-cloud-python/issues/1402#issuecomment-183009502\" rel=\"nofollow noreferrer\">here</a> the only thing that is left is to check whether the field is set to its standard value:</p>\n\n<pre><code>if msg.textfield.isEmpty() {\n    //assume textfield is not set\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5784993,
+      "reputation" : 2939,
+      "user_id" : 4564515,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2d46f329904dfffed745f91c646b885b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "jschultz410",
+      "link" : "https://stackoverflow.com/users/4564515/jschultz410"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1631567272,
+    "last_edit_date" : 1631567272,
+    "creation_date" : 1582315267,
+    "answer_id" : 60345496,
+    "question_id" : 51918871,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The best suggestion I've seen for this in proto3 is to wrap your field in a singleton oneof.  This will allow you to check for presence / absence again, similar to proto2.</p>\n<pre><code>message blah\n{\n    oneof foo_ { sint32 foo = 1; }\n}\n</code></pre>\n<p>In Python generated code this is extremely smooth as <code>foo</code> can be directly operated on as a scalar as if it wasn't inside a oneof.</p>\n<p>Unfortunately, for Java I think support for oneof's is far uglier.  Google also purposely removed the hasFoo() generated class function in proto3.  So you would need to consult the getFooCase() of the oneof instead to check for presence or absence.</p>\n<p><a href=\"https://developers.google.com/protocol-buffers/docs/reference/java-generated#oneof-fields\" rel=\"nofollow noreferrer\">https://developers.google.com/protocol-buffers/docs/reference/java-generated#oneof-fields</a></p>\n<p>Yes, I realize this means tons of oneof's and any attendant hassle they bring.  On the plus side, there is no overhead on the wire.</p>\n<p>The second best suggestion I've seen is to use a submessage to wrap your scalar because presence / absence of submessages is still supported.  There are the Well Known Types (WKT) in google.protobuf.wrappers.proto.  If you use those, then you may even get extra special treatment in your preferred language where the wrapped scalar can be easily operated on as if the containing submessage didn't exist (or so I've read, not entirely sure on this point myself).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10640901,
+        "reputation" : 852,
+        "user_id" : 7835969,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/RuFXC.jpg?s=256",
+        "display_name" : "Manishoaham",
+        "link" : "https://stackoverflow.com/users/7835969/manishoaham"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1751566380,
+      "post_id" : 66368383,
+      "comment_id" : 140562996,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "A cleaner solution is to declare the field as optional (with Protobuf version &gt; 3.15.0) as mentioned by @lahiru-chandima. This will generate has&lt;FieldName&gt;() methods (e.g. hasName()) ."
+    } ],
+    "owner" : {
+      "account_id" : 5987348,
+      "reputation" : 4624,
+      "user_id" : 4704510,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WBcGH.jpg?s=256",
+      "display_name" : "UsamaAmjad",
+      "link" : "https://stackoverflow.com/users/4704510/usamaamjad"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1759532505,
+    "last_edit_date" : 1759532505,
+    "creation_date" : 1614255716,
+    "answer_id" : 66368383,
+    "question_id" : 51918871,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>Update: Protobuf 3.15.0 <code>hasField</code></h1>\n<p>As mentioned by @Lahiru,  Protobuf <a href=\"https://github.com/protocolbuffers/protobuf/releases/tag/v3.15.0\" rel=\"nofollow noreferrer\">3.15.0</a> now has support for optional fields. You can use <code>hasField</code> methods again.</p>\n<p>-----------</p>\n<h2>Use Proto Wrappers <code>hasField()</code></h2>\n<p>I see some people are suggesting to use <code>oneof</code> to wrap your field in it but <code>proto3</code> already provides built-in <code>wrappers</code> with <code>hasField</code> kind of methods for primitive data types which <strong>will allow you to check if the field has been set or not</strong>.</p>\n<p>This is how you can declare it (see more <a href=\"https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#index\" rel=\"nofollow noreferrer\">Value types here</a>):</p>\n<pre><code>syntax = &quot;proto3&quot;;\n\nimport &quot;google/protobuf/wrappers.proto&quot;;\n\nmessage MyProtoMessage {\n    google.protobuf.BoolValue enabled = 1;\n    google.protobuf.StringValue name = 2;\n    google.protobuf.Int32Value age = 3;\n}\n</code></pre>\n<p>and this in Java code to check it:</p>\n<pre><code>MyProtoMessage myProtoMessage = getItFromSomewhere();\nif (myProtoMessage.hasName()) {\n    // field is set by client\n    myProtoMessage.getName();\n} else {\n    // field is not set by the client\n    // but you can still call `myProtoMessage.getName()` which will `return` default value &quot;&quot;\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5784993,
+        "reputation" : 2939,
+        "user_id" : 4564515,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2d46f329904dfffed745f91c646b885b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "jschultz410",
+        "link" : "https://stackoverflow.com/users/4564515/jschultz410"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1631567592,
+      "post_id" : 66541707,
+      "comment_id" : 122252459,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes. Interestingly enough, this is basically just syntactic sugar for an implicit oneof that wraps the scalar."
+    } ],
+    "owner" : {
+      "account_id" : 118763,
+      "reputation" : 24378,
+      "user_id" : 1015678,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/e12a835193e80c39b8483eb90780ff37?s=256&d=identicon&r=PG",
+      "display_name" : "Lahiru Chandima",
+      "link" : "https://stackoverflow.com/users/1015678/lahiru-chandima"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1615270329,
+    "creation_date" : 1615270329,
+    "answer_id" : 66541707,
+    "question_id" : 51918871,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Protobuf <a href=\"https://github.com/protocolbuffers/protobuf/releases/tag/v3.15.0\" rel=\"noreferrer\">3.15.0</a> now has the support for optional fields. You can use <code>hasField</code> methods again.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2009886,
+    "reputation" : 301,
+    "user_id" : 1798617,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/d8370f9c9ffa85110368373f6b3275e3?s=256&d=identicon&r=PG",
+    "display_name" : "user1798617",
+    "link" : "https://stackoverflow.com/users/1798617/user1798617"
+  },
+  "is_answered" : true,
+  "view_count" : 82603,
+  "answer_count" : 5,
+  "score" : 30,
+  "last_activity_date" : 1759532505,
+  "creation_date" : 1534690321,
+  "last_edit_date" : 1534694657,
+  "question_id" : 51918871,
+  "link" : "https://stackoverflow.com/questions/51918871/check-if-a-field-has-been-set-in-protocol-buffer-3",
+  "title" : "Check if a field has been set in protocol buffer 3",
+  "body" : "<p>I am migrating a java application from protocol buffers 2 to protocol buffer 3.</p>\n\n<p>In proto 2 to check if a field is set you have <code>hasfield()</code> method \nfor which an example Java code generated is:</p>\n\n<pre><code>public boolean hasText() {\n  return ((bitField0_ &amp; 0x00000004) == 0x00000004);\n}\n</code></pre>\n\n<p>However in proto 3 there it has been removed. \nHow do you check if a field has been set in proto 3?</p>\n"
+}

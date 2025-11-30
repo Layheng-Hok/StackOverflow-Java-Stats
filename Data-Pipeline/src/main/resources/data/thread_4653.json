@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "serialization", "apache-flink", "flink-streaming" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5538675,
+      "reputation" : 5123,
+      "user_id" : 4396113,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/4e5a85d2e82e9dc870bca92f15dec990?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "bottaio",
+      "link" : "https://stackoverflow.com/users/4396113/bottaio"
+    },
+    "is_accepted" : true,
+    "score" : 9,
+    "last_activity_date" : 1586497913,
+    "creation_date" : 1586497913,
+    "answer_id" : 61134736,
+    "question_id" : 61128734,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Flink is a distributed framework. That means, your program is potentially going to run on a thousands of nodes. This also means that each worker node has to receive code to be executed along with the required context. Simplifying a bit, both events flowing through the system and functions to be executed have to be serializable - as they are transfer via the wire. This is why serialization is important in distributed programming in general.</p>\n\n<hr>\n\n<p>In short, serialization is a process of encoding data into byte representation that can be transferred and restored on another node (another JVM).</p>\n\n<hr>\n\n<p>Back to the problem. Here is your cause:</p>\n\n<pre><code>Caused by: java.io.NotSerializableException: CEP\n</code></pre>\n\n<p>which is caused by line</p>\n\n<pre><code>return Tuple2.of(streamsIdComp, value);\n</code></pre>\n\n<p>You are using <code>streamsIdComp</code> variable which is a field in <code>CEP</code> class. That means, Flink has to serialize whole class to be able to access this field when executing <code>MapFunction</code>. You can overcome it by introducing local variable in <code>converttoKeyedStream</code> function:</p>\n\n<pre><code>public &lt;T&gt; KeyedStream&lt;Tuple2&lt;Integer, T&gt;, Integer&gt; converttoKeyedStream(DataStream&lt;T&gt; inputStream){\n\n    Preconditions.checkNotNull(inputStream, \"dataStream\");\n    TypeInformation&lt;T&gt; streamType = inputStream.getType();\n    // note this variable is local\n    int localStreamsIdComp = streamsIdComp;\n\n    KeyedStream&lt;Tuple2&lt;Integer,T&gt;,Integer&gt; keyedInputStream = inputStream.\n            map(new MapFunction&lt;T, Tuple2&lt;Integer,T&gt;&gt;() {\n                @Override\n                public Tuple2&lt;Integer, T&gt; map(T value) throws Exception {\n                    // and is used here\n                    return Tuple2.of(localStreamsIdComp, value);\n                }\n            }).\n            keyBy(new KeySelector&lt;Tuple2&lt;Integer, T&gt;, Integer&gt;() {\n                @Override\n                public Integer getKey(Tuple2&lt;Integer, T&gt; integerTTuple2) throws Exception {\n                    return integerTTuple2.f0;\n                }\n            });\n    return keyedInputStream;\n}\n</code></pre>\n\n<p>that way Flink has to serialize just this single variable, not the whole class itself.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8283698,
+      "reputation" : 1039,
+      "user_id" : 6227500,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e9be78c5f20b91a891a12dab02b23ca7?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "raphaelauv",
+      "link" : "https://stackoverflow.com/users/6227500/raphaelauv"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759717297,
+    "creation_date" : 1759717297,
+    "answer_id" : 79783323,
+    "question_id" : 61128734,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>An example in the doc of flink show how create a custom MapFunction class</p>\n<p><a href=\"https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/user_defined_functions/#implementing-an-interface\" rel=\"nofollow noreferrer\">https://nightlies.apache.org/flink/flink-docs-master/docs/dev/datastream/user_defined_functions/#implementing-an-interface</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 18043709,
+    "reputation" : 43,
+    "user_id" : 13115227,
+    "user_type" : "registered",
+    "profile_image" : "https://lh4.googleusercontent.com/-qYKjvU2xa0s/AAAAAAAAAAI/AAAAAAAAAAA/AKF05nC_ByoBd6OJTXPdWL3IxhVQWeRpKQ/s256-rj/photo.jpg",
+    "display_name" : "Maher Marwani",
+    "link" : "https://stackoverflow.com/users/13115227/maher-marwani"
+  },
+  "is_answered" : true,
+  "view_count" : 7446,
+  "accepted_answer_id" : 61134736,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1759717297,
+  "creation_date" : 1586460267,
+  "question_id" : 61128734,
+  "link" : "https://stackoverflow.com/questions/61128734/the-implementation-of-the-mapfunction-is-not-serializable-flink",
+  "title" : "The implementation of the MapFunction is not serializable Flink",
+  "body" : "<p>I am trying to implement a class that enables the user to manipulate N input Streams without having constraints on Types of input Streams.</p>\n\n<p>For starter, I wanted to transform all input DataStreams into keyedStreams.\nSo, I mapped the input dataStream into a Tuple and after that, I applied KeyBy to convert it into keystream.</p>\n\n<p>I always get a problem of serialization, I tried to follow this guide <a href=\"https://ci.apache.org/projects/flink/flink-docs-stable/dev/java_lambdas.html\" rel=\"nofollow noreferrer\">https://ci.apache.org/projects/flink/flink-docs-stable/dev/java_lambdas.html</a> and it didn't work.</p>\n\n<p>What I do like to know is :</p>\n\n<ol>\n<li>What is Serialization/Deserialization in Java ? and what is used for.</li>\n<li>What are the problems that I can counter in Flink with Serialization</li>\n<li>What is the problem in my code( you may find below the code and the error message)</li>\n</ol>\n\n<p>Thank you very much.</p>\n\n<p><strong>Main Class:</strong></p>\n\n<pre><code>public class CEP {\n\nprivate  Integer streamsIdComp = 0;\nfinal  private Map&lt;Integer, DataStream&lt;?&gt; &gt; dataStreams = new HashMap&lt;&gt;();\nfinal  private Map&lt;Integer, TypeInformation&lt;?&gt;&gt; dataStreamsTypes = new HashMap&lt;&gt;();\n\npublic &lt;T&gt; KeyedStream&lt;Tuple2&lt;Integer, T&gt;, Integer&gt; converttoKeyedStream(DataStream&lt;T&gt; inputStream){\n\n    Preconditions.checkNotNull(inputStream, \"dataStream\");\n    TypeInformation&lt;T&gt; streamType = inputStream.getType();\n\n    KeyedStream&lt;Tuple2&lt;Integer,T&gt;,Integer&gt; keyedInputStream = inputStream.\n            map(new MapFunction&lt;T, Tuple2&lt;Integer,T&gt;&gt;() {\n                @Override\n                public Tuple2&lt;Integer, T&gt; map(T value) throws Exception {\n                    return Tuple2.of(streamsIdComp, value);\n                }\n            }).\n            keyBy(new KeySelector&lt;Tuple2&lt;Integer, T&gt;, Integer&gt;() {\n                @Override\n                public Integer getKey(Tuple2&lt;Integer, T&gt; integerTTuple2) throws Exception {\n                    return integerTTuple2.f0;\n                }\n            });\n    return keyedInputStream;\n}\n\npublic &lt;T1&gt; void addInputStream(DataStream&lt;T1&gt; inputStream) {\n\n    TypeInformation&lt;T1&gt; streamType = inputStream.getType();\n\n    dataStreamsTypes.put(streamsIdComp, streamType);\n    dataStreams.put(streamsIdComp, this.converttoKeyedStream(inputStream));\n    streamsIdComp++;\n}\n}\n</code></pre>\n\n<p><strong>Test Class</strong></p>\n\n<pre><code>public class CEPTest {\n\n@Test\npublic void addInputStreamTest() throws Exception {\n    //test if we can change keys in a keyedStream\n    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();\n\n    DataStream&lt;Record&gt; input1 = env.fromElements(\n            new Record(\"1\", 1, \"a\"),\n            new Record(\"2\", 2, \"b\"),\n            new Record(\"3\", 3, \"c\"))\n            .keyBy(Record::getBizName);\n\n    DataStream&lt;Integer&gt; input2 = env.fromElements(1, 2, 3, 4);\n\n    CEP cepObject = new CEP();\n    cepObject.addInputStream(input1);\n    cepObject.addInputStream(input2);\n\n   }\n}\n</code></pre>\n\n<p><strong>Error Message</strong></p>\n\n<pre><code>org.apache.flink.api.common.InvalidProgramException: The implementation of the MapFunction \nis not serializable. The implementation accesses fields of its enclosing class, which is a \ncommon reason for non-serializability. A common solution is to make the function a proper \n(non-inner) class, or a static inner class.\n\nat org.apache.flink.api.java.ClosureCleaner.clean(ClosureCleaner.java:151)\nat org.apache.flink.api.java.ClosureCleaner.clean(ClosureCleaner.java:71)\nat org.apache.flink.streaming.api.environment.StreamExecutionEnvironment.clean(StreamExecutionEnvironment.java:1821)\nat org.apache.flink.streaming.api.datastream.DataStream.clean(DataStream.java:188)\nat org.apache.flink.streaming.api.datastream.DataStream.map(DataStream.java:590)\nat CEP.converttoKeyedStream(CEP.java:25)\nat CEP.addInputStream(CEP.java:45)\nat CEPTest.addInputStreamTest(CEPTest.java:33)\nat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\nat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\nat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\nat java.base/java.lang.reflect.Method.invoke(Method.java:566)\nat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)\nat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\nat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)\nat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\nat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)\nat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)\nat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)\nat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\nat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\nat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\nat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\nat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\nat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\nat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\nat \ncom.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)\nat com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:33)\nat com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:230)\nat com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:58)\nCaused by: java.io.NotSerializableException: CEP\nat java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1185)\nat java.base/java.io.ObjectOutputStream.defaultWriteFields(ObjectOutputStream.java:1553)\nat java.base/java.io.ObjectOutputStream.writeSerialData(ObjectOutputStream.java:1510)\nat java.base/java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1433)\nat java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1179)\nat java.base/java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:349)\nat org.apache.flink.util.InstantiationUtil.serializeObject(InstantiationUtil.java:586)\nat org.apache.flink.api.java.ClosureCleaner.clean(ClosureCleaner.java:133)\n... 29 more\n</code></pre>\n"
+}

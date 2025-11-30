@@ -1,0 +1,477 @@
+{
+  "tags" : [ "java", "java-8", "java-stream" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 93689,
+      "reputation" : 427426,
+      "user_id" : 256196,
+      "user_type" : "moderator",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/d84b558fd67be10d5a718fb94231909d?s=256&d=identicon&r=PG",
+      "display_name" : "Bohemian",
+      "link" : "https://stackoverflow.com/users/256196/bohemian"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1449226150,
+    "post_id" : 34086461,
+    "comment_id" : 55925258,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Looks like you need a Collector"
+  }, {
+    "owner" : {
+      "account_id" : 1123823,
+      "reputation" : 11251,
+      "user_id" : 1111544,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+      "display_name" : "Luigi Cortese",
+      "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+    },
+    "reply_to_user" : {
+      "account_id" : 93689,
+      "reputation" : 427426,
+      "user_id" : 256196,
+      "user_type" : "moderator",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/d84b558fd67be10d5a718fb94231909d?s=256&d=identicon&r=PG",
+      "display_name" : "Bohemian",
+      "link" : "https://stackoverflow.com/users/256196/bohemian"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1449226201,
+    "post_id" : 34086461,
+    "comment_id" : 55925293,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I thought about that, but I couldn&#39;t find a (nice and clean) solution"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1449226989,
+      "post_id" : 34086750,
+      "comment_id" : 55925774,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Well, in the original problem source stream is a log file, so you don&#39;t really have access to indexes."
+    } ],
+    "owner" : {
+      "account_id" : 4860165,
+      "reputation" : 28283,
+      "user_id" : 3920048,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f47640b2477cfc8debdc80a35dfa3962?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Misha",
+      "link" : "https://stackoverflow.com/users/3920048/misha"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1449228644,
+    "last_edit_date" : 1449228644,
+    "creation_date" : 1449226647,
+    "answer_id" : 34086750,
+    "question_id" : 34086461,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can write a custom collector, or use the much simpler approach of streaming over the list's indexes:</p>\n\n<pre><code>Map&lt;String, String&gt; result = IntStream.range(0, data.size() - 1)\n        .filter(i -&gt; data.get(i).startsWith(\"err\"))\n        .boxed()\n        .collect(toMap(data::get, i -&gt; data.get(i+1)));\n</code></pre>\n\n<p>This assumes that your data is in a random access friendly list or that you can temporarily dump it into one.</p>\n\n<p>If you cannot randomly access the data or load it into a list or array for processing, you can always make a custom <code>pairing</code> collector so you can write </p>\n\n<pre><code>Map&lt;String, String&gt; result = data.stream()\n        .collect(pairing(\n                (a, b) -&gt; a.startsWith(\"err\"), \n                AbstractMap.SimpleImmutableEntry::new,\n                toMap(Map.Entry::getKey, Map.Entry::getValue)\n        ));\n</code></pre>\n\n<p>Here's the source for the collector.  It's parallel-friendly and might come in handy in other situations:</p>\n\n<pre><code>public static &lt;T, V, A, R&gt; Collector&lt;T, ?, R&gt; pairing(BiPredicate&lt;T, T&gt; filter, BiFunction&lt;T, T, V&gt; map, Collector&lt;? super V, A, R&gt; downstream) {\n\n    class Pairing {\n        T left, right;\n        A middle = downstream.supplier().get();\n        boolean empty = true;\n\n        void add(T t) {\n            if (empty) {\n                left = t;\n                empty = false;\n            } else if (filter.test(right, t)) {\n                downstream.accumulator().accept(middle, map.apply(right, t));\n            }\n            right = t;\n        }\n\n        Pairing combine(Pairing other) {\n            if (!other.empty) {\n                this.add(other.left);\n                this.middle = downstream.combiner().apply(this.middle, other.middle);\n                this.right = other.right;\n            }\n            return this;\n        }\n\n        R finish() {\n            return downstream.finisher().apply(middle);\n        }\n    }\n\n    return Collector.of(Pairing::new, Pairing::add, Pairing::combine, Pairing::finish);\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1449227697,
+      "post_id" : 34086958,
+      "comment_id" : 55926191,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "So, well, there&#39;s not a more straightforward way. +1 for StreamEx library, very interesting project! <code>PairMap</code> perfectly addresses my needs"
+    }, {
+      "owner" : {
+        "account_id" : 1936546,
+        "reputation" : 138175,
+        "user_id" : 1743880,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/wcXBB.png?s=256",
+        "display_name" : "Tunaki",
+        "link" : "https://stackoverflow.com/users/1743880/tunaki"
+      },
+      "reply_to_user" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1449227977,
+      "post_id" : 34086958,
+      "comment_id" : 55926364,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@LuigiCortese I don&#39;t think so no. That&#39;s unfortunate. Scala has a nice <a href=\"http://www.scala-lang.org/api/current/index.html#scala.collection.Seq@sliding%28size:Int,step:Int%29:Iterator%5BRepr%5D\" rel=\"nofollow noreferrer\"><code>sliding</code></a> method on Stream that would be appropriate here: it groups elements in fixed size blocks."
+    }, {
+      "owner" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1449228167,
+      "post_id" : 34086958,
+      "comment_id" : 55926455,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;ve heard about that. IMHO that&#39;s a big, deep hole left there right in the middle. It could be much more synthetic and easly understandable"
+    }, {
+      "owner" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1449228420,
+      "post_id" : 34086958,
+      "comment_id" : 55926614,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "correct me if I&#39;m wrong, your solution doesn&#39;t allow to limit your search to the first <i>n</i> couples, right?"
+    }, {
+      "owner" : {
+        "account_id" : 1936546,
+        "reputation" : 138175,
+        "user_id" : 1743880,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/wcXBB.png?s=256",
+        "display_name" : "Tunaki",
+        "link" : "https://stackoverflow.com/users/1743880/tunaki"
+      },
+      "reply_to_user" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1449228922,
+      "post_id" : 34086958,
+      "comment_id" : 55926920,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@LuigiCortese With the <code>pairMap</code> solution, you could add a <code>.limit(2*n)</code> after the <code>.filter(Objects::nonNull)</code> so that it limits to n couples."
+    }, {
+      "owner" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1449229123,
+      "post_id" : 34086958,
+      "comment_id" : 55927029,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Clear, I was referring to custom collector solution. I need to take a close look at this StreamEx..."
+    }, {
+      "owner" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "reply_to_user" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1449231764,
+      "post_id" : 34086958,
+      "comment_id" : 55928605,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Also why <code>.limit(2*n)</code>? Seems that <code>.limit(n)</code> is what @LuigiCortese wants."
+    } ],
+    "owner" : {
+      "account_id" : 1936546,
+      "reputation" : 138175,
+      "user_id" : 1743880,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/wcXBB.png?s=256",
+      "display_name" : "Tunaki",
+      "link" : "https://stackoverflow.com/users/1743880/tunaki"
+    },
+    "is_accepted" : true,
+    "score" : 25,
+    "last_activity_date" : 1591141588,
+    "last_edit_date" : 1591141588,
+    "creation_date" : 1449227264,
+    "answer_id" : 34086958,
+    "question_id" : 34086461,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can build a custom <a href=\"https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/stream/Collector.html\" rel=\"noreferrer\"><code>Collector</code></a> for this task.</p>\n\n<pre><code>Map&lt;String, String&gt; map = \n    Stream.of(\"a\", \"b\", \"err1\", \"c\", \"d\", \"err2\", \"e\", \"f\", \"g\", \"h\", \"err3\", \"i\", \"j\")\n          .collect(MappingErrors.collector());\n</code></pre>\n\n<p>with:</p>\n\n<pre><code>private static final class MappingErrors {\n\n    private Map&lt;String, String&gt; map = new HashMap&lt;&gt;();\n\n    private String first, second;\n\n    public void accept(String str) {\n        first = second;\n        second = str;\n        if (first != null &amp;&amp; first.startsWith(\"err\")) {\n            map.put(first, second);\n        }\n    }\n\n    public MappingErrors combine(MappingErrors other) {\n        throw new UnsupportedOperationException(\"Parallel Stream not supported\");\n    }\n\n    public Map&lt;String, String&gt; finish() {\n        return map;\n    }\n\n    public static Collector&lt;String, ?, Map&lt;String, String&gt;&gt; collector() {\n        return Collector.of(MappingErrors::new, MappingErrors::accept, MappingErrors::combine, MappingErrors::finish);\n    }\n\n}\n</code></pre>\n\n<p>In this collector, two running elements are kept. Each time a <code>String</code> is accepted, they are updated and if the first starts with <code>\"err\"</code>, the two elements are added to a map.</p>\n\n<hr>\n\n<p>Another solution is to use the <a href=\"https://github.com/amaembo/streamex\" rel=\"noreferrer\">StreamEx</a> library which provides a <a href=\"http://amaembo.github.io/streamex/javadoc/one/util/streamex/StreamEx.html#pairMap-java.util.function.BiFunction-\" rel=\"noreferrer\"><code>pairMap</code></a> method that applies a given function to the every adjacent pair of elements of this stream. In the following code, the operation returns a String array consisting of the first and second element of the pair if the first element starts with <code>\"err\"</code>, <code>null</code> otherwise. <code>null</code> elements are then filtered out and the Stream is collected into a map.</p>\n\n<pre><code>Map&lt;String, String&gt; map = \n    StreamEx.of(\"a\", \"b\", \"err1\", \"c\", \"d\", \"err2\", \"e\", \"f\", \"g\", \"h\", \"err3\", \"i\", \"j\")\n            .pairMap((s1, s2) -&gt; s1.startsWith(\"err\") ? new String[] { s1, s2 } : null)\n            .nonNull()\n            .toMap(a -&gt; a[0], a -&gt; a[1]);\n\nSystem.out.println(map);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1449233326,
+      "post_id" : 34088321,
+      "comment_id" : 55929489,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I like the idea behind StreamEx, I hope to come out with some interesting PR soon =)"
+    }, {
+      "owner" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "reply_to_user" : {
+        "account_id" : 1123823,
+        "reputation" : 11251,
+        "user_id" : 1111544,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+        "display_name" : "Luigi Cortese",
+        "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1449279697,
+      "post_id" : 34088321,
+      "comment_id" : 55952496,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@LuigiCortese, please note though that I not eagerly accept every single enhancement. Every enhancement has many pros and cons to evaluate. For example, I&#39;ll likely to reject any new feature which shows poor parallel performance. Probably it would be better to discuss your idea first in the <a href=\"https://github.com/amaembo/streamex/issues\" rel=\"nofollow noreferrer\">issue tracker</a>"
+    } ],
+    "owner" : {
+      "account_id" : 6243460,
+      "reputation" : 100904,
+      "user_id" : 4856258,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tagir Valeev",
+      "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1449231668,
+    "creation_date" : 1449231668,
+    "answer_id" : 34088321,
+    "question_id" : 34086461,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Things would be easier if your input is located in the random-access list. This way you can utilize good old <code>List.subList</code> method like this:</p>\n\n<pre><code>List&lt;String&gt; list = Arrays.asList(\"a\", \"b\", \"err1\", \"c\", \"d\", \"err2\", \"e\", \n     \"f\", \"g\", \"h\", \"err3\", \"i\", \"j\");\n\nMap&lt;String, String&gt; map = IntStream.range(0, list.size()-1)\n    .mapToObj(i -&gt; list.subList(i, i+2))\n    .filter(l -&gt; l.get(0).startsWith(\"err\"))\n    .collect(Collectors.toMap(l -&gt; l.get(0), l -&gt; l.get(1)));\n</code></pre>\n\n<p>The same thing could be done with already mentioned StreamEx library (written by me) in a little bit shorter manner:</p>\n\n<pre><code>List&lt;String&gt; list = Arrays.asList(\"a\", \"b\", \"err1\", \"c\", \"d\", \"err2\", \"e\", \n     \"f\", \"g\", \"h\", \"err3\", \"i\", \"j\");\n\nMap&lt;String, String&gt; map = StreamEx.ofSubLists(list, 2, 1)\n    .mapToEntry(l -&gt; l.get(0), l -&gt; l.get(1))\n    .filterKeys(key -&gt; key.startsWith(\"err\"))\n    .toMap();\n</code></pre>\n\n<p>Though if you don't want third-party dependency, the poor Stream API solution looks also not very bad.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1649573,
+        "reputation" : 2029,
+        "user_id" : 1520422,
+        "user_type" : "registered",
+        "accept_rate" : 36,
+        "profile_image" : "https://i.sstatic.net/FntW4.jpg?s=256",
+        "display_name" : "Frederic Leitenberger",
+        "link" : "https://stackoverflow.com/users/1520422/frederic-leitenberger"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1595425966,
+      "post_id" : 34095374,
+      "comment_id" : 111470292,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Bad idead. This is very error-prone. If there is a <code>,</code> in one of the input Strings it will do unexpected things. besides ... what is this crazy RegEx all about? :-)"
+    }, {
+      "owner" : {
+        "account_id" : 5745825,
+        "reputation" : 13081,
+        "user_id" : 4537090,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/Dwxvn.jpg?s=256",
+        "display_name" : "WesternGun",
+        "link" : "https://stackoverflow.com/users/4537090/westerngun"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1719581498,
+      "post_id" : 34095374,
+      "comment_id" : 138723855,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If the stream is too long, you read all elements into memory which is not space-efficient; even it&#39;s a small stream, using it like somehow nullify the purpose of Stream API."
+    }, {
+      "owner" : {
+        "account_id" : 93689,
+        "reputation" : 427426,
+        "user_id" : 256196,
+        "user_type" : "moderator",
+        "accept_rate" : 77,
+        "profile_image" : "https://www.gravatar.com/avatar/d84b558fd67be10d5a718fb94231909d?s=256&d=identicon&r=PG",
+        "display_name" : "Bohemian",
+        "link" : "https://stackoverflow.com/users/256196/bohemian"
+      },
+      "reply_to_user" : {
+        "account_id" : 5745825,
+        "reputation" : 13081,
+        "user_id" : 4537090,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/Dwxvn.jpg?s=256",
+        "display_name" : "WesternGun",
+        "link" : "https://stackoverflow.com/users/4537090/westerngun"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1719616062,
+      "post_id" : 34095374,
+      "comment_id" : 138727421,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@WesternGun The elements of the stream are <i>already</i> in memory. This uses the same amount of memory again. It would take billions of elements to cause a problem."
+    } ],
+    "owner" : {
+      "account_id" : 93689,
+      "reputation" : 427426,
+      "user_id" : 256196,
+      "user_type" : "moderator",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/d84b558fd67be10d5a718fb94231909d?s=256&d=identicon&r=PG",
+      "display_name" : "Bohemian",
+      "link" : "https://stackoverflow.com/users/256196/bohemian"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1449254807,
+    "creation_date" : 1449254807,
+    "answer_id" : 34095374,
+    "question_id" : 34086461,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Here's a simple one liner using an off-the-shelf collector:</p>\n\n<pre><code>Stream&lt;String&gt; stream = Stream.of(\"a\", \"b\", \"err1\", \"c\", \"d\", \"err2\", \"e\", \"f\", \"g\", \"h\", \"err3\", \"i\", \"j\");\n\nMap&lt;String, String&gt; map = Arrays.stream(stream\n        .collect(Collectors.joining(\",\")).split(\",(?=(([^,]*,){2})*[^,]*$)\"))\n    .filter(s -&gt; s.startsWith(\"err\"))\n    .map(s -&gt; s.split(\",\"))\n    .collect(Collectors.toMap(a -&gt; a[0], a -&gt; a[1]));\n</code></pre>\n\n<p>The \"trick\" here is to first join all terms together into a single String, then split it into Strings of pairs, eg <code>\"a,b\"</code>, <code>\"err1,c\"</code>, etc. Once you have a stream of pairs, processing is straightforward.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16249442,
+      "reputation" : 4160,
+      "user_id" : 11733759,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/26949f2f7f33f86e2e74e958efc7a2c6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "lczapski",
+      "link" : "https://stackoverflow.com/users/11733759/lczapski"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1575386991,
+    "last_edit_date" : 1575386991,
+    "creation_date" : 1574768330,
+    "answer_id" : 59050118,
+    "question_id" : 34086461,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Other approach with <code>Collector.of</code> and <code>List&lt;List&lt;String&gt;&gt;</code> as structure to collect pairs.\nFirst collect to <code>List&lt;List&lt;String&gt;&gt;</code>:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>List&lt;List&lt;String&gt;&gt; collect = Stream.of(\"a\", \"b\", \"err1\", \"c\", \"d\", \"err2\", \"e\", \"f\", \"g\", \"h\", \"err3\", \"i\", \"j\")\n        .collect(\n                Collector.of(\n                        LinkedList::new,\n                        (a, b) -&gt; {\n                            if (b.startsWith(\"err\"))\n                                a.add(new ArrayList&lt;&gt;(List.of(b)));\n                            else if (!a.isEmpty() &amp;&amp; a.getLast().size() == 1)\n                                a.getLast().add(b);\n                        },\n                        (a, b) -&gt; { throw new UnsupportedOperationException(); }\n                )\n        );\n</code></pre>\n\n<p>Then it can be transform to map</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>Map&lt;String, String&gt; toMap = collect.stream().filter(l -&gt; l.size() == 2)\n        .collect(Collectors.toMap(\n                e -&gt; e.get(0),\n                e -&gt; e.get(1))\n        );\n</code></pre>\n\n<p>Or all in one with <code>Collectors.collectingAndThen</code></p>\n\n<pre class=\"lang-java prettyprint-override\"><code>Map&lt;String, String&gt; toMap = Stream.of(\"a\", \"b\", \"err1\", \"c\", \"d\", \"err2\", \"e\", \"f\", \"g\", \"h\", \"err3\", \"i\", \"j\")\n        .collect(Collectors.collectingAndThen(\n                Collector.of(\n                        LinkedList&lt;List&lt;String&gt;&gt;::new,\n                        (a, b) -&gt; {\n                            if (b.startsWith(\"err\"))\n                                a.add(new ArrayList&lt;&gt;(List.of(b)));\n                            else if (!a.isEmpty() &amp;&amp; a.getLast().size() == 1)\n                                a.getLast().add(b);\n                        },\n                        (a, b) -&gt; { throw new UnsupportedOperationException(); }\n                ), (x) -&gt; x.stream().filter(l -&gt; l.size() == 2)\n                        .collect(Collectors.toMap(\n                                e -&gt; e.get(0),\n                                e -&gt; e.get(1))\n                        )\n        ));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1046868,
+      "reputation" : 5367,
+      "user_id" : 1051677,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/662f409b812848562fa7a07d1988b1c2?s=256&d=identicon&r=PG",
+      "display_name" : "Silviu Burcea",
+      "link" : "https://stackoverflow.com/users/1051677/silviu-burcea"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1762081663,
+    "last_edit_date" : 1762081663,
+    "creation_date" : 1762081202,
+    "answer_id" : 79807074,
+    "question_id" : 34086461,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Java 25 is the first LTS version with support for such operations (storing internal state before pushing the final shape). Enter <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/Gatherers.html\" rel=\"nofollow noreferrer\">gatherers</a>.</p>\n<p>Below is the generic implementation for grouping by particular keys in a stream:</p>\n<pre class=\"lang-java prettyprint-override\"><code>record GroupBy&lt;V&gt;(Predicate&lt;V&gt; predicate) implements Gatherer&lt;V, List&lt;GroupBy.InternalState&lt;V&gt;&gt;, Map&lt;V, List&lt;V&gt;&gt;&gt; {\n\n    static class InternalState&lt;V&gt; { // #0\n        V key;\n        List&lt;V&gt; value;\n\n        private InternalState(V key, List&lt;V&gt; value) {\n            this.key = key;\n            this.value = value;\n        }\n    }\n\n    @Override\n    public Supplier&lt;List&lt;InternalState&lt;V&gt;&gt;&gt; initializer() {\n        return ArrayList::new; // #1\n    }\n\n    @Override\n    public Integrator&lt;List&lt;InternalState&lt;V&gt;&gt;, V, Map&lt;V, List&lt;V&gt;&gt;&gt; integrator() {\n        return (state, item, downstream) -&gt; {\n            if (predicate.test(item)) { // #2\n                state.add(new InternalState&lt;&gt;(item, new ArrayList&lt;&gt;()));\n            } else if (!state.isEmpty()) { // #4\n                state.getLast().value.add(item); // #3\n            }\n\n            return true;\n        };\n    }\n\n    @Override\n    public BinaryOperator&lt;List&lt;InternalState&lt;V&gt;&gt;&gt; combiner() {\n        return (first, second) -&gt; {\n            first.addAll(second);\n            return first;\n        };\n    }\n\n    @Override\n    public BiConsumer&lt;List&lt;InternalState&lt;V&gt;&gt;, Downstream&lt;? super Map&lt;V, List&lt;V&gt;&gt;&gt;&gt; finisher() {\n        return (state, downstream) -&gt; { // #5\n            var result = new HashMap&lt;V, List&lt;V&gt;&gt;();\n            state.forEach(s -&gt; result.put(s.key, s.value));\n            if (!downstream.isRejecting()) downstream.push(result);\n        };\n    }\n}\n</code></pre>\n<p>The idea is:</p>\n<ul>\n<li>store a list of an internal state, which is a pair of (key, listOfValues) (see #0 and #1)</li>\n<li>if the item passes the test, add a new entry for it (see #2)</li>\n<li>if the item does not pass the test, it is a regular item to be grouped so add to the value of last entry (#3), if such an entry exists (#4) as the Stream could start without a matching item, e.g. your <code>a</code> and <code>b</code> before <code>err1</code></li>\n<li>at the end, consolidate the list of entries collected into a final map (#5)</li>\n</ul>\n<p>Usage:</p>\n<pre class=\"lang-java prettyprint-override\"><code>Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;err1&quot;, &quot;c&quot;, &quot;d&quot;, &quot;err2&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;, &quot;err3&quot;, &quot;i&quot;, &quot;j&quot;)\n                .gather(new GroupBy&lt;&gt;(s -&gt; s.startsWith(&quot;err&quot;)))\n                .forEach(System.out::println);\n\n// prints {err3=[i, j], err2=[e, f, g, h], err1=[c, d]} \n</code></pre>\n<p>You could easily modify it to accept a maximum limit for each group (when you add an item, check the existing size and do nothing in the step), or a maximum number of groups (by returning <code>false</code> in the integrator if the groups list reached your threshold).</p>\n<p>I hope that it satisfies your requirements and respects the true spirit of <code>Stream</code>s.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1123823,
+    "reputation" : 11251,
+    "user_id" : 1111544,
+    "user_type" : "registered",
+    "accept_rate" : 79,
+    "profile_image" : "https://i.sstatic.net/z1mLC.jpg?s=256",
+    "display_name" : "Luigi Cortese",
+    "link" : "https://stackoverflow.com/users/1111544/luigi-cortese"
+  },
+  "is_answered" : true,
+  "view_count" : 43129,
+  "accepted_answer_id" : 34086958,
+  "answer_count" : 6,
+  "score" : 34,
+  "last_activity_date" : 1762087043,
+  "creation_date" : 1449225827,
+  "last_edit_date" : 1762087043,
+  "question_id" : 34086461,
+  "link" : "https://stackoverflow.com/questions/34086461/is-there-a-way-to-iterate-a-java-stream-taking-two-elements-a-time-instead-of-on",
+  "title" : "Is there a way to iterate a Java Stream taking two elements a time instead of one?",
+  "body" : "<p>Let's say we have this stream</p>\n<pre><code>Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;err1&quot;, &quot;c&quot;, &quot;d&quot;, &quot;err2&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;, &quot;err3&quot;, &quot;i&quot;, &quot;j&quot;);\n</code></pre>\n<p>and I want to save in a map the couples of adjacent strings in which the first one starts with &quot;err&quot;.</p>\n<p>What I thought of is something like this</p>\n<pre><code>Map&lt;String, String&gt; map = new HashMap&lt;&gt;();\n\nStream.of(&quot;a&quot;, &quot;b&quot;, &quot;err1&quot;, &quot;c&quot;, &quot;d&quot;, &quot;err2&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;, &quot;err3&quot;, &quot;i&quot;, &quot;j&quot;)\n.reduce((acc, next) -&gt; {\n    if (acc.startsWith(&quot;err&quot;))\n        map.put(acc,next);\n    if (next.startsWith(&quot;err&quot;))\n        return next;\n    else\n        return &quot;&quot;;\n});\n</code></pre>\n<p>But I'm not totally satisfied with it for two main reasons</p>\n<ol>\n<li>I'm &quot;misusing&quot; <code>reduce</code> function. In Stream API every function has its clear, well defined purpose: <code>max</code> is supposed to calculate max value, <code>filter</code> is supposed to filter based on a condition, <code>reduce</code> is supposed to produce an incrementally accumulated value and so on.</li>\n<li>Doing that prevents me from using Streams powerful mechanisms: what if I wanted to limit my search to the first two results?</li>\n</ol>\n<p>Here I used <code>reduce</code> because (as far as I know) it's the only function that lets you compare couple of values that you can, somehow, lead back to something similar to &quot;current value&quot; and &quot;next value&quot; concepts.</p>\n<p>Is there a more straightforward way? Something that allows you to iterate the stream considering more than one value for each iteration?</p>\n<p>What I'm thinking about is some mechanism that, given the current element, allows you to define a &quot;window of elements&quot; to consider, for each iteration.</p>\n<p>Something like</p>\n<pre><code>&lt;R&gt; Stream&lt;R&gt; mapMoreThanOne(\n    int elementsBeforeCurrent,\n    int elementsAfterCurrent,\n    Function&lt;List&lt;? super T&gt;, ? extends R&gt; mapper);\n</code></pre>\n<p>instead of</p>\n<pre><code>&lt;R&gt; Stream&lt;R&gt; map(Function&lt;? super T, ? extends R&gt; mapper);\n</code></pre>\n<p>That would be a powerful &quot;upgrade&quot; to current API.</p>\n<p>I appreciate the effort of people proposing their solution, but the issue is not the algorithm per se. There are different ways to achieve my goal by putting together streams, indexes, temp variables to store previous values... but I was wondering if there was some method in Stream API that was designed for the task of dealing with elements other than the current without breaking the &quot;stream paradigm&quot;. Something like this</p>\n<pre><code>List&lt;String&gt; list =\n        Stream.of(&quot;a&quot;, &quot;b&quot;, &quot;err1&quot;, &quot;c&quot;, &quot;d&quot;, &quot;err2&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot;, &quot;err3&quot;, &quot;i&quot;, &quot;j&quot;)\n        .filterFunctionImWonderingIfExist(/*filters couples of elements*/)\n        .limit(2)\n        .collect(Collectors.toList());\n</code></pre>\n<p>Given the answers, I think there's no &quot;clear and quick&quot; solution, unless using StreamEx library</p>\n"
+}

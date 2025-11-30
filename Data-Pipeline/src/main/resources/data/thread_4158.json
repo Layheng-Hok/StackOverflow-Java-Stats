@@ -1,0 +1,64 @@
+{
+  "tags" : [ "java", "spring", "hibernate" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 4454424,
+      "reputation" : 7672,
+      "user_id" : 3625215,
+      "user_type" : "registered",
+      "accept_rate" : 47,
+      "profile_image" : "https://www.gravatar.com/avatar/421576a7eb9562bafa82f62d99d31f5e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "MyTwoCents",
+      "link" : "https://stackoverflow.com/users/3625215/mytwocents"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1551846847,
+    "post_id" : 55013728,
+    "comment_id" : 96785279,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You may need to add @Table(name=Actor.TABLE_NAME)   in Company Entity as well. <a href=\"https://thoughts-on-java.org/hibernate-tips-how-to-map-an-entity-to-multiple-tables/\" rel=\"nofollow noreferrer\">thoughts-on-java.org/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 959020,
+      "reputation" : 3361,
+      "user_id" : 983783,
+      "user_type" : "registered",
+      "accept_rate" : 63,
+      "profile_image" : "https://www.gravatar.com/avatar/16d47cf0922781407d116796f632e633?s=256&d=identicon&r=PG",
+      "display_name" : "Eddy Freeman",
+      "link" : "https://stackoverflow.com/users/983783/eddy-freeman"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1760802257,
+    "last_edit_date" : 1760802257,
+    "creation_date" : 1552111516,
+    "answer_id" : 55074515,
+    "question_id" : 55013728,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>After some research I found the answer myself. Since am using <code>@Secondarytable</code> annotation on the <code>Company</code> class and its also inheriting from <code>Actor</code>, I have to specify which table the attributes of <code>Company</code> should persist.</p>\n<p>By adding <strong>&quot;table = TABLE_NAME&quot;</strong> to each <code>@Column</code> annotation on the attributes of <code>Company</code> the problem is solved. Without <strong>&quot;table = TABLE_NAME&quot;</strong> inside <code>@Column</code>, Hibernate will not know whether to save <code>Company</code> properties in the <strong>actor</strong> table or <strong>company</strong> table.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 959020,
+    "reputation" : 3361,
+    "user_id" : 983783,
+    "user_type" : "registered",
+    "accept_rate" : 63,
+    "profile_image" : "https://www.gravatar.com/avatar/16d47cf0922781407d116796f632e633?s=256&d=identicon&r=PG",
+    "display_name" : "Eddy Freeman",
+    "link" : "https://stackoverflow.com/users/983783/eddy-freeman"
+  },
+  "is_answered" : true,
+  "view_count" : 442,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760802257,
+  "creation_date" : 1551832380,
+  "last_edit_date" : 1552244912,
+  "question_id" : 55013728,
+  "link" : "https://stackoverflow.com/questions/55013728/having-issues-with-hibernate-inheritance-secondarytable-annotations",
+  "title" : "Having issues with Hibernate inheritance: @SecondaryTable Annotations",
+  "body" : "<p>I have the following classes:</p>\n\n<p><strong>// Actor class</strong></p>\n\n<pre><code>@Entity\n@Table(name=Actor.TABLE_NAME)  \n@Inheritance(strategy=InheritanceType.SINGLE_TABLE)\n@DiscriminatorColumn(name=\"type\")\n@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property=\"id\")\npublic abstract class Actor{\n\n    public static final String TABLE_NAME = \"actor\";\n\n    @Id\n    @Column(name=\"id\")\n    private String id = IdGenerator.createId();   \n\n    public Actor() { }\n\n    public String getId() { return id;  }\n}\n</code></pre>\n\n<p><strong>// Company class</strong></p>\n\n<pre><code>@Entity\n@SecondaryTable(name = Company.TABLE_NAME, pkJoinColumns= {@PrimaryKeyJoinColumn(name=Company.PK_NAME)})\n@DiscriminatorValue(\"company\")\n\npublic class Company extends Actor {\n\n    public static final String TABLE_NAME = \"company\";\n    public static final String PK_NAME = \"id\";\n\n    // Inherits Id from superclass Actor\n\n    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER)\n    @JoinColumn(name=\"categoryid\") \n    private Category category;\n\n    @Column(name = \"name\", nullable=false)\n    @Size(min=2, max=60, message=\"LATER\")\n    private String name;\n\n    @Column(name=\"domainName\", nullable=true)\n    private String domainName;  \n\n    @Column(name=\"registrationNumber\", nullable=true)\n    private String registrationNumber;\n\n    @Column(name=\"description\")\n    private String description;\n\n\n    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)\n    @JoinColumn(name=\"itemId\")\n    private Set&lt;Image&gt; logos = new HashSet&lt;&gt;();\n\n    @OneToMany(mappedBy=\"company\", cascade=CascadeType.ALL, fetch=FetchType.LAZY)\n    private Set&lt;Branch&gt; branches = new HashSet&lt;&gt;();\n\n    public Company() {}\n\n    public void addBranch(Branch branch) {\n        branch.setCompany(this);\n        branches.add(branch);\n    }\n\n    public void addLogo(Image logo) {\n\n    }\n\n// GETTERS AND SETTERS .......\n\n}\n</code></pre>\n\n<p><strong>// Branch class</strong></p>\n\n<pre><code>@Entity\n@Table(name=Branch.TABLE_NAME)\npublic class Branch {\n\n    public static final String TABLE_NAME = \"branch\";\n\n    @Id\n    @Column(name = \"id\")\n    private String id = IdGenerator.createId();\n\n    @OneToOne(cascade=CascadeType.ALL)\n    @JoinColumn(name=\"address\")\n    private Address address;\n\n    @Column(name = \"telephone\")\n    private String telephone;\n\n    @ManyToOne\n    @JoinColumn(name=\"company\")\n    private Company company;\n\n    public Branch() {\n        this.address.setAddressCategory(AddressCategory.BRANCH); \n    }\n\n// GETTERS AND SETTERS\n\n}\n</code></pre>\n\n<p><strong>// Address class</strong></p>\n\n<pre><code>@Entity  \n@Table(name=Address.TABLE_ADDRESS) \npublic class Address {\n\n    public static final String TABLE_ADDRESS = \"address\";\n    @Id\n    @Column(name=\"id\")\n    private String id = IdGenerator.createId();   \n\n    @Column(name=\"category\", nullable=false)\n    private AddressCategory addressCategory;;\n\n    @Column(name=\"streetname\", nullable=true)\n    private String streetName;\n\n    @Column(name=\"number\", nullable=true)\n    private String number;\n\n    @Column(name=\"postcode\", nullable=true)\n    private String postcode;\n\n    @Column(name=\"city\", nullable=true)\n    private String city;\n\n    @Column(name=\"country\", nullable=true)\n    private String country;\n\n    @Column(name = \"telephone\")\n    private String telephone;\n\n    @Embedded\n    private EmailAddress email;\n\n    @Column(name=\"description\", nullable=true)\n    private String description;\n\n    @ManyToOne\n    @JoinColumn(name=\"actor\")\n    @NotNull(groups = {Update.class}) \n    @JsonIgnore\n    private Actor actor;\n\n    public Address() { }\n\n    public Address(Actor actor) {\n        this.actor = actor;\n    }\n\n// GETTERS AND SETTERS\n\n}\n</code></pre>\n\n<p>When i run the above code with the following json from Postman:</p>\n\n<pre><code>{\n    \"categoryId\": \"ee6e75c9-2d1b-41c1-8f12-236fbf907683\",\n    \"name\": \"McDonalds\",\n    \"domainName\": \"www.McDonalds.be\",\n    \"registrationNumber\": \"5555555\",\n    \"description\": \"Food and Drink\"\n}\n</code></pre>\n\n<p>I get the following exception:</p>\n\n<pre><code>com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Field 'company0_.categoryid' not found in field list\n    at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:1.8.0_151]\n    at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source) ~[na:1.8.0_151]\n    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source) ~[na:1.8.0_151]\n    at java.lang.reflect.Constructor.newInstance(Unknown Source) ~[na:1.8.0_151]\n    at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.44.jar:5.1.44]\n    at com.mysql.jdbc.Util.getInstance(Util.java:408) ~[mysql-connector-java-5.1.44.jar:5.1.44]\n    at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:943) ~[mysql-connector-java-5.1.44.jar:5.1.44\n...\n...\n</code></pre>\n\n<p>Please note I have omitted the controller code to make the post concise. The exception above talks about the <strong>categoryid</strong> attribute in the company class. I deleted the categorid and the exception replaces the categoryid with the <strong>description</strong> attribute</p>\n\n<p>I think the problem deals with the annotation using the secondary tables.</p>\n\n<p>The tables are as follows:</p>\n\n<pre><code>CREATE TABLE actor\n(\n   id    VARCHAR(255)   DEFAULT '' NOT NULL,\n   type  VARCHAR(255),\n   PRIMARY KEY (id)\n)\n\n\nCREATE TABLE company\n(\n   id                    VARCHAR(255)   NOT NULL,\n   categoryid            VARCHAR(255),\n   name                  VARCHAR(255)   NOT NULL,\n   `domainName`          VARCHAR(255)   NOT NULL,\n   `registrationNumber`  VARCHAR(255),\n   description           VARCHAR(255)   NOT NULL,\n   PRIMARY KEY (id)\n)\n\nCREATE TABLE branch\n(\n   id         VARCHAR(255)   NOT NULL,\n   company    VARCHAR(255),\n   address    VARCHAR(255),\n   telephone  VARCHAR(255),\n   PRIMARY KEY (id)\n)\n\nCREATE TABLE address\n(\n   id           VARCHAR(255)   NOT NULL,\n   category     VARCHAR(255),\n   actor        VARCHAR(255),\n   streetname   VARCHAR(255),\n   number       VARCHAR(255),\n   postcode     VARCHAR(255),\n   city         VARCHAR(255),\n   country      VARCHAR(255),\n   telephone    VARCHAR(255),\n   email        VARCHAR(255),\n   description  VARCHAR(255),\n   PRIMARY KEY (id)\n)\n</code></pre>\n"
+}

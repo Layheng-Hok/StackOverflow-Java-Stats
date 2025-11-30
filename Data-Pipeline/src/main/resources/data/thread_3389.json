@@ -1,0 +1,63 @@
+{
+  "tags" : [ "java" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2345668,
+      "reputation" : 13449,
+      "user_id" : 2055998,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://i.sstatic.net/2Vx3A.jpg?s=256",
+      "display_name" : "PM 77-1",
+      "link" : "https://stackoverflow.com/users/2055998/pm-77-1"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1710440182,
+    "post_id" : 78162589,
+    "comment_id" : 137797967,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Have a look: <a href=\"https://stackoverflow.com/questions/19309203/how-to-make-a-diamond-using-nested-for-loops\" title=\"how to make a diamond using nested for loops\">stackoverflow.com/questions/19309203/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 49492,
+      "reputation" : 318212,
+      "user_id" : 147356,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://www.gravatar.com/avatar/b9506717d24256a090524dd5505d3207?s=256&d=identicon&r=PG",
+      "display_name" : "larsks",
+      "link" : "https://stackoverflow.com/users/147356/larsks"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1710443137,
+    "creation_date" : 1710443137,
+    "answer_id" : 78162877,
+    "question_id" : 78162589,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Things are not aligning correctly because you're not applying the correct amount of padding. You need to know the width of the longest (bottom) line in your tree, and then use that to calculate the padding applied to every other row (and the trunk).</p>\n<p>You should be generating the entire tree in your <code>ChristmasTree</code> class, rather than instantiating multiple <code>ChristmassTree</code> objects in your <code>main</code> function. Your existing design makes it very difficult to calculate padding correctly, since each <code>ChristmasTree</code> instance does not have any knowledge about the total number of &quot;floors&quot; (and hence is not able to calculate the length of the final line in the tree).</p>\n<p>Here's one possible solution:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class ChristmasTree {\n  private int numberOfLevels;\n  private int maxWidth;\n  private String[] trunk = {\n    &quot;H&quot;,\n    &quot;H&quot;,\n    &quot;=====&quot;\n  };\n\n  public ChristmasTree(int numberOfLevels) {\n    this.numberOfLevels = numberOfLevels;\n    this.maxWidth = 2 * (numberOfLevels+1)+1;\n  }\n\n  private void generateOneLevel(int level) {\n    for (int i = 1; i &lt;= level + 3; i++) {\n      int numberOfStars = (2*i) - 1;\n      int padding = maxWidth/2 - numberOfStars/2;\n      System.out.println(&quot; &quot;.repeat(padding) + &quot;*&quot;.repeat(numberOfStars));\n    }\n  }\n\n  private void generateTrunk() {\n    for (String s: trunk) {\n      int padding = maxWidth/2 - s.length()/2;\n      System.out.println(&quot; &quot;.repeat(padding) + s);\n    }\n  }\n\n  public void generateTree() {\n    for (int i = 0; i &lt; numberOfLevels; i++) {\n      generateOneLevel(i);\n    }\n\n    generateTrunk();\n  }\n\n  public static void main(String[] args) {\n    ChristmasTree tree = new ChristmasTree(3);\n    tree.generateTree();\n  }\n}\n</code></pre>\n<p>The above code will produce:</p>\n<pre><code>    *\n   ***\n  *****\n    *\n   ***\n  *****\n *******\n    *\n   ***\n  *****\n *******\n*********\n    H\n    H\n  =====\n</code></pre>\n<p>We get three layers because we called <code>new ChristmasTree(3)</code>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 26522609,
+    "reputation" : 21,
+    "user_id" : 20156042,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/fjgWi.jpg?s=256",
+    "display_name" : "Alex",
+    "link" : "https://stackoverflow.com/users/20156042/alex"
+  },
+  "is_answered" : true,
+  "view_count" : 300,
+  "protected_date" : 1762533648,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762533404,
+  "creation_date" : 1710439676,
+  "last_edit_date" : 1710439714,
+  "question_id" : 78162589,
+  "link" : "https://stackoverflow.com/questions/78162589/christmas-tree-made-of-asterisks",
+  "title" : "Christmas tree made of asterisks",
+  "body" : "<p>I wanted to create a class called 'ChristmasTree' that generates a tree as shown in the example. The Christmas tree should have a parameter - 'number of floors' (a class member variable), and based on it, the tree should be generated. The top floor should have three rows, each subsequent floor having one more row than the previous one, and the lowest one should touch the left edge of the console. The base consists of five characters, '='. Everything is symmetrical regardless of the parameter value.</p>\n<pre><code>    *\n   ***\n  *****\n    *\n   ***\n  *****\n *******\n    *\n   ***\n  *****\n *******\n*********\n    H\n    H\n  =====\n</code></pre>\n<p>I came up with this code, but it doesn't make it symmetrical.</p>\n<pre><code>public class ChristmasTree {\n    private int numberOfLevels;\n\n    public ChristmasTree(int numberOfLevels) {\n        this.numberOfLevels = numberOfLevels;\n    }\n\n    public void generateTree() {\n        int maxNumberOfLevels = numberOfLevels;\n        for (int i = 1; i &lt;= numberOfLevels; i++) {\n            int numberOfSpaces = (maxNumberOfLevels + numberOfLevels) / 2 - i;\n            System.out.println(&quot; &quot;.repeat(numberOfSpaces) + &quot;*&quot;.repeat(2 * i - 1));\n        }\n    }\n\n    public static void main(String[] args) {\n        ChristmasTree tree = new ChristmasTree(3);\n        tree.generateTree();\n        \n        tree = new ChristmasTree(4);\n        tree.generateTree();\n        \n        tree = new ChristmasTree(5);\n        tree.generateTree();\n\n        System.out.println(&quot;H&quot;);\n        System.out.println(&quot;H&quot;);\n        System.out.println(&quot;=====&quot;);\n    }\n}\n\n</code></pre>\n"
+}

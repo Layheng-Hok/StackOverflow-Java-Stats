@@ -1,0 +1,122 @@
+{
+  "tags" : [ "java", "mysql", "mybatis" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 184171,
+      "reputation" : 2766,
+      "user_id" : 420047,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/97267550e7e663302bc6a178c63863a2?s=256&d=identicon&r=PG",
+      "display_name" : "Daniel Novak",
+      "link" : "https://stackoverflow.com/users/420047/daniel-novak"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1323169338,
+    "last_edit_date" : 1323169338,
+    "creation_date" : 1291126222,
+    "answer_id" : 4314627,
+    "question_id" : 4283159,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The <code>&lt;insert&gt;</code>, <code>&lt;update&gt;</code>and <code>&lt;delete&gt;</code> statements return the number of affected rows, as is common with database APIs.</p>\n\n<p>If a new ID is generated for the inserted row, it is reflected in the object you passed as a parameter. So for example, if you call mapper.insert(someObject) inside your annotated insert method, after inserting, you can call someObject.getId (or similar) to retrieve it.</p>\n\n<p>Using the options of <code>&lt;insert&gt;</code>, you can tweak how (by providing an SQL statement) and when (before or after the actual insertion) the id is generated or retrieved, and where in the object it is put.</p>\n\n<p>It may be instructive to use the <a href=\"http://code.google.com/p/mybatis/wiki/Generator\" rel=\"noreferrer\">MyBatis generator</a> to generate classes from a database schema and have a look at how inserts and updates are handled. Specifically, the generator produces \"example\" classes that are used as temporary containers to pass around data.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2003177,
+        "reputation" : 17411,
+        "user_id" : 1793718,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/b7e248ec60fb7f8c8e353025aad7e059?s=256&d=identicon&r=PG",
+        "display_name" : "Lucky",
+        "link" : "https://stackoverflow.com/users/1793718/lucky"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1456996613,
+      "post_id" : 4427362,
+      "comment_id" : 59207504,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Assuming you use annotation for select and with <code>@Options(useGeneratedKeys=true)</code>"
+    } ],
+    "owner" : {
+      "account_id" : 225702,
+      "reputation" : 64,
+      "user_id" : 1543136,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YrQLm.jpg?s=256",
+      "display_name" : "edwinkun",
+      "link" : "https://stackoverflow.com/users/1543136/edwinkun"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1292232255,
+    "creation_date" : 1292232255,
+    "answer_id" : 4427362,
+    "question_id" : 4283159,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>you can get your generated ids from save methods,\nlets say a bean with ID and name properties,</p>\n\n<pre><code>bean.setName(\"xxx\");\nmapper.save(bean);\n// here is your id\nlogger.debug(bean.getID);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13345,
+      "reputation" : 8843,
+      "user_id" : 26737,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/61c81bd17331d408f11babea92cfe32d?s=256&d=identicon&r=PG",
+      "display_name" : "Manur",
+      "link" : "https://stackoverflow.com/users/26737/manur"
+    },
+    "is_accepted" : false,
+    "score" : 36,
+    "last_activity_date" : 1760339486,
+    "last_edit_date" : 1760339486,
+    "creation_date" : 1308835908,
+    "answer_id" : 6454886,
+    "question_id" : 4283159,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Actually, it's possible to do it, with the <code>@Options</code> annotation (provided you're using auto_increment or something similar in your database) :</p>\n<pre><code>@Insert(&quot;insert into table3 (id, name) values(null, #{name})&quot;) \n@Options(useGeneratedKeys=true, keyProperty=&quot;idName&quot;)\nint insertTable3(SomeBean myBean); \n</code></pre>\n<p>Note that the <code>keyProperty=&quot;idName&quot;</code> part is not necessary if the key property in SomeBean is named &quot;id&quot;. There's also a <code>keyColumn</code> attribute available, for the rare cases when MyBatis can't find the primary key column by himself. Please also note that by using <code>@Options</code>, you're submitting your method to some default parameters; here follows the excerpt from the doc (page 60, linked below)</p>\n<blockquote>\n<p>This annotation provides access to the wide range of switches and configuration options that are normally present on the mapped statement as attributes. Rather than complicate each statement annotation, the Options annotation provides a consistent and clear way to access these. Attributes: useCache=true, flushCache=false, resultSetType=FORWARD_ONLY, statementType=PREPARED, fetchSize=-1, timeout=-1, useGeneratedKeys=false, keyProperty=&quot;id&quot;, keyColumn=&quot;&quot;. It’s important to understand that with Java Annotations, there is no way to specify “null” as a value. Therefore, once you engage the Options annotation, your statement is subject to all of the default values. Pay attention to what the default values are to avoid unexpected behavior. Note that keyColumn is only required in certain databases (like PostgreSQL) when the key column is not the first column in the table.</p>\n</blockquote>\n<p><strong>(Old answer)</strong> The (quite recent) <code>@SelectKey</code> annotation can be used for more complex key retrieval (sequences, identity() function...). Here's what the <a href=\"https://download.milesburton.com/Misc/MyBatis-3-User-Guide.pdf\" rel=\"nofollow noreferrer\">MyBatis 3 User Guide</a> (pdf) offers as examples :</p>\n<blockquote>\n<p>This example shows using the @SelectKey annotation to retrieve a value from a sequence before an\ninsert:</p>\n</blockquote>\n<pre><code>@Insert(&quot;insert into table3 (id, name) values(#{nameId}, #{name})&quot;) \n@SelectKey(statement=&quot;call next value for TestSequence&quot;, keyProperty=&quot;nameId&quot;, before=true, resultType=int.class) \nint insertTable3(Name name); \n</code></pre>\n<blockquote>\n<p>This example shows using the @SelectKey annotation to retrieve an identity value after an insert:</p>\n</blockquote>\n<pre><code>@Insert(&quot;insert into table2 (name) values(#{name})&quot;)\n@SelectKey(statement=&quot;call identity()&quot;, keyProperty=&quot;nameId&quot;, before=false, resultType=int.class)\nint insertTable2(Name name);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1096470,
+      "reputation" : 29415,
+      "user_id" : 1089967,
+      "user_type" : "registered",
+      "accept_rate" : 59,
+      "profile_image" : "https://www.gravatar.com/avatar/1f256b904ff621d678598d8fa49f86c5?s=256&d=identicon&r=PG",
+      "display_name" : "lance-java",
+      "link" : "https://stackoverflow.com/users/1089967/lance-java"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1686299335,
+    "last_edit_date" : 1686299335,
+    "creation_date" : 1630061024,
+    "answer_id" : 68952069,
+    "question_id" : 4283159,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I didn't like most of the answers I found online for returning generated keys because</p>\n<ol>\n<li>All of the solutions I found called a &quot;setter&quot; on the inbound object</li>\n<li>None of the solutions returned the generated column from the method</li>\n</ol>\n<p>I came up with the following solution which addresses points 1 &amp; 2 above which</p>\n<ol>\n<li>Passes two parameters to mybatis &quot;in&quot; &amp; &quot;out&quot; (mybatis does not mutate &quot;in&quot;, it calls a setter on &quot;out&quot;)</li>\n<li>Requires an additional <a href=\"https://docs.oracle.com/javase/tutorial/java/IandI/defaultmethods.html\" rel=\"nofollow noreferrer\">default method</a> on the interface to return the value</li>\n</ol>\n<pre><code>public interface MyMapper {\n   /**\n    * this method is used by the mybatis mapper\n    * I don't call this method directly in my application code   \n    */\n   @Insert(&quot;INSERT INTO MY_TABLE (FOO) VALUES (#{in.foo})&quot;)\n   @Options(useGeneratedKeys=true, keyColumn=&quot;ID&quot;, keyProperty = &quot;out.value&quot;)\n   void insert(@Param(&quot;in&quot;) MyTable in, @Param(&quot;out&quot;) LongReference out);\n\n   /**\n     * this &quot;default method&quot; is called in my application code and returns the generated id.\n     */\n   default long insert(MyTable tableBean) {\n      LongReference idReference = new LongReference();\n      insert(tableBean, idReference);\n      return idReference.getValue();\n   }\n}\n</code></pre>\n<p>This requires an additional class which can be re-used on similar methods in future</p>\n<pre><code>public class LongReference {\n    private Long value;\n\n    // getter &amp; setter\n}\n\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6636,
+    "reputation" : 231464,
+    "user_id" : 11236,
+    "user_type" : "registered",
+    "accept_rate" : 76,
+    "profile_image" : "https://www.gravatar.com/avatar/40656706454dcbdbcec125b85b01f1e4?s=256&d=identicon&r=PG",
+    "display_name" : "ripper234",
+    "link" : "https://stackoverflow.com/users/11236/ripper234"
+  },
+  "is_answered" : true,
+  "view_count" : 40997,
+  "answer_count" : 4,
+  "score" : 22,
+  "last_activity_date" : 1760339486,
+  "creation_date" : 1290755255,
+  "last_edit_date" : 1495541854,
+  "question_id" : 4283159,
+  "link" : "https://stackoverflow.com/questions/4283159/how-to-return-ids-on-inserts-with-mybatis-in-mysql-with-annotations",
+  "title" : "How to return ids on Inserts with mybatis in mysql with annotations",
+  "body" : "<ul>\n<li><a href=\"https://stackoverflow.com/questions/4260428/mybatis-how-to-return-the-id-of-the-inserted-object-under-postgres\">See this related question</a> for Postgres. For some reason, the solution doesn't work for me - the return value of the insert statement is always \"1\".</li>\n<li>See this other question for an <a href=\"https://stackoverflow.com/questions/1769688/howto-return-ids-on-inserts-with-ibatis-with-returning-keyword\">XML based solution</a>. I would like to do the same without XML - insert a record and find the new auto-generated id of the record I just insreted.</li>\n</ul>\n\n<p>I didn't find a matching annotation to <code>&lt;selectkey&gt;</code> (see this <a href=\"http://code.google.com/p/mybatis/issues/detail?id=10\" rel=\"noreferrer\">open issue</a>)\nHow do I proceed?</p>\n\n<p>Examining mybatis code reveals that <code>INSERT</code> is implemented via <code>UPDATE</code>, and always returns the number of inserted rows! So ... unless I'm completely missing something here, there's no way to do this using the current (3.0.3) implementation.</p>\n"
+}

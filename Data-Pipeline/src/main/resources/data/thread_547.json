@@ -1,0 +1,1361 @@
+{
+  "tags" : [ "java", "performance", "processing-efficiency", "microbenchmark", "branch-prediction" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3557625,
+      "reputation" : 201906,
+      "user_id" : 2970947,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/HLTev.png?s=256",
+      "display_name" : "Elliott Frisch",
+      "link" : "https://stackoverflow.com/users/2970947/elliott-frisch"
+    },
+    "edited" : false,
+    "score" : 11,
+    "creation_date" : 1456019757,
+    "post_id" : 35531369,
+    "comment_id" : 58752260,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What about <code>if (!(a == 0 || b == 0))</code>? Microbenchmarks are notoriously unreliable, this is unlikely to really be measurable (~3% sounds like a margin of error to me)."
+  }, {
+    "owner" : {
+      "account_id" : 7744277,
+      "reputation" : 1265,
+      "user_id" : 5862726,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-dyBzTE1yNyc/AAAAAAAAAAI/AAAAAAAAAUs/xIiSMA7_Gko/s256-rj/photo.jpg",
+      "display_name" : "Todd Knarr",
+      "link" : "https://stackoverflow.com/users/5862726/todd-knarr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456019993,
+    "post_id" : 35531369,
+    "comment_id" : 58752295,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Try comparing <code>a*b != 0</code> with <code>!( a == 0 || b == 0)</code>. If those two results are much closer together, it&#39;s an optimization quirk."
+  }, {
+    "owner" : {
+      "account_id" : 465573,
+      "reputation" : 200423,
+      "user_id" : 869736,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/ae7bb06b9a23a4dd7eea69e853d47d12?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Louis Wasserman",
+      "link" : "https://stackoverflow.com/users/869736/louis-wasserman"
+    },
+    "edited" : false,
+    "score" : 9,
+    "creation_date" : 1456020298,
+    "post_id" : 35531369,
+    "comment_id" : 58752350,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Or <code>a != 0 &amp; b != 0</code>."
+  }, {
+    "owner" : {
+      "account_id" : 956558,
+      "reputation" : 31339,
+      "user_id" : 981744,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qJi4S.png?s=256",
+      "display_name" : "Erwin Bolwidt",
+      "link" : "https://stackoverflow.com/users/981744/erwin-bolwidt"
+    },
+    "edited" : false,
+    "score" : 17,
+    "creation_date" : 1456020318,
+    "post_id" : 35531369,
+    "comment_id" : 58752353,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Branching is slow if the predicted branch is wrong. <code>a*b!=0</code> has one less branch"
+  }, {
+    "owner" : {
+      "account_id" : 6650510,
+      "reputation" : 6284,
+      "user_id" : 5132826,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/f857415cbbb419c70cdb1952a5e67cae?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Maljam",
+      "link" : "https://stackoverflow.com/users/5132826/maljam"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456021122,
+    "post_id" : 35531369,
+    "comment_id" : 58752492,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I added  !(a == 0 || b == 0) to the analysis as you guys suggested, and it&#39;s exactly the same as a != 0 &amp;&amp; b != 0. It seems that it really depends on the number of comparators, and that arithmetic operators and much quicker"
+  }, {
+    "owner" : {
+      "account_id" : 667308,
+      "reputation" : 47108,
+      "user_id" : 1161878,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/0157ddd785dc01e95342e3661d34b42a?s=256&d=identicon&r=PG",
+      "display_name" : "Gene",
+      "link" : "https://stackoverflow.com/users/1161878/gene"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456023505,
+    "post_id" : 35531369,
+    "comment_id" : 58752935,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I&#39;m a bit surprised that a multiply is faster than a comparison even granted the effect of pipelining @StevenC pointed out. It would be interesting to see what the JIT compiler does by way of optimizing the two forms. It&#39;s very simple to peephole optimize <code>a*b==0</code> to <code>(a|b) == 0</code>, where optimizing the short-circuited comparison is more work. Regardless, you should try the <code>a|b</code> option, since this will be no more than one cycle (it could even be &quot;free&quot; if dispatched with another op), whereas multiply is usually 2 to 4 cycles in modern x86&#39;s."
+  }, {
+    "owner" : {
+      "account_id" : 199923,
+      "reputation" : 109248,
+      "user_id" : 445517,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://www.gravatar.com/avatar/57e2ba76e6290c4e9e19821a068bc8c1?s=256&d=identicon&r=PG",
+      "display_name" : "CodesInChaos",
+      "link" : "https://stackoverflow.com/users/445517/codesinchaos"
+    },
+    "edited" : false,
+    "score" : 22,
+    "creation_date" : 1456051172,
+    "post_id" : 35531369,
+    "comment_id" : 58758756,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<code>(1&lt;&lt;16) * (1&lt;&lt;16) == 0</code> yet both are different from zero."
+  }, {
+    "owner" : {
+      "account_id" : 85750,
+      "reputation" : 109275,
+      "user_id" : 238886,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/8ca29123b5669b26f9b6ca2c62d9d215?s=256&d=identicon&r=PG",
+      "display_name" : "Wayne Conrad",
+      "link" : "https://stackoverflow.com/users/238886/wayne-conrad"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1456057692,
+    "post_id" : 35531369,
+    "comment_id" : 58760767,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Something like 1 in 12 people have some form of color blindness.  Graphs using solely color to distinguish points can be difficult or impossible for those people.  The usual solution is to also make the points have different shapes.  That said, it&#39;s a wonderful graph and a great question."
+  }, {
+    "owner" : {
+      "account_id" : 473127,
+      "reputation" : 23392,
+      "user_id" : 882051,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/f76d986b54e90fa6c431160e9a0796cd?s=256&d=identicon&r=PG",
+      "display_name" : "hmakholm left over Monica",
+      "link" : "https://stackoverflow.com/users/882051/hmakholm-left-over-monica"
+    },
+    "reply_to_user" : {
+      "account_id" : 667308,
+      "reputation" : 47108,
+      "user_id" : 1161878,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/0157ddd785dc01e95342e3661d34b42a?s=256&d=identicon&r=PG",
+      "display_name" : "Gene",
+      "link" : "https://stackoverflow.com/users/1161878/gene"
+    },
+    "edited" : false,
+    "score" : 14,
+    "creation_date" : 1456057936,
+    "post_id" : 35531369,
+    "comment_id" : 58760861,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@Gene: Your proposed optimization is not valid. Even ignoring overflow, <code>a*b</code> is zero if <i>one</i> of <code>a</code> and <code>b</code> is zero; <code>a|b</code> is zero only if both are."
+  }, {
+    "owner" : {
+      "account_id" : 2009857,
+      "reputation" : 26235,
+      "user_id" : 1798593,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/be41e365336e709f1bfc2c9866eac8e9?s=256&d=identicon&r=PG",
+      "display_name" : "Patricia Shanahan",
+      "link" : "https://stackoverflow.com/users/1798593/patricia-shanahan"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456061485,
+    "post_id" : 35531369,
+    "comment_id" : 58762037,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Because the issue is probably branch prediction, do make sure you are testing with actual values from your program <b>in the order in which they appear in the program</b>. The taken/not-taken sequence for a given conditional branch controls how well branch prediction works. A correctly predicted branch is a fast operation."
+  }, {
+    "owner" : {
+      "account_id" : 12815,
+      "reputation" : 1157,
+      "user_id" : 25429,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/BDMil.jpg?s=256",
+      "display_name" : "zloster",
+      "link" : "https://stackoverflow.com/users/25429/zloster"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456063672,
+    "post_id" : 35531369,
+    "comment_id" : 58762796,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Have you seen <a href=\"http://stackoverflow.com/a/513259/25429\">this answer</a>? You could use <a href=\"http://openjdk.java.net/projects/code-tools/jmh/\" rel=\"nofollow noreferrer\">JMH</a> to write microbenchmark and get the low-level details including the CPU branch-prediction stats."
+  }, {
+    "owner" : {
+      "account_id" : 1409820,
+      "reputation" : 62494,
+      "user_id" : 1336654,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://www.gravatar.com/avatar/b1fcddf43425d951bb5dafef53563d45?s=256&d=identicon&r=PG",
+      "display_name" : "Jeppe Stig Nielsen",
+      "link" : "https://stackoverflow.com/users/1336654/jeppe-stig-nielsen"
+    },
+    "reply_to_user" : {
+      "account_id" : 199923,
+      "reputation" : 109248,
+      "user_id" : 445517,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://www.gravatar.com/avatar/57e2ba76e6290c4e9e19821a068bc8c1?s=256&d=identicon&r=PG",
+      "display_name" : "CodesInChaos",
+      "link" : "https://stackoverflow.com/users/445517/codesinchaos"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1456068834,
+    "post_id" : 35531369,
+    "comment_id" : 58764724,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@CodesInChaos Exactly. Of course there are very many examples like that. For example <code>983040 * 6422528 == 0</code> (as 32-bit integers) but neither factor is zero (as a 32-bit integer). If you see it as hex, with arbitrary precision my example is <code>0xF0000 * 0x620000 == 0x5BE00000000</code>, but since a 32-bit integer preserves only the 8 least significant hex digits, the product is <code>0x00000000</code>, or just zero."
+  }, {
+    "owner" : {
+      "account_id" : 667308,
+      "reputation" : 47108,
+      "user_id" : 1161878,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/0157ddd785dc01e95342e3661d34b42a?s=256&d=identicon&r=PG",
+      "display_name" : "Gene",
+      "link" : "https://stackoverflow.com/users/1161878/gene"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456081173,
+    "post_id" : 35531369,
+    "comment_id" : 58769578,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I&#39;m sorry. Brain cramp.  I meant <code>(a&amp;b)!=0</code>."
+  }, {
+    "owner" : {
+      "account_id" : 473606,
+      "reputation" : 835,
+      "user_id" : 882813,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/e49c05b5c0bf93ef572175bcae5c84e8?s=256&d=identicon&r=PG",
+      "display_name" : "user882813",
+      "link" : "https://stackoverflow.com/users/882813/user882813"
+    },
+    "edited" : false,
+    "score" : 5,
+    "creation_date" : 1456081510,
+    "post_id" : 35531369,
+    "comment_id" : 58769711,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Premature optimization is the root of all evil.   Stop doing meaningless microoptimizations and improve <i>algorithms</i> instead."
+  }, {
+    "owner" : {
+      "account_id" : 346918,
+      "reputation" : 6662,
+      "user_id" : 680727,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7e84ed97f423d7dd974efd8a871c5861?s=256&d=identicon&r=PG",
+      "display_name" : "Aleksi Torhamo",
+      "link" : "https://stackoverflow.com/users/680727/aleksi-torhamo"
+    },
+    "reply_to_user" : {
+      "account_id" : 667308,
+      "reputation" : 47108,
+      "user_id" : 1161878,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/0157ddd785dc01e95342e3661d34b42a?s=256&d=identicon&r=PG",
+      "display_name" : "Gene",
+      "link" : "https://stackoverflow.com/users/1161878/gene"
+    },
+    "edited" : false,
+    "score" : 7,
+    "creation_date" : 1456081964,
+    "post_id" : 35531369,
+    "comment_id" : 58769947,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@Gene: That doesn&#39;t work either; take eg. <code>1&amp;2</code>."
+  }, {
+    "owner" : {
+      "account_id" : 37136,
+      "reputation" : 59192,
+      "user_id" : 106104,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/c88b9310b92a937108ec4336c2832f92?s=256&d=identicon&r=PG",
+      "display_name" : "Stack Exchange Broke The Law",
+      "link" : "https://stackoverflow.com/users/106104/stack-exchange-broke-the-law"
+    },
+    "reply_to_user" : {
+      "account_id" : 473606,
+      "reputation" : 835,
+      "user_id" : 882813,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/e49c05b5c0bf93ef572175bcae5c84e8?s=256&d=identicon&r=PG",
+      "display_name" : "user882813",
+      "link" : "https://stackoverflow.com/users/882813/user882813"
+    },
+    "edited" : false,
+    "score" : 5,
+    "creation_date" : 1456094115,
+    "post_id" : 35531369,
+    "comment_id" : 58774698,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@user882813 Why? If you could reduce your program&#39;s execution time by over 25% with this trick, would you <b>not</b> do it?"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user562566"
+    },
+    "reply_to_user" : {
+      "account_id" : 37136,
+      "reputation" : 59192,
+      "user_id" : 106104,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/c88b9310b92a937108ec4336c2832f92?s=256&d=identicon&r=PG",
+      "display_name" : "Stack Exchange Broke The Law",
+      "link" : "https://stackoverflow.com/users/106104/stack-exchange-broke-the-law"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1456118768,
+    "post_id" : 35531369,
+    "comment_id" : 58781286,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@immibis because the internet and peers have told him over and over again searching for and discovering such optimizations is called &quot;premature optimization&quot; and that &quot;premature optimization is bad.&quot; That&#39;s why. Some guy somewhere said that, so it&#39;s universally true. Geeze, didn&#39;t you get the memo?"
+  }, {
+    "owner" : {
+      "account_id" : 2278116,
+      "reputation" : 6543,
+      "user_id" : 2003898,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/j2hnV.jpg?s=256",
+      "display_name" : "dhein",
+      "link" : "https://stackoverflow.com/users/2003898/dhein"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456129120,
+    "post_id" : 35531369,
+    "comment_id" : 58785727,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I tend to open a post &quot;Why is using itneger 1 isntead a constant calculation resulting in 1 faste?&quot;...."
+  }, {
+    "owner" : {
+      "account_id" : 1700981,
+      "reputation" : 3711,
+      "user_id" : 1561062,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://www.gravatar.com/avatar/c9a180ed40166c5720b1d973eac9ea53?s=256&d=identicon&r=PG",
+      "display_name" : "elyashiv",
+      "link" : "https://stackoverflow.com/users/1561062/elyashiv"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456132491,
+    "post_id" : 35531369,
+    "comment_id" : 58787698,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "To check if this is compiler or hardware you can turn off compiler optimization..."
+  }, {
+    "owner" : {
+      "account_id" : 187094,
+      "reputation" : 5301,
+      "user_id" : 424903,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8oHZF.png?s=256",
+      "display_name" : "Gimby",
+      "link" : "https://stackoverflow.com/users/424903/gimby"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456146009,
+    "post_id" : 35531369,
+    "comment_id" : 58796505,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@TechnikEmpire There are actually two guys. One that by definition yells that doing optimizations too soon in the development process is bad - this person should be banned from discussions. But there is also the other which is the good scientist: calling out the optimizations which are implemented prematurely, without first spending enough time verifying that it does not influence the actual logic. Don&#39;t snub his wisdom!"
+  }, {
+    "owner" : {
+      "account_id" : 172481,
+      "reputation" : 113938,
+      "user_id" : 400547,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bece78258b3847bca4ab1ee92ad92b88?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Hanna",
+      "link" : "https://stackoverflow.com/users/400547/jon-hanna"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456156879,
+    "post_id" : 35531369,
+    "comment_id" : 58804575,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "In a way it&#39;s the habit of using <code>&amp;&amp;</code> rather than <code>&amp;</code> when the result is the same (no side-effects to consider) that&#39;s the premature optimisation. We tend to favour <code>&amp;&amp;</code> in C-style languages because it tends to be faster (do less work) but sometimes that&#39;s premature when it turns out that the added branch costs more than the omitted work. (In fairness, it is also more often the case that <code>&amp;</code> is just wrong than that <code>&amp;&amp;</code> is wrong, but the favouring of <code>&amp;&amp;</code> goes back to a time in C when branch prediction wasn&#39;t as big an influence and the speed impact influenced the habits in later languages)."
+  }, {
+    "owner" : {
+      "account_id" : 152400,
+      "reputation" : 246067,
+      "user_id" : 366904,
+      "user_type" : "moderator",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/5sLgY.png?s=256",
+      "display_name" : "Cody Gray",
+      "link" : "https://stackoverflow.com/users/366904/cody-gray"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1456202166,
+    "post_id" : 35531369,
+    "comment_id" : 58825573,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "If branch misprediction is indeed the problem (as I suspect that it is), then you should see even better performance from the non-branching, bitwise <code>&amp;</code> operator: <code>if ((a != 0) &amp; (b != 0))</code>. Not only will this avoid the overflow problem, but should be considerably faster, given how slow multiplication is. It and division are the only operations that require multiple cycles; bit-twiddling is extremely fast by comparison."
+  }, {
+    "owner" : {
+      "account_id" : 7890233,
+      "reputation" : 251,
+      "user_id" : 5960641,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/832afb7bc6dad6d3f116ca464154c289?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Pagefault",
+      "link" : "https://stackoverflow.com/users/5960641/pagefault"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456211365,
+    "post_id" : 35531369,
+    "comment_id" : 58829322,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I am similarly surprised that bitwise and works on booleans, but Java is not my usual language. That said, I suspect one or both of my suggestions will perform similarly."
+  }, {
+    "owner" : {
+      "account_id" : 2940947,
+      "reputation" : 235,
+      "user_id" : 2630827,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6fb024f7b59a96ae41723576edbc0759?s=256&d=identicon&r=PG",
+      "display_name" : "Carsten S",
+      "link" : "https://stackoverflow.com/users/2630827/carsten-s"
+    },
+    "reply_to_user" : {
+      "account_id" : 7890233,
+      "reputation" : 251,
+      "user_id" : 5960641,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/832afb7bc6dad6d3f116ca464154c289?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Pagefault",
+      "link" : "https://stackoverflow.com/users/5960641/pagefault"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456217296,
+    "post_id" : 35531369,
+    "comment_id" : 58832379,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "You write that a and b are variables, but they are not, they are more complex expressions. As noted in @Pagefault&#39;s answer, this can very well make a difference."
+  }, {
+    "owner" : {
+      "account_id" : 115378,
+      "reputation" : 9252,
+      "user_id" : 302994,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/eccb0518287a19fe6a4dbf18a08abd93?s=256&d=identicon&r=PG",
+      "display_name" : "Jack",
+      "link" : "https://stackoverflow.com/users/302994/jack"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456263007,
+    "post_id" : 35531369,
+    "comment_id" : 58863438,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Sounds like most of my college career .... &quot;Write code that does ...&quot; .... Ooooh shiiiiny graphs. Hell who am I kidding I still do this."
+  }, {
+    "owner" : {
+      "account_id" : 667308,
+      "reputation" : 47108,
+      "user_id" : 1161878,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/0157ddd785dc01e95342e3661d34b42a?s=256&d=identicon&r=PG",
+      "display_name" : "Gene",
+      "link" : "https://stackoverflow.com/users/1161878/gene"
+    },
+    "reply_to_user" : {
+      "account_id" : 346918,
+      "reputation" : 6662,
+      "user_id" : 680727,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7e84ed97f423d7dd974efd8a871c5861?s=256&d=identicon&r=PG",
+      "display_name" : "Aleksi Torhamo",
+      "link" : "https://stackoverflow.com/users/680727/aleksi-torhamo"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456281099,
+    "post_id" : 35531369,
+    "comment_id" : 58870574,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@AleksiTorhamo Thanks. Sorry. It was a long day. Wasn&#39;t thinking clearly."
+  }, {
+    "owner" : {
+      "account_id" : 1423961,
+      "reputation" : 6086,
+      "user_id" : 1347968,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/60ac5d1887465fa8a299e94810aa5fec?s=256&d=identicon&r=PG",
+      "display_name" : "siegi",
+      "link" : "https://stackoverflow.com/users/1347968/siegi"
+    },
+    "reply_to_user" : {
+      "account_id" : 152400,
+      "reputation" : 246067,
+      "user_id" : 366904,
+      "user_type" : "moderator",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/5sLgY.png?s=256",
+      "display_name" : "Cody Gray",
+      "link" : "https://stackoverflow.com/users/366904/cody-gray"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456290536,
+    "post_id" : 35531369,
+    "comment_id" : 58873337,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@CodyGray Nitpicking: When the operands to <code>&amp;</code> are booleans, it is not a bitwise but a logical operator, see <a href=\"https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.22\" rel=\"nofollow noreferrer\">JLS &#167;15.22</a>."
+  }, {
+    "owner" : {
+      "account_id" : 152400,
+      "reputation" : 246067,
+      "user_id" : 366904,
+      "user_type" : "moderator",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/5sLgY.png?s=256",
+      "display_name" : "Cody Gray",
+      "link" : "https://stackoverflow.com/users/366904/cody-gray"
+    },
+    "reply_to_user" : {
+      "account_id" : 1423961,
+      "reputation" : 6086,
+      "user_id" : 1347968,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/60ac5d1887465fa8a299e94810aa5fec?s=256&d=identicon&r=PG",
+      "display_name" : "siegi",
+      "link" : "https://stackoverflow.com/users/1347968/siegi"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456298094,
+    "post_id" : 35531369,
+    "comment_id" : 58876486,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@siegi Blargh! Sure enough. That&#39;s what I get as a C++ guy for commenting on a question that pops up in the &quot;hot questions&quot; section. :-) In fact, that may explain why the updated benchmark shows it not performing as well as I would have expected. Java&#39;s compiler or runtime environment may not be able to optimize this as efficiently as it would if it were a bitwise operation. It may still be compiling it to a branch."
+  }, {
+    "owner" : {
+      "account_id" : 6230972,
+      "reputation" : 1420,
+      "user_id" : 4847772,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/682120c7fcdf59a82d28baa9f6e85792?s=256&d=identicon&r=PG",
+      "display_name" : "PJTraill",
+      "link" : "https://stackoverflow.com/users/4847772/pjtraill"
+    },
+    "reply_to_user" : {
+      "account_id" : 473127,
+      "reputation" : 23392,
+      "user_id" : 882051,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/f76d986b54e90fa6c431160e9a0796cd?s=256&d=identicon&r=PG",
+      "display_name" : "hmakholm left over Monica",
+      "link" : "https://stackoverflow.com/users/882051/hmakholm-left-over-monica"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456312076,
+    "post_id" : 35531369,
+    "comment_id" : 58885441,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@HenningMakholm: As I read it, he suggests <code>(a|b) != 0</code> as an optimisation for <code>a != 0  ||  b != 0</code> and <code>(a*b) != 0</code> for <code>a != 0  &amp;&amp;  b != 0</code> — the former is fine, the latter risks overflow on numbers &gt;= 2&#185;⁶."
+  }, {
+    "owner" : {
+      "account_id" : 6230972,
+      "reputation" : 1420,
+      "user_id" : 4847772,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/682120c7fcdf59a82d28baa9f6e85792?s=256&d=identicon&r=PG",
+      "display_name" : "PJTraill",
+      "link" : "https://stackoverflow.com/users/4847772/pjtraill"
+    },
+    "reply_to_user" : {
+      "account_id" : 1423961,
+      "reputation" : 6086,
+      "user_id" : 1347968,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/60ac5d1887465fa8a299e94810aa5fec?s=256&d=identicon&r=PG",
+      "display_name" : "siegi",
+      "link" : "https://stackoverflow.com/users/1347968/siegi"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456312401,
+    "post_id" : 35531369,
+    "comment_id" : 58885703,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@siegi: Surely JLS 15.22 does not specify lazy evaluation of <code>b</code> in <code>a&amp;b</code>, which is what will determine whether a branch is used (and whether side-effects occur). But if you are only criticising “bitwise” you are right — unless we accept that a Boolean has one bit!"
+  }, {
+    "owner" : {
+      "account_id" : 473606,
+      "reputation" : 835,
+      "user_id" : 882813,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/e49c05b5c0bf93ef572175bcae5c84e8?s=256&d=identicon&r=PG",
+      "display_name" : "user882813",
+      "link" : "https://stackoverflow.com/users/882813/user882813"
+    },
+    "reply_to_user" : {
+      "account_id" : 37136,
+      "reputation" : 59192,
+      "user_id" : 106104,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/c88b9310b92a937108ec4336c2832f92?s=256&d=identicon&r=PG",
+      "display_name" : "Stack Exchange Broke The Law",
+      "link" : "https://stackoverflow.com/users/106104/stack-exchange-broke-the-law"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456780853,
+    "post_id" : 35531369,
+    "comment_id" : 59096574,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@immibis Simply because you will not get 25% boost by just replacing &quot;slow&quot; primitive operation with &quot;fast&quot; (and, BTW, incorrect, as in this question) one. The old good days when you can dramatically increase computation speed by just replacing division by 2 with bitwise shift is gone. Forever. To improve performance nowadays you should, no, not should, you <i>must</i> switch you brain on and improve algorithms. Or, at least, choose right one. I&#39;m sad to say, but there is no more magic unicorns nor fairies in our world. Instead we have terabytes of &quot;tricky optimized&quot; low-quality code."
+  }, {
+    "owner" : {
+      "account_id" : 37136,
+      "reputation" : 59192,
+      "user_id" : 106104,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/c88b9310b92a937108ec4336c2832f92?s=256&d=identicon&r=PG",
+      "display_name" : "Stack Exchange Broke The Law",
+      "link" : "https://stackoverflow.com/users/106104/stack-exchange-broke-the-law"
+    },
+    "reply_to_user" : {
+      "account_id" : 473606,
+      "reputation" : 835,
+      "user_id" : 882813,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/e49c05b5c0bf93ef572175bcae5c84e8?s=256&d=identicon&r=PG",
+      "display_name" : "user882813",
+      "link" : "https://stackoverflow.com/users/882813/user882813"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456787667,
+    "post_id" : 35531369,
+    "comment_id" : 59100020,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@user882813 &quot; you will not get 25% boost by just replacing &quot;slow&quot; primitive operation with &quot;fast&quot; one&quot; - Then how come the asker has shown exactly that result?"
+  }, {
+    "owner" : {
+      "account_id" : 3454996,
+      "reputation" : 5920,
+      "user_id" : 2893693,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/Uft9O.jpg?s=256",
+      "display_name" : "J-J",
+      "link" : "https://stackoverflow.com/users/2893693/j-j"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1500294256,
+    "post_id" : 35531369,
+    "comment_id" : 77257064,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What if <code>a</code> and <code>b</code> are bigger numbers?"
+  }, {
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1582939598,
+    "post_id" : 35531369,
+    "comment_id" : 106960545,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I just want to comment on &#39;premature optimization is the root of all evil&#39;. First, there is no evidence that it&#39;s premature here. Second, it&#39;s a partial quotation. What Knuth actually said was &#39;We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil. Yet we should not pass up our opportunities in that critical 3%.&#39;. And there&#39;s a lot more in the same vein. Unfortunately it has become one of the most misquoted quotations in computing history."
+  }, {
+    "owner" : {
+      "account_id" : 36215,
+      "reputation" : 285924,
+      "user_id" : 103167,
+      "user_type" : "registered",
+      "accept_rate" : 53,
+      "profile_image" : "https://i.sstatic.net/rX1ss.png?s=256",
+      "display_name" : "Ben Voigt",
+      "link" : "https://stackoverflow.com/users/103167/ben-voigt"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1651269359,
+    "post_id" : 35531369,
+    "comment_id" : 127332664,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "&quot;if you expect &quot;a&quot; or &quot;b&quot; to be equal to 0 more than ~3% of the time&quot;  From your graph, it seems you mean <code>0.3</code> which is 30% not 3%...  it might be exactly <code>1 - sqrt(0.5)</code> which is approximately 29.3%, and then the &quot;OR&quot; case is <code>sqrt(0.5)</code>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6650510,
+        "reputation" : 6284,
+        "user_id" : 5132826,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/f857415cbbb419c70cdb1952a5e67cae?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Maljam",
+        "link" : "https://stackoverflow.com/users/5132826/maljam"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1456021522,
+      "post_id" : 35531496,
+      "comment_id" : 58752552,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks for your answer, that&#39;s quite interesting. And to address your concern about benchmarking, I just iterated an arbitrary int variable (&quot;arb++&quot;). I omitted it because I thought that it didn&#39;t matter as long as I use the same one."
+    }, {
+      "owner" : {
+        "account_id" : 1870308,
+        "reputation" : 5433,
+        "user_id" : 1692706,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://i.sstatic.net/GyaAv.png?s=256",
+        "display_name" : "Debosmit Ray",
+        "link" : "https://stackoverflow.com/users/1692706/debosmit-ray"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1456022064,
+      "post_id" : 35531496,
+      "comment_id" : 58752642,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@StephenC Please correct me if I am wrong. For <code>(a != 0 &amp;&amp; b != 0)</code>, you&#39;d have to load <code>a</code>, do a <code>beqz</code> with 0, store the value; same thing for <code>b</code>. So, we have 2 lw&#39;s, 2 sw&#39;s and 2 branches. For <code>(a * b != 0)</code>, you have two lw&#39;s for <code>a</code>, <code>b</code>; one sw for storing <code>a*b</code> and then a beqz for comparison with 0. So, we have 2 lw&#39;s, 1 sw and 1 branch. Do you think this reasoning is correct?   Further, in the second case, there is only one available branch, so the branch predictor will always have a probability tending to 1."
+    }, {
+      "owner" : {
+        "account_id" : 47283,
+        "reputation" : 723399,
+        "user_id" : 139985,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+        "display_name" : "Stephen C",
+        "link" : "https://stackoverflow.com/users/139985/stephen-c"
+      },
+      "reply_to_user" : {
+        "account_id" : 1870308,
+        "reputation" : 5433,
+        "user_id" : 1692706,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://i.sstatic.net/GyaAv.png?s=256",
+        "display_name" : "Debosmit Ray",
+        "link" : "https://stackoverflow.com/users/1692706/debosmit-ray"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1456022610,
+      "post_id" : 35531496,
+      "comment_id" : 58752737,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@DebosmitRay - 1) There should be no SW&#39;s.  The intermediate results will be kept in a register.  2) In the second case, there are two available branches: one to execute &quot;some code&quot; and the other to skip to the next statement after the <code>if</code>."
+    }, {
+      "owner" : {
+        "account_id" : 6650510,
+        "reputation" : 6284,
+        "user_id" : 5132826,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/f857415cbbb419c70cdb1952a5e67cae?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Maljam",
+        "link" : "https://stackoverflow.com/users/5132826/maljam"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1456026963,
+      "post_id" : 35531496,
+      "comment_id" : 58753610,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@StephenC you are right to be confused about a+b and a|b, because the curves <i>are</i> the same, I think it&#39;s the colors being really close. Apologies to color blind people!"
+    }, {
+      "owner" : {
+        "account_id" : 47283,
+        "reputation" : 723399,
+        "user_id" : 139985,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+        "display_name" : "Stephen C",
+        "link" : "https://stackoverflow.com/users/139985/stephen-c"
+      },
+      "reply_to_user" : {
+        "account_id" : 6650510,
+        "reputation" : 6284,
+        "user_id" : 5132826,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/f857415cbbb419c70cdb1952a5e67cae?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Maljam",
+        "link" : "https://stackoverflow.com/users/5132826/maljam"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1456027273,
+      "post_id" : 35531496,
+      "comment_id" : 58753668,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Maljam - I meant - I&#39;m puzzled that they are different from the <code>a * b != 0</code> case.  I would not have expected that.  Maybe there is a clue in the native code that the JIT compiler produces.  Or maybe we &gt;&gt;are&lt;&lt; seeing a benchmarking artefact."
+    }, {
+      "owner" : {
+        "account_id" : 341129,
+        "reputation" : 39438,
+        "user_id" : 671543,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/2145962377da9419f2446cd565f614ee?s=256&d=identicon&r=PG",
+        "display_name" : "njzk2",
+        "link" : "https://stackoverflow.com/users/671543/njzk2"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1456027761,
+      "post_id" : 35531496,
+      "comment_id" : 58753751,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@StephenC the result is probably different because <code>a*b</code> and <code>a+b</code> are different. branch prediction cannot work the same on those."
+    }, {
+      "owner" : {
+        "account_id" : 6394256,
+        "reputation" : 6113,
+        "user_id" : 4959221,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a6fd88e53b672be3bd77fc25a5bc494f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Anton&#237;n Lejsek",
+        "link" : "https://stackoverflow.com/users/4959221/anton%c3%adn-lejsek"
+      },
+      "reply_to_user" : {
+        "account_id" : 341129,
+        "reputation" : 39438,
+        "user_id" : 671543,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/2145962377da9419f2446cd565f614ee?s=256&d=identicon&r=PG",
+        "display_name" : "njzk2",
+        "link" : "https://stackoverflow.com/users/671543/njzk2"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1456029685,
+      "post_id" : 35531496,
+      "comment_id" : 58754102,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@njzk2 from probability perspective those cases should be symmetric according to axis on 50% (probability of zero of <code>a&amp;b</code> and <code>a|b</code>). They are, but not perfectly, that is the puzzle."
+    }, {
+      "owner" : {
+        "account_id" : 5247811,
+        "reputation" : 4767,
+        "user_id" : 4192931,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c26d448bf8935cf10be612180b85ffc7?s=256&d=identicon&r=PG",
+        "display_name" : "JS1",
+        "link" : "https://stackoverflow.com/users/4192931/js1"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1456088068,
+      "post_id" : 35531496,
+      "comment_id" : 58772412,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@StephenC The reason why <code>a*b != 0</code> and <code>a+b != 0</code> benchmark differently is because <code>a+b != 0</code> is not at all equivalent and should never have been benchmarked.  For example, with <code>a = 1, b = 0</code>, the first expression evaluates to false  but the second evaluates to true.  The multiply acts sort of like an <b>and</b> operator, whereas the add acts sort of like an <b>or</b> operator."
+    }, {
+      "owner" : {
+        "account_id" : 2224982,
+        "reputation" : 494,
+        "user_id" : 1963965,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/SjvUL.png?s=256",
+        "display_name" : "WYSIWYG",
+        "link" : "https://stackoverflow.com/users/1963965/wysiwyg"
+      },
+      "reply_to_user" : {
+        "account_id" : 6394256,
+        "reputation" : 6113,
+        "user_id" : 4959221,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a6fd88e53b672be3bd77fc25a5bc494f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Anton&#237;n Lejsek",
+        "link" : "https://stackoverflow.com/users/4959221/anton%c3%adn-lejsek"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1456213377,
+      "post_id" : 35531496,
+      "comment_id" : 58830317,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Anton&#237;nLejsek I think the probabilities would differ. If you have <code>n</code> zeros then the likelihood of both <code>a</code> and <code>b</code> being zero increases with <code>n</code>. In an <code>AND</code> operation, with higher <code>n</code> the probability of one of them <b>being non-zero</b> increases and the condition is met. This is opposite for an <code>OR</code> operation (probability of either one of them <b>being zero</b> increases with <code>n</code>). This is based on a mathematical perspective. I am not sure if that&#39;s how the hardware works."
+    }, {
+      "owner" : {
+        "account_id" : 4479009,
+        "reputation" : 1608,
+        "user_id" : 3643303,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://i.sstatic.net/sIpdl.jpg?s=256",
+        "display_name" : "Amber Beriwal",
+        "link" : "https://stackoverflow.com/users/3643303/amber-beriwal"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1457464350,
+      "post_id" : 35531496,
+      "comment_id" : 59415372,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What could be difference in case 1 and case 3 in first graph?"
+    }, {
+      "owner" : {
+        "account_id" : 21994,
+        "reputation" : 75391,
+        "user_id" : 53897,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://i.sstatic.net/enNdg.jpg?s=256",
+        "display_name" : "Thorbj&#248;rn Ravn Andersen",
+        "link" : "https://stackoverflow.com/users/53897/thorbj%c3%b8rn-ravn-andersen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1550705196,
+      "post_id" : 35531496,
+      "comment_id" : 96371540,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "One thing is what the compiler emits at the byte code level, another what the machine code generated by HotSpot actually do."
+    }, {
+      "owner" : {
+        "account_id" : 47283,
+        "reputation" : 723399,
+        "user_id" : 139985,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+        "display_name" : "Stephen C",
+        "link" : "https://stackoverflow.com/users/139985/stephen-c"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1550709738,
+      "post_id" : 35531496,
+      "comment_id" : 96372656,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yup.  See the first few lines of my answer."
+    }, {
+      "owner" : {
+        "account_id" : 4193205,
+        "reputation" : 1838,
+        "user_id" : 3440248,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c98aadab1b181a8e78b59577050bf947?s=256&d=identicon&r=PG",
+        "display_name" : "Drunken Code Monkey",
+        "link" : "https://stackoverflow.com/users/3440248/drunken-code-monkey"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1684219920,
+      "post_id" : 35531496,
+      "comment_id" : 134481432,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<code>a|b != 0</code> would be faster if the compiler optimizes by short-circuiting. You don&#39;t need to even load the value for b if a != 0."
+    } ],
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : true,
+    "score" : 251,
+    "last_activity_date" : 1456027191,
+    "last_edit_date" : 1456027191,
+    "creation_date" : 1456020591,
+    "answer_id" : 35531496,
+    "question_id" : 35531369,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I'm ignoring the issue that your benchmarking <em>might</em> be flawed, and taking the result at face value.</p>\n\n<blockquote>\n  <p>Is it the compiler or is it at the hardware level?</p>\n</blockquote>\n\n<p>That latter, I think:</p>\n\n<pre><code>  if (a != 0 &amp;&amp; b != 0)\n</code></pre>\n\n<p>will compile to 2 memory loads and two conditional branches</p>\n\n<pre><code>  if (a * b != 0)\n</code></pre>\n\n<p>will compile to 2 memory loads, a multiply and one conditional branch.</p>\n\n<p>The multiply is likely to be faster than the second conditional branch if the hardware-level branch prediction is ineffective.  As you increase the ratio ... the branch prediction is becoming less effective.</p>\n\n<p>The reason that conditional branches are slower is that they cause the instruction execution pipeline to stall.  Branch prediction is about avoiding the stall by predicting which way the branch is going to go and speculatively choosing the next instruction based on that.  If the prediction fails, there is a delay while the instruction for the other direction is loaded.</p>\n\n<p>(Note: the above explanation is oversimplified.  For a more accurate explanation, you need to look at the literature provided by the CPU manufacturer for assembly language coders and compiler writers.  The Wikipedia page on <a href=\"https://en.wikipedia.org/wiki/Branch_predictor\">Branch Predictors</a> is good background.)</p>\n\n<hr>\n\n<p>However, there is one thing that you need to be careful about with this optimization.  Are there any values where <code>a * b != 0</code> will give the wrong answer?  Consider cases where computing the product results in integer overflow.</p>\n\n<hr>\n\n<p><strong>UPDATE</strong></p>\n\n<p>Your graphs tend to confirm what I said.  </p>\n\n<ul>\n<li><p>There is also a \"branch prediction\" effect in the conditional branch <code>a * b != 0</code> case, and this comes out in the graphs.</p></li>\n<li><p>If you project the curves beyond 0.9 on the X-axis, it looks like 1) they will meet at about 1.0 and 2) the meeting point will be at roughly the same Y value as for X = 0.0.</p></li>\n</ul>\n\n<hr>\n\n<p><strong>UPDATE 2</strong></p>\n\n<p>I don't understand why the curves are different for the <code>a + b != 0</code> and the <code>a | b != 0</code> cases.  There <em>could be</em> something clever in the branch predictors logic.  Or it could indicate something else.</p>\n\n<p>(Note that this kind of thing can be specific to a particular chip model number or even version.  The results of your benchmarks could be different on other systems.)</p>\n\n<p>However, they both have the advantage of working for all non-negative values of <code>a</code> and <code>b</code>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1606917,
+        "reputation" : 6231,
+        "user_id" : 1486834,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/xnxhK.png?s=256",
+        "display_name" : "Kuba Wyrostek",
+        "link" : "https://stackoverflow.com/users/1486834/kuba-wyrostek"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1456089547,
+      "post_id" : 35531610,
+      "comment_id" : 58772976,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In second expression if <code>a</code> is zero then <code>b</code> needs not to be evaluated since whole expression is already false. So <i>every element is compared</i> is not true."
+    } ],
+    "owner" : {
+      "account_id" : 7824538,
+      "reputation" : 356,
+      "user_id" : 5923072,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://graph.facebook.com/1124738317557739/picture?type=large",
+      "display_name" : "Sanket Gupte",
+      "link" : "https://stackoverflow.com/users/5923072/sanket-gupte"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1456021811,
+    "creation_date" : 1456021811,
+    "answer_id" : 35531610,
+    "question_id" : 35531369,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When we take the multiplication, even if one number is 0, then the product is 0. While writing </p>\n\n<pre><code>    (a*b != 0)\n</code></pre>\n\n<p>It evaluates the result of the product thereby eliminating the first few occurrences of the iteration starting from 0. As a result the comparisons are less than that when the condition is</p>\n\n<pre><code>   (a != 0 &amp;&amp; b != 0)\n</code></pre>\n\n<p>Where every element is compared with 0 and evaluated. Hence the time required is less. But I believe that the second condition might give you more accurate solution.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1644897199,
+      "post_id" : 35538237,
+      "comment_id" : 125720713,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I think it&#39;s still worth mentioning that <code>a|b != 0</code> doesn&#39;t have any of the problems of <code>a+b</code>.  Regardless of the footnote about C++ compilers optimizing <code>a||b</code> into <code>a|b</code> <a href=\"https://stackoverflow.com/questions/71039947/is-ifa-b-always-faster-than-ifa-b\">when it&#39;s safe</a>, e.g. NULL deref impossible.  (<a href=\"https://godbolt.org/z/EKnYbo7En\" rel=\"nofollow noreferrer\">godbolt.org/z/EKnYbo7En</a>)  That&#39;s something Java implementations <i>could</i> do; something to keep an eye out for in the future if not now."
+    } ],
+    "owner" : {
+      "account_id" : 935202,
+      "reputation" : 50314,
+      "user_id" : 964243,
+      "user_type" : "registered",
+      "accept_rate" : 66,
+      "profile_image" : "https://i.sstatic.net/fL1rH.png?s=256",
+      "display_name" : "Boann",
+      "link" : "https://stackoverflow.com/users/964243/boann"
+    },
+    "is_accepted" : false,
+    "score" : 73,
+    "last_activity_date" : 1644896528,
+    "last_edit_date" : 1644896528,
+    "creation_date" : 1456069828,
+    "answer_id" : 35538237,
+    "question_id" : 35531369,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think your benchmark has some flaws and might not be useful for inferring about real programs. Here are my thoughts:</p>\n<ul>\n<li><p><code>(a|b)!=0</code> and <code>(a+b)!=0</code> test if <em>either</em> value is non-zero, whereas <code>a != 0 &amp;&amp; b != 0</code> and <code>(a*b)!=0</code> test if <em>both</em> are non-zero. So you are not comparing the timing of just the arithmetic: if the condition is true more often, it causes more executions of the <code>if</code> body, which takes more time too.</p>\n</li>\n<li><p><code>(a+b)!=0</code> will do the wrong thing for positive and negative values that sum to zero, so you can't use it in the general case, even if it works here.  Also for <code>a=b=0x80000000</code> (MIN_VALUE), the only set bit will overflow out the top.</p>\n</li>\n<li><p>Similarly, <code>(a*b)!=0</code> will do the wrong thing for values that overflow. Random example: 196608 * 327680 is 0 because the true result happens to be divisible by 2<sup>32</sup>, so its low 32 bits are 0, and those bits are all you get if it's an <code>int</code> operation.</p>\n</li>\n<li><p>The VM will optimize the expression during the first few runs of the outer (<code>fraction</code>) loop, when <code>fraction</code> is 0, when the branches are almost never taken. The optimizer may do different things if you start <code>fraction</code> at 0.5.</p>\n</li>\n<li><p>Unless the VM is able to eliminate some of the array bounds checks here, there are four other branches in the expression just due to the bounds checks, and that's a complicating factor when trying to figure out what's happening at a low level. You might get different results if you split the two-dimensional array into two flat arrays, changing <code>nums[0][i]</code> and <code>nums[1][i]</code> to <code>nums0[i]</code> and <code>nums1[i]</code>.</p>\n</li>\n<li><p>CPU branch predictors detect short patterns in the data, or runs of all branches being taken or not taken. Your randomly generated benchmark data is the <a href=\"https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array\">worst-case scenario for a branch predictor</a>. If real-world data has a predictable pattern, or it has long runs of all-zero and all-non-zero values, the branches could cost <strong>much</strong> less.</p>\n</li>\n<li><p>The particular code that is executed after the condition is met can affect the performance of evaluating the condition itself, because it affects things like whether or not the loop can be unrolled, which CPU registers are available, and if any of the fetched <code>nums</code> values need to be reused after evaluating the condition. Merely incrementing a counter in the benchmark is not a perfect placeholder for what real code would do.</p>\n</li>\n<li><p><code>System.currentTimeMillis()</code> is on most systems not more accurate than +/- 10 ms. <code>System.nanoTime()</code> is usually more accurate.</p>\n</li>\n</ul>\n<p>There are lots of uncertainties, and it's always hard to say anything definite with these sorts of micro-optimizations because a trick that is faster on one VM or CPU can be slower on another. If running the 32-bit HotSpot JVM, rather than the 64-bit version, be aware that it comes in two flavors: with the &quot;Client&quot; VM having different (weaker) optimizations compared to the &quot;Server&quot; VM.</p>\n<p>If you can <a href=\"https://wiki.openjdk.java.net/display/HotSpot/PrintAssembly\" rel=\"nofollow noreferrer\">disassemble the machine code generated by the VM</a>, do that rather than trying to guess what it does!</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1168964,
+        "reputation" : 4152,
+        "user_id" : 1146585,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/e2YfK.png?s=256",
+        "display_name" : "Pierre Arlaud",
+        "link" : "https://stackoverflow.com/users/1146585/pierre-arlaud"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1456147615,
+      "post_id" : 35544998,
+      "comment_id" : 58797603,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Upvoted although I have a feeling this doesn&#39;t <i>quite</i> answer the question."
+    }, {
+      "owner" : {
+        "account_id" : 172481,
+        "reputation" : 113938,
+        "user_id" : 400547,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/bece78258b3847bca4ab1ee92ad92b88?s=256&d=identicon&r=PG",
+        "display_name" : "Jon Hanna",
+        "link" : "https://stackoverflow.com/users/400547/jon-hanna"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1456156492,
+      "post_id" : 35544998,
+      "comment_id" : 58804306,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "That&#39;s a way to introduce a branch without changing the logic from non-branching (if the way you obtained <code>a</code> and <code>b</code> had side-effects you would have kept them). You still have <code>&amp;&amp;</code> so you still have a branch."
+    }, {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1644864645,
+      "post_id" : 35544998,
+      "comment_id" : 125713397,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If the combined condition is more predictable than both separately, you should be avoiding short-circuit eval.  e.g. doing <code>aZero = (nums[0][i] == 0)</code> etc. and <code>if (! (aZero | bZero) )</code> or something.  Or I guess Java without implicit bool-&gt;int conversion would need <code>nums[...] == 0 ? 1 : 0</code>.  That might require several asm instructions to actually implement, so would be slower than 2 branches if the first one (or both) predicted well."
+    } ],
+    "owner" : {
+      "account_id" : 7890233,
+      "reputation" : 251,
+      "user_id" : 5960641,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/832afb7bc6dad6d3f116ca464154c289?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Pagefault",
+      "link" : "https://stackoverflow.com/users/5960641/pagefault"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1730987285,
+    "last_edit_date" : 1730987285,
+    "creation_date" : 1456109035,
+    "answer_id" : 35544998,
+    "question_id" : 35531369,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The answers here are good, though I had an idea that might improve things.</p>\n<p>Since the two branches and associated branch prediction are the likely culprit, we may be able to reduce the branching to a single branch without changing the logic at all.</p>\n<pre><code>boolean aNotZero = (nums[0][i] != 0);\nboolean bNotZero = (nums[1][i] != 0);\nif (aNotZero &amp;&amp; bNotZero) { /* Some code */ }\n</code></pre>\n<p>It may also work to do</p>\n<pre><code>int a = nums[0][i];\nint b = nums[1][i];\nif (a != 0 &amp;&amp; b != 0) { /* Some code */ }\n</code></pre>\n<p>The reason being, by the rules of short-circuiting, if the first boolean is false, the second should not be evaluated. It has to perform an extra branch to avoid evaluating <code>nums[1][i]</code> if <code>nums[0][i]</code> was false. Now, you may not care that <code>nums[1][i]</code> gets evaluated, but the compiler can't be certain that it won't throw an out of range or null ref when you do. By reducing the <code>if</code> block to simple bools, the compiler may be smart enough to realize that evaluating the second boolean unnecessarily won't have negative side effects.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1423961,
+        "reputation" : 6086,
+        "user_id" : 1347968,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/60ac5d1887465fa8a299e94810aa5fec?s=256&d=identicon&r=PG",
+        "display_name" : "siegi",
+        "link" : "https://stackoverflow.com/users/1347968/siegi"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1456291155,
+      "post_id" : 35591852,
+      "comment_id" : 58873565,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<code>&amp;</code> is not a &quot;bitwise OR&quot; but (in this case) a &quot;logical AND&quot; because both operands are booleans and it&#39;s not <code>|</code> ;-)"
+    }, {
+      "owner" : {
+        "account_id" : 28416,
+        "reputation" : 35745,
+        "user_id" : 75889,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/37aa3ec65ec47c5a3f9e2a80534837f3?s=256&d=identicon&r=PG",
+        "display_name" : "StackedCrooked",
+        "link" : "https://stackoverflow.com/users/75889/stackedcrooked"
+      },
+      "reply_to_user" : {
+        "account_id" : 1423961,
+        "reputation" : 6086,
+        "user_id" : 1347968,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/60ac5d1887465fa8a299e94810aa5fec?s=256&d=identicon&r=PG",
+        "display_name" : "siegi",
+        "link" : "https://stackoverflow.com/users/1347968/siegi"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1456331838,
+      "post_id" : 35591852,
+      "comment_id" : 58899891,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@siegi TIL Java &#39;&amp;&#39; is actually a logical AND without short-circuiting."
+    }, {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1644864758,
+      "post_id" : 35591852,
+      "comment_id" : 125713442,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<code>&amp;</code> isn&#39;t a logical AND, it&#39;s a bitwise AND.  Same as in C.  So <code>a &amp; b</code> is <i>not</i> equivalent to <code>a &amp;&amp; b</code>.  But <code>a|b</code> <i>is</i> equivalent to <code>a || b</code>, just because of the difference in how &quot;any bits set in either&quot; vs. &quot;no bits set&quot; vs. &quot;no intersecting bits&quot; works."
+    }, {
+      "owner" : {
+        "account_id" : 36215,
+        "reputation" : 285924,
+        "user_id" : 103167,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/rX1ss.png?s=256",
+        "display_name" : "Ben Voigt",
+        "link" : "https://stackoverflow.com/users/103167/ben-voigt"
+      },
+      "reply_to_user" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1651269800,
+      "post_id" : 35591852,
+      "comment_id" : 127332750,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PeterCordes: In the special case &quot;both operands are booleans&quot; which siegi explicitly claimed, there is no difference between logical AND and bitwise AND.  For booleans, it is correct to say that <code>&amp;</code> is logical AND without short-circuit, and <code>&amp;&amp;</code> is logical AND with short-circuit behavior."
+    }, {
+      "owner" : {
+        "account_id" : 78868,
+        "reputation" : 376943,
+        "user_id" : 224132,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/N4ivW.png?s=256",
+        "display_name" : "Peter Cordes",
+        "link" : "https://stackoverflow.com/users/224132/peter-cordes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1651285616,
+      "post_id" : 35591852,
+      "comment_id" : 127334661,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes, but the reply to siegi&#39;s correct comment omits mention of that special case when saying &quot;today I learned (TIL)&quot;.  It is interesting that since Java doesn&#39;t do implicit conversion between <code>boolean</code> and <code>int</code>, it&#39;s not just a &quot;logical AND&quot; in quotes, i.e. not a bitwise AND that happens to be used on 1-bit operands like in C++.  In Java it&#39;s truly a logical AND when used on <code>boolean</code> operands, and you can&#39;t do <code>true &amp; 123</code>."
+    } ],
+    "owner" : {
+      "account_id" : 28416,
+      "reputation" : 35745,
+      "user_id" : 75889,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/37aa3ec65ec47c5a3f9e2a80534837f3?s=256&d=identicon&r=PG",
+      "display_name" : "StackedCrooked",
+      "link" : "https://stackoverflow.com/users/75889/stackedcrooked"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1456332295,
+    "last_edit_date" : 1456332295,
+    "creation_date" : 1456278948,
+    "answer_id" : 35591852,
+    "question_id" : 35531369,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You are using randomized input data which makes the branches unpredictable. In practice branches are often (~90%) predictable so in real code the branchful code is likely to be faster.</p>\n\n<p>That said. I don't see how <code>a*b != 0</code> can be faster than <code>(a|b) != 0</code>. Generally integer multiplication is more expensive than a bitwise OR. But things like this occasionally get weird. See for example the \"Example 7: Hardware complexities\" example from <a href=\"http://igoro.com/archive/gallery-of-processor-cache-effects/\" rel=\"noreferrer\">Gallery of Processor Cache Effects</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 22057425,
+      "reputation" : 135,
+      "user_id" : 16320675,
+      "user_type" : "unregistered",
+      "profile_image" : "https://i.sstatic.net/PYn0O.png?s=256",
+      "display_name" : "user16320675",
+      "link" : "https://stackoverflow.com/users/16320675/user16320675"
+    },
+    "is_accepted" : false,
+    "community_owned_date" : 1644848002,
+    "score" : 2,
+    "last_activity_date" : 1730987976,
+    "last_edit_date" : 1730987976,
+    "creation_date" : 1644848002,
+    "answer_id" : 71113288,
+    "question_id" : 35531369,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I know the question is old, but for curiosity and training I did some tests using JMH. The results were slightly different:</p>\n<ul>\n<li>bit-wise OR (<code>a | b != 0</code>) and multiplication (<code>a * b != 0</code>) were the fastest;</li>\n<li>bit-wise AND (<code>a!=0 &amp; b!=0</code>) was almost as good as multiplication</li>\n<li>short-circuiting AND and OR (<code>a!=0 &amp;&amp; b!=0</code>, <code>!(a!=0 || b!=0)</code> were slowest</li>\n</ul>\n<p>Disclaimer: I am not even near an expert in JMH.</p>\n<p>Here the code, I tried to reproduce the code posted in question, added bit-wise OR:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Warmup(iterations = 5, time = 100, timeUnit = TimeUnit.MILLISECONDS)\n@Measurement(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)\n@Fork(value = 3)\n@BenchmarkMode(Mode.AverageTime)\n@OutputTimeUnit(TimeUnit.MILLISECONDS)\n@State(Scope.Benchmark)\npublic class MultAnd {\n    \n    public static void main(String[] args) throws RunnerException {\n        Options opt = new OptionsBuilder()\n            .include(MultAnd.class.getSimpleName())\n            .build();\n        \n        new Runner(opt).run();\n    }\n\n    private static final int size = 50_000_000;\n    \n    @Param({&quot;0.00&quot;, &quot;0.10&quot;, &quot;0.20&quot;, &quot;0.30&quot;, &quot;0.40&quot;, &quot;0.45&quot;, \n            &quot;0.50&quot;, &quot;0.55&quot;, &quot;0.60&quot;, &quot;0.70&quot;, &quot;0.80&quot;, &quot;0.90&quot;, \n            &quot;1.00&quot;})\n    private double fraction;\n\n    private int[][] nums;\n\n    @Setup\n    public void setup() {\n        nums = new int[2][size];\n        for(int i = 0 ; i &lt; 2 ; i++) {\n            for(int j = 0 ; j &lt; size ; j++) {\n                double random = Math.random();\n                if (random &lt; fraction) \n                    nums[i][j] = 0;\n                else \n                    nums[i][j] = (int) (random*15 + 1);\n            }\n        }\n    }\n    \n    @Benchmark\n    public int and() {\n        int s = 0;\n        for (int i = 0; i &lt; size; i++) {\n            if ((nums[0][i]!=0) &amp; (nums[1][i]!=0))\n                s++;\n        }\n        return s;\n    }\n    \n    @Benchmark\n    public int andAnd() {\n        int s = 0;\n        for (int i = 0; i &lt; size; i++) {\n            if ((nums[0][i]!=0) &amp;&amp; (nums[1][i]!=0))\n                s++;\n        }\n        return s;\n    }\n    \n    @Benchmark\n    public int bitOr() {\n        int s = 0;\n        for (int i = 0; i &lt; size; i++) {\n            if ((nums[0][i] | nums[1][i]) != 0)\n                s++;\n        }\n        return s;\n    }\n    \n    @Benchmark\n    public int mult() {\n        int s = 0;\n        for (int i = 0; i &lt; size; i++) {\n            if (nums[0][i]*nums[1][i] != 0)\n                s++;\n        }\n        return s;\n    }\n    \n    @Benchmark\n    public int notOrOr() {\n        int s = 0;\n        for (int i = 0; i &lt; size; i++) {\n            if (!((nums[0][i]!=0) || (nums[1][i]!=0)))\n                s++;\n        }\n        return s;\n    }\n}\n</code></pre>\n<p>And the the results:</p>\n<pre><code>REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on\nwhy the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial\nexperiments, perform baseline and negative tests that provide experimental control, make sure\nthe benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.\nDo not assume the numbers tell you what you want them to tell.\n\nBenchmark        (fraction)  Mode  Cnt    Score    Error  Units\nMultAnd.and            0.00  avgt   30   33.238 ±  0.883  ms/op\nMultAnd.and            0.10  avgt   30   48.011 ±  1.635  ms/op\nMultAnd.and            0.20  avgt   30   48.284 ±  1.797  ms/op\nMultAnd.and            0.30  avgt   30   47.969 ±  1.463  ms/op\nMultAnd.and            0.40  avgt   30   48.999 ±  2.881  ms/op\nMultAnd.and            0.45  avgt   30   47.804 ±  1.053  ms/op\nMultAnd.and            0.50  avgt   30   48.332 ±  1.990  ms/op\nMultAnd.and            0.55  avgt   30   47.457 ±  1.210  ms/op\nMultAnd.and            0.60  avgt   30  127.530 ±  3.104  ms/op\nMultAnd.and            0.70  avgt   30   92.630 ±  1.471  ms/op\nMultAnd.and            0.80  avgt   30   69.458 ±  1.609  ms/op\nMultAnd.and            0.90  avgt   30   55.421 ±  1.443  ms/op\nMultAnd.and            1.00  avgt   30   30.672 ±  1.387  ms/op\nMultAnd.andAnd         0.00  avgt   30   33.187 ±  0.978  ms/op\nMultAnd.andAnd         0.10  avgt   30  110.943 ±  1.435  ms/op\nMultAnd.andAnd         0.20  avgt   30  177.527 ±  2.353  ms/op\nMultAnd.andAnd         0.30  avgt   30  226.247 ±  1.879  ms/op\nMultAnd.andAnd         0.40  avgt   30  266.316 ± 18.647  ms/op\nMultAnd.andAnd         0.45  avgt   30  258.120 ±  2.638  ms/op\nMultAnd.andAnd         0.50  avgt   30  259.727 ±  3.532  ms/op\nMultAnd.andAnd         0.55  avgt   30  248.706 ±  1.419  ms/op\nMultAnd.andAnd         0.60  avgt   30  229.825 ±  1.256  ms/op\nMultAnd.andAnd         0.70  avgt   30  177.911 ±  2.787  ms/op\nMultAnd.andAnd         0.80  avgt   30  121.303 ±  2.724  ms/op\nMultAnd.andAnd         0.90  avgt   30   67.914 ±  1.589  ms/op\nMultAnd.andAnd         1.00  avgt   30   15.892 ±  0.349  ms/op\nMultAnd.bitOr          0.00  avgt   30   33.271 ±  1.896  ms/op\nMultAnd.bitOr          0.10  avgt   30   35.597 ±  1.536  ms/op\nMultAnd.bitOr          0.20  avgt   30   42.366 ±  1.641  ms/op\nMultAnd.bitOr          0.30  avgt   30   58.385 ±  0.778  ms/op\nMultAnd.bitOr          0.40  avgt   30   85.567 ±  1.678  ms/op\nMultAnd.bitOr          0.45  avgt   30   32.152 ±  1.345  ms/op\nMultAnd.bitOr          0.50  avgt   30   32.190 ±  1.357  ms/op\nMultAnd.bitOr          0.55  avgt   30   32.335 ±  1.384  ms/op\nMultAnd.bitOr          0.60  avgt   30   31.910 ±  1.026  ms/op\nMultAnd.bitOr          0.70  avgt   30   31.783 ±  0.807  ms/op\nMultAnd.bitOr          0.80  avgt   30   31.671 ±  0.745  ms/op\nMultAnd.bitOr          0.90  avgt   30   31.329 ±  0.708  ms/op\nMultAnd.bitOr          1.00  avgt   30   30.530 ±  0.534  ms/op\nMultAnd.mult           0.00  avgt   30   30.859 ±  0.735  ms/op\nMultAnd.mult           0.10  avgt   30   33.933 ±  0.887  ms/op\nMultAnd.mult           0.20  avgt   30   34.243 ±  0.917  ms/op\nMultAnd.mult           0.30  avgt   30   33.825 ±  1.155  ms/op\nMultAnd.mult           0.40  avgt   30   34.309 ±  1.334  ms/op\nMultAnd.mult           0.45  avgt   30   33.709 ±  1.277  ms/op\nMultAnd.mult           0.50  avgt   30   37.699 ±  4.029  ms/op\nMultAnd.mult           0.55  avgt   30   36.374 ±  2.948  ms/op\nMultAnd.mult           0.60  avgt   30  100.354 ±  1.553  ms/op\nMultAnd.mult           0.70  avgt   30   69.570 ±  1.441  ms/op\nMultAnd.mult           0.80  avgt   30   47.181 ±  1.567  ms/op\nMultAnd.mult           0.90  avgt   30   33.552 ±  0.999  ms/op\nMultAnd.mult           1.00  avgt   30   30.775 ±  0.548  ms/op\nMultAnd.notOrOr        0.00  avgt   30   15.701 ±  0.254  ms/op\nMultAnd.notOrOr        0.10  avgt   30   68.052 ±  1.433  ms/op\nMultAnd.notOrOr        0.20  avgt   30  120.393 ±  2.299  ms/op\nMultAnd.notOrOr        0.30  avgt   30  177.729 ±  2.438  ms/op\nMultAnd.notOrOr        0.40  avgt   30  229.547 ±  1.859  ms/op\nMultAnd.notOrOr        0.45  avgt   30  250.660 ±  4.810  ms/op\nMultAnd.notOrOr        0.50  avgt   30  258.760 ±  2.190  ms/op\nMultAnd.notOrOr        0.55  avgt   30  258.010 ±  1.018  ms/op\nMultAnd.notOrOr        0.60  avgt   30  254.732 ±  2.076  ms/op\nMultAnd.notOrOr        0.70  avgt   30  227.148 ±  2.040  ms/op\nMultAnd.notOrOr        0.80  avgt   30  180.193 ±  4.659  ms/op\nMultAnd.notOrOr        0.90  avgt   30  112.212 ±  3.111  ms/op\nMultAnd.notOrOr        1.00  avgt   30   33.458 ±  0.952  ms/op\n</code></pre>\n<p>or as graph:<br />\n<a href=\"https://i.sstatic.net/WJUZK.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/WJUZK.png\" alt=\"JFreeChart\" /></a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6650510,
+    "reputation" : 6284,
+    "user_id" : 5132826,
+    "user_type" : "registered",
+    "accept_rate" : 80,
+    "profile_image" : "https://www.gravatar.com/avatar/f857415cbbb419c70cdb1952a5e67cae?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Maljam",
+    "link" : "https://stackoverflow.com/users/5132826/maljam"
+  },
+  "is_answered" : true,
+  "view_count" : 26089,
+  "accepted_answer_id" : 35531496,
+  "answer_count" : 6,
+  "score" : 437,
+  "last_activity_date" : 1730987976,
+  "creation_date" : 1456019477,
+  "last_edit_date" : 1592644375,
+  "question_id" : 35531369,
+  "link" : "https://stackoverflow.com/questions/35531369/why-is-ab-0-faster-than-a-0-b-0-in-java",
+  "title" : "Why is (a*b != 0) faster than (a != 0 &amp;&amp; b != 0) in Java?",
+  "body" : "<p>I'm writing some code in Java where, at some point, the flow of the program is determined by whether two int variables, &quot;a&quot; and &quot;b&quot;, are non-zero (note: a and b are never negative, and never within integer overflow range).</p>\n<p>I can evaluate it with</p>\n<pre><code>if (a != 0 &amp;&amp; b != 0) { /* Some code */ }\n</code></pre>\n<p>Or alternatively</p>\n<pre><code>if (a*b != 0) { /* Some code */ }\n</code></pre>\n<p>Because I expect that piece of code to run millions of times per run, I was wondering which one would be faster. I did the experiment by comparing them on a huge randomly generated array, and I was also curious to see how the sparsity of the array (fraction of data = 0) would affect the results:</p>\n<pre><code>long time;\nfinal int len = 50000000;\nint arbitrary = 0;\nint[][] nums = new int[2][len];\n\nfor (double fraction = 0 ; fraction &lt;= 0.9 ; fraction += 0.0078125) {\n    for(int i = 0 ; i &lt; 2 ; i++) {\n        for(int j = 0 ; j &lt; len ; j++) {\n            double random = Math.random();\n\n            if(random &lt; fraction) nums[i][j] = 0;\n            else nums[i][j] = (int) (random*15 + 1);\n        }\n    }\n\n    time = System.currentTimeMillis();\n\n    for(int i = 0 ; i &lt; len ; i++) {\n        if( /*insert nums[0][i]*nums[1][i]!=0 or nums[0][i]!=0 &amp;&amp; nums[1][i]!=0*/ ) arbitrary++;\n    }\n    System.out.println(System.currentTimeMillis() - time);\n}\n</code></pre>\n<p>And the results show that if you expect &quot;a&quot; or &quot;b&quot; to be equal to 0 more than ~3% of the time, <code>a*b != 0</code> is faster than <code>a!=0 &amp;&amp; b!=0</code>:</p>\n<p><a href=\"https://i.sstatic.net/POHYD.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/POHYD.png\" alt=\"Graphical graph of the results of a AND b non-zero\" /></a></p>\n<p>I'm curious to know why. Could anyone shed some light? Is it the compiler or is it at the hardware level?</p>\n<p><strong>Edit:</strong> <em>Out of curiosity...</em> now that I learned about branch prediction, I was wondering what the analog comparison would show for a <strong>OR</strong> b is non-zero:</p>\n<p><a href=\"https://i.sstatic.net/GpJoM.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/GpJoM.png\" alt=\"Graph of a or b non-zero\" /></a></p>\n<p>We do see the same effect of branch prediction as expected, interestingly the graph is somewhat flipped along the X-axis.</p>\n<h3>Update</h3>\n<p>1- I added <code>!(a==0 || b==0)</code> to the analysis to see what happens.</p>\n<p>2- I also included <code>a != 0 || b != 0</code>, <code>(a+b) != 0</code> and <code>(a|b) != 0</code> out of curiosity, after learning about branch prediction. But they are not logically equivalent to the other expressions, because only a <em>OR</em> b needs to be non-zero to return true, so they are not meant to be compared for processing efficiency.</p>\n<p>3- I also added the actual benchmark that I used for the analysis, which is just iterating an arbitrary int variable.</p>\n<p>4- Some people were suggesting to include <code>a != 0 &amp; b != 0</code> as opposed to <code>a != 0 &amp;&amp; b != 0</code>, with the prediction that it would behave more closely to <code>a*b != 0</code> because we would remove the branch prediction effect. I didn't know that <code>&amp;</code> could be used with boolean variables, I thought it was only used for binary operations with integers.</p>\n<p>Note: In the context that I was considering all this, int overflow is not an issue, but that's definitely an important consideration in general contexts.</p>\n<p>CPU: Intel Core i7-3610QM @ 2.3GHz</p>\n<p>Java version: 1.8.0_45<br />\nJava(TM) SE Runtime Environment (build 1.8.0_45-b14)<br />\nJava HotSpot(TM) 64-Bit Server VM (build 25.45-b02, mixed mode)</p>\n"
+}

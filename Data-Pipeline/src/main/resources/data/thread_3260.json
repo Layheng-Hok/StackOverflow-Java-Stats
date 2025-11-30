@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "quarkus" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1115215,
+      "reputation" : 11642,
+      "user_id" : 1104727,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4298a3f5e864fa84f25b90f48288c0d4?s=256&d=identicon&r=PG",
+      "display_name" : "Holly Cummins",
+      "link" : "https://stackoverflow.com/users/1104727/holly-cummins"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1732791592,
+    "last_edit_date" : 1732791592,
+    "creation_date" : 1732732189,
+    "answer_id" : 79231482,
+    "question_id" : 71254917,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For versions of Quarkus after <a href=\"https://github.com/quarkusio/quarkus/commit/8d3ed606140d3a6c2db4f445762fd6f1da94bcb0\" rel=\"nofollow noreferrer\">April 2022</a>, this should work. For example, there's a <a href=\"https://github.com/quarkusio/quarkus/blob/a36e483cb4d76bee68118b757fa4eb055c8d0d1f/integration-tests/main/src/test/java/io/quarkus/it/main/QuarkusTestNestedWithTestProfileTestCase.java#L21\" rel=\"nofollow noreferrer\">test case</a> which does:</p>\n<pre><code>@QuarkusTest\n@TestProfile(QuarkusTestNestedWithTestProfileTestCase.OuterProfile.class)\npublic class QuarkusTestNestedWithTestProfileTestCase {\n\n    private static final int TEST_PORT_FROM_PROFILE = 7777;\n\n    @Nested\n    class NestedCase {\n\n        @Test\n        void testProfileFromNested() {\n            Assertions.assertEquals(TEST_PORT_FROM_PROFILE, RestAssured.port);\n            RestAssured.when()\n                    .get(&quot;/greeting/Stu&quot;)\n                    .then()\n                    .statusCode(200)\n                    .body(is(&quot;OuterProfile Stu&quot;));\n        }\n    }\n\n    @Nested\n    @TestProfile(QuarkusTestNestedWithTestProfileTestCase.ModernEnglishProfile.class)\n    class ModernEnglishCase {\n\n        @Test\n        void testProfileFromNested() {\n            RestAssured.when()\n                    .get(&quot;/greeting/Stu&quot;)\n                    .then()\n                    .statusCode(200)\n                    .body(is(&quot;Hey Stu&quot;));\n        }\n    }\n\n    public static class OuterProfile implements QuarkusTestProfile {\n\n        @Override\n        public Map&lt;String, String&gt; getConfigOverrides() {\n            return Collections.singletonMap(&quot;quarkus.http.test-port&quot;, &quot;&quot; + TEST_PORT_FROM_PROFILE);\n        }\n\n        @Override\n        public String[] commandLineParameters() {\n            return new String[] { &quot;OuterProfile&quot; };\n        }\n\n        @Override\n        public boolean runMainMethod() {\n            return true;\n        }\n    }\n\n    public static class ModernEnglishProfile implements QuarkusTestProfile {\n\n        @Override\n        public String[] commandLineParameters() {\n            return new String[] { &quot;Hey&quot; };\n        }\n\n        @Override\n        public boolean runMainMethod() {\n            return true;\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14983151,
+      "reputation" : 750,
+      "user_id" : 10816587,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qLZ1Y.jpg?s=256",
+      "display_name" : "MichaelCkr",
+      "link" : "https://stackoverflow.com/users/10816587/michaelckr"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762890009,
+    "creation_date" : 1762890009,
+    "answer_id" : 79817057,
+    "question_id" : 71254917,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Sadly, this is not possible (anymore). I had such a test in my service as well and now, incrementing the Quarkus version to LTS 3.27.0, it is broken.</p>\n<p>The test class cited in the answer from Holly Cummins (thanks for the link) is still present: <a href=\"https://github.com/quarkusio/quarkus/blob/main/integration-tests/main/src/test/java/io/quarkus/it/main/QuarkusTestNestedWithTestProfileTestCase.java\" rel=\"nofollow noreferrer\">QuarkusTestNestedWithTestProfileTestCase</a></p>\n<p>However, there is a slight but important difference by now:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Nested\n@TestProfile(QuarkusTestNestedWithTestProfileTestCase.ModernEnglishProfile.class)\n@Disabled(&quot;With the current test classloading design, test profiles on nested inner classes are too hard, because nested classes should run with the same classloader as the parent, but a test profile involves a new application, which involves a new classloader.&quot;)\nclass ModernEnglishCase {\n\n    @Test\n    void testProfileFromNested() {\n        RestAssured.when()\n                .get(&quot;/greeting/Stu&quot;)\n                .then()\n                .statusCode(200)\n                .body(is(&quot;Hey Stu&quot;));\n    }\n}\n</code></pre>\n<p>So bad luck here.</p>\n<p>Executing my old and previously working test results in the following exception:</p>\n<pre><code>org.junit.jupiter.api.extension.TestInstantiationException: @Nested tests may not contain @TestProfile annotations.\n    at io.quarkus.test.junit.QuarkusTestExtension.ensureStarted(QuarkusTestExtension.java:598)\n    at io.quarkus.test.junit.QuarkusTestExtension.beforeAll(QuarkusTestExtension.java:687)\n    at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)\n    at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)\n</code></pre>\n<p>The behavior is as well documented <a href=\"https://quarkus.io/guides/getting-started-testing#nested-tests\" rel=\"nofollow noreferrer\">here</a>.</p>\n<blockquote>\n<ol start=\"11\">\n<li>Nested Tests</li>\n</ol>\n<p>JUnit 5 @Nested tests are useful for structuring more complex test scenarios. However, note that it is not possible to assign different test profiles or resources to nested tests within the same parent class.</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5017943,
+    "reputation" : 189,
+    "user_id" : 4032284,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/6cf48f99a0cf3ea24d70ed3023ee4070?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "chschroe",
+    "link" : "https://stackoverflow.com/users/4032284/chschroe"
+  },
+  "is_answered" : true,
+  "view_count" : 1194,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1762890009,
+  "creation_date" : 1645718772,
+  "question_id" : 71254917,
+  "link" : "https://stackoverflow.com/questions/71254917/using-nested-quarkus-tests-with-different-test-profiles",
+  "title" : "Using nested Quarkus tests with different test profiles",
+  "body" : "<p>I want to create a test case for a class Foo. That class Foo gets an instance of Bar injected; however, there are different implementations of Bar, and the decision which one should be used depends on a config property. (The technical implementation is a producer method that produces instances of Bar. This producer method gets the config property injected and uses it to decide which implementation to use.)</p>\n<p>I can achieve that by creating separate test classes for the different behavior of Foo (which depends on the injected Bar instance) and annotating each of them with a different test profile. These test profiles could provide the configuration such that the different implementations of Bar will be injected.</p>\n<p>However, ideally, I want to have the tests in a single test class FooTest. Since the @TestProfile annotation is only allowed for classes, I tried using nested test classes like this:</p>\n<pre><code>@QuarkusTest\nclass FooTest {\n    \n    @Inject Foo foo;\n\n    @Nested\n    @TestProfile(ProfileA.class)\n    class TestForImplementationA {\n\n        @Test\n        void testSomething() {\n            foo.doSomething();\n        }\n\n    }\n\n    @Nested\n    @TestProfile(ProfileB.class)\n    class TestForImplementationB {\n\n        @Test\n        void testSomething() {\n            foo.doSomething();\n        }\n\n    }\n\n}\n</code></pre>\n<p>Unfortunately, the test profiles do not seem to be taken into account since I end up with an error that the config property is missing:</p>\n<blockquote>\n<p>The config property barType is required but it could not be found in any config source</p>\n</blockquote>\n<p>Is there any way to achieve what I want, or do I have to stick to the separate test classes?</p>\n<p>PS: An example project can be downloaded from <a href=\"https://www.dropbox.com/s/qn3mp4ls32d694a/quarkus-test.zip?dl=0\" rel=\"nofollow noreferrer\">https://www.dropbox.com/s/qn3mp4ls32d694a/quarkus-test.zip?dl=0</a></p>\n"
+}

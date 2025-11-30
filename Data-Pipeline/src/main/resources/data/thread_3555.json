@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "apache-kafka", "consumer" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 6384814,
+      "reputation" : 62830,
+      "user_id" : 4953079,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/HwySN.jpg?s=256",
+      "display_name" : "Matthias J. Sax",
+      "link" : "https://stackoverflow.com/users/4953079/matthias-j-sax"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1463143009,
+    "post_id" : 37111935,
+    "comment_id" : 61951537,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Do you always want to read from the very beginning of the topic? If yes, you should use props.put(&quot;auto.offset.reset&quot;, &quot;smallest&quot;); and disable auto-commit:  props.put(&quot;enable.auto.commit&quot;, false);"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 6265717,
+      "reputation" : 171,
+      "user_id" : 4871528,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/da1626f558ffbaf75f547d6f9fe60f96?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Cosmos",
+      "link" : "https://stackoverflow.com/users/4871528/cosmos"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1487226296,
+    "creation_date" : 1487226296,
+    "answer_id" : 42266438,
+    "question_id" : 37111935,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Here is your example.</p>\n\n<p>The most important here is Kafka consumer configuration properties:</p>\n\n<p>Will start from the beginning of the queue.  </p>\n\n<pre><code>props.put(\"auto.offset.reset\", \"smallest\");  \n</code></pre>\n\n<p>Won't store offsets for this consumer.</p>\n\n<pre><code>props.put(\"auto.commit.enable\", \"false\");\n</code></pre>\n\n<p>Will wait 5 sec for messages if no more messages available will give up.</p>\n\n<pre><code>props.put(\"consumer.timeout.ms\", \"5000\");\n</code></pre>\n\n<p>The whole example:</p>\n\n<pre><code>package com.xxx.yyy.zzz;\n\nimport java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Properties;\n\nimport kafka.consumer.Consumer;\nimport kafka.consumer.ConsumerConfig;\nimport kafka.consumer.ConsumerTimeoutException;\nimport kafka.consumer.KafkaStream;\nimport kafka.javaapi.consumer.ConsumerConnector;\n\npublic class KafkaConsumer {\n    private final ConsumerConnector consumer;\n    private final String topic;\n    private int count = 0;\n\n    public KafkaConsumer(final String zookeeper, final String groupId, final String topic) {\n        this.consumer = Consumer.createJavaConsumerConnector(createConsumerConfig(zookeeper, groupId));\n        this.topic = topic;\n    }\n\n    // Initialize connection properties to Kafka and Zookeeper\n    private static ConsumerConfig createConsumerConfig(final String zookeeper, final String groupId) {\n        Properties props = new Properties();\n        props.put(\"zookeeper.connect\", zookeeper);\n        props.put(\"group.id\", groupId);\n        props.put(\"zookeeper.session.timeout.ms\", \"2000\");\n        props.put(\"zookeeper.sync.time.ms\", \"250\");\n        props.put(\"auto.commit.interval.ms\", \"1000\");\n        props.put(\"auto.offset.reset\", \"smallest\");\n        props.put(\"auto.commit.enable\", \"false\");\n        props.put(\"consumer.timeout.ms\", \"5000\");\n\n        return new ConsumerConfig(props);\n    }\n\n    private void getData() {\n        List&lt;byte[]&gt; msgs = new ArrayList();\n        Map&lt;String, Integer&gt; topicMap = new HashMap&lt;&gt;();\n\n        // Define single thread for topic\n        topicMap.put(topic, 1);\n        try {\n            Map&lt;String, List&lt;KafkaStream&lt;byte[], byte[]&gt;&gt;&gt; listMap = consumer.createMessageStreams(topicMap);\n            List&lt;KafkaStream&lt;byte[], byte[]&gt;&gt; kafkaStreams = listMap.get(topic);\n\n            // Collect the messages.\n            kafkaStreams.forEach(ks -&gt; ks.forEach(mam -&gt; msgs.add(mam.message())));\n\n        } catch (ConsumerTimeoutException exception) {\n            // There no more messages available -&gt; so, we are done.\n\n            // Now print all your messages\n            msgs.forEach(System.out::println);\n\n            // count them\n            count = msgs.size();\n        } finally {\n            if (consumer != null) {\n                consumer.shutdown();\n            }\n        }\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6912320,
+    "reputation" : 1,
+    "user_id" : 5307708,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/YosCc.png?s=256",
+    "display_name" : "Meni ",
+    "link" : "https://stackoverflow.com/users/5307708/meni"
+  },
+  "is_answered" : false,
+  "view_count" : 9683,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762218170,
+  "creation_date" : 1462785516,
+  "last_edit_date" : 1462785990,
+  "question_id" : 37111935,
+  "link" : "https://stackoverflow.com/questions/37111935/how-to-get-all-the-messages-from-kafka-topic-and-count-them-using-java",
+  "title" : "How to get all the messages from kafka topic and count them using java?",
+  "body" : "<p>This code sometimes gives me all the messages from the beginning and waiting for another message and sometimes it's just waiting for another message</p>\n\n<pre><code>import java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Properties;\nimport kafka.consumer.ConsumerConfig;\nimport kafka.consumer.ConsumerIterator;\nimport kafka.consumer.KafkaStream;\nimport kafka.javaapi.consumer.ConsumerConnector;\nimport kafka.message.MessageAndMetadata;\n\npublic class TestConsumer{\n\npublic static void main(String[] args) {\n    ConsumerConfig config;\n    Properties props = new Properties(); \n    props.put(\"zookeeper.connect\",\"sandbox.hortonworks.com:2181\");\n    props.put(\"group.id\", \"group-4\");\n    props.put(\"zookeeper.session.timeout.ms\", \"400\");\n    props.put(\"zookeeper.sync.time.ms\", \"200\");\n    props.put(\"auto.commit.interval.ms\", \"200\");\n    config = new ConsumerConfig(props);\n    ConsumerConnector consumer = kafka.consumer.Consumer.createJavaConsumerConnector\n            (config);\n    String topic = \"News\"; \n    System.out.println(\"Running\");\n    Run(consumer,topic); \n}\n\npublic static void Run(ConsumerConnector consumer,String topic){\n    HashMap&lt;String,Integer&gt; topicCountMap = \n            new HashMap&lt;String,Integer&gt;();\n    topicCountMap.put(topic, 1);\n    Map&lt;String,List&lt;KafkaStream&lt;byte[],byte[]&gt;&gt;&gt; \n    consumerMap = consumer.createMessageStreams(topicCountMap);\n    KafkaStream&lt;byte[],byte[]&gt; stream = consumerMap.get(topic).get(0);\n    ConsumerIterator&lt;byte[],byte[]&gt; it =  stream.iterator();\n    List&lt;String&gt; msgTopicList = new ArrayList&lt;String&gt;();\n    int count = 0;\n    System.out.println(\"Waiting\");\n    while(it.hasNext()){\n        MessageAndMetadata&lt;byte[],byte[]&gt; msgAndData = it.next(); \n        String msg = new String(msgAndData.message());\n        msgTopicList.add(msg);\n        String key = \"NoKey\";\n        System.out.println(msg);\n        count++;\n    }\n}\n}\n</code></pre>\n\n<p>What I have to do is get all the messages from the topic sent them to the user and count them</p>\n\n<p>What is the best way to do this?</p>\n\n<p>version  kafka_2.10-0.8.1.2.2.4.2-2</p>\n"
+}

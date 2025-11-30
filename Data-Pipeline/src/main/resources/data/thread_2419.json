@@ -1,0 +1,331 @@
+{
+  "tags" : [ "java", "android", "header", "httprequest", "retrofit" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2931700,
+        "reputation" : 7374,
+        "user_id" : 2511775,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/897e5e4c3b3d06d450c0561ef890e8a8?s=256&d=identicon&r=PG",
+        "display_name" : "Ashkan Sarlak",
+        "link" : "https://stackoverflow.com/users/2511775/ashkan-sarlak"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1453634861,
+      "post_id" : 32606841,
+      "comment_id" : 57679803,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In retrofit2-beta3 version it&#39;s a bit different. See here: <a href=\"http://stackoverflow.com/questions/34973432/okhttpclient-throws-exception-after-upgrading-to-okhttp3\" title=\"okhttpclient throws exception after upgrading to okhttp3\">stackoverflow.com/questions/34973432/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 7465996,
+        "reputation" : 1912,
+        "user_id" : 5675550,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://www.gravatar.com/avatar/8d71c2ed6e49a881671232bd7d82513a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "viper",
+        "link" : "https://stackoverflow.com/users/5675550/viper"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1502943711,
+      "post_id" : 32606841,
+      "comment_id" : 78410495,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How can we confirm that these headers are sent. When I debug on Call <code>enqueue</code> I cannot see the default headers."
+    }, {
+      "owner" : {
+        "account_id" : 6619524,
+        "reputation" : 1358,
+        "user_id" : 5111725,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/ZodDn.jpg?s=256",
+        "display_name" : "Wojtek",
+        "link" : "https://stackoverflow.com/users/5111725/wojtek"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1508179120,
+      "post_id" : 32606841,
+      "comment_id" : 80499514,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It should be <code>new OkHttpClient.Builder()</code> instead <code>new OkHttpClient()</code>"
+    } ],
+    "owner" : {
+      "account_id" : 6916966,
+      "reputation" : 4498,
+      "user_id" : 5310828,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/618eb0b468986e711a62e6b22a4bbe5c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dtx12",
+      "link" : "https://stackoverflow.com/users/5310828/dtx12"
+    },
+    "is_accepted" : true,
+    "score" : 251,
+    "last_activity_date" : 1521626241,
+    "last_edit_date" : 1521626241,
+    "creation_date" : 1442401508,
+    "answer_id" : 32606841,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>OkHttpClient.Builder httpClient = new OkHttpClient.Builder();\n\nhttpClient.addInterceptor(new Interceptor() {\n    @Override\n    public Response intercept(Chain chain) throws IOException {\n        Request request = chain.request().newBuilder().addHeader(\"parameter\", \"value\").build();\n        return chain.proceed(request);\n    }\n});\nRetrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl(url).client(httpClient.build()).build();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1020930,
+      "reputation" : 11194,
+      "user_id" : 1031297,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://i.sstatic.net/xubh0.png?s=256",
+      "display_name" : "OWADVL",
+      "link" : "https://stackoverflow.com/users/1031297/owadvl"
+    },
+    "is_accepted" : false,
+    "score" : 90,
+    "last_activity_date" : 1471351902,
+    "last_edit_date" : 1471351902,
+    "creation_date" : 1453843404,
+    "answer_id" : 35024248,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<h1>The Latest Retrofit Version HERE -> 2.1.0.</h1>\n\n<p><strong>lambda version:</strong></p>\n\n<pre><code>  builder.addInterceptor(chain -&gt; {\n    Request request = chain.request().newBuilder().addHeader(\"key\", \"value\").build();\n    return chain.proceed(request);\n  });\n</code></pre>\n\n<p><strong>ugly long version:</strong></p>\n\n<pre><code>  builder.addInterceptor(new Interceptor() {\n    @Override public Response intercept(Chain chain) throws IOException {\n      Request request = chain.request().newBuilder().addHeader(\"key\", \"value\").build();\n      return chain.proceed(request);\n    }\n  });\n</code></pre>\n\n<p><strong>full version:</strong></p>\n\n<pre><code>class Factory {\n\npublic static APIService create(Context context) {\n\n  OkHttpClient.Builder builder = new OkHttpClient().newBuilder();\n  builder.readTimeout(10, TimeUnit.SECONDS);\n  builder.connectTimeout(5, TimeUnit.SECONDS);\n\n  if (BuildConfig.DEBUG) {\n    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();\n    interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);\n    builder.addInterceptor(interceptor);\n  }\n\n  builder.addInterceptor(chain -&gt; {\n    Request request = chain.request().newBuilder().addHeader(\"key\", \"value\").build();\n    return chain.proceed(request);\n  });\n\n  builder.addInterceptor(new UnauthorisedInterceptor(context));\n  OkHttpClient client = builder.build();\n\n  Retrofit retrofit =\n      new Retrofit.Builder().baseUrl(APIService.ENDPOINT).client(client).addConverterFactory(GsonConverterFactory.create()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();\n\n  return retrofit.create(APIService.class);\n  }\n}\n</code></pre>\n\n<p><strong>gradle file (you need to add the logging interceptor if you plan to use it):</strong></p>\n\n<pre><code>  //----- Retrofit\n  compile 'com.squareup.retrofit2:retrofit:2.1.0'\n  compile \"com.squareup.retrofit2:converter-gson:2.1.0\"\n  compile \"com.squareup.retrofit2:adapter-rxjava:2.1.0\"\n  compile 'com.squareup.okhttp3:logging-interceptor:3.4.0'\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3970533,
+      "reputation" : 5811,
+      "user_id" : 3275253,
+      "user_type" : "registered",
+      "accept_rate" : 17,
+      "profile_image" : "https://i.sstatic.net/jSMeb.jpg?s=256",
+      "display_name" : "voghDev",
+      "link" : "https://stackoverflow.com/users/3275253/voghdev"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1470917069,
+    "creation_date" : 1470917069,
+    "answer_id" : 38895881,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In my case <code>addInterceptor()</code>didn't work to add HTTP headers to my request, I had to use <code>addNetworkInterceptor()</code>. Code is as follows:</p>\n\n<pre><code>OkHttpClient.Builder httpClient = new OkHttpClient.Builder();\nhttpClient.addNetworkInterceptor(new AddHeaderInterceptor());\n</code></pre>\n\n<p>And the interceptor code:</p>\n\n<pre><code>public class AddHeaderInterceptor implements Interceptor {\n    @Override\n    public Response intercept(Chain chain) throws IOException {\n\n        Request.Builder builder = chain.request().newBuilder();\n        builder.addHeader(\"Authorization\", \"MyauthHeaderContent\");\n\n        return chain.proceed(builder.build());\n    }\n}\n</code></pre>\n\n<p>This and more examples on <a href=\"https://gist.github.com/voghDev/35c79194ecc85e1cb95738b60d9b4b1c\" rel=\"noreferrer\">this gist</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5704022,
+      "reputation" : 1989,
+      "user_id" : 4508168,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://lh5.googleusercontent.com/-jS_PRP-Tx_k/AAAAAAAAAAI/AAAAAAAAAE8/OyuY9t1aIrA/s256-rj/photo.jpg",
+      "display_name" : "swetabh suman",
+      "link" : "https://stackoverflow.com/users/4508168/swetabh-suman"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1471939042,
+    "last_edit_date" : 1471939042,
+    "creation_date" : 1471937242,
+    "answer_id" : 39094899,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For Logging your request and response you need an interceptor and also for setting the header you need an interceptor, Here's the solution for adding both the interceptor at once using retrofit 2.1</p>\n\n<pre><code> public OkHttpClient getHeader(final String authorizationValue ) {\n        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();\n        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);\n        OkHttpClient okClient = new OkHttpClient.Builder()\n                .addInterceptor(interceptor)\n                .addNetworkInterceptor(\n                        new Interceptor() {\n                            @Override\n                            public Response intercept(Interceptor.Chain chain) throws IOException {\n                                Request request = null;\n                                if (authorizationValue != null) {\n                                    Log.d(\"--Authorization-- \", authorizationValue);\n\n                                    Request original = chain.request();\n                                    // Request customization: add request headers\n                                    Request.Builder requestBuilder = original.newBuilder()\n                                            .addHeader(\"Authorization\", authorizationValue);\n\n                                    request = requestBuilder.build();\n                                }\n                                return chain.proceed(request);\n                            }\n                        })\n                .build();\n        return okClient;\n\n    }\n</code></pre>\n\n<p>Now in your retrofit object add this header in the client</p>\n\n<pre><code>Retrofit retrofit = new Retrofit.Builder()\n                .baseUrl(url)\n                .client(getHeader(authorizationValue))\n                .addConverterFactory(GsonConverterFactory.create())\n                .build();\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1111321,
+        "reputation" : 9019,
+        "user_id" : 1101730,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/zCmrE.jpg?s=256",
+        "display_name" : "Micer",
+        "link" : "https://stackoverflow.com/users/1101730/micer"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1532272077,
+      "post_id" : 44846856,
+      "comment_id" : 89901236,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You can also add <code>HttpLoggingInterceptor</code> as the last interceptor to see final request."
+    } ],
+    "owner" : {
+      "account_id" : 1747203,
+      "reputation" : 162,
+      "user_id" : 1597097,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/27dc4416ecdcbfa83537d8c5b3668c5a?s=256&d=identicon&r=PG",
+      "display_name" : "red-rocket",
+      "link" : "https://stackoverflow.com/users/1597097/red-rocket"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1498826832,
+    "creation_date" : 1498826832,
+    "answer_id" : 44846856,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you use addInterceptor method for add HttpLoggingInterceptor, it won't be logging the things that added by other interceptors applied later than HttpLoggingInterceptor.</p>\n\n<p>For example: If you have two interceptors \"HttpLoggingInterceptor\" and \"AuthInterceptor\", and HttpLoggingInterceptor applied first, then you \ncan't view the http-params or headers which set by AuthInterceptor.</p>\n\n<pre><code>OkHttpClient.Builder builder = new OkHttpClient.Builder()\n.addNetworkInterceptor(logging)\n.addInterceptor(new AuthInterceptor());\n</code></pre>\n\n<p>I solved it, via using addNetworkInterceptor method.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9725840,
+        "reputation" : 1569,
+        "user_id" : 7212836,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/IwC31.jpg?s=256",
+        "display_name" : "Evgenii Vorobei",
+        "link" : "https://stackoverflow.com/users/7212836/evgenii-vorobei"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1539010018,
+      "post_id" : 49520732,
+      "comment_id" : 92336099,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "How to make one header for all requests in interface without duplicating it?"
+    }, {
+      "owner" : {
+        "account_id" : 4783053,
+        "reputation" : 2772,
+        "user_id" : 4476671,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/KcMjY.jpg?s=256",
+        "display_name" : "Avinash Verma",
+        "link" : "https://stackoverflow.com/users/4476671/avinash-verma"
+      },
+      "reply_to_user" : {
+        "account_id" : 9725840,
+        "reputation" : 1569,
+        "user_id" : 7212836,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/IwC31.jpg?s=256",
+        "display_name" : "Evgenii Vorobei",
+        "link" : "https://stackoverflow.com/users/7212836/evgenii-vorobei"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1539071508,
+      "post_id" : 49520732,
+      "comment_id" : 92357217,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You have to add it in HTTP Logging interceptor"
+    } ],
+    "owner" : {
+      "account_id" : 4783053,
+      "reputation" : 2772,
+      "user_id" : 4476671,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/KcMjY.jpg?s=256",
+      "display_name" : "Avinash Verma",
+      "link" : "https://stackoverflow.com/users/4476671/avinash-verma"
+    },
+    "is_accepted" : false,
+    "score" : 34,
+    "last_activity_date" : 1589639496,
+    "last_edit_date" : 1589639496,
+    "creation_date" : 1522177897,
+    "answer_id" : 49520732,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Try this type header for Retrofit 1.9 and 2.0. For Json Content Type.</p>\n\n<pre><code>@Headers({\"Accept: application/json\"})\n@POST(\"user/classes\")\nCall&lt;playlist&gt; addToPlaylist(@Body PlaylistParm parm);\n</code></pre>\n\n<p>You can add many more headers i.e</p>\n\n<pre><code>@Headers({\n        \"Accept: application/json\",\n        \"User-Agent: Your-App-Name\",\n        \"Cache-Control: max-age=640000\"\n    })\n</code></pre>\n\n<p>Dynamically Add to headers:</p>\n\n<pre><code>@POST(\"user/classes\")\nCall&lt;ResponseModel&gt; addToPlaylist(@Header(\"Content-Type\") String content_type, @Body RequestModel req);\n</code></pre>\n\n<p>Call you method i.e</p>\n\n<pre><code>mAPI.addToPlayList(\"application/json\", playListParam);\n</code></pre>\n\n<p>Or</p>\n\n<p>Want to pass everytime then Create HttpClient object with http Interceptor:</p>\n\n<pre><code>OkHttpClient httpClient = new OkHttpClient();\n        httpClient.networkInterceptors().add(new Interceptor() {\n            @Override\n            public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {\n                Request.Builder requestBuilder = chain.request().newBuilder();\n                requestBuilder.header(\"Content-Type\", \"application/json\");\n                return chain.proceed(requestBuilder.build());\n            }\n        });\n</code></pre>\n\n<p>Then add to retrofit object</p>\n\n<pre><code>Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(httpClient).build();\n</code></pre>\n\n<p><strong>UPDATE</strong> if you are using Kotlin remove the  <code>{ }</code> else it will not work </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8022984,
+      "reputation" : 101,
+      "user_id" : 7359908,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-Tg9dz5IvA2k/AAAAAAAAAAI/AAAAAAAABYs/vNdozErrWuY/s256-rj/photo.jpg",
+      "display_name" : "Nishant Rai",
+      "link" : "https://stackoverflow.com/users/7359908/nishant-rai"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1546940793,
+    "creation_date" : 1546940793,
+    "answer_id" : 54089097,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use this Retrofit Client </p>\n\n<pre><code>class RetrofitClient2(context: Context) : OkHttpClient() {\n\n    private var mContext:Context = context\n    private var retrofit: Retrofit? = null\n\n    val client: Retrofit?\n        get() {\n            val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)\n\n            val client = OkHttpClient.Builder()\n                    .connectTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)\n                    .readTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)\n                    .writeTimeout(Constants.TIME_OUT, TimeUnit.SECONDS)\n            client.addInterceptor(logging)\n            client.interceptors().add(AddCookiesInterceptor(mContext))\n\n            val gson = GsonBuilder().setDateFormat(\"yyyy-MM-dd'T'HH:mm:ssZ\").create()\n            if (retrofit == null) {\n\n                retrofit = Retrofit.Builder()\n                        .baseUrl(Constants.URL)\n                        .addConverterFactory(GsonConverterFactory.create(gson))\n                        .client(client.build())\n                        .build()\n            }\n            return retrofit\n        }\n}\n</code></pre>\n\n<hr>\n\n<p>I'm passing the JWT along with every request. Please don't mind the variable names, it's a bit confusing. </p>\n\n<pre><code>class AddCookiesInterceptor(context: Context) : Interceptor {\n    val mContext: Context = context\n    @Throws(IOException::class)\n    override fun intercept(chain: Interceptor.Chain): Response {\n        val builder = chain.request().newBuilder()\n        val preferences = CookieStore().getCookies(mContext)\n        if (preferences != null) {\n            for (cookie in preferences!!) {\n                builder.addHeader(\"Authorization\", cookie)\n            }\n        }\n        return chain.proceed(builder.build())\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15287379,
+      "reputation" : 609,
+      "user_id" : 11030016,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e41670e6cadf6ed73236cb250daf6758?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Damian JK",
+      "link" : "https://stackoverflow.com/users/11030016/damian-jk"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1568986301,
+    "creation_date" : 1568986301,
+    "answer_id" : 58029395,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In kotlin adding interceptor looks that way:</p>\n\n<pre><code>.addInterceptor{ it.proceed(it.request().newBuilder().addHeader(\"Cache-Control\", \"no-store\").build())}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11280578,
+      "reputation" : 349,
+      "user_id" : 8273184,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/--kVrfflMg0E/AAAAAAAAAAI/AAAAAAAAAHY/gtoT_rSQiVk/s256-rj/photo.jpg",
+      "display_name" : "Mojtaba Razaghi",
+      "link" : "https://stackoverflow.com/users/8273184/mojtaba-razaghi"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1569809428,
+    "creation_date" : 1569809428,
+    "answer_id" : 58160720,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><a href=\"https://github.com/G-Corporation/RetrofitHelper\" rel=\"nofollow noreferrer\">RetrofitHelper</a> library written in kotlin, will let you make API calls, using a few lines of code.  </p>\n\n<p>Add headers in your application class like this : </p>\n\n<pre><code>class Application : Application() {\n\n    override fun onCreate() {\n    super.onCreate()\n\n        retrofitClient = RetrofitClient.instance\n                    //api url\n                .setBaseUrl(\"https://reqres.in/\")\n                    //you can set multiple urls\n        //                .setUrl(\"example\",\"http://ngrok.io/api/\")\n                    //set timeouts\n                .setConnectionTimeout(4)\n                .setReadingTimeout(15)\n                    //enable cache\n                .enableCaching(this)\n                    //add Headers\n                .addHeader(\"Content-Type\", \"application/json\")\n                .addHeader(\"client\", \"android\")\n                .addHeader(\"language\", Locale.getDefault().language)\n                .addHeader(\"os\", android.os.Build.VERSION.RELEASE)\n            }\n\n        companion object {\n        lateinit var retrofitClient: RetrofitClient\n\n        }\n    }  \n</code></pre>\n\n<p>And then make your call:  </p>\n\n<pre><code>retrofitClient.Get&lt;GetResponseModel&gt;()\n            //set path\n            .setPath(\"api/users/2\")\n            //set url params Key-Value or HashMap\n            .setUrlParams(\"KEY\",\"Value\")\n            // you can add header here\n            .addHeaders(\"key\",\"value\")\n            .setResponseHandler(GetResponseModel::class.java,\n                object : ResponseHandler&lt;GetResponseModel&gt;() {\n                    override fun onSuccess(response: Response&lt;GetResponseModel&gt;) {\n                        super.onSuccess(response)\n                        //handle response\n                    }\n                }).run(this)\n</code></pre>\n\n<p>For more information see the <a href=\"https://github.com/G-Corporation/RetrofitHelper/wiki\" rel=\"nofollow noreferrer\">documentation</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1353734,
+      "reputation" : 6172,
+      "user_id" : 1292557,
+      "user_type" : "registered",
+      "accept_rate" : 65,
+      "profile_image" : "https://i.sstatic.net/9wdp1.png?s=256",
+      "display_name" : "Abu Yousuf",
+      "link" : "https://stackoverflow.com/users/1292557/abu-yousuf"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1583167104,
+    "creation_date" : 1583167104,
+    "answer_id" : 60493114,
+    "question_id" : 32605711,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Kotlin version would be </p>\n\n<pre><code>fun getHeaderInterceptor():Interceptor{\n    return object : Interceptor {\n        @Throws(IOException::class)\n        override fun intercept(chain: Interceptor.Chain): Response {\n            val request =\n            chain.request().newBuilder()\n                    .header(Headers.KEY_AUTHORIZATION, \"Bearer.....\")\n                    .build()\n            return chain.proceed(request)\n        }\n    }\n}\n\n\nprivate fun createOkHttpClient(): OkHttpClient {\n    return OkHttpClient.Builder()\n            .apply {\n                if(BuildConfig.DEBUG){\n                    this.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))\n                }\n            }\n            .addInterceptor(getHeaderInterceptor())\n            .build()\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2931700,
+    "reputation" : 7374,
+    "user_id" : 2511775,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://www.gravatar.com/avatar/897e5e4c3b3d06d450c0561ef890e8a8?s=256&d=identicon&r=PG",
+    "display_name" : "Ashkan Sarlak",
+    "link" : "https://stackoverflow.com/users/2511775/ashkan-sarlak"
+  },
+  "is_answered" : true,
+  "view_count" : 175788,
+  "accepted_answer_id" : 32606841,
+  "answer_count" : 10,
+  "score" : 172,
+  "last_activity_date" : 1625252993,
+  "creation_date" : 1442398348,
+  "last_edit_date" : 1495542396,
+  "question_id" : 32605711,
+  "link" : "https://stackoverflow.com/questions/32605711/adding-header-to-all-request-with-retrofit-2",
+  "title" : "Adding header to all request with Retrofit 2",
+  "body" : "<p><a href=\"http://square.github.io/retrofit/\" rel=\"noreferrer\">Retrofit 2's documentation</a> says:</p>\n\n<blockquote>\n  <p>Headers that need to be added to every request can be specified using an OkHttp interceptor.</p>\n</blockquote>\n\n<p>It can be done easily using the previous version, <a href=\"https://stackoverflow.com/questions/27213291/how-to-define-a-header-to-all-request-using-retrofit\">here's</a> the related QA.</p>\n\n<p>But using retrofit 2, I couldn't find something like <code>setRequestInterceptor</code> or <code>setInterceptor</code> method that can be applied to <code>Retrofit.Builder</code> object.</p>\n\n<p>Also it seems that there's no <code>RequestInterceptor</code> in <a href=\"http://square.github.io/okhttp/\" rel=\"noreferrer\">OkHttp</a> anymore. Retrofit's doc refers us to <a href=\"https://github.com/square/okhttp/wiki/Interceptors\" rel=\"noreferrer\">Interceptor</a> that I didn't quite understand how to use it for this purpose.</p>\n\n<p>How can I do this?</p>\n"
+}

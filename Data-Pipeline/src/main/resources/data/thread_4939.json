@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "public-key-encryption", "hardware-security-module" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1666585,
+      "reputation" : 574,
+      "user_id" : 1533851,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/PolJj.png?s=256",
+      "display_name" : "S&#233;bastien Vanmechelen",
+      "link" : "https://stackoverflow.com/users/1533851/s%c3%a9bastien-vanmechelen"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1474359018,
+    "creation_date" : 1474359018,
+    "answer_id" : 39588864,
+    "question_id" : 27872096,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Did you try something like this :</p>\n\n<pre><code>final KeyStore keyStore = KeyStore.getInstance(\"Luna\");\nkeyStore.load(null, null);\n\nfinal Certificate certificate = keyStore.getCertificate(alias);\nif (certificate == null) {\n   throw new IllegalArgumentException(String.format(\"Certificate '%s' does not exists\", alias));\n}\n\nfinal PublicKey publicKey = certificate.getPublicKey();\n// TODO Working with the public key...\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9617222,
+      "reputation" : 51,
+      "user_id" : 7139564,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8d939297d19a71f5eac0288845739c43?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Arindam Sarkar",
+      "link" : "https://stackoverflow.com/users/7139564/arindam-sarkar"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1759094097,
+    "last_edit_date" : 1759094097,
+    "creation_date" : 1517338023,
+    "answer_id" : 48528479,
+    "question_id" : 27872096,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The correct answer is:</p>\n<pre class=\"lang-java prettyprint-override\"><code>LunaKey lk = LunaKey.LocateKeyByAlias(&quot;publicKeyName&quot;);\n</code></pre>\n<p>but it is advisable to make the key persistent before querying the HSM.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5691890,
+      "reputation" : 86,
+      "user_id" : 8106572,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/684c63f8dba3d0a2526dff77bb4e71c4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sam Paul",
+      "link" : "https://stackoverflow.com/users/8106572/sam-paul"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759094274,
+    "last_edit_date" : 1759094274,
+    "creation_date" : 1660483482,
+    "answer_id" : 73352012,
+    "question_id" : 27872096,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In Java keystore there is no <code>PublicKeyEntry</code> and that's the reason why you're not able to access your public key.</p>\n<p><a href=\"https://docs.oracle.com/javase/8/docs/api/java/security/KeyStore.Entry.html\" rel=\"nofollow noreferrer\">https://docs.oracle.com/javase/8/docs/api/java/security/KeyStore.Entry.html</a></p>\n<p>Java's <code>KeyStore.KeyEntry</code> interface has three implementing classes.</p>\n<ol>\n<li><code>PrivateKeyEntry</code></li>\n<li><code>SecretKeyEntry</code></li>\n<li><code>TrustedCertificateEntry</code>.</li>\n</ol>\n<p>Java expects you to get retrieve a public key out of your certificate. Sebastien Vanmechelen has given you the perfect example on how to do that.</p>\n<p>If by any chance, your Luna HSM partition does not have a X509 certificate then using LunaKey is the only alternative.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5603441,
+    "reputation" : 21,
+    "user_id" : 4438901,
+    "user_type" : "registered",
+    "profile_image" : "https://lh4.googleusercontent.com/-541zwMkaCVc/AAAAAAAAAAI/AAAAAAAAEzA/GLRuiaJsf04/s256-rj/photo.jpg",
+    "display_name" : "Sivajee Akula",
+    "link" : "https://stackoverflow.com/users/4438901/sivajee-akula"
+  },
+  "is_answered" : true,
+  "view_count" : 3006,
+  "answer_count" : 3,
+  "score" : 2,
+  "last_activity_date" : 1759111207,
+  "creation_date" : 1420855205,
+  "last_edit_date" : 1759111207,
+  "question_id" : 27872096,
+  "link" : "https://stackoverflow.com/questions/27872096/java-luna-hsm-verify-sign-using-public-key",
+  "title" : "Java: Luna HSM Verify Sign using Public Key",
+  "body" : "<p>Using Java API, I am trying to access Public key stored in Luna HSM. Even though I am able to print the corresponding public key label name, but when I am trying to get the public key, I am not able to get the reference to that public key. Here is the code snippet:</p>\n<pre class=\"lang-java prettyprint-override\"><code>KeyStore ks = KeyStore.getInstance(&quot;Luna&quot;);\nks.load(null, null); \nlunaProvider = ks.getProvider();\n\npublicKey = (PublicKey) ks.getKey(alipayImpl.getHsmKeyStorePublicEntryName(), null);\n\n// ****************************************************************************\n// ** If the private keystore is not found, return original barcode string.  **\n// ****************************************************************************\nif (publicKey == null) {\n    throw new Exception(&quot;Unable to acquire the Public Key &quot; + alipayImpl.getHsmKeyStorePublicEntryName() + &quot;, Hash will not be verified.&quot;);\n}\n// ***********************************************************\n// ** Create a Signature Object and sign the encrypted text **\n// ***********************************************************\nSignature signatureObject = Signature.getInstance(alipayImpl.getAlipaySignAlgorithm(), lunaProvider);\n\nsignatureObject.initVerify(publicKey);\nsignatureObject.update(signedMessage.getBytes(AlipayConstants.INPUT_CHARSET_VALUE));\nisValidSign = signatureObject.verify(Base64.decode(hash));\n</code></pre>\n<p>I am logging to HSM properly. While Accessing Private Key, I didnt have any issues. Is there any restriction on Luna HSM that access to public key is given only through Certificates?</p>\n<p>Thanks in advance.</p>\n"
+}

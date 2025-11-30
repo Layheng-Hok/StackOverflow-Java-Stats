@@ -1,0 +1,118 @@
+{
+  "tags" : [ "java", "unit-testing", "dependency-injection", "kotlin", "ktor" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1795126,
+        "reputation" : 5438,
+        "user_id" : 1634695,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1ba40fe836c9fbdf2e3aadb155a90b23?s=256&d=identicon&r=PG",
+        "display_name" : "Mehdi Karamosly",
+        "link" : "https://stackoverflow.com/users/1634695/mehdi-karamosly"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1505398547,
+      "post_id" : 46213944,
+      "comment_id" : 79405742,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "thanks for the response, in my case I do have a class dependency that interacts with other services, how do I inject that one (so when I write my test I just stub/mock that dependency and pass a mock instance instead of the real one)"
+    } ],
+    "owner" : {
+      "account_id" : 9944,
+      "reputation" : 12182,
+      "user_id" : 18575,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/318654a786700455b96049d8ac9beb11?s=256&d=identicon&r=PG",
+      "display_name" : "Ilya Ryzhenkov",
+      "link" : "https://stackoverflow.com/users/18575/ilya-ryzhenkov"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1678355518,
+    "last_edit_date" : 1678355518,
+    "creation_date" : 1505377082,
+    "answer_id" : 46213944,
+    "question_id" : 46185168,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Ktor doesn't have a built-in dependency injection mechanism. If you need to use DI, you will need to use any framework you like, such as Guice for example. It would look something like this:</p>\n<pre><code>fun Application.module() {\n  Guice.createInjector(MainModule(this))\n}\n\n// Main module, binds application and routes\nclass MainModule(private val application: Application) : AbstractModule() {\n    override fun configure() {\n        bind(Application::class.java).toInstance(application)\n        ... other bindings ...\n    }\n}\n</code></pre>\n<p>This way you delegate application composition to Guice and build it up as any other application. E.g. you might compose different parts of your application like this:</p>\n<pre class=\"lang-kotlin prettyprint-override\"><code>class Hello @Inject constructor(application: Application) {\n  init {\n    application.routing {\n        get(&quot;/&quot;) {\n            call.respondText(&quot;Hello&quot;)\n        }\n    }\n  }\n}\n</code></pre>\n<p>and then bind it in a main module:</p>\n<pre><code>bind(Hello::class.java).asEagerSingleton()\n</code></pre>\n<p><code>asEagerSingleton</code> is needed so that Guice will create it eagerly since no other service would query it.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3656419,
+      "reputation" : 5124,
+      "user_id" : 3047318,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://i.sstatic.net/QPoQU.jpg?s=256",
+      "display_name" : "Pavel Shorokhov",
+      "link" : "https://stackoverflow.com/users/3047318/pavel-shorokhov"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1547167992,
+    "creation_date" : 1547167992,
+    "answer_id" : 54138970,
+    "question_id" : 46185168,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Easy example with <strong>Koin</strong></p>\n\n<p>1) At first, define our prod and test dependencies:</p>\n\n<pre><code>val prodModule = module {\n    single&lt;IFirstService&gt; { RealFirstService() }\n    single&lt;ISecondService&gt; { RealSecondService() }\n}\n\nval testModule = module {\n    single&lt;IFirstService&gt; { FakeFirstService() }\n    single&lt;ISecondService&gt; { FakeSecondService() }\n}\n</code></pre>\n\n<p>2) Then add DI initialization before app start:</p>\n\n<pre><code>fun main(args: Array&lt;String&gt;) {\n    startKoin(listOf(prodModule))\n    embeddedServer(Netty, commandLineEnvironment(args)).start(true)\n}\n</code></pre>\n\n<p>3) Use inject in Application or in routes:</p>\n\n<pre><code>fun Application.apiModule() {\n    val firstService: IFirstService by inject()\n    val secondService: ISecondService by inject()\n    ...\n    routing {\n        someApi(inject(), inject())\n    }\n}\n</code></pre>\n\n<p>4) <em>(Optional)</em> For tests just add initialization in testModule before run test:</p>\n\n<pre><code>fun testApp(test: TestApplicationEngine.() -&gt; Unit) {\n    withTestApplication({\n        ... // configure your test app here\n\n        stopKoin() // Need to stop koin and restart after other tests\n        startKoin(listOf(testModule)) // Init with test DI\n\n        apiModule() // Run you application\n    })\n}\n\n// And run tests\n@Test\nfun `get events`() = testApp {\n    // do tests\n}\n</code></pre>\n\n<p>That's all!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10066191,
+      "reputation" : 1255,
+      "user_id" : 7441319,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/9PaOi.jpg?s=256",
+      "display_name" : "Alkis Mavridis",
+      "link" : "https://stackoverflow.com/users/7441319/alkis-mavridis"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1678356158,
+    "last_edit_date" : 1678356158,
+    "creation_date" : 1617270349,
+    "answer_id" : 66902225,
+    "question_id" : 46185168,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>After experimenting a bit with Koin, Kodein, and Daggers, we ended up using <strong>spring-context</strong> with Ktor. It works like a charm.</p>\n<p><strong>Step 1</strong>: In our Gradle file:</p>\n<pre><code>implementation(group = &quot;org.springframework&quot;, name = &quot;spring-context&quot;, version = &quot;5.3.5&quot;)\n</code></pre>\n<p>Change that to any <code>spring-context</code> version you prefer.</p>\n<p><strong>Step 2</strong>: We defined our <code>@Component</code>s, <code>@Configuration</code>s, <code>@Bean</code>s etc. like we would with any spring application.</p>\n<p><strong>Step 3</strong>: in our <code>main</code> method, we have a little bit of glue code to explicitly initialize the DI context and use it for initializing Ktor:</p>\n<pre class=\"lang-kotlin prettyprint-override\"><code>    val ctx = AnnotationConfigApplicationContext(&quot;YOUR.ROOT.PACKAGE.GOES.HERE&quot;)\n    val someBean = ctx.getBean(SomeBean::class.java) // you can get any bean you need to use in your top-level glue code\n\n    // ... go ahead with KTOR configuration as usual. You can access any bean using the ctx variable.\n</code></pre>\n<p>Of course this glue code where we explicitly interact with the spring context is done only once. The rest of the project consist of components that reference each other using the regular spring-context way.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6102174,
+      "reputation" : 1881,
+      "user_id" : 4760884,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/UFSBb.jpg?s=256",
+      "display_name" : "Horatio",
+      "link" : "https://stackoverflow.com/users/4760884/horatio"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762325265,
+    "creation_date" : 1762325265,
+    "answer_id" : 79809695,
+    "question_id" : 46185168,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As of Ktor Version 3.2.0, Ktor has a dependency injection plugin. You can see the docs here: <a href=\"https://ktor.io/docs/server-dependency-injection.html?topic=rx\" rel=\"nofollow noreferrer\">https://ktor.io/docs/server-dependency-injection.html?topic=rx</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1795126,
+    "reputation" : 5438,
+    "user_id" : 1634695,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/1ba40fe836c9fbdf2e3aadb155a90b23?s=256&d=identicon&r=PG",
+    "display_name" : "Mehdi Karamosly",
+    "link" : "https://stackoverflow.com/users/1634695/mehdi-karamosly"
+  },
+  "is_answered" : true,
+  "view_count" : 19801,
+  "answer_count" : 4,
+  "score" : 14,
+  "last_activity_date" : 1762325265,
+  "creation_date" : 1505249618,
+  "last_edit_date" : 1509983305,
+  "question_id" : 46185168,
+  "link" : "https://stackoverflow.com/questions/46185168/how-to-inject-dependencies-in-a-ktor-application",
+  "title" : "How to inject dependencies in a ktor Application",
+  "body" : "<p>The documentation talks about dependency injection but does not really show how it is being done.</p>\n\n<p>Documentation is not completed as well and has a bunch of place holders:\n<a href=\"http://ktor.io/getting-started.html\" rel=\"noreferrer\">http://ktor.io/getting-started.html</a></p>\n\n<p>I tried to create my main function in a way that it accepts parameter (which is my dependency) but that failed on the test side when I call <code>withTestApplication</code>.\nI looked into the application code and saw that Application accepts a configuration object but I have no idea how I can change that configuration object to inject some dependencies inside of it.</p>\n\n<pre><code>package org.jetbrains.ktor.application\n\n/**\n * Represents configured and running web application, capable of handling requests\n */\nclass Application(val environment: ApplicationEnvironment) : ApplicationCallPipeline() {\n    /**\n     * Called by host when [Application] is terminated\n     */\n    fun dispose() {\n        uninstallAllFeatures()\n    }\n}\n\n/**\n * Convenience property to access log from application\n */\nval Application.log get() = environment.log\n</code></pre>\n\n<p>In the test code using <code>withTestApplication</code> I have something similar to the below:</p>\n\n<pre><code>@Test\ninternal fun myTest() = withTestApplication (Application::myMain)\n</code></pre>\n\n<p>The above <code>withTestApplication</code> would fail if I call <code>myMain</code> with parameters (parameters that I need to mock and inject.)</p>\n\n<p><strong>Update:</strong></p>\n\n<p>The issue is that in my request handling, I am using a dependency class that connects to other web services outside and does some requests, I need a way to be able to inject this so in my tests I can stub/mock it and change its behavior based on my test cases.</p>\n"
+}

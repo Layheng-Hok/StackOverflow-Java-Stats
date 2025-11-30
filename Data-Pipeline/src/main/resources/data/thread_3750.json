@@ -1,0 +1,82 @@
+{
+  "tags" : [ "java", "lambda", "interface", "functional-programming", "java-8" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2417243,
+      "reputation" : 11925,
+      "user_id" : 2111035,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5abecc5a16092419eb6a4e22a022d494?s=256&d=identicon&r=PG",
+      "display_name" : "Chris K",
+      "link" : "https://stackoverflow.com/users/2111035/chris-k"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1445432892,
+    "post_id" : 33260064,
+    "comment_id" : 54321428,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What does the code for RowListener itself look like in the lambda case?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1445439455,
+    "creation_date" : 1445439455,
+    "answer_id" : 33262696,
+    "question_id" : 33260064,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A lambda expression of the form</p>\n\n<pre><code>map -&gt; {\n        // whatever\n    }\n</code></pre>\n\n<p>is not compatible with the functional signature. According to your inner class example code, it has to return a <code>boolean</code> value. Hence, it has to be either</p>\n\n<pre><code>map -&gt; {\n        // whatever\n        return false;\n    }\n</code></pre>\n\n<p>or</p>\n\n<pre><code>map -&gt; /* simple expression, e.g.: */ false\n</code></pre>\n\n<p>In case of overloaded methods, the compiler uses the shape of a lambda expression, i.e. whether it’s <em>value compatible</em> or <em>void compatible</em> (see <a href=\"https://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.27.2\" rel=\"nofollow\">JLS §15.27.2</a>), to determine which methods are applicable.</p>\n\n<p>Keep in mind that if the lambda’s body is a block containing conditional code, all code flows which can complete normally must return a value.</p>\n\n<p>Since <em>all</em> methods are inapplicable, the compiler picks one to report an error, according to an algorithm which is independent of the fact that one argument is a lambda expression. It seems that it reports against the method <code>find(String, Object...)</code> because that method can consume most kind of arguments. You could say, that method could consume anything, if there weren’t lambda expressions.</p>\n\n<p>That might be a compiler specific behavior which has been implemented before lambda expressions were to consider. However, that’s only the error reporting behavior, the primary problem is the lambda expression which is not <em>value compatible</em>. Fixing it should solve all problems.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1960953,
+      "reputation" : 826,
+      "user_id" : 1762552,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/566721bda822a785ec0c777e247cbc4f?s=256&d=identicon&r=PG",
+      "display_name" : "shulito",
+      "link" : "https://stackoverflow.com/users/1762552/shulito"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1445508794,
+    "last_edit_date" : 1445508794,
+    "creation_date" : 1445440931,
+    "answer_id" : 33263184,
+    "question_id" : 33260064,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Ahh, the error message confused me. I added a boolean return value and it compiles :)</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1960953,
+    "reputation" : 826,
+    "user_id" : 1762552,
+    "user_type" : "registered",
+    "accept_rate" : 80,
+    "profile_image" : "https://www.gravatar.com/avatar/566721bda822a785ec0c777e247cbc4f?s=256&d=identicon&r=PG",
+    "display_name" : "shulito",
+    "link" : "https://stackoverflow.com/users/1762552/shulito"
+  },
+  "is_answered" : true,
+  "view_count" : 490,
+  "accepted_answer_id" : 33262696,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1761750768,
+  "creation_date" : 1445432513,
+  "last_edit_date" : 1761750768,
+  "question_id" : 33260064,
+  "link" : "https://stackoverflow.com/questions/33260064/lambda-overloaded-method",
+  "title" : "Lambda overloaded method",
+  "body" : "<p>I'm new to lambdas and functional interfaces. I'm trying to implement a RowListener functional interface (ActiveJDBC ORM) with a lambda but I get a compiler error and I don't really know why.</p>\n<p>Here's how the anonymous class old-style looks like:</p>\n<pre><code>db.find(&quot;some query&quot;, new RowListener() {\n        @Override\n        public boolean next(Map&lt;String, Object&gt; arg0) {\n            // TODO Auto-generated method stub\n            return false;\n        }\n    });\n</code></pre>\n<p>Here's what I want to do:</p>\n<pre><code>db.find(&quot;some query&quot;, map -&gt; {\n        // whatever\n    });\n</code></pre>\n<p>The error that gives me is:</p>\n<blockquote>\n<p>The method find(String, Object...) in the type Base is not applicable for the arguments (String, ( map) -&gt; {})</p>\n</blockquote>\n<p>I think it's trying to apply the lambda to an overloaded method of 'find' which doesn't take a RowListener as an argument, but I'm not really sure why.</p>\n<p>Any light you can shed on this would be helpful.</p>\n"
+}

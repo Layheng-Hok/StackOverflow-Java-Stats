@@ -1,0 +1,78 @@
+{
+  "tags" : [ "java", "rmi" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 19644506,
+      "reputation" : 1020,
+      "user_id" : 14379859,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/A2HI0Ip8.jpg?s=256",
+      "display_name" : "Endunry",
+      "link" : "https://stackoverflow.com/users/14379859/endunry"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1602499019,
+    "post_id" : 64315916,
+    "comment_id" : 113730052,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "It looks like the host for an Socket &quot;santafe.mightygumbal.com&quot; doesnt exist. So you try to reach a Socket which isnt there."
+  }, {
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1602558715,
+    "post_id" : 64315916,
+    "comment_id" : 113751118,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You can only rebind and unbind to a local <code>Registry</code> anyway, so specifying the hostname as anything but <code>localhost</code> is pointless."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 15023502,
+      "reputation" : 51,
+      "user_id" : 10844213,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/20648e61e912bee2173c2490163ce659?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "satya",
+      "link" : "https://stackoverflow.com/users/10844213/satya"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760809189,
+    "creation_date" : 1760809189,
+    "answer_id" : 79793887,
+    "question_id" : 64315916,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I experienced the same issue today when trying to reproduce the proxy pattern's Gumball Machine Remote monitoring example. I'm using JDK 21. I resolved it with following steps. I am using intellij. so few steps are quite simple. This method should work for all jdk versions though!<br />\nYou need three terminals.</p>\n<p>1. Perform maven clean from from the side bar in intellij and then do maven compile</p>\n<p>2. In terminal 1, navigate to the root directory's target/classes and start rmiregistry using the command <code>rmiregistry &amp;</code></p>\n<p>3. In terminal 2, get to the root directory of your project (from where you will have access to target directory) and run the following command <code>java -cp target/classes org.example.proxyPattern.step2_gumballWithProxy.GumballMachineTestDrive localhost 25</code> Here, localhost is the location and 25 is the gumball count.</p>\n<p>4.In terminal 3, get to the root directory and we can run the monitor class using the following command <code>java -cp target/classes org.example.proxyPattern.step2_gumballWithProxy.GumballMonitorTestDrive</code></p>\n<p>This should resolve your error and you get your expected output from terminal 3</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 18684368,
+    "reputation" : 1,
+    "user_id" : 13620222,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/73b822627ee46e6b8da96acea4093918?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "User2001",
+    "link" : "https://stackoverflow.com/users/13620222/user2001"
+  },
+  "is_answered" : false,
+  "view_count" : 215,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760809189,
+  "creation_date" : 1602498018,
+  "last_edit_date" : 1602498216,
+  "question_id" : 64315916,
+  "link" : "https://stackoverflow.com/questions/64315916/java-net-connectexception-when-using-rmi",
+  "title" : "java.net.ConnectException when using rmi",
+  "body" : "<p>I was reading Head First Design Patterns book when I got this code:</p>\n<pre><code>import java.rmi.*;\nimport java.rmi.*;\n\npublic class GumballMachineTestDrive {\n\n    public static void main(String[] args) {\n        GumballMachine gumballMachine = null;\n        int count = 0;\n\n        try {\n            count = Integer.parseInt(args[1]);\n            gumballMachine = new GumballMachine(args[0], count);\n            Naming.rebind(&quot;//&quot; + args[0] + &quot;/gumballmachine&quot;, gumballMachine);\n        } catch (Exception ex) {\n            ex.printStackTrace();\n        }\n    }\n}\n</code></pre>\n<p>As they said in the book before I run this code, I made sure that i have rmiregisty running the background, but when I wrote this</p>\n<pre><code>C:\\Users\\Vision\\Downloads\\Desktop\\New folder\\StateAndProxy\\build\\classes&gt;java \ngumball.GumballMachineTestDrive santafe.mightygumball.com 100\n</code></pre>\n<p>in command prompt i had this error</p>\n<pre><code>java.rmi.ConnectException: Connection refused to host: santafe.mightygumball.com; nested \n    exception is:\n    java.net.ConnectException: Connection timed out: connect\n    at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:623)\n    at java.rmi/sun.rmi.transport.tcp.TCPChannel.createConnection(TCPChannel.java:209)\n    at java.rmi/sun.rmi.transport.tcp.TCPChannel.newConnection(TCPChannel.java:196)\n    at java.rmi/sun.rmi.server.UnicastRef.newCall(UnicastRef.java:343)\n    at java.rmi/sun.rmi.registry.RegistryImpl_Stub.rebind(RegistryImpl_Stub.java:150)\n    at java.rmi/java.rmi.Naming.rebind(Naming.java:177)\n    at gumball.GumballMachineTestDrive.main(GumballMachineTestDrive.java:17)\n    Caused by: java.net.ConnectException: Connection timed out: connect\n    at java.base/sun.nio.ch.Net.connect0(Native Method)\n    at java.base/sun.nio.ch.Net.connect(Net.java:493)\n    at java.base/sun.nio.ch.Net.connect(Net.java:482)\n    at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:588)\n    at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:339)\n    at java.base/java.net.Socket.connect(Socket.java:603)\n    at java.base/java.net.Socket.connect(Socket.java:552)\n    at java.base/java.net.Socket.&lt;init&gt;(Socket.java:475)\n    at java.base/java.net.Socket.&lt;init&gt;(Socket.java:249)\n    at \n    java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createSocket\n    (TCPDirectSocketFactory.java:40)\n    at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newSocket(TCPEndpoint.java:617)\n    ... 6 more\n</code></pre>\n<p>Any ideas what's the problem ??</p>\n"
+}

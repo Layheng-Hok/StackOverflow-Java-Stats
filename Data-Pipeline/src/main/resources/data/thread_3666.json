@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "hashmap" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 5281408,
+      "reputation" : 20275,
+      "user_id" : 4216641,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/dVLIh.jpg?s=256",
+      "display_name" : "Turing85",
+      "link" : "https://stackoverflow.com/users/4216641/turing85"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456053730,
+    "post_id" : 35535439,
+    "comment_id" : 58759530,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Please post the whole exception."
+  }, {
+    "owner" : {
+      "account_id" : 213468,
+      "reputation" : 110270,
+      "user_id" : 466862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Rotteveel",
+      "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1456053860,
+    "post_id" : 35535439,
+    "comment_id" : 58759570,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Alternative duplicate: <a href=\"http://stackoverflow.com/questions/1811706/java-null-pointer-exception-when-unboxing-integer\" title=\"java null pointer exception when unboxing integer\">stackoverflow.com/questions/1811706/&hellip;</a> You are assigning an <code>Integer</code> to <code>int</code> and the unboxing will trigger a <code>NullPointerException</code> if it is <code>null</code> (eg because there is no value in the map)."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1263831,
+      "reputation" : 395079,
+      "user_id" : 1221571,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/jXcg4.png?s=256",
+      "display_name" : "Eran",
+      "link" : "https://stackoverflow.com/users/1221571/eran"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1456056649,
+    "last_edit_date" : 1456056649,
+    "creation_date" : 1456053793,
+    "answer_id" : 35535468,
+    "question_id" : 35535439,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>int m=valeurs.get(p);</code> will throw a <code>NullPointerException</code> if <code>valuers.get(p)</code> returns <code>null</code>, due to the attempt to auto un-box the <code>null</code> value to a primitive <code>int</code>.</p>\n\n<p>If your method would return an <code>Integer</code> instead, it would be able to return a <code>null</code> :</p>\n\n<pre><code>public Integer getValeur(int x, int y) {\n    Position p=new Position(x,y);\n    Integer m=valeurs.get(p);\n    return m;\n}\n</code></pre>\n\n<p>EDIT :</p>\n\n<p>After seeing your comment that you can't change the return type of <code>getValeur</code>, your only option (other than returning a default value that represents null) is to throw an unchecked exception (or a checked exception if the method you are overriding is already throwing that exception or a super-class of that exception) if <code>valuers.get(p)</code> returns <code>null</code> :</p>\n\n<pre><code>public int getValeur(int x, int y) {\n    Position p=new Position(x,y);\n    Integer m=valeurs.get(p);\n    if (m == null) {\n        throw new IllegalArgumentException (\"Invalid position \" + x + \",\" + y);\n    }\n    return m;\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7886215,
+    "reputation" : 31,
+    "user_id" : 5958166,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/9d1d987966e5aa12da7cdfb0a58bd8dd?s=256&d=identicon&r=PG",
+    "display_name" : "Pika",
+    "link" : "https://stackoverflow.com/users/5958166/pika"
+  },
+  "is_answered" : true,
+  "view_count" : 70,
+  "closed_date" : 1456053778,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761904744,
+  "creation_date" : 1456053641,
+  "last_edit_date" : 1456059885,
+  "question_id" : 35535439,
+  "link" : "https://stackoverflow.com/questions/35535439/hashmap-with-java",
+  "closed_reason" : "Duplicate",
+  "title" : "HashMap with java",
+  "body" : "<p>i got this code:</p>\n\n<pre><code>public class MatriceMap extends AbstractMatrix {\n\nHashMap&lt;Position,Integer&gt; valeurs;\npublic MatriceMap(int nbl, int nbc) {\n    super(nbl, nbc);\n    values = new HashMap&lt;Position, Integer&gt;();\n}\n@Override\npublic int getValue(int x, int y) {\n    Position p=new Position(x,y);\n    int m=valeurs.get(p);\n    return m;\n}\n</code></pre>\n\n<p>and i got an error with getValue method : java.lang.NullPointerException</p>\n"
+}

@@ -1,0 +1,99 @@
+{
+  "tags" : [ "java", "jpa", "jpql" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 277416,
+      "reputation" : 694244,
+      "user_id" : 571407,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/2f0d9dec16bae1e06552af55ddefc11f?s=256&d=identicon&r=PG",
+      "display_name" : "JB Nizet",
+      "link" : "https://stackoverflow.com/users/571407/jb-nizet"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1398459326,
+    "post_id" : 23302647,
+    "comment_id" : 35673827,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "That doesn&#39;t make sense. If you want a List&lt;Publication&gt;, the use a query that retrieves a list of publications: <code>select p from Publication p</code>."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 2111671,
+      "reputation" : 4572,
+      "user_id" : 1876839,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/VaCc0.jpg?s=256",
+      "display_name" : "Patrick",
+      "link" : "https://stackoverflow.com/users/1876839/patrick"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1398459367,
+    "creation_date" : 1398459367,
+    "answer_id" : 23302876,
+    "question_id" : 23302647,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Try</p>\n\n<pre><code>public List&lt;Publication&gt; getAllPublication() {\n    TypedQuery&lt;Publication&gt; query = em. createNamedQuery(Publication.FIND_ALL, Publication.class);\n    return query.getResultList();\n}\n</code></pre>\n\n<p>And your Entity looks like:</p>\n\n<pre><code> package entities;\n\nimport java.io.Serializable;\nimport javax.persistence.*;\n\n@Entity\n@NamedQuery(name=Publication.FIND_ALL, query=\"SELECT p FROM Publication p\")\npublic class Publication  {\n\n    public static final String FIND_ALL = \"Publication.findAll\";\n\n    @Id\n    @Column(name=\"\\\"idPublication\\\"\")\n    private Integer idPublication;\n\n    private String corps;\n\n    @Column(name=\"\\\"datePublication\\\"\")\n    private String datePublication;\n\n    @Column(name=\"\\\"titrePublication\\\"\")\n    private String titrePublication;\n\n    @ManyToOne(fetch=FetchType.LAZY)\n    @JoinColumn(name=\"auteur\")\n    private Employee employee;\n\n    public Publication() {\n    }\n\n    public Integer getIdPublication() {\n        return this.idPublication;\n    }\n\n    public void setIdPublication(Integer idPublication) {\n        this.idPublication = idPublication;\n    }\n\n    public String getCorps() {\n        return this.corps;\n    }\n\n    public void setCorps(String corps) {\n        this.corps = corps;\n    }\n\n    public String getDatePublication() {\n        return this.datePublication;\n    }\n\n    public void setDatePublication(String datePublication) {\n        this.datePublication = datePublication;\n    }\n\n    public String getTitrePublication() {\n        return this.titrePublication;\n    }\n\n    public Employee getEmployee() {\n        return employee;\n    }\n\n    public void setEmployee(Employee employee) {\n        this.employee = employee;\n    }\n\n    public void setTitrePublication(String titrePublication) {\n        this.titrePublication = titrePublication;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4381141,
+      "reputation" : 775,
+      "user_id" : 3572771,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/8cc88dc0cce9e4cf80a273099098304c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "yotsov",
+      "link" : "https://stackoverflow.com/users/3572771/yotsov"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1398459369,
+    "creation_date" : 1398459369,
+    "answer_id" : 23302877,
+    "question_id" : 23302647,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You need to create a typed query by doing:</p>\n\n<pre><code>TypedQuery&lt;Publication&gt; q;\nem.getTransaction().begin();\nq=em.createQuery(\"SELECT c.titrePublication,\n    c.datePublication, c.corps,p.login FROM Publication c  JOIN c.employee p \", \n    Publication.class);\n</code></pre>\n\n<p>Edit: as the other answers indicate, the query needs to be changed too to return all that is in the Publication table.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 193447,
+      "reputation" : 4034,
+      "user_id" : 435187,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c79b02cfe69e2311c3f8ab5c3b179daf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Asif Bhutto",
+      "link" : "https://stackoverflow.com/users/435187/asif-bhutto"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1398459437,
+    "creation_date" : 1398459437,
+    "answer_id" : 23302893,
+    "question_id" : 23302647,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>JPA provides an <code>SqlResultSetMapping and resultClass</code> that allows you to map whatever returns from your native query into an Entity</p>\n\n<p>You have to define Query <code>NamedNativeQuery</code> in your Publication.</p>\n\n<pre><code>@NamedNativeQuery(name=\"findPublication\", query=\"SELECT c.titrePublication, c.datePublication, c.corps,p.login FROM Publication c  JOIN c.employee p\", resultClass=Publication.class)\n</code></pre>\n\n<p>login property is not define in Publication class, you need add login peroperty in Publication with getter/setter because your selecting login from employee table using join</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1703258,
+    "reputation" : 79,
+    "user_id" : 1562847,
+    "user_type" : "registered",
+    "accept_rate" : 88,
+    "profile_image" : "https://www.gravatar.com/avatar/7d067b6f3cb9ce3ced7f449a2da8bb95?s=256&d=identicon&r=PG",
+    "display_name" : "fati lem",
+    "link" : "https://stackoverflow.com/users/1562847/fati-lem"
+  },
+  "is_answered" : false,
+  "view_count" : 9463,
+  "answer_count" : 3,
+  "score" : 0,
+  "last_activity_date" : 1760883095,
+  "creation_date" : 1398458540,
+  "last_edit_date" : 1398458849,
+  "question_id" : 23302647,
+  "link" : "https://stackoverflow.com/questions/23302647/retrieving-listentity-from-listobject-jpa",
+  "title" : "retrieving List&lt;Entity&gt; from List&lt;Object[]&gt; JPA",
+  "body" : "<p>I have an Entity class calle Publication, a method called getAllPublication that return <code>List&lt;Publication&gt;</code> , but my query inside the method has a resultList of type <code>List&lt;Object[]&gt;</code>, how can I retrieve a list of publication entity fromthe <code>List&lt;Object[]&gt;</code>:\n-here the method :</p>\n\n<pre><code>public List&lt;Publication&gt; getAllPublication() {\n    List&lt;Object[]&gt; listePublication;\n    Query q;\n    em.getTransaction().begin();\n    q=em.createQuery(\"SELECT c.titrePublication,\n    c.datePublication, c.corps,p.login FROM Publication c  JOIN c.employee p \");\n    listePublication = q.getResultList();\n    //ArrayList&lt;Publication&gt; results = new ArrayList&lt;Publication&gt;();\n    //for (Object[] resultat : listePublication)\n    //results.add((Publication) resultat[0]);*/\n    em.getTransaction().commit();\n    return results;\n}\n</code></pre>\n\n<p>thanks in advance.\nhere is the entity class </p>\n\n<pre><code> package entities;\n\nimport java.io.Serializable;\nimport javax.persistence.*;\n\n@Entity\n@NamedQuery(name=\"Publication.findAll\", query=\"SELECT p FROM Publication p\")\npublic class Publication  {\n\n\n    @Id\n    @Column(name=\"\\\"idPublication\\\"\")\n    private Integer idPublication;\n\n    private String corps;\n\n    @Column(name=\"\\\"datePublication\\\"\")\n    private String datePublication;\n\n    @Column(name=\"\\\"titrePublication\\\"\")\n    private String titrePublication;\n\n    @ManyToOne(fetch=FetchType.LAZY)\n    @JoinColumn(name=\"auteur\")\n    private Employee employee;\n\n    public Publication() {\n    }\n\n    public Integer getIdPublication() {\n        return this.idPublication;\n    }\n\n    public void setIdPublication(Integer idPublication) {\n        this.idPublication = idPublication;\n    }\n\n    public String getCorps() {\n        return this.corps;\n    }\n\n    public void setCorps(String corps) {\n        this.corps = corps;\n    }\n\n    public String getDatePublication() {\n        return this.datePublication;\n    }\n\n    public void setDatePublication(String datePublication) {\n        this.datePublication = datePublication;\n    }\n\n    public String getTitrePublication() {\n        return this.titrePublication;\n    }\n\n    public Employee getEmployee() {\n        return employee;\n    }\n\n    public void setEmployee(Employee employee) {\n        this.employee = employee;\n    }\n\n    public void setTitrePublication(String titrePublication) {\n        this.titrePublication = titrePublication;\n    }\n}\n</code></pre>\n"
+}

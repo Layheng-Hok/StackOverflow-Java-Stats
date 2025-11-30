@@ -1,0 +1,494 @@
+{
+  "tags" : [ "java", "unit-testing", "junit", "mockito" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 304562,
+      "reputation" : 12463,
+      "user_id" : 614141,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://i.sstatic.net/d8f8l.png?s=256",
+      "display_name" : "javing",
+      "link" : "https://stackoverflow.com/users/614141/javing"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1635191402,
+    "post_id" : 36253040,
+    "comment_id" : 123225667,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Maybe you find this article useful: <a href=\"https://medium.com/javarevisited/argument-capturing-a-must-know-unit-testing-technique-e88b3a6a6af1\" rel=\"nofollow noreferrer\">medium.com/javarevisited/&hellip;</a>   It has a simple example"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71611,
+        "reputation" : 26920,
+        "user_id" : 6998684,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/aBp1t.jpg?s=256",
+        "display_name" : "IgorGanapolsky",
+        "link" : "https://stackoverflow.com/users/6998684/igorganapolsky"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1487947060,
+      "post_id" : 36253109,
+      "comment_id" : 72026367,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What if there are multiple parameters passed into the method - all of different types?  How do you actually verify that boolean parameter was <b>true</b>, for example."
+    }, {
+      "owner" : {
+        "account_id" : 307264,
+        "reputation" : 2155,
+        "user_id" : 618465,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://www.gravatar.com/avatar/af730d11df1d869dcfac19e3695eab49?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Navigatron",
+        "link" : "https://stackoverflow.com/users/618465/navigatron"
+      },
+      "edited" : false,
+      "score" : 36,
+      "creation_date" : 1497005468,
+      "post_id" : 36253109,
+      "comment_id" : 75907997,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Can you provide an explanation for your comment: <i>Oh, and please consider using TestNG instead of JUnit.</i>. Why consider it? Why change?"
+    }, {
+      "owner" : {
+        "account_id" : 4715182,
+        "reputation" : 968,
+        "user_id" : 3814557,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/0bfcb39195c8caf0325209e607195e6b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "johnwick0831",
+        "link" : "https://stackoverflow.com/users/3814557/johnwick0831"
+      },
+      "reply_to_user" : {
+        "account_id" : 71611,
+        "reputation" : 26920,
+        "user_id" : 6998684,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/aBp1t.jpg?s=256",
+        "display_name" : "IgorGanapolsky",
+        "link" : "https://stackoverflow.com/users/6998684/igorganapolsky"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1525922117,
+      "post_id" : 36253109,
+      "comment_id" : 87547834,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@IgorGanapolsky you just add another ArgumentCaptor.   ArgumentCaptor&lt;BigDecimal&gt; arg = ArgumentCaptor.forClass(BigDecimal.class);     ArgumentCaptor&lt;String&gt; arg2 = ArgumentCaptor.forClass(String.class);      Michael michael = new Michael();     michael.sayHi(j);     verify(j).saySomething(arg.capture(), arg2.capture());     System.out.println(&quot;value is  &quot; + arg.getValue());     System.out.println(&quot;string is &quot; + arg2.getValue());"
+    } ],
+    "owner" : {
+      "account_id" : 1101161,
+      "reputation" : 122410,
+      "user_id" : 1093528,
+      "user_type" : "registered",
+      "accept_rate" : 65,
+      "profile_image" : "https://i.sstatic.net/VjxwC.jpg?s=256",
+      "display_name" : "fge",
+      "link" : "https://stackoverflow.com/users/1093528/fge"
+    },
+    "is_accepted" : false,
+    "score" : 53,
+    "last_activity_date" : 1459115545,
+    "creation_date" : 1459115545,
+    "answer_id" : 36253109,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The two main differences are:</p>\n\n<ul>\n<li>when you capture even a single argument, you are able to make much more elaborate tests on this argument, and with more obvious code;</li>\n<li>an <code>ArgumentCaptor</code> can capture <em>more</em> than once.</li>\n</ul>\n\n<p>To illustrate the latter, say you have:</p>\n\n<pre><code>final ArgumentCaptor&lt;Foo&gt; captor = ArgumentCaptor.forClass(Foo.class);\n\nverify(x, times(4)).someMethod(captor.capture()); // for instance\n</code></pre>\n\n<p>Then the captor will be able to give you access to all 4 arguments, which you can then perform assertions on separately.</p>\n\n<p>This or any number of arguments in fact, since a <code>VerificationMode</code> is not limited to a fixed number of invocations; in any event, the captor will give you access to all of them, if you wish.</p>\n\n<p>This also has the benefit that such tests are (imho) much easier to write than having to implement your own <code>ArgumentMatcher</code>s -- particularly if you combine mockito with assertj.</p>\n\n<p>Oh, and please consider using TestNG instead of JUnit.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 200610,
+        "reputation" : 56640,
+        "user_id" : 446554,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/2fe5bee1c3e113262b71d6d336821b13?s=256&d=identicon&r=PG",
+        "display_name" : "Cory Klein",
+        "link" : "https://stackoverflow.com/users/446554/cory-klein"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1544034517,
+      "post_id" : 36267673,
+      "comment_id" : 94136784,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If <code>doSomething(data)</code> mutates <code>innerData</code>, then will that change be present in <code>assertEquals(&quot;Some inner data&quot;, actual.innerData)</code>, or will <code>innerData</code> be captured as-is <i>before</i> <code>doSomething</code> is executed?"
+    }, {
+      "owner" : {
+        "account_id" : 5294426,
+        "reputation" : 4235,
+        "user_id" : 4225948,
+        "user_type" : "registered",
+        "accept_rate" : 10,
+        "profile_image" : "https://lh6.googleusercontent.com/-SxPqpCeXKYo/AAAAAAAAAAI/AAAAAAAAAqg/cpvMbAOfisY/s256-rj/photo.jpg",
+        "display_name" : "Slava Shpitalny",
+        "link" : "https://stackoverflow.com/users/4225948/slava-shpitalny"
+      },
+      "reply_to_user" : {
+        "account_id" : 200610,
+        "reputation" : 56640,
+        "user_id" : 446554,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/2fe5bee1c3e113262b71d6d336821b13?s=256&d=identicon&r=PG",
+        "display_name" : "Cory Klein",
+        "link" : "https://stackoverflow.com/users/446554/cory-klein"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1544199493,
+      "post_id" : 36267673,
+      "comment_id" : 94204006,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@CoryKlein The <code>OtherClass</code> is a mock, and as it is defined now the <code>doSomething()</code> will not actualy do anything, it simply records the object that was passed. This means that it will be captured as-is before <code>doSomething</code> is executed."
+    }, {
+      "owner" : {
+        "account_id" : 1807152,
+        "reputation" : 1169,
+        "user_id" : 1644036,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/4782c0e06aabcfa6b262698b0e4fa3bd?s=256&d=identicon&r=PG",
+        "display_name" : "Inego",
+        "link" : "https://stackoverflow.com/users/1644036/inego"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1567752197,
+      "post_id" : 36267673,
+      "comment_id" : 102064566,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In <code>verify</code>, <code>times(1)</code> is the default and can be omitted."
+    }, {
+      "owner" : {
+        "account_id" : 3882629,
+        "reputation" : 561,
+        "user_id" : 3214777,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://lh3.googleusercontent.com/-Kd9QFdnKbMU/AAAAAAAAAAI/AAAAAAAAJEo/5snqvrXm2i8/s256-rj/photo.jpg",
+        "display_name" : "Daniel Pop",
+        "link" : "https://stackoverflow.com/users/3214777/daniel-pop"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1594795094,
+      "post_id" : 36267673,
+      "comment_id" : 111247315,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "how does ArgumentCaptor know that foo(other) happened since it is instantiated only after the foo(other) call?"
+    }, {
+      "owner" : {
+        "account_id" : 5294426,
+        "reputation" : 4235,
+        "user_id" : 4225948,
+        "user_type" : "registered",
+        "accept_rate" : 10,
+        "profile_image" : "https://lh6.googleusercontent.com/-SxPqpCeXKYo/AAAAAAAAAAI/AAAAAAAAAqg/cpvMbAOfisY/s256-rj/photo.jpg",
+        "display_name" : "Slava Shpitalny",
+        "link" : "https://stackoverflow.com/users/4225948/slava-shpitalny"
+      },
+      "reply_to_user" : {
+        "account_id" : 3882629,
+        "reputation" : 561,
+        "user_id" : 3214777,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://lh3.googleusercontent.com/-Kd9QFdnKbMU/AAAAAAAAAAI/AAAAAAAAJEo/5snqvrXm2i8/s256-rj/photo.jpg",
+        "display_name" : "Daniel Pop",
+        "link" : "https://stackoverflow.com/users/3214777/daniel-pop"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1594894527,
+      "post_id" : 36267673,
+      "comment_id" : 111289257,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@AvramPop the one who knows this is the mock object. It contains inside a lot of information about the mock. Inside all of that information it also contains the call history for each method with it&#39;s parameters. When you call the <code>verify</code> method, it uses that information to run matches against the verification that you are doing. For every parameter it asks whether it matches the specific call it checks. When ArgumentCaptor is checked, it simply stores the values it was invoked with so when <code>verify</code> ends, it holds all the relevant invocations. It&#39;s roughly how it works. Hope it helps"
+    }, {
+      "owner" : {
+        "account_id" : 3882629,
+        "reputation" : 561,
+        "user_id" : 3214777,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://lh3.googleusercontent.com/-Kd9QFdnKbMU/AAAAAAAAAAI/AAAAAAAAJEo/5snqvrXm2i8/s256-rj/photo.jpg",
+        "display_name" : "Daniel Pop",
+        "link" : "https://stackoverflow.com/users/3214777/daniel-pop"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1594963229,
+      "post_id" : 36267673,
+      "comment_id" : 111315535,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I was supposing that the mock object was doing the magic, but was unsure. Thanks for clarifying, @SlavaShpitalny"
+    }, {
+      "owner" : {
+        "account_id" : 4097768,
+        "reputation" : 963,
+        "user_id" : 3364064,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/3S9E3.jpg?s=256",
+        "display_name" : "V&#237;ctor Gil",
+        "link" : "https://stackoverflow.com/users/3364064/v%c3%adctor-gil"
+      },
+      "reply_to_user" : {
+        "account_id" : 3882629,
+        "reputation" : 561,
+        "user_id" : 3214777,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://lh3.googleusercontent.com/-Kd9QFdnKbMU/AAAAAAAAAAI/AAAAAAAAJEo/5snqvrXm2i8/s256-rj/photo.jpg",
+        "display_name" : "Daniel Pop",
+        "link" : "https://stackoverflow.com/users/3214777/daniel-pop"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1601567353,
+      "post_id" : 36267673,
+      "comment_id" : 113454179,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@SlavaShpitalny very well explained, initially I thought the same as @AvramPop, now I see that <code>captore.capture()</code> actually means: &quot;retrieve the argument which was previously saved inside the mock&quot;. I think the name of that API method could be better..."
+    } ],
+    "owner" : {
+      "account_id" : 5294426,
+      "reputation" : 4235,
+      "user_id" : 4225948,
+      "user_type" : "registered",
+      "accept_rate" : 10,
+      "profile_image" : "https://lh6.googleusercontent.com/-SxPqpCeXKYo/AAAAAAAAAAI/AAAAAAAAAqg/cpvMbAOfisY/s256-rj/photo.jpg",
+      "display_name" : "Slava Shpitalny",
+      "link" : "https://stackoverflow.com/users/4225948/slava-shpitalny"
+    },
+    "is_accepted" : false,
+    "score" : 297,
+    "last_activity_date" : 1503669191,
+    "last_edit_date" : 1503669191,
+    "creation_date" : 1459186872,
+    "answer_id" : 36267673,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I agree with what @fge said, more over. Lets look at example.\nConsider you have a method:</p>\n\n<pre><code>class A {\n    public void foo(OtherClass other) {\n        SomeData data = new SomeData(\"Some inner data\");\n        other.doSomething(data);\n    }\n}\n</code></pre>\n\n<p>Now if you want to check the inner data you can use the captor:</p>\n\n<pre><code>// Create a mock of the OtherClass\nOtherClass other = mock(OtherClass.class);\n\n// Run the foo method with the mock\nnew A().foo(other);\n\n// Capture the argument of the doSomething function\nArgumentCaptor&lt;SomeData&gt; captor = ArgumentCaptor.forClass(SomeData.class);\nverify(other, times(1)).doSomething(captor.capture());\n\n// Assert the argument\nSomeData actual = captor.getValue();\nassertEquals(\"Some inner data\", actual.innerData);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6875545,
+      "reputation" : 2159,
+      "user_id" : 5284105,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/rMCIc.png?s=256",
+      "display_name" : "Lho Ben",
+      "link" : "https://stackoverflow.com/users/5284105/lho-ben"
+    },
+    "is_accepted" : false,
+    "score" : 38,
+    "last_activity_date" : 1624391457,
+    "last_edit_date" : 1624391457,
+    "creation_date" : 1539987344,
+    "answer_id" : 52900526,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The steps in order to make a full check are :</p>\n<p><strong>First</strong>, prepare the argument captor :</p>\n<pre><code>ArgumentCaptor&lt;ArgumentClass&gt; argumentCaptor = ArgumentCaptor.forClass(ArgumentClass.class);\n</code></pre>\n<p><strong>Second</strong>, verify the call to the dependent on component (collaborator of subject under test).</p>\n<p><em>times(1) is the default value, so ne need to add it.</em></p>\n<pre><code>verify(dependentOnComponent, times(1)).method(argumentCaptor.capture());\n</code></pre>\n<p><strong>Third</strong>, get the argument passed to collaborator using getValue() of the captor</p>\n<pre><code>ArgumentClass someArgument = messageCaptor.getValue();\n</code></pre>\n<p><strong>Fourth</strong>, use someArgument for assertions</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3682862,
+        "reputation" : 1333,
+        "user_id" : 3067411,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/05ffc4ed26315cb57cb35b90e1243fbc?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Felipe Martins Melo",
+        "link" : "https://stackoverflow.com/users/3067411/felipe-martins-melo"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1548758940,
+      "post_id" : 54103611,
+      "comment_id" : 95648241,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Shouldn&#39;t it refer to ArgumentCaptor?"
+    }, {
+      "owner" : {
+        "account_id" : 3991392,
+        "reputation" : 385,
+        "user_id" : 3290219,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/MxwNA.jpg?s=256",
+        "display_name" : "Vikram singh",
+        "link" : "https://stackoverflow.com/users/3290219/vikram-singh"
+      },
+      "reply_to_user" : {
+        "account_id" : 3682862,
+        "reputation" : 1333,
+        "user_id" : 3067411,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/05ffc4ed26315cb57cb35b90e1243fbc?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Felipe Martins Melo",
+        "link" : "https://stackoverflow.com/users/3067411/felipe-martins-melo"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1550836520,
+      "post_id" : 54103611,
+      "comment_id" : 96427771,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "yes we are capturing the listener passed to method login() in example login(LoginProvider loginProvider,LoginListener callback)"
+    }, {
+      "owner" : {
+        "account_id" : 1002291,
+        "reputation" : 2473,
+        "user_id" : 1016891,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/7e7a61432aae7dad04bd6fcf446d3c80?s=256&d=identicon&r=PG",
+        "display_name" : "tom_mai78101",
+        "link" : "https://stackoverflow.com/users/1016891/tom-mai78101"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1585762673,
+      "post_id" : 54103611,
+      "comment_id" : 107879541,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Where is the <code>captor</code> defined in your answer?"
+    }, {
+      "owner" : {
+        "account_id" : 3991392,
+        "reputation" : 385,
+        "user_id" : 3290219,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/MxwNA.jpg?s=256",
+        "display_name" : "Vikram singh",
+        "link" : "https://stackoverflow.com/users/3290219/vikram-singh"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1592154423,
+      "post_id" : 54103611,
+      "comment_id" : 110316842,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "ArgumentCaptor&lt; LoginListener &gt; listenerCaptor =             ArgumentCaptor.forClass(LoginListener.class);"
+    } ],
+    "owner" : {
+      "account_id" : 3991392,
+      "reputation" : 385,
+      "user_id" : 3290219,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/MxwNA.jpg?s=256",
+      "display_name" : "Vikram singh",
+      "link" : "https://stackoverflow.com/users/3290219/vikram-singh"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1547010908,
+    "creation_date" : 1547010908,
+    "answer_id" : 54103611,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here I am giving you a proper example of one callback method .\nso suppose we have a method like method login() :</p>\n\n<pre><code> public void login() {\n    loginService = new LoginService();\n    loginService.login(loginProvider, new LoginListener() {\n        @Override\n        public void onLoginSuccess() {\n            loginService.getresult(true);\n        }\n\n        @Override\n        public void onLoginFaliure() {\n            loginService.getresult(false);\n\n        }\n    });\n    System.out.print(\"@@##### get called\");\n}\n</code></pre>\n\n<p>I also put all the helper class here to make the example more clear:\nloginService class</p>\n\n<pre><code>public class LoginService implements Login.getresult{\npublic void login(LoginProvider loginProvider,LoginListener callback){\n\n    String username  = loginProvider.getUsername();\n    String pwd  = loginProvider.getPassword();\n    if(username != null &amp;&amp; pwd != null){\n        callback.onLoginSuccess();\n    }else{\n        callback.onLoginFaliure();\n    }\n\n}\n\n@Override\npublic void getresult(boolean value) {\n    System.out.print(\"login success\"+value);\n}}\n</code></pre>\n\n<p>and we have listener LoginListener as :</p>\n\n<pre><code>interface LoginListener {\nvoid onLoginSuccess();\n\nvoid onLoginFaliure();\n</code></pre>\n\n<p>}</p>\n\n<p>now I just wanted to test the method login() of class Login</p>\n\n<pre><code> @Test\npublic void loginTest() throws Exception {\n    LoginService service = mock(LoginService.class);\n    LoginProvider provider = mock(LoginProvider.class);\n    whenNew(LoginProvider.class).withNoArguments().thenReturn(provider);\n    whenNew(LoginService.class).withNoArguments().thenReturn(service);\n    when(provider.getPassword()).thenReturn(\"pwd\");\n    when(provider.getUsername()).thenReturn(\"username\");\n    login.getLoginDetail(\"username\",\"password\");\n\n    verify(provider).setPassword(\"password\");\n    verify(provider).setUsername(\"username\");\n\n    verify(service).login(eq(provider),captor.capture());\n\n    LoginListener listener = captor.getValue();\n\n    listener.onLoginSuccess();\n\n    verify(service).getresult(true);\n</code></pre>\n\n<p>also dont forget to add annotation above the test class as </p>\n\n<pre><code>@RunWith(PowerMockRunner.class)\n@PrepareForTest(Login.class)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3995853,
+      "reputation" : 590,
+      "user_id" : 3293436,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/JLkr5.jpg?s=256",
+      "display_name" : "MauroB",
+      "link" : "https://stackoverflow.com/users/3293436/maurob"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1619433029,
+    "creation_date" : 1619433029,
+    "answer_id" : 67265000,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I created this example that simulates a very simple service that uses a repository to save a String (no dependency injection, no entities), just to teach ArgumentCaptor quickly.</p>\n<ul>\n<li>The service receives, converts to uppercase and trim a name, then invoke the repository.</li>\n<li>The repository &quot;saves&quot; the String.</li>\n<li>With ArgumentCaptor I want to know which value is passed to the repository and then check if it's trimmed and in uppercase, as expected</li>\n</ul>\n<p>3 classes: PersonService, PersonRepository and PersonServiceTest (packages omitted)</p>\n<pre><code>public class PersonService {\n\n    private PersonRepository personRepository;\n\n    public void setPersonRepository(final PersonRepository personRepository) {\n        this.personRepository = personRepository;\n    }\n\n    public void savePerson(final String name) {\n        this.personRepository.save(name.toUpperCase().trim());\n    }\n\n}\n\npublic class PersonRepository {\n\n    public void save(final String person) {\n        System.out.println(&quot;.. saving person ..&quot;);\n    }\n}\n\n\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nimport static org.mockito.Mockito.mock;\nimport static org.mockito.Mockito.times;\nimport static org.mockito.Mockito.verify;\n\nimport org.junit.jupiter.api.Test;\nimport org.mockito.ArgumentCaptor;\n\nclass PersonServiceTest {\n\n    @Test\n    void testPersonService() {\n\n        // Create the repository mock\n        final PersonRepository personRepositoryMock = mock(PersonRepository.class);\n\n        // Create the service and set the repository mock\n        final PersonService personService = new PersonService();\n        personService.setPersonRepository(personRepositoryMock);\n\n        // Save a person\n        personService.savePerson(&quot;Mario &quot;);\n\n        // Prepare an ArgumentCaptor to capture the value passed to repo.saveMethod\n        final ArgumentCaptor&lt;String&gt; captor = ArgumentCaptor.forClass(String.class);\n\n        // Capture the argument passed in the unique method invocation\n        verify(personRepositoryMock, times(1)).save(captor.capture());\n\n        // Check if the captured value is the expected one\n        final String capturedParameter = captor.getValue();\n        assertEquals(&quot;MARIO&quot;, capturedParameter);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1964307,
+      "reputation" : 3945,
+      "user_id" : 1764947,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f23ac435b51bd5b0f9bead0585ebe757?s=256&d=identicon&r=PG",
+      "display_name" : "fl0w",
+      "link" : "https://stackoverflow.com/users/1764947/fl0w"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1668778114,
+    "creation_date" : 1668778114,
+    "answer_id" : 74490414,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You might want to use verify() in combination with the ArgumentCaptor to assure execution in the test and the ArgumentCaptor to evaluate the arguments:</p>\n<pre><code>ArgumentCaptor&lt;Document&gt; argument = ArgumentCaptor.forClass(Document.class);\nverify(reader).document(argument.capture());\nassertEquals(*expected value here*, argument.getValue());\n    \n</code></pre>\n<p>The argument's value is obviously accessible via the argument.getValue() for further manipulation / checking or whatever you wish to do.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 204659,
+      "reputation" : 38566,
+      "user_id" : 453005,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/Rjx6y.png?s=256",
+      "display_name" : "DwB",
+      "link" : "https://stackoverflow.com/users/453005/dwb"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1668778886,
+    "creation_date" : 1668778886,
+    "answer_id" : 74490576,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use annotations for this and most things @Spy, @Mock, @Captor, etc.</p>\n<p>Here is a sample (using JUnit 5):</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class Blam\n{\n  public void foo(final OtherClass other)\n  {\n    final SomeData data = new SomeData(&quot;Some inner data&quot;);\n    other.doSomething(data);\n  }\n}\n\n@ExtendWith(MockitoExtension.class)\npublic class TestBlam\n{\n  @Captor\n  private ArgumentCaptor&lt;SomeData&gt; captorSomeData;\n\n  private Blam classToTest;\n\n  @Mock\n  private OtherClass mockOtherClass;\n\n  @BeforeEach\n  void beforeEach()\n  {\n    classToTest = new Blam();\n  }\n\n  @Test\n  void foo_allGood_success()\n  {\n    SomeData actualSomeData;\n\n    classToTest.foo(mockOtherClass);\n    \n    verify(mockOtherClass).doSomething(captorSomeData.capture());\n    \n    actualSomeData = captorSomeData.getValue();\n    \n    assert(stuff about actualSomeData);\n  }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1628102,
+      "reputation" : 5215,
+      "user_id" : 1503163,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c849158de87c316eccc01649e521374a?s=256&d=identicon&r=PG",
+      "display_name" : "Sanjay Bharwani",
+      "link" : "https://stackoverflow.com/users/1503163/sanjay-bharwani"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1737107023,
+    "creation_date" : 1737107023,
+    "answer_id" : 79364305,
+    "question_id" : 36253040,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>ArgumentCaptor is quite useful when a new object is being created within the under test method which can't be mocked / controlled by the test.</p>\n<p>For e.g. consider below method which creates an instance of employee nad passes to the <code>employeeTable.save</code></p>\n<pre><code>public void saveEmployee(String name, String department) {\n        Employee employee = new Employee(UUID.randomUUID().toString(),name, department);\n\n        Instant start = Instant.now();\n        employeeTable.save(employee);\n        LOGGER.info(&quot;Saved - {} {} in {} millis&quot;, name, department, timeElapsed);\n    }\n</code></pre>\n<p>The test for this method would not be complete without ArgumentCaptor.</p>\n<p>How do we use it?</p>\n<pre><code>@Captor\nArgumentCaptor&lt;Employee&gt; employeeCaptor;\n</code></pre>\n<p>Now use this captor in mockito verify method as</p>\n<pre><code>verify(employeeTable,times(1)).save(employeeCaptor.capture());\n</code></pre>\n<p>and then retrieve the captured value and assert against</p>\n<pre><code>var employee = messagesCaptor.getValue();\n        assertThat(history.getName()).isEqualTo(&quot;Sanjay&quot;);\n        assertThat(history.getDept()).isEqualTo(&quot;Engineering&quot;);\n        assertThat(history.getId()).isEqualTo(&quot;Engineering&quot;);\n</code></pre>\n<p>Full test here</p>\n<pre><code>@Test\nvoid saveEmployee(final CapturedOutput output) {    \n    employeeService.saveEmployee(&quot;Sanjay&quot;, &quot;Engineering&quot;);\n     verify(employeeTable,times(1)).save(employeeCaptor.capture());\n\n    var employee = messagesCaptor.getValue();\n    assertThat(history.getName()).isEqualTo(&quot;Sanjay&quot;);\n    assertThat(history.getDept()).isEqualTo(&quot;Engineering&quot;);\n    assertThat(history.getId()).isEqualTo(&quot;Engineering&quot;);\n   \n    assertThat(output.getOut()).contains(&quot;Saved - Sanjay Engineering in&quot;));\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7645565,
+    "reputation" : 2573,
+    "user_id" : 5796365,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/fplTI.jpg?s=256",
+    "display_name" : "Ujjwal",
+    "link" : "https://stackoverflow.com/users/5796365/ujjwal"
+  },
+  "is_answered" : true,
+  "view_count" : 304880,
+  "protected_date" : 1558275893,
+  "answer_count" : 8,
+  "score" : 232,
+  "last_activity_date" : 1737107023,
+  "creation_date" : 1459115063,
+  "last_edit_date" : 1723918280,
+  "question_id" : 36253040,
+  "link" : "https://stackoverflow.com/questions/36253040/example-of-mockitos-argumentcaptor",
+  "title" : "Example of Mockito&#39;s argumentCaptor",
+  "body" : "<p>Can anyone please provide me an example showing how to use the <code>org.mockito.ArgumentCaptor</code> class and how it is different from <em>simple matchers</em> that are provided with mockito?</p>\n<p>I read the provided mockito documents but those don't illustrate it clearly, none of them can explain it with clarity.</p>\n"
+}

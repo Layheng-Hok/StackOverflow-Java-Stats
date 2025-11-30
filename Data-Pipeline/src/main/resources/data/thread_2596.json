@@ -1,0 +1,209 @@
+{
+  "tags" : [ "java", "eclipse", "maven", "selenium" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10064278,
+        "reputation" : 59,
+        "user_id" : 7439898,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/a8126c961becba61ccc767ab79c88b3f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "EnislavMollov",
+        "link" : "https://stackoverflow.com/users/7439898/enislavmollov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1507188088,
+      "post_id" : 46579569,
+      "comment_id" : 80112792,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I try it, but got the same error: FAILED CONFIGURATION: @BeforeTest beforeTest java.lang.IllegalStateException: The path to the driver executable must be set by the webdriver.chrome.driver system property;"
+    }, {
+      "owner" : {
+        "account_id" : 11064868,
+        "reputation" : 1289,
+        "user_id" : 8124980,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/ofqbL.jpg?s=256",
+        "display_name" : "Ankur Singh",
+        "link" : "https://stackoverflow.com/users/8124980/ankur-singh"
+      },
+      "reply_to_user" : {
+        "account_id" : 10064278,
+        "reputation" : 59,
+        "user_id" : 7439898,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/a8126c961becba61ccc767ab79c88b3f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "EnislavMollov",
+        "link" : "https://stackoverflow.com/users/7439898/enislavmollov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1507194668,
+      "post_id" : 46579569,
+      "comment_id" : 80116439,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "String exePath = &quot;/Users/********/Downloads/chromedriver&quot; Ur path should be till chromedriver.exe.. refer syntx                                                                                  String exePath = &quot;/Users/********/Downloads/chromedriver/chromedriver.exe&quot;;"
+    }, {
+      "owner" : {
+        "account_id" : 10064278,
+        "reputation" : 59,
+        "user_id" : 7439898,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/a8126c961becba61ccc767ab79c88b3f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "EnislavMollov",
+        "link" : "https://stackoverflow.com/users/7439898/enislavmollov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1507210894,
+      "post_id" : 46579569,
+      "comment_id" : 80127363,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "chromedriver is not *.exe file. It says &#39;Unix executable&#39;"
+    }, {
+      "owner" : {
+        "account_id" : 3411393,
+        "reputation" : 306,
+        "user_id" : 2861219,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/93f643c12c93aa21d0c7f30b2e24cf5e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Harish",
+        "link" : "https://stackoverflow.com/users/2861219/harish"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1507354689,
+      "post_id" : 46579569,
+      "comment_id" : 80185578,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I assume, you are using Mac OS. You don&#39;t have to specify the extension for your Chromedriver executable. Modify your exePath as exePath = &quot;/Users/********/Downloads/chromedriver&quot; in beforeTest method."
+    } ],
+    "owner" : {
+      "account_id" : 11064868,
+      "reputation" : 1289,
+      "user_id" : 8124980,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ofqbL.jpg?s=256",
+      "display_name" : "Ankur Singh",
+      "link" : "https://stackoverflow.com/users/8124980/ankur-singh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1507195065,
+    "last_edit_date" : 1507195065,
+    "creation_date" : 1507186423,
+    "answer_id" : 46579569,
+    "question_id" : 46579476,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You need to set property in @beforeTest method bec. it will run before @Test.</p>\n\n<p>In your case you are trying to create driver instance before setting it property.  </p>\n\n<p>Try below code :- </p>\n\n<pre><code>  @BeforeTest\n    public void beforeTest() {  \n       String exePath = \"/Users/********/Downloads/chromedriver/chromedriver.exe\";\n        System.setProperty(\"webdriver.chrome.driver\", exePath);\n        driver = new ChromeDriver();  \n    } \n</code></pre>\n\n<hr>\n\n<pre><code>package test.java;\n\nimport org.testng.annotations.AfterTest;\nimport org.testng.annotations.BeforeTest;\nimport org.testng.annotations.Test;\n\nimport junit.framework.Assert;\n\nimport org.openqa.selenium.WebDriver;\nimport org.openqa.selenium.chrome.ChromeDriver;\n\n\npublic class NewTest {\n\nprivate WebDriver driver;\n\n@Test   \n\npublic void f() {\n\n    driver.get(\"https://www.apple.com/\");  \n    String title = driver.getTitle();                \n    Assert.assertTrue(title.contains(\"Apple\"));         \n}\n\n@BeforeTest\npublic void beforeTest() {  \nString exePath = \"/Users/********/Downloads/chromedriver/chromedriver.exe\";\n    System.setProperty(\"webdriver.chrome.driver\", exePath);\n\n    driver = new ChromeDriver();  \n}       \n@AfterTest\npublic void afterTest() {\n    driver.quit();          \n}       \n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14036550,
+      "reputation" : 1,
+      "user_id" : 10139092,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/612fd9d3cf22159e06f0134a5bd6189a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sindhuja Reddy",
+      "link" : "https://stackoverflow.com/users/10139092/sindhuja-reddy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1635108345,
+    "last_edit_date" : 1635108345,
+    "creation_date" : 1635105707,
+    "answer_id" : 69700312,
+    "question_id" : 46579476,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Worked for me when i removed <code>.exe</code> extension from the path. For example:</p>\n<pre><code>System.setProperty(&quot;webdriver.chrome.driver&quot;, &quot;/Users/***/***/chromedriver&quot;);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 179900,
+        "reputation" : 636,
+        "user_id" : 412867,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/49520744217d2bb93ac51e8a01411f41?s=256&d=identicon&r=PG",
+        "display_name" : "Vukasin Toroman",
+        "link" : "https://stackoverflow.com/users/412867/vukasin-toroman"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1678287828,
+      "post_id" : 75626476,
+      "comment_id" : 133503758,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Please don&#39;t link external resources and describe the solution instead"
+    }, {
+      "owner" : {
+        "account_id" : 25046376,
+        "reputation" : 21,
+        "user_id" : 18902753,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/M33N4.jpg?s=256",
+        "display_name" : "naresh",
+        "link" : "https://stackoverflow.com/users/18902753/naresh"
+      },
+      "reply_to_user" : {
+        "account_id" : 179900,
+        "reputation" : 636,
+        "user_id" : 412867,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/49520744217d2bb93ac51e8a01411f41?s=256&d=identicon&r=PG",
+        "display_name" : "Vukasin Toroman",
+        "link" : "https://stackoverflow.com/users/412867/vukasin-toroman"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1678374239,
+      "post_id" : 75626476,
+      "comment_id" : 133523328,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I found this sts file after a long search (here <a href=\"https://spring.io/blog/category/releases\" rel=\"nofollow noreferrer\">spring.io/blog/category/releases</a>).  I thought it&#39;d be helpful for newbies."
+    } ],
+    "owner" : {
+      "account_id" : 25046376,
+      "reputation" : 21,
+      "user_id" : 18902753,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/M33N4.jpg?s=256",
+      "display_name" : "naresh",
+      "link" : "https://stackoverflow.com/users/18902753/naresh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1677842694,
+    "creation_date" : 1677842694,
+    "answer_id" : 75626476,
+    "question_id" : 46579476,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I got the error <code>failed CONFIGURATION: @BeforeTest java.lang.NoSuchMethodError:openqa selenium</code>. After switched my project to STS, it worked fine(problem with my eclipse, I think). Download STS here <a href=\"https://download.springsource.com/release/STS4/4.17.0.RELEASE/dist/e4.26/spring-tool-suite-4-4.17.0.RELEASE-e4.26.0-win32.win32.x86_64.zip\" rel=\"nofollow noreferrer\">https://download.springsource.com/release/STS4/4.17.0.RELEASE/dist/e4.26/spring-tool-suite-4-4.17.0.RELEASE-e4.26.0-win32.win32.x86_64.zip</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10064278,
+    "reputation" : 59,
+    "user_id" : 7439898,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/a8126c961becba61ccc767ab79c88b3f?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "EnislavMollov",
+    "link" : "https://stackoverflow.com/users/7439898/enislavmollov"
+  },
+  "is_answered" : false,
+  "view_count" : 10870,
+  "answer_count" : 3,
+  "score" : 0,
+  "last_activity_date" : 1764270255,
+  "creation_date" : 1507186145,
+  "last_edit_date" : 1507195054,
+  "question_id" : 46579476,
+  "link" : "https://stackoverflow.com/questions/46579476/failed-configuration-beforetest-beforetest-maven-testng-selenium",
+  "title" : "FAILED CONFIGURATION: @BeforeTest beforeTest . MAVEN; TestNG, Selenium",
+  "body" : "<p>Hi I'm trying to run Selenium script with Maven, TestNG in Eclipse. \nFirst I right click on my project and select TestNG | Convert to TestNG(testing.xml is created). Then I go to the Run Configurations and create a new launch TestNGl and click Run. When run it I got this error:</p>\n\n<p>[RemoteTestNG] detected TestNG version 6.11.0\nFAILED CONFIGURATION: @BeforeTest beforeTest\njava.lang.IllegalStateException: The path to the driver executable must be set by the webdriver.chrome.driver system property; for more information, see <a href=\"https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver\" rel=\"nofollow noreferrer\">https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver</a>. The latest version can be downloaded from <a href=\"http://chromedriver.storage.googleapis.com/index.html\" rel=\"nofollow noreferrer\">http://chromedriver.storage.googleapis.com/index.html</a>\n    at com.google.common.base.Preconditions.checkState(Preconditions.java:754)\n    at org.openqa.selenium.remote.service.DriverService.findExecutable(DriverService.java:124)\n    at org.openqa.selenium.chrome.ChromeDriverService.access$000(ChromeDriverService.java:32)\n    at org.openqa.selenium.chrome.ChromeDriverService$Builder.findDefaultExecutable(ChromeDriverService.java:137)\n    at org.openqa.selenium.remote.service.DriverService$Builder.build(DriverService.java:329)\n    at org.openqa.selenium.chrome.ChromeDriverService.createDefaultService(ChromeDriverService.java:88)\n    at org.openqa.selenium.chrome.ChromeDriver.(ChromeDriver.java:123)\n    at test.java.NewTest.beforeTest(NewTest.java:27)\n    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n    at java.lang.reflect.Method.invoke(Method.java:498)\n    at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:108)\n    at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:523)\n    at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:224)\n    at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:146)\n    at org.testng.TestRunner.beforeRun(TestRunner.java:626)\n    at org.testng.TestRunner.run(TestRunner.java:594)\n    at org.testng.SuiteRunner.runTest(SuiteRunner.java:380)\n    at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:375)\n    at org.testng.SuiteRunner.privateRun(SuiteRunner.java:340)\n    at org.testng.SuiteRunner.run(SuiteRunner.java:289)\n    at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)\n    at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)\n    at org.testng.TestNG.runSuitesSequentially(TestNG.java:1301)\n    at org.testng.TestNG.runSuitesLocally(TestNG.java:1226)\n    at org.testng.TestNG.runSuites(TestNG.java:1144)\n    at org.testng.TestNG.run(TestNG.java:1115)\n    at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:114)\n    at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)\n    at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)</p>\n\n<p>SKIPPED CONFIGURATION: @AfterTest afterTest\nSKIPPED: f\njava.lang.IllegalStateException: The path to the driver executable must be set by the webdriver.chrome.driver system property; for more information, see <a href=\"https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver\" rel=\"nofollow noreferrer\">https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver</a>. The latest version can be downloaded from <a href=\"http://chromedriver.storage.googleapis.com/index.html\" rel=\"nofollow noreferrer\">http://chromedriver.storage.googleapis.com/index.html</a>\n    at com.google.common.base.Preconditions.checkState(Preconditions.java:754)\n    at org.openqa.selenium.remote.service.DriverService.findExecutable(DriverService.java:124)\n    at org.openqa.selenium.chrome.ChromeDriverService.access$000(ChromeDriverService.java:32)\n    at org.openqa.selenium.chrome.ChromeDriverService$Builder.findDefaultExecutable(ChromeDriverService.java:137)\n    at org.openqa.selenium.remote.service.DriverService$Builder.build(DriverService.java:329)\n    at org.openqa.selenium.chrome.ChromeDriverService.createDefaultService(ChromeDriverService.java:88)\n    at org.openqa.selenium.chrome.ChromeDriver.(ChromeDriver.java:123)\n    at test.java.NewTest.beforeTest(NewTest.java:27)\n    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n    at java.lang.reflect.Method.invoke(Method.java:498)\n    at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:108)\n    at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:523)\n    at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:224)\n    at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:146)\n    at org.testng.TestRunner.beforeRun(TestRunner.java:626)\n    at org.testng.TestRunner.run(TestRunner.java:594)\n    at org.testng.SuiteRunner.runTest(SuiteRunner.java:380)\n    at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:375)\n    at org.testng.SuiteRunner.privateRun(SuiteRunner.java:340)\n    at org.testng.SuiteRunner.run(SuiteRunner.java:289)\n    at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)\n    at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)\n    at org.testng.TestNG.runSuitesSequentially(TestNG.java:1301)\n    at org.testng.TestNG.runSuitesLocally(TestNG.java:1226)\n    at org.testng.TestNG.runSuites(TestNG.java:1144)\n    at org.testng.TestNG.run(TestNG.java:1115)\n    at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:114)\n    at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)\n    at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)</p>\n\n<p>===============================================\n    Default test\n    Tests run: 1, Failures: 0, Skips: 1</p>\n\n<h1>    Configuration Failures: 1, Skips: 1</h1>\n\n<p>===============================================\nDefault suite\nTotal tests run: 1, Failures: 0, Skips: 1</p>\n\n<h1>Configuration Failures: 1, Skips: 1</h1>\n\n<p>I have the following code:</p>\n\n<pre><code>package test.java;\n\nimport org.testng.annotations.AfterTest;\nimport org.testng.annotations.BeforeTest;\nimport org.testng.annotations.Test;\n\nimport junit.framework.Assert;\n\nimport org.openqa.selenium.WebDriver;\nimport org.openqa.selenium.chrome.ChromeDriver;\n\n\npublic class NewTest {\n\nprivate WebDriver driver;\n\n@Test   \n\npublic void f() {\n    // TODO Auto-generated method stub\n    String exePath = \"/Users/********/Downloads/chromedriver\";\n    System.setProperty(\"webdriver.chrome.driver\", exePath);\n\n    //WebDriver driver = new ChromeDriver();\n\n    driver.get(\"https://www.apple.com/\");  \n    String title = driver.getTitle();                \n    Assert.assertTrue(title.contains(\"Apple\"));         \n}\n\n@BeforeTest\npublic void beforeTest() {  \n    driver = new ChromeDriver();  \n}       \n@AfterTest\npublic void afterTest() {\n    driver.quit();          \n}       \n\n}\n</code></pre>\n\n<p>And following pom.xml:</p>\n\n<pre><code>project xmlns=\"http://maven.apache.org/POM/4.0.0\" \nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \nxsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 \nhttp://maven.apache.org/xsd/maven-4.0.0.xsd\"&gt;\n &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n&lt;groupId&gt;TestMaven&lt;/groupId&gt;\n&lt;artifactId&gt;TestMaven&lt;/artifactId&gt;\n&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;\n&lt;build&gt;\n&lt;sourceDirectory&gt;src&lt;/sourceDirectory&gt;\n&lt;plugins&gt;\n  &lt;plugin&gt;\n    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;\n    &lt;version&gt;3.5.1&lt;/version&gt;\n    &lt;configuration&gt;\n      &lt;source&gt;1.8&lt;/source&gt;\n      &lt;target&gt;1.8&lt;/target&gt;\n    &lt;/configuration&gt;\n  &lt;/plugin&gt;\n&lt;/plugins&gt;\n&lt;/build&gt;\n&lt;dependencies&gt;\n&lt;dependency&gt;\n    &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;\n    &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;\n    &lt;version&gt;3.6.0&lt;/version&gt;\n&lt;/dependency&gt;\n&lt;dependency&gt;\n    &lt;groupId&gt;log4j&lt;/groupId&gt;\n    &lt;artifactId&gt;log4j&lt;/artifactId&gt;\n    &lt;version&gt;1.2.17&lt;/version&gt;\n&lt;/dependency&gt;\n&lt;dependency&gt;\n    &lt;groupId&gt;org.testng&lt;/groupId&gt;\n    &lt;artifactId&gt;testng&lt;/artifactId&gt;\n    &lt;version&gt;6.11&lt;/version&gt;\n&lt;/dependency&gt;\n&lt;dependency&gt;\n    &lt;groupId&gt;org.apache.poi&lt;/groupId&gt;\n    &lt;artifactId&gt;poi&lt;/artifactId&gt;\n    &lt;version&gt;3.17&lt;/version&gt;\n&lt;/dependency&gt;\n&lt;dependency&gt;\n    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n    &lt;version&gt;2.20.1&lt;/version&gt;\n&lt;/dependency&gt;\n&lt;/dependencies&gt;\n&lt;/project&gt;\n</code></pre>\n"
+}

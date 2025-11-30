@@ -1,0 +1,134 @@
+{
+  "tags" : [ "java", "arraylist", "indexoutofboundsexception" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2792262,
+      "reputation" : 190692,
+      "user_id" : 2402272,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/1182b1d5518a596d4e8cfe0567a65c4d?s=256&d=identicon&r=PG",
+      "display_name" : "John Bollinger",
+      "link" : "https://stackoverflow.com/users/2402272/john-bollinger"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1554243500,
+    "post_id" : 55484242,
+    "comment_id" : 97678274,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Every <code>java.util.List</code> has a <code>size()</code> method that can tell you how many elements it contains.  If there are any, then the index of the last is one less than the list size.  There is also a convenient <code>empty()</code> method that tests whether the list is empty."
+  }, {
+    "owner" : {
+      "account_id" : 2792262,
+      "reputation" : 190692,
+      "user_id" : 2402272,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/1182b1d5518a596d4e8cfe0567a65c4d?s=256&d=identicon&r=PG",
+      "display_name" : "John Bollinger",
+      "link" : "https://stackoverflow.com/users/2402272/john-bollinger"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1554244869,
+    "post_id" : 55484242,
+    "comment_id" : 97678653,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "It&#39;s unclear exactly what the issue is, in part because your code is incomplete.  Our general expectation is that requests for debugging help be accompanied by a <a href=\"https://stackoverflow.com/help/minimal-reproducible-example\">minimal reproducible example</a> that demonstrates the problem.  From the stack trace and partial code, however, it looks like your <code>counter</code> variable is somehow getting out of sync.  I suggest getting rid of it altogether, since it is redundant with <code>prices.size()</code>.  The resulting code should be simpler and less prone to error."
+  }, {
+    "owner" : {
+      "account_id" : 1907169,
+      "reputation" : 1304,
+      "user_id" : 1721793,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/BnuBU.png?s=256",
+      "display_name" : "sashimi",
+      "link" : "https://stackoverflow.com/users/1721793/sashimi"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1554250504,
+    "post_id" : 55484242,
+    "comment_id" : 97679846,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Hi! We left an implementation below that should solve the issue and provides some feedback on code :) Please accept the answer if is OK :)"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2792262,
+        "reputation" : 190692,
+        "user_id" : 2402272,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/1182b1d5518a596d4e8cfe0567a65c4d?s=256&d=identicon&r=PG",
+        "display_name" : "John Bollinger",
+        "link" : "https://stackoverflow.com/users/2402272/john-bollinger"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1554298758,
+      "post_id" : 55484592,
+      "comment_id" : 97700222,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You missed changing the return type of <code>removeLastEntry()</code>."
+    } ],
+    "owner" : {
+      "account_id" : 1907169,
+      "reputation" : 1304,
+      "user_id" : 1721793,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/BnuBU.png?s=256",
+      "display_name" : "sashimi",
+      "link" : "https://stackoverflow.com/users/1721793/sashimi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1554308107,
+    "last_edit_date" : 1554308107,
+    "creation_date" : 1554245399,
+    "answer_id" : 55484592,
+    "question_id" : 55484242,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>We solve the issue by checking if the list is already empty before attempting to delete last element in list - just in case the first value you receive is a zero :)\nWe edited the original code to encapsulate behaviour regarding conventions (-1 to exit, 0 to remove last value) and avoid violating that principle every time we need to check.</p>\n\n<pre><code>    List&lt;Double&gt; prices = new ArrayList&lt;Double&gt;();\n\n    // declaring variables to terminate loop, count prices, total prices, and current entry for conditions\n    int counter  = 0;\n    double entry = 0;\n    double total = 0;\n\n    // our loop to continuously add prices to the array list from input\n    while (!isExit(entry)) {\n        System.out.println(String.format(\"Enter a price for item # %s: \", counter+1));\n        entry = myInput.nextDouble();\n\n    // if the entry is a price we will add it to prices and continue with the loop\n        if(isExit(entry)){\n            //TODO exit\n        }\n        if(isRemove(entry)){\n            if(!list.isEmpty()){\n                total -= removeLastEntry(prices);\n                counter--;\n            }\n        }else{\n            prices.add(entry);\n            total += entry;\n            counter++;\n        }\n\n    }\n\n    private boolean isExit(double value){\n        return value==-1;\n    }\n\n    private boolean isRemove(double entry){\n        return entry==0;\n    }\n\n    public static double removeLastEntry(List&lt;Double&gt; list) {\n        double last = list.get(list.size()-1);\n        list.remove(list.size()-1)\n        return last;\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14443980,
+      "reputation" : 1649,
+      "user_id" : 10433739,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-SseFTbME50A/AAAAAAAAAAI/AAAAAAAAAAw/X-bo6dqWWHc/s256-rj/photo.jpg",
+      "display_name" : "Benjamin Urquhart",
+      "link" : "https://stackoverflow.com/users/10433739/benjamin-urquhart"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1554250150,
+    "creation_date" : 1554250150,
+    "answer_id" : 55485220,
+    "question_id" : 55484242,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can add a check to see <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/List.html\" rel=\"nofollow noreferrer\">if the list is empty</a>:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>// declare our array list which will hold our prices!\nArrayList&lt;Double&gt; prices = new ArrayList&lt;Double&gt;();\n\n\n// declaring variables to terminate loop, count prices, total prices, and current entry for conditions\n        int counter  = 0;\n        double entry = 0;\n        double total = 0;\n\n// our loop to continuously add prices to the array list from input\nwhile (entry != -1) {\n\n    System.out.println(\"Enter a price for item #\" + (counter+1) + \": \");\n    entry = myInput.nextDouble();\n\n// if the entry is a price we will add it to prices and continue with the loop\n\n    if (entry != 0 &amp;&amp; entry != -1) {\n            prices.add(entry);\n            total += entry;\n            counter++;\n    }\n\n//if the entry is 0 we will revert back to the previous iteration to re-add\n\n    else if (entry == 0.0) {\n        total -= prices.get(counter-1);\n        removeLastEntry(prices);\n        counter--;\n    }\n\npublic static void removeLastEntry(ArrayList&lt;Double&gt; anArrayList) {\n    if(!anArrayList.isEmpty()) {\n        anArrayList.remove(anArrayList.size()-1);\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 15280871,
+    "reputation" : 11,
+    "user_id" : 11025307,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/-7epACqFwqB4/AAAAAAAAAAI/AAAAAAAAMTk/yfKVFfdeDiw/s256-rj/photo.jpg",
+    "display_name" : "Chris Mullen",
+    "link" : "https://stackoverflow.com/users/11025307/chris-mullen"
+  },
+  "is_answered" : false,
+  "view_count" : 12320,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1763042545,
+  "creation_date" : 1554242877,
+  "last_edit_date" : 1554244124,
+  "question_id" : 55484242,
+  "link" : "https://stackoverflow.com/questions/55484242/how-to-correct-arraylist-index-out-of-bounds-for-length-error-in-java",
+  "title" : "How to correct Arraylist index out of bounds for length error in Java",
+  "body" : "<p>I am writing a program for school which acts as a cash register. I am asking for input for prices of items and playing them into an ongoing ArrayList until the user enters -1 or 0. 0 is to re-enter the previous price in case of mistake and -1 terminates the loop.</p>\n\n<p>I am getting the </p>\n\n<blockquote>\n  <p>java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0</p>\n</blockquote>\n\n<p>error when I try to run my code. \nI have to include a method called <code>removeLastEntry()</code>, which will remove the last price entered into the array upon a 0 being entered by the user. How can I ensure the array is populated and I am indeed removing the last entry?</p>\n\n<p>I am running Java 11 in Eclipse.</p>\n\n<p>The code runs fine without the method being used, as I reduce my counter and in the next iteration of the loop, the previous array location is overwritten, regardless whether it has been removed or not. The method itself is set to remove ArrayList.size()-1 so that it removes the last entry. I have tried this with -2, and 0, and it still runs out of bounds.</p>\n\n<p>I read through previous questions and many people had not populated the array.\nSo I ran a print stub to make sure that the ArrayList has been properly populated, and it has: when two items were placed into the ArrayList size was equal to 2. The error code also goes up the more items I place into the code but is always items - 1 index out of bounds at items - 1 length \nI'm sure I'm making a rookie mistake but I'm unable to find it and it is driving me insane!</p>\n\n<p>for full error context:</p>\n\n<blockquote>\n  <p>Exception in thread \"main\" java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0\n      at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)\n      at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)\n      at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)\n      at java.base/java.util.Objects.checkIndex(Objects.java:372)\n      at java.base/java.util.ArrayList.get(ArrayList.java:458)\n      at C_M_iDeaProject.main(C_M_iDeaProject.java:76)</p>\n</blockquote>\n\n<pre><code>// declare our array list which will hold our prices!\nArrayList&lt;Double&gt; prices = new ArrayList&lt;Double&gt;();\n\n\n// declaring variables to terminate loop, count prices, total prices, and current entry for conditions\n        int counter  = 0;\n        double entry = 0;\n        double total = 0;\n\n// our loop to continuously add prices to the array list from input\nwhile (entry != -1) {\n\n    System.out.println(\"Enter a price for item #\" + (counter+1) + \": \");\n    entry = myInput.nextDouble();\n\n// if the entry is a price we will add it to prices and continue with the loop\n\n    if (entry != 0 &amp;&amp; entry != -1) {\n            prices.add(entry);\n            total += entry;\n            counter++;\n    }\n\n//if the entry is 0 we will revert back to the previous iteration to re-add\n\n    else if (entry == 0.0) {\n        total -= prices.get(counter-1);\n        removeLastEntry(prices);\n        counter--;\n    }\n\npublic static void removeLastEntry(ArrayList&lt;Double&gt; anArrayList) {\n    anArrayList.remove(anArrayList.size()-1);\n}\n</code></pre>\n"
+}

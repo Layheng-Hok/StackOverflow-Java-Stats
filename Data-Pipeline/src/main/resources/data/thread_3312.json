@@ -1,0 +1,121 @@
+{
+  "tags" : [ "java", "spring-webflux", "paysafe" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 15064163,
+      "reputation" : 17085,
+      "user_id" : 10871900,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/720202b6e19abc330dcd92e6a1254562?s=256&d=identicon&r=PG",
+      "display_name" : "dan1st",
+      "link" : "https://stackoverflow.com/users/10871900/dan1st"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1568477424,
+    "creation_date" : 1568477424,
+    "answer_id" : 57937214,
+    "question_id" : 57935651,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The server you sent the request to answered with http status code 400. That means, that your request seems to be malformed.</p>\n\n<p>For example, you could have forgotten to include a parameter.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13097682,
+        "reputation" : 899,
+        "user_id" : 9463119,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s256-rj/photo.jpg",
+        "display_name" : "Daniel",
+        "link" : "https://stackoverflow.com/users/9463119/daniel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1638191353,
+      "post_id" : 70151178,
+      "comment_id" : 124014504,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "First this would give a Mono&lt;String&gt; object, and secondly it is blocking, so really a bad solution"
+    }, {
+      "owner" : {
+        "account_id" : 23425720,
+        "reputation" : 89,
+        "user_id" : 17485231,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJwx6OBIPSBnmNwuoo1ANKgtjlotb57OoF-kKakD=k-s256",
+        "display_name" : "Ravikumar Kumarasamy",
+        "link" : "https://stackoverflow.com/users/17485231/ravikumar-kumarasamy"
+      },
+      "reply_to_user" : {
+        "account_id" : 13097682,
+        "reputation" : 899,
+        "user_id" : 9463119,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s256-rj/photo.jpg",
+        "display_name" : "Daniel",
+        "link" : "https://stackoverflow.com/users/9463119/daniel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1638244888,
+      "post_id" : 70151178,
+      "comment_id" : 124030917,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Daniel, I have faced similar issue and I have found actual reason of 400 bad request and fixed using this approach. This will help identifying the actual error. Mono&lt;String&gt;  and blocking is not a fixed option any one can customise based on the requirement. Also if you feel this can be implemented better you can post the modified version."
+    }, {
+      "owner" : {
+        "account_id" : 13097682,
+        "reputation" : 899,
+        "user_id" : 9463119,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s256-rj/photo.jpg",
+        "display_name" : "Daniel",
+        "link" : "https://stackoverflow.com/users/9463119/daniel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1638263237,
+      "post_id" : 70151178,
+      "comment_id" : 124035560,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "There is another issue in your solution : the result of clientHttpResponse.getBody is never used or logged"
+    } ],
+    "owner" : {
+      "account_id" : 23425720,
+      "reputation" : 89,
+      "user_id" : 17485231,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJwx6OBIPSBnmNwuoo1ANKgtjlotb57OoF-kKakD=k-s256",
+      "display_name" : "Ravikumar Kumarasamy",
+      "link" : "https://stackoverflow.com/users/17485231/ravikumar-kumarasamy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1638171883,
+    "creation_date" : 1638171883,
+    "answer_id" : 70151178,
+    "question_id" : 57935651,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>400 Bad Request could be of many reasons. To find out what exactly causing issue try printing the response body as below:</p>\n<pre><code>.exchange()\n                .flatMap(clientResponse -&gt; {\n                    if (clientResponse.statusCode().is5xxServerError()) {\n                        clientResponse.body((clientHttpResponse, context) -&gt; {\n                            return clientHttpResponse.getBody();\n                        });\n                        return clientResponse.bodyToMono(String.class);\n                    }\n                    else\n                        return clientResponse.bodyToMono(String.class);\n                })\n                .block();\n</code></pre>\n<p>This helps you to find the right reason and then you can fix</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 965625,
+    "reputation" : 1104,
+    "user_id" : 1103606,
+    "user_type" : "registered",
+    "accept_rate" : 51,
+    "profile_image" : "https://www.gravatar.com/avatar/0d93cc650b93939ea91066fcb5aefae0?s=256&d=identicon&r=PG",
+    "display_name" : "Peter Penzov",
+    "link" : "https://stackoverflow.com/users/1103606/peter-penzov"
+  },
+  "is_answered" : false,
+  "view_count" : 9461,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1762783505,
+  "creation_date" : 1568465419,
+  "question_id" : 57935651,
+  "link" : "https://stackoverflow.com/questions/57935651/badrequest-400-bad-request",
+  "title" : "BadRequest: 400 Bad Request",
+  "body" : "<p>I want to make a Authorization request using Spring Webflux to Paysafe test environment. I tried this:</p>\n\n<pre><code>Mono&lt;AuthorizeRequest&gt; transactionMono = Mono.just(transaction);\n        return client.post().uri(\"https://api.test.paysafe.com/cardpayments/v1/accounts/{id}/auths\", \"123456789\")\n                .header(HttpHeaders.CONTENT_TYPE, \"application/json\")\n                .header(HttpHeaders.AUTHORIZATION, \"Basic dGVz.......\")\n                .accept(MediaType.APPLICATION_JSON)\n                .contentType(MediaType.APPLICATION_JSON)\n                .body(transactionMono, AuthorizeRequest.class)\n                .retrieve()\n                .bodyToMono(AuthorizeResponse.class);\n</code></pre>\n\n<p>But I get:</p>\n\n<pre><code>org.springframework.web.reactive.function.client.WebClientResponseException$BadRequest: 400 Bad Request\n    at org.springframework.web.reactive.function.client.WebClientResponseException.create(WebClientResponseException.java:174)\n    at org.springframework.web.reactive.function.client.DefaultWebClient$DefaultResponseSpec.lambda$createResponseException$15(DefaultWebClient.java:512)\n</code></pre>\n\n<p>Do you know how I can solve this?</p>\n"
+}

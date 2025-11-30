@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "amazon-dynamodb", "spring-data" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 15175692,
+      "reputation" : 164,
+      "user_id" : 10950497,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/53885d5978d2ff45541d0e824eec64b1?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "orser",
+      "link" : "https://stackoverflow.com/users/10950497/orser"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1631467962,
+    "creation_date" : 1631467962,
+    "answer_id" : 69153807,
+    "question_id" : 66928972,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>On the GitHub page is a table with versions and compatibility: <a href=\"https://github.com/boostchicken/spring-data-dynamodb\" rel=\"noreferrer\">https://github.com/boostchicken/spring-data-dynamodb</a></p>\n<p><a href=\"https://i.sstatic.net/05PuU.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/05PuU.png\" alt=\"enter image description here\" /></a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1421881,
+    "reputation" : 379,
+    "user_id" : 1346346,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/1b58317303f4754e62eb90d82e3e2e9f?s=256&d=identicon&r=PG",
+    "display_name" : "user1346346",
+    "link" : "https://stackoverflow.com/users/1346346/user1346346"
+  },
+  "is_answered" : true,
+  "view_count" : 7120,
+  "answer_count" : 1,
+  "score" : 5,
+  "last_activity_date" : 1762375255,
+  "creation_date" : 1617437172,
+  "last_edit_date" : 1617439588,
+  "question_id" : 66928972,
+  "link" : "https://stackoverflow.com/questions/66928972/what-is-the-compatible-version-for-spring-data-dynamodb-and-spring-boot",
+  "title" : "What is the compatible version for spring-data-dynamodb and spring boot",
+  "body" : "<p>I am getting this warning as the server started.</p>\n<pre><code>INFO 13868 --- s.DynamoDBRepositoryFactory  : Spring Data Version:          2.3.7.RELEASE\nINFO 13868 --- s.DynamoDBRepositoryFactory  : AWS SDK Version:              1.11.64\nINFO 13868 --- s.DynamoDBRepositoryFactory  : Java Version:                 11.0.7 - Java HotSpot(TM) 64-Bit Server VM 11.0.7+8-LTS\nINFO 13868 --- s.DynamoDBRepositoryFactory  : Platform Details:             Windows 10 10.0\nWARN 13868 --- s.DynamoDBRepositoryFactory  : This Spring Data DynamoDB implementation might not be compatible with the available Spring Data classes on the classpath!\n</code></pre>\n<p><a href=\"https://github.com/boostchicken/spring-data-dynamodb\" rel=\"nofollow noreferrer\">https://github.com/boostchicken/spring-data-dynamodb</a></p>\n<p>This is the gradle dependency.</p>\n<pre><code>plugins {\n    id(&quot;org.springframework.boot&quot;) version &quot;2.4.3&quot;\n    id(&quot;io.spring.dependency-management&quot;) version &quot;1.0.11.RELEASE&quot;\n    id(&quot;com.google.cloud.tools.jib&quot;) version &quot;2.7.1&quot;\n    id(&quot;com.github.jk1.dependency-license-report&quot;) version &quot;1.16&quot;\n    id(&quot;java&quot;)\n}\n\njava.sourceCompatibility = JavaVersion.VERSION_11\n\n\ndependencies {\n    implementation 'org.springframework.boot:spring-boot-starter-web'\n    implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.970'\n    //implementation 'com.github.derjust:spring-data-dynamodb:5.1.0'\n    implementation 'io.github.boostchicken:spring-data-dynamodb:5.2.5'\n    compileOnly 'org.projectlombok:lombok'\n    developmentOnly 'org.springframework.boot:spring-boot-devtools'\n    annotationProcessor 'org.projectlombok:lombok'\n    testImplementation('org.springframework.boot:spring-boot-starter-test') {\n        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'\n    }\n}\n</code></pre>\n<p>As I use @DynamoDBRangeKey on top of get method, i am getting ClassNotFoundException.  Server is not started.  If i do not use @DynamoDBRangeKey, server is stated properly.\nBut i have to use @DynamoDBRangeKey to specify the range key.</p>\n<pre><code>@DynamoDBTable(tableName = &quot;partner_signup&quot;)\npublic class PartnerSignup {\n\n    @Id\n    //@DynamoDBIgnore\n    private ProductSignupId productSignupId;\n    \n    private String partnerId;\n    private String partnerType;\n    \n    //@DynamoDBAttribute(attributeName = &quot;partner_type&quot;)\n    @DynamoDBRangeKey(attributeName = &quot;partner_type&quot;)\n    public String getPartnerType() {\n        System.out.println(&quot; partner_type    &quot; + productSignupId.getPartnerType());\n        return productSignupId != null ? productSignupId.getPartnerType() : null;\n    }\n}\n\nCaused by: java.lang.ClassNotFoundException: org.springframework.data.repository.core.support.ReflectionEntityInformation\n    at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[na:na]\n    at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[na:na]\n    at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521) ~[na:na]\n</code></pre>\n<p><strong>Anything i need to add or modify in the dependency? What will be the compatible version of Spring Data DynamoDB and Spring Boot.</strong></p>\n"
+}

@@ -1,0 +1,128 @@
+{
+  "tags" : [ "java", "hibernate", "spring-data" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6836948,
+        "reputation" : 4868,
+        "user_id" : 5258516,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/vTDB0.png?s=256",
+        "display_name" : "e2rabi",
+        "link" : "https://stackoverflow.com/users/5258516/e2rabi"
+      },
+      "reply_to_user" : {
+        "account_id" : 8523491,
+        "reputation" : 143,
+        "user_id" : 6389566,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://graph.facebook.com/10154188957524110/picture?type=large",
+        "display_name" : "Samshay",
+        "link" : "https://stackoverflow.com/users/6389566/samshay"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1508776408,
+      "post_id" : 46893819,
+      "comment_id" : 80735618,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What&#39;s the new problem ? just on your Udsadonnees class  on the udsaconnex setter add @jsonsetter"
+    }, {
+      "owner" : {
+        "account_id" : 20679093,
+        "reputation" : 314,
+        "user_id" : 15183075,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-YOoHTHe0FwA/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclMYmeYQwW3LhJfmqaiyJVSkVAA9Q/s96-c/s256-rj/photo.jpg",
+        "display_name" : "Yannick Mussche",
+        "link" : "https://stackoverflow.com/users/15183075/yannick-mussche"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1664826072,
+      "post_id" : 46893819,
+      "comment_id" : 130555499,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Does it perform once and then breaks the loop or does it prevent from looking in the first place?"
+    } ],
+    "owner" : {
+      "account_id" : 6836948,
+      "reputation" : 4868,
+      "user_id" : 5258516,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/vTDB0.png?s=256",
+      "display_name" : "e2rabi",
+      "link" : "https://stackoverflow.com/users/5258516/e2rabi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1508776343,
+    "last_edit_date" : 1508776343,
+    "creation_date" : 1508774829,
+    "answer_id" : 46893819,
+    "question_id" : 46893664,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can't convert a bidirectional relation of an enitity to JSON. You get an endless loop try to add @JsonIgnore to break the loop on your bi-directional association </p>\n\n<pre><code>  @ManyToOne\n  @JsonIgnore\n  private Udsaconnex udsaconnex;\n\n@jsonsetter  \npublic void setUdsaconnex(Udsaconnex udsaconnex){\n     this.udsaconnex = udsaconnex;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8910445,
+      "reputation" : 757,
+      "user_id" : 6650896,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-QXdsbpMdz9s/AAAAAAAAAAI/AAAAAAAAAEk/YAjA7E-XwzI/s256-rj/photo.jpg",
+      "display_name" : "Abbas Hosseini",
+      "link" : "https://stackoverflow.com/users/6650896/abbas-hosseini"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1529602214,
+    "creation_date" : 1529602214,
+    "answer_id" : 50974437,
+    "question_id" : 46893664,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had the same problem, here is what worked for me:</p>\n\n<p>In the parent class:</p>\n\n<pre><code>@JsonIgnore // to break endless loop in bi-directional association\npublic List&lt;Udsaconnex&gt; getUdsadonnees() {\n    return udsadonnees;\n}\n</code></pre>\n\n<p>In the child class:</p>\n\n<pre><code> @ManyToOne\n @JoinColumn(name = \"idconnex\") // You must specify the join column.\n private Udsaconnex udsaconnex;\n</code></pre>\n\n<p>These two changes will resolve your problem.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2156954,
+      "reputation" : 5970,
+      "user_id" : 1911941,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/psRfS.jpg?s=256",
+      "display_name" : "ELITE",
+      "link" : "https://stackoverflow.com/users/1911941/elite"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1717389059,
+    "creation_date" : 1717389059,
+    "answer_id" : 78568392,
+    "question_id" : 46893664,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There might the stack overflow error because jackson is trying to convert <code>MYconnex</code> into json and refers the object <code>MYdonnees</code> and while converting <code>MYdonnees</code>, it tries to convert the back reference <code>MYconnex</code> again.</p>\n<p>You can solve this by using below annotations</p>\n<pre><code>....\npublic class MYconnex ... {\n\n....\n\n    @JsonManagedReference\n    @OneToMany(mappedBy=&quot;MYconnex&quot;)\n    private List&lt;MYdonnees&gt; MYdonnees;\n\n}\n</code></pre>\n<p>Similarly in the other class, you've to add below annotation.</p>\n<pre><code>....\npublic class MYdonnees ... {\n    ...\n\n    @JsonBackReference\n    @ManyToOne\n    private MYconnex MYconnex;\n\n\n}\n</code></pre>\n<p>below are the exact class names</p>\n<p><code>import com.fasterxml.jackson.annotation.JsonManagedReference;</code>\n<code>import com.fasterxml.jackson.annotation.JsonBackReference;</code></p>\n<p>Happy coding.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8523491,
+    "reputation" : 143,
+    "user_id" : 6389566,
+    "user_type" : "registered",
+    "accept_rate" : 40,
+    "profile_image" : "https://graph.facebook.com/10154188957524110/picture?type=large",
+    "display_name" : "Samshay",
+    "link" : "https://stackoverflow.com/users/6389566/samshay"
+  },
+  "is_answered" : false,
+  "view_count" : 12251,
+  "answer_count" : 3,
+  "score" : 0,
+  "last_activity_date" : 1761908615,
+  "creation_date" : 1508774383,
+  "last_edit_date" : 1568622409,
+  "question_id" : 46893664,
+  "link" : "https://stackoverflow.com/questions/46893664/failed-to-extract-resultset",
+  "title" : "Failed to extract ResultSet",
+  "body" : "<p>I have this error with my Spring Data/JPA project:</p>\n\n<pre><code>SQL Error: -206, SQLState: 42703 \nDB2 SQL Error: SQLCODE=-206, SQLSTATE=42703, SQLERRMC=MYDONNEE0_.MYCONNEX_IDCON, DRIVER=4.19.26 \nSQL Error: -727, SQLState: 56098 \nDB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-206;42703;MYDONNEE0_.MYCONNEX_IDCON, DRIVER=4.19.26 \nSQL Error: -727, SQLState: 56098 \nDB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-206;42703;MYDONNEE0_.MYCONNEX_IDCON, DRIVER=4.19.26 \nEnter: my.package.test.web.rest.errors.ExceptionTranslator.processRuntimeException() with argument[s] = [org.springframework.http.converter.HttpMessageNotWritableException: Could not write content: could not extract ResultSet (through reference chain: my.package.test.repository.entity.MYconnex[\"MYdonnees\"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: could not extract ResultSet (through reference chain: my.package.test.repository.entity.MYconnex[\"MYdonnees\"])] \nExit: my.package.test.web.rest.errors.ExceptionTranslator.processRuntimeException() with result = &lt;500 Internal Server Error,my.package.test.web.rest.errors.ErrorDTO@70b511c1,{}&gt; \n</code></pre>\n\n<p>I search, but i don't find a problem with my entity.</p>\n\n<p>MYconnex :</p>\n\n<pre><code>@Entity\n@NamedQuery(name=\"MYconnex.findAll\", query=\"SELECT u FROM MYconnex u\")\npublic class MYconnex implements Serializable {\n    private static final long serialVersionUID = 1L;\n\n    @Id\n    private long IDCON;\n\n    private String key;\n\n    private Timestamp dateconnex;\n\n    private String mel;\n\n    private int tel;\n\n    //bi-directional many-to-one association to MYdonnees\n    @OneToMany(mappedBy=\"MYconnex\")\n    private List&lt;MYdonnees&gt; MYdonnees;\n\n    //Getter and setter\n}\n</code></pre>\n\n<p>MYdonnees : </p>\n\n<pre><code>@Entity\n@NamedQuery(name=\"MYdonnees.findAll\", query=\"SELECT u FROM MYdonnees u\")\n@Table(name=\"MYdonnees\")\npublic class MYdonnees implements Serializable {\n    private static final long serialVersionUID = 1L;\n\n    @Id\n    private long idata;\n\n    @Lob\n    @Column(name=\"\\\"DATA\\\"\")\n    private String data;\n\n    //bi-directional many-to-one association to MYconnex\n    @ManyToOne\n    private MYconnex MYconnex;\n\n    public MYdonnees() {\n    }\n\n    //Getter and Setter\n\n}\n</code></pre>\n\n<p>My CrudRepository :</p>\n\n<pre><code>public interface ADRESSRepository extends CrudRepository&lt;ADRESS, Integer&gt; {\n}\n</code></pre>\n\n<p>The DataBase :</p>\n\n<p><a href=\"https://i.sstatic.net/iqLtt.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/iqLtt.png\" alt=\"enter image description here\"></a></p>\n\n<p>I think the problem come from the entity, but I can't find this problem.</p>\n"
+}

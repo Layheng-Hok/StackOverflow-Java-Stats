@@ -1,0 +1,213 @@
+{
+  "tags" : [ "java", "spring", "kotlin", "client" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 17247093,
+        "reputation" : 1799,
+        "user_id" : 12488082,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/425ec53693d9360077408152630ed0f0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "AlexElin",
+        "link" : "https://stackoverflow.com/users/12488082/alexelin"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1710526751,
+      "post_id" : 78084672,
+      "comment_id" : 137808888,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This example is tightly bound to the Apache Http client because the <code>HttpComponentsClientHttpRequestFactory</code> is from there. Is there another, more generic way to set timeouts?"
+    }, {
+      "owner" : {
+        "account_id" : 21708863,
+        "reputation" : 87,
+        "user_id" : 16020807,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/dcd2f88a6e3804b81243a63df16d52db?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "wavedeck",
+        "link" : "https://stackoverflow.com/users/16020807/wavedeck"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1751980004,
+      "post_id" : 78084672,
+      "comment_id" : 140573715,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "RestClient is an abstraction upon different http client implementations. The <code>ClientHttpRequestFactory</code> chooses the actual http client implementation used. So yes, by picking that specific factory you&#39;re instructing RestClient to use the Apache HttpClient. There are a number of other options available however that implement <code>ClientHttpRequestFactory</code> and support timeouts."
+    }, {
+      "owner" : {
+        "account_id" : 21708863,
+        "reputation" : 87,
+        "user_id" : 16020807,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/dcd2f88a6e3804b81243a63df16d52db?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "wavedeck",
+        "link" : "https://stackoverflow.com/users/16020807/wavedeck"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1751980892,
+      "post_id" : 78084672,
+      "comment_id" : 140573773,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you take a look at the default: <code>DefaultRestClientBuilder.initRequestFactory</code> it either picks between Apache, Jetty, Reactor Netty or falling back to the native Java HttpClient, depending on what&#39;s on the classpath. All of those support setting timeouts so choose the most sensible <code>ClientHttpRequestFactory</code> implementation depending on your specific needs or just use the native Java one -&gt; <code>JdkClientHttpRequestFactory</code>"
+    } ],
+    "owner" : {
+      "account_id" : 24440940,
+      "reputation" : 5239,
+      "user_id" : 18364656,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/70eb650df3e935255b17e62942f30620?s=256&d=identicon&r=PG",
+      "display_name" : "Andrei Lisa",
+      "link" : "https://stackoverflow.com/users/18364656/andrei-lisa"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1709246302,
+    "creation_date" : 1709246302,
+    "answer_id" : 78084672,
+    "question_id" : 78084176,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You could create a <a href=\"https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/client/HttpComponentsClientHttpRequestFactory.html\" rel=\"noreferrer\">HttpComponentsClientHttpRequestFactory</a> where you will set connection and read timeout and then you will be able to set it to <code>RestClient</code> using provided builder.</p>\n<pre><code>public Object exampleMethod(Object object) {\n\n        RestClient restClient = RestClient\n                .builder()\n                .requestFactory(getClientHttpRequestFactory())\n                .build();\n        //usage of restClient with timeout.\n        restClient.get();\n    }\n\n    private ClientHttpRequestFactory getClientHttpRequestFactory() {\n        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();\n        clientHttpRequestFactory.setConnectTimeout(100);\n        clientHttpRequestFactory.setConnectionRequestTimeout(70);\n        return clientHttpRequestFactory;\n    }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2712341,
+        "reputation" : 1279,
+        "user_id" : 2340484,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/625d8bd27e0c0092266140de5caee252?s=256&d=identicon&r=PG",
+        "display_name" : "charlb",
+        "link" : "https://stackoverflow.com/users/2340484/charlb"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1718812983,
+      "post_id" : 78141371,
+      "comment_id" : 138652570,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Above constructor is deprecated for removal.  <code>ClientHttpRequestFactorySettings settings = ClientHttpRequestFactorySettings.DEFAULTS.withConnectTimeout&zwnj;&#8203;(Duration.ofSeconds(&zwnj;&#8203;30)).withReadTimeout&zwnj;&#8203;(Duration.ofSeconds(&zwnj;&#8203;30));</code>"
+    }, {
+      "owner" : {
+        "account_id" : 6927228,
+        "reputation" : 2399,
+        "user_id" : 5317928,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/636d6529c83758152d7d4a3c8bbdda31?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "wamfous",
+        "link" : "https://stackoverflow.com/users/5317928/wamfous"
+      },
+      "reply_to_user" : {
+        "account_id" : 2712341,
+        "reputation" : 1279,
+        "user_id" : 2340484,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/625d8bd27e0c0092266140de5caee252?s=256&d=identicon&r=PG",
+        "display_name" : "charlb",
+        "link" : "https://stackoverflow.com/users/2340484/charlb"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1718981768,
+      "post_id" : 78141371,
+      "comment_id" : 138669630,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The constructors defining a <code>bufferRequestBody</code> value are deprecated. It looks like the one used here is not"
+    } ],
+    "owner" : {
+      "account_id" : 6927228,
+      "reputation" : 2399,
+      "user_id" : 5317928,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/636d6529c83758152d7d4a3c8bbdda31?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "wamfous",
+      "link" : "https://stackoverflow.com/users/5317928/wamfous"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1710167236,
+    "creation_date" : 1710167236,
+    "answer_id" : 78141371,
+    "question_id" : 78084176,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In case anyone is also trying to take advantage of Spring's <code>SslBundle</code>, defining it all in a <code>ClientHttpRequestFactorySettings</code> object is what worked for me:</p>\n<pre><code>@Bean\npublic RestClient restClient(RestClient.Builder restClientBuilder, SslBundles sslBundles) {\n    ClientHttpRequestFactorySettings requestFactorySettings = new ClientHttpRequestFactorySettings(\n            Duration.ofSeconds(30),\n            Duration.ofSeconds(30),\n            sslBundles.getBundle(&quot;mybundle&quot;));\n\n    return restClientBuilder\n            .requestFactory(ClientHttpRequestFactories.get(requestFactorySettings))\n            .build();\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2712341,
+      "reputation" : 1279,
+      "user_id" : 2340484,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/625d8bd27e0c0092266140de5caee252?s=256&d=identicon&r=PG",
+      "display_name" : "charlb",
+      "link" : "https://stackoverflow.com/users/2340484/charlb"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1736414201,
+    "last_edit_date" : 1736414201,
+    "creation_date" : 1725007181,
+    "answer_id" : 78931153,
+    "question_id" : 78084176,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I don't believe there is a generic way to set timeouts. Just a bit of caution when using SSLBundles.</p>\n<pre class=\"lang-java prettyprint-override\"><code>RestClient.Builder builder;\nbuilder.apply(restClientSsl.fromBundle(&quot;myBundle&quot;));\n</code></pre>\n<p>creates a new ClientHttpRequestFactory, you will lose all timeout settings already set on your ClientHttpRequestFactory.</p>\n<p>Rather set the SSL bundle like this</p>\n<pre class=\"lang-java prettyprint-override\"><code>ClientHttpRequestFactorySettings settings;\n        ClientHttpRequestFactorySettings settings = ClientHttpRequestFactorySettings.DEFAULTS\n    .withConnectTimeout(Duration.ofMillis(30000))\n    .withReadTimeout(Duration.ofMillis(30000))\n    .withSslBundle(sslBundles.getBundle(&quot;myBundle&quot;));\n</code></pre>\n<p>In <code>RestClientSsl</code> class there is a comment.</p>\n<p>NOTE: Apply SSL configuration will replace any previously configured <code>ClientHttpRequestFactory</code>. If you need to configure <code>ClientHttpRequestFactory</code> with more than just SSL consider using a <code>ClientHttpRequestFactorySettings</code> with <code>ClientHttpRequestFactories</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15683987,
+      "reputation" : 1421,
+      "user_id" : 11317208,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/dKxck.png?s=256",
+      "display_name" : "jeadonara",
+      "link" : "https://stackoverflow.com/users/11317208/jeadonara"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1736414233,
+    "last_edit_date" : 1736414233,
+    "creation_date" : 1726648730,
+    "answer_id" : 78997287,
+    "question_id" : 78084176,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can set it by using <code>SimpleClientHttpRequestFactory</code></p>\n<pre><code>public RestClient restClient() {\n    return RestClient\n            .builder()\n            .requestFactory(getClientHttpRequestFactory())\n            .build();\n}\n\nprivate ClientHttpRequestFactory getClientHttpRequestFactory() {\n    SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();\n    factory.setReadTimeout(6000);\n    factory.setConnectTimeout(6000);\n    return factory;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8032229,
+      "reputation" : 313,
+      "user_id" : 6056739,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-_xGd7aNoUdE/AAAAAAAAAAI/AAAAAAAADTo/-iJ10JjYG1U/s256-rj/photo.jpg",
+      "display_name" : "Alessandro Falappa",
+      "link" : "https://stackoverflow.com/users/6056739/alessandro-falappa"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762963825,
+    "last_edit_date" : 1762963825,
+    "creation_date" : 1762963396,
+    "answer_id" : 79817956,
+    "question_id" : 78084176,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>When using <strong>Spring Boot 3.5.x and above</strong> the generic way to set up timeouts and other properties common to all the HTTP client implementations should be as follow:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Component\npublic class Component {\n\n    private final RestClient client;\n\n    public Component(RestClient.Builder builder) {\n        ClientHttpRequestFactorySettings factorySettings = ClientHttpRequestFactorySettings.defaults()\n                .withConnectTimeout(Duration.ofSeconds(2))\n                .withReadTimeout(Duration.ofSeconds(5));\n        // there are settings for redirects and SSL bundles\n        this.client = builder\n.requestFactory(ClientHttpRequestFactoryBuilder.detect().build(factorySettings)).build();\n    }\n\n    // your methods using the RestClient here\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 17247093,
+    "reputation" : 1799,
+    "user_id" : 12488082,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/425ec53693d9360077408152630ed0f0?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "AlexElin",
+    "link" : "https://stackoverflow.com/users/12488082/alexelin"
+  },
+  "is_answered" : true,
+  "view_count" : 19810,
+  "answer_count" : 5,
+  "score" : 17,
+  "last_activity_date" : 1762963825,
+  "creation_date" : 1709239503,
+  "last_edit_date" : 1736414216,
+  "question_id" : 78084176,
+  "link" : "https://stackoverflow.com/questions/78084176/how-to-set-connect-read-timeout-in-the-springs-restclient",
+  "title" : "How to set connect/read timeout in the Spring&#39;s `RestClient`?",
+  "body" : "<p>How to set a connect/read timeout in the Spring's <a href=\"https://docs.spring.io/spring-framework/docs/6.1.0/javadoc-api/org/springframework/web/client/RestClient.html\" rel=\"noreferrer\"><code>RestClient</code></a>? This client has been added in the Spring Framework 6.1.</p>\n"
+}

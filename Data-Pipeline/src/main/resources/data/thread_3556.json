@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "image", "jasper-reports" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5754264,
+      "reputation" : 1,
+      "user_id" : 4542780,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/1541394486110827/picture?type=large",
+      "display_name" : "Eddlou Pe",
+      "link" : "https://stackoverflow.com/users/4542780/eddlou-pe"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1426413866,
+    "creation_date" : 1426413866,
+    "answer_id" : 29059405,
+    "question_id" : 21128381,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>go to your xml and do this, the location of my image is as seen below it works for me thanks</p>\n\n<p>imageExpression>![CDATA[\"src\\Forms\\leaf_banner_gray.png</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2479831,
+      "reputation" : 1486,
+      "user_id" : 2159525,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://i.sstatic.net/bYDnR.jpg?s=256",
+      "display_name" : "Nallamachu",
+      "link" : "https://stackoverflow.com/users/2159525/nallamachu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1686300433,
+    "creation_date" : 1686300433,
+    "answer_id" : 76438662,
+    "question_id" : 21128381,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The below line of code working fine when I do preview of the PDF from JasperStudio but not while creating PDF from Java.</p>\n<pre><code>&lt;imageExpression&gt;![CDATA[&quot;src\\Forms\\leaf_banner_gray.png&quot;]]&lt;/imageExpression&gt;\n</code></pre>\n<p>Finally, we found the solution.</p>\n<pre><code>//declared a property leafBanner of type InputStream\n&lt;parameter name=&quot;leafBanner&quot; class=&quot;java.io.InputStream&quot;/&gt;\n//leafBanner property has been used below\n&lt;imageExpression&gt;![CDATA[$P{leafBanner}]]&lt;/imageExpression&gt;\n</code></pre>\n<p>Below is the code to pass image as stream from Java.</p>\n<pre><code>Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();\nFile leafBanner= ResourceUtils.getFile(&quot;src//main//resources//images//leafBanner.PNG&quot;);\nFileInputStream leafBannerStream = new FileInputStream(leafBanner);\nparams.put(&quot;leafBanner&quot;, leafBannerStream);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3022288,
+    "reputation" : 367,
+    "user_id" : 2563020,
+    "user_type" : "registered",
+    "accept_rate" : 44,
+    "profile_image" : "https://www.gravatar.com/avatar/a6ab96755a83836d3523c38fbb45609d?s=256&d=identicon&r=PG",
+    "display_name" : "Roshana",
+    "link" : "https://stackoverflow.com/users/2563020/roshana"
+  },
+  "is_answered" : false,
+  "view_count" : 8835,
+  "answer_count" : 2,
+  "score" : 3,
+  "last_activity_date" : 1762218170,
+  "creation_date" : 1389755079,
+  "last_edit_date" : 1389769118,
+  "question_id" : 21128381,
+  "link" : "https://stackoverflow.com/questions/21128381/getting-net-sf-jasperreports-engine-jrexception-byte-data-not-found-at-location",
+  "title" : "Getting net.sf.jasperreports.engine.JRException: Byte data not found at location when pass java.awt.Image as parameter",
+  "body" : "<p>I get the exception above when I try to display an image chosen from <em>JFileChooser</em> for passing to <em>JasperReports</em> report, can anyone please help me to figure out it?</p>\n\n<p>The steps I followed are:</p>\n\n<ol>\n<li>added a  parameter named photo via report inspector and set its parameter class to Object </li>\n<li>dragged and dropped an image from the palette and gave its expression class as <em>java.awt.Image</em> and <em>Image Expression</em> to <code>$P{photo}</code></li>\n</ol>\n\n<p>This is the image element in .jrxml file</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;image&gt;\n   &lt;reportElement x=\"315\" y=\"0\" width=\"195\" height=\"77\" uuid=\"59390988-25fc-4d62-80c4-bc19b80b0fa0\"/&gt;\n   &lt;imageExpression&gt;&lt;![CDATA[$P{photo}]]&gt;&lt;/imageExpression&gt;\n&lt;/image&gt;\n</code></pre>\n\n<p>These are the code examples i referred and used to generate the report. </p>\n\n<pre><code>Image photo;\nJFileChooser fc = new JFileChooser();\n\nprivate void getPicture() {\n    fc.setFileFilter(new FileNameExtensionFilter(\"Images\", \"jpg\", \"gif\", \"bmp\"));\n    if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {\n        fc.setCurrentDirectory(fc.getCurrentDirectory());\n\n        ImageIcon icon = new ImageIcon(fc.getSelectedFile().getAbsolutePath());\n        icon = new ImageIcon(icon.getImage().getScaledInstance(350, 350, Image.SCALE_DEFAULT));\n        photo = icon.getImage();\n    }\n\n    if (photo == null) {\n        System.out.println(\"null\");\n    }\n\n    System.out.println(\"path= \" + fc.getSelectedFile().getAbsolutePath());\n    Map&lt;String, Object&gt; param = new HashMap&lt;String, Object&gt;();\n    param.put(\"photo\", photo);\n\n    generateReports(param);\n}\n\n\nprivate void generateReports(Map param) {\n    try {\n\n        String source = \"C:\\\\newReport.jrxml\";\n\n        if (new File(source).exists() == false) {\n            System.out.println(\"Please  report Source does not exist\");\n            return;\n        }\n\n        JasperReport jasperReport = JasperCompileManager.compileReport(source);\n        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, param, new JREmptyDataSource());\n        JasperViewer.viewReport(jasperPrint, false);\n    } catch (Exception e) {\n        System.out.println(\"reports Error \" + e.toString());\n    }\n}\n</code></pre>\n"
+}

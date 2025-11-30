@@ -1,0 +1,85 @@
+{
+  "tags" : [ "java", "openssl", "ssl-certificate", "grpc", "grpc-java" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3421244,
+      "reputation" : 39516,
+      "user_id" : 2868801,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3f265dbe3edef5d671947a604f7171bf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dave_thompson_085",
+      "link" : "https://stackoverflow.com/users/2868801/dave-thompson-085"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1634855377,
+    "post_id" : 69583277,
+    "comment_id" : 123146260,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You used <code>-addext ...DNS.1:192.168.88.132...</code> but it should be <code>...IP.1:192.168.88.132...</code>. DNS names and IP addresses are different."
+  }, {
+    "owner" : {
+      "account_id" : 22955277,
+      "reputation" : 53,
+      "user_id" : 17085923,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Gjy37eZ4sC0OtBxiZp931IjSoc6qz03hlYKycSm=k-s256",
+      "display_name" : "Нуркасым Абилов",
+      "link" : "https://stackoverflow.com/users/17085923/%d0%9d%d1%83%d1%80%d0%ba%d0%b0%d1%81%d1%8b%d0%bc-%d0%90%d0%b1%d0%b8%d0%bb%d0%be%d0%b2"
+    },
+    "reply_to_user" : {
+      "account_id" : 3421244,
+      "reputation" : 39516,
+      "user_id" : 2868801,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3f265dbe3edef5d671947a604f7171bf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dave_thompson_085",
+      "link" : "https://stackoverflow.com/users/2868801/dave-thompson-085"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1635400198,
+    "post_id" : 69583277,
+    "comment_id" : 123288537,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Yes, it realy helped"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 14947494,
+      "reputation" : 539,
+      "user_id" : 10792320,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0c5ef155fac96c693a9f95844bd6219d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "San P",
+      "link" : "https://stackoverflow.com/users/10792320/san-p"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1634841109,
+    "creation_date" : 1634841109,
+    "answer_id" : 69667087,
+    "question_id" : 69583277,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use <a href=\"https://grpc.github.io/grpc-java/javadoc/io/grpc/ManagedChannelBuilder.html#overrideAuthority-java.lang.String-\" rel=\"nofollow noreferrer\">overrideAuthority(String authority)</a> to match what the certificate has in its SAN. Use an OpenSsl command to display what you have in your server cert.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22955277,
+    "reputation" : 53,
+    "user_id" : 17085923,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Gjy37eZ4sC0OtBxiZp931IjSoc6qz03hlYKycSm=k-s256",
+    "display_name" : "Нуркасым Абилов",
+    "link" : "https://stackoverflow.com/users/17085923/%d0%9d%d1%83%d1%80%d0%ba%d0%b0%d1%81%d1%8b%d0%bc-%d0%90%d0%b1%d0%b8%d0%bb%d0%be%d0%b2"
+  },
+  "is_answered" : false,
+  "view_count" : 8874,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1762221725,
+  "creation_date" : 1634293312,
+  "question_id" : 69583277,
+  "link" : "https://stackoverflow.com/questions/69583277/problems-with-grpc-connection-using-ssl",
+  "title" : "Problems with grpc connection using ssl",
+  "body" : "<p>I am currently new in grpc.\nI wanted to provide ssl for  my grpc server\nthe javav code for starting looks like this:</p>\n<pre><code>InputStream publicKey = ServerStarter.class.getResourceAsStream(&quot;/my-public-key-cert.pem&quot;);\nInputStream privateKey = ServerStarter.class.getResourceAsStream(&quot;/my-private-key.pem&quot;);\nSslContext sslContext = GrpcSslContexts.forServer(publicKey, privateKey).build();\nServer server = NettyServerBuilder.forPort(5555)\n                    .sslContext(sslContext)\n                    .addService(new RedirectService())\n                    .intercept(new AuthorizationInterceptor())\n                    .build();\nserver.start();\n</code></pre>\n<p>SSL certificates were generated with openssl. And here how openssl command looks like:</p>\n<pre><code>openssl req -x509 -newkey rsa:4096 -keyout ./grpc-server/src/main/resources/my-private-key.pem -out ./grpc-server/src/main/resources/my-public-key-cert.pem -days 365 -nodes -subj &quot;/CN=192.168.88.132&quot; -addext &quot;subjectAltName = DNS.1:192.168.88.132, DNS.2:localhost&quot;\n</code></pre>\n<p>Server runs fine.\nBut I can't connect to server.\nMy clients code looks like this:</p>\n<pre><code>InputStream certificate = GalamatClient.class.getResourceAsStream(&quot;/my-public-key-cert.pem&quot;);\nSslContext context = GrpcSslContexts.forClient().trustManager(certificate).build();\nManagedChannel channel = NettyChannelBuilder.forTarget(&quot;192.168.88.132:5555&quot;)\n                .sslContext(context)\n                .build();\nGreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel)\nGreetingService.GreetingRequest request = GreetingService.GreetingRequest.newBuilder().setMessage(&quot;Hi&quot;).build();\nGreetingService.GreetingResponse response = stub.greet(request);\nchannel.shutdownNow();\n</code></pre>\n<p>And when I try to run client next Error occurs:</p>\n<pre><code>Exception in thread &quot;main&quot; io.grpc.StatusRuntimeException: UNAVAILABLE: io exception\nChannel Pipeline: [SslHandler#0, ProtocolNegotiators$ClientTlsHandler#0, WriteBufferingAndExceptionHandler#0, DefaultChannelPipeline$TailContext#0]\n    at io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:262)\n    at io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:243)\n    at io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:156)\n    at com.example.GreetingServiceGrpc$GreetingServiceBlockingStub.recognize(SpeechRecognitionGrpc.java:246)\n    at com.example.main(Client.java:59)\nCaused by: javax.net.ssl.SSLHandshakeException: General OpenSslEngine problem\n    at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslEngine.handshakeException(ReferenceCountedOpenSslEngine.java:1772)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslEngine.wrap(ReferenceCountedOpenSslEngine.java:777)\n    at javax.net.ssl.SSLEngine.wrap(SSLEngine.java:509)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.SslHandler.wrap(SslHandler.java:1079)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.SslHandler.wrapNonAppData(SslHandler.java:970)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1443)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.SslHandler.decodeJdkCompatible(SslHandler.java:1275)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.SslHandler.decode(SslHandler.java:1322)\n    at io.grpc.netty.shaded.io.netty.handler.codec.ByteToMessageDecoder.decodeRemovalReentryProtection(ByteToMessageDecoder.java:501)\n    at io.grpc.netty.shaded.io.netty.handler.codec.ByteToMessageDecoder.callDecode(ByteToMessageDecoder.java:440)\n    at io.grpc.netty.shaded.io.netty.handler.codec.ByteToMessageDecoder.channelRead(ByteToMessageDecoder.java:276)\n    at io.grpc.netty.shaded.io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)\n    at io.grpc.netty.shaded.io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)\n    at io.grpc.netty.shaded.io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:357)\n    at io.grpc.netty.shaded.io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)\n    at io.grpc.netty.shaded.io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:379)\n    at io.grpc.netty.shaded.io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:365)\n    at io.grpc.netty.shaded.io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)\n    at io.grpc.netty.shaded.io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)\n    at io.grpc.netty.shaded.io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:714)\n    at io.grpc.netty.shaded.io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650)\n    at io.grpc.netty.shaded.io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576)\n    at io.grpc.netty.shaded.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)\n    at io.grpc.netty.shaded.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)\n    at io.grpc.netty.shaded.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)\n    at io.grpc.netty.shaded.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)\n    at java.lang.Thread.run(Thread.java:748)\nCaused by: java.security.cert.CertificateException: No subject alternative names matching IP address 192.168.88.132 found\n    at sun.security.util.HostnameChecker.matchIP(HostnameChecker.java:168)\n    at sun.security.util.HostnameChecker.match(HostnameChecker.java:94)\n    at sun.security.ssl.X509TrustManagerImpl.checkIdentity(X509TrustManagerImpl.java:459)\n    at sun.security.ssl.X509TrustManagerImpl.checkIdentity(X509TrustManagerImpl.java:440)\n    at sun.security.ssl.X509TrustManagerImpl.checkTrusted(X509TrustManagerImpl.java:261)\n    at sun.security.ssl.X509TrustManagerImpl.checkServerTrusted(X509TrustManagerImpl.java:144)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.OpenSslTlsv13X509ExtendedTrustManager.checkServerTrusted(OpenSslTlsv13X509ExtendedTrustManager.java:223)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslClientContext$ExtendedTrustManagerVerifyCallback.verify(ReferenceCountedOpenSslClientContext.java:261)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslContext$AbstractCertificateVerifier.verify(ReferenceCountedOpenSslContext.java:698)\n    at io.grpc.netty.shaded.io.netty.internal.tcnative.SSL.readFromSSL(Native Method)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslEngine.readPlaintextData(ReferenceCountedOpenSslEngine.java:596)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslEngine.unwrap(ReferenceCountedOpenSslEngine.java:1203)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslEngine.unwrap(ReferenceCountedOpenSslEngine.java:1325)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.SslHandler$SslEngineType$1.unwrap(SslHandler.java:201)\n    at io.grpc.netty.shaded.io.netty.handler.ssl.SslHandler.unwrap(SslHandler.java:1380)\n    ... 21 more\n    Suppressed: javax.net.ssl.SSLHandshakeException: error:1000007d:SSL routines:OPENSSL_internal:CERTIFICATE_VERIFY_FAILED\n        at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslEngine.sslReadErrorResult(ReferenceCountedOpenSslEngine.java:1288)\n        at io.grpc.netty.shaded.io.netty.handler.ssl.ReferenceCountedOpenSslEngine.unwrap(ReferenceCountedOpenSslEngine.java:1249)\n        ... 24 more\n</code></pre>\n<p>Error says that I don't provide needed Ip in subject alternative names:</p>\n<pre><code>No subject alternative names matching IP address 192.168.88.132 found\n</code></pre>\n<p>but I provided it in command of creation certificate.\nI will apreciate if you could help with that.</p>\n"
+}

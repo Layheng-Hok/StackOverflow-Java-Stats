@@ -1,0 +1,316 @@
+{
+  "tags" : [ "java", "inner-classes" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 45413,
+        "reputation" : 29579,
+        "user_id" : 133830,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/08f7df98a990128894baa9d090dfc1ca?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "peakit",
+        "link" : "https://stackoverflow.com/users/133830/peakit"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1259522571,
+      "post_id" : 1816462,
+      "comment_id" : 1706292,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks Jon ! But what if I don&#39;t have control to modify the inner class (check my edit)."
+    }, {
+      "owner" : {
+        "account_id" : 11683,
+        "reputation" : 1520502,
+        "user_id" : 22656,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+        "display_name" : "Jon Skeet",
+        "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1259522948,
+      "post_id" : 1816462,
+      "comment_id" : 1706317,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@peakit: Then as far as I know, you&#39;re out of luck unless you use reflection. It feels like it&#39;s a violation of encapsulation though really - if the inner class doesn&#39;t want to tell you what its outer instance is, you should respect that and try to design such that you don&#39;t need it."
+    }, {
+      "owner" : {
+        "account_id" : 5408602,
+        "reputation" : 123,
+        "user_id" : 4306242,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://www.gravatar.com/avatar/746ebbca9b54799d053b4c23e7a13015?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "misty",
+        "link" : "https://stackoverflow.com/users/4306242/misty"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1475081143,
+      "post_id" : 1816462,
+      "comment_id" : 66802668,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Is this still valid in Java 8?"
+    }, {
+      "owner" : {
+        "account_id" : 6006523,
+        "reputation" : 3626,
+        "user_id" : 4718288,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/0fb27f199bb7e89ae91b68fac70051c9?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Hatefiend",
+        "link" : "https://stackoverflow.com/users/4718288/hatefiend"
+      },
+      "reply_to_user" : {
+        "account_id" : 5408602,
+        "reputation" : 123,
+        "user_id" : 4306242,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://www.gravatar.com/avatar/746ebbca9b54799d053b4c23e7a13015?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "misty",
+        "link" : "https://stackoverflow.com/users/4306242/misty"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1565577692,
+      "post_id" : 1816462,
+      "comment_id" : 101384401,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@misty Yes, it is."
+    } ],
+    "owner" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "is_accepted" : true,
+    "score" : 380,
+    "last_activity_date" : 1518302080,
+    "last_edit_date" : 1518302080,
+    "creation_date" : 1259521864,
+    "answer_id" : 1816462,
+    "question_id" : 1816458,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Within the inner class itself, you can use <code>OuterClass.this</code>. This expression, which allows to refer to any lexically enclosing instance, is described in the JLS as <a href=\"https://docs.oracle.com/javase/specs/jls/se9/html/jls-15.html#jls-15.8.4\" rel=\"noreferrer\">Qualified <code>this</code></a>.</p>\n\n<p>I don't <em>think</em> there's a way to get the instance from outside the code of the inner class though. Of course, you can always introduce your own property:</p>\n\n<pre><code>public OuterClass getOuter() {\n    return OuterClass.this;\n}\n</code></pre>\n\n<p>EDIT: By experimentation, it looks like the field holding the reference to the outer class has package level access - at least with the JDK I'm using. </p>\n\n<p>EDIT: The name used (<code>this$0</code>) <em>is</em> actually valid in Java, although the <a href=\"http://docs.oracle.com/javase/specs/jls/se7/html/jls-3.html#jls-3.8\" rel=\"noreferrer\">JLS</a> discourages its use:</p>\n\n<blockquote>\n  <p>The <code>$</code> character should be used only in\n  mechanically generated source code or,\n  rarely, to access pre-existing names on\n  legacy systems.</p>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 47283,
+        "reputation" : 723399,
+        "user_id" : 139985,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+        "display_name" : "Stephen C",
+        "link" : "https://stackoverflow.com/users/139985/stephen-c"
+      },
+      "edited" : false,
+      "score" : 12,
+      "creation_date" : 1265102285,
+      "post_id" : 1816468,
+      "comment_id" : 2130301,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "But only in/within the source of the OuterClass.  And I don&#39;t think that is what the OP wants."
+    }, {
+      "owner" : {
+        "account_id" : 9026259,
+        "reputation" : 1452,
+        "user_id" : 6725459,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/osb1F.png?s=256",
+        "display_name" : "jjazzboss",
+        "link" : "https://stackoverflow.com/users/6725459/jjazzboss"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1667730826,
+      "post_id" : 1816468,
+      "comment_id" : 131232138,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This does not answer the question"
+    } ],
+    "owner" : {
+      "account_id" : 44736,
+      "reputation" : 100665,
+      "user_id" : 131433,
+      "user_type" : "registered",
+      "accept_rate" : 76,
+      "profile_image" : "https://www.gravatar.com/avatar/e6eeaf8698180e971e169a925d8e0f4f?s=256&d=identicon&r=PG",
+      "display_name" : "bmargulies",
+      "link" : "https://stackoverflow.com/users/131433/bmargulies"
+    },
+    "is_accepted" : false,
+    "score" : 41,
+    "last_activity_date" : 1259522074,
+    "last_edit_date" : 1259522074,
+    "creation_date" : 1259521939,
+    "answer_id" : 1816468,
+    "question_id" : 1816458,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p><code>OuterClass.this</code> references the outer class.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 247217,
+      "reputation" : 223472,
+      "user_id" : 521799,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+      "display_name" : "Lukas Eder",
+      "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+    },
+    "is_accepted" : false,
+    "score" : 26,
+    "last_activity_date" : 1362642986,
+    "creation_date" : 1362642986,
+    "answer_id" : 15265900,
+    "question_id" : 1816458,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You could (but you shouldn't) use reflection for the job:</p>\n\n<pre><code>import java.lang.reflect.Field;\n\npublic class Outer {\n    public class Inner {\n    }\n\n    public static void main(String[] args) throws Exception {\n\n        // Create the inner instance\n        Inner inner = new Outer().new Inner();\n\n        // Get the implicit reference from the inner to the outer instance\n        // ... make it accessible, as it has default visibility\n        Field field = Inner.class.getDeclaredField(\"this$0\");\n        field.setAccessible(true);\n\n        // Dereference and cast it\n        Outer outer = (Outer) field.get(inner);\n        System.out.println(outer);\n    }\n}\n</code></pre>\n\n<p>Of course, the name of the implicit reference is utterly unreliable, so as I said, you shouldn't :-)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2389614,
+      "reputation" : 3523,
+      "user_id" : 2092405,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/7851e072f6a91643bc0ec24c00902bed?s=256&d=identicon&r=PG",
+      "display_name" : "Ashish Rawat",
+      "link" : "https://stackoverflow.com/users/2092405/ashish-rawat"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1462718402,
+    "creation_date" : 1462718402,
+    "answer_id" : 37101016,
+    "question_id" : 1816458,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Here's the example:</p>\n\n<pre><code>// Test\npublic void foo() {\n    C c = new C();\n    A s;\n    s = ((A.B)c).get();\n    System.out.println(s.getR());\n}\n\n// classes\nclass C {}\n\nclass A {\n   public class B extends C{\n     A get() {return A.this;}\n   }\n   public String getR() {\n     return \"This is string\";\n   }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 893830,
+        "reputation" : 189,
+        "user_id" : 931570,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ea0ed8701cf91bff2e1d97bae076183e?s=256&d=identicon&r=PG",
+        "display_name" : "sb4",
+        "link" : "https://stackoverflow.com/users/931570/sb4"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1591292218,
+      "post_id" : 38925649,
+      "comment_id" : 110008100,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Not sure that example proves the point best because &quot;Test.this.x&quot; is same as &quot;Test.x&quot; because it is static, doesn&#39;t really belong to the enclosing class object.  I think would be better example if the code was in the constructor of class Test and Test.x not static."
+    } ],
+    "owner" : {
+      "account_id" : 1680813,
+      "reputation" : 729,
+      "user_id" : 1545084,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/74b32f8e55cf7fb7488201675eac4f53?s=256&d=identicon&r=PG",
+      "display_name" : "Gladclef",
+      "link" : "https://stackoverflow.com/users/1545084/gladclef"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1508268649,
+    "last_edit_date" : 1508268649,
+    "creation_date" : 1471032009,
+    "answer_id" : 38925649,
+    "question_id" : 1816458,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The more general answer to this question involves shadowed variables and how they are accessed.</p>\n\n<p>In the following example (from Oracle), the variable <strong>x</strong> in <strong>main()</strong> is shadowing <strong>Test.x</strong>:</p>\n\n<pre><code>class Test {\n    static int x = 1;\n    public static void main(String[] args) {\n        InnerClass innerClassInstance = new InnerClass()\n        {\n            public void printX()\n            {\n                System.out.print(\"x=\" + x);\n                System.out.println(\", Test.this.x=\" + Test.this.x);\n            }\n        }\n        innerClassInstance.printX();\n    }\n\n    public abstract static class InnerClass\n    {\n        int x = 0;\n\n        public InnerClass() { }\n\n        public abstract void printX();\n    }\n}\n</code></pre>\n\n<p>Running this program will print:</p>\n\n<pre><code>x=0, Test.this.x=1\n</code></pre>\n\n<p>More at: <a href=\"http://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.6\" rel=\"nofollow noreferrer\">http://docs.oracle.com/javase/specs/jls/se7/html/jls-6.html#jls-6.6</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8800824,
+      "reputation" : 1,
+      "user_id" : 6577041,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e8b4cea548778e8853323d32d4a66ff7?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "曹建发",
+      "link" : "https://stackoverflow.com/users/6577041/%e6%9b%b9%e5%bb%ba%e5%8f%91"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1493303061,
+    "creation_date" : 1493303061,
+    "answer_id" : 43660586,
+    "question_id" : 1816458,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>if you don't have control to modify the inner class, the refection may help you (but not recommend). this$0 is reference in Inner class which tells which instance of Outer class was used to create current instance of Inner class.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1565505236,
+      "post_id" : 51604567,
+      "comment_id" : 101371302,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "&#39;Static inner&#39; is a contradiction in terms."
+    } ],
+    "owner" : {
+      "account_id" : 11106649,
+      "reputation" : 37,
+      "user_id" : 8153640,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-kv1X4inxCfo/AAAAAAAAAAI/AAAAAAAAAAs/87egnJiZ9lQ/s256-rj/photo.jpg",
+      "display_name" : "Vali Zhao",
+      "link" : "https://stackoverflow.com/users/8153640/vali-zhao"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1533003359,
+    "creation_date" : 1533003359,
+    "answer_id" : 51604567,
+    "question_id" : 1816458,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>/**\n * Not applicable to Static Inner Class (nested class)\n */\npublic static Object getDeclaringTopLevelClassObject(Object object) {\n    if (object == null) {\n        return null;\n    }\n    Class cls = object.getClass();\n    if (cls == null) {\n        return object;\n    }\n    Class outerCls = cls.getEnclosingClass();\n    if (outerCls == null) {\n        // this is top-level class\n        return object;\n    }\n    // get outer class object\n    Object outerObj = null;\n    try {\n        Field[] fields = cls.getDeclaredFields();\n        for (Field field : fields) {\n            if (field != null &amp;&amp; field.getType() == outerCls\n                    &amp;&amp; field.getName() != null &amp;&amp; field.getName().startsWith(\"this$\")) {\n                field.setAccessible(true);\n                outerObj = field.get(object);\n                break;\n            }\n        }\n    } catch (Exception e) {\n        e.printStackTrace();\n    }\n    return getDeclaringTopLevelClassObject(outerObj);\n}\n</code></pre>\n\n<p>Of course, the name of the implicit reference is unreliable, so you shouldn't use reflection for the job.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 45413,
+    "reputation" : 29579,
+    "user_id" : 133830,
+    "user_type" : "registered",
+    "accept_rate" : 87,
+    "profile_image" : "https://www.gravatar.com/avatar/08f7df98a990128894baa9d090dfc1ca?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "peakit",
+    "link" : "https://stackoverflow.com/users/133830/peakit"
+  },
+  "is_answered" : true,
+  "view_count" : 183670,
+  "accepted_answer_id" : 1816462,
+  "answer_count" : 7,
+  "score" : 291,
+  "last_activity_date" : 1667336122,
+  "creation_date" : 1259521817,
+  "last_edit_date" : 1259522766,
+  "question_id" : 1816458,
+  "link" : "https://stackoverflow.com/questions/1816458/getting-hold-of-the-outer-class-object-from-the-inner-class-object",
+  "title" : "Getting hold of the outer class object from the inner class object",
+  "body" : "<p>I have the following code. I want to get hold of the outer class object using which I created the inner class object <code>inner</code>. How can I do it?</p>\n\n<pre><code>public class OuterClass {\n\n    public class InnerClass {\n        private String name = \"Peakit\";\n    }\n\n    public static void main(String[] args) {\n        OuterClass outer = new OuterClass();\n        InnerClass inner = outer.new InnerClass();\n       // How to get the same outer object which created the inner object back?\n        OuterClass anotherOuter = ?? ;\n\n        if(anotherOuter == outer) {\n             System.out.println(\"Was able to reach out to the outer object via inner !!\");\n        } else {\n             System.out.println(\"No luck :-( \");\n        }\n    }\n}\n</code></pre>\n\n<p><strong>EDIT:</strong> Well, some of you guys suggested of modifying the inner class by adding a method:</p>\n\n<pre><code>public OuterClass outer() {\n   return OuterClass.this;\n}\n</code></pre>\n\n<p>But what if I don't have control to modify the inner class, then (just to confirm) do we have some other way of getting the corresponding outer class object from the inner class object?</p>\n"
+}

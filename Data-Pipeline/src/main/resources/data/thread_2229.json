@@ -1,0 +1,915 @@
+{
+  "tags" : [ "java", "lambda", "java-8", "java-stream" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3539723,
+      "reputation" : 4111,
+      "user_id" : 2957169,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/dpv0j.jpg?s=256",
+      "display_name" : "charles-allen",
+      "link" : "https://stackoverflow.com/users/2957169/charles-allen"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1501677099,
+    "post_id" : 23860533,
+    "comment_id" : 77882055,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Could you elaborate more on &quot;process one way&quot;... are you consuming the objects? Mapping them? partitionBy() and groupingBy() can get you directly to 2+ lists, but you might benefit from mapping first or just having a decision fork in your forEach()."
+  }, {
+    "owner" : {
+      "account_id" : 1161310,
+      "reputation" : 9503,
+      "user_id" : 1140754,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://i.sstatic.net/Q0fyF.jpg?s=256",
+      "display_name" : "Miguel Gamboa",
+      "link" : "https://stackoverflow.com/users/1140754/miguel-gamboa"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1589449496,
+    "post_id" : 23860533,
+    "comment_id" : 109300990,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "In some cases, turning it into a Collection could not be an option if we are dealing with infinite stream. You may find an alternative for memoization here: <a href=\"https://dzone.com/articles/how-to-replay-java-streams\" rel=\"nofollow noreferrer\">dzone.com/articles/how-to-replay-java-streams</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 440158,
+      "reputation" : 330010,
+      "user_id" : 829571,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://i.sstatic.net/zflGZ.png?s=256",
+      "display_name" : "assylias",
+      "link" : "https://stackoverflow.com/users/829571/assylias"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1401100241,
+    "last_edit_date" : 1401100241,
+    "creation_date" : 1401058937,
+    "answer_id" : 23860761,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You could create a stream of runnables (for example):</p>\n\n<pre><code>results.stream()\n    .flatMap(either -&gt; Stream.&lt;Runnable&gt; of(\n            () -&gt; failure(either.left()),\n            () -&gt; success(either.right())))\n    .forEach(Runnable::run);\n</code></pre>\n\n<p>Where <code>failure</code> and <code>success</code> are the operations to apply. This will however create quite a few temporary objects and may not be more efficient than starting from a collection and streaming/iterating it twice.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 83125,
+        "reputation" : 9843,
+        "user_id" : 233266,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/77e6036ad38ca6586c9b077be8e0b4a4?s=256&d=identicon&r=PG",
+        "display_name" : "Toby",
+        "link" : "https://stackoverflow.com/users/233266/toby"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1435171729,
+      "post_id" : 23861084,
+      "comment_id" : 50093591,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Perhaps I shouldn&#39;t have used &quot;efficiency&quot;, I&#39;m kind of getting at why would I bother with streams (and not store anything) if all I do is immediately store the data (<code>toList</code>) to be able to process it (the <code>Either</code> case being the example)?"
+    }, {
+      "owner" : {
+        "account_id" : 1416522,
+        "reputation" : 96341,
+        "user_id" : 3553087,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+        "display_name" : "Brian Goetz",
+        "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+      },
+      "reply_to_user" : {
+        "account_id" : 83125,
+        "reputation" : 9843,
+        "user_id" : 233266,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/77e6036ad38ca6586c9b077be8e0b4a4?s=256&d=identicon&r=PG",
+        "display_name" : "Toby",
+        "link" : "https://stackoverflow.com/users/233266/toby"
+      },
+      "edited" : false,
+      "score" : 12,
+      "creation_date" : 1435172159,
+      "post_id" : 23861084,
+      "comment_id" : 50093856,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Streams are both <i>expressive</i> and <i>efficient</i>.  They are expressive in that they let you set up complex aggregate operations without a lot of accidental detail (e.g., intermediate results) in the way of reading the code.  They are also efficient, in that they (generally) make a single pass on the data and do not populate intermediate result containers.  These two properties together make them an attractive programming model for many situations.  Of course, not all programming models fit all problems; you still need to decide whether you&#39;re using an appropriate tool for the job."
+    }, {
+      "owner" : {
+        "account_id" : 39566,
+        "reputation" : 16247,
+        "user_id" : 114200,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/mq94v.png?s=256",
+        "display_name" : "Niall Connaughton",
+        "link" : "https://stackoverflow.com/users/114200/niall-connaughton"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1497918593,
+      "post_id" : 23861084,
+      "comment_id" : 76269697,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "But the inability to reuse a stream causes situations where the developer is forced to store intermediate results (collecting) in order to process a stream in two different ways. The implication that the stream is generated more than once (unless you collect it) seems clear - because otherwise you wouldn&#39;t need a collect method."
+    }, {
+      "owner" : {
+        "account_id" : 1416522,
+        "reputation" : 96341,
+        "user_id" : 3553087,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+        "display_name" : "Brian Goetz",
+        "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+      },
+      "reply_to_user" : {
+        "account_id" : 39566,
+        "reputation" : 16247,
+        "user_id" : 114200,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/mq94v.png?s=256",
+        "display_name" : "Niall Connaughton",
+        "link" : "https://stackoverflow.com/users/114200/niall-connaughton"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1497942360,
+      "post_id" : 23861084,
+      "comment_id" : 76277224,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@NiallConnaughton I&#39;m not sure want your point is. If you want to traverse it twice, someone has to store it, or you have to regenerate it.  Are you suggesting the library should buffer it just in case someone needs it twice?  That would be silly."
+    }, {
+      "owner" : {
+        "account_id" : 39566,
+        "reputation" : 16247,
+        "user_id" : 114200,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/mq94v.png?s=256",
+        "display_name" : "Niall Connaughton",
+        "link" : "https://stackoverflow.com/users/114200/niall-connaughton"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1497975652,
+      "post_id" : 23861084,
+      "comment_id" : 76301857,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Not suggesting that the library should buffer it, but saying that by having streams as one-offs, it forces people who want to reuse a seed stream (ie: sharing the declarative logic used to define it) to build multiple derived streams to either collect the seed stream, or have access to a provider factory that will create a duplicate of the seed stream. Both options have their pain points. This answer has much more detail on the topic: <a href=\"https://stackoverflow.com/a/28513908/114200\">stackoverflow.com/a/28513908/114200</a>."
+    }, {
+      "owner" : {
+        "account_id" : 83125,
+        "reputation" : 9843,
+        "user_id" : 233266,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/77e6036ad38ca6586c9b077be8e0b4a4?s=256&d=identicon&r=PG",
+        "display_name" : "Toby",
+        "link" : "https://stackoverflow.com/users/233266/toby"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1542290889,
+      "post_id" : 23861084,
+      "comment_id" : 93522564,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Scala manages to do this with Eithers... but perhaps that&#39;s another question :)"
+    } ],
+    "owner" : {
+      "account_id" : 1416522,
+      "reputation" : 96341,
+      "user_id" : 3553087,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+      "display_name" : "Brian Goetz",
+      "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+    },
+    "is_accepted" : false,
+    "score" : 113,
+    "last_activity_date" : 1401079472,
+    "last_edit_date" : 1401079472,
+    "creation_date" : 1401062431,
+    "answer_id" : 23861084,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think your assumption about efficiency is kind of backwards.  You get this huge efficiency payback if you're only going to use the data once, because you don't have to store it, and streams give you powerful \"loop fusion\" optimizations that let you flow the whole data efficiently through the pipeline.  </p>\n\n<p>If you want to re-use the same data, then by definition you either have to generate it twice (deterministically) or store it.  If it already happens to be in a collection, great; then iterating it twice is cheap.  </p>\n\n<p>We did experiment in the design with \"forked streams\".  What we found was that supporting this had real costs; it burdened the common case (use once) at the expense of the uncommon case.  The big problem was dealing with \"what happens when the two pipelines don't consume data at the same rate.\"  Now you're back to buffering anyway.  This was a feature that clearly didn't carry its weight.  </p>\n\n<p>If you want to operate on the same data repeatedly, either store it, or structure your operations as Consumers and do the following:</p>\n\n<pre><code>stream()...stuff....forEach(e -&gt; { consumerA(e); consumerB(e); });\n</code></pre>\n\n<p>You might also look into the RxJava library, as its processing model lends itself better to this kind of \"stream forking\".</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1442464430,
+      "post_id" : 25961951,
+      "comment_id" : 53095315,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This solution is not thread-safe: you cannot pass one of the streams to another thread. I really see no scenario when both streams can be consumed in equal rate in single thread and you actually need two distinct streams. If you want to produce two results from the same stream, it would be much better to use combining collectors (which you already have in JOOL)."
+    }, {
+      "owner" : {
+        "account_id" : 247217,
+        "reputation" : 223472,
+        "user_id" : 521799,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+        "display_name" : "Lukas Eder",
+        "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+      },
+      "reply_to_user" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442475268,
+      "post_id" : 25961951,
+      "comment_id" : 53099558,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@TagirValeev: You&#39;re right about the thread-safety, good point. How could this be done with combining collectors?"
+    }, {
+      "owner" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1442476249,
+      "post_id" : 25961951,
+      "comment_id" : 53100092,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I mean if somebody wants to use the same stream twice like this <code>Tuple2&lt;Seq&lt;A&gt;&gt;, Seq&lt;A&gt;&gt; t = duplicate(stream); long count = t.collect(counting()); List&lt;A&gt; list = t.collect(toList());</code>, it&#39;s better to <code>Tuple2&lt;Long, List&lt;A&gt;&gt; t = stream.collect(Tuple.collectors(counting(), toList()));</code>. Using <code>Collectors.mapping&#47;reducing</code> one may express other stream operations as collectors and process elements in quite different manner creating single resulting tuple. So in general you can do many things consuming the stream once without duplication and it will be parallel-friendly."
+    }, {
+      "owner" : {
+        "account_id" : 247217,
+        "reputation" : 223472,
+        "user_id" : 521799,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+        "display_name" : "Lukas Eder",
+        "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+      },
+      "reply_to_user" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442476993,
+      "post_id" : 25961951,
+      "comment_id" : 53100514,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Aha, I see your point. That would be an interesting answer by itself, actually! Yes that works for a number of simpler use-cases, specifically as this question wasn&#39;t really about duplication, but about reusing the data. But there are still many use-cases, where the two (or many) stream reductions are very different, and you won&#39;t get too far with <code>Collector</code>."
+    }, {
+      "owner" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1442479845,
+      "post_id" : 25961951,
+      "comment_id" : 53102115,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In this case you will still reduce one stream after another. So there&#39;s no point to make the life harder introducing the sofisticated iterator which anyways will collect the whole stream to the list under the hood. You may just collect to the list explicitly then create two streams from it as OP tells (it&#39;s the same number of code lines). Well, you may only have some improvement if the first reduction is short-circuit, but it&#39;s not the OP case."
+    }, {
+      "owner" : {
+        "account_id" : 283609,
+        "reputation" : 46760,
+        "user_id" : 581205,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/e9a46cf0cb855b5b591740cfd7b9f81a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "maaartinus",
+        "link" : "https://stackoverflow.com/users/581205/maaartinus"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1484004020,
+      "post_id" : 25961951,
+      "comment_id" : 70322501,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<code>LinkedList</code>? Really? I&#39;d like to assume you know what you&#39;re doing, but cases when it outperforms <code>ArrayList</code> are extremely rare and this one doesn&#39;t look like it. Did you benchmarked it?"
+    }, {
+      "owner" : {
+        "account_id" : 247217,
+        "reputation" : 223472,
+        "user_id" : 521799,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+        "display_name" : "Lukas Eder",
+        "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+      },
+      "reply_to_user" : {
+        "account_id" : 283609,
+        "reputation" : 46760,
+        "user_id" : 581205,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/e9a46cf0cb855b5b591740cfd7b9f81a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "maaartinus",
+        "link" : "https://stackoverflow.com/users/581205/maaartinus"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1484040789,
+      "post_id" : 25961951,
+      "comment_id" : 70334918,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@maaartinus: Thanks, good pointer. I&#39;ve created an <a href=\"https://github.com/jOOQ/jOOL/issues/280\" rel=\"nofollow noreferrer\">issue</a> for the benchmark. I used it for the <code>offer()</code> / <code>poll()</code> API, but an <code>ArrayDeque</code> might do just the same."
+    } ],
+    "owner" : {
+      "account_id" : 247217,
+      "reputation" : 223472,
+      "user_id" : 521799,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+      "display_name" : "Lukas Eder",
+      "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1484040647,
+    "last_edit_date" : 1484040647,
+    "creation_date" : 1411320651,
+    "answer_id" : 25961951,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>We've implemented a <code>duplicate()</code> method for streams in <a href=\"https://github.com/jOOQ/jOOL\" rel=\"nofollow noreferrer\">jOOλ</a>, an Open Source library that we created to improve integration testing for <a href=\"http://www.jooq.org\" rel=\"nofollow noreferrer\">jOOQ</a>. Essentially, you can just write:</p>\n\n<pre><code>Tuple2&lt;Seq&lt;A&gt;, Seq&lt;A&gt;&gt; duplicates = Seq.seq(doSomething()).duplicate();\n</code></pre>\n\n<p>Internally, there is a buffer storing all values that have been consumed from one stream but not from the other. That's probably as efficient as it gets if your two streams are consumed about at the same rate, <em>and if you can live with the lack of thread-safety</em>.</p>\n\n<p>Here's how the algorithm works:</p>\n\n<pre><code>static &lt;T&gt; Tuple2&lt;Seq&lt;T&gt;, Seq&lt;T&gt;&gt; duplicate(Stream&lt;T&gt; stream) {\n    final List&lt;T&gt; gap = new LinkedList&lt;&gt;();\n    final Iterator&lt;T&gt; it = stream.iterator();\n\n    @SuppressWarnings(\"unchecked\")\n    final Iterator&lt;T&gt;[] ahead = new Iterator[] { null };\n\n    class Duplicate implements Iterator&lt;T&gt; {\n        @Override\n        public boolean hasNext() {\n            if (ahead[0] == null || ahead[0] == this)\n                return it.hasNext();\n\n            return !gap.isEmpty();\n        }\n\n        @Override\n        public T next() {\n            if (ahead[0] == null)\n                ahead[0] = this;\n\n            if (ahead[0] == this) {\n                T value = it.next();\n                gap.offer(value);\n                return value;\n            }\n\n            return gap.poll();\n        }\n    }\n\n    return tuple(seq(new Duplicate()), seq(new Duplicate()));\n}\n</code></pre>\n\n<p><a href=\"https://github.com/jOOQ/jOOL/blob/master/src/main/java/org/jooq/lambda/Seq.java\" rel=\"nofollow noreferrer\">More source code here</a></p>\n\n<p><code>Tuple2</code> is probably like your <code>Pair</code> type, whereas <code>Seq</code> is <code>Stream</code> with some enhancements.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4528587,
+        "reputation" : 516,
+        "user_id" : 3679732,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/b3e4684d896f0a40a5a14da76888a7cc?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "dylaniato",
+        "link" : "https://stackoverflow.com/users/3679732/dylaniato"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1517581435,
+      "post_id" : 30922045,
+      "comment_id" : 84165995,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "nice and elegant solution. much more java8-ish than the most upvoted solution."
+    }, {
+      "owner" : {
+        "account_id" : 135385,
+        "reputation" : 1965,
+        "user_id" : 457589,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nV6R1.png?s=256",
+        "display_name" : "Julien",
+        "link" : "https://stackoverflow.com/users/457589/julien"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1588587207,
+      "post_id" : 30922045,
+      "comment_id" : 108945283,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Just a note on using <code>Supplier</code> if the <code>Stream</code> is built with a &quot;costly&quot; manner, <b>you pay that cost for each call to <code>Supplier.get()</code></b>. i.e if a database query... that query is done each time"
+    }, {
+      "owner" : {
+        "account_id" : 231117,
+        "reputation" : 8982,
+        "user_id" : 495157,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://i.sstatic.net/UFMPn.png?s=256",
+        "display_name" : "JGFMK",
+        "link" : "https://stackoverflow.com/users/495157/jgfmk"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1588760087,
+      "post_id" : 30922045,
+      "comment_id" : 109020034,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You can&#39;t seem to follow this pattern after a mapTo though using an IntStream. I found I had to convert it back to a <code>Set&lt;Integer&gt;</code> using <code>collect(Collectors.toSet())</code> ... and do a couple of operations on that. I wanted <code>max()</code> and if a specific value was in set as two operations... <code>filter(d -&gt; d == -1).count() == 1;</code>"
+    }, {
+      "owner" : {
+        "account_id" : 11763655,
+        "reputation" : 1734,
+        "user_id" : 8608962,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://i.sstatic.net/wseAh.jpg?s=256",
+        "display_name" : "sander",
+        "link" : "https://stackoverflow.com/users/8608962/sander"
+      },
+      "reply_to_user" : {
+        "account_id" : 135385,
+        "reputation" : 1965,
+        "user_id" : 457589,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nV6R1.png?s=256",
+        "display_name" : "Julien",
+        "link" : "https://stackoverflow.com/users/457589/julien"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1687953659,
+      "post_id" : 30922045,
+      "comment_id" : 135008365,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Julien Is there a way to avoid this?"
+    }, {
+      "owner" : {
+        "account_id" : 14556785,
+        "reputation" : 464,
+        "user_id" : 10514096,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3e1ce9396bb4149a4c730cd2c820464f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "SpongeBob",
+        "link" : "https://stackoverflow.com/users/10514096/spongebob"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1699779498,
+      "post_id" : 30922045,
+      "comment_id" : 136572260,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I tried this solution but second time it generate new empty stream only!"
+    }, {
+      "owner" : {
+        "account_id" : 1195086,
+        "reputation" : 2634,
+        "user_id" : 1166992,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/e0f83383550130a39b6b421420e14b77?s=256&d=identicon&r=PG",
+        "display_name" : "Olivier Faucheux",
+        "link" : "https://stackoverflow.com/users/1166992/olivier-faucheux"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1737985030,
+      "post_id" : 30922045,
+      "comment_id" : 140007202,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This works only for streams comming of a known source and if this source can create streams as often as you want. If the stream is from a big database query, it will be recreated each time. It&#39;s surlery not what you want."
+    } ],
+    "owner" : {
+      "account_id" : 6418170,
+      "reputation" : 1599,
+      "user_id" : 4975679,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/64ac978c43acc6734da2ccc2518f50ad?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user4975679",
+      "link" : "https://stackoverflow.com/users/4975679/user4975679"
+    },
+    "is_accepted" : false,
+    "score" : 110,
+    "last_activity_date" : 1578220303,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1434648884,
+    "answer_id" : 30922045,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use a local variable with a <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html\" rel=\"noreferrer\"><code>Supplier</code></a> to set up common parts of the stream pipeline.</p>\n<p>From <a href=\"http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/\" rel=\"noreferrer\">http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/</a>:</p>\n<blockquote>\n<p><strong>Reusing Streams</strong></p>\n<p>Java 8 streams cannot be reused. As soon as you call any terminal operation the stream is closed:</p>\n<pre><code>Stream&lt;String&gt; stream = Stream.of(&quot;d2&quot;, &quot;a2&quot;, &quot;b1&quot;, &quot;b3&quot;, &quot;c&quot;)\n    .filter(s -&gt; s.startsWith(&quot;a&quot;));\nstream.anyMatch(s -&gt; true);    // ok\nstream.noneMatch(s -&gt; true);   // exception\n\nCalling `noneMatch` after `anyMatch` on the same stream results in the following exception:\njava.lang.IllegalStateException: stream has already been operated upon or closed\nat \njava.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:229)\nat \njava.util.stream.ReferencePipeline.noneMatch(ReferencePipeline.java:459)\nat com.winterbe.java8.Streams5.test7(Streams5.java:38)\nat com.winterbe.java8.Streams5.main(Streams5.java:28)\n</code></pre>\n<p>To overcome this limitation we have to to create a new stream chain for every terminal operation we want to execute, e.g. we could create a stream supplier to construct a new stream with all intermediate operations already set up:</p>\n<pre><code>Supplier&lt;Stream&lt;String&gt;&gt; streamSupplier =\n    () -&gt; Stream.of(&quot;d2&quot;, &quot;a2&quot;, &quot;b1&quot;, &quot;b3&quot;, &quot;c&quot;)\n            .filter(s -&gt; s.startsWith(&quot;a&quot;));\n\nstreamSupplier.get().anyMatch(s -&gt; true);   // ok\nstreamSupplier.get().noneMatch(s -&gt; true);  // ok\n</code></pre>\n<p>Each call to <code>get()</code> constructs a new stream on which we are save to call the desired terminal operation.</p>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1860944,
+        "reputation" : 6402,
+        "user_id" : 1685538,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/ebbb7b5247615b8e0984e149bd86fc16?s=256&d=identicon&r=PG",
+        "display_name" : "HectorJ",
+        "link" : "https://stackoverflow.com/users/1685538/hectorj"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1572360715,
+      "post_id" : 30967569,
+      "comment_id" : 103530330,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It seems peek is not supposed to be used for this (see <a href=\"https://softwareengineering.stackexchange.com/a/308979/195787\">softwareengineering.stackexchange.com/a/308979/195787</a>)"
+    }, {
+      "owner" : {
+        "account_id" : 1437036,
+        "reputation" : 3061,
+        "user_id" : 1358179,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/00cfd044a6131e69ec0d6bfa114622f3?s=256&d=identicon&r=PG",
+        "display_name" : "Martin",
+        "link" : "https://stackoverflow.com/users/1358179/martin"
+      },
+      "reply_to_user" : {
+        "account_id" : 1860944,
+        "reputation" : 6402,
+        "user_id" : 1685538,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/ebbb7b5247615b8e0984e149bd86fc16?s=256&d=identicon&r=PG",
+        "display_name" : "HectorJ",
+        "link" : "https://stackoverflow.com/users/1685538/hectorj"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1572378265,
+      "post_id" : 30967569,
+      "comment_id" : 103538625,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@HectorJ The other thread is about modifying elements. I assumed that is not done here."
+    } ],
+    "owner" : {
+      "account_id" : 1437036,
+      "reputation" : 3061,
+      "user_id" : 1358179,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/00cfd044a6131e69ec0d6bfa114622f3?s=256&d=identicon&r=PG",
+      "display_name" : "Martin",
+      "link" : "https://stackoverflow.com/users/1358179/martin"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1484318028,
+    "last_edit_date" : 1484318028,
+    "creation_date" : 1434909220,
+    "answer_id" : 30967569,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Another way to handle the elements multiple times is to use <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#peek-java.util.function.Consumer-\" rel=\"nofollow noreferrer\">Stream.peek(Consumer)</a>:</p>\n\n<pre><code>doSomething().stream()\n.peek(either -&gt; handleFailure(either.left()))\n.foreach(either -&gt; handleSuccess(either.right()));\n</code></pre>\n\n<p><code>peek(Consumer)</code> can be chained as many times as needed.</p>\n\n<pre><code>doSomething().stream()\n.peek(element -&gt; handleFoo(element.foo()))\n.peek(element -&gt; handleBar(element.bar()))\n.peek(element -&gt; handleBaz(element.baz()))\n.foreach(element-&gt; handleQux(element.qux()));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1442463992,
+      "post_id" : 32619261,
+      "comment_id" : 53095211,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "And, of course it should be noted that the resulting streams have significant CPU/memory overhead and very poor parallel performance. Also this solution is not thread-safe (you cannot pass one of the resulting streams to another thread and process it safely in parallel). It would be much more performant and safe to <code>List&lt;Integer&gt; list = stream.collect(Collectors.toList()); streams = new Tuple2&lt;&gt;(list.stream(), list.stream())</code> (as OP suggests). Also please disclose explicitly in the answer that you&#39;re the author of cyclop-streams. Read <a href=\"http://stackoverflow.com/help/promotion\">this</a>."
+    }, {
+      "owner" : {
+        "account_id" : 5914036,
+        "reputation" : 5303,
+        "user_id" : 4653367,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/0sRMy.png?s=256",
+        "display_name" : "John McClean",
+        "link" : "https://stackoverflow.com/users/4653367/john-mcclean"
+      },
+      "reply_to_user" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442481159,
+      "post_id" : 32619261,
+      "comment_id" : 53102887,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Updated to reflect I&#39;m the author. Also a good point to discuss the performance charachteristics of each. Your assessment above is pretty much spot on for StreamUtils.duplicate. StreamUtils.duplicate works by buffering data from one Stream to the other, incurring both a CPU and Memory overhead (use case depending). For Streamable.of(1,2,3) however, a new Stream is created directly from the Array each time and the performance characteristics, included parallel performance, will be the same as for normally created Stream."
+    }, {
+      "owner" : {
+        "account_id" : 5914036,
+        "reputation" : 5303,
+        "user_id" : 4653367,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/0sRMy.png?s=256",
+        "display_name" : "John McClean",
+        "link" : "https://stackoverflow.com/users/4653367/john-mcclean"
+      },
+      "reply_to_user" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442481568,
+      "post_id" : 32619261,
+      "comment_id" : 53103140,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Also, there is an AsStreamable class which allows the creation of a Streamable instance from a Stream but synchronizes access to the collection backing the Streamable as it is created (AsStreamable.synchronizedFromStream). Making it more suitable for use across threads (if that is what you need - I would imagine 99% of the time Streams are created and reused on the same thread)."
+    }, {
+      "owner" : {
+        "account_id" : 5914036,
+        "reputation" : 5303,
+        "user_id" : 4653367,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/0sRMy.png?s=256",
+        "display_name" : "John McClean",
+        "link" : "https://stackoverflow.com/users/4653367/john-mcclean"
+      },
+      "reply_to_user" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442481805,
+      "post_id" : 32619261,
+      "comment_id" : 53103290,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hi Tagir - shouldn&#39;t you also disclose in your comment that you are author of a competing library?"
+    }, {
+      "owner" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1442482907,
+      "post_id" : 32619261,
+      "comment_id" : 53103909,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Comments are not answers and I don&#39;t advertise my library here as my library has no feature to duplicate the stream (just because I think it&#39;s useless), so we don&#39;t compete here. Of course when I propose a solution involving my library I always say explicitly that I&#39;m the author."
+    }, {
+      "owner" : {
+        "account_id" : 5914036,
+        "reputation" : 5303,
+        "user_id" : 4653367,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/0sRMy.png?s=256",
+        "display_name" : "John McClean",
+        "link" : "https://stackoverflow.com/users/4653367/john-mcclean"
+      },
+      "reply_to_user" : {
+        "account_id" : 6243460,
+        "reputation" : 100904,
+        "user_id" : 4856258,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/b7730699b8b690670dc78109644a9b1f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tagir Valeev",
+        "link" : "https://stackoverflow.com/users/4856258/tagir-valeev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442486412,
+      "post_id" : 32619261,
+      "comment_id" : 53105954,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Compete was the wrong word on my part, cyclops-streams and cyclops generally will work just fine with Streamex. It (Streamex) definitely will help inform your perspectives on Streams (and be informed by it - for example I&#39;m guessing from your response the parallel CPU bound use case is important to you?). Duplication /or replayability mightn&#39;t seem useful at all to you, but possibly some of your users might like to have it."
+    } ],
+    "owner" : {
+      "account_id" : 5914036,
+      "reputation" : 5303,
+      "user_id" : 4653367,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/0sRMy.png?s=256",
+      "display_name" : "John McClean",
+      "link" : "https://stackoverflow.com/users/4653367/john-mcclean"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1456743460,
+    "last_edit_date" : 1456743460,
+    "creation_date" : 1442439795,
+    "answer_id" : 32619261,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><a href=\"https://github.com/aol/cyclops-react\" rel=\"nofollow\">cyclops-react</a>, a library I contribute to, has a static method that will allow you duplicate a Stream (and returns a  jOOλ Tuple of Streams).</p>\n\n<pre><code>    Stream&lt;Integer&gt; stream = Stream.of(1,2,3);\n    Tuple2&lt;Stream&lt;Integer&gt;,Stream&lt;Integer&gt;&gt; streams =  StreamUtils.duplicate(stream);\n</code></pre>\n\n<p>See comments, there is performance penalty that will be incurred when using duplicate on an existing Stream. A more performant alternative would be to use Streamable :-</p>\n\n<p>There is also a (lazy) Streamable class that can be constructed from a Stream, Iterable or Array and replayed multiple times.</p>\n\n<pre><code>    Streamable&lt;Integer&gt; streamable = Streamable.of(1,2,3);\n    streamable.stream().forEach(System.out::println);\n    streamable.stream().forEach(System.out::println);\n</code></pre>\n\n<p>AsStreamable.synchronizedFromStream(stream) - can be used to create a Streamable that will lazily populate it's backing collection, in a way such that can be shared across threads. Streamable.fromStream(stream) will not incur any synchronization overhead. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7998665,
+      "reputation" : 129,
+      "user_id" : 6034197,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2ee0241f98f6947267260b508dc4fe78?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Lubomir Varga",
+      "link" : "https://stackoverflow.com/users/6034197/lubomir-varga"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1459492976,
+    "creation_date" : 1459492976,
+    "answer_id" : 36349678,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For this particular problem you can use also partitioning. Something like</p>\n\n<pre><code>     // Partition Eighters into left and right\n     List&lt;Either&lt;Pair&lt;A, Throwable&gt;, A&gt;&gt; results = doSomething();\n     Map&lt;Boolean, Object&gt; passingFailing = results.collect(Collectors.partitioningBy(s -&gt; s.isLeft()));\n     passingFailing.get(true) &lt;- here will be all passing (left values)\n     passingFailing.get(false) &lt;- here will be all failing (right values)\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8805149,
+        "reputation" : 1177,
+        "user_id" : 6580080,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/95e8cb4ded706155b1f367ee9fb9f6e8?s=256&d=identicon&r=PG",
+        "display_name" : "ebonnal",
+        "link" : "https://stackoverflow.com/users/6580080/ebonnal"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1580728340,
+      "post_id" : 49104908,
+      "comment_id" : 106179928,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Upvote you as you are the first to have pointed Suppliers out here."
+    }, {
+      "owner" : {
+        "account_id" : 4248662,
+        "reputation" : 903,
+        "user_id" : 3476492,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/IPHzX.jpg?s=256",
+        "display_name" : "01000001",
+        "link" : "https://stackoverflow.com/users/3476492/01000001"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1648570412,
+      "post_id" : 49104908,
+      "comment_id" : 126656027,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "To avoid null pointer in case where list could be null, better to use Stream.empty().... e.g. Supplier&lt;Stream&lt;Integer&gt;&gt; streamSupplier = () -&gt; list == null ? Stream.empty() :  list.stream();"
+    }, {
+      "owner" : {
+        "account_id" : 3141252,
+        "reputation" : 501,
+        "user_id" : 2656677,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5131ce4b5ff67baeec5910299cbbdcf4?s=256&d=identicon&r=PG",
+        "display_name" : "Vijay",
+        "link" : "https://stackoverflow.com/users/2656677/vijay"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1655887459,
+      "post_id" : 49104908,
+      "comment_id" : 128435912,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Supplier make sense if you have only stream. If you have list then use list.stream() only. becuase both will create new stream then why we will add extra supplier."
+    }, {
+      "owner" : {
+        "account_id" : 45934,
+        "reputation" : 207606,
+        "user_id" : 135589,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/354d279a4def71b4541964105311709c?s=256&d=identicon&r=PG",
+        "display_name" : "Jesper",
+        "link" : "https://stackoverflow.com/users/135589/jesper"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1659101497,
+      "post_id" : 49104908,
+      "comment_id" : 129222134,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Using a <code>Supplier</code> has no benefit here. You can just as well just call <code>list.stream()</code> twice directly."
+    } ],
+    "owner" : {
+      "account_id" : 13070668,
+      "reputation" : 799,
+      "user_id" : 9444316,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8fb79d09cb1720bb43c8a45d8db1641b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Rams",
+      "link" : "https://stackoverflow.com/users/9444316/rams"
+    },
+    "is_accepted" : false,
+    "score" : 58,
+    "last_activity_date" : 1578220436,
+    "last_edit_date" : 1578220436,
+    "creation_date" : 1520232618,
+    "answer_id" : 49104908,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use a <code>Supplier</code> to produce the stream for each termination operation.</p>\n\n<pre><code>Supplier&lt;Stream&lt;Integer&gt;&gt; streamSupplier = () -&gt; list.stream();\n</code></pre>\n\n<p>Whenever you need a stream of that collection, \nuse <code>streamSupplier.get()</code> to get a new stream.</p>\n\n<p><strong>Examples:</strong></p>\n\n<ol>\n<li><code>streamSupplier.get().anyMatch(predicate);</code></li>\n<li><code>streamSupplier.get().allMatch(predicate2);</code></li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5452116,
+      "reputation" : 323,
+      "user_id" : 4336588,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/FDnSv.jpg?s=256",
+      "display_name" : "Lokesh Singal",
+      "link" : "https://stackoverflow.com/users/4336588/lokesh-singal"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1537643667,
+    "creation_date" : 1537643667,
+    "answer_id" : 52460028,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>We can make use of Stream Builder at the time of reading or iterating a stream.\nHere's the document of <strong>Stream Builder</strong>.</p>\n\n<p><a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.Builder.html\" rel=\"nofollow noreferrer\">https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.Builder.html</a></p>\n\n<p><strong>Use case</strong></p>\n\n<p>Let's say we have employee stream and we need to use this stream to write employee data in excel file and then update the employee collection/table\n[This is just use case to show the use of Stream Builder]:</p>\n\n<pre><code>Stream.Builder&lt;Employee&gt; builder = Stream.builder();\n\nemployee.forEach( emp -&gt; {\n   //store employee data to excel file \n   // and use the same object to build the stream.\n   builder.add(emp);\n});\n\n//Now this stream can be used to update the employee collection\nStream&lt;Employee&gt; newStream = builder.build();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10162471,
+      "reputation" : 183,
+      "user_id" : 7505492,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0363e1e4efb8f35d4d381fee7280754a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jeremy Hicks",
+      "link" : "https://stackoverflow.com/users/7505492/jeremy-hicks"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1548773566,
+    "last_edit_date" : 1548773566,
+    "creation_date" : 1548238526,
+    "answer_id" : 54324863,
+    "question_id" : 23860533,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had a similar problem, and could think of three different intermediate structures from which to create a copy of the stream: a <code>List</code>, an array and a <code>Stream.Builder</code>. I wrote a little benchmark program, which suggested that from a performance point of view the <code>List</code> was about 30% slower than the other two which were fairly similar.</p>\n\n<p>The only drawback of converting to an array is that it is tricky if your element type is a generic type (which in my case it was); therefore I prefer to use a <code>Stream.Builder</code>.</p>\n\n<p>I ended up writing a little function that creates a <code>Collector</code>:</p>\n\n<pre><code>private static &lt;T&gt; Collector&lt;T, Stream.Builder&lt;T&gt;, Stream&lt;T&gt;&gt; copyCollector()\n{\n    return Collector.of(Stream::builder, Stream.Builder::add, (b1, b2) -&gt; {\n        b2.build().forEach(b1);\n        return b1;\n    }, Stream.Builder::build);\n}\n</code></pre>\n\n<p>I can then make a copy of any stream <code>str</code> by doing <code>str.collect(copyCollector())</code> which feels quite in keeping with the idiomatic usage of streams. </p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 83125,
+    "reputation" : 9843,
+    "user_id" : 233266,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/77e6036ad38ca6586c9b077be8e0b4a4?s=256&d=identicon&r=PG",
+    "display_name" : "Toby",
+    "link" : "https://stackoverflow.com/users/233266/toby"
+  },
+  "is_answered" : true,
+  "view_count" : 124878,
+  "protected_date" : 1560337694,
+  "answer_count" : 10,
+  "score" : 182,
+  "last_activity_date" : 1578220436,
+  "creation_date" : 1401056700,
+  "last_edit_date" : 1518187171,
+  "question_id" : 23860533,
+  "link" : "https://stackoverflow.com/questions/23860533/copy-a-stream-to-avoid-stream-has-already-been-operated-upon-or-closed",
+  "title" : "Copy a stream to avoid &quot;stream has already been operated upon or closed&quot;",
+  "body" : "<p>I'd like to duplicate a Java 8 stream so that I can deal with it twice. I can <code>collect</code> as a list and get new streams from that;</p>\n\n<pre><code>// doSomething() returns a stream\nList&lt;A&gt; thing = doSomething().collect(toList());\nthing.stream()... // do stuff\nthing.stream()... // do other stuff\n</code></pre>\n\n<p>But I kind of think there should be a more efficient/elegant way.</p>\n\n<p><strong>Is there a way to copy the stream without turning it into a collection?</strong></p>\n\n<p>I'm actually working with a stream of <code>Either</code>s, so want to process the left projection one way before moving onto the right projection and dealing with that another way. Kind of like this (which, so far, I'm forced to use the <code>toList</code> trick with).</p>\n\n<pre><code>List&lt;Either&lt;Pair&lt;A, Throwable&gt;, A&gt;&gt; results = doSomething().collect(toList());\n\nStream&lt;Pair&lt;A, Throwable&gt;&gt; failures = results.stream().flatMap(either -&gt; either.left());\nfailures.forEach(failure -&gt; ... );\n\nStream&lt;A&gt; successes = results.stream().flatMap(either -&gt; either.right());\nsuccesses.forEach(success -&gt; ... );\n</code></pre>\n"
+}

@@ -1,0 +1,219 @@
+{
+  "tags" : [ "java", "algorithm", "permutation" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 166589,
+      "reputation" : 16998,
+      "user_id" : 390807,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6f64fce01ffa86130c3fae06b1fcadef?s=256&d=identicon&r=PG",
+      "display_name" : "chill",
+      "link" : "https://stackoverflow.com/users/390807/chill"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1387539904,
+    "post_id" : 20702782,
+    "comment_id" : 31008324,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I guess the obvious O(n^2) algorithm is not appropriate, right?"
+  }, {
+    "owner" : {
+      "account_id" : 74486,
+      "reputation" : 106529,
+      "user_id" : 214010,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/2bfafb4d16a6dc78abef970bcab9ca97?s=256&d=identicon&r=PG",
+      "display_name" : "mikera",
+      "link" : "https://stackoverflow.com/users/214010/mikera"
+    },
+    "reply_to_user" : {
+      "account_id" : 166589,
+      "reputation" : 16998,
+      "user_id" : 390807,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6f64fce01ffa86130c3fae06b1fcadef?s=256&d=identicon&r=PG",
+      "display_name" : "chill",
+      "link" : "https://stackoverflow.com/users/390807/chill"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1387540206,
+    "post_id" : 20702782,
+    "comment_id" : 31008448,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Correct - I&#39;ve got an O(n^2) algorithm that needs temporary space already. I&#39;m hoping some smart person here can do much better than that :-)"
+  }, {
+    "owner" : {
+      "account_id" : 522930,
+      "reputation" : 113,
+      "user_id" : 4090319,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9103499995f2582c4eea6d0ce0f3eb0f?s=256&d=identicon&r=PG",
+      "display_name" : "domotorp",
+      "link" : "https://stackoverflow.com/users/4090319/domotorp"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1418587417,
+    "post_id" : 20702782,
+    "comment_id" : 43381434,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Related: <a href=\"http://cstheory.stackexchange.com/questions/27748/computing-parity-of-a-permutation-in-a-streaming-fashion-way\" title=\"computing parity of a permutation in a streaming fashion way\">cstheory.stackexchange.com/questions/27748/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1962756,
+      "reputation" : 516,
+      "user_id" : 1763810,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c9f7e37df3adc5214512c64c9b4ae9f4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "sebii",
+      "link" : "https://stackoverflow.com/users/1763810/sebii"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1387540367,
+    "last_edit_date" : 1492088275,
+    "creation_date" : 1387540367,
+    "answer_id" : 20703081,
+    "question_id" : 20702782,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You want the parity of the number of inversions. You can do this in O(n * log n) time using merge sort, but either you lose the initial array, or you need extra memory on the order of O(n). </p>\n\n<p>A simple algorithm that uses O(n) extra space and is O(n * log n):</p>\n\n<pre><code>inv = 0\nmergesort A into a copy B\nfor i from 1 to length(A):\n    binary search for position j of A[i] in B\n    remove B[j] from B\n    inv = inv + (j - 1)\n</code></pre>\n\n<p>That said, I don't think it's possible to do it in sublinear memory. See also:</p>\n\n<ul>\n<li><a href=\"https://cs.stackexchange.com/questions/3200/counting-inversion-pairs\">https://cs.stackexchange.com/questions/3200/counting-inversion-pairs</a></li>\n<li><a href=\"https://mathoverflow.net/questions/72669/finding-the-parity-of-a-permutation-in-little-space\">https://mathoverflow.net/questions/72669/finding-the-parity-of-a-permutation-in-little-space</a></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 166589,
+      "reputation" : 16998,
+      "user_id" : 390807,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6f64fce01ffa86130c3fae06b1fcadef?s=256&d=identicon&r=PG",
+      "display_name" : "chill",
+      "link" : "https://stackoverflow.com/users/390807/chill"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1387540736,
+    "creation_date" : 1387540736,
+    "answer_id" : 20703182,
+    "question_id" : 20702782,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Consider this approach...</p>\n\n<p>From the permutation, get the inverse permutation, by swapping the rows and\nsorting according to the top row order. This is O(nlogn)</p>\n\n<p>Then, simulate performing the inverse permutation and count the swaps, for O(n). This should give the parity of the permutation, according to this</p>\n\n<blockquote>\n  <p>An even permutation can be obtained as the composition of an even\n  number and only an even number of exchanges (called transpositions) of\n  two elements, while an odd permutation be obtained by (only) an odd\n  number of transpositions.</p>\n</blockquote>\n\n<p>from Wikipedia.</p>\n\n<p>Here's some code I had lying around, which performs an inverse permutation, I just modified it a bit to count swaps, you can just remove all mention of <code>a</code>, <code>p</code> contains the inverse permutation.</p>\n\n<pre><code>size_t\npermute_inverse (std::vector&lt;int&gt; &amp;a, std::vector&lt;size_t&gt; &amp;p) {\n    size_t cnt = 0\n    for (size_t i = 0; i &lt; a.size(); ++i) {\n        while (i != p[i]) {\n            ++cnt;\n            std::swap (a[i], a[p[i]]);\n            std::swap (p[i], p[p[i]]);\n        }\n    }\n    return cnt;\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 33833314,
+        "reputation" : 1,
+        "user_id" : 26209252,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a4223eb56b6adfbfa1631bd91e785840?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Sergei Kopylov",
+        "link" : "https://stackoverflow.com/users/26209252/sergei-kopylov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1720390286,
+      "post_id" : 20703469,
+      "comment_id" : 138791135,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This answer is not correct. Parity is not defined by a cycle&#39;s length. Consider cycles (123) and (132) that have the same length but different parity"
+    }, {
+      "owner" : {
+        "account_id" : 235018,
+        "reputation" : 375639,
+        "user_id" : 501557,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/e4bac7ebd5f5a06c716f508af656e24b?s=256&d=identicon&r=PG",
+        "display_name" : "templatetypedef",
+        "link" : "https://stackoverflow.com/users/501557/templatetypedef"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1720391042,
+      "post_id" : 20703469,
+      "comment_id" : 138791136,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The permutation (1 2 3) corresponds to the sequence 3 1 2, which has even parity (two inversions: 3/1 and 3/2). The permutation (1 3 2) corresponds to the sequence 2 3 1, which also has even parity (two inversions: 2/1 and 3/1). I believe the accepted answer is correct."
+    } ],
+    "owner" : {
+      "account_id" : 1159594,
+      "reputation" : 33579,
+      "user_id" : 1139393,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/4f7f66aa636f33c3e5784d3581213ba8?s=256&d=identicon&r=PG",
+      "display_name" : "Peter de Rivaz",
+      "link" : "https://stackoverflow.com/users/1139393/peter-de-rivaz"
+    },
+    "is_accepted" : true,
+    "score" : 26,
+    "last_activity_date" : 1387541830,
+    "creation_date" : 1387541830,
+    "answer_id" : 20703469,
+    "question_id" : 20702782,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think you can do this in O(n) time and O(n) space by simply computing the <a href=\"http://en.wikipedia.org/wiki/Cycle_decomposition_%28group_theory%29\">cycle decomposition</a>.</p>\n\n<p>You can compute the cycle decomposition in O(n) by simply starting with the first element and following the path until you return to the start.  This gives you the first cycle.  Mark each node as visited as you follow the path. </p>\n\n<p>Then repeat for the next unvisited node until all nodes are marked as visited.</p>\n\n<p>The parity of a cycle of length k is (k-1)%2, so you can simply add up the parities of all the cycles you have discovered to find the parity of the overall permutation.</p>\n\n<h2>Saving space</h2>\n\n<p>One way of marking the nodes as visited would be to add N to each value in the array when it is visited.  You would then be able to do a final tidying O(n) pass to turn all the numbers back to the original values.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 74486,
+      "reputation" : 106529,
+      "user_id" : 214010,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/2bfafb4d16a6dc78abef970bcab9ca97?s=256&d=identicon&r=PG",
+      "display_name" : "mikera",
+      "link" : "https://stackoverflow.com/users/214010/mikera"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1387627756,
+    "creation_date" : 1387627756,
+    "answer_id" : 20718842,
+    "question_id" : 20702782,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I selected the answer by Peter de Rivaz as the correct answer as this was the algorithmic approach I ended up using.</p>\n\n<p>However I used a couple of extra optimisations so I thought I would share them:</p>\n\n<ul>\n<li>Examine the size of data first</li>\n<li>If it is greater than 64, use a <code>java.util.BitSet</code> to store the visited elements</li>\n<li>If it is less than or equal to 64, use a long with bitwise operations to store the visited elements. This makes it O(1) space for many applications that only use small permutations.</li>\n<li>Actually return the swap count rather than the parity. This gives you the parity if you need it, but is potentially useful for other purposes, and is no more expensive to compute.</li>\n</ul>\n\n<p>Code below:</p>\n\n<pre><code>public int swapCount() {\n    if (length()&lt;=64) {\n        return swapCountSmall();\n    } else {\n        return swapCountLong();\n    }\n}\n\nprivate int swapCountLong() {\n    int n=length();\n    int swaps=0;\n    BitSet seen=new BitSet(n);\n    for (int i=0; i&lt;n; i++) {\n        if (seen.get(i)) continue;\n        seen.set(i);\n        for(int j=data[i]; !seen.get(j); j=data[j]) {\n            seen.set(j);\n            swaps++;\n        }       \n    }\n    return swaps;\n}\n\nprivate int swapCountSmall() {\n    int n=length();\n    int swaps=0;\n    long seen=0;\n    for (int i=0; i&lt;n; i++) {\n        long mask=(1L&lt;&lt;i);\n        if ((seen&amp;mask)!=0) continue;\n        seen|=mask;\n        for(int j=data[i]; (seen&amp;(1L&lt;&lt;j))==0; j=data[j]) {\n            seen|=(1L&lt;&lt;j);\n            swaps++;\n        }       \n    }\n    return swaps;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1607224,
+      "reputation" : 7155,
+      "user_id" : 1487069,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/jsf93.png?s=256",
+      "display_name" : "Carlo Wood",
+      "link" : "https://stackoverflow.com/users/1487069/carlo-wood"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764295155,
+    "last_edit_date" : 1764295155,
+    "creation_date" : 1764293126,
+    "answer_id" : 79832177,
+    "question_id" : 20702782,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think I'm brilliant ;) ... I came up with this in like 10 minutes:</p>\n<pre><code>bool is_odd(std::span&lt;uint8_t&gt; const&amp; permutation)\n{\n  int c = 0;\n  uint64_t m = 0;\n  for (uint8_t e : permutation)\n  {\n    uint64_t im = uint64_t{1} &lt;&lt; e;\n    if ((m &amp; im))\n      ++c;\n    m ^= (im - 1);\n  }\n  return (c &amp; 1);\n}\n</code></pre>\n<p>This even works if <code>permutation</code> doesn't contain its own indices, but contains indices into larger array (I needed this to pick axis from an N-dimensional space to form an M-dimensional subspace with proper rotation (which requires the permutation to be even)).</p>\n<p>The canonical implementation lives here, in <code>struct Permutation</code>:\n<a href=\"https://github.com/CarloWood/math/blob/master/Universe.h#L133\" rel=\"nofollow noreferrer\">https://github.com/CarloWood/math/blob/master/Universe.h#L133</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 74486,
+    "reputation" : 106529,
+    "user_id" : 214010,
+    "user_type" : "registered",
+    "accept_rate" : 83,
+    "profile_image" : "https://www.gravatar.com/avatar/2bfafb4d16a6dc78abef970bcab9ca97?s=256&d=identicon&r=PG",
+    "display_name" : "mikera",
+    "link" : "https://stackoverflow.com/users/214010/mikera"
+  },
+  "is_answered" : true,
+  "view_count" : 11136,
+  "accepted_answer_id" : 20703469,
+  "answer_count" : 5,
+  "score" : 21,
+  "last_activity_date" : 1764295155,
+  "creation_date" : 1387539373,
+  "last_edit_date" : 1387539680,
+  "question_id" : 20702782,
+  "link" : "https://stackoverflow.com/questions/20702782/efficiently-determine-the-parity-of-a-permutation",
+  "title" : "Efficiently determine the parity of a permutation",
+  "body" : "<p>I have an <code>int[]</code> array of length <code>N</code> containing the values 0, 1, 2, .... (N-1), i.e. it represents a permutation of integer indexes.</p>\n\n<p>What's the most efficient way to determine if the permutation has odd or even <a href=\"http://en.wikipedia.org/wiki/Parity_of_a_permutation\" rel=\"noreferrer\">parity</a>?</p>\n\n<p>(I'm particularly keen to avoid allocating objects for temporary working space if possible....)</p>\n"
+}

@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "spring", "swagger", "openapi", "openapi-generator" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2111085,
+      "reputation" : 9170,
+      "user_id" : 1876355,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/jAyUZ.png?s=256",
+      "display_name" : "Pierre",
+      "link" : "https://stackoverflow.com/users/1876355/pierre"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1665470356,
+    "post_id" : 74023693,
+    "comment_id" : 130701358,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Looking at the documentation <a href=\"https://swagger.io/specification/#considerations-for-file-uploads\" rel=\"nofollow noreferrer\">swagger.io/specification/#considerations-for-file-uploads</a> change your <code>options</code> &quot;<code>properties</code>&quot; to &quot;<code>items</code>&quot; then that can have a type which can also be a reference to a complex object"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 26564177,
+      "reputation" : 36,
+      "user_id" : 20191548,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8937139f499b7f00a88eea83ace36378?s=256&d=identicon&r=PG",
+      "display_name" : "AbhishekVinayak",
+      "link" : "https://stackoverflow.com/users/20191548/abhishekvinayak"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1665474054,
+    "last_edit_date" : 1665474054,
+    "creation_date" : 1665472093,
+    "answer_id" : 74024247,
+    "question_id" : 74023693,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The interface has the name 'FileuploadwithoptionsApi', YAML file has /fileuploadwithoptions and the response entity has name fileuploadwithoptionsPost but the RequestParam has object 'FileuploadwithoptionsPostRequestOptions' is it because of this it cannot resolve the symbol.</p>\n<pre><code>@Parameter(name = &quot;options&quot;, description = &quot;&quot;) @Valid @RequestParam(value = &quot;options&quot;, required = false) FileuploadwithoptionsPostRequestOptions options)\n</code></pre>\n<p>Is the object 'FileuploadwithoptionsPostRequestOptions' instantiated or does it have a similar class or interface matching the object present in @Request Param.</p>\n<p>Ok, you have imported the required class for the object try using @RequestPart as you have used for file. Try if it works.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 16834911,
+    "reputation" : 404,
+    "user_id" : 12171869,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/GPjBK.gif?s=256",
+    "display_name" : "frankmurphy",
+    "link" : "https://stackoverflow.com/users/12171869/frankmurphy"
+  },
+  "is_answered" : false,
+  "view_count" : 9861,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1761753890,
+  "creation_date" : 1665468856,
+  "question_id" : 74023693,
+  "link" : "https://stackoverflow.com/questions/74023693/openapi-generator-not-generating-model",
+  "title" : "openapi-generator not generating model",
+  "body" : "<p>I am using the openapi-generator to create a multipart/form-data. In an ideal situation I should be able to upload a file, and specify in the options what should happen with the file.</p>\n<p>I would like the options to be an object. For one or another reason, this does not seem to work. The openapi-generator generates the API interface, etc, but it does not generate the model for the options object.</p>\n<p>I can specify the options individually, but I prefer the options to be an object, with the necessary model to it. I believe this provides a more structured way to deal with the options.</p>\n<p>My yaml file looks like this (I specified what works and what doesn't work):</p>\n<pre><code>  /fileuploadwithoptions:\n    post:\n      summary: Upload a file and processes it according to the options specified.\n      requestBody:\n        content:\n          multipart/form-data:\n            schema:\n              required:\n                - file\n              type: object\n              properties:\n                file:\n                  type: string\n                  format: binary\n                option1:  &lt;-- this works\n                  type: string\n                  description: A descriptions for option 1.\n                options: &lt;-- this does not work\n                  #type: application/json\n                  type: object\n                  description: The options.\n                  properties:\n                    option1:\n                      type: string\n                      description: A descriptions for option 1.\n                    option2:\n                      type: string\n                      description: A descriptions for option 2.\n            encoding:\n              file:\n                contentType: application/octet-stream\n</code></pre>\n<p>This generates the following API:</p>\n<pre><code>/**\n * NOTE: This class is auto generated by OpenAPI Generator (https://openapi-generator.tech) (6.0.1).\n * https://openapi-generator.tech\n * Do not edit the class manually.\n */\npackage com.teradact.tokenizerplusserver.api;\n\nimport com.teradact.tokenizerplusserver.model.FileuploadwithoptionsPostRequestOptions;\nimport io.swagger.v3.oas.annotations.Operation;\nimport io.swagger.v3.oas.annotations.Parameter;\nimport io.swagger.v3.oas.annotations.Parameters;\nimport io.swagger.v3.oas.annotations.media.Content;\nimport io.swagger.v3.oas.annotations.media.Schema;\nimport io.swagger.v3.oas.annotations.responses.ApiResponse;\nimport io.swagger.v3.oas.annotations.security.SecurityRequirement;\nimport io.swagger.v3.oas.annotations.tags.Tag;\nimport org.springframework.http.HttpStatus;\nimport org.springframework.http.MediaType;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.validation.annotation.Validated;\nimport org.springframework.web.bind.annotation.*;\nimport org.springframework.web.context.request.NativeWebRequest;\nimport org.springframework.web.multipart.MultipartFile;\n\nimport javax.validation.Valid;\nimport javax.validation.constraints.*;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Optional;\nimport javax.annotation.Generated;\n\n@Generated(value = &quot;org.openapitools.codegen.languages.SpringCodegen&quot;, date = &quot;2022-10-11T08:11:04.909499+02:00[Europe/Brussels]&quot;)\n@Validated\n@Tag(name = &quot;fileuploadwithoptions&quot;, description = &quot;the fileuploadwithoptions API&quot;)\npublic interface FileuploadwithoptionsApi {\n\n    default Optional&lt;NativeWebRequest&gt; getRequest() {\n        return Optional.empty();\n    }\n\n    /**\n     * POST /fileuploadwithoptions : Upload a file and processes it according to the options specified.\n     *\n     * @param file  (required)\n     * @param option1 A descriptions for option 1. (optional)\n     * @param options  (optional)\n     * @return The file. (status code 200)\n     *         or bad input parameter (status code 400)\n     */\n    @Operation(\n        operationId = &quot;fileuploadwithoptionsPost&quot;,\n        summary = &quot;Upload a file and processes it according to the options specified.&quot;,\n        responses = {\n            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;The processed file.&quot;, content = {\n                @Content(mediaType = &quot;application/octet-stream&quot;, schema = @Schema(implementation = org.springframework.core.io.Resource.class))\n            }),\n            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;bad input parameter&quot;)\n        }\n    )\n    @RequestMapping(\n        method = RequestMethod.POST,\n        value = &quot;/fileuploadwithoptions&quot;,\n        produces = { &quot;application/octet-stream&quot; },\n        consumes = { &quot;multipart/form-data&quot; }\n    )\n    default ResponseEntity&lt;org.springframework.core.io.Resource&gt; fileuploadwithoptionsPost(\n        @Parameter(name = &quot;file&quot;, description = &quot;&quot;, required = true) @RequestPart(value = &quot;file&quot;, required = true) MultipartFile file,\n        @Parameter(name = &quot;option1&quot;, description = &quot;A descriptions for option 1.&quot;) @Valid @RequestParam(value = &quot;option1&quot;, required = false) String option1,\n        @Parameter(name = &quot;options&quot;, description = &quot;&quot;) @Valid @RequestParam(value = &quot;options&quot;, required = false) FileuploadwithoptionsPostRequestOptions options\n    ) {\n        return new ResponseEntity&lt;&gt;(HttpStatus.NOT_IMPLEMENTED);\n\n    }\n\n}\n</code></pre>\n<p>This gives however the following error:</p>\n<p>&quot;Cannot resolve symbol 'FileuploadwithoptionsPostRequestOptions&quot;, since the model for the object is simply not created.</p>\n<p>Thanks in advance for pointing out where I am wrong!</p>\n"
+}

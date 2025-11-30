@@ -1,0 +1,108 @@
+{
+  "tags" : [ "java", "json", "pretty-print" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 81495,
+      "reputation" : 4085,
+      "user_id" : 229743,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Tef4U.jpg?s=256",
+      "display_name" : "Taylor",
+      "link" : "https://stackoverflow.com/users/229743/taylor"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1387208678,
+    "post_id" : 20614799,
+    "comment_id" : 30849912,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "That&#39;s going to be challenging because a structure CANNOT be inferred from invalid JSON.  That&#39;s the whole point."
+  }, {
+    "owner" : {
+      "account_id" : 3737013,
+      "reputation" : 211,
+      "user_id" : 3107741,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/3c01c9b6c447d9151994b0576dc789f3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Christian Morin",
+      "link" : "https://stackoverflow.com/users/3107741/christian-morin"
+    },
+    "reply_to_user" : {
+      "account_id" : 81495,
+      "reputation" : 4085,
+      "user_id" : 229743,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Tef4U.jpg?s=256",
+      "display_name" : "Taylor",
+      "link" : "https://stackoverflow.com/users/229743/taylor"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1387210185,
+    "post_id" : 20614799,
+    "comment_id" : 30850974,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "So no way to do something similar with regexp as in the question/answer I linked for XML?"
+  }, {
+    "owner" : {
+      "account_id" : 2325393,
+      "reputation" : 9619,
+      "user_id" : 2040040,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://i.sstatic.net/FD6QD.png?s=256",
+      "display_name" : "johnchen902",
+      "link" : "https://stackoverflow.com/users/2040040/johnchen902"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1393594275,
+    "post_id" : 20614799,
+    "comment_id" : 33515317,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "How about adding some <code>]</code>, <code>}</code>, <code>)</code> and <code>&quot;</code> at the end of the JSON to make it correctly parsed?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3737013,
+      "reputation" : 211,
+      "user_id" : 3107741,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/3c01c9b6c447d9151994b0576dc789f3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Christian Morin",
+      "link" : "https://stackoverflow.com/users/3107741/christian-morin"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1404721285,
+    "creation_date" : 1404721285,
+    "answer_id" : 24605993,
+    "question_id" : 20614799,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This is how I ended up solving this. Not a great solution, but not sure how it could've been done better (given the problematic input restrictions). It's working well however, and attempts to pretty-print json the best it can. It's building on the solution seen here for PHP: <a href=\"https://gist.github.com/GloryFish/1045396\" rel=\"nofollow\">https://gist.github.com/GloryFish/1045396</a></p>\n\n<pre><code>public String prettyPrintJSONAsString(String jsonString) {\n\n    int tabCount = 0;\n    StringBuffer prettyPrintJson = new StringBuffer();\n    String lineSeparator = \"\\r\\n\";\n    String tab = \"  \";\n    boolean ignoreNext = false;\n    boolean inQuote = false;\n\n    char character;\n\n    /* Loop through each character to style the output */\n    for (int i = 0; i &lt; jsonString.length(); i++) {\n\n        character = jsonString.charAt(i);\n\n        if (inQuote) {\n\n            if (ignoreNext) {\n                ignoreNext = false;\n            } else if (character == '\"') {\n                inQuote = !inQuote;\n            }\n            prettyPrintJson.append(character);\n        } else {\n\n            if (ignoreNext ? ignoreNext = !ignoreNext : ignoreNext);\n\n            switch (character) {\n\n            case '[':\n                ++tabCount;\n                prettyPrintJson.append(character);\n                prettyPrintJson.append(lineSeparator);\n                printIndent(tabCount, prettyPrintJson, tab);\n                break;\n\n            case ']':\n                --tabCount;\n                prettyPrintJson.append(lineSeparator);\n                printIndent(tabCount, prettyPrintJson, tab);\n                prettyPrintJson.append(character);\n                break;\n\n            case '{':\n                ++tabCount;\n                prettyPrintJson.append(character);\n                prettyPrintJson.append(lineSeparator);\n                printIndent(tabCount, prettyPrintJson, tab);\n                break;\n\n            case '}':\n                --tabCount;\n                prettyPrintJson.append(lineSeparator);\n                printIndent(tabCount, prettyPrintJson, tab);\n                prettyPrintJson.append(character);\n                break;\n\n            case '\"':\n                inQuote = !inQuote;\n                prettyPrintJson.append(character);\n                break;\n\n            case ',':\n                prettyPrintJson.append(character);\n                prettyPrintJson.append(lineSeparator);\n                printIndent(tabCount, prettyPrintJson, tab);\n                break;\n\n            case ':':\n                prettyPrintJson.append(character + \" \");\n                break;\n\n            case '\\\\':\n                prettyPrintJson.append(character);\n                ignoreNext = true;\n                break;\n\n            default:\n                prettyPrintJson.append(character);\n                break;\n            }\n        }\n    }\n\n    return prettyPrintJson.toString();\n}\n\nprivate void printIndent(int count, StringBuffer stringBuffer, String indent) {\n    for (int i = 0; i &lt; count; i++) {\n        stringBuffer.append(indent);\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3737013,
+    "reputation" : 211,
+    "user_id" : 3107741,
+    "user_type" : "registered",
+    "accept_rate" : 67,
+    "profile_image" : "https://www.gravatar.com/avatar/3c01c9b6c447d9151994b0576dc789f3?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Christian Morin",
+    "link" : "https://stackoverflow.com/users/3107741/christian-morin"
+  },
+  "is_answered" : true,
+  "view_count" : 938,
+  "accepted_answer_id" : 24605993,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760537233,
+  "creation_date" : 1387208520,
+  "last_edit_date" : 1495541700,
+  "question_id" : 20614799,
+  "link" : "https://stackoverflow.com/questions/20614799/how-to-pretty-print-invalid-incomplete-json-in-java",
+  "title" : "How to pretty print invalid/incomplete JSON in Java",
+  "body" : "<p>Assuming an incomplete JSON string (cut off in the middle for e.g.) how can I best pretty print the characters I have? All pretty printing I've come across for JSON involves libraries, but they assume a valid and complete JSON structure. </p>\n\n<p>I'm fine with using a \"brute-force\" method as described here for XML: <a href=\"https://stackoverflow.com/a/19236572/3107741\">How to pretty print XML from Java?</a></p>\n\n<p>Any ideas for similar handling for JSON?</p>\n\n<p>(I don't want to parse the entire JSON structure since it can be massive, I only want a small part of it printed for logging purposes which I want to be minimal and fast-- and then I want it pretty printed).</p>\n"
+}

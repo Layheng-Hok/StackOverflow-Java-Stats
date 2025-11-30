@@ -1,0 +1,249 @@
+{
+  "tags" : [ "java", "postgresql", "jdbc", "pg-jdbc" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1313740,
+      "reputation" : 2736,
+      "user_id" : 1261162,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/1PwKU.jpg?s=256",
+      "display_name" : "Rafael",
+      "link" : "https://stackoverflow.com/users/1261162/rafael"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1379517232,
+    "post_id" : 17969431,
+    "comment_id" : 27860382,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Can you post the actual PreparedStatement you are trying to run?"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 72209,
+        "reputation" : 4091,
+        "user_id" : 208581,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/613a76ffb9081687436c7dc29d041b57?s=256&d=identicon&r=PG",
+        "display_name" : "Rob Bygrave",
+        "link" : "https://stackoverflow.com/users/208581/rob-bygrave"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1444684553,
+      "post_id" : 19751613,
+      "comment_id" : 53996630,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&gt; that committee is more secretive than the Soviet Politburo and slower than a glacier.   ... Comment of the year !!!"
+    } ],
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 42,
+    "last_activity_date" : 1761670218,
+    "last_edit_date" : 1761670218,
+    "creation_date" : 1383471932,
+    "answer_id" : 19751613,
+    "question_id" : 17969431,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>tl;dr</h1>\n<p>Use index-friendly UUID <a href=\"https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7\" rel=\"nofollow noreferrer\">Version 7</a> (Unix-style timestamp plus random bits):</p>\n<pre class=\"lang-java prettyprint-override\"><code>myPreparedStatement.setObject\n( \n    … , \n    com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch()  // &quot;UUID Creator&quot; library.\n)\n</code></pre>\n<p>… or use another library:</p>\n<pre class=\"lang-java prettyprint-override\"><code>myPreparedStatement.setObject\n( \n    … , \n    com.fasterxml.uuid.Generators.timeBasedEpochGenerator().generate()  // &quot;UUID Creator&quot; library.\n)\n</code></pre>\n<p>If no Java library available supporting UUID Version 7, fall back to using UUID <a href=\"https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-4\" rel=\"nofollow noreferrer\">Version 4</a> (random bits, <em>not</em> index-friendly):</p>\n<pre class=\"lang-java prettyprint-override\"><code>myPreparedStatement.setObject\n( \n    … , \n    java.util.UUID.randomUUID()\n)\n</code></pre>\n<h1>Details</h1>\n<p>(a) Show us your code.</p>\n<p><a href=\"https://docs.oracle.com/javase/10/docs/api/java/sql/PreparedStatement.html#setObject(int,java.lang.Object)\" rel=\"nofollow noreferrer\"><code>PreparedStatement::setObject</code></a> does work when passing a <a href=\"https://docs.oracle.com/javase/10/docs/api/java/util/UUID.html\" rel=\"nofollow noreferrer\"><code>java.util.UUID</code></a>. You likely have some other issue in your code.</p>\n<p>(b) See my blog post <a href=\"http://crafted-software.blogspot.com/2013/03/uuid-values-from-jdbc-to-postgres.html\" rel=\"nofollow noreferrer\">UUID Values From JDBC to Postgres</a> for a bit of discussion and example code.</p>\n<pre><code>// Example data to store in database.\njava.util.UUID uuid = java.util.UUID.randomUUID(); // Generate a random UUID. \nString foodName = &quot;Croissant&quot;;\n\n// JDBC Prepared Statement.\nPreparedStatement preparedStatement = conn.prepareStatement( &quot;INSERT INTO food_ (pkey_, food_name_  ) VALUES (?,?)&quot; );\nint nthPlaceholder = 1; // 1-based counting (not an index).\npreparedStatement.setObject( nthPlaceholder++, uuid ); \npreparedStatement.setString( nthPlaceholder++, foodName ); \n\n// Execute SQL.\nif ( !( preparedStatement.executeUpdate() == 1 ) ) { \n  // If the SQL reports other than one row inserted…\n  this.logger.error( &quot;Failed to insert row into database.&quot; );\n}\n</code></pre>\n<p>(c) I'm not sure what you mean by</p>\n<blockquote>\n<p>The latest Java JDBC drivers for postgres claim to support UUIDs natively</p>\n</blockquote>\n<p>Which driver? There are at least two open-source JDBC drivers for Postgres, the <a href=\"http://jdbc.postgresql.org/\" rel=\"nofollow noreferrer\">current/legacy one</a> and a new rewrite <a href=\"https://github.com/impossibl/pgjdbc-ng\" rel=\"nofollow noreferrer\">&quot;next generation&quot; one</a>. And there are other commercial drivers as well.</p>\n<p>&quot;natively&quot;? Can you link to the documentation you read? The SQL spec has no data type for <a href=\"https://en.wikipedia.org/wiki/Universally_unique_identifier\" rel=\"nofollow noreferrer\">UUID</a> (unfortunately ☹), therefore the <a href=\"http://openjdk.java.net/jeps/170\" rel=\"nofollow noreferrer\">JDBC spec</a> has no data type for UUID. As a workaround, the JDBC driver for Postgres uses the <code>setObject</code> and <code>getObject</code> methods on PreparedStatement move the UUID across the chasm between Java ↔ SQL ↔ Postgres. See the example code above.</p>\n<p>As the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/sql/PreparedStatement.html\" rel=\"nofollow noreferrer\">PreparedStatement JDBC doc</a> says:</p>\n<blockquote>\n<p>If arbitrary parameter type conversions are required, the method setObject should be used with a target SQL type.</p>\n</blockquote>\n<p>Perhaps by &quot;natively&quot;, you confused Postgres' native support for UUID as a data type with JDBC having a UUID data type. Postgres does indeed support UUID as a data type, which means the value is stored as 128-bits rather than multiple times that if it were stored as as ASCII or Unicode hex string. And being native also means Postgres knows how to build an index on a column of that type.</p>\n<p>The point of my blog post mentioned above was that I was pleasantly surprised by how simple it is to bridge that chasm between <code>Java ↔ SQL ↔ Postgres</code>. In my first uneducated attempts, I was working too hard.</p>\n<h2>Postgres support of UUID</h2>\n<p>Another note about Postgres supporting UUID… Postgres knows how to store, index, and retrieve existing UUID values.</p>\n<p><em>Storing</em> UUID values is built into Postgres for all versions, while <em>generating</em> UUID values has more of a story:</p>\n<ul>\n<li>In older versions of Postgres, to <em>generate</em> UUID values you must enable the Postgres extension (plugin) <a href=\"http://www.postgresql.org/docs/current/static/uuid-ossp.html\" rel=\"nofollow noreferrer\"><code>uuid-ossp</code></a>. This extension wraps <a href=\"http://www.ossp.org/pkg/lib/uuid/\" rel=\"nofollow noreferrer\">a library provided by The OSSP Project</a> for generating a variety of kinds of UUID values. See <a href=\"http://crafted-software.blogspot.com/2011/10/extensions-in-postgres.html\" rel=\"nofollow noreferrer\">my blog for instructions</a>.</li>\n<li>In modern Postgres, generate UUID values using the built-in functions <code>uuidv7</code> &amp; <code>uuidv4</code> methods described below.</li>\n</ul>\n<h2>Modern UUID</h2>\n<p>Update on modern UUIDs… In 2024, the <a href=\"https://en.wikipedia.org/wiki/Internet_Engineering_Task_Force\" rel=\"nofollow noreferrer\">IETF</a> finalized <a href=\"https://www.rfc-editor.org/rfc/rfc9562.html\" rel=\"nofollow noreferrer\"><em>RFC 9562</em></a>, obsoleting <em>RFC 4122</em>, a new specification for UUID.</p>\n<p>This new spec invents three new Versions of UUID, inspired by dozens of experimental efforts in the community. In addition to Versions 1 (point in time and space), 4 (random), and 5 (name-based, SHA-1 hash) already in use, we now have Versions 6 (point in time and space), 7 (time plus random), and 8 (undefined, for experimental and private use).</p>\n<ul>\n<li>Version 1 (point in time and space)</li>\n<li>Version 4 (random)</li>\n<li>Version 5 (name-based, SHA-1 hash, supplants Version 3)</li>\n<li>\uD83D\uDC49\uD83C\uDFFD Version 6 (point in time and space of Version 1 but with sensible bit-layout)</li>\n<li>\uD83D\uDC49\uD83C\uDFFD Version 7 (Unix time plus random)</li>\n<li>Version 8 (undefined, for experimental and private use)</li>\n</ul>\n<h3>Index efficiency</h3>\n<p>The purpose of Versions 6 &amp; 7 is to be <strong>index-friendly</strong>. The older UUIDs are index-hostile, making inserts to a database significantly inefficient in larger tables. That index-inefficiency problem is resolved by using Versions 6 &amp; 7.</p>\n<ul>\n<li>Version 6 is a reworking of Version 1, with the same fields but rearranged more sensibly to put most significant bits first. You can refactor a database to convert between 1 and 6, lossless and reversible, to dramatically improve performance.</li>\n<li>Version 7 is a new kind of UUID. It uses a different kind of timestamp than Versions 1/6. V.7 uses a Unix-style timestamp, a count since first moment of 1970 in UTC, 1970-01-01T00:00Z. By default the count is milliseconds with an allowance for using up to 12 more bits for a sub-millisecond timestamp. The remaining bits are randomly-generated. Prefer Version 7 over 6 &amp; 1 if possible.</li>\n</ul>\n<h3>Postgres 18+</h3>\n<p>Postgres 18 (released 2025-09) adds support for Version 7 by adding a built-in generation function, <code>uuidv7</code>. This function exercises that spec-granted option to use 12 more bits for sub-millisecond timestamp.</p>\n<p>And, in Postgres 18+, the existing random UUID (Version 4) generation function gets a second name for consistency: <code>uuidv4</code>. With these two functions built-in, you may no longer need the <em>uuid-ossp</em> extension.</p>\n<h3>Java</h3>\n<p>On the JDBC side, Java has <em>not</em> been updated for RFC 9562. So the <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/UUID.html\" rel=\"nofollow noreferrer\"><code>java.util.UUID</code></a> class does not understand Versions 6 and 7. But the class is compatible nevertheless! The <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/UUID.html#fromString(java.lang.String)\" rel=\"nofollow noreferrer\">fromString</a> blindly parses the hex string inputs of Version 6 and 7, converting them to 128 bits appropriately. The <code>variant</code> and <code>version</code> methods report correct values. But the <code>timestamp()</code> &amp; <code>node()</code> methods do not yet work with a Version 6 or 7 UUID object (as of Java 25).</p>\n<p>As for generating Version 6 or 7 values in Java, you’ll need a third-party library. At least two such libraries exist that have been updated to support <em>RFC 9562</em>. Both of those libraries return <code>java.util.UUID</code> objects.</p>\n<p>I am not specifically recommending either library as I have not yet examined their source code nor have I used them in production. Do you own due diligence.</p>\n<ul>\n<li><a href=\"https://github.com/f4b6a3/uuid-creator?tab=readme-ov-file\" rel=\"nofollow noreferrer\"><em>UUID Creator</em></a></li>\n<li><a href=\"https://github.com/cowtowncoder/java-uuid-generator?tab=readme-ov-file\" rel=\"nofollow noreferrer\"><em>Java Uuid Generator (JUG)</em></a></li>\n</ul>\n<p>Access them as a dependency in Maven, Gradle, etc.</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;!-- UUID Creator --&gt;\n&lt;!-- https://github.com/f4b6a3/uuid-creator --&gt;\n&lt;dependency&gt;\n    &lt;groupId&gt;com.github.f4b6a3&lt;/groupId&gt;\n    &lt;artifactId&gt;uuid-creator&lt;/artifactId&gt;\n    &lt;version&gt;6.1.1&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;!-- Java Uuid Generator (JUG) --&gt;\n&lt;!-- https://github.com/cowtowncoder/java-uuid-generator --&gt;\n&lt;dependency&gt;\n    &lt;groupId&gt;com.fasterxml.uuid&lt;/groupId&gt;\n    &lt;artifactId&gt;java-uuid-generator&lt;/artifactId&gt;\n    &lt;version&gt;5.1.0&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n<h4>Example code</h4>\n<p>So the modern version of the Java code seen above would be like the following. I put in calls to both libraries listed above, so delete the unwanted line after cut-and-paste.</p>\n<pre class=\"lang-java prettyprint-override\"><code>// Example data to store in database.\n// Generate a Version 7 UUID based on Unix-style timestamp plus random bits.\njava.util.UUID uuid =  com.github.f4b6a3.uuid.UuidCreator.getTimeOrderedEpoch();  // &quot;UUID Creator&quot; library.\njava.util.UUID uuid =  com.fasterxml.uuid.Generators.timeBasedEpochGenerator().generate();  // &quot;Java Uuid Generator (JUG)&quot; library.\nString foodName = &quot;Croissant&quot;;\n\n// Prepared statement in SQL.\nPreparedStatement preparedStatement = conn.prepareStatement( &quot;INSERT INTO food_ (pkey_, food_name_  ) VALUES (?,?)&quot; );\nint nthPlaceholder = 1; // 1-based counting (not an index).\npreparedStatement.setObject( nthPlaceholder++, uuid ); \npreparedStatement.setString( nthPlaceholder++, foodName ); \n\n// Execute SQL.\nif ( !( preparedStatement.executeUpdate() == 1 ) ) \n{ \n    // If the SQL reports other than one row inserted…\n    this.logger.error( &quot;Failed to insert row into database.&quot; );\n}\n</code></pre>\n<p>In a rapid-fire scenario where you are generating many UUIDs per millisecond, use the <em>UUID Creator</em> library, and change the method called above to <a href=\"https://javadoc.io/doc/com.github.f4b6a3/uuid-creator/latest/com.github.f4b6a3.uuid/com/github/f4b6a3/uuid/UuidCreator.html\" rel=\"nofollow noreferrer\"><code>UuidCreator.getTimeOrderedEpochPlus1()</code></a> or <code>getTimeOrderedEpochPlusN</code>. Those methods generate a monotonic number within each timestamp (each millisecond) to (a) guarantee uniqueness, and for (b) speedier performance (random generation is more work than incrementing). The other library may not offer this feature (I am not certain).</p>\n<h2>SQL Standard</h2>\n<p>By the way…</p>\n<p>If I knew how to petition the JDBC expert group or JSR team to make JDBC aware of UUID, I certainly would. They are doing just that for the new date-time types being defined in <a href=\"http://jcp.org/en/jsr/detail?id=310\" rel=\"nofollow noreferrer\">JSR 310: Date and Time API</a>.</p>\n<p>Similarly, if I knew how to petition the SQL standards committee to add a data type of UUID, I would. But apparently that committee is more secretive than the Soviet Politburo and slower than a glacier.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 111681,
+        "reputation" : 13372,
+        "user_id" : 1480018,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/adc85b2c054f3eb102da8eb68545dca4?s=256&d=identicon&r=PG",
+        "display_name" : "Paul Taylor",
+        "link" : "https://stackoverflow.com/users/1480018/paul-taylor"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1534921907,
+      "post_id" : 22681738,
+      "comment_id" : 90873231,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "where does PGobject come from ?"
+    }, {
+      "owner" : {
+        "account_id" : 3660223,
+        "reputation" : 6383,
+        "user_id" : 3050249,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/yz2yy.jpg?s=256",
+        "display_name" : "Miha_x64",
+        "link" : "https://stackoverflow.com/users/3050249/miha-x64"
+      },
+      "reply_to_user" : {
+        "account_id" : 111681,
+        "reputation" : 13372,
+        "user_id" : 1480018,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/adc85b2c054f3eb102da8eb68545dca4?s=256&d=identicon&r=PG",
+        "display_name" : "Paul Taylor",
+        "link" : "https://stackoverflow.com/users/1480018/paul-taylor"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1589742900,
+      "post_id" : 22681738,
+      "comment_id" : 109408479,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PaulTaylor, <code>org.postgresql.util.PGobject</code> comes from PostgreSQL JDBC driver, <code>org.postgresql:postgresql</code>."
+    } ],
+    "owner" : {
+      "account_id" : 1142738,
+      "reputation" : 435,
+      "user_id" : 1126196,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/wrdAP.jpg?s=256",
+      "display_name" : "Nischal Hp",
+      "link" : "https://stackoverflow.com/users/1126196/nischal-hp"
+    },
+    "is_accepted" : false,
+    "community_owned_date" : 1395908200,
+    "score" : 18,
+    "last_activity_date" : 1395908200,
+    "creation_date" : 1395908200,
+    "answer_id" : 22681738,
+    "question_id" : 17969431,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I used the following approach to add UUID and other objects to postgres:</p>\n\n<pre><code> PGobject toInsertUUID = new PGobject();\n toInsertUUID.setType(\"uuid\");\n toInsertUUID.setValue(uuid.toString());\n PreparedStmt stmt = conn.prepareStatement(query);\n stmt.setObject(placeHolder,toInsertUUID);\n stmt.execute();\n</code></pre>\n\n<p>This way you will be stopping yourself from doing type casting. This piece of code worked perfectly for me for any time for example even json.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 111681,
+        "reputation" : 13372,
+        "user_id" : 1480018,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/adc85b2c054f3eb102da8eb68545dca4?s=256&d=identicon&r=PG",
+        "display_name" : "Paul Taylor",
+        "link" : "https://stackoverflow.com/users/1480018/paul-taylor"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1534780442,
+      "post_id" : 41167382,
+      "comment_id" : 90818912,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Where does PostgresUUIDType.INSTANCE come from, seems to be Hibernate class ?"
+    }, {
+      "owner" : {
+        "account_id" : 418826,
+        "reputation" : 710,
+        "user_id" : 795616,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/08cc96719ee0145caa6069c9253f5b66?s=256&d=identicon&r=PG",
+        "display_name" : "reznic",
+        "link" : "https://stackoverflow.com/users/795616/reznic"
+      },
+      "reply_to_user" : {
+        "account_id" : 111681,
+        "reputation" : 13372,
+        "user_id" : 1480018,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/adc85b2c054f3eb102da8eb68545dca4?s=256&d=identicon&r=PG",
+        "display_name" : "Paul Taylor",
+        "link" : "https://stackoverflow.com/users/1480018/paul-taylor"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1534921796,
+      "post_id" : 41167382,
+      "comment_id" : 90873182,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "org.hibernate.type"
+    } ],
+    "owner" : {
+      "account_id" : 418826,
+      "reputation" : 710,
+      "user_id" : 795616,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/08cc96719ee0145caa6069c9253f5b66?s=256&d=identicon&r=PG",
+      "display_name" : "reznic",
+      "link" : "https://stackoverflow.com/users/795616/reznic"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1481814459,
+    "creation_date" : 1481814459,
+    "answer_id" : 41167382,
+    "question_id" : 17969431,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>try </p>\n\n<pre><code>.setParameter(\"uuid\", uuid, PostgresUUIDType.INSTANCE);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3677053,
+        "reputation" : 353,
+        "user_id" : 3062913,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/74027d60c7ebf421679adbbbee051c29?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user3062913",
+        "link" : "https://stackoverflow.com/users/3062913/user3062913"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1566925407,
+      "post_id" : 54214663,
+      "comment_id" : 101805360,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you so much, I&#39;ve had a real nightmare of a time trying to find the right solution to this."
+    } ],
+    "owner" : {
+      "account_id" : 5786048,
+      "reputation" : 1989,
+      "user_id" : 4565235,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-E_QTH5wOUVk/AAAAAAAAAAI/AAAAAAAAAEw/ubd2R6D8dI4/s256-rj/photo.jpg",
+      "display_name" : "David Lilljegren",
+      "link" : "https://stackoverflow.com/users/4565235/david-lilljegren"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1547633208,
+    "creation_date" : 1547633208,
+    "answer_id" : 54214663,
+    "question_id" : 17969431,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This worked for me using the org.postgresql.postgresql 42.2.5</p>\n\n<pre><code>myPreparedStatement.setObject(4, UUID.randomUUID(),java.sql.Types.OTHER)\n</code></pre>\n\n<p>Without java.sql.Types.OTHER I got an error</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 136785,
+    "reputation" : 703,
+    "user_id" : 340535,
+    "user_type" : "registered",
+    "accept_rate" : 22,
+    "profile_image" : "https://www.gravatar.com/avatar/dbbddb832902ac6c29e838d7da878e6b?s=256&d=identicon&r=PG",
+    "display_name" : "user340535",
+    "link" : "https://stackoverflow.com/users/340535/user340535"
+  },
+  "is_answered" : true,
+  "view_count" : 44776,
+  "answer_count" : 4,
+  "score" : 23,
+  "last_activity_date" : 1761670218,
+  "creation_date" : 1375271037,
+  "last_edit_date" : 1544033865,
+  "question_id" : 17969431,
+  "link" : "https://stackoverflow.com/questions/17969431/postgres-uuid-jdbc-not-working",
+  "title" : "Postgres UUID JDBC not working",
+  "body" : "<p>The latest Java JDBC drivers for postgres claim to support UUIDs natively; working against Postgres 9.2 (mac).</p>\n\n<p>Indeed, when a PreparedStatement is used, I can step through the driver code, and even walk\nthrough the specialised 'setUuid' function in AbstractJdbc3gStatement.java. By all indications, it should 'just work'.</p>\n\n<p>However, it does not work. The database flings back an error, which I receive thus:</p>\n\n<pre><code>Caused by: org.postgresql.util.PSQLException: ERROR: operator does not exist: uuid = bytea\n  Hint: No operator matches the given name and argument type(s). You might need to add explicit type casts.\n  Position: 139\n    at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2157) ~[postgresql-9.2-1002.jdbc4.jar:na]\n</code></pre>\n\n<p>Yes, indeed, setUuid in the JDBC driver does send that as a bytea :</p>\n\n<pre><code>private void setUuid(int parameterIndex, UUID uuid) throws SQLException {\n        if (connection.binaryTransferSend(Oid.UUID)) {\n            byte[] val = new byte[16];\n            ByteConverter.int8(val, 0, uuid.getMostSignificantBits());\n            ByteConverter.int8(val, 8, uuid.getLeastSignificantBits());\n            bindBytes(parameterIndex, val, Oid.UUID);\n        } else {\n            bindLiteral(parameterIndex, uuid.toString(), Oid.UUID);\n        }\n    }\n</code></pre>\n\n<p>What gives?\nIs there some magic rune required in the actual database to bless this conversion ?</p>\n"
+}

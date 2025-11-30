@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "stream", "java-io", "encoder", "avro" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 259114,
+      "reputation" : 3118,
+      "user_id" : 541763,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/43aac9fdbb3f489dbeb253d3debb8b80?s=256&d=identicon&r=PG",
+      "display_name" : "LiMuBei",
+      "link" : "https://stackoverflow.com/users/541763/limubei"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1374746004,
+    "creation_date" : 1374746004,
+    "answer_id" : 17854663,
+    "question_id" : 17093739,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Not sure I understand correctly what you want, but why don't you specify a default value for the name field?</p>\n\n<pre><code>{\"type\": \"record\",\n \"name\": \"Member\",\n \"fields\": [\n    {\"name\": \"name\", \"type\": [\"string\", \"null\"], \"default\": \"unknown\" },\n    {\"name\": \"skill\", \"type\": \"string\"}\n]}\n</code></pre>\n\n<p>Then, if you don't explicitly set the field value to null it should use the string default.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2250079,
+    "reputation" : 1325,
+    "user_id" : 1982483,
+    "user_type" : "registered",
+    "accept_rate" : 16,
+    "profile_image" : "https://i.sstatic.net/jCDSl.jpg?s=256",
+    "display_name" : "ramu",
+    "link" : "https://stackoverflow.com/users/1982483/ramu"
+  },
+  "is_answered" : false,
+  "view_count" : 12228,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762527710,
+  "creation_date" : 1371145730,
+  "last_edit_date" : 1372689626,
+  "question_id" : 17093739,
+  "link" : "https://stackoverflow.com/questions/17093739/problems-in-avro-schema-string-null",
+  "title" : "Problems in avro schema .. String, null",
+  "body" : "<p>In this avro schema</p>\n\n<pre><code>{\"type\": \"record\",\n\"name\": \"Member\",\n\"fields\": [\n {\"name\": \"name\", \"type\": [\"string\", \"null\"] },\n {\"name\": \"skill\", \"type\": \"string\"}\n]}\n</code></pre>\n\n<p>When I try to assign multiple values to name like multiple records ... </p>\n\n<pre><code>ByteArrayOutputStream bos=new ByteArrayOutputStream();\nEncoder e= EncoderFactory.get().binaryEncoder(bos, null);\nGenericRecord rec=new GenericData.Record(schema);\nGenericDatumWriter&lt;GenericRecord&gt; datumWriter = new GenericDatumWriter&lt;GenericRecord&gt;(schema);\n\nfor(int i=0;i&lt;memlist.size();i++)\n{\n   rec.put(\"name\", memlist.get(i).name);\n   rec.put(\"skill\", memlist.get(i).skill);\n   datumWriter.write(rec, e);\n}\n\ne.flush();\nbos.close();\nSystem.out.println(bos.toString());\n</code></pre>\n\n<p>It always assign Null FOR the NAME field in the schema ... except for the first record that I put ... \nIs there a way I can use default as STRING ... and if there is no string then only it uses null mentioned in the schema</p>\n\n<p>Unions, as mentioned above, are represented using JSON arrays. For example, [\"string\", \"null\"] declares a schema which may be either a string or null.</p>\n\n<p>Unions may not contain more than one schema with the same type, except for the named types record, fixed and enum. For example, unions containing two array types or two map types are not permitted, but two types with different names are permitted. (Names permit efficient resolution when reading and writing unions.)</p>\n\n<p>So it always take NULL even though string value exist except for the first record</p>\n"
+}

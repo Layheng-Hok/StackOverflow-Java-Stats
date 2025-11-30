@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "cdi" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 224853,
+      "reputation" : 363,
+      "user_id" : 484962,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/LMzmnNdr.png?s=256",
+      "display_name" : "Lini",
+      "link" : "https://stackoverflow.com/users/484962/lini"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1581364728,
+    "last_edit_date" : 1581364728,
+    "creation_date" : 1576240984,
+    "answer_id" : 59322871,
+    "question_id" : 59295219,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It should be possible with @Alternative, but you need @Priority to declare your implementation a selected alternatives for the application:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>@Alternative @Priority(Interceptor.Priority.APPLICATION)\npublic class MyServiceHolder implements IServiceHolder {\n   ...\n}\n</code></pre>\n\n<p>The CDI Spec says:  </p>\n\n<p><strong>5.1 Modularity</strong><br>\nAn alternative is not available for injection, lookup or EL resolution to classes or JSP/JSF pages in a module unless the module is a bean archive and the alternative is explicitly selected for the bean archive <strong>or the application</strong>.</p>\n\n<p><strong>5.1.4 Inter-module injection</strong><br>\nA bean is available for injection in a certain module if:  </p>\n\n<ul>\n<li>the bean is not an interceptor or decorator</li>\n<li>the bean is enabled,</li>\n<li>the bean is either not an alternative, or the module is a bean archive and the bean is a selected alternative of the bean archive, or the bean is a <strong>selected alternative of the application</strong>, and </li>\n<li>the bean class is required to be accessible to classes in the module, according to the class accessibility requirements of the module architecture.</li>\n</ul>\n\n<p>You don't even need to declare your CDI as alternative in <strong>your own beans.xml</strong> though:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" ?&gt; \n&lt;beans xmlns=\"http://xmlns.jcp.org/xml/ns/javaee\" \n       xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \n       xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/javaee \n                           http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd\" \n       bean-discovery-mode=\"all\"&gt;\n    &lt;!--Using @Priority you dont need to specify alternative here--&gt;\n&lt;/beans&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 16340926,
+    "reputation" : 11,
+    "user_id" : 11801857,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/cb0df0548966f0e02c530bd8385daa9a?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Daniela",
+    "link" : "https://stackoverflow.com/users/11801857/daniela"
+  },
+  "is_answered" : false,
+  "view_count" : 435,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760910781,
+  "creation_date" : 1576104035,
+  "last_edit_date" : 1760910781,
+  "question_id" : 59295219,
+  "link" : "https://stackoverflow.com/questions/59295219/cdi-how-to-substitute-an-injected-bean-with-another",
+  "title" : "CDI, how to substitute an injected bean with another",
+  "body" : "<p>I started recently using CDI in one of projects i work and i have a specific situation where i could not find a solution yet. Could someone give me some hints? I would really appreciate.</p>\n\n<p>I have an application that uses a custom framework.</p>\n\n<ol>\n<li><p>In the custom framework i have one ejb that injects a bean.</p>\n\n<pre><code>public class MyEjb implements MyEjbBI {\n    ...\n    private IServiceHolder serviceHolder;\n    ...\n}\n\npublic interface IServiceHolder {\n    ...\n}\n\npublic class DefaultServiceHolder implements IServiceHolder {\n    ...\n}\n</code></pre></li>\n<li><p>In my application, the above mentioned code is packed into one jar file and that jar contains also one bean.xml file that i cannot change, so i cannot use @Alternative on my own implementation</p>\n\n<pre><code>public class MyServiceHolder extends IServiceHolder\n{\n    ...\n}\n</code></pre></li>\n</ol>\n\n<p><strong>My question:</strong> is any possibility to substitute at runtime the injected serviceHolder from \"MyEjb\"(default one) with \"MyServiceHolder\" implementation?</p>\n\n<p>I mention that i can do changes also in framework code. \nI have read something about producer methods but i do not really understand how to use them.</p>\n\n<p>Thanks!</p>\n"
+}

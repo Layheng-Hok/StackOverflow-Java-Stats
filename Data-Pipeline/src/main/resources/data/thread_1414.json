@@ -1,0 +1,534 @@
+{
+  "tags" : [ "java", "sorting" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 95910,
+      "reputation" : 241432,
+      "user_id" : 260990,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/39acb52ff074bc477f0325f4b1960c90?s=256&d=identicon&r=PG",
+      "display_name" : "Jigar Joshi",
+      "link" : "https://stackoverflow.com/users/260990/jigar-joshi"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1296052357,
+    "last_edit_date" : 1296052357,
+    "creation_date" : 1296051981,
+    "answer_id" : 4805618,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Use <code>Comparator</code> and then put objects into <code>Collection</code>,  then <code>Collections.sort();</code></p>\n\n<pre><code>class Person {\n\n    String fname;\n    String lname;\n    int age;\n\n    public Person() {\n    }\n\n    public int getAge() {\n        return age;\n    }\n\n    public void setAge(int age) {\n        this.age = age;\n    }\n\n    public String getFname() {\n        return fname;\n    }\n\n    public void setFname(String fname) {\n        this.fname = fname;\n    }\n\n    public String getLname() {\n        return lname;\n    }\n\n    public void setLname(String lname) {\n        this.lname = lname;\n    }\n\n    public Person(String fname, String lname, int age) {\n        this.fname = fname;\n        this.lname = lname;\n        this.age = age;\n    }\n\n    @Override\n    public String toString() {\n        return fname + \",\" + lname + \",\" + age;\n    }\n}\n\npublic class Main{\n\n    public static void main(String[] args) {\n        List&lt;Person&gt; persons = new java.util.ArrayList&lt;Person&gt;();\n        persons.add(new Person(\"abc3\", \"def3\", 10));\n        persons.add(new Person(\"abc2\", \"def2\", 32));\n        persons.add(new Person(\"abc1\", \"def1\", 65));\n        persons.add(new Person(\"abc4\", \"def4\", 10));\n        System.out.println(persons);\n        Collections.sort(persons, new Comparator&lt;Person&gt;() {\n\n            @Override\n            public int compare(Person t, Person t1) {\n                return t.getAge() - t1.getAge();\n            }\n        });\n        System.out.println(persons);\n\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 104911,
+      "reputation" : 121291,
+      "user_id" : 280244,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://i.sstatic.net/oTmxxFgA.jpg?s=256",
+      "display_name" : "Ralph",
+      "link" : "https://stackoverflow.com/users/280244/ralph"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1296052896,
+    "last_edit_date" : 1296052896,
+    "creation_date" : 1296051989,
+    "answer_id" : 4805621,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You need to implement your own <code>Comparator</code>, and then use it: for example</p>\n\n<pre><code>Arrays.sort(persons, new PersonComparator());\n</code></pre>\n\n<p>Your Comparator could look a bit like this:</p>\n\n<pre><code>public class PersonComparator implements Comparator&lt;? extends Person&gt; {\n\n  public int compare(Person p1, Person p2) {\n     int nameCompare = p1.name.compareToIgnoreCase(p2.name);\n     if (nameCompare != 0) {\n        return nameCompare;\n     } else {\n       return Integer.valueOf(p1.age).compareTo(Integer.valueOf(p2.age));\n     }\n  }\n}\n</code></pre>\n\n<p>The comparator first compares the names, if they are not equals it returns the result from comparing them, else it returns the compare result when comparing the ages of both persons.</p>\n\n<p><em>This code is only a draft: because the class is immutable you could think of building an singleton of it, instead creating a new instance for each sorting.</em></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 692600,
+        "reputation" : 4215,
+        "user_id" : 1410035,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/uNNeY.png?s=256",
+        "display_name" : "Tom Saleeba",
+        "link" : "https://stackoverflow.com/users/1410035/tom-saleeba"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1410934767,
+      "post_id" : 4805676,
+      "comment_id" : 40507614,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Mini code review: the else clause is redundant because the first return acts as a guard clause. Great answer though, worked a treat for me."
+    }, {
+      "owner" : {
+        "account_id" : 238157,
+        "reputation" : 38262,
+        "user_id" : 506855,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/1593ecf28b204068027f050329d171b4?s=256&d=identicon&r=PG",
+        "display_name" : "Puce",
+        "link" : "https://stackoverflow.com/users/506855/puce"
+      },
+      "edited" : false,
+      "score" : 58,
+      "creation_date" : 1453480400,
+      "post_id" : 4805676,
+      "comment_id" : 57634643,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "As this question/ answer still gets linked, please note that with Java SE 8 this became much simpler. If there are getters you can write <code>Comparator&lt;Person&gt; comparator = Comparator.comparing(Person::getName).thenComparingInt(Perso&zwnj;&#8203;n::getAge);</code>"
+    } ],
+    "owner" : {
+      "account_id" : 61630,
+      "reputation" : 39277,
+      "user_id" : 183579,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://www.gravatar.com/avatar/6cb844f49167c1c62dfb60bcbd9fe153?s=256&d=identicon&r=PG",
+      "display_name" : "Richard H",
+      "link" : "https://stackoverflow.com/users/183579/richard-h"
+    },
+    "is_accepted" : true,
+    "score" : 293,
+    "last_activity_date" : 1522247455,
+    "last_edit_date" : 1522247455,
+    "creation_date" : 1296052292,
+    "answer_id" : 4805676,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use <code>Collections.sort</code> as follows:</p>\n\n<pre><code>private static void order(List&lt;Person&gt; persons) {\n\n    Collections.sort(persons, new Comparator() {\n\n        public int compare(Object o1, Object o2) {\n\n            String x1 = ((Person) o1).getName();\n            String x2 = ((Person) o2).getName();\n            int sComp = x1.compareTo(x2);\n\n            if (sComp != 0) {\n               return sComp;\n            } \n\n            Integer x1 = ((Person) o1).getAge();\n            Integer x2 = ((Person) o2).getAge();\n            return x1.compareTo(x2);\n    }});\n}\n</code></pre>\n\n<p><code>List&lt;Persons&gt;</code> is now sorted by name, then by age.</p>\n\n<p><code>String.compareTo</code> \"Compares two strings lexicographically\" - from the <a href=\"http://download.oracle.com/javase/1.5.0/docs/api/java/lang/String.html\" rel=\"noreferrer\">docs</a>.</p>\n\n<p><code>Collections.sort</code> is a static method in the native Collections library. It does the actual sorting, you just need to provide a Comparator which defines how two elements in your list should be compared: this is achieved by providing your own implementation of the <code>compare</code> method.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 264830,
+      "reputation" : 72797,
+      "user_id" : 551406,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/asxye.jpg?s=256",
+      "display_name" : "Michael Berry",
+      "link" : "https://stackoverflow.com/users/551406/michael-berry"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1296052352,
+    "creation_date" : 1296052352,
+    "answer_id" : 4805688,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Have your person class implement <code>Comparable&lt;Person&gt;</code> and then implement the compareTo method, for instance:</p>\n\n<pre><code>public int compareTo(Person o) {\n    int result = name.compareToIgnoreCase(o.name);\n    if(result==0) {\n        return Integer.valueOf(age).compareTo(o.age);\n    }\n    else {\n        return result;\n    }\n}\n</code></pre>\n\n<p>That will sort first by name (case insensitively) and then by age. You can then run <code>Arrays.sort()</code> or <code>Collections.sort()</code> on the collection or array of Person objects.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 279365,
+      "reputation" : 49954,
+      "user_id" : 574479,
+      "user_type" : "registered",
+      "accept_rate" : 87,
+      "profile_image" : "https://www.gravatar.com/avatar/79f682361ccbe900f8846a1098d13921?s=256&d=identicon&r=PG",
+      "display_name" : "biziclop",
+      "link" : "https://stackoverflow.com/users/574479/biziclop"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1296052352,
+    "creation_date" : 1296052352,
+    "answer_id" : 4805689,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Or you can exploit the fact that <code>Collections.sort()</code> (or <code>Arrays.sort()</code>) is stable (it doesn't reorder elements that are equal) and use a <code>Comparator</code> to sort by age first and then another one to sort by name.</p>\n\n<p>In this specific case this isn't a very good idea but if you have to be able to change the sort order in runtime, it might be useful.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 230303,
+      "reputation" : 14598,
+      "user_id" : 493823,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/07076311c1d32f65f2e1ee3e0de9b62b?s=256&d=identicon&r=PG",
+      "display_name" : "fmucar",
+      "link" : "https://stackoverflow.com/users/493823/fmucar"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1296057053,
+    "last_edit_date" : 1296057053,
+    "creation_date" : 1296052673,
+    "answer_id" : 4805748,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<pre><code>Arrays.sort(persons, new PersonComparator());\n\n\n\nimport java.util.Comparator;\n\npublic class PersonComparator implements Comparator&lt;? extends Person&gt; {\n\n    @Override\n    public int compare(Person o1, Person o2) {\n        if(null == o1 || null == o2  || null == o1.getName() || null== o2.getName() ){\n            throw new NullPointerException();\n        }else{\n            int nameComparisonResult = o1.getName().compareTo(o2.getName());\n            if(0 == nameComparisonResult){\n                return o1.getAge()-o2.getAge();\n            }else{\n                return nameComparisonResult;\n            }\n        }\n    }\n}\n\n\nclass Person{\n    int age; String name;\n\n    public int getAge() {\n        return age;\n    }\n\n    public void setAge(int age) {\n        this.age = age;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n}\n</code></pre>\n\n<p>Updated version:</p>\n\n<pre><code>public class PersonComparator implements Comparator&lt;? extends Person&gt; {\n\n   @Override\n   public int compare(Person o1, Person o2) {\n\n      int nameComparisonResult = o1.getName().compareToIgnoreCase(o2.getName());\n      return 0 == nameComparisonResult?o1.getAge()-o2.getAge():nameComparisonResult;\n\n   }\n }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 206081,
+      "reputation" : 764,
+      "user_id" : 455169,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/df379a261a96a3252bc1b7f9bb89ca2e?s=256&d=identicon&r=PG",
+      "display_name" : "Maheshkumar",
+      "link" : "https://stackoverflow.com/users/455169/maheshkumar"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1354073420,
+    "creation_date" : 1354073420,
+    "answer_id" : 13597316,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use generic serial Comparator to sort collections by multiple fields.</p>\n\n<pre><code>import org.apache.commons.lang3.reflect.FieldUtils;\nimport java.util.Arrays;\nimport java.util.Comparator;\nimport java.util.List;\n\n/**\n* @author MaheshRPM\n*/\npublic class SerialComparator&lt;T&gt; implements Comparator&lt;T&gt; {\nList&lt;String&gt; sortingFields;\n\npublic SerialComparator(List&lt;String&gt; sortingFields) {\n    this.sortingFields = sortingFields;\n}\n\npublic SerialComparator(String... sortingFields) {\n    this.sortingFields = Arrays.asList(sortingFields);\n}\n\n@Override\npublic int compare(T o1, T o2) {\n    int result = 0;\n    try {\n        for (String sortingField : sortingFields) {\n            if (result == 0) {\n                Object value1 = FieldUtils.readField(o1, sortingField, true);\n                Object value2 = FieldUtils.readField(o2, sortingField, true);\n                if (value1 instanceof Comparable &amp;&amp; value2 instanceof Comparable) {\n                    Comparable comparable1 = (Comparable) value1;\n                    Comparable comparable2 = (Comparable) value2;\n                    result = comparable1.compareTo(comparable2);\n                } else {\n                    throw new RuntimeException(\"Cannot compare non Comparable fields. \" + value1.getClass()\n                            .getName() + \" must implement Comparable&lt;\" + value1.getClass().getName() + \"&gt;\");\n                }\n            } else {\n                break;\n            }\n        }\n    } catch (IllegalAccessException e) {\n        throw new RuntimeException(e);\n    }\n    return result;\n}\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1225804,
+        "reputation" : 3361,
+        "user_id" : 1191353,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/83e1bc5e8b02d06b9f88e876d9cb83ae?s=256&d=identicon&r=PG",
+        "display_name" : "John Baum",
+        "link" : "https://stackoverflow.com/users/1191353/john-baum"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1447174148,
+      "post_id" : 26865122,
+      "comment_id" : 55044214,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What would be the complexity of this sort of chaining of comparators? Are we essentially sorting each time we chain the comparators? So we do a NlogN operation for each comparator?"
+    }, {
+      "owner" : {
+        "account_id" : 238157,
+        "reputation" : 38262,
+        "user_id" : 506855,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/1593ecf28b204068027f050329d171b4?s=256&d=identicon&r=PG",
+        "display_name" : "Puce",
+        "link" : "https://stackoverflow.com/users/506855/puce"
+      },
+      "edited" : false,
+      "score" : 28,
+      "creation_date" : 1453480052,
+      "post_id" : 26865122,
+      "comment_id" : 57634389,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If there are getters you can write <code>Comparator&lt;Person&gt; comparator = Comparator.comparing(Person::getName).thenComparing(Person::&zwnj;&#8203;getAge);</code>"
+    }, {
+      "owner" : {
+        "account_id" : 238157,
+        "reputation" : 38262,
+        "user_id" : 506855,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/1593ecf28b204068027f050329d171b4?s=256&d=identicon&r=PG",
+        "display_name" : "Puce",
+        "link" : "https://stackoverflow.com/users/506855/puce"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1453480561,
+      "post_id" : 26865122,
+      "comment_id" : 57634760,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Use <code>thenComparingInt</code> for age (int)"
+    }, {
+      "owner" : {
+        "account_id" : 2422698,
+        "reputation" : 590,
+        "user_id" : 2115337,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/171aaa0bda97ca3fc2d0b20b5aa0a168?s=256&d=identicon&r=PG",
+        "display_name" : "Noldy",
+        "link" : "https://stackoverflow.com/users/2115337/noldy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1459322508,
+      "post_id" : 26865122,
+      "comment_id" : 60228406,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Syntax with the labda &#39;-&gt;&#39; doesnt work for me. The Person::getLastName does."
+    }, {
+      "owner" : {
+        "account_id" : 4841988,
+        "reputation" : 586,
+        "user_id" : 3906773,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://graph.facebook.com/779488056/picture?type=large",
+        "display_name" : "Anish Sana",
+        "link" : "https://stackoverflow.com/users/3906773/anish-sana"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1536701075,
+      "post_id" : 26865122,
+      "comment_id" : 91517032,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "After creating the comparator, what is the need to create a stream, sort it with the comparator and then collect it? Can you just use <code>Collections.sort(people, comparator);</code> instead?"
+    }, {
+      "owner" : {
+        "account_id" : 52873,
+        "reputation" : 2583,
+        "user_id" : 158037,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b1b81dd76dea2a6e58fa4c8606301e92?s=256&d=identicon&r=PG",
+        "display_name" : "user158037",
+        "link" : "https://stackoverflow.com/users/158037/user158037"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1599723464,
+      "post_id" : 26865122,
+      "comment_id" : 112863022,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "There is only one sort - every time sort needs to compare 2 elements the provided comparator is used. And each <code>thenComparing</code> is only executed if previous one returned EQUAL/0. And yes, <code>Collections.sort</code>  works with such comparators."
+    } ],
+    "owner" : {
+      "account_id" : 82472,
+      "reputation" : 4219,
+      "user_id" : 231860,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/8KBtE.jpg?s=256",
+      "display_name" : "Luke Machowski",
+      "link" : "https://stackoverflow.com/users/231860/luke-machowski"
+    },
+    "is_accepted" : false,
+    "score" : 203,
+    "last_activity_date" : 1415709485,
+    "creation_date" : 1415709485,
+    "answer_id" : 26865122,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For those able to use the Java 8 streaming API, there is a neater approach that is well documented here:\n<a href=\"http://blog.jooq.org/2014/01/31/java-8-friday-goodies-lambdas-and-sorting/\" rel=\"noreferrer\">Lambdas and sorting</a></p>\n\n<p>I was looking for the equivalent of the C# LINQ:</p>\n\n<pre><code>.ThenBy(...)\n</code></pre>\n\n<p>I found the mechanism in Java 8 on the Comparator:</p>\n\n<pre><code>.thenComparing(...)\n</code></pre>\n\n<p>So here is the snippet that demonstrates the algorithm.</p>\n\n<pre><code>    Comparator&lt;Person&gt; comparator = Comparator.comparing(person -&gt; person.name);\n    comparator = comparator.thenComparing(Comparator.comparing(person -&gt; person.age));\n</code></pre>\n\n<p>Check out the link above for a neater way and an explanation about how Java's type inference makes it a bit more clunky to define compared to LINQ.</p>\n\n<p>Here is the full unit test for reference:</p>\n\n<pre><code>@Test\npublic void testChainedSorting()\n{\n    // Create the collection of people:\n    ArrayList&lt;Person&gt; people = new ArrayList&lt;&gt;();\n    people.add(new Person(\"Dan\", 4));\n    people.add(new Person(\"Andi\", 2));\n    people.add(new Person(\"Bob\", 42));\n    people.add(new Person(\"Debby\", 3));\n    people.add(new Person(\"Bob\", 72));\n    people.add(new Person(\"Barry\", 20));\n    people.add(new Person(\"Cathy\", 40));\n    people.add(new Person(\"Bob\", 40));\n    people.add(new Person(\"Barry\", 50));\n\n    // Define chained comparators:\n    // Great article explaining this and how to make it even neater:\n    // http://blog.jooq.org/2014/01/31/java-8-friday-goodies-lambdas-and-sorting/\n    Comparator&lt;Person&gt; comparator = Comparator.comparing(person -&gt; person.name);\n    comparator = comparator.thenComparing(Comparator.comparing(person -&gt; person.age));\n\n    // Sort the stream:\n    Stream&lt;Person&gt; personStream = people.stream().sorted(comparator);\n\n    // Make sure that the output is as expected:\n    List&lt;Person&gt; sortedPeople = personStream.collect(Collectors.toList());\n    Assert.assertEquals(\"Andi\",  sortedPeople.get(0).name); Assert.assertEquals(2,  sortedPeople.get(0).age);\n    Assert.assertEquals(\"Barry\", sortedPeople.get(1).name); Assert.assertEquals(20, sortedPeople.get(1).age);\n    Assert.assertEquals(\"Barry\", sortedPeople.get(2).name); Assert.assertEquals(50, sortedPeople.get(2).age);\n    Assert.assertEquals(\"Bob\",   sortedPeople.get(3).name); Assert.assertEquals(40, sortedPeople.get(3).age);\n    Assert.assertEquals(\"Bob\",   sortedPeople.get(4).name); Assert.assertEquals(42, sortedPeople.get(4).age);\n    Assert.assertEquals(\"Bob\",   sortedPeople.get(5).name); Assert.assertEquals(72, sortedPeople.get(5).age);\n    Assert.assertEquals(\"Cathy\", sortedPeople.get(6).name); Assert.assertEquals(40, sortedPeople.get(6).age);\n    Assert.assertEquals(\"Dan\",   sortedPeople.get(7).name); Assert.assertEquals(4,  sortedPeople.get(7).age);\n    Assert.assertEquals(\"Debby\", sortedPeople.get(8).name); Assert.assertEquals(3,  sortedPeople.get(8).age);\n    // Andi     : 2\n    // Barry    : 20\n    // Barry    : 50\n    // Bob      : 40\n    // Bob      : 42\n    // Bob      : 72\n    // Cathy    : 40\n    // Dan      : 4\n    // Debby    : 3\n}\n\n/**\n * A person in our system.\n */\npublic static class Person\n{\n    /**\n     * Creates a new person.\n     * @param name The name of the person.\n     * @param age The age of the person.\n     */\n    public Person(String name, int age)\n    {\n        this.age = age;\n        this.name = name;\n    }\n\n    /**\n     * The name of the person.\n     */\n    public String name;\n\n    /**\n     * The age of the person.\n     */\n    public int age;\n\n    @Override\n    public String toString()\n    {\n        if (name == null) return super.toString();\n        else return String.format(\"%s : %d\", this.name, this.age);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6006179,
+      "reputation" : 2865,
+      "user_id" : 4718042,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/RUTKK.jpg?s=256",
+      "display_name" : "Bradley D",
+      "link" : "https://stackoverflow.com/users/4718042/bradley-d"
+    },
+    "is_accepted" : false,
+    "score" : 163,
+    "last_activity_date" : 1660127365,
+    "last_edit_date" : 1660127365,
+    "creation_date" : 1463962425,
+    "answer_id" : 37380950,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using the Java 8 Streams approach, with method references on the getters...</p>\n<pre><code>// Create a stream...\nvar sortedList = persons.stream()\n    // sort it (does not sort the original list)...\n    .sorted(Comparator.comparing(Person::getName)\n                      .thenComparing(Person::getAge));\n    // and collect to a new list\n    .collect(Collectors.toList());\n</code></pre>\n<p>Collection to an array ist also possible:</p>\n<pre><code>persons.stream()\n    .sorted(Comparator.comparing(Person::getName)\n                      .thenComparing(Person::getAge));\n    .toArray(String[]::new);\n</code></pre>\n<p>And the Java 8 Lambda approach...</p>\n<pre><code>//Sorts the original list Lambda style\npersons.sort((p1, p2) -&gt; {\n        if (p1.getName().compareTo(p2.getName()) == 0) {\n            return p1.getAge().compareTo(p2.getAge());\n        } else {\n            return p1.getName().compareTo(p2.getName());\n        } \n    });\n</code></pre>\n<p>Lastly...</p>\n<pre><code>// This syntax is similar to the Streams example above, but sorts the original list!!!\npersons.sort(Comparator.comparing(Person::getName).thenComparing(Person::getAge));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9508571,
+      "reputation" : 1,
+      "user_id" : 7067192,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/1681159952169878/picture?type=large",
+      "display_name" : "Jackey Dada Bob",
+      "link" : "https://stackoverflow.com/users/7067192/jackey-dada-bob"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1477373273,
+    "last_edit_date" : 1477373273,
+    "creation_date" : 1477361195,
+    "answer_id" : 40230257,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For a class <code>Book</code> like this: </p>\n\n<pre><code>package books;\n\npublic class Book {\n\n    private Integer id;\n    private Integer number;\n    private String name;\n\n    public Integer getId() {\n        return id;\n    }\n\n    public void setId(Integer id) {\n        this.id = id;\n    }\n\n    public Integer getNumber() {\n        return number;\n    }\n\n    public void setNumber(Integer number) {\n        this.number = number;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    @Override\n    public String toString() {\n        return \"book{\" +\n                \"id=\" + id +\n                \", number=\" + number +\n                \", name='\" + name + '\\'' + '\\n' +\n                '}';\n    }\n}\n</code></pre>\n\n<p>sorting main class with mock objects </p>\n\n<pre><code>package books;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.Comparator;\nimport java.util.List;\n\n\npublic class Main {\n\n    public static void main(String[] args) {\n        System.out.println(\"Hello World!\");\n\n        Book b = new Book();\n\n        Book c = new Book();\n\n        Book d = new Book();\n\n        Book e = new Book();\n\n        Book f = new Book();\n\n        Book g = new Book();\n        Book g1 = new Book();\n        Book g2 = new Book();\n        Book g3 = new Book();\n        Book g4 = new Book();\n\n\n\n\n        b.setId(1);\n        b.setNumber(12);\n        b.setName(\"gk\");\n\n        c.setId(2);\n        c.setNumber(12);\n        c.setName(\"gk\");\n\n        d.setId(2);\n        d.setNumber(13);\n        d.setName(\"maths\");\n\n        e.setId(3);\n        e.setNumber(3);\n        e.setName(\"geometry\");\n\n        f.setId(3);\n        f.setNumber(34);\n        b.setName(\"gk\");\n\n        g.setId(3);\n        g.setNumber(11);\n        g.setName(\"gk\");\n\n        g1.setId(3);\n        g1.setNumber(88);\n        g1.setName(\"gk\");\n        g2.setId(3);\n        g2.setNumber(91);\n        g2.setName(\"gk\");\n        g3.setId(3);\n        g3.setNumber(101);\n        g3.setName(\"gk\");\n        g4.setId(3);\n        g4.setNumber(4);\n        g4.setName(\"gk\");\n\n\n\n\n\n        List&lt;Book&gt; allBooks = new ArrayList&lt;Book&gt;();\n\n        allBooks.add(b);\n        allBooks.add(c);\n        allBooks.add(d);\n        allBooks.add(e);\n        allBooks.add(f);\n        allBooks.add(g);\n        allBooks.add(g1);\n        allBooks.add(g2);\n        allBooks.add(g3);\n        allBooks.add(g4);\n\n\n\n        System.out.println(allBooks.size());\n\n\n        Collections.sort(allBooks, new Comparator&lt;Book&gt;() {\n\n            @Override\n            public int compare(Book t, Book t1) {\n                int a =  t.getId()- t1.getId();\n\n                if(a == 0){\n                    int a1 = t.getNumber() - t1.getNumber();\n                    return a1;\n                }\n                else\n                    return a;\n            }\n        });\n        System.out.println(allBooks);\n\n    }\n\n\n   }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2444852,
+        "reputation" : 538,
+        "user_id" : 2132480,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/aj8GS.jpg?s=256",
+        "display_name" : "Georgios Stathis",
+        "link" : "https://stackoverflow.com/users/2132480/georgios-stathis"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1609181715,
+      "post_id" : 44277989,
+      "comment_id" : 115770614,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It is really not recommended as a pattern to bind a class to a specific comparator."
+    }, {
+      "owner" : {
+        "account_id" : 4228050,
+        "reputation" : 1932,
+        "user_id" : 3461120,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/qVyjw.jpg?s=256",
+        "display_name" : "prashant.kr.mod",
+        "link" : "https://stackoverflow.com/users/3461120/prashant-kr-mod"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1722335589,
+      "post_id" : 44277989,
+      "comment_id" : 138950159,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This implementation will not server the purpose. It will sort, in 2 different way without keeping sort sequence in scope."
+    } ],
+    "owner" : {
+      "account_id" : 5001640,
+      "reputation" : 630,
+      "user_id" : 4020474,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d72f9f584c3c9ee288a0aaf73ae9e4aa?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tiago Redaelli",
+      "link" : "https://stackoverflow.com/users/4020474/tiago-redaelli"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1496215190,
+    "last_edit_date" : 1496215190,
+    "creation_date" : 1496214582,
+    "answer_id" : 44277989,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I'm not sure if it's ugly to write the compartor inside the Person class in this case. Did it like this:</p>\n\n<pre><code>public class Person implements Comparable &lt;Person&gt; {\n\n    private String lastName;\n    private String firstName;\n    private int age;\n\n    public Person(String firstName, String lastName, int BirthDay) {\n        this.firstName = firstName;\n        this.lastName = lastName;\n        this.age = BirthDay;\n    }\n\n    public int getAge() {\n        return age;\n    }\n\n    public String getFirstName() {\n        return firstName;\n    }\n\n    public String getLastName() {\n        return lastName;\n    }\n\n    @Override\n    public int compareTo(Person o) {\n        // default compareTo\n    }\n\n    @Override\n    public String toString() {\n        return firstName + \" \" + lastName + \" \" + age + \"\";\n    }\n\n    public static class firstNameComperator implements Comparator&lt;Person&gt; {\n        @Override\n        public int compare(Person o1, Person o2) {\n            return o1.firstName.compareTo(o2.firstName);\n        }\n    }\n\n    public static class lastNameComperator implements Comparator&lt;Person&gt; {\n        @Override\n        public int compare(Person o1, Person o2) {\n            return o1.lastName.compareTo(o2.lastName);\n        }\n    }\n\n    public static class ageComperator implements Comparator&lt;Person&gt; {\n        @Override\n        public int compare(Person o1, Person o2) {\n            return o1.age - o2.age;\n        }\n    }\n}\npublic class Test {\n    private static void print() {\n       ArrayList&lt;Person&gt; list = new ArrayList();\n        list.add(new Person(\"Diana\", \"Agron\", 31));\n        list.add(new Person(\"Kay\", \"Panabaker\", 27));\n        list.add(new Person(\"Lucy\", \"Hale\", 28));\n        list.add(new Person(\"Ashley\", \"Benson\", 28));\n        list.add(new Person(\"Megan\", \"Park\", 31));\n        list.add(new Person(\"Lucas\", \"Till\", 27));\n        list.add(new Person(\"Nicholas\", \"Hoult\", 28));\n        list.add(new Person(\"Aly\", \"Michalka\", 28));\n        list.add(new Person(\"Adam\", \"Brody\", 38));\n        list.add(new Person(\"Chris\", \"Pine\", 37));\n        Collections.sort(list, new Person.lastNameComperator());\n        Iterator&lt;Person&gt; it = list.iterator();\n        while(it.hasNext()) \n            System.out.println(it.next().toString()); \n     }  \n}    \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9938803,
+      "reputation" : 138,
+      "user_id" : 7466089,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/NVV3e.jpg?s=256",
+      "display_name" : "Fabian Brand&#227;o",
+      "link" : "https://stackoverflow.com/users/7466089/fabian-brand%c3%a3o"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1498566295,
+    "creation_date" : 1498566295,
+    "answer_id" : 44780258,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Create as many comparators as necessary. After, call the method \"thenComparing\" for each order category. It's a way of doing by Streams. See:</p>\n\n<pre><code>//Sort by first and last name\nSystem.out.println(\"\\n2.Sort list of person objects by firstName then \"\n                                        + \"by lastName then by age\");\nComparator&lt;Person&gt; sortByFirstName \n                            = (p, o) -&gt; p.firstName.compareToIgnoreCase(o.firstName);\nComparator&lt;Person&gt; sortByLastName \n                            = (p, o) -&gt; p.lastName.compareToIgnoreCase(o.lastName);\nComparator&lt;Person&gt; sortByAge \n                            = (p, o) -&gt; Integer.compare(p.age,o.age);\n\n//Sort by first Name then Sort by last name then sort by age\npersonList.stream().sorted(\n    sortByFirstName\n        .thenComparing(sortByLastName)\n        .thenComparing(sortByAge)\n     ).forEach(person-&gt;\n        System.out.println(person));        \n</code></pre>\n\n<p>Look: <a href=\"http://www.makeinjava.com/sort-object-multiple-fields-properties-comparator-interface-lambda-stream-java-8/\" rel=\"nofollow noreferrer\">Sort user defined object on multiple fields – Comparator (lambda stream)</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4742105,
+      "reputation" : 4095,
+      "user_id" : 3834496,
+      "user_type" : "registered",
+      "accept_rate" : 29,
+      "profile_image" : "https://i.sstatic.net/QrnUp.jpg?s=256",
+      "display_name" : "Pritesh Mhatre",
+      "link" : "https://stackoverflow.com/users/3834496/pritesh-mhatre"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1498635779,
+    "creation_date" : 1498635779,
+    "answer_id" : 44796436,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Guava's <code>ComparisonChain</code> provides a clean way of doing it. Refer to this <a href=\"https://google.github.io/guava/releases/19.0/api/docs/com/google/common/collect/ComparisonChain.html\" rel=\"noreferrer\">link</a>.</p>\n\n<p>A utility for performing a chained comparison statement. For example:</p>\n\n<pre><code>   public int compareTo(Foo that) {\n     return ComparisonChain.start()\n         .compare(this.aString, that.aString)\n         .compare(this.anInt, that.anInt)\n         .compare(this.anEnum, that.anEnum, Ordering.natural().nullsLast())\n         .result();\n   }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4162753,
+      "reputation" : 628,
+      "user_id" : 3490098,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/aD18d.jpg?s=256",
+      "display_name" : "rafambbr",
+      "link" : "https://stackoverflow.com/users/3490098/rafambbr"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1500046073,
+    "creation_date" : 1500046073,
+    "answer_id" : 45106675,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can do like this:</p>\n\n<pre><code>List&lt;User&gt; users = Lists.newArrayList(\n  new User(\"Pedro\", 12), \n  new User(\"Maria\", 10), \n  new User(\"Rafael\",12)\n);\n\nusers.sort(\n  Comparator.comparing(User::getName).thenComparing(User::getAge)\n);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 12145950,
+        "reputation" : 5524,
+        "user_id" : 8868289,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/984bb123a4de58126dc1166e43927c5a?s=256&d=identicon&r=PG",
+        "display_name" : "Yoory N.",
+        "link" : "https://stackoverflow.com/users/8868289/yoory-n"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1558518701,
+      "post_id" : 53319449,
+      "comment_id" : 99125090,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "&quot;...creates an instance of it per element been compared...&quot; -- this is not true. At least in modern versions of Guava, calling to <code>compare</code> method doesn&#39;t create anything, but returns one of singleton instances <code>LESS</code>, <code>GREATER</code> or <code>ACTIVE</code> depending on the result of the comparison. This is a highly optimized approach and doesn&#39;t add any memory or performance overhead."
+    }, {
+      "owner" : {
+        "account_id" : 1836471,
+        "reputation" : 466,
+        "user_id" : 1666753,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ca0f0d5400ff6cc2cc42dc8e7e443feb?s=256&d=identicon&r=PG",
+        "display_name" : "Guido Medina",
+        "link" : "https://stackoverflow.com/users/1666753/guido-medina"
+      },
+      "reply_to_user" : {
+        "account_id" : 12145950,
+        "reputation" : 5524,
+        "user_id" : 8868289,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/984bb123a4de58126dc1166e43927c5a?s=256&d=identicon&r=PG",
+        "display_name" : "Yoory N.",
+        "link" : "https://stackoverflow.com/users/8868289/yoory-n"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1558622174,
+      "post_id" : 53319449,
+      "comment_id" : 99169498,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes; I just looked at the source code now, I see what you mean, but I&#39;d be more inclined to use the new Java 8 comparison API for the sake of dependencies."
+    } ],
+    "owner" : {
+      "account_id" : 1836471,
+      "reputation" : 466,
+      "user_id" : 1666753,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ca0f0d5400ff6cc2cc42dc8e7e443feb?s=256&d=identicon&r=PG",
+      "display_name" : "Guido Medina",
+      "link" : "https://stackoverflow.com/users/1666753/guido-medina"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1542284606,
+    "creation_date" : 1542284606,
+    "answer_id" : 53319449,
+    "question_id" : 4805606,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I would be careful when using Guava's <code>ComparisonChain</code> because it creates an instance of it per element been compared so you would be looking at a creation of <code>N x Log N</code> comparison chains just to compare if you are sorting, or <code>N</code> instances if you are iterating and checking for equality.</p>\n\n<p>I would instead create a static <code>Comparator</code> using the newest Java 8 API if possible or Guava's <code>Ordering</code> API which allows you to do that, here is an example with Java 8:</p>\n\n<pre><code>import java.util.Comparator;\nimport static java.util.Comparator.naturalOrder;\nimport static java.util.Comparator.nullsLast;\n\nprivate static final Comparator&lt;Person&gt; COMPARATOR = Comparator\n  .comparing(Person::getName, nullsLast(naturalOrder()))\n  .thenComparingInt(Person::getAge);\n\n@Override\npublic int compareTo(@NotNull Person other) {\n  return COMPARATOR.compare(this, other);\n}\n</code></pre>\n\n<p>Here is how to use the Guava's <code>Ordering</code> API: <a href=\"https://github.com/google/guava/wiki/OrderingExplained\" rel=\"noreferrer\">https://github.com/google/guava/wiki/OrderingExplained</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 225869,
+    "reputation" : 56697,
+    "user_id" : 486578,
+    "user_type" : "registered",
+    "accept_rate" : 58,
+    "profile_image" : "https://www.gravatar.com/avatar/51f25affd1ea28bd28e61422868f02d5?s=256&d=identicon&r=PG",
+    "display_name" : "Damir",
+    "link" : "https://stackoverflow.com/users/486578/damir"
+  },
+  "is_answered" : true,
+  "view_count" : 306584,
+  "accepted_answer_id" : 4805676,
+  "answer_count" : 15,
+  "score" : 242,
+  "last_activity_date" : 1660127365,
+  "creation_date" : 1296051900,
+  "last_edit_date" : 1521745395,
+  "question_id" : 4805606,
+  "link" : "https://stackoverflow.com/questions/4805606/how-to-sort-by-two-fields-in-java",
+  "title" : "How to sort by two fields in Java?",
+  "body" : "<p>I have array of objects <code>person (int age; String name;)</code>.</p>\n\n<p>How can I sort this array alphabetically by name and then by age?</p>\n\n<p>Which algorithm would you use for this ?</p>\n"
+}

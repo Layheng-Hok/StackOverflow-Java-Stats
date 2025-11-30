@@ -1,0 +1,113 @@
+{
+  "tags" : [ "java", "android", "android-14", "android-api-34" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 10364565,
+      "reputation" : 5027,
+      "user_id" : 7644018,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/yE50W.png?s=256",
+      "display_name" : "Paul T.",
+      "link" : "https://stackoverflow.com/users/7644018/paul-t"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1703432140,
+    "post_id" : 77711002,
+    "comment_id" : 137002710,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Looks like there was a <a href=\"https://developer.android.com/about/versions/14/behavior-changes-14#security\" rel=\"nofollow noreferrer\">security change for intents</a> ... maybe that info can help? Unfortunately, I do not know enough Android development to assist."
+  }, {
+    "owner" : {
+      "account_id" : 10364565,
+      "reputation" : 5027,
+      "user_id" : 7644018,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/yE50W.png?s=256",
+      "display_name" : "Paul T.",
+      "link" : "https://stackoverflow.com/users/7644018/paul-t"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1703434668,
+    "post_id" : 77711002,
+    "comment_id" : 137002877,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Good news! ... as you can accept your own answer, consider posting an answer for what had to change for your particular situation to get working. The information may help others that cross the same issue."
+  }, {
+    "owner" : {
+      "account_id" : 8830506,
+      "reputation" : 465,
+      "user_id" : 6764443,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-LcByO0idJcQ/AAAAAAAAAAI/AAAAAAAABAc/rKmT3BA6P7o/s256-rj/photo.jpg",
+      "display_name" : "Nishant Agarwal",
+      "link" : "https://stackoverflow.com/users/6764443/nishant-agarwal"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1749026948,
+    "post_id" : 77711002,
+    "comment_id" : 140485883,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@Rishabh , please don&#39;t forget to mark the answer as accepted if it resolved your issue. Thanks!"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 8830506,
+      "reputation" : 465,
+      "user_id" : 6764443,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-LcByO0idJcQ/AAAAAAAAAAI/AAAAAAAABAc/rKmT3BA6P7o/s256-rj/photo.jpg",
+      "display_name" : "Nishant Agarwal",
+      "link" : "https://stackoverflow.com/users/6764443/nishant-agarwal"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1703436117,
+    "creation_date" : 1703436117,
+    "answer_id" : 77711247,
+    "question_id" : 77711002,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As <a href=\"https://stackoverflow.com/users/7644018/paul-t\">Paul T</a> mentioned, there has been a security change in Android that restricts implicit intents for apps targeting Android 14+.</p>\n<blockquote>\n<ul>\n<li>Implicit intents are only delivered to exported components. Apps must either use an explicit intent to deliver to unexported    components, or mark the component as exported.</li>\n<li>If an app creates a    mutable pending intent with an intent that doesn't specify a    component or package, the system now throws an\nexception.</li>\n</ul>\n<p>These changes prevent malicious apps from intercepting implicit\nintents that are intended for use by an app's internal components.</p>\n</blockquote>\n<p>Option 1 :</p>\n<pre><code>&lt;activity\n    android:name=&quot;.AppActivity&quot;\n    android:exported=&quot;true&quot;&gt;\n</code></pre>\n<p>Option 2 :</p>\n<pre><code>&lt;activity\nandroid:name=&quot;.AppActivity&quot;\nandroid:exported=&quot;false&quot;&gt;\n&lt;intent-filter&gt;\n    &lt;action android:name=&quot;com.example.action.APP_ACTION&quot; /&gt;\n    &lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&gt;\n&lt;/intent-filter&gt;\n</code></pre>\n\n<pre><code>// This makes the intent explicit.\nIntent explicitIntent =\n        new Intent(&quot;com.example.action.APP_ACTION&quot;)\nexplicitIntent.setPackage(context.getPackageName());\ncontext.startActivity(explicitIntent);\n</code></pre>\n<p>You can read more here,</p>\n<p><a href=\"https://developer.android.com/about/versions/14/behavior-changes-14#security\" rel=\"noreferrer\">https://developer.android.com/about/versions/14/behavior-changes-14#security</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 21191538,
+      "reputation" : 65,
+      "user_id" : 15583934,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YT7HQIx7.jpg?s=256",
+      "display_name" : "Chinmay Gawde",
+      "link" : "https://stackoverflow.com/users/15583934/chinmay-gawde"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1721196699,
+    "creation_date" : 1721196699,
+    "answer_id" : 78757902,
+    "question_id" : 77711002,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><code>&lt;activity android:name=&quot;.MyActivityName&quot; android:exported=&quot;true&quot;&gt;</code></p>\n<p>Even I got same issue when receiving response from an External SDK Activity.\nI had to set My Activity Exported &quot;True&quot; because the External SDK was sending response implicitly through intent.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 18178272,
+    "reputation" : 131,
+    "user_id" : 13226583,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/fcf343de4bba3961b35e2ec10c39665d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Rishabh Kabra",
+    "link" : "https://stackoverflow.com/users/13226583/rishabh-kabra"
+  },
+  "is_answered" : true,
+  "view_count" : 5282,
+  "protected_date" : 1760779548,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1760779560,
+  "creation_date" : 1703430119,
+  "last_edit_date" : 1760779560,
+  "question_id" : 77711002,
+  "link" : "https://stackoverflow.com/questions/77711002/android-14-api-34-no-activity-found-to-handle-intent",
+  "title" : "Android 14 API 34. No Activity found to handle Intent",
+  "body" : "<p>I had a working code. <strong>It is working fine till Android 13 but from Android 14 it is not working</strong>.</p>\n<p>Problem:\napplication needs to start a new activity-for-result. On launching new Activity, code is throwing exception.</p>\n<p>Code:</p>\n<pre><code>ActivityResultLauncher&lt;Intent&gt; myNewActivity = myActivity.registerForActivityResult(\n    new ActivityResultContracts.StartActivityForResult()\n    , result -&gt; myActivityResult(getJotterReqNo(), result.getResultCode(), result.getData())\n);\n\nmyNewActivity.launch(new Intent(getMyActivity().ACTIVITY_TO_LAUNCH));\n</code></pre>\n<p>Exception:</p>\n<pre><code>android.content.ActivityNotFoundException: No Activity found to handle Intent { act=app.my.application.MyActivity }\nat android.app.Instrumentation.checkStartActivityResult(Instrumentation.java:2239)\nat android.app.Instrumentation.execStartActivity(Instrumentation.java:1878)\nat android.app.Activity.startActivityForResult(Activity.java:5589)\nat androidx.activity.ComponentActivity.startActivityForResult(ComponentActivity.java:780)\nat androidx.core.app.ActivityCompat$Api16Impl.startActivityForResult(ActivityCompat.java:854)\nat androidx.core.app.ActivityCompat.startActivityForResult(ActivityCompat.java:245)\nat androidx.activity.ComponentActivity$1.onLaunch(ComponentActivity.java:239)\nat androidx.activity.result.ActivityResultRegistry$2.launch(ActivityResultRegistry.java:173)\nat androidx.activity.result.ActivityResultLauncher.launch(ActivityResultLauncher.java:47)\nat app.my.application.fragments.applicationsList.MainActivity.onListItemClicked(MainActivity.java:241)\nat app.my.application.fragments.applicationsList.MainActivity$$ExternalSyntheticLambda5.onItemClick(Unknown Source:6)\n</code></pre>\n"
+}

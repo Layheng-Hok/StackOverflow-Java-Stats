@@ -1,0 +1,120 @@
+{
+  "tags" : [ "java", "maven", "maven-2" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 195854,
+      "reputation" : 160525,
+      "user_id" : 438992,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/QouOz.jpg?s=256",
+      "display_name" : "Dave Newton",
+      "link" : "https://stackoverflow.com/users/438992/dave-newton"
+    },
+    "is_accepted" : true,
+    "score" : 11,
+    "last_activity_date" : 1762550632,
+    "last_edit_date" : 1762550632,
+    "creation_date" : 1327434203,
+    "answer_id" : 8993035,
+    "question_id" : 8993004,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use the <a href=\"http://maven.apache.org/pom.html#Resources\" rel=\"nofollow noreferrer\"><code>&lt;resources&gt;</code> element</a>; nutshell:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;build&gt;\n&lt;...&gt;\n&lt;resources&gt;\n &lt;resource&gt;\n    &lt;directory&gt;${basedir}/src/main/resources&lt;/directory&gt;\n &lt;/resource&gt;\n\n &lt;resource&gt;\n    &lt;directory&gt;${basedir}/src/main/java&lt;/directory&gt;\n &lt;/resource&gt;\n&lt;/resources&gt;\n&lt;...&gt;\n&lt;/build&gt;\n</code></pre>\n<p><em>Edit:</em> Oh, I thought you meant you wanted a single jar with both normal jar contents and the source.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10686965,
+        "reputation" : 883,
+        "user_id" : 7867223,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7ab6ab020fe3399f3c10ffb56d1e37eb?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "PrecisionLex",
+        "link" : "https://stackoverflow.com/users/7867223/precisionlex"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1579011491,
+      "post_id" : 8993046,
+      "comment_id" : 105619917,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "this only generates jar that contains source code, but without compiled classes"
+    }, {
+      "owner" : {
+        "account_id" : 371967,
+        "reputation" : 4962,
+        "user_id" : 720773,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/SnvRp.jpg?s=256",
+        "display_name" : "Gary Sheppard",
+        "link" : "https://stackoverflow.com/users/720773/gary-sheppard"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1597785143,
+      "post_id" : 8993046,
+      "comment_id" : 112246214,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;m pretty sure that&#39;s what the OP wanted. Good answer, @stacker."
+    } ],
+    "owner" : {
+      "account_id" : 87016,
+      "reputation" : 69118,
+      "user_id" : 241590,
+      "user_type" : "registered",
+      "accept_rate" : 99,
+      "profile_image" : "https://www.gravatar.com/avatar/4854e06b7e4c6b4941443c0cf2da7dfe?s=256&d=identicon&r=PG",
+      "display_name" : "stacker",
+      "link" : "https://stackoverflow.com/users/241590/stacker"
+    },
+    "is_accepted" : false,
+    "score" : 39,
+    "last_activity_date" : 1327434806,
+    "last_edit_date" : 1327434806,
+    "creation_date" : 1327434238,
+    "answer_id" : 8993046,
+    "question_id" : 8993004,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>mvn source:jar\n</code></pre>\n\n<p>This is using the source:jar plugin <a href=\"http://maven.apache.org/plugins/maven-source-plugin/jar-mojo.html\" rel=\"noreferrer\">documentation</a></p>\n\n<p><a href=\"http://maven.apache.org/plugins/maven-source-plugin/usage.html\" rel=\"noreferrer\">Usage documentation</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 159349,
+      "reputation" : 1193,
+      "user_id" : 378606,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/goEf1.jpg?s=256",
+      "display_name" : "Ryan Bennetts",
+      "link" : "https://stackoverflow.com/users/378606/ryan-bennetts"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1652925778,
+    "creation_date" : 1652925778,
+    "answer_id" : 72297853,
+    "question_id" : 8993004,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To do this automatically as part of your build, configure the <a href=\"https://maven.apache.org/plugins/maven-source-plugin/jar-mojo.html\" rel=\"noreferrer\">maven-source-plugin</a> to bind to the appropriate phase of your build:</p>\n<pre><code>&lt;plugin&gt;\n    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n    &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;\n    &lt;executions&gt;\n        &lt;execution&gt;\n            &lt;id&gt;attach-sources&lt;/id&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;jar&lt;/goal&gt;\n            &lt;/goals&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>This will create an additional jar file with the <code>source</code> classifier, ie: <code>&lt;your-artifact-name&gt;-source.jar</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1006686,
+    "reputation" : 1001,
+    "user_id" : 1020251,
+    "user_type" : "registered",
+    "accept_rate" : 35,
+    "profile_image" : "https://www.gravatar.com/avatar/e41392ef16ee2e22af3f27e7ca275dfc?s=256&d=identicon&r=PG",
+    "display_name" : "Kaltresian",
+    "link" : "https://stackoverflow.com/users/1020251/kaltresian"
+  },
+  "is_answered" : true,
+  "view_count" : 28208,
+  "accepted_answer_id" : 8993035,
+  "answer_count" : 3,
+  "score" : 28,
+  "last_activity_date" : 1762550632,
+  "creation_date" : 1327434053,
+  "last_edit_date" : 1327434933,
+  "question_id" : 8993004,
+  "link" : "https://stackoverflow.com/questions/8993004/how-to-generate-a-jar-with-the-source-code-in-maven",
+  "title" : "How to generate a JAR with the source code in Maven",
+  "body" : "<p>How can I use Maven 2.2 to generate a JAR with the source code inside it?</p>\n"
+}

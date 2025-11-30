@@ -1,0 +1,90 @@
+{
+  "tags" : [ "java", "spring", "jpa", "spring-data", "spring-data-jpa" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2266637,
+        "reputation" : 1542,
+        "user_id" : 1995130,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ee77bb5963bfba17bca789df98a0097d?s=256&d=identicon&r=PG",
+        "display_name" : "dubonzi",
+        "link" : "https://stackoverflow.com/users/1995130/dubonzi"
+      },
+      "reply_to_user" : {
+        "account_id" : 1223835,
+        "reputation" : 77459,
+        "user_id" : 1189885,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/DLHqU.png?s=256",
+        "display_name" : "chrylis -cautiouslyoptimistic-",
+        "link" : "https://stackoverflow.com/users/1189885/chrylis-cautiouslyoptimistic"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1445871321,
+      "post_id" : 33347303,
+      "comment_id" : 54492916,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Oh I hadn&#39;t noticed the <code>Pageable pageable</code> in his query, my bad! Edit my answer."
+    } ],
+    "owner" : {
+      "account_id" : 2266637,
+      "reputation" : 1542,
+      "user_id" : 1995130,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ee77bb5963bfba17bca789df98a0097d?s=256&d=identicon&r=PG",
+      "display_name" : "dubonzi",
+      "link" : "https://stackoverflow.com/users/1995130/dubonzi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1445871247,
+    "last_edit_date" : 1445871247,
+    "creation_date" : 1445867008,
+    "answer_id" : 33347303,
+    "question_id" : 33318257,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Spring Data offers basic sorting as seen <a href=\"http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-six-sorting/\" rel=\"nofollow\">here</a>. You can also annotate your query with <code>@Query</code> and use <code>order by</code>, but I believe what you need is a more complex sorting logic.</p>\n\n<p>If youre using Java 8 you can use its features to sort your list, <a href=\"http://www.leveluplunch.com/java/tutorials/007-sort-arraylist-stream-of-objects-in-java8/\" rel=\"nofollow\">this</a> article shows good examples of that, it takes a bit more work but seems like what you're after. Note that in order to convert from <code>stream</code> to <code>list</code> you have to include  <code>.collect(Collectors.toList());</code> at the end of the <code>stream</code>. </p>\n\n<p>Example(taken from the article): </p>\n\n<pre><code>employees.stream().sorted((Employee e1, Employee e2) -&gt; e1.getHireDate()\n                        .compareTo(e2.getHireDate())).collect(Collectors.toList());\n</code></pre>\n\n<p><strong>Edit</strong>: I didn't notice you were using pagination. I had a similar problem where I had to do something with the page contents before returning the <code>Page</code> object, so I ended up creating an extension of the <code>PageImpl&lt;T&gt;</code> class:</p>\n\n<pre><code>public class PageImplBean&lt;T&gt; extends PageImpl&lt;T&gt; {\n\n    private static final long serialVersionUID = 1L;\n    private int number;\n    private int size;\n    private int totalPages;\n    private int numberOfElements;\n    private long totalElements;\n    private boolean previousPage;\n    private boolean first;\n    private boolean nextPage;\n    private boolean last;\n    private List&lt;T&gt; content;\n    @JsonIgnore\n    private Sort sort;\n\n    public PageImplBean() {\n        super(new ArrayList&lt;T&gt;());\n    }\n\n    public PageImplBean(Page pagina){\n        super(new ArrayList&lt;T&gt;());\n        this.number = pagina.getNumber();\n        this.size = pagina.getSize();\n        this.totalPages = pagina.getTotalPages();\n        this.numberOfElements = pagina.getNumberOfElements();\n        this.totalElements = pagina.getTotalElements();\n        this.previousPage = pagina.hasPrevious();\n        this.first = pagina.isFirst();\n        this.nextPage = pagina.hasNext();\n        this.last = pagina.isLast();\n    }\n\n    public int getNumber() {\n        return number;\n    }\n\n    public void setNumber(int number) {\n        this.number = number;\n    }\n\n    public int getSize() {\n        return size;\n    }\n\n    public void setSize(int size) {\n        this.size = size;\n    }\n\n    public int getTotalPages() {\n        return totalPages;\n    }\n\n    public void setTotalPages(int totalPages) {\n        this.totalPages = totalPages;\n    }\n\n    public int getNumberOfElements() {\n        return numberOfElements;\n    }\n\n    public void setNumberOfElements(int numberOfElements) {\n        this.numberOfElements = numberOfElements;\n    }\n\n    public long getTotalElements() {\n        return totalElements;\n    }\n\n    public void setTotalElements(long totalElements) {\n        this.totalElements = totalElements;\n    }\n\n    public boolean isPreviousPage() {\n        return previousPage;\n    }\n\n    public void setPreviousPage(boolean previousPage) {\n        this.previousPage = previousPage;\n    }\n\n    public boolean isFirst() {\n        return first;\n    }\n\n    public void setFirst(boolean first) {\n        this.first = first;\n    }\n\n    public boolean isNextPage() {\n        return nextPage;\n    }\n\n    public void setNextPage(boolean nextPage) {\n        this.nextPage = nextPage;\n    }\n\n    public boolean isLast() {\n        return last;\n    }\n\n    public void setLast(boolean last) {\n        this.last = last;\n    }\n\n    public List&lt;T&gt; getContent() {\n        return content;\n    }\n\n    public void setContent(List&lt;T&gt; content) {\n        this.content = content;\n    }\n\n    public Sort getSort() {\n        return sort;\n    }\n\n    public void setSort(Sort sort) {\n        this.sort = sort;\n    }\n\n    public PageImpl&lt;T&gt; pageImpl() {\n        return new PageImpl&lt;T&gt;(getContent(), new PageRequest(getNumber(),\n                getSize(), getSort()), getTotalElements());\n    }\n}\n</code></pre>\n\n<p>What's important here in your case is the <code>setContent</code> method which doesnt exist in the base class. You can use that with your sorting method:</p>\n\n<pre><code>PageImplBean&lt;Thing&gt; page = //call your rest repository\nList&lt;Thing&gt; pageContent = page.getContent();\npage.setContent(sortByRating(pageContent));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7322363,
+      "reputation" : 292,
+      "user_id" : 6597476,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-k-FhVtywL98/AAAAAAAAAAI/AAAAAAAAAXs/ns0CeQHJH4c/s256-rj/photo.jpg",
+      "display_name" : "Leonardo Ramos Duarte",
+      "link" : "https://stackoverflow.com/users/6597476/leonardo-ramos-duarte"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1558998357,
+    "creation_date" : 1558998357,
+    "answer_id" : 56333281,
+    "question_id" : 33318257,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can customize your object page(Pageable). If you get data of request:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public PageRequest customSort(Args...) {\n    String[] newParams = {\"newParam\"};\n    Sort sort = page.getSort();\n    Sort.Order dataSort =\n        sort.iterator().next();\n    Sort newSort = Sort.by(dataSort.getDirection(), newParams);\n    return PageRequest.of(page.getPageNumber(), this.getPageSize(), newSort);\n}\n</code></pre>\n\n<p>SQL Before:</p>\n\n<pre class=\"lang-sql prettyprint-override\"><code>order by oldParam ASC/DESC;\n</code></pre>\n\n<p>SQL After:</p>\n\n<pre class=\"lang-sql prettyprint-override\"><code>order by newParam ASC/DESC;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1155426,
+    "reputation" : 6045,
+    "user_id" : 2442740,
+    "user_type" : "registered",
+    "accept_rate" : 73,
+    "profile_image" : "https://i.sstatic.net/U7UZy.jpg?s=256",
+    "display_name" : "Christos Baziotis",
+    "link" : "https://stackoverflow.com/users/2442740/christos-baziotis"
+  },
+  "is_answered" : false,
+  "view_count" : 15149,
+  "answer_count" : 2,
+  "score" : 9,
+  "last_activity_date" : 1759349165,
+  "creation_date" : 1445690056,
+  "last_edit_date" : 1445693983,
+  "question_id" : 33318257,
+  "link" : "https://stackoverflow.com/questions/33318257/spring-data-jpa-custom-sort-in-jparepository",
+  "title" : "Spring Data JPA - Custom Sort in JpaRepository",
+  "body" : "<p>I am using Spring Data JPA with Spring Data REST and i have created a JpaRepository for my <code>Thing</code> entity.</p>\n\n<pre><code>@Repository\npublic interface ThingRepository extends JpaRepository&lt;Thing, Long&gt; {\n\n    @RestResource(path = \"findByName\", rel = \"findByName\")\n    Page findByName(@Param(\"name\") String name, Pageable page);\n\n}\n</code></pre>\n\n<p>I want to apply sorting. I want to sort the <code>Thing</code> List based on a custom rating  algorithm. </p>\n\n<pre><code>List&lt;Thing&gt; sortByRating(List&lt;Thing&gt; things){\n\n    // custom logic\n\n    return things;\n};\n</code></pre>\n\n<p>I would like if possible to use a custom function in order to sort the results. What is the best approach to this kind of thing in Spring JPA? How can i make my Repository use my function to sort the result set?</p>\n"
+}

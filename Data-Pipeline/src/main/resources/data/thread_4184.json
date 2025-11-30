@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "android", "http", "post", "android-studio" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 7464007,
+      "reputation" : 3081,
+      "user_id" : 5674298,
+      "user_type" : "registered",
+      "accept_rate" : 61,
+      "profile_image" : "https://www.gravatar.com/avatar/1972262fcd5734c83a5efd3cafb52fb8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "coolguy",
+      "link" : "https://stackoverflow.com/users/5674298/coolguy"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1450531194,
+    "creation_date" : 1450531194,
+    "answer_id" : 34371239,
+    "question_id" : 34371032,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Try using <code>HttpPost(URI)</code> constructor insted of <code>HttpPost(String)</code>. Think it will work.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7470297,
+      "reputation" : 2879,
+      "user_id" : 5678532,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e97d7ba15e09d32724feeb6103e05cef?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Mk.Sl.",
+      "link" : "https://stackoverflow.com/users/5678532/mk-sl"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1450531746,
+    "creation_date" : 1450531746,
+    "answer_id" : 34371323,
+    "question_id" : 34371032,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Try to add port separately like in code below:</p>\n\n<pre><code>private static final int HTTP_PORT = 8081;\n\nprivate static final String USER_AGENT_NAME = \"http.useragent\";\n\nprivate static final String USER_AGENT_VALUE = \"Mozilla/5.0 (Linux; U; Android 1.1; en-us;dream) AppleWebKit/525.10+ (KHTML, like Gecko) Version/3.0.4 Mobile Safari/523.12.2\";\n\n\nprotected DefaultHttpClient getHttpClient() throws KeyManagementException, UnrecoverableKeyException, \nNoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {\n    if (httpClient == null) {\n\n        SchemeRegistry schemeRegistry = new SchemeRegistry();\n        schemeRegistry.register(new Scheme(\"http\", PlainSocketFactory.getSocketFactory(), HTTP_PORT));\n\n        HttpParams params = new BasicHttpParams();\n        params.setParameter(USER_AGENT_NAME, USER_AGENT_VALUE);\n        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);\n        HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);\n\n        ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);\n        httpClient = new DefaultHttpClient(cm, params);\n    }\n    return httpClient;\n}\n</code></pre>\n\n<p>While making HTTP request be sure that port is NOT included more.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6930529,
+      "reputation" : 496,
+      "user_id" : 5320122,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-8vpVSbuUjhg/AAAAAAAAAAI/AAAAAAAAMXg/0G3HC16mOLY/s256-rj/photo.jpg",
+      "display_name" : "Amit",
+      "link" : "https://stackoverflow.com/users/5320122/amit"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1670752673,
+    "creation_date" : 1670752673,
+    "answer_id" : 74759811,
+    "question_id" : 34371032,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>With HttpPost, it works when you specify port number as part of http URL, like this:</p>\n<pre><code>HttpClient httpclient = new DefaultHttpClient();\nHttpPost httppost = new HttpPost(&quot;http://100.1.1.1:8081&quot;);\n\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 26384984,
+      "reputation" : 418,
+      "user_id" : 20037647,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/9nb18CcK.png?s=256",
+      "display_name" : "EarthTurtle",
+      "link" : "https://stackoverflow.com/users/20037647/earthturtle"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1747675384,
+    "creation_date" : 1747675384,
+    "answer_id" : 79629210,
+    "question_id" : 34371032,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This may have been related to a bug I reported with Apache's <code>HttpClient</code>: <a href=\"https://issues.apache.org/jira/browse/HTTPCLIENT-2363\" rel=\"nofollow noreferrer\">https://issues.apache.org/jira/browse/HTTPCLIENT-2363</a>. The port was being added inconsistently to the host header, depending on how the host was defined:</p>\n<pre class=\"lang-java prettyprint-override\"><code>try (CloseableHttpClient client = HttpClientBuilder.create()\n    .addRequestInterceptorLast((request, entity, context) -&gt; System.out.println(Arrays.toString(request.getHeaders())))\n    .build()) {\n    // Does not work, adds port info\n    HttpHost host = HttpHost.create(&quot;https://echo.free.beeceptor.com&quot;);\n    HttpGet request = new HttpGet(&quot;/some/path&quot;);\n    // Uncommenting the below line causes the port to not be added to the host\n    // request.setAuthority(new URIAuthority(host));\n    client.execute(host, request, response -&gt; null);\n    // Output: \n    // [Accept-Encoding: gzip, x-gzip, deflate, Host: echo.free.beeceptor.com:443, Connection: keep-alive, User-Agent: Apache-HttpClient/5.4.2 (Java/23.0.2)]\n    // -----------------------------------------------------------------------!!!\n            \n    // works, leaves port info as undefined\n    HttpGet workingRequest = new HttpGet(&quot;https://echo.free.beeceptor.com/some/path&quot;);\n    client.execute(workingRequest, response -&gt; null);\n    // Output:\n    // [Accept-Encoding: gzip, x-gzip, deflate, Host: echo.free.beeceptor.com, Connection: keep-alive, User-Agent: Apache-HttpClient/5.4.2 (Java/23.0.2)]\n}\n</code></pre>\n<p>This has been fixed as of 5.4.3</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4034047,
+    "reputation" : 3893,
+    "user_id" : 3319176,
+    "user_type" : "registered",
+    "accept_rate" : 64,
+    "profile_image" : "https://i.sstatic.net/t6C1K.jpg?s=256",
+    "display_name" : "SalmanShariati",
+    "link" : "https://stackoverflow.com/users/3319176/salmanshariati"
+  },
+  "is_answered" : false,
+  "view_count" : 10895,
+  "answer_count" : 4,
+  "score" : 2,
+  "last_activity_date" : 1760724105,
+  "creation_date" : 1450529864,
+  "question_id" : 34371032,
+  "link" : "https://stackoverflow.com/questions/34371032/http-post-request-with-specified-port-number",
+  "title" : "HTTP POST request with specified port number",
+  "body" : "<p>I'm developing an Android App using JAVA in Android Studio IDE. I'm trying to send an HTTP Post request from my application to retrieve the response from the server as XML.</p>\n\n<p>When I run </p>\n\n<pre><code>HttpClient httpClient = new DefaultHttpClient();\nHttpPost httpPost = new HttpPost(\"100.1.1.1\");\n</code></pre>\n\n<p>It works without any exception but when I use a port in the URL like</p>\n\n<pre><code>HttpClient httpClient = new DefaultHttpClient();\nHttpPost httpPost = new HttpPost(\"100.1.1.1:8081\");\n</code></pre>\n\n<p>the app warns me by \"Unfortunately, App has stopped\" and exits.</p>\n\n<p>The real IP Addresses in this post have been replaced by 100.1.1.1</p>\n\n<p>My Question is \"why it doesn't work with Port number in URL?\" and if there is a better way to get data from a web server by URL and Query Strings what is that way.</p>\n\n<p>The URL that returns data as XML is like :</p>\n\n<blockquote>\n  <p>100.1.1.1:8081/?FindResults&amp;Parameter1&amp;Parameter2&amp;Parameter3</p>\n</blockquote>\n\n<p>Any help would be appreciated.</p>\n"
+}

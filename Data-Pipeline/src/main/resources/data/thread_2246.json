@@ -1,0 +1,501 @@
+{
+  "tags" : [ "java", "generics", "instanceof", "typechecking" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 28947,
+        "reputation" : 92371,
+        "user_id" : 77779,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/1a62456c71b0851726898e87ec88b69c?s=256&d=identicon&r=PG",
+        "display_name" : "Yishai",
+        "link" : "https://stackoverflow.com/users/77779/yishai"
+      },
+      "reply_to_user" : {
+        "account_id" : 69301,
+        "reputation" : 10589,
+        "user_id" : 201722,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://i.sstatic.net/z5MSO.jpg?s=256",
+        "display_name" : "luis.espinal",
+        "link" : "https://stackoverflow.com/users/201722/luis-espinal"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1270647371,
+      "post_id" : 1570099,
+      "comment_id" : 2600490,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@luis, Tom&#39;s comment probably meant I should use isInstance() and pass the actual arg0 parameter. It has the advantage of avoiding the null check."
+    }, {
+      "owner" : {
+        "account_id" : 1033733,
+        "reputation" : 4345,
+        "user_id" : 1041533,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/fPMRU.jpg?s=256",
+        "display_name" : "AgentKnopf",
+        "link" : "https://stackoverflow.com/users/1041533/agentknopf"
+      },
+      "reply_to_user" : {
+        "account_id" : 196134,
+        "reputation" : 29381,
+        "user_id" : 439427,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/c1201849caa3693e9b41824351c9dc3d?s=256&d=identicon&r=PG",
+        "display_name" : "Rubens Mariuzzo",
+        "link" : "https://stackoverflow.com/users/439427/rubens-mariuzzo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1336249616,
+      "post_id" : 1570099,
+      "comment_id" : 13517818,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@RubensMariuzzo maybe this helps: <a href=\"http://www.ralfebert.de/blog/java/isassignablefrom/\" rel=\"nofollow noreferrer\">ralfebert.de/blog/java/isassignablefrom</a> the important part here is: isAssignableFrom tells you if the generic type T is a super class of the instance arg0."
+    }, {
+      "owner" : {
+        "account_id" : 28947,
+        "reputation" : 92371,
+        "user_id" : 77779,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/1a62456c71b0851726898e87ec88b69c?s=256&d=identicon&r=PG",
+        "display_name" : "Yishai",
+        "link" : "https://stackoverflow.com/users/77779/yishai"
+      },
+      "reply_to_user" : {
+        "account_id" : 85429,
+        "reputation" : 9439,
+        "user_id" : 238190,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/5e9cf9eceb686673146bae441b625f7a?s=256&d=identicon&r=PG",
+        "display_name" : "emeraldhieu",
+        "link" : "https://stackoverflow.com/users/238190/emeraldhieu"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1339162365,
+      "post_id" : 1570099,
+      "comment_id" : 14290929,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Emerald214, you do not need to extend the class, but the class does have the static method (this is the static factory pattern <a href=\"http://www.javaworld.com/javaworld/jw-06-2001/j1-01-sintes2.html\" rel=\"nofollow noreferrer\">javaworld.com/javaworld/jw-06-2001/j1-01-sintes2.html</a>)"
+    } ],
+    "owner" : {
+      "account_id" : 28947,
+      "reputation" : 92371,
+      "user_id" : 77779,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/1a62456c71b0851726898e87ec88b69c?s=256&d=identicon&r=PG",
+      "display_name" : "Yishai",
+      "link" : "https://stackoverflow.com/users/77779/yishai"
+    },
+    "is_accepted" : true,
+    "score" : 95,
+    "last_activity_date" : 1665519272,
+    "last_edit_date" : 1665519272,
+    "creation_date" : 1255576239,
+    "answer_id" : 1570099,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The error message says it all. At runtime, the type is gone, there is no way to check for it.</p>\n<p>You could catch it by making a factory for your object like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public static &lt;T&gt; MyObject&lt;T&gt; createMyObject(Class&lt;T&gt; type) {\n    return new MyObject&lt;T&gt;(type);\n}\n</code></pre>\n<p>And then in the object's constructor store that type, so variable so that your method could look like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>if (arg0 != null &amp;&amp; !(this.type.isAssignableFrom(arg0.getClass())) {\n    return -1;\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 49568,
+        "reputation" : 123174,
+        "user_id" : 147601,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://i.sstatic.net/Z41apeIm.jpg?s=256",
+        "display_name" : "Nick Heiner",
+        "link" : "https://stackoverflow.com/users/147601/nick-heiner"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1255576724,
+      "post_id" : 1570105,
+      "comment_id" : 1430330,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "yeah, the List interface demands that the function take an object parameter."
+    }, {
+      "owner" : {
+        "account_id" : 19061,
+        "reputation" : 190566,
+        "user_id" : 44330,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://www.gravatar.com/avatar/dd5a7ef1476fb01998a215b1642dfd07?s=256&d=identicon&r=PG",
+        "display_name" : "Jason S",
+        "link" : "https://stackoverflow.com/users/44330/jason-s"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1255576895,
+      "post_id" : 1570105,
+      "comment_id" : 1430334,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "you&#39;re implementing List? Why aren&#39;t you implementing List&lt;E&gt; ?"
+    }, {
+      "owner" : {
+        "account_id" : 19061,
+        "reputation" : 190566,
+        "user_id" : 44330,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://www.gravatar.com/avatar/dd5a7ef1476fb01998a215b1642dfd07?s=256&d=identicon&r=PG",
+        "display_name" : "Jason S",
+        "link" : "https://stackoverflow.com/users/44330/jason-s"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1255576999,
+      "post_id" : 1570105,
+      "comment_id" : 1430337,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "(see for example the declaration of ArrayList: <a href=\"http://java.sun.com/j2se/1.5.0/docs/api/java/util/ArrayList.html\" rel=\"nofollow noreferrer\">java.sun.com/j2se/1.5.0/docs/api/java/util/ArrayList.html</a>)"
+    }, {
+      "owner" : {
+        "account_id" : 31622,
+        "reputation" : 123161,
+        "user_id" : 86989,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4bd262de5d82a235eeb64f71e4058198?s=256&d=identicon&r=PG",
+        "display_name" : "newacct",
+        "link" : "https://stackoverflow.com/users/86989/newacct"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1255588366,
+      "post_id" : 1570105,
+      "comment_id" : 1430904,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@Rosarch: the List interface&#39;s indexOf() method does not require that the argument given is the same type as the object you are looking for. it just has to be .equals() to it, and objects of different types can be .equals() to each other. This is the same issue as for the remove() method, see: <a href=\"http://stackoverflow.com/questions/104799/why-arent-java-collections-remove-methods-generic\" title=\"why arent java collections remove methods generic\">stackoverflow.com/questions/104799/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 19061,
+        "reputation" : 190566,
+        "user_id" : 44330,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://www.gravatar.com/avatar/dd5a7ef1476fb01998a215b1642dfd07?s=256&d=identicon&r=PG",
+        "display_name" : "Jason S",
+        "link" : "https://stackoverflow.com/users/44330/jason-s"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1255611806,
+      "post_id" : 1570105,
+      "comment_id" : 1432640,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "[[[sheepishly]]] never mind, I thought indexOf() required E as a parameter rather than Object. (why did they do that?!??!)"
+    }, {
+      "owner" : {
+        "account_id" : 28947,
+        "reputation" : 92371,
+        "user_id" : 77779,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/1a62456c71b0851726898e87ec88b69c?s=256&d=identicon&r=PG",
+        "display_name" : "Yishai",
+        "link" : "https://stackoverflow.com/users/77779/yishai"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1255612740,
+      "post_id" : 1570105,
+      "comment_id" : 1432740,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@Jason basically because it would break perfectly valid code that didn&#39;t require an potentially unsafe type cast. Also, because Generics are not covariant you can get into some edge cases with type parameters (say a list of lists that itself has a type parameter) that the compiler would block even though the indexOf() would actually return a real index (the object is in the list but the compiler can&#39;t let you see it)."
+    } ],
+    "owner" : {
+      "account_id" : 19061,
+      "reputation" : 190566,
+      "user_id" : 44330,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/dd5a7ef1476fb01998a215b1642dfd07?s=256&d=identicon&r=PG",
+      "display_name" : "Jason S",
+      "link" : "https://stackoverflow.com/users/44330/jason-s"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1255576405,
+    "creation_date" : 1255576405,
+    "answer_id" : 1570105,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Technically you shouldn't have to, that's the point of generics, so you can do compile-type checking:</p>\n\n<pre><code>public int indexOf(E arg0) {\n   ...\n}\n</code></pre>\n\n<p>but then the @Override may be a problem if you have a class hierarchy. Otherwise see Yishai's answer.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3282,
+        "reputation" : 147614,
+        "user_id" : 4725,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+        "display_name" : "Tom Hawtin - tackline",
+        "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1255581979,
+      "post_id" : 1570232,
+      "comment_id" : 1430542,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "(Although you might want to do an instance type check if you are using <code>Comparator</code> or similar.)"
+    } ],
+    "owner" : {
+      "account_id" : 3282,
+      "reputation" : 147614,
+      "user_id" : 4725,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+      "display_name" : "Tom Hawtin - tackline",
+      "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1255579709,
+    "creation_date" : 1255579709,
+    "answer_id" : 1570232,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The runtime type of the object is a relatively arbitrary condition to filter on. I suggest keeping such muckiness away from your collection. This is simply achieved by having your collection delegate to a filter passed in a construction.</p>\n\n<pre><code>public interface FilterObject {\n     boolean isAllowed(Object obj);\n}\n\npublic class FilterOptimizedList&lt;E&gt; implements List&lt;E&gt; {\n     private final FilterObject filter;\n     ...\n     public FilterOptimizedList(FilterObject filter) {\n         if (filter == null) {\n             throw NullPointerException();\n         }\n         this.filter = filter;\n     }\n     ...\n     public int indexOf(Object obj) {\n         if (!filter.isAllows(obj)) {\n              return -1;\n         }\n         ...\n     }\n     ...\n}\n\n     final List&lt;String&gt; longStrs = new FilterOptimizedList&lt;String&gt;(\n         new FilterObject() { public boolean isAllowed(Object obj) {\n             if (obj == null) {\n                 return true;\n             } else if (obj instanceof String) {\n                 String str = (String)str;\n                 return str.length() &gt; = 4;\n             } else {\n                 return false;\n             }\n         }}\n     );\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 779815,
+      "reputation" : 161,
+      "user_id" : 836265,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/91a8994741533c0ec867631f4e824916?s=256&d=identicon&r=PG",
+      "display_name" : "terryscotttaylor",
+      "link" : "https://stackoverflow.com/users/836265/terryscotttaylor"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1310170251,
+    "creation_date" : 1310170251,
+    "answer_id" : 6631819,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Provided your class extends a class with a generic parameter, you can also get this at runtime via reflection, and then use that for comparison, i.e.</p>\n\n<pre><code>class YourClass extends SomeOtherClass&lt;String&gt;\n{\n\n   private Class&lt;?&gt; clazz;\n\n   public Class&lt;?&gt; getParameterizedClass()\n   {\n      if(clazz == null)\n      {\n         ParameterizedType pt = (ParameterizedType)this.getClass().getGenericSuperclass();\n          clazz = (Class&lt;?&gt;)pt.getActualTypeArguments()[0];\n       }\n       return clazz;\n    }\n}\n</code></pre>\n\n<p>In the case above, at runtime you will get String.class from getParameterizedClass(), and it caches so you don't get any reflection overhead upon multiple checks.  Note that you can get the other parameterized types by index from the ParameterizedType.getActualTypeArguments() method.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1034085,
+        "reputation" : 16079,
+        "user_id" : 1041822,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/1fc976c3c3e2819f639f300378692c6d?s=256&d=identicon&r=PG",
+        "display_name" : "dinox0r",
+        "link" : "https://stackoverflow.com/users/1041822/dinox0r"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1351638982,
+      "post_id" : 13106609,
+      "comment_id" : 17887019,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "+1 A pragmatic non-over engineered solution for a simple check! I wish I could up voted this more"
+    }, {
+      "owner" : {
+        "account_id" : 28947,
+        "reputation" : 92371,
+        "user_id" : 77779,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/1a62456c71b0851726898e87ec88b69c?s=256&d=identicon&r=PG",
+        "display_name" : "Yishai",
+        "link" : "https://stackoverflow.com/users/77779/yishai"
+      },
+      "edited" : false,
+      "score" : 30,
+      "creation_date" : 1357752086,
+      "post_id" : 13106609,
+      "comment_id" : 19761400,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This wouldn&#39;t work. E is erased at runtime, so the cast won&#39;t fail, you will just get a compiler warning about it."
+    } ],
+    "owner" : {
+      "account_id" : 1984761,
+      "reputation" : 157,
+      "user_id" : 1780345,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8689eca4ae5899d2f95e8d74d78b9c9e?s=256&d=identicon&r=PG",
+      "display_name" : "ben",
+      "link" : "https://stackoverflow.com/users/1780345/ben"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1351403728,
+    "last_edit_date" : 1351403728,
+    "creation_date" : 1351402140,
+    "answer_id" : 13106609,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Or you could catch a failed attempt to cast into E <strong>eg.</strong><br/></p>\n\n<pre><code>public int indexOf(Object arg0){\n  try{\n    E test=(E)arg0;\n    return doStuff(test);\n  }catch(ClassCastException e){\n    return -1;\n  }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5396455,
+        "reputation" : 6074,
+        "user_id" : 4297539,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/f3d400b65c2d7331fb33155b0354fa00?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Kirill",
+        "link" : "https://stackoverflow.com/users/4297539/kirill"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1708506185,
+      "post_id" : 17072077,
+      "comment_id" : 137567073,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If T = Integer, o = Double, then there would be no Exception."
+    } ],
+    "owner" : {
+      "account_id" : 269969,
+      "reputation" : 11669,
+      "user_id" : 559634,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/84a8595ea918f3f5ef0dc7919afe2ca2?s=256&d=identicon&r=PG",
+      "display_name" : "SharkAlley",
+      "link" : "https://stackoverflow.com/users/559634/sharkalley"
+    },
+    "is_accepted" : false,
+    "score" : 52,
+    "last_activity_date" : 1371090973,
+    "last_edit_date" : 1495541430,
+    "creation_date" : 1371059598,
+    "answer_id" : 17072077,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Two options for runtime type checking with generics:</p>\n\n<p><strong>Option 1 - Corrupt your constructor</strong></p>\n\n<p>Let's assume you are overriding indexOf(...), and you want to check the type just for performance, to save yourself iterating the entire collection. </p>\n\n<p>Make a filthy constructor like this:</p>\n\n<pre><code>public MyCollection&lt;T&gt;(Class&lt;T&gt; t) {\n\n    this.t = t;\n}\n</code></pre>\n\n<p>Then you can use <a href=\"http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html#isAssignableFrom%28java.lang.Class%29\" rel=\"noreferrer\">isAssignableFrom</a> to check the type.</p>\n\n<pre><code>public int indexOf(Object o) {\n\n    if (\n        o != null &amp;&amp;\n\n        !t.isAssignableFrom(o.getClass())\n\n    ) return -1;\n\n//...\n</code></pre>\n\n<p>Each time you instantiate your object you would have to repeat yourself:</p>\n\n<pre><code>new MyCollection&lt;Apples&gt;(Apples.class);\n</code></pre>\n\n<p>You might decide it isn't worth it. In the implementation of <a href=\"http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b14/java/util/ArrayList.java#ArrayList.indexOf%28java.lang.Object%29\" rel=\"noreferrer\">ArrayList.indexOf(...)</a>, they do not check that the type matches.</p>\n\n<p><strong>Option 2 - Let it fail</strong></p>\n\n<p>If you need to use an abstract method that requires your unknown type, then all you really want is for the compiler to stop crying about <strong>instanceof</strong>. If you have a method like this:</p>\n\n<pre><code>protected abstract void abstractMethod(T element);\n</code></pre>\n\n<p>You can use it like this:</p>\n\n<pre><code>public int indexOf(Object o) {\n\n    try {\n\n        abstractMethod((T) o);\n\n    } catch (ClassCastException e) {\n\n//...\n</code></pre>\n\n<p>You are casting the object to T (your generic type), just to fool the compiler. <a href=\"http://docs.oracle.com/javase/tutorial/java/generics/restrictions.html#cannotCast\" rel=\"noreferrer\">Your cast does nothing at runtime</a>, but you will still get a ClassCastException when you try to pass the wrong type of object into your abstract method.</p>\n\n<p>NOTE 1: If you are doing additional unchecked casts in your abstract method, your ClassCastExceptions will get caught here. That could be good or bad, so think it through.</p>\n\n<p>NOTE 2: <a href=\"https://stackoverflow.com/questions/2950319/is-null-check-needed-before-calling-instanceof\">You get a free null check when you use instanceof</a>. Since you can't use it, you may need to check for null with your bare hands.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5335539,
+      "reputation" : 109,
+      "user_id" : 4254661,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0ac53f2757a8b4c6ed1c313d252e6cdb?s=256&d=identicon&r=PG",
+      "display_name" : "hsaturn",
+      "link" : "https://stackoverflow.com/users/4254661/hsaturn"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1416096666,
+    "last_edit_date" : 1416096666,
+    "creation_date" : 1416051682,
+    "answer_id" : 26945416,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I had the same problem and here is my solution (very humble, @george: this time compiling AND working ...).</p>\n\n<p>My probem was inside an abstract class that implements Observer.\nThe Observable fires method update(...) with Object class that can be any kind of Object.</p>\n\n<p>I only want to handler Objects of type T </p>\n\n<p>The solution is to pass the class to the constructor in order to be able to compare types at runtime.</p>\n\n<pre><code>public abstract class AbstractOne&lt;T&gt; implements Observer {\n\n  private Class&lt;T&gt; tClass;\n    public AbstractOne(Class&lt;T&gt; clazz) {\n    tClass = clazz;\n  }\n\n  @Override\n  public void update(Observable o, Object arg) {\n    if (tClass.isInstance(arg)) {\n      // Here I am, arg has the type T\n      foo((T) arg);\n    }\n  }\n\n  public abstract foo(T t);\n\n}\n</code></pre>\n\n<p>For the implementation we just have to pass the Class to the constructor</p>\n\n<pre><code>public class OneImpl extends AbstractOne&lt;Rule&gt; {\n  public OneImpl() {\n    super(Rule.class);\n  }\n\n  @Override\n  public void foo(Rule t){\n  }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1750515,
+        "reputation" : 6786,
+        "user_id" : 1599699,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/2cf9dae9c1b91452223a39ac08a915b8?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Andrew",
+        "link" : "https://stackoverflow.com/users/1599699/andrew"
+      },
+      "edited" : false,
+      "score" : 39,
+      "creation_date" : 1508243794,
+      "post_id" : 28580762,
+      "comment_id" : 80526906,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It&#39;s unclear what you&#39;re actually contributing here."
+    }, {
+      "owner" : {
+        "account_id" : 13118858,
+        "reputation" : 6977,
+        "user_id" : 9477038,
+        "user_type" : "registered",
+        "profile_image" : "https://lh4.googleusercontent.com/-boqZcfx9flg/AAAAAAAAAAI/AAAAAAAAABM/RuS5QrvFjbQ/s256-rj/photo.jpg",
+        "display_name" : "Jackkobec",
+        "link" : "https://stackoverflow.com/users/9477038/jackkobec"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1699038355,
+      "post_id" : 28580762,
+      "comment_id" : 136485657,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Usable in special cases"
+    } ],
+    "owner" : {
+      "account_id" : 5129456,
+      "reputation" : 1074,
+      "user_id" : 4110190,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/dc936c3019ab13d4bcf38f20f147f509?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jonas Pedersen",
+      "link" : "https://stackoverflow.com/users/4110190/jonas-pedersen"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1424253873,
+    "creation_date" : 1424253873,
+    "answer_id" : 28580762,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Old post, but a simple way to do generic instanceOf checking.</p>\n\n<pre><code>public static &lt;T&gt; boolean isInstanceOf(Class&lt;T&gt; clazz, Class&lt;T&gt; targetClass) {\n    return clazz.isInstance(targetClass);\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4620550,
+      "reputation" : 1939,
+      "user_id" : 3748178,
+      "user_type" : "registered",
+      "accept_rate" : 22,
+      "profile_image" : "https://i.sstatic.net/w1sKg.jpg?s=256",
+      "display_name" : "Salathiel Genese",
+      "link" : "https://stackoverflow.com/users/3748178/salathiel-genese"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1616009572,
+    "creation_date" : 1616009572,
+    "answer_id" : 66680005,
+    "question_id" : 1570073,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Let Java determine it and catch the exception bottom line.</p>\n<pre><code>public class Behaviour&lt;T&gt; {\n    public void behave(Object object) {\n        T typedObject = null;\n        \n        try { typedObject = (T) object; }\n        catch (ClassCastException ignored) {}\n        \n        if (null != typedObject) {\n            // Do something type-safe with typedObject\n        }\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 49568,
+    "reputation" : 123174,
+    "user_id" : 147601,
+    "user_type" : "registered",
+    "accept_rate" : 63,
+    "profile_image" : "https://i.sstatic.net/Z41apeIm.jpg?s=256",
+    "display_name" : "Nick Heiner",
+    "link" : "https://stackoverflow.com/users/147601/nick-heiner"
+  },
+  "is_answered" : true,
+  "view_count" : 249232,
+  "accepted_answer_id" : 1570099,
+  "answer_count" : 9,
+  "score" : 181,
+  "last_activity_date" : 1665519272,
+  "creation_date" : 1255575603,
+  "last_edit_date" : 1365886985,
+  "question_id" : 1570073,
+  "link" : "https://stackoverflow.com/questions/1570073/java-instanceof-and-generics",
+  "title" : "Java: Instanceof and Generics",
+  "body" : "<p>Before I look through my generic data structure for a value's index, I'd like to see if it is even an instance of the type <code>this</code> has been parametrized to.</p>\n\n<p>But Eclipse complains when I do this:</p>\n\n<pre><code>@Override\npublic int indexOf(Object arg0) {\n    if (!(arg0 instanceof E)) {\n        return -1;\n    }\n</code></pre>\n\n<p>This is the error message:</p>\n\n<blockquote>\n  <p>Cannot perform instanceof check against type parameter E. Use instead its erasure Object since generic type information will be erased at runtime</p>\n</blockquote>\n\n<p>What is the better way to do it?</p>\n"
+}

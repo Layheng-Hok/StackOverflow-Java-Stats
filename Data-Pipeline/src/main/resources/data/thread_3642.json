@@ -1,0 +1,44 @@
+{
+  "tags" : [ "java", "soap", "wsdl", "cxf" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 9747335,
+      "reputation" : 1495,
+      "user_id" : 7226842,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/a134f7b5139307fe2b11da6d27b08894?s=256&d=identicon&r=PG",
+      "display_name" : "Emmanuel Guiton",
+      "link" : "https://stackoverflow.com/users/7226842/emmanuel-guiton"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1526306042,
+    "creation_date" : 1526306042,
+    "answer_id" : 50332075,
+    "question_id" : 16700900,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>An explanation may be found here <a href=\"https://issues.apache.org/jira/browse/CXF-1460\" rel=\"nofollow noreferrer\">https://issues.apache.org/jira/browse/CXF-1460</a> though it is a long closed bug.</p>\n\n<p>I am struggling with the same issue with CXF and ServiceNow when the WSDL that ServiceNow exposes has <code>elementFormDefault=\"unqualified\"</code>. I noticed that the generated <code>package-info.java</code> does not have the the correct <code>@javax.xml.bind.annotation.XmlSchema</code> annotation since it misses <code>elementFormDefault=XmlNsForm.UNQUALIFIED</code> I am using CXF 3.2.4 with Glassfish Java XML Binding 2.3.0</p>\n\n<p>A workaround to make the client work is to set the <code>glide.wsdl.schema.UnqualifiedElementFormDefault</code> parameter in ServiceNow to <code>false</code> .</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1270657,
+    "reputation" : 1168,
+    "user_id" : 1227012,
+    "user_type" : "registered",
+    "accept_rate" : 66,
+    "profile_image" : "https://www.gravatar.com/avatar/10853c3b2a875547b7233f25cd56fcb4?s=256&d=identicon&r=PG",
+    "display_name" : "David Nedrow",
+    "link" : "https://stackoverflow.com/users/1227012/david-nedrow"
+  },
+  "is_answered" : false,
+  "view_count" : 10304,
+  "answer_count" : 1,
+  "score" : 9,
+  "last_activity_date" : 1761948140,
+  "creation_date" : 1369254029,
+  "last_edit_date" : 1495541344,
+  "question_id" : 16700900,
+  "link" : "https://stackoverflow.com/questions/16700900/unexpected-wrapper-element-when-using-cxf-generated-client",
+  "title" : "Unexpected wrapper element when using CXF generated client",
+  "body" : "<p>I've generated a client for a webservice using CXF's wsdl2java.</p>\n\n<p>THe client connects OK, but throws an expection complaining that the response found doesn't match the expected response.</p>\n\n<pre><code>May 22, 2013 3:44:46 PM org.apache.cxf.service.factory.ReflectionServiceFactoryBean buildServiceFromWSDL\nINFO: Creating Service {http://www.service-now.com/cmdb_ci_comm}ServiceNow_cmdb_ci_comm from WSDL: file:/C:/Dev/Workspaces/Eclipse/clim20130508/ServiceNowCXFClient/bin/service-now.wsdl\nInvoking getRecords...\nMay 22, 2013 3:44:51 PM org.apache.cxf.phase.PhaseInterceptorChain doDefaultLogging\nWARNING: Interceptor for {http://www.service-now.com/foo}ServiceNow_foo#{http://www.service-now.com/foo}getRecords has thrown exception, unwinding now\norg.apache.cxf.interceptor.Fault: Unexpected wrapper element getRecordsResponse found.   Expected {http://www.service-now.com/foo}getRecordsResponse.\nat org.apache.cxf.interceptor.DocLiteralInInterceptor.handleMessage(DocLiteralInInterceptor.java:100)\nat org.apache.cxf.phase.PhaseInterceptorChain.doIntercept(PhaseInterceptorChain.java:271)\nat org.apache.cxf.endpoint.ClientImpl.onMessage(ClientImpl.java:800)\nat org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.handleResponseInternal(HTTPConduit.java:1592)\nat org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.handleResponse(HTTPConduit.java:1490)\nat org.apache.cxf.transport.http.HTTPConduit$WrappedOutputStream.close(HTTPConduit.java:1309)\nat org.apache.cxf.transport.AbstractConduit.close(AbstractConduit.java:56)\nat org.apache.cxf.transport.http.HTTPConduit.close(HTTPConduit.java:622)\nat org.apache.cxf.interceptor.MessageSenderInterceptor$MessageSenderEndingInterceptor.handleMessage(MessageSenderInterceptor.java:62)\nat org.apache.cxf.phase.PhaseInterceptorChain.doIntercept(PhaseInterceptorChain.java:271)\nat org.apache.cxf.endpoint.ClientImpl.doInvoke(ClientImpl.java:530)\nat org.apache.cxf.endpoint.ClientImpl.invoke(ClientImpl.java:463)\nat org.apache.cxf.endpoint.ClientImpl.invoke(ClientImpl.java:366)\nat org.apache.cxf.endpoint.ClientImpl.invoke(ClientImpl.java:319)\nat org.apache.cxf.frontend.ClientProxy.invokeSync(ClientProxy.java:96)\nat org.apache.cxf.jaxws.JaxWsClientProxy.invoke(JaxWsClientProxy.java:133)\nat com.sun.proxy.$Proxy29.getRecords(Unknown Source)\nat com.service_now.cmdb_ci_comm.ServiceNowSoap_ServiceNowSoap_Client.main(ServiceNowSoap_ServiceNowSoap_Client.java:178)\n</code></pre>\n\n<p>Clearly, the received response differs from the expected response in that the latter includes a namespace.</p>\n\n<pre><code>getRecordsResponse found.   Expected {http://www.service-now.com/foo}getRecordsResponse\n</code></pre>\n\n<p>My service client opens as follows...</p>\n\n<pre><code>@WebServiceClient(name = \"ServiceNow_foo\", \n              wsdlLocation = \"service-now.wsdl\",\n              targetNamespace = \"http://www.service-now.com/foo\") \npublic class ServiceNowFoo extends Service {\n\n    public final static URL WSDL_LOCATION;\n\n    public final static QName SERVICE = new QName(\"http://www.service-now.com/foo\", \"ServiceNow_foo\");\n    public final static QName ServiceNowSoap = new QName(\"http://www.service-now.com/foom\", \"ServiceNowSoap\");\n</code></pre>\n\n<p>You can see the client code in the question <a href=\"https://stackoverflow.com/questions/16698404/how-does-one-configure-cxf-generated-client-for-preemptive-http-auth\">How does one configure CXF generated client for preemptive HTTP auth?</a></p>\n\n<p>Any ideas as to what the misconfiguration is?</p>\n"
+}

@@ -1,0 +1,125 @@
+{
+  "tags" : [ "java", "json", "jsonschema", "json-schema-validator" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 7739148,
+      "reputation" : 3759,
+      "user_id" : 5859654,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/464f7f94d7f25167cfab94dde1181214?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Nemanja",
+      "link" : "https://stackoverflow.com/users/5859654/nemanja"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1660134373,
+    "post_id" : 73305460,
+    "comment_id" : 129460367,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Which library do you use for json validation?"
+  }, {
+    "owner" : {
+      "account_id" : 5137581,
+      "reputation" : 350,
+      "user_id" : 4115835,
+      "user_type" : "registered",
+      "accept_rate" : 15,
+      "profile_image" : "https://www.gravatar.com/avatar/bbeb2565284640ae1e8c5529f36f3a16?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Loren",
+      "link" : "https://stackoverflow.com/users/4115835/loren"
+    },
+    "reply_to_user" : {
+      "account_id" : 7739148,
+      "reputation" : 3759,
+      "user_id" : 5859654,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/464f7f94d7f25167cfab94dde1181214?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Nemanja",
+      "link" : "https://stackoverflow.com/users/5859654/nemanja"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1660194763,
+    "post_id" : 73305460,
+    "comment_id" : 129476367,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@Nemanja edit my question. Added library details"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6556336,
+        "reputation" : 1236,
+        "user_id" : 5128343,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/fba81eb5873cd78be1b58cd164c4234b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Jelaby",
+        "link" : "https://stackoverflow.com/users/5128343/jelaby"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1660213635,
+      "post_id" : 73318897,
+      "comment_id" : 129482120,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Seems likely your want to put the &quot;maxItems&quot; message inside &quot;foo&quot;, so you can have a different message for each array (of there were more arrays):  <code>&quot;foo&quot;: { ..., &quot;message&quot;: { &quot;maxItems&quot;: &quot;foo must contain 3 or fewer entries&quot; } }</code>"
+    } ],
+    "owner" : {
+      "account_id" : 7739148,
+      "reputation" : 3759,
+      "user_id" : 5859654,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/464f7f94d7f25167cfab94dde1181214?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Nemanja",
+      "link" : "https://stackoverflow.com/users/5859654/nemanja"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1762241531,
+    "last_edit_date" : 1762241531,
+    "creation_date" : 1660212452,
+    "answer_id" : 73318897,
+    "question_id" : 73305460,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>According to <a href=\"https://github.com/networknt/json-schema-validator/blob/2.0.0/doc/error-message.md\" rel=\"nofollow noreferrer\">the documentation</a>, you can provide the custom message in the JSON schema itself, but not in the way you did.</p>\n<p>For example if you have a JSON schema like this (with default message):</p>\n<pre><code>{\n  &quot;type&quot;: &quot;object&quot;,\n  &quot;properties&quot;: {\n    &quot;firstName&quot;: {\n      &quot;type&quot;: &quot;string&quot;,\n      &quot;description&quot;: &quot;The person's first name.&quot;\n    },\n    &quot;foo&quot;: {\n      &quot;type&quot;: &quot;array&quot;,\n      &quot;maxItems&quot;: 3\n    }\n  }\n}\n</code></pre>\n<p>You can customize the error message by changing above JSON schema as follows:</p>\n<pre><code>{\n  &quot;type&quot;: &quot;object&quot;,\n  &quot;properties&quot;: {\n    &quot;firstName&quot;: {\n      &quot;type&quot;: &quot;string&quot;,\n      &quot;description&quot;: &quot;The person's first name.&quot;\n    },\n    &quot;foo&quot;: {\n      &quot;type&quot;: &quot;array&quot;,\n      &quot;maxItems&quot;: 3\n    }\n  },\n  &quot;message&quot;: {\n    &quot;maxItems&quot; : &quot;MaxItem must be 3 only&quot;,\n    &quot;type&quot; : &quot;Invalid type&quot;\n  }\n}\n</code></pre>\n<p>In the message field, users can declare their custom message. The key should be the validation type, and the value should be the custom message.</p>\n<pre><code>&quot;message&quot;: {\n    [validationType] : [customMessage]\n  }\n</code></pre>\n<p>Also, we can make format the dynamic message with properties returned from <a href=\"https://github.com/networknt/json-schema-validator/blob/1.5.9/src/main/java/com/networknt/schema/ValidationMessage.java\" rel=\"nofollow noreferrer\">ValidationMessage.java</a> class such as arguments, path, etc.</p>\n<p>Take a look at the <a href=\"https://github.com/networknt/json-schema-validator/pull/438\" rel=\"nofollow noreferrer\">PR</a></p>\n<p>With this setup, this line of code:</p>\n<pre><code> for (ValidationMessage error : errors) {\n        System.out.println(error.getMessage());\n    }\n</code></pre>\n<p>Should print your customized error message.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 26137201,
+      "reputation" : 178,
+      "user_id" : 19827057,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/eAPUxDRv.jpg?s=256",
+      "display_name" : "mariya cherian",
+      "link" : "https://stackoverflow.com/users/19827057/mariya-cherian"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1754285312,
+    "creation_date" : 1754285312,
+    "answer_id" : 79724508,
+    "question_id" : 73305460,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>you need to  change the configuration</p>\n<pre><code>    SchemaValidatorsConfig config = SchemaValidatorsConfig.builder()\n                            .pathType(PathType.JSON_POINTER)\n                            .errorMessageKeyword(&quot;message&quot;)\n                            .nullableKeywordEnabled(true)\n                            .build();\n\n                        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(\n                            SpecVersion.VersionFlag.V7,\n                            b -&gt; b.schemaMappers(sm -&gt;\n                                sm.mapPrefix(schemaPrefix, schemaLocationUri.toString())));\n\n                        JsonSchema schema = factory.getSchema(schemaStream, config);\n                        Set&lt;ValidationMessage&gt; errors = schema.validate(jsonNode);\n</code></pre>\n<pre><code> for (ValidationMessage error : errors) {\n        System.out.println(error.getMessage());\n    }\n</code></pre>\n<p>this will print the desired message</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5137581,
+    "reputation" : 350,
+    "user_id" : 4115835,
+    "user_type" : "registered",
+    "accept_rate" : 15,
+    "profile_image" : "https://www.gravatar.com/avatar/bbeb2565284640ae1e8c5529f36f3a16?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Loren",
+    "link" : "https://stackoverflow.com/users/4115835/loren"
+  },
+  "is_answered" : true,
+  "view_count" : 4455,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1762241531,
+  "creation_date" : 1660130782,
+  "last_edit_date" : 1695831683,
+  "question_id" : 73305460,
+  "link" : "https://stackoverflow.com/questions/73305460/how-to-get-customised-error-message-defined-in-json-schema-using-json-schema-val",
+  "title" : "How to get customised error message defined in Json Schema using json-schema-validator in java?",
+  "body" : "<p>I am trying to access customised error message set in json schema in my java code if validation fails. But I am not able to fetch that. Can you please help me in finding a way ?</p>\n<p>Library Plugin</p>\n<pre><code>  &lt;dependency&gt;\n        &lt;groupId&gt;com.networknt&lt;/groupId&gt;\n        &lt;artifactId&gt;json-schema-validator&lt;/artifactId&gt;\n        &lt;version&gt;1.0.49&lt;/version&gt;\n    &lt;/dependency&gt;\n</code></pre>\n<p>Json-Schema</p>\n<pre><code> &quot;membershipNo&quot;: {\n      &quot;type&quot;: &quot;string&quot;,\n      &quot;minLength&quot;: 1,\n      &quot;message&quot;: {\n        &quot;pattern&quot;: &quot;membershipNo should not be empty&quot;\n      }\n    }\n</code></pre>\n<p>This is how I am fetching the error in Java Class-</p>\n<pre><code>JsonSchema schema = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7).getSchema(schemaAsStream);\nObjectMapper om = new ObjectMapper();\n    om.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);\n    JsonNode jsonNode = om.readTree(payload);\n    Set&lt;ValidationMessage&gt; errors = schema.validate(jsonNode);\n    for (ValidationMessage error : errors) {\n        System.out.println(error.getMessage());\n    }\n\nError Getting- $.payment.membershipNo: must be at least 1 characters long&quot;  \nError Expected - membershipNo should not be empty   \n</code></pre>\n"
+}

@@ -1,0 +1,208 @@
+{
+  "tags" : [ "java", "java-8", "java-stream" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1223835,
+      "reputation" : 77459,
+      "user_id" : 1189885,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://i.sstatic.net/DLHqU.png?s=256",
+      "display_name" : "chrylis -cautiouslyoptimistic-",
+      "link" : "https://stackoverflow.com/users/1189885/chrylis-cautiouslyoptimistic"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1421448841,
+    "post_id" : 27994021,
+    "comment_id" : 44378764,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Just start from zero and count up, using an integer type as a bitfield?"
+  }, {
+    "owner" : {
+      "account_id" : 20707,
+      "reputation" : 31860,
+      "user_id" : 49746,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/0IAAg.jpg?s=256",
+      "display_name" : "Todd",
+      "link" : "https://stackoverflow.com/users/49746/todd"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1421449443,
+    "post_id" : 27994021,
+    "comment_id" : 44378923,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Isn&#39;t that what he&#39;s doing? Converting int-&gt;binary string and then char by char to boolean."
+  }, {
+    "owner" : {
+      "account_id" : 3883769,
+      "reputation" : 3142,
+      "user_id" : 3215673,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/xdCUz.png?s=256",
+      "display_name" : "TheBakker",
+      "link" : "https://stackoverflow.com/users/3215673/thebakker"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1601462661,
+    "post_id" : 27994021,
+    "comment_id" : 113414083,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "surprised there are no such method in commons tbh"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 775068,
+      "reputation" : 66047,
+      "user_id" : 823393,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6a37a096cfb6f7b8e40e4950dc1a9658?s=256&d=identicon&r=PG",
+      "display_name" : "OldCurmudgeon",
+      "link" : "https://stackoverflow.com/users/823393/oldcurmudgeon"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1421454937,
+    "last_edit_date" : 1421454937,
+    "creation_date" : 1421452171,
+    "answer_id" : 27994579,
+    "question_id" : 27994021,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Only <em>kind of</em> a one-liner - and it gives you an <code>Iterator</code> not a <code>List</code> but it demonstrates the principle of counting up and rendering each bit of the count as a <code>boolean</code>.</p>\n\n<pre><code>public static Iterator&lt;Boolean[]&gt; bool(final int n) {\n    return new Iterator&lt;Boolean[]&gt;() {\n        final BigInteger max = BigInteger.ONE.shiftLeft(n);\n        BigInteger next = BigInteger.ZERO;\n\n        @Override\n        public boolean hasNext() {\n            return next.compareTo(max) &lt; 0;\n        }\n\n        @Override\n        public Boolean[] next() {\n            Boolean[] b = new Boolean[n];\n            for (int i = 0; i &lt; n; i++) {\n                b[i] = next.testBit(i);\n            }\n            next = next.add(BigInteger.ONE);\n            return b;\n        }\n\n    };\n}\n</code></pre>\n\n<p><code>OldCurmudgeon</code> has no time for these new-fangled <code>Stream</code> thingies. They'll never catch on - its just a fad ... get off my lawn!! :)</p>\n\n<p>My rather failed attempt at a <code>Stream</code> solution - I'm still not groking them:</p>\n\n<pre><code>private static Boolean[] asBooleanArray(BigInteger n) {\n    int l = n.bitLength();\n    Boolean[] b = new Boolean[l];\n    for (int i = 0; i &lt; l; i++) {\n        b[i] = n.testBit(i);\n    }\n    return b;\n}\n\n    List&lt;Boolean[]&gt; bools = \n            Stream.&lt;BigInteger&gt;iterate(\n                    BigInteger.ZERO, \n                    i -&gt; i.add(BigInteger.ONE))\n            .map(n -&gt; asBooleanArray(n))\n            .collect(Collectors.toList());\n</code></pre>\n\n<p>I'm having problems terminating an infnite <code>Stream</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5502972,
+      "reputation" : 3863,
+      "user_id" : 4371758,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/72db1b0515a9560b1b53aa7f8662d390?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Bubletan",
+      "link" : "https://stackoverflow.com/users/4371758/bubletan"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1421456897,
+    "creation_date" : 1421456897,
+    "answer_id" : 27995096,
+    "question_id" : 27994021,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Tried something. Doesn't use the Stream API for everything.. Though I don't think it's possible to create a <code>boolean[]</code> with it. Haven't used it much so I might be wrong.</p>\n\n<pre><code>public static List&lt;boolean[]&gt; bool(int n) {\n    return IntStream.range(0, 1 &lt;&lt; n)\n            .mapToObj(i -&gt; BitSet.valueOf(new long[] {i}))\n            .map(bs -&gt; {\n                boolean[] a = new boolean[n];\n                for (int i = 0; i &lt; n; i++) {\n                    a[n - i - 1] = bs.get(i);\n                }\n                return a;\n            })\n            .collect(Collectors.toList());\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4247317,
+        "reputation" : 4599,
+        "user_id" : 3475600,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/df7fb496bf3c29be90ff3c31eebedb94?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "srborlongan",
+        "link" : "https://stackoverflow.com/users/3475600/srborlongan"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1421464926,
+      "post_id" : 27995662,
+      "comment_id" : 44382041,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Would it be better to split the mapToObj function into .mapToObj(i -&gt; new long[] { i }).map(BitSet::valueOf).map(bs -&gt; bitSetToArray(bs, n)) ?"
+    }, {
+      "owner" : {
+        "account_id" : 120353,
+        "reputation" : 17565,
+        "user_id" : 312743,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/tcfdY.jpg?s=256",
+        "display_name" : "Hans Cappelle",
+        "link" : "https://stackoverflow.com/users/312743/hans-cappelle"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760949277,
+      "post_id" : 27995662,
+      "comment_id" : 140805910,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Also for everyone working with kotlin these days this is a shorter version <a href=\"https://pl.kotl.in/WeVdwzhft\" rel=\"nofollow noreferrer\">pl.kotl.in/WeVdwzhft</a> <code>fun bool(n: Int): List&lt;List&lt;Boolean&gt;&gt; =       &#47;&#47; Creates a range from 0 to 2^n      (0 until 2f.pow(n).toLong())          .map {               &#47;&#47; Maps to BitSet values (from Long)              BitSet.valueOf(longArrayOf(it))           }          .map {              &#47;&#47; Initializes all elements to false, then sets from BitSet values              MutableList(n) { false }.apply {  \t            it.stream().forEach { i -&gt; this[i] = true }              }          }</code>"
+    } ],
+    "owner" : {
+      "account_id" : 1548079,
+      "reputation" : 133461,
+      "user_id" : 1441122,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+      "display_name" : "Stuart Marks",
+      "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+    },
+    "is_accepted" : true,
+    "score" : 7,
+    "last_activity_date" : 1421987952,
+    "last_edit_date" : 1495541717,
+    "creation_date" : 1421462611,
+    "answer_id" : 27995662,
+    "question_id" : 27994021,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Try this:</p>\n\n<pre><code>boolean[] bitSetToArray(BitSet bs, int width) {\n    boolean[] result = new boolean[width]; // all false\n    bs.stream().forEach(i -&gt; result[i] = true);\n    return result;\n}\n\nList&lt;boolean[]&gt; bool(int n) {\n    return IntStream.range(0, (int)Math.pow(2, n))\n        .mapToObj(i -&gt; bitSetToArray(BitSet.valueOf(new long[] { i }), n))\n        .collect(toList());\n}\n</code></pre>\n\n<p>The key is that <code>BitSet</code> has a <code>stream()</code> method on it that returns a stream of indexes of the one-bits. This can be used to set <code>true</code> values into a <code>boolean[]</code>. Also note that (like Bubletan) it's possible to have a <code>List&lt;boolean[]&gt;</code> instead of <code>List&lt;Boolean[]&gt;</code>. That is, a list of array of primitive <code>boolean</code> values instead of a list of array of boxed <code>Boolean</code> values. (This is because arrays are of reference types and thus can be used as a type argument.)</p>\n\n<p>Finally, thanks to <a href=\"https://stackoverflow.com/users/4371758/bubletan\">Bubletan</a>, whose solution I augmented by adding <code>bitSetToArray()</code>.</p>\n\n<p><strong>UPDATE</strong></p>\n\n<p>srborlongan asked in a comment whether the following might be better:</p>\n\n<pre><code>List&lt;boolean[]&gt; bool(int n) {\n    return IntStream.range(0, (int)Math.pow(2, n))\n        .mapToObj(i -&gt; new long[] { i })\n        .map(BitSet::valueOf)\n        .map(bs -&gt; bitSetToArray(bs, n))\n        .collect(toList());\n}\n</code></pre>\n\n<p>It does have the advantage of being less dense. After all, this isn't code golf, APL, or Perl where the goal seems to be to write something the most terse way possible. Code that's less dense is often, but not always, easier to read and understand.</p>\n\n<p>There are some nuances in this case though, I think. The \"obj\" being emitted by the <code>mapToObj</code> stage is <code>long[]</code>, which is inferred to be the parameter type of <code>BitSet::valueOf</code>. This in turn affects overload resolution! Unless you're already intimately familar with the <code>BitSet</code> API, you have to do a bit of type inference yourself to figure out what this is doing. So in this case it might be better to have a direct method call to <code>BitSet.valueOf(long[])</code>.</p>\n\n<p>In terms of performance -- which is not always top priority -- I think that direct method calls probably perform better than a chain of <code>map</code> operations. Passing a value through an additional stream operation involves perhaps two method calls, plus the overhead of the Lambda Metafactory calls for the additional lambda(s). In addition, direct method calls are likely more easily optimized by the JIT, and inlined, than passing values through the stream. But I haven't verified any of this.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1421494176,
+    "creation_date" : 1421494176,
+    "answer_id" : 27998990,
+    "question_id" : 27994021,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If it has to be <code>Stream</code>s:</p>\n\n<pre><code>public static List&lt;boolean[]&gt; bool(int n) {\n    return IntStream.range(0, 1&lt;&lt;n).mapToObj(\n        i-&gt;IntStream.range(0, n)\n            .collect(()-&gt;new boolean[n], (ba,j)-&gt;ba[j]=((i&gt;&gt;&gt;j)&amp;1)!=0,\n            (x,y)-&gt;{throw new UnsupportedOperationException();})\n      ).collect(Collectors.toList());\n}\n</code></pre>\n\n<p>I left out the unused merge function for two <code>boolean[]</code> arrays, though it is possible to provide such function. But especially the inner <code>Stream</code> code is not a big win compared to a straight-forward loop:</p>\n\n<pre><code>public static List&lt;boolean[]&gt; bool(int n) {\n    return IntStream.range(0, 1&lt;&lt;n).mapToObj(i-&gt; {\n        boolean[] ba=new boolean[n];\n        for(int j=0; j&lt;n; j++) ba[j]=((i&gt;&gt;&gt;j)&amp;1)!=0;\n        return ba;\n    }).collect(Collectors.toList());\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 120353,
+      "reputation" : 17565,
+      "user_id" : 312743,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/tcfdY.jpg?s=256",
+      "display_name" : "Hans Cappelle",
+      "link" : "https://stackoverflow.com/users/312743/hans-cappelle"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760949413,
+    "creation_date" : 1760949413,
+    "answer_id" : 79794721,
+    "question_id" : 27994021,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A verison in Kotlin, based on the accepted answer here. Link to kotlin playground <a href=\"https://pl.kotl.in/WeVdwzhft\" rel=\"nofollow noreferrer\">https://pl.kotl.in/WeVdwzhft</a></p>\n<pre><code>fun bool(n: Int): List&lt;List&lt;Boolean&gt;&gt; = \n    // Creates a range from 0 to 2^n\n    (0 until 2f.pow(n).toLong())\n        .map { \n            // Maps to BitSet values (from Long)\n            BitSet.valueOf(longArrayOf(it)) \n        }\n        .map {\n            // Initializes all elements to false, then sets from BitSet values\n            MutableList(n) { false }.apply {\n                it.stream().forEach { i -&gt; this[i] = true }\n            }\n        }\n</code></pre>\n<p>Some example usage and output</p>\n<pre><code>println(&quot;\\noutput examples&quot;)\n    \nprintln(&quot;bool(1) is ${bool(1)}&quot;)\nprintln(&quot;bool(2) is ${bool(2)}&quot;)\nprintln(&quot;bool(3) is ${bool(3)}&quot;)\n</code></pre>\n<p>renders</p>\n<pre><code>output examples\nbool(1) is [[false], [true]]\nbool(2) is [[false, false], [true, false], [false, true], [true, true]]\nbool(3) is [[false, false, false], [true, false, false], [false, true, false], [true, true, false], [false, false, true], [true, false, true], [false, true, true], [true, true, true]]\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2706912,
+    "reputation" : 16127,
+    "user_id" : 2336315,
+    "user_type" : "registered",
+    "accept_rate" : 90,
+    "profile_image" : "https://www.gravatar.com/avatar/207576ab67c7dfb4c498b1a4d7600a23?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user2336315",
+    "link" : "https://stackoverflow.com/users/2336315/user2336315"
+  },
+  "is_answered" : true,
+  "view_count" : 3769,
+  "accepted_answer_id" : 27995662,
+  "answer_count" : 5,
+  "score" : 13,
+  "last_activity_date" : 1760949413,
+  "creation_date" : 1421448542,
+  "last_edit_date" : 1423872346,
+  "question_id" : 27994021,
+  "link" : "https://stackoverflow.com/questions/27994021/most-elegant-way-to-generate-possible-boolean-combinations",
+  "title" : "Most elegant way to generate possible boolean combinations",
+  "body" : "<p>What is the most elegant way to generate the possible boolean combinations given the max number of booleans you want?</p>\n\n<p>Ex :</p>\n\n<pre><code>bool(1) -&gt; [false], [true]\nbool(2) -&gt; [false, false], [false, true], [true, false], [true, true]\n...\n</code></pre>\n\n<p>This is my current implementation:</p>\n\n<pre><code>public static List&lt;Boolean[]&gt; bool(int n) {\n    return IntStream.range(0, (int) Math.pow(2, n))\n                    .mapToObj(i -&gt; StringUtils.leftPad(Integer.toBinaryString(i), n, '0').chars().mapToObj(c -&gt; c != '0').toArray(Boolean[]::new))\n                    .collect(Collectors.toList());\n}\n</code></pre>\n\n<p>However I'm not satisfied with the fact that I use integers, then map to binary with <code>StringUtils.leftPad</code> and the <code>map</code> that returns a <code>Boolean[]</code> instead of a <code>boolean[]</code>.</p>\n\n<p>Is there a nicer way to do it in a one-liner using the Stream API?</p>\n"
+}

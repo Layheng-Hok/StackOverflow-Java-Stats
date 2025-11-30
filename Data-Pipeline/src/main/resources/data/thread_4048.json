@@ -1,0 +1,140 @@
+{
+  "tags" : [ "java", "logging", "logback" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 136865,
+      "reputation" : 155,
+      "user_id" : 340665,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/a81497c09b5022e126a9c9463c98c982?s=256&d=identicon&r=PG",
+      "display_name" : "Milo Casagrande",
+      "link" : "https://stackoverflow.com/users/340665/milo-casagrande"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1314698969,
+    "creation_date" : 1314698969,
+    "answer_id" : 7241620,
+    "question_id" : 5924112,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I don't think there is the equivalent of the <code>{x}</code> syntax for <code>%thread</code>, but you can use something like <code>%.-5thread</code> to print just the first 5 characters of the thread name, but just 5, not a shortened version (obviously, adjust the number to your needs).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 33206,
+      "reputation" : 10245,
+      "user_id" : 92764,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://i.sstatic.net/wpTC3.jpg?s=256",
+      "display_name" : "Luciano Fiandesio",
+      "link" : "https://stackoverflow.com/users/92764/luciano-fiandesio"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1314699291,
+    "creation_date" : 1314699291,
+    "answer_id" : 7241683,
+    "question_id" : 5924112,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use:</p>\n\n<pre><code>[%.-10t]\n</code></pre>\n\n<p>This expression prints the first 10 chars of the thread name.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 244252,
+        "reputation" : 23099,
+        "user_id" : 516910,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/ecb6fe519e40259b1b51de9c2b5c8a6a?s=256&d=identicon&r=PG",
+        "display_name" : "broc.seib",
+        "link" : "https://stackoverflow.com/users/516910/broc-seib"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1363795496,
+      "post_id" : 15514658,
+      "comment_id" : 21997065,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I just opened a new feature request for %thread{length}. <a href=\"http://jira.qos.ch/browse/LOGBACK-813\" rel=\"nofollow noreferrer\">jira.qos.ch/browse/LOGBACK-813</a>"
+    } ],
+    "owner" : {
+      "account_id" : 244252,
+      "reputation" : 23099,
+      "user_id" : 516910,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/ecb6fe519e40259b1b51de9c2b5c8a6a?s=256&d=identicon&r=PG",
+      "display_name" : "broc.seib",
+      "link" : "https://stackoverflow.com/users/516910/broc-seib"
+    },
+    "is_accepted" : true,
+    "score" : 41,
+    "last_activity_date" : 1363749474,
+    "creation_date" : 1363749474,
+    "answer_id" : 15514658,
+    "question_id" : 5924112,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>[%.7thread]\n</code></pre>\n\n<p>This will print the <em>last</em> 7 characters of the thread name.</p>\n\n<p>Trailing characters of a thread name are often more interesting than the characters at the beginning of a thread name. :-)</p>\n\n<p>You may read about the <a href=\"http://logback.qos.ch/manual/layouts.html#formatModifiers\" rel=\"noreferrer\">maximum field width modifier</a> in the logback docs.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8390210,
+      "reputation" : 599,
+      "user_id" : 6314668,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/00a4a4dc590fbe551aaf8a13799df101?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "gorcajo",
+      "link" : "https://stackoverflow.com/users/6314668/gorcajo"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1496832873,
+    "last_edit_date" : 1496832873,
+    "creation_date" : 1496831479,
+    "answer_id" : 44410156,
+    "question_id" : 5924112,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>What about this at your thread's beginings?</p>\n\n<pre><code>if (Thread.currentThread().getName().split(\"-\").length &gt; 1) {\n    String threadName = Thread.currentThread().getName();\n    threadName = \"thread\" + threadName.split(\"-\")[3];\n    Thread.currentThread().setName(threadName);\n}\n</code></pre>\n\n<p>Then in your logback.xml:</p>\n\n<pre><code>[%-8thread] %msg%n\n</code></pre>\n\n<p>... and you'll get something like this:</p>\n\n<pre><code>[main    ] Process started\n[thread1 ] Thread started\n[thread2 ] Thread started\n[thread1 ] Thread ended\n[thread1 ] Thread started\n[thread2 ] Thread ended\n[thread2 ] Thread started\n[thread1 ] Thread ended\n[thread2 ] Thread ended\n[thread3 ] Thread ended\n[thread4 ] Thread ended\n[thread5 ] Thread ended\n[main    ] Process ended\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1518185,
+      "reputation" : 11597,
+      "user_id" : 1418643,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/NO9Qh.jpg?s=256",
+      "display_name" : "Aksel Willgert",
+      "link" : "https://stackoverflow.com/users/1418643/aksel-willgert"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1534422343,
+    "creation_date" : 1534422343,
+    "answer_id" : 51877045,
+    "question_id" : 5924112,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To print the 7 last characters and Rightpad with spaces:</p>\n\n<pre><code>[%-7.7thread] \n</code></pre>\n\n<p>Output:</p>\n\n<pre><code>14:22:43.097 [main   ] DEBUG \n14:22:43.341 [main   ] INFO  \n14:22:43.341 [main   ] INFO  \n14:22:45.399 [-target] INFO  \n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 57987,
+    "reputation" : 30183,
+    "user_id" : 173677,
+    "user_type" : "registered",
+    "accept_rate" : 83,
+    "profile_image" : "https://www.gravatar.com/avatar/8fe496625f910b5f94e8ebd9870408b4?s=256&d=identicon&r=PG",
+    "display_name" : "Vladislav Rastrusny",
+    "link" : "https://stackoverflow.com/users/173677/vladislav-rastrusny"
+  },
+  "is_answered" : true,
+  "view_count" : 18378,
+  "accepted_answer_id" : 15514658,
+  "answer_count" : 5,
+  "score" : 24,
+  "last_activity_date" : 1761057142,
+  "creation_date" : 1304803746,
+  "last_edit_date" : 1761057142,
+  "question_id" : 5924112,
+  "link" : "https://stackoverflow.com/questions/5924112/how-to-shorten-thread-name-in-logback-logs",
+  "title" : "How to shorten thread name in logback logs?",
+  "body" : "<p>You can shorten the name of the logger using the <code>%logger{x}</code> syntax where x controls shortening procedure. Is there any way to shorten the name of the thread the same way?</p>\n"
+}

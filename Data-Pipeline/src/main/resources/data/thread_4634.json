@@ -1,0 +1,110 @@
+{
+  "tags" : [ "java", "xml", "xml-signature" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2329701,
+        "reputation" : 173,
+        "user_id" : 2043423,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/hrXxL.png?s=256",
+        "display_name" : "han",
+        "link" : "https://stackoverflow.com/users/2043423/han"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1699731806,
+      "post_id" : 68819853,
+      "comment_id" : 136569356,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Do you mind sharing your XPathResourceResolver class?"
+    }, {
+      "owner" : {
+        "account_id" : 7670388,
+        "reputation" : 307,
+        "user_id" : 5812830,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://graph.facebook.com/1587026638239005/picture?type=large",
+        "display_name" : "Aramis Rodr&#237;guez Blanco",
+        "link" : "https://stackoverflow.com/users/5812830/aramis-rodr%c3%adguez-blanco"
+      },
+      "reply_to_user" : {
+        "account_id" : 2329701,
+        "reputation" : 173,
+        "user_id" : 2043423,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/hrXxL.png?s=256",
+        "display_name" : "han",
+        "link" : "https://stackoverflow.com/users/2043423/han"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1759764029,
+      "post_id" : 68819853,
+      "comment_id" : 140779865,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@han See my answer <a href=\"https://stackoverflow.com/a/79783838/5812830\">stackoverflow.com/a/79783838/5812830</a>"
+    } ],
+    "owner" : {
+      "account_id" : 22419961,
+      "reputation" : 41,
+      "user_id" : 16627424,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/afd693f1fbb4a9765b770bae023f7315?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "DeliveryNinja",
+      "link" : "https://stackoverflow.com/users/16627424/deliveryninja"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1629213135,
+    "creation_date" : 1629213135,
+    "answer_id" : 68819853,
+    "question_id" : 68717782,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To solve this issue I created a custom ResourceResolverSPI and added it</p>\n<pre><code>  ResourceResolver.register(new XPathResourceResolver(), true);\n</code></pre>\n<p>That solved the issue, the custom resolver just uses XPath to create a Set for signing.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7670388,
+      "reputation" : 307,
+      "user_id" : 5812830,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://graph.facebook.com/1587026638239005/picture?type=large",
+      "display_name" : "Aramis Rodr&#237;guez Blanco",
+      "link" : "https://stackoverflow.com/users/5812830/aramis-rodr%c3%adguez-blanco"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759764849,
+    "last_edit_date" : 1759764849,
+    "creation_date" : 1759763994,
+    "answer_id" : 79783838,
+    "question_id" : 68717782,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is the ResourceResolverSPI implementation that finally worked!</p>\n<pre><code>\nimport java.util.LinkedHashSet;\nimport java.util.Set;\n\nimport javax.xml.xpath.XPath;\nimport javax.xml.xpath.XPathConstants;\nimport javax.xml.xpath.XPathExpressionException;\nimport javax.xml.xpath.XPathFactory;\n\nimport org.apache.xml.security.signature.XMLSignatureException;\nimport org.apache.xml.security.signature.XMLSignatureInput;\nimport org.apache.xml.security.signature.XMLSignatureNodeSetInput;\nimport org.apache.xml.security.utils.XMLUtils;\nimport org.apache.xml.security.utils.resolver.ResourceResolverContext;\nimport org.apache.xml.security.utils.resolver.ResourceResolverException;\nimport org.apache.xml.security.utils.resolver.ResourceResolverSpi;\nimport org.w3c.dom.Document;\nimport org.w3c.dom.Node;\nimport org.w3c.dom.NodeList;\n\npublic class EbicsXPointerNodeSetResolver extends ResourceResolverSpi {\n    \n\n    @Override\n    public boolean engineCanResolveURI(ResourceResolverContext context) {\n        String uri = context.uriToResolve;\n        return uri != null &amp;&amp; uri.startsWith(&quot;#xpointer(&quot;);\n    }\n\n    @Override\n    public XMLSignatureInput engineResolveURI(ResourceResolverContext context)\n            throws ResourceResolverException {\n        Document doc = context.attr.getOwnerDocument();\n        \n        try {\n            XPath xpath = XPathFactory.newInstance().newXPath();\n            \n            // XPath expression to find nodes with attribute: authenticate=&quot;true&quot;\n            String xpathExpr = &quot;//*[@authenticate='true']&quot;;\n            NodeList nodes = (NodeList) xpath.evaluate(xpathExpr, doc, XPathConstants.NODESET);\n            \n            if (nodes.getLength() == 0) {\n                throw new XPathExpressionException(&quot;No se encontraron elementos con authenticate='true'&quot;);\n            }\n            \n            Set&lt;Node&gt; rootSet = new LinkedHashSet&lt;&gt;();\n            for (int i = 0; i &lt; nodes.getLength(); i++) {\n                Node node = nodes.item(i);                \n                rootSet.add(node);\n            }\n            \n            Set&lt;Node&gt; expandedNodeSet = new LinkedHashSet&lt;&gt;();\n            for (Node root : rootSet) {\n                XMLUtils.getSet(root, expandedNodeSet, null, false);  // Add root + all childs, no comments\n            }\n            \n            XMLSignatureNodeSetInput input=new XMLSignatureNodeSetInput(expandedNodeSet);\n            input.setExcludeComments(true);\n            input.setNodeSet(true);  \n            \n        } catch (XPathExpressionException | XMLSignatureException e) {\n            throw new ResourceResolverException(&quot;No nodes with authenticate=true&quot;, context.uriToResolve, context.baseUri);\n        }\n    }\n\n}\n\n</code></pre>\n<p>Firstly, using only rootSet, the canonalizer algorithm wasn't working as expected because it was only using the nodes marked with the attribute authenticate=true but it wasn't using the child nodes, so the xml to be digested was not complete and then it failed validating the signature.</p>\n<p>I integrated this implementation using this line:\n<code>ResourceResolver.register(new EbicsXPointerNodeSetResolver(),true);</code></p>\n<p>This is the code to sign the XML using XPath expression to select only those nodes with attribute authenticate=true</p>\n<pre><code>\nimport java.security.InvalidAlgorithmParameterException;\nimport java.security.NoSuchAlgorithmException;\nimport java.security.Security;\nimport java.security.cert.X509Certificate;\nimport java.security.interfaces.RSAPrivateKey;\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.List;\n\nimport javax.xml.crypto.MarshalException;\nimport javax.xml.crypto.dsig.DigestMethod;\nimport javax.xml.crypto.dsig.Reference;\nimport javax.xml.crypto.dsig.SignatureMethod;\nimport javax.xml.crypto.dsig.SignedInfo;\nimport javax.xml.crypto.dsig.Transform;\nimport javax.xml.crypto.dsig.XMLSignature;\nimport javax.xml.crypto.dsig.XMLSignatureException;\nimport javax.xml.crypto.dsig.XMLSignatureFactory;\nimport javax.xml.crypto.dsig.dom.DOMSignContext;\nimport javax.xml.crypto.dsig.keyinfo.KeyInfo;\nimport javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;\nimport javax.xml.crypto.dsig.keyinfo.X509Data;\nimport javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;\nimport javax.xml.crypto.dsig.spec.TransformParameterSpec;\n\nimport org.apache.logging.log4j.LogManager;\nimport org.apache.logging.log4j.Logger;\nimport org.apache.xml.security.Init;\nimport org.apache.xml.security.c14n.Canonicalizer;\nimport org.apache.xml.security.utils.resolver.ResourceResolver;\nimport org.w3c.dom.Document;\nimport org.w3c.dom.Element;\nimport org.w3c.dom.NodeList;\n\npublic class XMLDSigService {\n    \n    private static final Logger log = LogManager.getLogger(XMLDSigService.class);\n    private static final org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI xmlDSigRI = new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI();\n    static {\n        Init.init();    \n        ResourceResolver.register(new EbicsXPointerNodeSetResolver(),true); \n        System.setProperty(&quot;org.jcp.xml.dsig.provider&quot;, &quot;org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI&quot;);  \n        Security.addProvider(xmlDSigRI);\n    }\n\n    public static void sign(Document doc, X509Certificate cert, RSAPrivateKey privateKey, boolean addKeyInfo) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, MarshalException, XMLSignatureException {\n        \n            XMLSignatureFactory sigFactory = XMLSignatureFactory.getInstance(&quot;DOM&quot;, xmlDSigRI);\n\n            List&lt;Transform&gt; transforms = new ArrayList&lt;&gt;();\n            \n            Transform c14nTransform = sigFactory.newTransform(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, (TransformParameterSpec) null);\n            transforms.add(c14nTransform);\n\n            Reference ref = sigFactory.newReference(\n                    &quot;#xpointer(//*[@authenticate='true'])&quot;,  \n                    sigFactory.newDigestMethod(DigestMethod.SHA256, null),\n                    transforms,\n                    null,\n                    null\n                    );\n\n            SignedInfo signedInfo = sigFactory.newSignedInfo(\n                    sigFactory.newCanonicalizationMethod(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS, (C14NMethodParameterSpec) null),\n                    sigFactory.newSignatureMethod(SignatureMethod.RSA_SHA256, null), Collections.singletonList(ref));\n\n\n            KeyInfoFactory kif = sigFactory.getKeyInfoFactory();\n            X509Data x509Data = kif.newX509Data(Collections.singletonList(cert));\n            KeyInfo keyInfo = kif.newKeyInfo(Collections.singletonList(x509Data));\n\n            XMLSignature signature = sigFactory.newXMLSignature(signedInfo,addKeyInfo? keyInfo:null);\n\n            DOMSignContext signContext = new DOMSignContext(privateKey,\n                    doc.getDocumentElement());\n            signContext.setDefaultNamespacePrefix(&quot;ds&quot;);\n            signature.sign(signContext);\n\n            NodeList sigNodes = doc.getElementsByTagNameNS(XMLSignature.XMLNS, &quot;Signature&quot;);\n            if (sigNodes.getLength() &gt; 0) {\n                Element sigElem = (Element) sigNodes.item(0);\n\n                // rename node to AuthSignature (to use EBICS namespace EBICS, no XMLDSIG ds namespace)\n                doc.renameNode(sigElem, &quot;urn:org:ebics:H005&quot;, &quot;AuthSignature&quot;);\n            }\n\n            Element sigValueElement = (Element) doc.getElementsByTagNameNS(&quot;http://www.w3.org/2000/09/xmldsig#&quot;, &quot;SignatureValue&quot;).item(0);\n            if (sigValueElement != null) {\n                log.debug(&quot;sigsignature value: {}&quot;,sigValueElement.getTextContent());\n                String sigValue = sigValueElement.getTextContent().replace(&quot;\\n&quot;, &quot;&quot;).replace(&quot;\\r&quot;, &quot;&quot;);\n                log.debug(&quot;signature value clean: {}&quot;,sigValue);\n                sigValueElement.setTextContent(sigValue);\n            }\n        \n    }\n    \n}\n\n</code></pre>\n<p>I tested the signed XML on <a href=\"https://tools.chilkat.io/xmlDsigVerify.cshtml\" rel=\"nofollow noreferrer\">this site</a> and the result was this:</p>\n<pre><code>Signature Verified\nNumber of Reference Digests = 1\nReference 1 digest is valid.\n</code></pre>\n<p>I have checked that this works fine with one or more nodes matching the xpath expression in the source XML.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22419961,
+    "reputation" : 41,
+    "user_id" : 16627424,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/afd693f1fbb4a9765b770bae023f7315?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "DeliveryNinja",
+    "link" : "https://stackoverflow.com/users/16627424/deliveryninja"
+  },
+  "is_answered" : true,
+  "view_count" : 560,
+  "accepted_answer_id" : 68819853,
+  "answer_count" : 2,
+  "score" : 3,
+  "last_activity_date" : 1759764849,
+  "creation_date" : 1628538400,
+  "last_edit_date" : 1628572113,
+  "question_id" : 68717782,
+  "link" : "https://stackoverflow.com/questions/68717782/xml-signature-in-java-but-only-on-elements-where-attribute-authenticate-true",
+  "title" : "Xml Signature in Java but only on elements where attribute authenticate=&#39;true&#39;",
+  "body" : "<p>I have been able to sign and verify my XML signature when using Apache Santuario, but now I want to only apply the signature to fields where the attribute <code>authenticate=&quot;true&quot;</code></p>\n<p>For example:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;Document&gt;\n  &lt;DoNotSign&gt;&lt;/DoNotSign&gt;\n  &lt;DoSign authenticate=&quot;true&quot;&gt;&lt;/DoSign&gt;\n  &lt;Something&gt;\n    &lt;SomethingElse authenticate=&quot;true&quot;&gt;&lt;/SomethingElse&gt;\n  &lt;/Someting&gt;\n&lt;/Document&gt;\n</code></pre>\n<p>Can anyone help me understand how to achieve it?</p>\n<p>I add the reference URI like so:</p>\n<pre class=\"lang-java prettyprint-override\"><code>xmlSignature.addDocument(&quot;#xpointer(//*[@authenticate='true'])&quot;, transforms, Constants.ALGO_ID_DIGEST_SHA1);\n</code></pre>\n<p>And just get an exception:</p>\n<pre><code>Original Exception was org.apache.xml.security.utils.resolver.ResourceResolverException: \nCould not find a resolver for URI #xpointer(//*[@authenticate='true'])\n</code></pre>\n<p>I have tried adding the following:</p>\n<pre class=\"lang-java prettyprint-override\"><code>transforms.addTransform(Transforms.TRANSFORM_XPOINTER);\nxmlSignature.getSignedInfo().addResourceResolver(new ResolverXPointer());\n</code></pre>\n<p>This returns me an exception when adding the <code>XPOINTER</code> transform.\nThe <code>ResolverXPointer</code> seems to have no effect.</p>\n<pre><code>TransformationException: Unknown transformation. \nNo handler installed for URI http://www.w3.org/TR/2001/WD-xptr-20010108\n</code></pre>\n<p>The complete method is below:</p>\n<pre class=\"lang-java prettyprint-override\"><code>final var transforms = new Transforms(document);\ntransforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);\ntransforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);\ntransforms.addTransform(Transforms.TRANSFORM_XPOINTER);\n\nxmlSignature.addDocument(&quot;#xpointer(//*[@authenticate='true'])&quot;, transforms, Constants.ALGO_ID_DIGEST_SHA1);\nxmlSignature.addKeyInfo(signingCertificate);\nxmlSignature.sign(signingKey);\n</code></pre>\n"
+}

@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "mysql", "spring", "jpa" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 6749614,
+      "reputation" : 778,
+      "user_id" : 5200064,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/79b695a0b6482c768728b8b1a2c8b089?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "lmk",
+      "link" : "https://stackoverflow.com/users/5200064/lmk"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1608753266,
+    "post_id" : 65377069,
+    "comment_id" : 115677691,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "did you get a chance to try the answers?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 16655393,
+      "reputation" : 871,
+      "user_id" : 12036956,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6ziw7.jpg?s=256",
+      "display_name" : "Jalil.Jarjanazy",
+      "link" : "https://stackoverflow.com/users/12036956/jalil-jarjanazy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1608456511,
+    "creation_date" : 1608456511,
+    "answer_id" : 65378512,
+    "question_id" : 65377069,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>First of all, you have to write the relationship between User and Transaction.</p>\n<pre><code>@Entity\n@Table(name = &quot;user&quot;)\npublic class User {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    @Column(name = &quot;id&quot;)\n    private long id;\n\n    @Column(name = &quot;name&quot;)\n    private String name;\n\n    @Column(name = &quot;email&quot;)\n    private String email;\n\n    @Column(name = &quot;password&quot;)\n    private String password;\n\n    @Column(name = &quot;money&quot;)\n    private int money;\n\n    @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL)\n    private Set&lt;Transaction&gt; transactions = new HashSet&lt;&gt;();\n    \n    //Getter Setter Constructor\n}\n\n\n@Entity\n@Table(name = &quot;transaction&quot;)\npublic class Transaction {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    @Column(name = &quot;id_trans&quot;)\n    private long id_trans;\n\n    @Column(name = &quot;id_user&quot;)\n    private long id_user;\n\n    @Column(name = &quot;transaction_date&quot;)\n    private Timestamp transaction_date;\n\n    @Column(name = &quot;type&quot;) //Default set as &quot;SEND MONEY&quot;\n    private String type;\n\n    @Column(name = &quot;trans_money&quot;) //From money in User.class\n    private int trans_money;\n\n    @ManyToOne(fetch = FetchType.LAZY)\n    @JoinColumn(referencedColumnName = &quot;id&quot;)\n    private User user;\n\n    //Getter Setter Constructor\n}\n</code></pre>\n<p>Then you have to create the JPA repository interface for the User</p>\n<pre><code>@Repository\npublic interface UserRepo extends CrudRepository &lt;User, Long&gt; {\n}\n</code></pre>\n<p>Then in a service, you can do the following</p>\n<pre><code>@Service\npublic class UserService {\n    private UserRepo userRepo;\n\n    @Autowired\n    MealService(UserRepo userRepo){\n        this.userRepo = userRepo;\n    }\n\n    public void CreateNewUser(){\n        User user = new User();\n        // set its values\n\n        Transaction transaction = new Transaction();\n        transaction.setType(&quot;SEND MONEY&quot;);\n        // set other values\n\n        user.getTransactions().add(transaction);\n\n        userRepo.save(user);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6749614,
+      "reputation" : 778,
+      "user_id" : 5200064,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/79b695a0b6482c768728b8b1a2c8b089?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "lmk",
+      "link" : "https://stackoverflow.com/users/5200064/lmk"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1608542581,
+    "last_edit_date" : 1608542581,
+    "creation_date" : 1608458802,
+    "answer_id" : 65378766,
+    "question_id" : 65377069,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Looking at the <code>@Entity</code> classes mentioned it seems to me that there exists an <code>@ManyToOne</code> association between <code>Transaction</code> and <code>User</code> which is not captured in the entity relationship modeling/mapping.</p>\n<p>Please consider modeling that in your <code>Transaction</code> entity as follows,</p>\n<pre><code>@Entity\n@Table(name = &quot;transaction&quot;)\npublic class Transaction {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    @Column(name = &quot;id_trans&quot;)\n    private long id_trans;\n\n    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)\n    @JoinColumn(name = &quot;user_id&quot;)\n    private User user;\n\n    @Column(name = &quot;transaction_date&quot;)\n    private Timestamp transaction_date;\n\n    @Column(name = &quot;type&quot;) //Default set as &quot;SEND MONEY&quot;\n    private String type;\n\n    @Column(name = &quot;trans_money&quot;) //From money in User.class\n    private int trans_money;\n\n\n    //Getter Setter Constructor\n}\n</code></pre>\n<p>Once you do that you can create a JPA repository class for <code>Transaction</code> and <code>User</code> and simply use the <code>save</code> method to do what you want in a transaction after constructing your instances. More on transactions in Spring Data JPA <a href=\"https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#transactions\" rel=\"nofollow noreferrer\">here</a></p>\n<pre><code>public interface TransactionRepository extends JpaRepository&lt;Transaction, Long&gt; {\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 11601904,
+    "reputation" : 71,
+    "user_id" : 8498758,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/1ddee2646da409a25f7176248f54efba?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "mochim",
+    "link" : "https://stackoverflow.com/users/8498758/mochim"
+  },
+  "is_answered" : false,
+  "view_count" : 10595,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1763474950,
+  "creation_date" : 1608440645,
+  "last_edit_date" : 1718907779,
+  "question_id" : 65377069,
+  "link" : "https://stackoverflow.com/questions/65377069/insert-data-to-multiple-tables-in-spring-jpa",
+  "title" : "Insert data to multiple tables in spring jpa",
+  "body" : "<p>I have two tables, <strong>user</strong> and <strong>transaction</strong>. Where <code>one user</code> can have <code>many transactions</code>. So, every time I execute <code>create new user</code>, they automatically make a <code>new transaction</code> and the <code>transaction type</code> is <strong>SEND MONEY</strong>. But I don't understand how to write it in Spring JPA. Please take a look at my code and help me.</p>\n<p>User.java</p>\n<p><div class=\"snippet\" data-lang=\"js\" data-hide=\"false\" data-console=\"true\" data-babel=\"false\">\r\n<div class=\"snippet-code\">\r\n<pre class=\"snippet-code-js lang-js prettyprint-override\"><code>@Entity\n@Table(name = \"user\")\npublic class User {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    @Column(name = \"id\")\n    private long id;\n\n    @Column(name = \"name\")\n    private String name;\n\n    @Column(name = \"email\")\n    private String email;\n\n    @Column(name = \"password\")\n    private String password;\n\n    @Column(name = \"money\")\n    private int money;\n    \n    //Getter Setter Constructor\n}</code></pre>\r\n</div>\r\n</div>\r\n</p>\n<p>Transaction.java</p>\n<p><div class=\"snippet\" data-lang=\"js\" data-hide=\"false\" data-console=\"true\" data-babel=\"false\">\r\n<div class=\"snippet-code\">\r\n<pre class=\"snippet-code-js lang-js prettyprint-override\"><code>@Entity\n@Table(name = \"transaction\")\npublic class Transaction {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    @Column(name = \"id_trans\")\n    private long id_trans;\n\n    @Column(name = \"id_user\")\n    private long id_user;\n\n    @Column(name = \"transaction_date\")\n    private Timestamp transaction_date;\n\n    @Column(name = \"type\") //Default set as \"SEND MONEY\"\n    private String type;\n\n    @Column(name = \"trans_money\") //From money in User.class\n    private int trans_money;\n\n\n    //Getter Setter Constructor\n}</code></pre>\r\n</div>\r\n</div>\r\n</p>\n<p>I know I should do something in my <strong>UserDAO.java</strong>, but I still don't know how to send data from the body and split(?) it into two objects (<code>user</code> and <code>transaction</code>, so I can persist it in <strong>UserDAO</strong>).</p>\n"
+}

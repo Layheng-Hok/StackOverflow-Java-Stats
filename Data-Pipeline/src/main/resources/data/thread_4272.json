@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "spring-webflux", "reactor", "reactor-netty" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 264830,
+      "reputation" : 72797,
+      "user_id" : 551406,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/asxye.jpg?s=256",
+      "display_name" : "Michael Berry",
+      "link" : "https://stackoverflow.com/users/551406/michael-berry"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1593552337,
+    "creation_date" : 1593552337,
+    "answer_id" : 62666393,
+    "question_id" : 62658719,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<p>I was excpecting that when using http1.1 the reactor-netty reuse the connections.</p>\n</blockquote>\n<p>It will, if it can. Taking the following as an example:</p>\n<pre><code>@RestController\npublic class MyController {\n\n    private final WebClient wc;\n\n    @Autowired\n    public MyController(WebClient.Builder wcb) {\n        wc = wcb\n                .baseUrl(&quot;https://jsonplaceholder.typicode.com/&quot;)\n                .clientConnector(new ReactorClientHttpConnector(\n                        HttpClient.create()\n                                .tcpConfiguration(tcpClient -&gt; tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000))\n                                .secure(spec -&gt; spec.sslContext(SslContextBuilder.forClient()))\n                ))\n                .build();\n    }\n\n    @GetMapping(&quot;/&quot;)\n    public Mono&lt;List&lt;Body&gt;&gt; cookieSetter() {\n        return Flux.range(1,10)\n                .flatMap(i -&gt; wc.get().uri(&quot;todos/&quot; + i).retrieve().bodyToMono(Body.class))\n                .collectList();\n    }\n\n    @Data\n    static class Body {\n        private String title;\n    }\n\n}\n</code></pre>\n<p>Load it up and you'll see a bunch of <code>HTTP GET https://jsonplaceholder.typicode.com/todos/x</code> and <code>Response 200 OK</code>, but no <code>Cancel signal (to close connection)</code> logs - it keeps the connection open and reuses it.</p>\n<p>You don't provide a complete example, but it's likely there's one of two things happening here:</p>\n<ul>\n<li>You're actively cancelling the publishers (or something in the framework is cancelling the response publishers), which then causes the connection to be closed as a side-effect of this cancellation.</li>\n<li>The server that you're connecting to doesn't support keep-alive. Note that this is an <em>optional</em> feature, and the server doesn't have to support it, even in HTTP/1.1. In this case, it's likely returning <code>Connection: close</code> headers in its response. This will correctly force Netty to close the connection in between each request, rather than reusing it.</li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8818967,
+    "reputation" : 751,
+    "user_id" : 6589470,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/-mka14lU045s/AAAAAAAAAAI/AAAAAAAAAZ0/PaYS7kT4uDA/s256-rj/photo.jpg",
+    "display_name" : "hba",
+    "link" : "https://stackoverflow.com/users/6589470/hba"
+  },
+  "is_answered" : false,
+  "view_count" : 10916,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760555155,
+  "creation_date" : 1593524119,
+  "last_edit_date" : 1593731463,
+  "question_id" : 62658719,
+  "link" : "https://stackoverflow.com/questions/62658719/webclient-open-and-close-connection-on-every-element-call-in-the-stream",
+  "title" : "WebClient open and close connection on every element call in the Stream",
+  "body" : "<p>Trying to understand how spring webclient handle the connections between the peers.<br />\nWhen using the code below :<br />\nI have as many close connection as element in the stream.<br />\nI was excpecting that when using http1.1 the reactor-netty reuse the connections.\nEven when trying to use the keep alive on configuration i do have the same behaviour :</p>\n<p>[d6b705e1] Response 200 OK<br />\n[d6b705e1] Cancel signal (to close connection)</p>\n<pre><code>public WebClient webClient(WebClient.Builder builder) {\n return builder\n  .baseUrl(config.getBaseurl())\n  .clientConnector(new ReactorClientHttpConnector(\n    HttpClient.create()\n      .tcpConfiguration(tcpClient -&gt; tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout))\n      .secure(spec -&gt; spec.sslContext(SslContextBuilder.forClient()))\n  ))\n  .build();\n}\n\nFlux&lt;String&gt; getIds() { ... }\n\nFlux&lt;Response&gt; getResponses() {\n  // here as many open and close connection as the return stream getIds \n  return getIds().flatMap(... // client.retrieve().bodyToMono(Reponse.class));\n}\n</code></pre>\n"
+}

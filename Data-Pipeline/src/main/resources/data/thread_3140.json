@@ -1,0 +1,85 @@
+{
+  "tags" : [ "java", "spring-boot", "spring-security" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 187094,
+      "reputation" : 5301,
+      "user_id" : 424903,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8oHZF.png?s=256",
+      "display_name" : "Gimby",
+      "link" : "https://stackoverflow.com/users/424903/gimby"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1662646046,
+    "post_id" : 73650321,
+    "comment_id" : 130058035,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "No, the most common reason to get a 403 is when you are using valid user credentials which are not authorised. I.E., no ADMIN role. That is what Spring Security is telling you here; no access. Working as designed. So you should probably start by setting a breakpoint in your userdetails code to see what data is being loaded."
+  }, {
+    "owner" : {
+      "account_id" : 13081377,
+      "reputation" : 283,
+      "user_id" : 9451827,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f6b32359cf492ef736f340003fea658c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "thor",
+      "link" : "https://stackoverflow.com/users/9451827/thor"
+    },
+    "reply_to_user" : {
+      "account_id" : 187094,
+      "reputation" : 5301,
+      "user_id" : 424903,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8oHZF.png?s=256",
+      "display_name" : "Gimby",
+      "link" : "https://stackoverflow.com/users/424903/gimby"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1662649129,
+    "post_id" : 73650321,
+    "comment_id" : 130059297,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "When setting a breakpoint there, I get what I expect e.g. authority name is <code>ADMIN</code> for the specified user in the GET request"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 13081377,
+      "reputation" : 283,
+      "user_id" : 9451827,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f6b32359cf492ef736f340003fea658c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "thor",
+      "link" : "https://stackoverflow.com/users/9451827/thor"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1662715438,
+    "creation_date" : 1662715438,
+    "answer_id" : 73659992,
+    "question_id" : 73650321,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I managed to get this working by adding <code>formLogin()</code> in my security configuration class. If omitted from Spring Security then there is no configuration for the authentication filter. <a href=\"https://stackoverflow.com/a/58111879/9451827\">See here</a>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 13081377,
+    "reputation" : 283,
+    "user_id" : 9451827,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f6b32359cf492ef736f340003fea658c?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "thor",
+    "link" : "https://stackoverflow.com/users/9451827/thor"
+  },
+  "is_answered" : false,
+  "view_count" : 12970,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1763114735,
+  "creation_date" : 1662645555,
+  "question_id" : 73650321,
+  "link" : "https://stackoverflow.com/questions/73650321/spring-security-failed-to-authorize-filter-invocation",
+  "title" : "Spring Security: Failed to authorize filter invocation",
+  "body" : "<p>My Spring Boot application is returning a 403 status code (forbidden) when I call a GET request in my <code>AdminControllor</code></p>\n<p>I am trying to blacklist URLs which have <code>&quot;/admin/**&quot;</code> except for those users who have the authority &quot;ADMIN&quot; in my database.</p>\n<p>I have disabled csrf which seems to be the most common issue for 403 forbidden.</p>\n<p>The problem seems to relate (see debug logs) to this:</p>\n<p><code>Failed to authorize filter invocation [GET /admin/allusers] with attributes [hasAuthority('ADMIN')]</code></p>\n<p>Logs</p>\n<pre><code>2022-09-08 13:56:20.018 DEBUG 21328 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /admin/allusers\n2022-09-08 13:56:20.026 DEBUG 21328 --- [nio-8080-exec-2] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext\n2022-09-08 13:56:20.026 DEBUG 21328 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext\n2022-09-08 13:56:20.042 DEBUG 21328 --- [nio-8080-exec-2] o.s.s.w.a.i.FilterSecurityInterceptor    : Failed to authorize filter invocation [GET /admin/allusers] with attributes [hasAuthority('ADMIN')]\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] o.s.s.w.s.HttpSessionRequestCache        : Saved request http://localhost:8080/admin/allusers to session\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] o.s.s.w.a.Http403ForbiddenEntryPoint     : Pre-authenticated entry point called. Rejecting access\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] w.c.HttpSessionSecurityContextRepository : Did not store empty SecurityContext\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] w.c.HttpSessionSecurityContextRepository : Did not store empty SecurityContext\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] s.s.w.c.SecurityContextPersistenceFilter : Cleared SecurityContextHolder to complete request\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /error\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] s.s.w.c.SecurityContextPersistenceFilter : Set SecurityContextHolder to empty SecurityContext\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext\n2022-09-08 13:56:20.090 DEBUG 21328 --- [nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /error\n2022-09-08 13:56:20.190 DEBUG 21328 --- [nio-8080-exec-2] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext\n2022-09-08 13:56:20.198 DEBUG 21328 --- [nio-8080-exec-2] w.c.HttpSessionSecurityContextRepository : Did not store anonymous SecurityContext\n</code></pre>\n<p><strong>My Security Config class</strong></p>\n<pre><code>package com.example.spring_security.config;\n\nimport org.springframework.context.annotation.Bean;\nimport org.springframework.context.annotation.Configuration;\nimport org.springframework.security.config.annotation.web.builders.HttpSecurity;\nimport org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;\nimport org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;\nimport org.springframework.security.crypto.password.PasswordEncoder;\nimport org.springframework.security.web.SecurityFilterChain;\n\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n\n@Bean\npublic SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {\n    http\n        .csrf().disable()\n        .authorizeRequests()\n        .mvcMatchers(&quot;/admin/**&quot;).hasAuthority(&quot;ADMIN&quot;)\n        .anyRequest().permitAll();\n    return http.build();\n}\n\n@Bean\npublic PasswordEncoder passwordEncoder() {\n    return new BCryptPasswordEncoder();\n}\n}\n</code></pre>\n<p><strong>My UserDetails</strong></p>\n<pre><code>package com.example.spring_security.security;\n\n\nimport com.example.spring_security.entities.User;\nimport org.springframework.security.core.GrantedAuthority;\nimport org.springframework.security.core.userdetails.UserDetails;\n\nimport java.util.Collection;\nimport java.util.stream.Collectors;\n\n\npublic class SecurityUser implements UserDetails {\n\n    private final User user;\n\n    public SecurityUser(User user){\n        this.user = user;\n    }\n\n    @Override\n    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {\n        return user.getAuthorities()\n                .stream()\n                .map(SecurityAuthority::new)\n                .collect(Collectors.toList());\n    }\n\n    @Override\n    public String getPassword() {\n        return user.getPassword();\n    }\n\n    @Override\n    public String getUsername() {\n        return user.getUsername();\n    }\n\n    @Override\n    public boolean isAccountNonExpired() {\n        return true;\n    }\n\n    @Override\n    public boolean isAccountNonLocked() {\n        return true;\n    }\n\n    @Override\n    public boolean isCredentialsNonExpired() {\n        return true;\n    }\n\n    @Override\n    public boolean isEnabled() {\n        return true;\n    }\n}\n</code></pre>\n<p><strong>My UserDetailsService</strong></p>\n<pre><code>package com.example.spring_security.services;\n\nimport com.example.spring_security.repositories.UserRepository;\nimport com.example.spring_security.security.SecurityUser;\nimport org.springframework.security.core.userdetails.UserDetails;\nimport org.springframework.security.core.userdetails.UserDetailsService;\nimport org.springframework.security.core.userdetails.UsernameNotFoundException;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class JpaUserDetailsService implements UserDetailsService {\n\n    private final UserRepository userRepository;\n\n    public JpaUserDetailsService(UserRepository userRepository) {\n        this.userRepository = userRepository;\n    }\n\n    @Override\n    public UserDetails loadUserByUsername(String username)  {\n        var u = userRepository.findUserByUsername(username);\n        return u.map(SecurityUser::new)\n                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;Username not found &quot; + username));\n    }\n\n}\n</code></pre>\n<p><strong>My GrantedAuthority</strong></p>\n<pre><code>package com.example.spring_security.security;\n\nimport com.example.spring_security.entities.Authority;\nimport org.springframework.security.core.GrantedAuthority;\n\npublic class SecurityAuthority implements GrantedAuthority {\n\n    private final Authority authority;\n\n    public SecurityAuthority(Authority authority) {\n        this.authority = authority;\n    }\n\n    @Override\n    public String getAuthority() {\n        return authority.getName();\n    }\n}\n</code></pre>\n"
+}

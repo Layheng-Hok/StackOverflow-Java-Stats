@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "apache-poi" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 927848,
+      "reputation" : 357,
+      "user_id" : 958260,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/463a7a6d73a6b02aac13e1fa2de3f181?s=256&d=identicon&r=PG",
+      "display_name" : "dhqvinh",
+      "link" : "https://stackoverflow.com/users/958260/dhqvinh"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1412737841,
+    "post_id" : 26248465,
+    "comment_id" : 41175224,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I found solution to number 2:     anchor.setAnchorType(ClientAnchor.DONT_MOVE_AND_RESIZE);"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 421254,
+      "reputation" : 183,
+      "user_id" : 799394,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/RukZ1.jpg?s=256",
+      "display_name" : "art",
+      "link" : "https://stackoverflow.com/users/799394/art"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1492086441,
+    "creation_date" : 1492086441,
+    "answer_id" : 43392331,
+    "question_id" : 26248465,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Proably that because of this comment in method 'resize' javadoc:  </p>\n\n<blockquote>\n  <p>Please note, that this method works correctly only for workbooks with the default font size (Arial 10pt for .xls and Calibri 11pt for .xlsx). If the default font is changed the resized image can be streched vertically or horizontally.</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 927848,
+    "reputation" : 357,
+    "user_id" : 958260,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/463a7a6d73a6b02aac13e1fa2de3f181?s=256&d=identicon&r=PG",
+    "display_name" : "dhqvinh",
+    "link" : "https://stackoverflow.com/users/958260/dhqvinh"
+  },
+  "is_answered" : true,
+  "view_count" : 3258,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761485324,
+  "creation_date" : 1412736468,
+  "last_edit_date" : 1761485324,
+  "question_id" : 26248465,
+  "link" : "https://stackoverflow.com/questions/26248465/apache-poi-insert-image-without-anchor",
+  "title" : "Apache POI insert image without anchor",
+  "body" : "<p>I'm creating Excel file in Java using Apache POI, it works but the inserted image is anchored to columns / rows. There are 2 issues with this method:</p>\n<ol>\n<li><p>The image doesn't keep the original size (get stretched a little bit).</p>\n</li>\n<li><p>When resizing the columns/rows the image get stretched. Is there any way to insert an image to Excel without anchor? (same as using Excel / Insert / Picture)</p>\n</li>\n</ol>\n<p>I'm using the following example from Apache POI document page:</p>\n<pre><code>//create a new workbook\nWorkbook wb = new XSSFWorkbook(); //or new HSSFWorkbook();\n\n//add picture data to this workbook.\nInputStream is = new FileInputStream(&quot;image1.jpeg&quot;);\nbyte[] bytes = IOUtils.toByteArray(is);\nint pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);\nis.close();\n\nCreationHelper helper = wb.getCreationHelper();\n\n//create sheet\nSheet sheet = wb.createSheet();\n\n// Create the drawing patriarch.  This is the top level container for all shapes. \nDrawing drawing = sheet.createDrawingPatriarch();\n\n//add a picture shape\nClientAnchor anchor = helper.createClientAnchor();\n//set top-left corner of the picture,\n//subsequent call of Picture#resize() will operate relative to it\nanchor.setCol1(3);\nanchor.setRow1(2);\nPicture pict = drawing.createPicture(anchor, pictureIdx);\n\n//auto-size picture relative to its top-left corner\npict.resize();\n\n//save workbook\nString file = &quot;picture.xls&quot;;\nif(wb instanceof XSSFWorkbook) file += &quot;x&quot;;\nFileOutputStream fileOut = new FileOutputStream(file);\nwb.write(fileOut);\nfileOut.close();\n</code></pre>\n"
+}

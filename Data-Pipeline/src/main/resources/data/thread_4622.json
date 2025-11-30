@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "regex", "checkmarx", "secure-coding" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 446457,
+      "reputation" : 5991,
+      "user_id" : 839513,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://i.sstatic.net/Do1LF.jpg?s=256",
+      "display_name" : "baruchiro",
+      "link" : "https://stackoverflow.com/users/839513/baruchiro"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1592975412,
+    "post_id" : 62545939,
+    "comment_id" : 110613474,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Basically, these two questions are about sanitizing the data by <code>if (not) return</code> pattern. <a href=\"https://stackoverflow.com/questions/62527043/checkmarx-cannot-see-the-code-in-static-method\">checkmarx cannot see the code in static method</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5439142,
+      "reputation" : 2525,
+      "user_id" : 4327668,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ATSJq.png?s=256",
+      "display_name" : "securecodeninja",
+      "link" : "https://stackoverflow.com/users/4327668/securecodeninja"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1597293869,
+    "creation_date" : 1597293869,
+    "answer_id" : 63388280,
+    "question_id" : 62545939,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Checkmarx searches for a set of validation and functions in code, one of them being the <a href=\"https://owasp.org/www-project-enterprise-security-api/\" rel=\"nofollow noreferrer\">ESAPI library</a>. Use the ESAPI.getValidInput method to validate instead:</p>\n<pre><code>Validator.SafeString=^[0-9a-zA-Z]+$;\n\nESAPI.validator().getValidInput(&quot;Search Path&quot;, searchPath , &quot;SafeString&quot;, maxLength, allowNull);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 402990,
+    "reputation" : 153,
+    "user_id" : 770493,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/660d0ab96d4a9eb8952cb24903f81163?s=256&d=identicon&r=PG",
+    "display_name" : "Yao Dong",
+    "link" : "https://stackoverflow.com/users/770493/yao-dong"
+  },
+  "is_answered" : false,
+  "view_count" : 9330,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1759809930,
+  "creation_date" : 1592960040,
+  "last_edit_date" : 1598604535,
+  "question_id" : 62545939,
+  "link" : "https://stackoverflow.com/questions/62545939/how-to-fix-checkmarx-trust-boundary-violation",
+  "title" : "How to fix checkmarx Trust Boundary Violation",
+  "body" : "<p>I persist a value from user input request. <em>Checkmarx</em> complains there is <strong>Trust Boundary Violation</strong>.</p>\n<blockquote>\n<p>gets user input from element request. This element’s value flows through the code without being properly sanitized or validated and is eventually stored in the server-side Session object</p>\n</blockquote>\n<p>I also found <a href=\"https://stackoverflow.com/questions/14977207/how-to-fix-trust-boundary-violation-flaw-in-java-web-application\">this post</a> online.\nThe accepted answer is to validate it.</p>\n<p>OK, validate and sanitize</p>\n<pre><code>private String getValidSearchPath(String searchPath) {\n    if (!searchPath.matches(&quot;^[0-9a-zA-Z]+$&quot;)) { //using regex to do validation\n        throw new RuntimeException(&quot;Unacceptable jsonPath &quot; + searchPath);\n    }\n    if (StringUtils.isBlank(searchPath)) {\n        return &quot;&quot;;\n    }\n    return searchPath.substring(0,0); // I intentionally put 0,0 here, which returns &quot;&quot; \n}\n\n...\n//pseudo code\nString searchPath = getValidSearchPath(request.get(...));\npersistSearchPath(searchPath);\n</code></pre>\n<p>Then I run <em>Checkmarx</em> again.<br />\nGuess what? I still got <strong>Trust Boundary Violation</strong>. Can someone tell me how to fix it? I already return empty string and <em>Checkmarx</em> still complains that I am using value from user input improperly.</p>\n"
+}

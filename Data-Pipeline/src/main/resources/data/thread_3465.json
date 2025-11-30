@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "gradle", "build.gradle" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1065971,
+      "reputation" : 1698,
+      "user_id" : 1066531,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/8c13b418848b78b1a18233cddfa8c2b6?s=256&d=identicon&r=PG",
+      "display_name" : "Zymus",
+      "link" : "https://stackoverflow.com/users/1066531/zymus"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1425511620,
+    "post_id" : 28858298,
+    "comment_id" : 45998923,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Can you post the entire error?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4946142,
+      "reputation" : 31,
+      "user_id" : 3981432,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4e4e5087e3f300dcae45149f4720474a?s=256&d=identicon&r=PG",
+      "display_name" : "Gerardo Guijarro",
+      "link" : "https://stackoverflow.com/users/3981432/gerardo-guijarro"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1425483689,
+    "last_edit_date" : 1425483689,
+    "creation_date" : 1425483519,
+    "answer_id" : 28858530,
+    "question_id" : 28858298,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This is what i do to include local jars.</p>\n\n<p>I place them in a app/libs folder.</p>\n\n<p>Then in the build.gradle (Module: app) looks like this:</p>\n\n<pre><code>dependencies {\n\n    compile project(':protobuf')\n    compile files('libs/android-support-v13.jar')\n\n}\n</code></pre>\n\n<p>Where \"android-support-v13.jar\" is the jar file i previously placed in libs folder.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1248059,
+      "reputation" : 83,
+      "user_id" : 1209101,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/14cfdaf911a2f8d1a080dc0105b94f3f?s=256&d=identicon&r=PG",
+      "display_name" : "Yu Lu",
+      "link" : "https://stackoverflow.com/users/1209101/yu-lu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1425559748,
+    "last_edit_date" : 1425559748,
+    "creation_date" : 1425510741,
+    "answer_id" : 28866937,
+    "question_id" : 28858298,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think the problem might be that you are using single quote in your file path. Single quoted String in Groovy does not do String interpolation so what you essentially get as your path is just <code>${buildDir}/dist/my-jar-${project.myVersion}.jar</code> itself, which is clearly not right.</p>\n\n<p>Just try double quotes like below:</p>\n\n<pre><code>dependencies {\n  compile files(\"${buildDir}/dist/my-jar-${project.myVersion}.jar\") \n}\n</code></pre>\n\n<p>The variables, 'buildDir' and 'project.myVersion', will be substituted with the real value when the String is evaluated.</p>\n\n<p>Take a look at the Groovy documentation about <a href=\"http://groovy.codehaus.org/Strings+and+GString\" rel=\"nofollow\">String and GString</a> and I'm sure it'll be useful.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 354956,
+    "reputation" : 1248,
+    "user_id" : 693614,
+    "user_type" : "registered",
+    "accept_rate" : 64,
+    "profile_image" : "https://www.gravatar.com/avatar/b6782906906cd0bf111fe40c3649749a?s=256&d=identicon&r=PG",
+    "display_name" : "CDelaney",
+    "link" : "https://stackoverflow.com/users/693614/cdelaney"
+  },
+  "is_answered" : false,
+  "view_count" : 11078,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1762390885,
+  "creation_date" : 1425482938,
+  "question_id" : 28858298,
+  "link" : "https://stackoverflow.com/questions/28858298/how-do-i-include-a-local-jar-dependency-in-gradle",
+  "title" : "How do I include a local jar dependency in Gradle?",
+  "body" : "<p>This must be fairly simple to accomplish, but I can't seem to get it right.</p>\n\n<p>I have a gradle task that creates a jar from some external classes, and my code is heavily dependent on those classes. When I try to build, I get errors from compileJava saying <code>package &lt;com.etc...&gt; does not exist</code> for the import lines in my classes.</p>\n\n<p>Here's the relevant code</p>\n\n<pre><code>project.ext.set(\"myVersion\", \"v1\")\n\ndependencies {\n  // tried this, but it gives  me a circular dependency error for my compile &amp; zip tasks\n  compile files('${buildDir}/dist/my-jar-${project.myVersion}.jar') {\n      builtBy 'zipExternalClasses'\n  }\n  // tried either of these, but still get package does not exist\n  compile files('${buildDir}/dist/my-jar-${project.myVersion}.jar') \n  runtime files('${buildDir}/dist/my-jar-${project.myVersion}.jar')\n}\n\n\n// The dependent task compileExternalClasses compiles the classes from a source folder\n// I can see that the jar is successfully created in 'build/dist'\ntask zipExternalClasses(dependsOn: 'compileExternalClasses', type: Jar) {\n    // code for zipping compiled external classes\n}\n</code></pre>\n"
+}

@@ -1,0 +1,165 @@
+{
+  "tags" : [ "java", "spring-boot", "junit5", "testcontainers" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 242097,
+        "reputation" : 6591,
+        "user_id" : 513393,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/64e5079487cac336376845f7f66f2116?s=256&d=identicon&r=PG",
+        "display_name" : "Skip",
+        "link" : "https://stackoverflow.com/users/513393/skip"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1591211457,
+      "post_id" : 62180427,
+      "comment_id" : 109973401,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That would only work for the <code>jdbc</code>, right? One of my containers contains an LDAP server.  Also in one environment - I dont have docker-engine available. So Exceptions are flighing, if the containers are even present and active.   So in order to solve my problems - the containers should not be injected. Even the check for the docker-engine should not happen."
+    }, {
+      "owner" : {
+        "account_id" : 3597514,
+        "reputation" : 123317,
+        "user_id" : 3001761,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/feZwC.jpg?s=256",
+        "display_name" : "jonrsharpe",
+        "link" : "https://stackoverflow.com/users/3001761/jonrsharpe"
+      },
+      "reply_to_user" : {
+        "account_id" : 242097,
+        "reputation" : 6591,
+        "user_id" : 513393,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/64e5079487cac336376845f7f66f2116?s=256&d=identicon&r=PG",
+        "display_name" : "Skip",
+        "link" : "https://stackoverflow.com/users/513393/skip"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1591211704,
+      "post_id" : 62180427,
+      "comment_id" : 109973527,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Skip yes, only for containers that can be wired via a &quot;magic URL&quot;. And I don&#39;t know whether it would still try to use Docker at all in the <code>dev</code> profile - my local database is <i>also</i> provided via Docker, so it&#39;ll bin out either way!"
+    } ],
+    "owner" : {
+      "account_id" : 3597514,
+      "reputation" : 123317,
+      "user_id" : 3001761,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/feZwC.jpg?s=256",
+      "display_name" : "jonrsharpe",
+      "link" : "https://stackoverflow.com/users/3001761/jonrsharpe"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1591209935,
+    "creation_date" : 1591209935,
+    "answer_id" : 62180427,
+    "question_id" : 62180261,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>One way to get containers in your test is just to use the JDBC URL, per <a href=\"https://www.testcontainers.org/modules/databases/jdbc/\" rel=\"nofollow noreferrer\">the docs</a>. This allows you to easily switch between e.g. Testcontainers and localhost based on a profile:</p>\n\n<p><code>application-integration.yml</code></p>\n\n<pre class=\"lang-yaml prettyprint-override\"><code>spring.datasource.url: jdbc:tc:postgresql:12-alpine:///mydatabase\n</code></pre>\n\n<p><code>application-dev.yml</code></p>\n\n<pre class=\"lang-yaml prettyprint-override\"><code>spring.datasource.url: jdbc:postgresql://localhost:5432/mydatabase\n</code></pre>\n\n<p>As the documentation notes:</p>\n\n<blockquote>\n  <ul>\n  <li>TC needs to be on your application's classpath at runtime for this to work</li>\n  <li>For Spring Boot (Before version 2.3.0) you need to specify the driver manually\n  <code>spring.datasource.driver-class-name=org.testcontainers.jdbc.ContainerDatabaseDriver</code></li>\n  </ul>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11732873,
+      "reputation" : 890,
+      "user_id" : 8587732,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/pEbWJ.jpg?s=256",
+      "display_name" : "Vitaly Chura",
+      "link" : "https://stackoverflow.com/users/8587732/vitaly-chura"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1591285279,
+    "last_edit_date" : 1591285279,
+    "creation_date" : 1591284978,
+    "answer_id" : 62198563,
+    "question_id" : 62180261,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Yes, it can be done using profiles.</p>\n\n<p>One possible solution would be (the idea is to play around with <code>static</code> keyword and it assumes using <code>.withLocalCompose(true)</code>):</p>\n\n<pre><code>@Configuration\n@Profile(\"test\")\npublic class TestDockerConfig {\n    // initialize your containers in static fields/static block\n}\n</code></pre>\n\n<p>And use the test profile when you need it. Even if you import that configuration in all tests, it should only be loaded for \"test\" ones.</p>\n\n<p>The idea is to have docker environment provided to test suite and use property profiles.\nIt can either:</p>\n\n<ul>\n<li>be provided by local docker engine (\"dev\") where you start containers\nyourself with proper dev URLs specified in application-dev.properties</li>\n<li>or provided via TestContainers, with test URLs in\napplication-test.properties</li>\n</ul>\n\n<p>Since starting up containers takes time you want to do that only once in a static way and it will be loaded before all of your classes.</p>\n\n<p>Hope that helps.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 242097,
+      "reputation" : 6591,
+      "user_id" : 513393,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/64e5079487cac336376845f7f66f2116?s=256&d=identicon&r=PG",
+      "display_name" : "Skip",
+      "link" : "https://stackoverflow.com/users/513393/skip"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1591354436,
+    "creation_date" : 1591354436,
+    "answer_id" : 62213690,
+    "question_id" : 62180261,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As recommended by Sergei here <a href=\"https://github.com/testcontainers/testcontainers-java/issues/2833#event-3405411419\" rel=\"nofollow noreferrer\">https://github.com/testcontainers/testcontainers-java/issues/2833#event-3405411419</a></p>\n\n<p>this is the solution:</p>\n\n<pre><code>public class FixedHostPortGenericDisableableContainer&lt;T extends FixedHostPortGenericDisableableContainer&lt;T&gt;&gt; extends FixedHostPortGenericContainer&lt;T&gt; {\n\n    private boolean isActive;\n\n    public FixedHostPortGenericDisableableContainer(@NotNull String dockerImageName) {\n        super(dockerImageName);\n    }\n\n    @Override\n    public void start() {\n        if (isActive) {\n            super.start();\n        }\n    }\n\n    public FixedHostPortGenericDisableableContainer isActive(boolean isActive) {\n        this.isActive = isActive;\n        return this;\n    }\n}\n</code></pre>\n\n<p>Usage</p>\n\n<pre><code>// set this environment variable to true to disable test containers\n    public static final String ENV_DISABLE_TEST_CONTAIENRS = \"DISABLE_TEST_CONTAIENRS\";\n\n    @Container\n    private static GenericContainer dynamoDb =\n            new FixedHostPortGenericDisableableContainer(\"amazon/dynamodb-local:1.11.477\")\n                    .isActive(StringUtils.isBlank(System.getenv(ENV_DISABLE_TEST_CONTAIENRS)))\n                    .withFixedExposedPort(8001, 8000)\n                    .withStartupAttempts(100);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 26367216,
+      "reputation" : 1,
+      "user_id" : 20022462,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AFdZucpdn0KSr_wXOcxSJG_fOY2pq0bZbGeLE5mtnNQ-=k-s256",
+      "display_name" : "St&#233;fan Georgesco",
+      "link" : "https://stackoverflow.com/users/20022462/st%c3%a9fan-georgesco"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1730106447,
+    "last_edit_date" : 1730106447,
+    "creation_date" : 1730106282,
+    "answer_id" : 79132696,
+    "question_id" : 62180261,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To test against test containers dependig on a spring active profile, I personally used the Spring <code>ApplicationContextInitializer</code> interface to :</p>\n<ol>\n<li>Get the application context active profiles,</li>\n<li>Depending on the target profile being present or not in the active profiles, list, start the container(s) and inject the replacement application properties based on the test container(s) dynamic properties (e.g. host, port, ...).</li>\n</ol>\n<p>I created a class implementing <code>ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt;</code> interface and then referenced it in a<code>@ContextConfiguration</code> annotation on the test class.</p>\n<p>Here is an example class implenting <code>ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt;</code> to launch an ollama ai embedding container (here with a docker compose file) when the active profiles include &quot;ollama-embedding&quot;:</p>\n<pre><code>package com.example.service;\n\nimport org.jetbrains.annotations.NotNull;\nimport org.springframework.context.ApplicationContextInitializer;\nimport org.springframework.context.ConfigurableApplicationContext;\nimport org.springframework.test.context.support.TestPropertySourceUtils;\nimport org.testcontainers.containers.DockerComposeContainer;\n\nimport java.io.File;\nimport java.util.Arrays;\nimport java.util.Objects;\n\npublic class TestContextInitializer implements ApplicationContextInitializer&lt;ConfigurableApplicationContext&gt; {\n    private static final int OLLAMA_PORT = 11434;\n    private static final String OLLAMA_PROFILE = &quot;ollama-embedding&quot;;\n\n    @Override\n    @SuppressWarnings({&quot;resource&quot;, &quot;HttpUrlsUsage&quot;})\n    public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {\n        if (Arrays.asList(applicationContext.getEnvironment().getActiveProfiles()).contains(OLLAMA_PROFILE)) {\n            final DockerComposeContainer&lt;?&gt; container = new DockerComposeContainer&lt;&gt;(\n                    new File(Objects.requireNonNull(ProductServiceTests.class.getClassLoader()\n                            .getResource(&quot;compose-test.yml&quot;)).getFile()))\n                    .withExposedService(&quot;ollama_1&quot;, OLLAMA_PORT);\n\n            container.start();\n\n            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(\n                    applicationContext,\n                    &quot;spring.ai.ollama.base-url=http://&quot; +\n                            container.getServiceHost(&quot;ollama_1&quot;, OLLAMA_PORT) + &quot;:&quot; +\n                            container.getServicePort(&quot;ollama_1&quot;, OLLAMA_PORT)\n            );\n        }\n    }\n}\n</code></pre>\n<p>Here is the example test class referencing that class in a <code>@ContextConfiguration</code> annotation:</p>\n<pre><code>package com.example.service;\n\nimport static org.assertj.core.api.Assertions.assertThat;\n\nimport com.example.Application;\nimport org.junit.jupiter.api.Test;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.boot.test.context.SpringBootTest;\nimport org.springframework.test.annotation.DirtiesContext;\nimport org.springframework.test.context.ActiveProfiles;\nimport org.springframework.test.context.ContextConfiguration;\n\n@SpringBootTest\n@ContextConfiguration(initializers = TestContextInitializer.class, classes = Application.class)\n@DirtiesContext\n@ActiveProfiles({&quot;another-profile&quot;, &quot;ollama-embedding&quot;})\npublic class IntegrationTests {\n\n    @Test\n    void test() {\n        // Your tests here\n    }\n}\n</code></pre>\n<p>This way, the container(s) will start if and only if the target profile (here &quot;ollama-embedding&quot;) is present in the active profiles list.<br>\nIt is important that you replace the application properties dynamically, as shown in the TestContextInitializer class, so that the containers is (are) properly reached by the test code through Spring application context.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8287442,
+      "reputation" : 1041,
+      "user_id" : 6230157,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-WNhDcqj4Bm8/AAAAAAAAAAI/AAAAAAAAAaQ/3s-LIcsL8Bw/s256-rj/photo.jpg",
+      "display_name" : "JenkaBY",
+      "link" : "https://stackoverflow.com/users/6230157/jenkaby"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763134982,
+    "creation_date" : 1763134982,
+    "answer_id" : 79820205,
+    "question_id" : 62180261,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here's <a href=\"https://github.com/JenkaBY/containers-in-profile\" rel=\"nofollow noreferrer\">a POC project</a> of usage spring profile to enable or disable Testcontainers in tests. The POC project uses <strong>spring-boot 3.5.7</strong>. This approach works for spring-boot 3.1.0, but doesn't for 3.0.x.</p>\n<p>Briefly:</p>\n<pre><code>@Profile(&quot;docker&quot;)\n@TestConfiguration(proxyBeanMethods = false)\nclass TestcontainersConfiguration {\n\n    @Bean\n    @ServiceConnection\n    MongoDBContainer mongoDbContainer() {\n        return new MongoDBContainer(DockerImageName.parse(&quot;mongo:latest&quot;));\n    }\n}\n</code></pre>\n<p>And test itself:</p>\n<pre><code>@Import(TestcontainersConfiguration.class)\n@SpringBootTest\nclass ContainersInProfileApplicationTests {\n\n    @Test\n    void contextLoads() {\n    }\n\n}\n</code></pre>\n<p>and then run with the testcontainers:</p>\n<pre><code>./mvnw clean test &quot;-Dspring.profiles.active=docker&quot;\n</code></pre>\n<p>or without it, just don't forget to point to your mongo instance in the properties:</p>\n<pre><code>./mvnw clean test\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 242097,
+    "reputation" : 6591,
+    "user_id" : 513393,
+    "user_type" : "registered",
+    "accept_rate" : 81,
+    "profile_image" : "https://www.gravatar.com/avatar/64e5079487cac336376845f7f66f2116?s=256&d=identicon&r=PG",
+    "display_name" : "Skip",
+    "link" : "https://stackoverflow.com/users/513393/skip"
+  },
+  "is_answered" : true,
+  "view_count" : 7908,
+  "accepted_answer_id" : 62213690,
+  "answer_count" : 5,
+  "score" : 5,
+  "last_activity_date" : 1763134982,
+  "creation_date" : 1591209357,
+  "last_edit_date" : 1593422160,
+  "question_id" : 62180261,
+  "link" : "https://stackoverflow.com/questions/62180261/is-there-a-way-to-disable-testcontainers-depending-on-spring-profile",
+  "title" : "Is there a way to disable Testcontainers depending on Spring profile?",
+  "body" : "<p>I am using Spring Boot and running tests in Testcontainers.</p>\n\n<p>Sometimes (when developing) I would like to run tests not against Testcontainers, but against already running containers.</p>\n\n<p>Is there a way to disable Testcontainers depending on Spring profiles, environment variables, etc.?</p>\n\n<p>Right now I am commenting the container injection code and regularly check them in like that.</p>\n"
+}

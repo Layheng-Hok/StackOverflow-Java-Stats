@@ -1,0 +1,434 @@
+{
+  "tags" : [ "java", "exception", "logging", "error-handling" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15751,
+        "reputation" : 13682,
+        "user_id" : 33611,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://www.gravatar.com/avatar/31e70bc52c40f56805487f8940ef44c8?s=256&d=identicon&r=PG",
+        "display_name" : "Elijah",
+        "link" : "https://stackoverflow.com/users/33611/elijah"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1247452107,
+      "post_id" : 1112783,
+      "comment_id" : 933608,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "So, what do you do in the cases where you need multiple values from different logger instances that are below the current logger level? For instance, 5 lines of debug logs when the log level is set at info?"
+    }, {
+      "owner" : {
+        "account_id" : 19562,
+        "reputation" : 31042,
+        "user_id" : 45935,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/76eb040bed8dc544b5b71aeb2d1a81ad?s=256&d=identicon&r=PG",
+        "display_name" : "Jim Ferrans",
+        "link" : "https://stackoverflow.com/users/45935/jim-ferrans"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1248139439,
+      "post_id" : 1112783,
+      "comment_id" : 975785,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "You can set up as many Loggers as you want (eg, have one per class) and then tailor each to have its own log level.  For example, if you use SLF4J over the Logback implementation, there&#39;s an XML file you can edit to specify that you want DEBUG messages for some Loggers.  Log levels can be changed programmatically too."
+    } ],
+    "owner" : {
+      "account_id" : 19562,
+      "reputation" : 31042,
+      "user_id" : 45935,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/76eb040bed8dc544b5b71aeb2d1a81ad?s=256&d=identicon&r=PG",
+      "display_name" : "Jim Ferrans",
+      "link" : "https://stackoverflow.com/users/45935/jim-ferrans"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1247288952,
+    "last_edit_date" : 1247288952,
+    "creation_date" : 1247279899,
+    "answer_id" : 1112783,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Another good logging API is SLF4J.  It can be configured to also intercept log APIs for Log4J, Java Util Logging, and Jakarta Commons Logging.  And it can also be configured to <em>use</em> various logging implementations, including Log4J, Logback, Java Util Logging, and one or two others.  This gives it enormous flexibility.  It was developed by the author of Log4J to be its successor.</p>\n\n<p>Of relevance to this question, the SLF4J API has a mechanism to concatenate string valued expressions into a log message.  The following calls are equivalent, but the second is about 30x faster to process if you're not outputting debug level messages, since the concatenation is avoided:</p>\n\n<pre><code>logger.debug(\"The new entry is \" + entry + \".\");\nlogger.debug(\"The new entry is {}.\", entry);\n</code></pre>\n\n<p>There's a two argument version too:</p>\n\n<pre><code>logger.debug(\"The new entry is {}. It replaces {}.\", entry, oldEntry);\n</code></pre>\n\n<p>And for more than two you can pass in an array of Object like this:</p>\n\n<pre><code>logger.debug(\"Value {} was inserted between {} and {}.\", \n             new Object[] {newVal, below, above});\n</code></pre>\n\n<p>This is a nice terse format that eliminates clutter.  </p>\n\n<p>Example source is from the <a href=\"http://www.slf4j.org/faq.html\" rel=\"noreferrer\">SLF4J FAQ</a>.</p>\n\n<p>Edit: Here's a possible refactoring of your example:</p>\n\n<pre><code>try {\n    doSomething(someObject.getValue());\n}\ncatch (BadThingsHappenException bthe) {\n  throw new UnhandledException(\n    MessageFormatter.format(\"An error occurred when setting value. [value={}]\", \n                              someObject.getValue()), \n    bthe);\n}\n</code></pre>\n\n<p>Or if this pattern occurs more than a few places you could write a set of static methods that capture the commonality, something like:</p>\n\n<pre><code>try {\n    doSomething(someObject.getValue());\n}\ncatch (BadThingsHappenException bthe) {\n    throwFormattedException(logger, bthe,\n                            \"An error occurred when setting value. [value={}]\", \n                            someObject.getValue()));\n}\n</code></pre>\n\n<p>and of course the method would also put the formatted message out on the logger for you.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 23949,
+        "reputation" : 63912,
+        "user_id" : 60518,
+        "user_type" : "registered",
+        "accept_rate" : 59,
+        "profile_image" : "https://i.sstatic.net/J9AwvZ2C.jpg?s=256",
+        "display_name" : "Tim B&#252;the",
+        "link" : "https://stackoverflow.com/users/60518/tim-b%c3%bcthe"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1247471497,
+      "post_id" : 1113049,
+      "comment_id" : 934323,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I don&#39;t think one should internationalize the exception texts. Error messages that are shown on the GUI are different, but exceptions should be as simple as possible. What happens if the ResourceBundle could not be read?"
+    }, {
+      "owner" : {
+        "account_id" : 15751,
+        "reputation" : 13682,
+        "user_id" : 33611,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://www.gravatar.com/avatar/31e70bc52c40f56805487f8940ef44c8?s=256&d=identicon&r=PG",
+        "display_name" : "Elijah",
+        "link" : "https://stackoverflow.com/users/33611/elijah"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1247474649,
+      "post_id" : 1113049,
+      "comment_id" : 934538,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Then why does the Java exception object have the getLocalizedMessage() method?"
+    }, {
+      "owner" : {
+        "account_id" : 42069,
+        "reputation" : 8255,
+        "user_id" : 122442,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/OFeoy.png?s=256",
+        "display_name" : "Csaba_H",
+        "link" : "https://stackoverflow.com/users/122442/csaba-h"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1247477486,
+      "post_id" : 1113049,
+      "comment_id" : 934695,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@Elijah: thanks for your comment. I have changed the snippet. @Tim: maybe for some it is not a good practice, but we use the Exception message in the logs <i>and</i> on gui-s because we want to avoid &quot;boilerplate code&quot; to transform exceptional situations for humans. I think the Exception message is just for that :) For the ResourceBundle: it is the same problem as for logging or application configuration cannot be read. You should provide a &quot;default&quot; properties for unhandled locales and you should test your application packages carefully."
+    }, {
+      "owner" : {
+        "account_id" : 36166,
+        "reputation" : 39605,
+        "user_id" : 103043,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5d5fca2b372b21bdcef1c8701b674c4d?s=256&d=identicon&r=PG",
+        "display_name" : "akf",
+        "link" : "https://stackoverflow.com/users/103043/akf"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1247805606,
+      "post_id" : 1113049,
+      "comment_id" : 959271,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "if i am reading this correctly, with this method you still need to declare stateful objects outside your try/catch block."
+    } ],
+    "owner" : {
+      "account_id" : 42069,
+      "reputation" : 8255,
+      "user_id" : 122442,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/OFeoy.png?s=256",
+      "display_name" : "Csaba_H",
+      "link" : "https://stackoverflow.com/users/122442/csaba-h"
+    },
+    "is_accepted" : true,
+    "score" : 14,
+    "last_activity_date" : 1247478991,
+    "last_edit_date" : 1247478991,
+    "creation_date" : 1247291407,
+    "answer_id" : 1113049,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>We tend to create our most important application specific runtime exception classes with some special constructors, some constants and a ResourceBundle.</p>\n\n<p>Example snippet:</p>\n\n<pre><code> public class MyException extends RuntimeException\n {\n    private static final long serialVersionUID = 5224152764776895846L;\n\n    private static final ResourceBundle MESSAGES;\n    static\n    {\n        MESSAGES = ResourceBundle.getBundle(\"....MyExceptionMessages\");\n    }\n\n    public static final String NO_CODE = \"unknown\";\n    public static final String PROBLEMCODEONE = \"problemCodeOne\";\n    public static final String PROBLEMCODETWO = \"problemCodeTwo\";\n    // ... some more self-descriptive problem code constants\n\n    private String errorCode = NO_CODE;\n    private Object[] parameters = null;\n\n    // Define some constructors\n\n    public MyException(String errorCode)\n    {\n        super();\n        this.errorCode = errorCode;\n    }\n\n    public MyException(String errorCode, Object[] parameters)   \n    {\n        this.errorCode = errorCode;\n        this.parameters = parameters;\n    }\n\n    public MyException(String errorCode, Throwable cause)\n    {\n        super(cause);\n        this.errorCode = errorCode;\n    }\n\n    public MyException(String errorCode, Object[] parameters, Throwable cause)\n    {\n        super(cause);\n        this.errorCode = errorCode;\n        this.parameters = parameters;\n    }   \n\n    @Override\n    public String getLocalizedMessage()\n    {\n        if (NO_CODE.equals(errorCode))\n        {\n            return super.getLocalizedMessage();\n        }\n\n        String msg = MESSAGES.getString(errorCode); \n        if(parameters == null)\n        {\n            return msg;\n        }\n        return MessageFormat.format(msg, parameters);\n    }\n }\n</code></pre>\n\n<p>In the properties file we specify the exception descriptions, e.g.:</p>\n\n<pre><code> problemCodeOne=Simple exception message\n problemCodeTwo=Parameterized exception message for {0} value\n</code></pre>\n\n<p>Using this approach</p>\n\n<ul>\n<li>We can use quite readable and understandable throw clauses (<code>throw new MyException(MyException.PROBLEMCODETWO, new Object[] {parameter}, bthe)</code>)</li>\n<li>The exception messages are \"centralized\", can easily maintained and \"internationalized\"</li>\n</ul>\n\n<p><strong>EDIT:</strong> change <code>getMessage</code> to <code>getLocalizedMessage</code> as Elijah suggested.</p>\n\n<p><strong>EDIT2:</strong> Forgot to mention: this approach does not support Locale changing \"on-the-fly\" but it is intentional (it can be implemented if you need it).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 36166,
+      "reputation" : 39605,
+      "user_id" : 103043,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5d5fca2b372b21bdcef1c8701b674c4d?s=256&d=identicon&r=PG",
+      "display_name" : "akf",
+      "link" : "https://stackoverflow.com/users/103043/akf"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1247806529,
+    "last_edit_date" : 1247806529,
+    "creation_date" : 1247463527,
+    "answer_id" : 1117845,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Besides your example which declares local fields outside the <code>try</code> block in order to be accessible inside the <code>catch</code> block, one very simple way of handling this is to dump the state of the class out in the <code>Exception</code> using the class's overridden <code>toString</code> method.  Granted, this is only useful in <code>Class</code>es that maintain state. </p>\n\n<pre><code>try {\n   setMyValue(someObject.getValue());\n   doSomething(getMyValue());\n}\ncatch (BadThingsHappenException bthe) {\n   // consider this a RuntimeException wrapper class\n  throw new UnhandledException(toString(), bthe);\n}\n</code></pre>\n\n<p>Your <code>toString()</code> would need to be overridden:</p>\n\n<pre><code>public String toString() {\n   return super.toString() + \"[myValue: \" + getMyValue() +\"]\";\n}\n</code></pre>\n\n<p><strong>edit:</strong></p>\n\n<p>another idea:</p>\n\n<p>You could maintain state in a <a href=\"http://java.sun.com/javase/6/docs/api/java/lang/ThreadLocal.html\" rel=\"nofollow noreferrer\"><code>ThreadLocal</code></a> debug context.   Suppose you create a class called <code>MyDebugUtils</code> which holds a <code>ThreadLocal</code> that contains a Map per Thread.  You allow for static access to this <code>ThreadLocal</code> and maintenance methods (ie, to clear the context when your debugging is finished). </p>\n\n<p>The interface could be:</p>\n\n<pre><code>public static void setValue(Object key, Object value)\npublic static void clearContext()\npublic static String getContextString() \n</code></pre>\n\n<p>and in our example:</p>\n\n<pre><code>try {\n   MyDebugUtils.setValue(\"someObeject.value\", someObject.getValue());\n   doSomething(someObject.getValue());\n} catch (BadThingsHappenException bthe) {\n   // consider this a RuntimeException wrapper class\n  throw new UnhandledException(MyDebugUtils.getContextString(), bthe);\n} finally {\n  MyDebugUtils.clearContext(); \n}\n</code></pre>\n\n<p>There might be some issues that you would want to iron out, such as handling cases where your <code>doSomething</code> method also contains a <code>try/catch/finally</code> set that clears the debug context.  This could be handled by allowing for finer granularity in the context Map than just the Thread in the process:</p>\n\n<pre><code>public static void setValue(Object contextID, Object key, Object value)\npublic static void clearContext(Object contextID)\npublic static String getContextString(Object contextID)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 17450,
+      "reputation" : 12267,
+      "user_id" : 39062,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/ykHR9J20.png?s=256",
+      "display_name" : "Markus Lausberg",
+      "link" : "https://stackoverflow.com/users/39062/markus-lausberg"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1585142632,
+    "last_edit_date" : 1585142632,
+    "creation_date" : 1247465255,
+    "answer_id" : 1117894,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have created a key combination in eclipse for a catch block creation.</p>\n\n<p>logmsg as key and the result will be:</p>\n\n<pre><code>catch(SomeException se){\n   String msg = \"\"; //$NON-NLS-1$\n   Object[] args = new Object[]{};\n\n   throw new SomeException(Message.format(msg, args), se);\n}\n</code></pre>\n\n<p>You can put as many informations as you want in the Message like:</p>\n\n<pre><code>msg = \"Dump:\\n varA({0}), varB({1}), varC({2}), varD({3})\";\nargs = new Object[]{varA, varB, varC, varD};\n</code></pre>\n\n<p>Or some user information:</p>\n\n<pre><code>msg = \"Please correct the SMTP client because ({0}) seems to be wrong\";\nargs = new Object[]{ smptClient };\n</code></pre>\n\n<p>You should think about using <strong>log4j</strong> as a logger, so you can print your states where ever you want. With the options DEBUG, INFO, ERROR you can define how many loggings you want to see in your log file.</p>\n\n<p>When you deliver your application you will set the log level to ERROR, but when you want to debug your application you can use DEBUG as default.</p>\n\n<p>When you are using a logger, you only have to print a hand full of information in your exception, because the state of some variables you would print into the log file before you are calling the critical try...catch block.</p>\n\n<pre><code>String msg = \"Dump:\\n varA({0}), varB({1}), varC({2}), varD({3})\";\nObject[] args = new Object[]{varA, varB, varC, varD};\nlogger.debug(Message.format(msg, args));\n\ntry{\n\n// do action\n}catch(ActionException ae){\n    msg = \"Please correct the SMTP client because ({0}) seems to be wrong\";\n    args = new Object[]{ smptClient };\n\n    logger.error(Message.format(msg, args), se);\n    throw new SomeException(Message.format(msg, args), se);\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 24127,
+      "reputation" : 70120,
+      "user_id" : 61158,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://www.gravatar.com/avatar/db0a0198951e15aadcb42b40452c29f7?s=256&d=identicon&r=PG",
+      "display_name" : "akarnokd",
+      "link" : "https://stackoverflow.com/users/61158/akarnokd"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1247470122,
+    "creation_date" : 1247470122,
+    "answer_id" : 1118105,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If you want to somehow process the details of the error message, you could:</p>\n\n<ul>\n<li><p>Use an XML text as the message, so you get a structured way:</p>\n\n<pre><code>throw new UnhandledException(String.format(\n    \"&lt;e&gt;&lt;m&gt;Unexpected things&lt;/m&gt;&lt;value&gt;%s&lt;/value&gt;&lt;/e&gt;\", value), bthe);\n</code></pre></li>\n<li><p>Use your own (and one for every case) exception types to capture variable information into named properties:</p>\n\n<pre><code>throw new UnhandledValueException(\"Unexpected value things\", value, bthe);\n</code></pre></li>\n</ul>\n\n<p>Or else you could include it in the raw message, as suggested by others.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 42317,
+      "reputation" : 3683,
+      "user_id" : 123248,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/5dda076408c2f4c8e261a3a8e7c5580c?s=256&d=identicon&r=PG",
+      "display_name" : "William Pietri",
+      "link" : "https://stackoverflow.com/users/123248/william-pietri"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1247471432,
+    "creation_date" : 1247471432,
+    "answer_id" : 1118167,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Perhaps I'm missing something, but if the users really require a relatively quiet log file, why don't you just configure your debug logs to go to a separate spot?</p>\n\n<p>If that's insufficient, then capture a fixed amount of the debug logs in RAM. E.g., the last 500 entries. Then, when something ugly happens, dump the debug logs along with the problem report. You don't mention your logging framework, but this would be pretty easy to do in Log4J.</p>\n\n<p>Even better, assuming you have the user's permission, just send an automatic error report rather than logging. I recently helped some folks run down a hard-to-find bug and made the error reporting automatic. We got 50x the number of bug reports, making the problem pretty easy to find.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 18798,
+        "reputation" : 45322,
+        "user_id" : 43452,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/58df0aa311a6bcce5cf9f40ee8cb163c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Stobor",
+        "link" : "https://stackoverflow.com/users/43452/stobor"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1247784070,
+      "post_id" : 1131716,
+      "comment_id" : 958468,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "+1 That looks like exactly what he wants... And it looks good to me, I&#39;ll have to remember it for next time!"
+    }, {
+      "owner" : {
+        "account_id" : 30285,
+        "reputation" : 56167,
+        "user_id" : 82511,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/68191be8e55efa97fdda3a4a65af2b22?s=256&d=identicon&r=PG",
+        "display_name" : "djna",
+        "link" : "https://stackoverflow.com/users/82511/djna"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1247807073,
+      "post_id" : 1131716,
+      "comment_id" : 959334,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Is the ide that the memory handler acts a ring-buffer accumulating debug messages from all subsystems? The appearance of any error then dumps the ring buffer? One small issue with this: Heavily instrumented code tends to avoid costs of building the debug string by using the &quot;if(isDebugEnabled()) { logDebug(&quot;some &quot; + &quot;string&quot; + &quot;formatting&quot;);} approach. Can&#39;t do that if we&#39;re using your approach"
+    }, {
+      "owner" : {
+        "account_id" : 18798,
+        "reputation" : 45322,
+        "user_id" : 43452,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/58df0aa311a6bcce5cf9f40ee8cb163c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Stobor",
+        "link" : "https://stackoverflow.com/users/43452/stobor"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1248047788,
+      "post_id" : 1131716,
+      "comment_id" : 969780,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@djna: at that point, you could use something like Jim&#39;s answer to delay the cost of the string formatting..."
+    } ],
+    "owner" : {
+      "account_id" : 46845,
+      "reputation" : 7259,
+      "user_id" : 138561,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/1a3c4b506124d8c3a6ed83d6267cd709?s=256&d=identicon&r=PG",
+      "display_name" : "Gregory Mostizky",
+      "link" : "https://stackoverflow.com/users/138561/gregory-mostizky"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1247816665,
+    "last_edit_date" : 1247816665,
+    "creation_date" : 1247667720,
+    "answer_id" : 1131716,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Take a look at the <a href=\"http://www.kodejava.org/examples/451.html\" rel=\"nofollow noreferrer\">MemoryHandler</a> class from java.util.logging. It acts as a buffer between your log.$level() invocations and the actual output, and will pass it's buffer content into the output only if some condition is met.</p>\n\n<p>For example you could configure it to dump content only if it sees ERROR level message. Then you can safely output DEBUG level messages and no one will see them unless actual error occurs and then all messages are written to log file.</p>\n\n<p>I would guess there are similar implementations for other logging frameworks.</p>\n\n<p>EDIT: One possible issue with this approach is a performance lost on generating all the debug messages (see @djna comment). Because of this it could be a good idea to make the level of logging going into the buffer configurable - in production it should be INFO or higher, and only if you are actively hunting a problem down it could be turned down to DEBUG. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 45775,
+      "reputation" : 12384,
+      "user_id" : 135078,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://www.gravatar.com/avatar/1e0094a4b0e705a0fe607e4a1a8ff426?s=256&d=identicon&r=PG",
+      "display_name" : "Kelly S. French",
+      "link" : "https://stackoverflow.com/users/135078/kelly-s-french"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1247677516,
+    "creation_date" : 1247677516,
+    "answer_id" : 1132660,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>As for the type of debug information you need, why don't you just always log the value and don't bother so much with a local try/catch.  Just use the Log4J config file to point your debug messages to a different log, or use chainsaw so you can remotely follow the log messages.  If all that fails maybe you need a new log message type to add to debug()/info()/warn()/error()/fatal() so you have more control over which messages get sent where. This would be the case when defining appenders in the log4j config file is impractical due to the high number of places where this type of debug logging needs to be inserted.</p>\n\n<p>While we're on the subject, you've touched on one of my pet peeves. Constructing a new exception in the catch block is a code smell.  </p>\n\n<pre><code>Catch(MyDBException eDB)\n{\n    throw new UnhandledException(\"Something bad happened!\", eDB);\n}\n</code></pre>\n\n<p>Put the message in the log and then rethrow the exception. Constructing Exceptions is expensive and can easily hide useful debugging information.</p>\n\n<p>First off, inexperienced coders and those who like to cut-n-paste (or begin-mark-bug, end-mark-bug, copy-bug, copy-bug, copy-bug) it can transform easily to this:</p>\n\n<pre><code>Catch(MyDBException eDB)\n{\n    throw new UnhandledException(\"Something bad happened!\");\n}\n</code></pre>\n\n<p>Now you've lost the original stacktrace.  Even in the first case, unless the wrapping Exception handles the wrapped exception properly, you can still lose details of the original exception, the stacktrace being the most likely.</p>\n\n<p>Rethrowing exceptions might be necessary but I've found that it should be handled more generally and as a strategy to communicate between layers, like between your business code and the persistance layer, like so:</p>\n\n<pre><code>Catch(SqlException eDB)\n{\n    throw new UnhandledAppException(\"Something bad happened!\", eDB);\n}\n</code></pre>\n\n<p>and in this case, the catch block for the UnhandledAppException is much further up the call stack where we can give the user an indication that they either need to retry their action, report a bug, or whatever.</p>\n\n<p>This let our main() code do something like this</p>\n\n<pre><code>catch(UnhandledAppException uae)\n{\n    \\\\notify user\n    \\\\log exception\n}\ncatch(Throwable tExcp)\n{\n    \\\\for all other unknown failures\n    \\\\log exception\n\n}\nfinally\n{\n    \\\\die gracefully\n}\n</code></pre>\n\n<p>Doing it this way meant that local code could catch the immediate and recoverable exceptions where debug logs could be done and the exception not have to be rethrown. This would be like for DivideByZero or maybe a ParseException of some sort.</p>\n\n<p>As for \"throws\" clauses, having a layer-based exception strategy meant being able to limit the number of exception types that have to be listed for each method.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3001,
+      "reputation" : 140375,
+      "user_id" : 4249,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://www.gravatar.com/avatar/c11c60c7e6d29cb4b87f3c0a3b692181?s=256&d=identicon&r=PG",
+      "display_name" : "matt b",
+      "link" : "https://stackoverflow.com/users/4249/matt-b"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1247718625,
+    "creation_date" : 1247718625,
+    "answer_id" : 1135384,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Why not keep a local copy/list of all messages that would have gone to the debug log if it was enabled, and pass that to the custom exception when you throw it? Something like:</p>\n\n<pre><code>static void logDebug(String message, List&lt;String&gt; msgs) {\n    msgs.add(message);\n    log.debug(message);\n}\n\n//...\n\ntry {\n\n    List&lt;String&gt; debugMsgs = new ArrayList&lt;String&gt;();\n\n    String myValue = someObject.getValue();\n    logDebug(\"Value: \" + myValue, debugMsgs);\n    doSomething(myValue);\n\n    int x = doSomething2();\n    logDebug(\"doSomething2() returned \" + x, debugMsgs);\n\n}\ncatch (BadThingsHappenException bthe) {\n    // at the point when the exception is caught, \n    // debugMsgs contains some or all of the messages \n    // which should have gone to the debug log\n    throw new UnhandledException(bthe, debugMsgs);\n}\n</code></pre>\n\n<p>Your exception class can make use of this <code>List</code> parameter when forming <code>getMessage()</code>:</p>\n\n<pre><code>public class UnhandledException extends Exception {\n    private List&lt;String&gt; debugMessages;\n\n    public UnhandledException(String message, List&lt;String&gt; debugMessages) {\n        super(message);\n        this.debugMessages = debugMessages;\n    }\n\n    @Override\n    public String getMessage() {\n        //return concatentation of super.getMessage() and debugMessages\n    }\n}\n</code></pre>\n\n<p>The usage of this would be tedious - as you'd have to declare the local variable in <em>every single</em> try/catch where you wanted this type of information - but it might be worth it if you have just a few critical sections of code in which you'd like to maintain this state information on an exception.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 563996,
+      "reputation" : 79,
+      "user_id" : 136576,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/4cfa65340ca91e7ac578f2f33674027f?s=256&d=identicon&r=PG",
+      "display_name" : "shimpossible",
+      "link" : "https://stackoverflow.com/users/136576/shimpossible"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1247870434,
+    "creation_date" : 1247870434,
+    "answer_id" : 1146001,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You answered your own question.   If you want to pass the state to the exception, you need to store your state somewhere.</p>\n\n<p>You have mentioned adding extra variables to do this, but didn't like all the extra variables.\nSomeone else mentioned a MemoryHandler as a buffer (holds state) between the logger and the application.</p>\n\n<p>These are all the same idea.   Create an object that will hold the state you want you show in your exception.  Update that object as your code executes.  If an error occurs pass that object into the exception.</p>\n\n<p>Exceptions already do this with StackTraceElements.  Each thread keeps a list of the stack trace (method, file, line) which represents its 'state'.   When the exception happens, it passes the stack trace to the exception.</p>\n\n<p>What you seem to be wanting, is a copy of all the local variables also.</p>\n\n<p>This would mean making a object to hold all your locals and using that object, instead of the locals directly.  Then passing the object to the exception.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15751,
+        "reputation" : 13682,
+        "user_id" : 33611,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://www.gravatar.com/avatar/31e70bc52c40f56805487f8940ef44c8?s=256&d=identicon&r=PG",
+        "display_name" : "Elijah",
+        "link" : "https://stackoverflow.com/users/33611/elijah"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1248051006,
+      "post_id" : 1149034,
+      "comment_id" : 969915,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Any idea how to get MemoryHandler-like functionality in logback?"
+    }, {
+      "owner" : {
+        "account_id" : 15083,
+        "reputation" : 22557,
+        "user_id" : 31506,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ced11826cb92c2e759c45bef134ca534?s=256&d=identicon&r=PG",
+        "display_name" : "Jack Leow",
+        "link" : "https://stackoverflow.com/users/31506/jack-leow"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1248054530,
+      "post_id" : 1149034,
+      "comment_id" : 970030,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I&#39;ve never used logback, but the CyclicBufferAppender (<a href=\"http://logback.qos.ch/apidocs/ch/qos/logback/core/read/CyclicBufferAppender.html\" rel=\"nofollow noreferrer\">logback.qos.ch/apidocs/ch/qos/logback/core/read/&hellip;</a>) seems to get you at least part of the way there."
+    } ],
+    "owner" : {
+      "account_id" : 15083,
+      "reputation" : 22557,
+      "user_id" : 31506,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ced11826cb92c2e759c45bef134ca534?s=256&d=identicon&r=PG",
+      "display_name" : "Jack Leow",
+      "link" : "https://stackoverflow.com/users/31506/jack-leow"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1763977288,
+    "last_edit_date" : 1763977288,
+    "creation_date" : 1247966125,
+    "answer_id" : 1149034,
+    "question_id" : 1112771,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>One option that no one seems to have mentioned yet is to use a logger that logs to an in memory buffer, and only pushes the information into the actual log target under certain circumstances (e.g., an error level message is logged).</p>\n<p>If you're using the JDK 1.4 logging facilities or newer, <a href=\"https://docs.oracle.com/en/java//javase/17/docs/api/java.logging/java/util/logging/MemoryHandler.html\" rel=\"nofollow noreferrer\">MemoryHandler</a> does exactly this. I'm not sure if the logging system you're using does this, but I imagine you should be able to implement your own appender/handler/whatever that does something similar.</p>\n<p>Also, I just want to point out that in your original example, if your concern is variable scope, you could always define a block to reduce the scope of your variable:</p>\n<pre><code>{\n    String myValue = null;\n    try {\n        myValue = someObject.getValue();\n        doSomething(myValue);\n    }\n    catch (BadThingsHappenException bthe) {\n        String pattern = &quot;An error occurred when setting value. [value={}]&quot;;\n        // note that the format method below doesn't barf on nulls\n        String detail = MessageFormatter.format(pattern, myValue);\n        // consider this a RuntimeException wrapper class\n        throw new UnhandledException(detail, bthe);\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 15751,
+    "reputation" : 13682,
+    "user_id" : 33611,
+    "user_type" : "registered",
+    "accept_rate" : 74,
+    "profile_image" : "https://www.gravatar.com/avatar/31e70bc52c40f56805487f8940ef44c8?s=256&d=identicon&r=PG",
+    "display_name" : "Elijah",
+    "link" : "https://stackoverflow.com/users/33611/elijah"
+  },
+  "is_answered" : true,
+  "view_count" : 15906,
+  "accepted_answer_id" : 1113049,
+  "answer_count" : 11,
+  "score" : 23,
+  "last_activity_date" : 1763977288,
+  "creation_date" : 1247279360,
+  "last_edit_date" : 1585137462,
+  "question_id" : 1112771,
+  "link" : "https://stackoverflow.com/questions/1112771/what-is-a-good-way-to-pass-useful-state-information-to-an-exception-in-java",
+  "title" : "What is a good way to pass useful state information to an exception in Java?",
+  "body" : "<p>I noticed some confusion initially with my question. I'm not asking about how to configure a logger nor how to use a logger properly, but rather how to capture all of the information that would have been logged at a lower logging level than what the current logging level is in the exception message.</p>\n\n<p>I have been noticing two patterns in Java for logging information that may be useful to a developer when an exception occurs.</p>\n\n<p>The following pattern seems very common. Basically, you just have your logger log information in-line as needed, so that when an exception occurs you have the log trace.</p>\n\n<pre><code>try {\n    String myValue = someObject.getValue();\n    logger.debug(\"Value: {}\", myValue);\n    doSomething(myValue);\n}\ncatch (BadThingsHappenException bthe) {\n    // consider this a RuntimeException wrapper class\n    throw new UnhandledException(bthe);\n}\n</code></pre>\n\n<p>The drawback with the above approach is that if your users <strong>require relatively quiet logs</strong> and need a high level of reliability to the point where they just can't \"try it again in debug mode\", the exception message contains insufficient data by itself to be useful to the developer.</p>\n\n<p>The next pattern is one that I have seen that tries to mitigate this problem but seems ugly:</p>\n\n<pre><code>String myValue = null;\ntry {\n    myValue = someObject.getValue();\n    doSomething(myValue);\n}\ncatch (BadThingsHappenException bthe) {\n    String pattern = \"An error occurred when setting value. [value={}]\";\n    // note that the format method below doesn't barf on nulls\n    String detail = MessageFormatter.format(pattern, myValue);\n    // consider this a RuntimeException wrapper class\n    throw new UnhandledException(detail, bthe);\n}\n</code></pre>\n\n<p>The above pattern seems to somewhat solve the problem, however, I'm not sure I like to declare so many variables outside the scope of the try block. Especially, when I have to deal with very complicated states.</p>\n\n<p>The only other approach I have seen is using a Map to store key-value pairs that are then dumped into the exception message. I'm not sure I like that approach either since it seems to create code bloat.</p>\n\n<p>Is there some Java voodoo out there that I am missing? How do you handle your exception state information?</p>\n"
+}

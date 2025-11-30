@@ -1,0 +1,79 @@
+{
+  "tags" : [ "java", "datetime", "locale", "translate" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2803497,
+      "reputation" : 26320,
+      "user_id" : 2411243,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/W96lW.png?s=256",
+      "display_name" : "Zabuzard",
+      "link" : "https://stackoverflow.com/users/2411243/zabuzard"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1628762451,
+    "post_id" : 68755118,
+    "comment_id" : 121510215,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Sounds like you need some sort of external framework that can do that."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 2416974,
+      "reputation" : 141,
+      "user_id" : 2110818,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1b5d901654840331e355684037c420c1?s=256&d=identicon&r=PG",
+      "display_name" : "digvijaykatoch",
+      "link" : "https://stackoverflow.com/users/2110818/digvijaykatoch"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1628764064,
+    "last_edit_date" : 1628764064,
+    "creation_date" : 1628763680,
+    "answer_id" : 68755594,
+    "question_id" : 68755118,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<ol>\n<li>Option 1 is Localization/Internationalization.</li>\n<li>Option 2 is using Google Translate API.</li>\n</ol>\n<p><strong>Coding yourself</strong></p>\n<p>Take a look at <em><strong>UNICODE</strong></em> tables. <a href=\"https://jrgraphix.net/r/Unicode/0980-09FF\" rel=\"nofollow noreferrer\">Link</a> Use it for translating characters.</p>\n<p>Combine it with <em><strong>internationalization/localization</strong></em>. These example will help:</p>\n<ul>\n<li><a href=\"https://www.javaknowledge.info/use-of-bangla-localization-in-java-swing/\" rel=\"nofollow noreferrer\">Java Swing</a></li>\n<li><a href=\"https://roytuts.com/spring-boot-internationalization-example/\" rel=\"nofollow noreferrer\">Spring Boot</a></li>\n</ul>\n<p>Personally, I would create a properties files(as in the examples above) with key value pairs for each character/digit, month, and so on. Then, just convert the time as needed.</p>\n<p><strong>Using Google Translate</strong></p>\n<p>This <a href=\"https://stackoverflow.com/questions/8147284/how-to-use-google-translate-api-in-my-java-application\">answer</a> explains how to use Google translate API for the same purpose. Depending on your tech stack, you should be able to integrate this API. It's free for 300 requests a month.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7612423,
+      "reputation" : 87400,
+      "user_id" : 5772882,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8283c64511fa80afed5259d10850168f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Anonymous",
+      "link" : "https://stackoverflow.com/users/5772882/anonymous"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1628826678,
+    "last_edit_date" : 1628826678,
+    "creation_date" : 1628792565,
+    "answer_id" : 68762503,
+    "question_id" : 68755118,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>TL;DR</h2>\n<p>For Bangla AKA Bengali:</p>\n<pre><code>    Locale loc = Locale.forLanguageTag(&quot;bn&quot;); // Bengali/Bangla\n    DateTimeFormatter formatter\n            = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)\n                    .localizedBy(loc)\n                    .withDecimalStyle(DecimalStyle.of(loc));\n\n    LocalDateTime dateTime = LocalDateTime.of(2021, Month.MAY, 12, 23, 50);\n    System.out.println(dateTime.format(formatter));\n</code></pre>\n<p>Output is:</p>\n<blockquote>\n<p>১২ মে, ২০২১ ১১:৫০:০০ PM</p>\n</blockquote>\n<h2>Details</h2>\n<p>Java does support the languages you mention.</p>\n<p>The <code>localizedBy</code> method that I use was introduced in Java 10. It promises to set the decimal style too, so the call to <code>withDecimalStyle()</code> ought not be necessary, but in my Java 11 it is. I can’t tell whether it’s a bug or what.</p>\n<p>You also mentioned Marathi:</p>\n<pre><code>    Locale loc = Locale.forLanguageTag(&quot;mr&quot;); // Marathi\n</code></pre>\n<blockquote>\n<p>१२ मे, २०२१, ११:५०:०० म.उ.</p>\n</blockquote>\n<p>For the remaining languages mentioned it seems that my Java 11 doesn’t know the digits to use. So we have to specify those ourselves. Only we only have to specify the digit for 0 (zero). Then Java figures the rest out.</p>\n<pre><code>    Locale loc = Locale.forLanguageTag(&quot;pa&quot;); // Punjabi\n    DateTimeFormatter formatter\n            = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)\n                    .localizedBy(loc)\n                    .withDecimalStyle(DecimalStyle.of(loc)\n                            .withZeroDigit('\\u0a66'));\n</code></pre>\n<blockquote>\n<p>੧੨ ਮਈ ੨੦੨੧, ੧੧:੫੦:੦੦ ਬਾ.ਦੁ.</p>\n</blockquote>\n<p>The specifications for the remaining languages mentioned are:</p>\n<div class=\"s-table-container\">\n<table class=\"s-table\">\n<thead>\n<tr>\n<th>Language</th>\n<th>Langauge tag</th>\n<th>Zero digit</th>\n<th>Output</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Telugu</td>\n<td><code>te</code></td>\n<td><code>'\\u0c66'</code></td>\n<td>౧౨ మే, ౨౦౨౧ ౧౧:౫౦:౦౦ PM</td>\n</tr>\n<tr>\n<td>Tamil</td>\n<td><code>ta</code></td>\n<td><code>'\\u0be6'</code></td>\n<td>௧௨ மே, ௨௦௨௧, பிற்பகல் ௧௧:௫௦:௦௦</td>\n</tr>\n<tr>\n<td>Kannada</td>\n<td><code>kn</code></td>\n<td><code>'\\u0ce6'</code></td>\n<td>ಮೇ ೧೨, ೨೦೨೧ ೧೧:೫೦:೦೦ ಅಪರಾಹ್ನ</td>\n</tr>\n</tbody>\n</table>\n</div><h2>Parsing your original string</h2>\n<p>I don’t understand why you have got your date and time as text in English. You should keep your date and time in proper date-time objects like the <code>LocalDateTime</code> object I use above. If you cannot avoid getting a <code>String</code>, parse it. Use this formatter for parsing:</p>\n<pre><code>private static final DateTimeFormatter ENGLISH_PARSER\n        = DateTimeFormatter.ofPattern(&quot;d MMM, uuuu h:mm a&quot;, Locale.ENGLISH);\n</code></pre>\n<p>Except I can’t tell from your example whether the string contains a full month name like <code>August</code> or an abbreviation like <code>Aug</code> (since the month of May only has three letters in its full name). If you get full month name, you will need <code>MMMM</code> instead of <code>MMM</code>. In any case parse like this:</p>\n<pre><code>    String dateTimeText = &quot;12 May, 2021 11:50 PM&quot;;\n    LocalDateTime dateTime = LocalDateTime.parse(dateTimeText, ENGLISH_PARSER);\n    System.out.println(dateTime);\n</code></pre>\n<p>Output:</p>\n<blockquote>\n<p>2021-05-12T23:50</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10220261,
+    "reputation" : 819,
+    "user_id" : 7544643,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/0zJL4.png?s=256",
+    "display_name" : "Debanik Dawn",
+    "link" : "https://stackoverflow.com/users/7544643/debanik-dawn"
+  },
+  "is_answered" : true,
+  "view_count" : 761,
+  "answer_count" : 2,
+  "score" : -1,
+  "last_activity_date" : 1763874625,
+  "creation_date" : 1628761755,
+  "question_id" : 68755118,
+  "link" : "https://stackoverflow.com/questions/68755118/translate-date-and-time-to-languages-not-supported-in-java-util-locale",
+  "title" : "Translate date and time to languages not supported in java.util.Locale",
+  "body" : "<p>I have text representing date and time in English.</p>\n<p>For example: <code>12 May, 2021 11:50 PM</code></p>\n<p>I want to translate this into various languages that are not natively supported by <code>java.util.Locale</code> API.</p>\n<p>Examples of such languages are Bangla, Marathi, Punjabi, Telugu, Tamil, Kannada, etc.</p>\n<p>In Bengali, for example, the above text would translate to: <code>১২ই মে, ২০২১ এর ১১:৫০ PM</code></p>\n<p>Is there an easy way to do this?</p>\n<p>Many thanks.</p>\n"
+}

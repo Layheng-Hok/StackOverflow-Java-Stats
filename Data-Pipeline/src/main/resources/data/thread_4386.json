@@ -1,0 +1,89 @@
+{
+  "tags" : [ "java", "button", "javafx", "toolbar", "overflow-menu" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 6408227,
+      "reputation" : 2314,
+      "user_id" : 4968749,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/44b4efc19994e674beff13dc6649a6cc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Hassam Abdelillah",
+      "link" : "https://stackoverflow.com/users/4968749/hassam-abdelillah"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1561625179,
+    "post_id" : 56787216,
+    "comment_id" : 100128631,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Try use fx-shape in your custom css and define the arrow as it suits you"
+  }, {
+    "owner" : {
+      "account_id" : 960281,
+      "reputation" : 398,
+      "user_id" : 9387519,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8Jf3n.png?s=256",
+      "display_name" : "Five",
+      "link" : "https://stackoverflow.com/users/9387519/five"
+    },
+    "reply_to_user" : {
+      "account_id" : 6408227,
+      "reputation" : 2314,
+      "user_id" : 4968749,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/44b4efc19994e674beff13dc6649a6cc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Hassam Abdelillah",
+      "link" : "https://stackoverflow.com/users/4968749/hassam-abdelillah"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1561625674,
+    "post_id" : 56787216,
+    "comment_id" : 100128979,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "It&#39;s okay to define an other arrow, but how can i make the clickable area bigger? Its only a rectangular around the arrow. The arrow is fitted. I want the same arrow with bigger clickable area around it. Any idea?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 17275811,
+      "reputation" : 32,
+      "user_id" : 12510457,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/h6sCB.jpg?s=256",
+      "display_name" : "Gibby",
+      "link" : "https://stackoverflow.com/users/12510457/gibby"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760350841,
+    "last_edit_date" : 1760350841,
+    "creation_date" : 1760348881,
+    "answer_id" : 79789134,
+    "question_id" : 56787216,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I also had to do this for a project I'm working on. I did a little digging and found this in the ToolBarSkin:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Override\nprotected void executeAccessibleAction(AccessibleAction action, Object... parameters) {\n    switch (action) {\n        case SHOW_MENU:\n            overflowMenu.fire();\n            break;\n        default: super.executeAccessibleAction(action, parameters);\n    }\n}\n</code></pre>\n<p>I made a CustomToolBarSkin where the nodes of the skin are searched and then the event gets added to the node that has the style class tool-bar-overflow-button:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class CustomToolBarSkin extends ToolBarSkin {\n\n    public CustomToolBarSkin(ToolBar toolbar) {\n        super(toolbar);\n        Node overflowButton = findOverflowButton(this.getChildren());\n        if (overflowButton != null) {\n            overflowButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -&gt; {\n                if (event.getButton() == MouseButton.PRIMARY) {\n                    this.executeAccessibleAction(AccessibleAction.SHOW_MENU);\n                    event.consume();\n                }\n            });\n        }\n    }\n\n    private Node findOverflowButton(List&lt;Node&gt; nodes) {\n        for (Node node : nodes) {\n            if (node.getStyleClass().contains(&quot;tool-bar-overflow-button&quot;)) {\n                return node;\n            }\n        }\n        return null;\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 960281,
+    "reputation" : 398,
+    "user_id" : 9387519,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/8Jf3n.png?s=256",
+    "display_name" : "Five",
+    "link" : "https://stackoverflow.com/users/9387519/five"
+  },
+  "is_answered" : false,
+  "view_count" : 460,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760350841,
+  "creation_date" : 1561624936,
+  "last_edit_date" : 1561649995,
+  "question_id" : 56787216,
+  "link" : "https://stackoverflow.com/questions/56787216/how-to-style-arrow-in-toolbars-overflow-menu-in-javafx",
+  "title" : "How to style arrow in ToolBar&#39;s overflow menu in JavaFx",
+  "body" : "<p>The JavaFx ToolBar component has a built in feature, its overflow menu. Basically it is an arrow which shows on a pane the hidden toolbar elements which had not enough space on the bar.\nMy problem is that the arrow which opens this menu has too small clickable area. I'm using the default modena.css or caspian.css.</p>\n\n<p>The arrow is an svg.\nThe overflowmenubutton has a styleclass <code>.tool-bar-overflow-button</code> and the arrow inside has an <code>.arrow class</code>.\nI tried to modify it by:<code>.tool-bar-overflow-button &gt; .arrow</code></p>\n\n<p>I have tried to modify its size(-fx-min-height etc.), but the arrow grew bigger. Tried to modify its background size or use padding. Tried those with scaling on and off.\nHad no luck.</p>\n\n<p>Thank you for any help!</p>\n\n<p>Update:</p>\n\n<p>I cannot resize the arrow inside the menubutton via css. I've tried with: <code>-fx-min-size</code> , <code>-fx-max-size</code> with resizing the overflow button itself at the same time. Still no luck.</p>\n\n<p>Any idea?</p>\n"
+}

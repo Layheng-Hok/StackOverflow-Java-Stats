@@ -1,0 +1,124 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "jpa", "spring-data-jpa" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3248328,
+        "reputation" : 1623,
+        "user_id" : 2739271,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://i.sstatic.net/VlLky.jpg?s=256",
+        "display_name" : "TomGrill Games",
+        "link" : "https://stackoverflow.com/users/2739271/tomgrill-games"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1560185951,
+      "post_id" : 56530328,
+      "comment_id" : 99644454,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "2) Wouldn&#39;t this just lock the single entity instead of the hole table?"
+    }, {
+      "owner" : {
+        "account_id" : 2535057,
+        "reputation" : 26710,
+        "user_id" : 2202415,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/2hHKw.jpg?s=256",
+        "display_name" : "Maciej Kowalski",
+        "link" : "https://stackoverflow.com/users/2202415/maciej-kowalski"
+      },
+      "reply_to_user" : {
+        "account_id" : 3248328,
+        "reputation" : 1623,
+        "user_id" : 2739271,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://i.sstatic.net/VlLky.jpg?s=256",
+        "display_name" : "TomGrill Games",
+        "link" : "https://stackoverflow.com/users/2739271/tomgrill-games"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1560189070,
+      "post_id" : 56530328,
+      "comment_id" : 99645709,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It should lock the entire table. Depends on Persistence Provider, but it should"
+    }, {
+      "owner" : {
+        "account_id" : 3248328,
+        "reputation" : 1623,
+        "user_id" : 2739271,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://i.sstatic.net/VlLky.jpg?s=256",
+        "display_name" : "TomGrill Games",
+        "link" : "https://stackoverflow.com/users/2739271/tomgrill-games"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1560199861,
+      "post_id" : 56530328,
+      "comment_id" : 99649924,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I played around. I do not think it locks the entire table. When the entity with ID 1 is missing the table is not locked. So when every thread is locking an existing entity with id 1 this basically is comes to a pseudo entire table lock."
+    }, {
+      "owner" : {
+        "account_id" : 3311159,
+        "reputation" : 3662,
+        "user_id" : 3839716,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/978c06d64d9c0928e1d4b3db53065f4d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "CodeShadow",
+        "link" : "https://stackoverflow.com/users/3839716/codeshadow"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1566480552,
+      "post_id" : 56530328,
+      "comment_id" : 101676267,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Shouldn&#39;t the unlock table part be in a finally block ?"
+    } ],
+    "owner" : {
+      "account_id" : 2535057,
+      "reputation" : 26710,
+      "user_id" : 2202415,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/2hHKw.jpg?s=256",
+      "display_name" : "Maciej Kowalski",
+      "link" : "https://stackoverflow.com/users/2202415/maciej-kowalski"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1560184893,
+    "creation_date" : 1560184893,
+    "answer_id" : 56530328,
+    "question_id" : 56530057,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>1)</strong> There might be a problem with your current design as well. The <code>persist</code> does not instantly INSERT a row in the database. That happens on transaction commit when the method returns.</p>\n\n<p>So you unlock the table before the actual insert:</p>\n\n<pre><code>    // save\n    entityManager.persist(entity) // -&gt; There is no INSERT at this point.\n\n    // unlock\n    entityManager.createNativeQuery(\"UNLOCK TABLES\").executeUpdate()\n</code></pre>\n\n<p><strong>2)</strong> Going back to how to do it only with JPA without natives (it still requires a bit of a workaround as it is not supported by default):</p>\n\n<pre><code>    // lock table by loading one existing entity and setting the LockModeType\n    Entity lockedEntity = entityManager.find(Entity.class, 1, LockModeType.PESSIMISTIC_WRITE);\n\n    // get current max EID, TRY NOT TO USE NATIVE QUERY HERE\n\n    // set entities EID with incremented result\n\n    // save\n    entityManager.persist(entity)\n    entityManager.flush() // -&gt; Force an actual INSERT\n\n    // unlock by passing the previous entity\n    entityManager.lock(lockedEntity, LockModeType.NONE)\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3248328,
+    "reputation" : 1623,
+    "user_id" : 2739271,
+    "user_type" : "registered",
+    "accept_rate" : 69,
+    "profile_image" : "https://i.sstatic.net/VlLky.jpg?s=256",
+    "display_name" : "TomGrill Games",
+    "link" : "https://stackoverflow.com/users/2739271/tomgrill-games"
+  },
+  "is_answered" : false,
+  "view_count" : 10636,
+  "answer_count" : 1,
+  "score" : 11,
+  "last_activity_date" : 1763654980,
+  "creation_date" : 1560183705,
+  "last_edit_date" : 1719244946,
+  "question_id" : 56530057,
+  "link" : "https://stackoverflow.com/questions/56530057/how-to-lock-table-do-stuff-unlock-table-with-spring-boot",
+  "title" : "How to LOCK TABLE ... do stuff ... UNLOCK TABLE with Spring Boot?",
+  "body" : "<p>The idea is basically to extend <em>some</em> Repositories with custom functionality. So I got this setup, which DOES work!</p>\n<pre class=\"lang-java prettyprint-override\"><code>@MappedSuperclass\nabstract class MyBaseEntity {\n\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    var id: Int = 0\n\n    var eid: Int = 0\n\n}\n\ninterface MyRepository&lt;T : MyBaseEntity&gt; {\n\n    @Transactional\n    fun saveInsert(entity: T): Optional&lt;T&gt;\n}\n\nopen class MyRepositoryImpl&lt;T : MyBaseEntity&gt; : MyRepository&lt;T&gt; {\n\n    @Autowired\n    private lateinit var entityManager: EntityManager\n\n    @Transactional\n    override fun saveInsert(entity: T): Optional&lt;T&gt; {\n\n        // lock table\n        entityManager.createNativeQuery(&quot;LOCK TABLE myTable WRITE&quot;).executeUpdate()\n\n        // get current max EID\n        val result = entityManager.createNativeQuery(&quot;SELECT MAX(eid) FROM myTable LIMIT 1&quot;).singleResult as? Int ?: 0\n\n        // set entities EID with incremented result\n        entity.eid = result + 1\n\n        // test if the table is locked. sending manually 2-3 POST requests to REST\n        Thread.sleep(5000)\n\n        // save\n        entityManager.persist(entity)\n\n        // unlock\n        entityManager.createNativeQuery(&quot;UNLOCK TABLES&quot;).executeUpdate()\n\n        return Optional.of(entity)\n    }\n}\n</code></pre>\n<p><strong>How would I do this more spring-like?</strong></p>\n<p>At first, I thought the <code>@Transactional</code> would do the LOCK and UNLOCK stuff. I tried a couple of additional parameters and <code>@Lock</code>. I did go through docs and some tutorials but the abstract technical English is often not easy to understand. In the end, I did not get a working solution so I manually added the table-locking, which works fine. Still would prefer a more spring-like way to do it.</p>\n"
+}

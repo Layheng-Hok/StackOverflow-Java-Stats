@@ -1,0 +1,106 @@
+{
+  "tags" : [ "java", "spring-boot", "unit-testing", "junit" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6802882,
+        "reputation" : 855,
+        "user_id" : 5235665,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b1b829c8707d74031ecd37125d6d2f16?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "hotmeatballsoup",
+        "link" : "https://stackoverflow.com/users/5235665/hotmeatballsoup"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1620841487,
+      "post_id" : 67507168,
+      "comment_id" : 119323118,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks so much @Shamitha (+1) -- quick question, what does <code>@EnableJpaRepositories(&quot;...&quot;)</code> do?"
+    }, {
+      "owner" : {
+        "account_id" : 1310803,
+        "reputation" : 2719,
+        "user_id" : 1258838,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://i.sstatic.net/urGUZ.jpg?s=256",
+        "display_name" : "Juliyanage Silva",
+        "link" : "https://stackoverflow.com/users/1258838/juliyanage-silva"
+      },
+      "reply_to_user" : {
+        "account_id" : 6802882,
+        "reputation" : 855,
+        "user_id" : 5235665,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b1b829c8707d74031ecd37125d6d2f16?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "hotmeatballsoup",
+        "link" : "https://stackoverflow.com/users/5235665/hotmeatballsoup"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1620896079,
+      "post_id" : 67507168,
+      "comment_id" : 119337406,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That&#39;s for when you use jpa repositories, I bet you are going to need them"
+    } ],
+    "owner" : {
+      "account_id" : 1310803,
+      "reputation" : 2719,
+      "user_id" : 1258838,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://i.sstatic.net/urGUZ.jpg?s=256",
+      "display_name" : "Juliyanage Silva",
+      "link" : "https://stackoverflow.com/users/1258838/juliyanage-silva"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1620835418,
+    "creation_date" : 1620835418,
+    "answer_id" : 67507168,
+    "question_id" : 67504825,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need another context for testing. I'm suggesting you to have a separate Test config:</p>\n<pre><code>@TestConfiguration\n@Slf4j\n@EnableJpaRepositories(&quot;tth.patientportal.repository&quot;)\npublic class TestConfig { // bean configs goes here for testing if you need to change \n  // context}\n</code></pre>\n<p>and in a controller test build the context like below:</p>\n<pre><code>@RunWith(SpringRunner.class)\n@AutoConfigureTestEntityManager\n@SpringBootTest\n@TestPropertySource(&quot;classpath:application-unittest.properties&quot;)\n@ContextConfiguration(classes = {TestConfig.class})    \npublic class RestControllerTest {\n    @Autowired\n    private WebApplicationContext webApplicationContext;\n    private MockMvc mockMvc;\n\n    @Before\n    public void setup() \n    {\n       mockMvc = MockMvcBuilders.\n            webAppContextSetup(webApplicationContext)\n            .build();\n    }\n\n    @Test\n    public void shouldReturnRegisteredUser() throws Exception {\n        this.mockMvc.\n            perform(MockMvcRequestBuilders\n                    .post(&quot;url&quot;)                        \n                    .contentType(MediaType.APPLICATION_JSON)\n                    .accept(MediaType.APPLICATION_JSON))\n            .andExpect(status().isOk())\n            .andExpect(MockMvcResultMatchers.jsonPath(&quot;$.username&quot;).exists());\n    }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2004750,
+      "reputation" : 8996,
+      "user_id" : 1795426,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9c233d3880e225df775d5dbaa12a9658?s=256&d=identicon&r=PG",
+      "display_name" : "user11153",
+      "link" : "https://stackoverflow.com/users/1795426/user11153"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761221247,
+    "creation_date" : 1761221247,
+    "answer_id" : 79797765,
+    "question_id" : 67504825,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You <em>don't need</em> separate <code>@TestConfiguration</code> to perform integration tests using <code>@WebMvcTest</code>, <code>@RestClientTest</code> or other dedicated annotations, that load only subset of beans from your entire application. But you must be aware, that the way you configure your application may disrupt beans filtering and you will end up with your case of <em>&quot;Spring is loading the entire application context of my app&quot;</em>.</p>\n<p>See this quote from <a href=\"https://docs.spring.io/spring-boot/reference/testing/spring-boot-applications.html#testing.spring-boot-applications.detecting-configuration\" rel=\"nofollow noreferrer\">&quot;Testing Spring Boot Applications&quot; documentation</a>:</p>\n<blockquote>\n<p>If you use a test annotation to test a more specific slice of your application, <strong>you should avoid adding configuration settings that are specific to a particular area on the main method’s application class.</strong></p>\n<p>The underlying component scan configuration of <code>@SpringBootApplication</code> defines exclude filters that are used to make sure slicing works as expected. <strong>If you are using an explicit <code>@ComponentScan</code> directive on your <code>@SpringBootApplication</code>-annotated class, be aware that those filters will be disabled.</strong> If you are using slicing, you should define them again.</p>\n</blockquote>\n<p>In my case, I fixed this issue by simple moving all <code>@Enable...</code> and <code>@ComponentScan</code> custom annotations away from <code>@SpringBootApplication</code>, to separate <code>@Configuration</code> class.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6802882,
+    "reputation" : 855,
+    "user_id" : 5235665,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/b1b829c8707d74031ecd37125d6d2f16?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "hotmeatballsoup",
+    "link" : "https://stackoverflow.com/users/5235665/hotmeatballsoup"
+  },
+  "is_answered" : true,
+  "view_count" : 2093,
+  "accepted_answer_id" : 67507168,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1761221247,
+  "creation_date" : 1620826790,
+  "question_id" : 67504825,
+  "link" : "https://stackoverflow.com/questions/67504825/spring-boot-controller-test-loading-entire-application-context",
+  "title" : "Spring Boot controller test loading entire application context",
+  "body" : "<p>Spring Boot here. I currently have the following REST controller:</p>\n<pre><code>@RestController\npublic class FizzbuzzController {\n\n    private final FizzbuzzService FizzbuzzService;\n\n    public FizzbuzzController(FizzbuzzService FizzbuzzService) {\n        this.FizzbuzzService = FizzbuzzService;\n    }\n\n    @PostMapping(&quot;/Fizzbuzzs/{fizzbuzzId}&quot;)\n    public ResponseEntity&lt;FizzbuzzDTO&gt; addFizzbuzz(@RequestParam(&quot;files&quot;) List&lt;MultipartFile&gt; files,\n                                      @PathVariable String fizzbuzzId) throws IOException {\n\n        FizzbuzzDTO fizzbuzzDTO = fizzbuzzService.store(files, fizzbuzzId);\n        return ResponseEntity.status(HttpStatus.OK).body(fizzbuzzDTO);\n        \n    }\n\n}\n</code></pre>\n<p>I would like to write an integration test for it that:</p>\n<ol>\n<li>Mocks or stubs an HTTP request to the URL; and</li>\n<li>Allows me to inject the <code>FizzbuzzController</code> (under test) with a mocked <code>FizzbuzzService</code> or the real thing; and</li>\n<li>Allows me to inspect the HTTP response coming back from the method (check status code, check response entity, etc.)</li>\n</ol>\n<p>My best attempt thus far:</p>\n<pre><code>@WebMvcTest(FizzbuzzController.class)\n@EnableConfigurationProperties\n@AutoConfigureMockMvc\npublic class FizzbuzzControllerTest {\n\n    @Autowired\n    private MockMvc mockMvc;\n\n    @MockBean\n    private FizzbuzzService FizzbuzzService;\n\n    @Test\n    public void should_store_fizzbuzz_files() throws Exception {\n        // I can't even get the test to run\n        assertTrue(1 == 1);\n    }\n\n}\n</code></pre>\n<p>When I run this, the test fails to run and it is clear (looking at the logs) that Spring is loading the entire application context of my app, whereas I just want it to isolate the context to this test class, the main <code>FizzbuzzController</code> class, and anything in the dependency tree underneath it.</p>\n<p><strong>Can anyone spot where I'm going awry?</strong></p>\n"
+}

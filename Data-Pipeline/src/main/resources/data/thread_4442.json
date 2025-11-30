@@ -1,0 +1,41 @@
+{
+  "tags" : [ "java", "android", "firebase", "firebase-authentication", "google-cloud-functions" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 5289146,
+      "reputation" : 9940,
+      "user_id" : 4222206,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/416696430ab23f397a5dbeda73e72896?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "queeg",
+      "link" : "https://stackoverflow.com/users/4222206/queeg"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1760186146,
+    "post_id" : 70966268,
+    "comment_id" : 140790020,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "This is best analyzed with the receiving side&#39;s help. Check what you transmit and compare it with the data you intend to transmit. Then check what the receiver gets and how that is interpreted."
+  } ],
+  "owner" : {
+    "account_id" : 18761197,
+    "reputation" : 81,
+    "user_id" : 13680116,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GgnGrLB3zI8z48EXLqpU0pRCH_odkNQBe1oq-5FW94=k-s256",
+    "display_name" : "Nimish Godbole",
+    "link" : "https://stackoverflow.com/users/13680116/nimish-godbole"
+  },
+  "is_answered" : false,
+  "view_count" : 348,
+  "answer_count" : 0,
+  "score" : 1,
+  "last_activity_date" : 1760184836,
+  "creation_date" : 1643865660,
+  "last_edit_date" : 1760184836,
+  "question_id" : 70966268,
+  "link" : "https://stackoverflow.com/questions/70966268/the-sms-code-is-expired-how-to-get-pass-this-exception",
+  "title" : "The SMS Code is expired. How to get pass this exception?",
+  "body" : "<p>I keep on getting the error of sms code has been expiraed please resend it even though it just came in my phone. This for android studio firebase authentication by phone number by the way. Can we solve this error?</p>\n<p>Here is the Send OTP Code:</p>\n<pre><code>public void sendOTP(){\n    final String Mobile = getMobileNo();\n    //Looks if the mobile number is already signed\n    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();\n    if(currentUser!=null){\n        Toast.makeText(this,&quot;User with mobile no&quot;+Mobile+&quot; already exists&quot;,Toast.LENGTH_LONG).show();\n        Intent in = new Intent(OTPActivity.this,LoginActivity.class);\n        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);\n        startActivity(in);\n    }\n    //if not a current user then send otp.\n    else {\n        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)\n                .setPhoneNumber(Mobile)\n                .setTimeout(120L, TimeUnit.SECONDS)\n                .setActivity(this)\n                .setCallbacks(mCallBack)\n                .build();\n        PhoneAuthProvider.verifyPhoneNumber(options);\n    }\n}\n</code></pre>\n<p>The mCallBacks Code:</p>\n<pre><code>private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {\n        @Override\n        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {\n            super.onCodeSent(s, forceResendingToken);\n            verificationId = s;\n            setVerificationId(verificationId);\n            setToken(forceResendingToken);\n        }\n\n    @Override\n    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {\n        final String code = phoneAuthCredential.getSmsCode();\n        if(code!=null){\n            OTP.setText(code);\n            verifyCode(getVerificationId(),code);\n        }\n    }\n\n    @Override\n    public void onVerificationFailed(@NonNull FirebaseException e) {\n        Toast.makeText(OTPActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();\n    }\n};\n</code></pre>\n<p>The Verify Code:</p>\n<pre><code>public void verifyCode(String verificationId,String code){\n        if(code!=null) {\n        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);\n        FirebaseAuth.getInstance().signInWithCredential(credential)\n                .addOnCompleteListener(new OnCompleteListener&lt;AuthResult&gt;() {\n                    @Override\n                    public void onComplete(@NonNull Task&lt;AuthResult&gt; task) {\n                        if(task.isSuccessful()){\n                            FirebaseUser user = task.getResult().getUser();\n                            AlertDialog.Builder builder = new AlertDialog.Builder(OTPActivity.this);\n                            builder.setMessage(&quot;Congratulations!!You are Registered. Do You Want To Login?&quot;);\n                            builder.setCancelable(true);\n                            builder.setPositiveButton(\n                                    &quot;Yes&quot;,\n                                    new DialogInterface.OnClickListener() {\n                                        @Override\n                                        public void onClick(DialogInterface dialog, int which) {\n                                            Intent in = new Intent(OTPActivity.this, LoginActivity.class);\n                                            in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);\n                                            startActivity(in);\n                                        }\n                                    });\n                            builder.setNegativeButton(&quot;No&quot;, new DialogInterface.OnClickListener() {\n                                @Override\n                                public void onClick(DialogInterface dialog, int which) {\n                                    Toast.makeText(OTPActivity.this, &quot;Exiting the app.&quot;, Toast.LENGTH_SHORT).show();\n                                    System.exit(0);\n                                }\n                            });\n                        }\n                        else\n                        {\n                            if(task.getException() instanceof FirebaseAuthInvalidCredentialsException){\n                                Toast.makeText(OTPActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();\n                            }\n                        }\n                    }\n                });\n    }\n    else\n    {\n        Toast.makeText(this,&quot;Code Field is Empty.Please Enter OTP.&quot;,Toast.LENGTH_LONG).show();\n    }\n}\n</code></pre>\n<p>The exception I am getting is this:</p>\n<blockquote>\n<p>The sms Code has expired. Please resend the code.</p>\n</blockquote>\n<p>even though I have got the otp code some seconds ago.</p>\n"
+}

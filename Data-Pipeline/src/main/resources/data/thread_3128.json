@@ -1,0 +1,135 @@
+{
+  "tags" : [ "java", "spring-boot" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3244691,
+        "reputation" : 1722,
+        "user_id" : 2736638,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/cb614b8e540314ef18ebd7500596aaa3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Manish Kothari",
+        "link" : "https://stackoverflow.com/users/2736638/manish-kothari"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1462971421,
+      "post_id" : 37159637,
+      "comment_id" : 61862122,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I will have to fall back to Bean configurations to do this, Is there any way that I can map entries from the outside property file to application.properties?"
+    } ],
+    "owner" : {
+      "account_id" : 4072209,
+      "reputation" : 12837,
+      "user_id" : 3344829,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/d1a55010c301a283b7eb5246ef1b91ae?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Saravana",
+      "link" : "https://stackoverflow.com/users/3344829/saravana"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1462961855,
+    "creation_date" : 1462961855,
+    "answer_id" : 37159637,
+    "question_id" : 37159210,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>From <a href=\"https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html\" rel=\"nofollow\">Spring Boot documentation</a></p>\n\n<p><strong><em>Property contributions can come from additional jar files on your classpath so you should not consider this an exhaustive list. It is also perfectly legit to define your own properties.</em></strong></p>\n\n<p>so you can have your own property file and it should be in your classpath,</p>\n\n<p>Inject property using <code>Value</code> annotation </p>\n\n<p><code>@Value(\"#{propFileName.propKeyName}\")</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8129121,
+      "reputation" : 1411,
+      "user_id" : 6122975,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/SfM5x.png?s=256",
+      "display_name" : "Jose A. Matar&#225;n",
+      "link" : "https://stackoverflow.com/users/6122975/jose-a-matar%c3%a1n"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1529656093,
+    "creation_date" : 1529656093,
+    "answer_id" : 50983792,
+    "question_id" : 37159210,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>All you need is override the Spring-Boot's Datasource default configuration. See the example above:</p>\n\n<pre><code>@Bean\n@Primary\npublic DataSource dataSource() {\n   return DataSourceBuilder\n    .create()\n    .username(\"\") // TODO: Get from properties\n    .password(\"\") // TODO: Get from properties\n    .url(\"\") // TODO: Get from properties\n    .driverClassName(\"\") // TODO: Get from properties\n    .build();\n}\n</code></pre>\n\n<p>In order to get from properties you can use the <code>@Value</code> annotation that @Saravana said you.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13534596,
+      "reputation" : 6066,
+      "user_id" : 9764133,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qcf47.jpg?s=256",
+      "display_name" : "Ganesh",
+      "link" : "https://stackoverflow.com/users/9764133/ganesh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1529662111,
+    "creation_date" : 1529662111,
+    "answer_id" : 50985630,
+    "question_id" : 37159210,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>@Manish Kothari... try this,create a configuration class with the annotations like \n@ConfigurationProperties.</p>\n\n<pre><code>@Component\n@PropertySource(\"classpath:dbConnection.properties\")\n@ConfigurationProperties\npublic class ConfigurationClass{\n\n //some code\n\n}\n</code></pre>\n\n<p>and now it will call your DB properities... I hope this will work</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3657397,
+      "reputation" : 1177,
+      "user_id" : 3048005,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d486871e99c456a367a77d61d00d303a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Prasad",
+      "link" : "https://stackoverflow.com/users/3048005/prasad"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1565676610,
+    "last_edit_date" : 1565676610,
+    "creation_date" : 1536211333,
+    "answer_id" : 52197017,
+    "question_id" : 37159210,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are multiple ways to do this\n1.You can pass the property files from the command promopt</p>\n\n<pre><code>-Dspring.config.location=classpath:job1.properties,classpath:job2.properties\n</code></pre>\n\n<p>2.Way is to add @PropertySource annotation\npublic class AppConfig</p>\n\n<pre><code>    @PropertySource(\"classpath:config.properties\")\n    public class LoadDbProps{\n      @value(\"${DATABASE_USER}\")\n      private String dbUserName;\n      private String dbUserName; \n    }\n</code></pre>\n\n<p>Later you can set this  LoadDbProps to application.properties properties using @Bean configuration.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4357556,
+      "reputation" : 11,
+      "user_id" : 3555664,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/100000936661082/picture?type=large",
+      "display_name" : "Ashish Atwal",
+      "link" : "https://stackoverflow.com/users/3555664/ashish-atwal"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1600188327,
+    "creation_date" : 1600188327,
+    "answer_id" : 63906396,
+    "question_id" : 37159210,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The below solution worked for me :</p>\n<pre><code> @Configuration\npublic class DataSourceConfig {\n    @Bean\n    public DataSource getDataSource() {\n        Properties properties = null;\n        InputStream inputStream = null;\n        DataSourceBuilder dataSourceBuilder =null;\n        try {\n        properties = new Properties();\n        inputStream = new FileInputStream(&quot;./src/main/resources/config.properties&quot;);\n        properties.load(inputStream);\n        dataSourceBuilder = DataSourceBuilder.create();\n        dataSourceBuilder.url(properties.getProperty(&quot;url&quot;));\n        dataSourceBuilder.username(properties.getProperty(&quot;user&quot;));\n        dataSourceBuilder.password(properties.getProperty(&quot;password&quot;));\n        }\n        catch(Exception ex) {\n            System.out.println(&quot;CONFIG EXCEPTION :&quot;+ex);\n        }\n        return dataSourceBuilder.build();\n    }\n}\n</code></pre>\n<p>refer below link for more details:</p>\n<p><a href=\"https://howtodoinjava.com/spring-boot2/datasource-configuration/#:%7E:text=Spring%20boot%20allows%20defining%20datasource,a%20DataSource%20bean%20for%20us\" rel=\"nofollow noreferrer\">https://howtodoinjava.com/spring-boot2/datasource-configuration/#:~:text=Spring%20boot%20allows%20defining%20datasource,a%20DataSource%20bean%20for%20us</a>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3244691,
+    "reputation" : 1722,
+    "user_id" : 2736638,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/cb614b8e540314ef18ebd7500596aaa3?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Manish Kothari",
+    "link" : "https://stackoverflow.com/users/2736638/manish-kothari"
+  },
+  "is_answered" : false,
+  "view_count" : 8451,
+  "answer_count" : 5,
+  "score" : 1,
+  "last_activity_date" : 1763132695,
+  "creation_date" : 1462960913,
+  "question_id" : 37159210,
+  "link" : "https://stackoverflow.com/questions/37159210/spring-boot-read-datasource-properties-from-another-property-file",
+  "title" : "Spring Boot: Read Datasource properties from another property file",
+  "body" : "<p>I want to configure a tomcat data source in Spring Boot, The properties of the database are stored in another property file (Say dbConnection.properties) with different keys.</p>\n\n<p>For example </p>\n\n<p><strong>dbConnection.properties:</strong></p>\n\n<pre><code>DATABASE_URL=SomeURL\nDATABASE_USER=SomeUser\nDATABASE_PASSWORD=SomePassword\n</code></pre>\n\n<p>From what I understand the properties related to a data source must be specified in <strong>application.properties</strong> as:</p>\n\n<pre><code>spring.datasource.url=jdbc:mysql://localhost/test\nspring.datasource.username=dbuser\nspring.datasource.password=dbpass\n</code></pre>\n\n<p>How do I pass the values from dbConnection.properties to application.properties?</p>\n"
+}

@@ -1,0 +1,144 @@
+{
+  "tags" : [ "java", "hadoop", "jdbc", "hive", "cloudera-cdh" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1922736,
+      "reputation" : 2658,
+      "user_id" : 1733834,
+      "user_type" : "registered",
+      "accept_rate" : 47,
+      "profile_image" : "https://i.sstatic.net/9lgbD.jpg?s=256",
+      "display_name" : "K S Nidhin",
+      "link" : "https://stackoverflow.com/users/1733834/k-s-nidhin"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1453313878,
+    "post_id" : 34898931,
+    "comment_id" : 57551080,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "GSS initiate failed this error generally occurs when your kerboros ticket gets expired. Try re validating the token each time you run the java code."
+  }, {
+    "owner" : {
+      "account_id" : 418796,
+      "reputation" : 334,
+      "user_id" : 795576,
+      "user_type" : "registered",
+      "accept_rate" : 65,
+      "profile_image" : "https://www.gravatar.com/avatar/2303979f16b71e7fb039c0e0d10d79ba?s=256&d=identicon&r=PG",
+      "display_name" : "Fayaz",
+      "link" : "https://stackoverflow.com/users/795576/fayaz"
+    },
+    "reply_to_user" : {
+      "account_id" : 1922736,
+      "reputation" : 2658,
+      "user_id" : 1733834,
+      "user_type" : "registered",
+      "accept_rate" : 47,
+      "profile_image" : "https://i.sstatic.net/9lgbD.jpg?s=256",
+      "display_name" : "K S Nidhin",
+      "link" : "https://stackoverflow.com/users/1733834/k-s-nidhin"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1453383900,
+    "post_id" : 34898931,
+    "comment_id" : 57584262,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I have already tried regenerating ticket using kninit command. But no luck."
+  }, {
+    "owner" : {
+      "account_id" : 6693666,
+      "reputation" : 9077,
+      "user_id" : 5162372,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/O8b0e.jpg?s=256",
+      "display_name" : "Samson Scharfrichter",
+      "link" : "https://stackoverflow.com/users/5162372/samson-scharfrichter"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1453403420,
+    "post_id" : 34898931,
+    "comment_id" : 57597413,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What flavor of JVM are you using? And what kind of encryption is expected by the KDC? <i>(spoiler: the Oracle/Sun JRE does not support AES256 by default, you must download the &quot;unlimited strength cryptography&quot;)</i>"
+  }, {
+    "owner" : {
+      "account_id" : 6693666,
+      "reputation" : 9077,
+      "user_id" : 5162372,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/O8b0e.jpg?s=256",
+      "display_name" : "Samson Scharfrichter",
+      "link" : "https://stackoverflow.com/users/5162372/samson-scharfrichter"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1453403601,
+    "post_id" : 34898931,
+    "comment_id" : 57597526,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Did you try the JAAS trace flag <code>-Djava.security.debug=gssloginconfig,configfile,configparser&zwnj;&#8203;,logincontext</code> to debug your issue?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 215757,
+      "reputation" : 15030,
+      "user_id" : 470583,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://i.sstatic.net/Nfmz4.jpg?s=256",
+      "display_name" : "Tagar",
+      "link" : "https://stackoverflow.com/users/470583/tagar"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1463437962,
+    "last_edit_date" : 1463437962,
+    "creation_date" : 1463436746,
+    "answer_id" : 37264088,
+    "question_id" : 34898931,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It's not a missing/expired ticket problem. Otherwise error stack will read also \"Caused by GSSException: No valid credentials provided\" down right after \"GSS initiate failed\".</p>\n\n<p>Possible problems:</p>\n\n<ol>\n<li><p>It seems that the server where you're trying to connect to (Hive Server 2, port 10000) and your client machine (that makes jdbc: hive connection) are in different domains. Is it the case?</p></li>\n<li><p>To confirm that your server and client can authenticate in that one domain, and its domain configurations are correct (krb5.conf etc.), do</p>\n\n<pre><code>$ kinit -k -t hive.keytab hive/cdh-542-kerberos.informatica.com@INFAQAKERB (like you did)\n$ klist \n</code></pre>\n\n<ul>\n<li>do this on server and client side and copy-paste result here.</li>\n</ul></li>\n<li><p>\"org.apache.hive.jdbc.HiveConnection.openTransport(HiveConnection.java:215) \" can give a clue that it might be a firewall/domain configuration issue from HS2 server to domain controller server. Although you can create ticket on client side, HS2 server can't validate it.</p></li>\n<li><p>On your code snippets - check out <a href=\"http://appcrawler.com/wordpress/2015/06/18/examples-of-connecting-to-kerberos-hive-in-jdbc/\" rel=\"nofollow\">Examples of connecting to Kerberos Hive in JDBC</a>.</p>\n\n<p>It seems your code is at least missing:</p>\n\n<pre><code>UserGroupInformation.setConfiguration(conf);\n</code></pre>\n\n<p>not sure though if it's relevant for your use case...</p></li>\n</ol>\n\n<p>Keep us updated if you are able to resolve this.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1175500,
+      "reputation" : 91,
+      "user_id" : 1151622,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/aa49bf9edda6b54374709161acc9ad2e?s=256&d=identicon&r=PG",
+      "display_name" : "chandugunturi",
+      "link" : "https://stackoverflow.com/users/1151622/chandugunturi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1506365204,
+    "creation_date" : 1506365204,
+    "answer_id" : 46412171,
+    "question_id" : 34898931,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For hive, you shouldn't use proxyuser to do ugi.doAs. Modify your code to </p>\n\n<pre><code>public static UserGroupInformation createkerbUser( String principal, String keyTabFilePath) \n{\n    return  UserGroupInformation.loginUserFromKeytabAndReturnUGI(principal, keyTabFilePath);\n}\n</code></pre>\n\n<p>OR</p>\n\n<pre><code>    public static UserGroupInformation createkerbUser( String principal, String keyTabFilePath) \n        {\n            UserGroupInformation.loginUserFromKeytab(principal, keyTabFilePath);\n            return UserGroupInformation.getLoginUser();\n        }\n</code></pre>\n\n<p>And if you need to do impersonation, append </p>\n\n<blockquote>\n  <p>hive.server2.proxy.user=<code>&lt;proxyUser&gt;</code></p>\n</blockquote>\n\n<p>(for apache driver) to the JDBC connection string.</p>\n\n<p>PS: In the cluster configuration, hive user should have privileges to impersonate to different user if you planning to use 'proxy user' property.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 418796,
+    "reputation" : 334,
+    "user_id" : 795576,
+    "user_type" : "registered",
+    "accept_rate" : 65,
+    "profile_image" : "https://www.gravatar.com/avatar/2303979f16b71e7fb039c0e0d10d79ba?s=256&d=identicon&r=PG",
+    "display_name" : "Fayaz",
+    "link" : "https://stackoverflow.com/users/795576/fayaz"
+  },
+  "is_answered" : false,
+  "view_count" : 8730,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1759424880,
+  "creation_date" : 1453289711,
+  "last_edit_date" : 1619525575,
+  "question_id" : 34898931,
+  "link" : "https://stackoverflow.com/questions/34898931/issue-connecting-to-hive-using-jdbc-with-kerberos-authentication",
+  "title" : "Issue connecting to Hive using JDBC with Kerberos authentication",
+  "body" : "<p>I am trying to write a program to connect to Hive using Jdbc Driver with Kerberos authentication. My program is as folloows :</p>\n<pre><code>public static void main(String a[])\n{\n\n    ...\n\n    connectionString_ = &quot;jdbc:hive2://cdh-542-kerberos.domain.com:10000/default;principal=hive/cdh-542-kerberos.domain.com@REALMDOMAIN&quot;;\n\n    UserGroupInformation ugi = createUgi();\n\n    connection = ugi.doAs(new PrivilegedExceptionAction&lt;Connection&gt;() {\n        public Connection run() throws Exception {\n            Connection connection = null;\n            Class.forName(jdbcDriverClass_);\n            connection =  DriverManager.getConnection(connectionString_);\n            return connection;\n        }\n    });\n    ... \n}\n\n\n\npublic static UserGroupInformation createUgi() \n{\n    try{\n        UserGroupInformation ugi = null;\n        \n        String principal = &quot;hive/cdh-542-kerberos.domain.com@REALMDOMAIN&quot;\n        String keyTabLocation = &quot;hive.keytab&quot;\n        \n        logger.debug(&quot;principal:&quot; + principal);\n        logger.debug(&quot;keyTabLocation:&quot; + keyTabLocation);\n        ugi =  createkerbUser( principal, keyTabLocation);\n        return ugi;\n    }\n    catch(Exception e)\n    {\n        throw new BDEToolSecurityException(BDEToolSecurityException.SECURITYEXCPETION, e);\n    }\n}\n\npublic static UserGroupInformation createkerbUser( String principal, String keyTabFilePath) \n{\n    UserGroupInformation app_ugi = UserGroupInformation.loginUserFromKeytabAndReturnUGI(principal, keyTabFilePath);\n    String user = getUserfromPrincipal(principal);\n    \n    if(user.trim().length() &gt; 0){\n        UserGroupInformation proxy_ugi = UserGroupInformation.createProxyUser(user, app_ugi);\n        return proxy_ugi;\n    }\n    return app_ugi;\n}\n\nprivate static String getUserfromPrincipal(String principal)\n{\n    String user = Constants.emptyString;\n    \n    if(principal.contains(Constants.fSlash)){\n        String[]  tokens = principal.split(Constants.fSlash);           \n        if(tokens.length &gt; 1){\n            user = tokens[0];\n        }            \n    }       \n    return user;\n}\n</code></pre>\n<p>This code is failing when it is trying to <code>ugi.doAs() ...</code> with below exception</p>\n<pre><code>java.sql.SQLException: Could not open client transport with JDBC Uri: jdbc:hive2://cdh-542-kerberos.informatica.com:10000/default;principal=hive/cdh-542-kerberos.informatica.com@INFAQAKERB: GSS initiate failed\n    at org.apache.hive.jdbc.HiveConnection.openTransport(HiveConnection.java:215)\n    at org.apache.hive.jdbc.HiveConnection.&lt;init&gt;(HiveConnection.java:163)\n    at org.apache.hive.jdbc.HiveDriver.connect(HiveDriver.java:105)\n    at java.sql.DriverManager.getConnection(DriverManager.java:571)\n    at java.sql.DriverManager.getConnection(DriverManager.java:233)\n    at com.informatica.gcs.tools.bde.connectivity.tool.hive.HiveJdbcTest$1.run(HiveJdbcTest.java:148)\n    at com.informatica.gcs.tools.bde.connectivity.tool.hive.HiveJdbcTest$1.run(HiveJdbcTest.java:144)\n    at java.security.AccessController.doPrivileged(Native Method)\n    at javax.security.auth.Subject.doAs(Subject.java:415)\n    at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1671)\n    ... 6 more\nCaused by: org.apache.thrift.transport.TTransportException: GSS initiate failed\n    at org.apache.thrift.transport.TSaslTransport.sendAndThrowMessage(TSaslTransport.java:232)\n    at org.apache.thrift.transport.TSaslTransport.open(TSaslTransport.java:316)\n    at org.apache.thrift.transport.TSaslClientTransport.open(TSaslClientTransport.java:37)\n    at org.apache.hadoop.hive.thrift.client.TUGIAssumingTransport$1.run(TUGIAssumingTransport.java:52)\n    at org.apache.hadoop.hive.thrift.client.TUGIAssumingTransport$1.run(TUGIAssumingTransport.java:49)\n    at java.security.AccessController.doPrivileged(Native Method)\n    at javax.security.auth.Subject.doAs(Subject.java:415)\n    at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1671)\n    at org.apache.hadoop.hive.thrift.client.TUGIAssumingTransport.open(TUGIAssumingTransport.java:49)\n    at org.apache.hive.jdbc.HiveConnection.openTransport(HiveConnection.java:190)\n    ... 15 more\n</code></pre>\n<p>Both the keytab and princiapl seems to be correct. I can successfully run the command</p>\n<pre><code>kinit -k -t hive.keytab hive/cdh-542-kerberos.informatica.com@INFAQAKERB\n</code></pre>\n<p>Can anybody help me further on this. I am stuck for almost a week on this problem. I can provide additional information, if required.</p>\n"
+}

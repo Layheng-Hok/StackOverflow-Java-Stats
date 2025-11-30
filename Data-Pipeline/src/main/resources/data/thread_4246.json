@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "testing", "automated-tests", "maven-3", "maven-surefire-plugin" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3758516,
+      "reputation" : 314,
+      "user_id" : 3124279,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/040b6342f08e47dac888d5dec63afa6c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "alwaysLearningABC",
+      "link" : "https://stackoverflow.com/users/3124279/alwayslearningabc"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1613521853,
+    "creation_date" : 1613521853,
+    "answer_id" : 66234147,
+    "question_id" : 66170505,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had the same problem and tried every combination of:</p>\n<ol>\n<li><p>maven-surefire-plugin (version 2.22.0)</p>\n</li>\n<li><p>maven-failsafe-plugin (version 2.22.0)</p>\n<ul>\n<li>This is another plugin that is basically the same but designed for running integration tests, in that it doesn't stop after the first failed test.</li>\n</ul>\n</li>\n<li><p>The parallel/threadCount configuration you mention.</p>\n</li>\n<li><p>These different plugin configurations specified at <a href=\"https://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven-config-params\" rel=\"nofollow noreferrer\">https://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven-config-params</a> and <a href=\"https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution\" rel=\"nofollow noreferrer\">https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution</a>. As in this:</p>\n<pre><code>   &lt;plugin&gt;\n     &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n     &lt;artifactId&gt;maven-failsafe-plugin&lt;/artifactId&gt;\n     &lt;version&gt;2.22.0&lt;/version&gt;\n     &lt;configuration&gt;\n       &lt;properties&gt;\n         &lt;configurationParameters&gt;\n           junit.jupiter.execution.parallel.enabled=true\n           junit.jupiter.execution.parallel.mode.default=same_thread\n           junit.jupiter.execution.parallel.mode.classes.default=concurrent\n         &lt;/configurationParameters&gt;\n       &lt;/properties&gt;\n     &lt;/configuration&gt;\n  &lt;/plugin&gt;\n</code></pre>\n</li>\n</ol>\n<p>The only combination that worked was 2 (maven-failsafe-plugin) and 4 (configurationParameters).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6502278,
+      "reputation" : 1574,
+      "user_id" : 5032575,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/QeMKn.jpg?s=256",
+      "display_name" : "Ahmed Sayed",
+      "link" : "https://stackoverflow.com/users/5032575/ahmed-sayed"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1614353153,
+    "last_edit_date" : 1614353153,
+    "creation_date" : 1613579793,
+    "answer_id" : 66246154,
+    "question_id" : 66170505,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Could you please try with the configuration option <code>forkCount</code>?</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;plugin&gt;\n   &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n   &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n   &lt;configuration&gt;\n      ...\n      &lt;forkCount&gt;4&lt;/forkCount&gt;\n      ...   \n   &lt;/configuration&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>From the official xml element description</p>\n<blockquote>\n<p>Option to specify the number of VMs to fork in parallel in order to execute the tests. When terminated with &quot;C&quot;,\nthe number part is multiplied with the number of CPU cores. Floating point value are only accepted together with\n&quot;C&quot;. If set to &quot;0&quot;, no VM is forked and all tests are executed within the main process.</p>\n<p>Example values: &quot;1.5C&quot;, &quot;4&quot;</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 42776,
+      "reputation" : 2015,
+      "user_id" : 124731,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ca5e6e4fcd509c1b53f0c2410a7d7c29?s=256&d=identicon&r=PG",
+      "display_name" : "Jason Crease",
+      "link" : "https://stackoverflow.com/users/124731/jason-crease"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760613975,
+    "creation_date" : 1760613975,
+    "answer_id" : 79792085,
+    "question_id" : 66170505,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This seems to be sufficient and necessary for surefire. Also bear in mind that using <code>@TestInstance(PER_CLASS)</code> will force it back to executing tests sequentially.</p>\n<pre><code>&lt;plugin&gt;\n  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n  &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n  &lt;configuration&gt;\n    &lt;properties&gt;\n      &lt;configurationParameters&gt;\n        junit.jupiter.execution.parallel.enabled = true\n        junit.jupiter.execution.parallel.mode.default = concurrent\n      &lt;/configurationParameters&gt;\n    &lt;/properties&gt;\n  &lt;/configuration&gt;\n&lt;/plugin&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1789130,
+    "reputation" : 899,
+    "user_id" : 1629924,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/fb01a33e61365b0d32d5328d01951c45?s=256&d=identicon&r=PG",
+    "display_name" : "Chris",
+    "link" : "https://stackoverflow.com/users/1629924/chris"
+  },
+  "is_answered" : true,
+  "view_count" : 13446,
+  "answer_count" : 3,
+  "score" : 10,
+  "last_activity_date" : 1760613975,
+  "creation_date" : 1613127189,
+  "last_edit_date" : 1613661192,
+  "question_id" : 66170505,
+  "link" : "https://stackoverflow.com/questions/66170505/running-tests-in-parallel-with-maven-surefire-plugin",
+  "title" : "Running tests in parallel with maven surefire plugin",
+  "body" : "<p>Recently got a new job, I'm working on a Maven and Micronaut project - I'm new to Micronaut, and if you're not familiar, its an alternative to Spring.</p>\n<p>Using this as a guide: <a href=\"https://www.baeldung.com/maven-junit-parallel-tests\" rel=\"noreferrer\">https://www.baeldung.com/maven-junit-parallel-tests</a></p>\n<p>I'm trying to get our integration tests to run in parallel, in an attempt to speed up our tests. I have added the required configuration to the pom.xml file. I have tweaked this lots, with different combinations of settings (including ones I found on other SO posts).</p>\n<p>But when I run the tests, with and without this added config, the time it takes to run them is exactly the same - 1 minute and 38 seconds. So I don't think its working. Although don't know what my expected output on the console should look like if it is working?</p>\n<p>In the tests, none of them are using @RunWith, its using the default, which should be okay.</p>\n<p>This is the pom. Can anyone advise please? Thanks.</p>\n<pre><code>&lt;profiles&gt;\n    &lt;profile&gt;\n      &lt;id&gt;integration&lt;/id&gt;\n      &lt;build&gt;\n        &lt;plugins&gt;\n          &lt;plugin&gt;\n            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n            &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n            &lt;configuration&gt;\n              &lt;excludedGroups&gt;unit, performance&lt;/excludedGroups&gt;\n              &lt;parallel&gt;classes&lt;/parallel&gt;\n              &lt;threadCount&gt;10&lt;/threadCount&gt;\n            &lt;/configuration&gt;\n          &lt;/plugin&gt;\n        &lt;/plugins&gt;\n      &lt;/build&gt;\n    &lt;/profile&gt;\n    &lt;profile&gt;\n      &lt;id&gt;performance&lt;/id&gt;\n      &lt;build&gt;\n        &lt;plugins&gt;\n          &lt;plugin&gt;\n            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n            &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n            &lt;configuration&gt;\n              &lt;excludedGroups&gt;unit, integration&lt;/excludedGroups&gt;\n            &lt;/configuration&gt;\n          &lt;/plugin&gt;\n        &lt;/plugins&gt;\n      &lt;/build&gt;\n    &lt;/profile&gt;\n    &lt;profile&gt;\n      &lt;id&gt;all&lt;/id&gt;\n      &lt;build&gt;\n        &lt;plugins&gt;\n          &lt;plugin&gt;\n            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n            &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n            &lt;configuration&gt;\n              &lt;excludedGroups&gt;none&lt;/excludedGroups&gt;\n            &lt;/configuration&gt;\n          &lt;/plugin&gt;\n        &lt;/plugins&gt;\n      &lt;/build&gt;\n    &lt;/profile&gt;\n  &lt;/profiles&gt;\n</code></pre>\n<pre><code>&lt;build&gt;\n    &lt;plugins&gt;\n      ...\n      &lt;plugin&gt;\n        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n        &lt;version&gt;${maven-surefire-plugin.version}&lt;/version&gt;\n        &lt;configuration&gt;\n          &lt;excludedGroups&gt;integration, performance&lt;/excludedGroups&gt;\n          &lt;parallel&gt;classes&lt;/parallel&gt;\n          &lt;threadCount&gt;10&lt;/threadCount&gt;\n        &lt;/configuration&gt;\n      &lt;/plugin&gt;\n      ...\n    &lt;/plugins&gt;\n  &lt;/build&gt;\n</code></pre>\n"
+}

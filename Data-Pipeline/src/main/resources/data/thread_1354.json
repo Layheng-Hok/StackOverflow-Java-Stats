@@ -1,0 +1,208 @@
+{
+  "tags" : [ "java", "sockets", "timeout", "connection" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : true,
+    "score" : 307,
+    "last_activity_date" : 1737821317,
+    "last_edit_date" : 1737821317,
+    "creation_date" : 1276863247,
+    "answer_id" : 3069450,
+    "question_id" : 3069382,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<ol>\n<li>What is the difference between connection and read  timeout for sockets?</li>\n</ol>\n</blockquote>\n<p>The connection timeout is the <strong>timeout in making the initial connection</strong>; i.e. completing the TCP connection handshake. The read timeout is the <strong>timeout on waiting to read data</strong><sup>1</sup>. If the server (or network) fails to deliver any data &lt;timeout&gt; seconds after the client makes a socket <code>read</code> call, a read timeout error will be raised.</p>\n<blockquote>\n<ol start=\"2\">\n<li>What does connection timeout set to &quot;infinity&quot; mean? In what situation can it remain in an infinitive loop? And what can trigger the infinity-loop to die?</li>\n</ol>\n</blockquote>\n<p>It means that the connection attempt can potentially be blocked forever. There is no infinite loop, but another thread closing the socket can unblock the attempt to connect.  (A <code>Thread.interrupt()</code> call may also do the trick ... not sure.)</p>\n<blockquote>\n<ol start=\"3\">\n<li>What does read timeout set to &quot;infinity&quot; mean? In what situation can it remain in an infinite loop?  What can trigger the infinite loop to end?</li>\n</ol>\n</blockquote>\n<p>It means that a call to <code>read</code> on the socket stream may block forever.  Once again there is no infinite loop, but the <code>read</code> can be unblocked by a <code>Thread.interrupt()</code> call, closing the socket, and (of course) the other end sending data or closing the connection.</p>\n<hr />\n<p><sup>1 - It is not ... as one commenter thought ... the timeout on how long a socket can be open, or idle.</sup></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1777001,
+        "reputation" : 532,
+        "user_id" : 1620597,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/UxA72.jpg?s=256",
+        "display_name" : "Tom Fink",
+        "link" : "https://stackoverflow.com/users/1620597/tom-fink"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1373980197,
+      "post_id" : 3069821,
+      "comment_id" : 25751389,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;If the value is set to infinity, you will not wait forever.&quot; As long as it&#39;s not about discussion about the meaning of &quot;infinity&quot;, it can for sure happen that you wait very very long. We had a case here, where an <code>HttpURLConnection.getResponseCode()</code> was hanging for apprx. a week until we restarted the process. There was obviously no timeout set on the JVM side and as well no timeout on the Linux OS side."
+    }, {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1376953273,
+      "post_id" : 3069821,
+      "comment_id" : 26894057,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The final paragraph is not correct. A connect will timeout after about a minute at most. A separate thread is completely unnecessary. You can certainly have <i>reads</i> that run forever if there is no data. However the Javadoc is wrong about the default connect timeout being infinite. It isn&#39;t."
+    }, {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "reply_to_user" : {
+        "account_id" : 987492,
+        "reputation" : 1963,
+        "user_id" : 1005652,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f9235416d6272b1f778f431cc8e68d81?s=256&d=identicon&r=PG",
+        "display_name" : "comeGetSome",
+        "link" : "https://stackoverflow.com/users/1005652/comegetsome"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1480301602,
+      "post_id" : 3069821,
+      "comment_id" : 68890194,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@comeGetSome That&#39;s not correct. You can shutdown the socket for input. That will cause the blocked read to encounter end of stream."
+    }, {
+      "owner" : {
+        "account_id" : 4477332,
+        "reputation" : 172,
+        "user_id" : 3642122,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/600a10c9050a938258bea5d7ca7ae193?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "fmcato",
+        "link" : "https://stackoverflow.com/users/3642122/fmcato"
+      },
+      "reply_to_user" : {
+        "account_id" : 987492,
+        "reputation" : 1963,
+        "user_id" : 1005652,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f9235416d6272b1f778f431cc8e68d81?s=256&d=identicon&r=PG",
+        "display_name" : "comeGetSome",
+        "link" : "https://stackoverflow.com/users/1005652/comegetsome"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1480345685,
+      "post_id" : 3069821,
+      "comment_id" : 68911523,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@comeGetSome: I had to implement this using a thread that holds a reference to an open HTTP URL connection. When said thread closes the connection, the other thread throws &quot;java.net.SocketException: Socket closed&quot;. Thank bug JDK-8075484 for making me do that!"
+    }, {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "reply_to_user" : {
+        "account_id" : 987492,
+        "reputation" : 1963,
+        "user_id" : 1005652,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f9235416d6272b1f778f431cc8e68d81?s=256&d=identicon&r=PG",
+        "display_name" : "comeGetSome",
+        "link" : "https://stackoverflow.com/users/1005652/comegetsome"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1494203019,
+      "post_id" : 3069821,
+      "comment_id" : 74712604,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@comeGetSome Surely you can call <code>Socket.shutdownInput()</code> without having your hand held? NB These timeouts are enforced by TCP, not the JVM."
+    }, {
+      "owner" : {
+        "account_id" : 987492,
+        "reputation" : 1963,
+        "user_id" : 1005652,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f9235416d6272b1f778f431cc8e68d81?s=256&d=identicon&r=PG",
+        "display_name" : "comeGetSome",
+        "link" : "https://stackoverflow.com/users/1005652/comegetsome"
+      },
+      "reply_to_user" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1494231476,
+      "post_id" : 3069821,
+      "comment_id" : 74721607,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@EJP you&#39; right, it works even on Socket.close(); however, the read/write does not encounter EOF in such a case but throws an IO exception."
+    } ],
+    "owner" : {
+      "account_id" : 50238,
+      "reputation" : 75696,
+      "user_id" : 149808,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/6c86720e9a178abc0b6f169ae67151fd?s=256&d=identicon&r=PG",
+      "display_name" : "ZZ Coder",
+      "link" : "https://stackoverflow.com/users/149808/zz-coder"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1276866449,
+    "creation_date" : 1276866449,
+    "answer_id" : 3069821,
+    "question_id" : 3069382,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>These are timeout values enforced by JVM for TCP connection establishment and waiting on reading data from socket.</p>\n\n<p>If the value is set to infinity, you will not wait forever. It simply means JVM doesn't have timeout  and OS will be responsible for all the timeouts. However, the timeouts on OS may be really long. On some slow network, I've seen timeouts as long as 6 minutes.</p>\n\n<p>Even if you set the timeout value for socket, it may not work if the timeout happens in the native code. We can reproduce the problem on Linux by connecting to a host blocked by firewall or unplugging the cable on switch.</p>\n\n<p>The only safe approach to handle TCP timeout is to run the connection code in a different thread and interrupt the thread when it takes too long.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 29678,
+    "reputation" : 12419,
+    "user_id" : 80389,
+    "user_type" : "registered",
+    "accept_rate" : 65,
+    "profile_image" : "https://www.gravatar.com/avatar/9baf7ed6081d3c82c97d81c45fc20d85?s=256&d=identicon&r=PG",
+    "display_name" : "corgrath",
+    "link" : "https://stackoverflow.com/users/80389/corgrath"
+  },
+  "is_answered" : true,
+  "view_count" : 276041,
+  "accepted_answer_id" : 3069450,
+  "answer_count" : 2,
+  "score" : 250,
+  "last_activity_date" : 1737821317,
+  "creation_date" : 1276862648,
+  "last_edit_date" : 1376951571,
+  "question_id" : 3069382,
+  "link" : "https://stackoverflow.com/questions/3069382/what-is-the-difference-between-connection-and-read-timeout-for-sockets",
+  "title" : "What is the difference between connection and read timeout for sockets?",
+  "body" : "<p>3 questions:</p>\n\n<ol>\n<li><p>What is the difference between <strong>connection</strong> and <strong>read</strong> timeout for sockets?</p></li>\n<li><p>What does <strong>connection</strong> timeout set to \"infinity\" mean? In what situation can it remain in an infinitive loop? and what can trigger that the infinity-loop dies?</p></li>\n<li><p>What does <strong>read</strong> timeout set to \"infinity\" mean? In what situation can it remain in an infinitive loop? and what can trigger that the infinity-loop dies?</p></li>\n</ol>\n"
+}

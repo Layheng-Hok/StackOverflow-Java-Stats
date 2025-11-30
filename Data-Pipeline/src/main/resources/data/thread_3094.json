@@ -1,0 +1,96 @@
+{
+  "tags" : [ "java", "swing", "encryption", "read-write" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4157399,
+        "reputation" : 141,
+        "user_id" : 3408309,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/61630caf90f0bc29b0c99ba9a1023c2b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Aventis",
+        "link" : "https://stackoverflow.com/users/3408309/aventis"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1394806197,
+      "post_id" : 22339860,
+      "comment_id" : 34068496,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks. Still need help on the other problem."
+    }, {
+      "owner" : {
+        "account_id" : 9463219,
+        "reputation" : 9678,
+        "user_id" : 7036419,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/66e3c04567f6d68a874c3007327c1373?s=256&d=identicon&r=PG",
+        "display_name" : "Maurice Perry",
+        "link" : "https://stackoverflow.com/users/7036419/maurice-perry"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1721107856,
+      "post_id" : 22339860,
+      "comment_id" : 138849145,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You should separate the generation of the key from the encryption."
+    } ],
+    "owner" : {
+      "account_id" : 3902605,
+      "reputation" : 6580,
+      "user_id" : 3230038,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://i.sstatic.net/8O2Sv.jpg?s=256",
+      "display_name" : "Leo",
+      "link" : "https://stackoverflow.com/users/3230038/leo"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1394585748,
+    "creation_date" : 1394585748,
+    "answer_id" : 22339860,
+    "question_id" : 22339123,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>to keep your data encrypted in a file, you can use CipherIn/OutputStream, just like this</p>\n\n<pre><code>public static void main(String[] args) throws Exception {\n    // got this example from http://www.java2s.com/Tutorial/Java/0490__Security/UsingCipherInputStream.htm\n    write();\n    read();\n}\n\npublic static void write() throws Exception {\n    KeyGenerator kg = KeyGenerator.getInstance(\"DES\");\n    kg.init(new SecureRandom());\n    SecretKey key = kg.generateKey();\n    SecretKeyFactory skf = SecretKeyFactory.getInstance(\"DES\");\n    Class spec = Class.forName(\"javax.crypto.spec.DESKeySpec\");\n    DESKeySpec ks = (DESKeySpec) skf.getKeySpec(key, spec);\n    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(\"keyfile\"));\n    oos.writeObject(ks.getKey());\n\n    Cipher c = Cipher.getInstance(\"DES/CFB8/NoPadding\");\n    c.init(Cipher.ENCRYPT_MODE, key);\n    CipherOutputStream cos = new CipherOutputStream(new FileOutputStream(\"ciphertext\"), c);\n    PrintWriter pw = new PrintWriter(new OutputStreamWriter(cos));\n    pw.println(\"Stand and unfold yourself\");\n    pw.flush();\n    pw.close();\n    oos.writeObject(c.getIV());\n    oos.close();\n}\n\npublic static void read() throws Exception {\n    ObjectInputStream ois = new ObjectInputStream(new FileInputStream(\"keyfile\"));\n    DESKeySpec ks = new DESKeySpec((byte[]) ois.readObject());\n    SecretKeyFactory skf = SecretKeyFactory.getInstance(\"DES\");\n    SecretKey key = skf.generateSecret(ks);\n\n    Cipher c = Cipher.getInstance(\"DES/CFB8/NoPadding\");\n    c.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec((byte[]) ois.readObject()));\n    CipherInputStream cis = new CipherInputStream(new FileInputStream(\"ciphertext\"), c);\n    BufferedReader br = new BufferedReader(new InputStreamReader(cis));\n    System.out.println(br.readLine());\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2485939,
+      "reputation" : 20969,
+      "user_id" : 2164365,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/RKSgV.png?s=256",
+      "display_name" : "Abra",
+      "link" : "https://stackoverflow.com/users/2164365/abra"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1572097238,
+    "creation_date" : 1572097238,
+    "answer_id" : 58571298,
+    "question_id" : 22339123,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Basically you asked two questions and Leo <a href=\"https://stackoverflow.com/questions/22339123/adding-highscores-to-java-game-from-console-to-jpanel-saving-highscore-in-en/22339860#22339860\">answered</a> your second question.</p>\n\n<p>Your first question is...</p>\n\n<blockquote>\n  <p>what I need is that ...[the high scores]... gets outputted on a <code>JPanel</code> next to my maze</p>\n</blockquote>\n\n<p>You didn't post any GUI code, but a subclass of <a href=\"https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html\" rel=\"nofollow noreferrer\">JTextComponent</a> would be more appropriate than a <code>JPanel</code>. Simply add a component, for example <code>JTextArea</code> and call its <code>setText()</code> method with your <em>high score string</em> as the method argument.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4157399,
+    "reputation" : 141,
+    "user_id" : 3408309,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/61630caf90f0bc29b0c99ba9a1023c2b?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Aventis",
+    "link" : "https://stackoverflow.com/users/3408309/aventis"
+  },
+  "is_answered" : false,
+  "view_count" : 8757,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1763237415,
+  "creation_date" : 1394581657,
+  "question_id" : 22339123,
+  "link" : "https://stackoverflow.com/questions/22339123/adding-highscores-to-java-game-from-console-to-jpanel-saving-highscore-in-en",
+  "title" : "Adding highscores to java game - From console to JPanel - Saving highscore in encrypted text file",
+  "body" : "<p>I am new to Java, and learning new things everyday. English is not my mother language, I'm sorry.\nSo, I'm making a maze game in Java to learn while writing code.\nFor my maze game, the player needs to get to the exit of the maze asap. And the time he has, needs to be saved in an encrypted text file. \nSo I've got a package Highscores combining several classes. The code works more or less, it outputs in the console. Now what I need is that that output gets outputted on a JPanel next to my maze. I've added some extra info in the code\nHere is my highscore class:</p>\n\n<pre><code>    public class Highscore {\n// An arraylist of the type \"score\" we will use to work with the scores inside the class\nprivate ArrayList&lt;Score&gt; scores;\n\n// The name of the file where the highscores will be saved\nprivate static final String highscorefile = \"Resources/scores.dat\";\n\n//Initialising an in and outputStream for working with the file\nObjectOutputStream output = null;\nObjectInputStream input = null;\n\npublic Highscore() {\n    //initialising the scores-arraylist\n    scores = new ArrayList&lt;Score&gt;();\n}\npublic ArrayList&lt;Score&gt; getScores() {\n    loadScoreFile();\n    sort();\n    return scores;\n}\nprivate void sort() {\n    ScoreVergelijken comparator = new ScoreVergelijken();\n    Collections.sort(scores, comparator);\n}\npublic void addScore(String name, int score) {\n    loadScoreFile();\n    scores.add(new Score(name, score));\n    updateScoreFile();\n}\npublic void loadScoreFile() {\n    try {\n        input = new ObjectInputStream(new FileInputStream(highscorefile));\n        scores = (ArrayList&lt;Score&gt;) input.readObject();\n    } catch (FileNotFoundException e) {\n        System.out.println(\"[Laad] FNF Error: \" + e.getMessage());\n    } catch (IOException e) {\n        System.out.println(\"[Laad] IO Error: \" + e.getMessage());\n    } catch (ClassNotFoundException e) {\n        System.out.println(\"[Laad] CNF Error: \" + e.getMessage());\n    } finally {\n        try {\n            if (output != null) {\n                output.flush();\n                output.close();\n            }\n        } catch (IOException e) {\n            System.out.println(\"[Laad] IO Error: \" + e.getMessage());\n        }\n    }\n}\npublic void updateScoreFile() {\n    try {\n        output = new ObjectOutputStream(new FileOutputStream(highscorefile));\n        output.writeObject(scores);\n    } catch (FileNotFoundException e) {\n        System.out.println(\"[Update] FNF Error: \" + e.getMessage() + \",the program will try and make a new file\");\n    } catch (IOException e) {\n        System.out.println(\"[Update] IO Error: \" + e.getMessage());\n    } finally {\n        try {\n            if (output != null) {\n                output.flush();\n                output.close();\n            }\n        } catch (IOException e) {\n            System.out.println(\"[Update] Error: \" + e.getMessage());\n        }\n    }\n}\npublic String getHighscoreString() {\n    String highscoreString = \"\";\n       int max = 10;\n\n    ArrayList&lt;Score&gt; scores;\n    scores = getScores();\n\n    int i = 0;\n    int x = scores.size();\n    if (x &gt; max) {\n        x = max;\n    }\n    while (i &lt; x) {\n        highscoreString += (i + 1) + \".\\t\" + scores.get(i).getNaam() + \"\\t\\t\" + scores.get(i).getScore() + \"\\n\";\n        i++;\n    }\n    return highscoreString;\n}\n</code></pre>\n\n<p>}</p>\n\n<p>Here is my Main class:    </p>\n\n<pre><code>    public class Main {\n    public static void main(String[] args) {\n    Highscore hm = new Highscore();\n    hm.addScore(\"Bart\",240);\n    hm.addScore(\"Marge\",300);\n    hm.addScore(\"Maggie\",220);\n    hm.addScore(\"Homer\",100);\n    hm.addScore(\"Lisa\",270);\n    hm.addScore(LabyrinthProject.View.MainMenu.username,290);\n\n    System.out.print(hm.getHighscoreString());\n} }\n</code></pre>\n\n<p>Score class :</p>\n\n<pre><code>public class Score  implements Serializable {\nprivate int score;\nprivate String naam;\n\npublic Score() {\n\n}\n\npublic int getScore() {\n    return score;\n}\n\npublic String getNaam() {\n    return naam;\n}\n\npublic Score(String naam, int score) {\n    this.score = score;\n    this.naam = naam;\n}\n</code></pre>\n\n<p>}</p>\n\n<p>ScoreVergelijken class (which means CompareScore)</p>\n\n<pre><code>public class ScoreVergelijken implements Comparator&lt;Score&gt; {\npublic int compare(Score score1, Score score2) {\n\n    int sc1 = score1.getScore();\n    int sc2 = score2.getScore();\n\n    if (sc1 &gt; sc2){\n        return -1;                   // -1 means first score is bigger then second score\n    }else if (sc1 &lt; sc2){\n        return +1;                   // +1 means that score is lower\n    }else{\n        return 0;                     // 0 means score is equal\n    }\n}  } \n</code></pre>\n\n<p>If anyone could explain to me what to use, it would be greatly appreciated! Thank you very much!</p>\n\n<p>Also, how to use those highscores and store them encrypted in a text file. How can I achieve that?</p>\n\n<p>Sincerely, A beginner java student.</p>\n"
+}

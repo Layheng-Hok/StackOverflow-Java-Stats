@@ -1,0 +1,119 @@
+{
+  "tags" : [ "java", "spring", "spring-el" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1288095,
+      "reputation" : 175832,
+      "user_id" : 1240763,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/OMgXO.png?s=256",
+      "display_name" : "Gary Russell",
+      "link" : "https://stackoverflow.com/users/1240763/gary-russell"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1521742576,
+    "post_id" : 49431829,
+    "comment_id" : 85873432,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "See the edit to my answer - if all your methods return false, you can negate them to force them all to be evaluated."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7858487,
+        "reputation" : 880,
+        "user_id" : 5939566,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/0a46acdecb500b9631c314cd7fd63bc5?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "tkralik",
+        "link" : "https://stackoverflow.com/users/5939566/tkralik"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1521807613,
+      "post_id" : 49435114,
+      "comment_id" : 85900918,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The thing is, I do not want to disable short circuit evaluation in general or modify <code>SpEL</code> expressions because of that. For evaluation over real context, short circuit evaluation comes in handy performance-wise. I thought there might have been a way to disable it for one specific evaluation. These methods only return false when I check the consistency of the expression, otherwise the return value depends on the context"
+    }, {
+      "owner" : {
+        "account_id" : 7858487,
+        "reputation" : 880,
+        "user_id" : 5939566,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/0a46acdecb500b9631c314cd7fd63bc5?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "tkralik",
+        "link" : "https://stackoverflow.com/users/5939566/tkralik"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1521807821,
+      "post_id" : 49435114,
+      "comment_id" : 85901040,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "However, stating that there is no way to make <code>Spring</code> suppress short circuit evaluation is a sufficient answer. Thank you"
+    } ],
+    "owner" : {
+      "account_id" : 1288095,
+      "reputation" : 175832,
+      "user_id" : 1240763,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/OMgXO.png?s=256",
+      "display_name" : "Gary Russell",
+      "link" : "https://stackoverflow.com/users/1240763/gary-russell"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1521742539,
+    "last_edit_date" : 1521742539,
+    "creation_date" : 1521740205,
+    "answer_id" : 49435114,
+    "question_id" : 49431829,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>No; the <code>OpAnd</code> operator always short-circuits...</p>\n\n<pre><code>@Override\npublic TypedValue getValueInternal(ExpressionState state) throws EvaluationException {\n    if (!getBooleanValue(state, getLeftOperand())) {\n        // no need to evaluate right operand\n        return BooleanTypedValue.FALSE;\n    }\n    return BooleanTypedValue.forValue(getBooleanValue(state, getRightOperand()));\n}\n</code></pre>\n\n<p>...there is no equivalent to Java's <code>&amp;</code> operator.</p>\n\n<p><strong>EDIT</strong></p>\n\n<blockquote>\n  <p>All these methods return false</p>\n</blockquote>\n\n<p>If they all return <code>false</code> can't you use <code>\"!(!m1() and !m2())\"</code> ?</p>\n\n<p>or even</p>\n\n<p><code>\"!((!m1() or m1()) and (!m2() or m2()))\"</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1816046,
+      "reputation" : 1465,
+      "user_id" : 1651107,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/fGuXb.png?s=256",
+      "display_name" : "Piro",
+      "link" : "https://stackoverflow.com/users/1651107/piro"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764145383,
+    "last_edit_date" : 1764145383,
+    "creation_date" : 1655982429,
+    "answer_id" : 72729137,
+    "question_id" : 49431829,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you really want to disable short circuit evaluation it is possible, but you have to get your hands dirty. As <a href=\"https://stackoverflow.com/a/49435114/1651107\">Gary pointed out</a> logic in OpAnd (OpOr) is fixed. So we have to change/override implementation of OpAnd/OpOr.getValueInternal(ExpressionState state). This requires some source code copying, so source code can be found <a href=\"https://github.com/spring-projects/spring-framework/tree/main/spring-expression/src/main/java/org/springframework/expression\" rel=\"nofollow noreferrer\">here</a>. My samples may differ a bit since I implemented it and tested on different version of maven dependency:</p>\n<pre><code>&lt;groupId&gt;org.springframework&lt;/groupId&gt;\n&lt;artifactId&gt;spring-expression&lt;/artifactId&gt;\n&lt;version&gt;5.1.5.RELEASE&lt;/version&gt;\n</code></pre>\n<p>First of all, we have to implement our own version of OpAnd and OpOr. Since OpAnd.getBooleanValue(ExpressionState state, SpelNodeImpl operand) and SpelNodeImpl.getValue(ExpressionState state, Class desiredReturnType) are private, we have to implement our version of getBooleanValue.</p>\n<pre><code>import org.springframework.expression.EvaluationException;\nimport org.springframework.expression.TypedValue;\nimport org.springframework.expression.common.ExpressionUtils;\nimport org.springframework.expression.spel.ExpressionState;\nimport org.springframework.expression.spel.SpelEvaluationException;\nimport org.springframework.expression.spel.SpelMessage;\nimport org.springframework.expression.spel.ast.OpAnd;\nimport org.springframework.expression.spel.ast.SpelNodeImpl;\nimport org.springframework.expression.spel.support.BooleanTypedValue;\nimport org.springframework.lang.Nullable;\n\npublic class DomailOpAnd extends OpAnd {\n\n    public static boolean getBooleanValue(ExpressionState state, SpelNodeImpl operand) {\n        try {\n            Boolean value = ExpressionUtils.convertTypedValue(state.getEvaluationContext(), operand.getValueInternal(state), Boolean.class);\n            //Boolean value = operand.getValue(state, Boolean.class);\n            assertValueNotNull(value);\n            return value;\n        }\n        catch (SpelEvaluationException ex) {\n            ex.setPosition(operand.getStartPosition());\n            throw ex;\n        }\n    }\n    \n    private static void assertValueNotNull(@Nullable Boolean value) {\n        if (value == null) {\n            throw new SpelEvaluationException(SpelMessage.TYPE_CONVERSION_ERROR, &quot;null&quot;, &quot;boolean&quot;);\n        }\n    }\n    \n    public DomailOpAnd(int pos, SpelNodeImpl ... operands) {\n        super(pos, operands);\n    }\n    \n    @Override\n    public TypedValue getValueInternal(ExpressionState state) throws EvaluationException {\n        //HERE is our non-short-circuiting logic:\n        boolean left = getBooleanValue(state, getLeftOperand());\n        boolean right = getBooleanValue(state, getRightOperand());\n        return BooleanTypedValue.forValue(left &amp;&amp; right);\n    }\n}\n\npublic class DomailOpOr extends OpOr {\n\n    public DomailOpOr(int pos, SpelNodeImpl ... operands) {\n        super(pos, operands);\n    }\n\n    @Override\n    public BooleanTypedValue getValueInternal(ExpressionState state) throws EvaluationException {\n        Boolean left = DomailOpAnd.getBooleanValue(state, getLeftOperand());\n        Boolean right = DomailOpAnd.getBooleanValue(state, getRightOperand());\n        return BooleanTypedValue.forValue(left || right);\n    }\n}\n</code></pre>\n<p>Now we have to use our versions of OpAnd and OpOr where they are created in InternalSpelExpressionParser. But InternalSpelExpressionParser is not a public class so we cannot use override as with OpAnd. We have to copy InternalSpelExpressionParser source code and create own class. Here I show only edited parts:</p>\n<pre><code>/**\n * Hand-written SpEL parser. Instances are reusable but are not thread-safe.\n *\n * @author Andy Clement\n * @author Juergen Hoeller\n * @author Phillip Webb\n * @since 3.0\n */\nclass DomailInternalExpressionParser extends TemplateAwareExpressionParser {\n//rest of class ...\n    @Nullable\n    private SpelNodeImpl eatLogicalOrExpression() {\n        SpelNodeImpl expr = eatLogicalAndExpression();\n        while (peekIdentifierToken(&quot;or&quot;) || peekToken(TokenKind.SYMBOLIC_OR)) {\n            Token t = takeToken();  //consume OR\n            SpelNodeImpl rhExpr = eatLogicalAndExpression();\n            checkOperands(t, expr, rhExpr);\n            expr = new DomailOpOr(toPos(t), expr, rhExpr);\n        }\n        return expr;\n    }\n\n    @Nullable\n    private SpelNodeImpl eatLogicalAndExpression() {\n        SpelNodeImpl expr = eatRelationalExpression();\n        while (peekIdentifierToken(&quot;and&quot;) || peekToken(TokenKind.SYMBOLIC_AND)) {\n            Token t = takeToken();  // consume 'AND'\n            SpelNodeImpl rhExpr = eatRelationalExpression();\n            checkOperands(t, expr, rhExpr);\n            expr = new DomailOpAnd(toPos(t), expr, rhExpr);\n        }\n        return expr;\n    }\n//rest of class ... \n</code></pre>\n<p>This also requires to copy source of other non public classes to be available:</p>\n<ul>\n<li>org.springframework.expression.spel.standard.Token</li>\n<li>org.springframework.expression.spel.standard.Tokenizer</li>\n<li>org.springframework.expression.spel.standard.TokenKind</li>\n</ul>\n<p>Finally we swap implementation of parser in SpelExpression Parser:</p>\n<pre><code>import org.springframework.expression.ParseException;\nimport org.springframework.expression.ParserContext;\nimport org.springframework.expression.spel.SpelParserConfiguration;\nimport org.springframework.expression.spel.standard.SpelExpression;\nimport org.springframework.expression.spel.standard.SpelExpressionParser;\n\npublic class DomailExpressionParser extends SpelExpressionParser {\n\n    private final SpelParserConfiguration configuration;\n    public DomailExpressionParser(SpelParserConfiguration configuration) {\n        super(configuration);\n        this.configuration = configuration;\n    }\n    \n    // we cannot use this because configuration is not visible\n    //  public DomailExpressionParser() {\n    //      super();\n    //  }\n\n    @Override\n    protected SpelExpression doParseExpression(String expressionString, ParserContext context) throws ParseException {\n        return new DomailInternalExpressionParser(this.configuration).doParseExpression(expressionString, context);\n    }\n\n}\n</code></pre>\n<p>and use our version of parser as if it would be SpelExpressionParser:</p>\n<pre><code>SpelParserConfiguration engineConfig = new SpelParserConfiguration();\nExpressionParser engine = new DomailExpressionParser(engineConfig);\nExpression parsedScript = engine.parseExpression(script);\nT result = parsedScript.getValue(scriptCtx, resultType);\n</code></pre>\n<p>We can test it on simple expression &quot;false &amp;&amp; blabla&quot;:</p>\n<ul>\n<li>with SpelExpressionParser there is no error</li>\n<li>with DomailExpressionParser I get org.springframework.expression.spel.SpelEvaluationException: EL1008E: Property or field 'blabla' cannot be found on object of type 'sk.dominanz.domic.common.eml.service.EmlScriptRootObject' - maybe not public or not valid?</li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7858487,
+    "reputation" : 880,
+    "user_id" : 5939566,
+    "user_type" : "registered",
+    "accept_rate" : 80,
+    "profile_image" : "https://www.gravatar.com/avatar/0a46acdecb500b9631c314cd7fd63bc5?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "tkralik",
+    "link" : "https://stackoverflow.com/users/5939566/tkralik"
+  },
+  "is_answered" : true,
+  "view_count" : 1101,
+  "accepted_answer_id" : 49435114,
+  "answer_count" : 2,
+  "score" : 3,
+  "last_activity_date" : 1764145383,
+  "creation_date" : 1521730547,
+  "question_id" : 49431829,
+  "link" : "https://stackoverflow.com/questions/49431829/spel-disable-short-circuit-evaluation",
+  "title" : "SpEL - disable short circuit evaluation",
+  "body" : "<p>In my application, I have objects with several <code>SpEL</code> expressions that usually contains signatures of methods with <code>boolean</code> return type to invoke and logical operators. Before these objects are cached, I check the consistency of the expression by simply executing the parsed expression. When an exception is thrown, I set an appropriate flag inside the object to indicate that the expression is invalid to avoid further execution.</p>\n\n<p>I am executing the expression on an <code>EvaluationContext</code> that implements all methods that are permitted to be a part of the expression. All these methods return <code>false</code>. I have come across a problem that involves a short circuit evaluation.</p>\n\n<p>Given <code>methodOne</code> and <code>methodTwo</code> are the only permitted methods to invoke, this expression correctly sets the inconsistency flag</p>\n\n<pre><code>methodERROROne(\"arg\") AND methodTwo(\"arg\")\n</code></pre>\n\n<p>this one, however, does not because <code>methodOne</code> returns <code>false</code>, <code>Spring</code> uses short circuit evaluation and does not execute the remaining operands. This causes the expression to fail when it is executed on real <code>EvaluationContext</code> and the <code>methodOne</code> returns <code>true</code></p>\n\n<pre><code>methodOne(\"arg\") AND methodERRORTwo(\"arg\")\n</code></pre>\n\n<p>Is there a way to disable short circuit evaluation is Spring expression language?</p>\n"
+}

@@ -1,0 +1,110 @@
+{
+  "tags" : [ "java", "memory-leaks", "garbage-collection", "jvm", "wildfly-8" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1475578260,
+      "post_id" : 39849880,
+      "comment_id" : 66988577,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Note the OP is reducing how often a Full GC is triggered by the GDC, which is indirectly contributing to this behaviour. +1"
+    }, {
+      "owner" : {
+        "account_id" : 1114067,
+        "reputation" : 201056,
+        "user_id" : 1103872,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/LR4iW.jpg?s=256",
+        "display_name" : "Marko Topolnik",
+        "link" : "https://stackoverflow.com/users/1103872/marko-topolnik"
+      },
+      "reply_to_user" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1475578368,
+      "post_id" : 39849880,
+      "comment_id" : 66988647,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Well noted... but does it apply to EJB, too? They should be pooled and &quot;cleaned up&quot; after a request. I thought DGC was more of an issue with raw RMI usage."
+    }, {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1475579754,
+      "post_id" : 39849880,
+      "comment_id" : 66989567,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "gdc is for rmi but it ensures full GCs occur regularly no matter what you might be doing."
+    } ],
+    "owner" : {
+      "account_id" : 1114067,
+      "reputation" : 201056,
+      "user_id" : 1103872,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/LR4iW.jpg?s=256",
+      "display_name" : "Marko Topolnik",
+      "link" : "https://stackoverflow.com/users/1103872/marko-topolnik"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1761030345,
+    "last_edit_date" : 1761030345,
+    "creation_date" : 1475576733,
+    "answer_id" : 39849880,
+    "question_id" : 39849790,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This behavior is expected for the stop-the-world ParallelGC algorithm. Every time the GC runs, the entire application is paused. That's why ParallelGC eagerly runs GC on the Young Generation regions, but doesn't clean up the Old generation until it's completely full. Objects are tenured to the Old Generation if they've been alive through several Young Generation GC runs.</p>\n<p>What you trigger from the outside is the &quot;Major GC&quot;, running on the Old Generation, and that's why you see the drop in memory usage. This is a sign that your Young generation is being overwhelmed, not being able to hold all the objects which have a request-scoped lifecycle, and being forced to tenure them to the Old Generation, where they then soon die and keep lingering until a Major GC run.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2135465,
+    "reputation" : 319,
+    "user_id" : 1895384,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/6348ac127678999474744a9138248bb8?s=256&d=identicon&r=PG",
+    "display_name" : "Sandeep",
+    "link" : "https://stackoverflow.com/users/1895384/sandeep"
+  },
+  "is_answered" : true,
+  "view_count" : 843,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761030345,
+  "creation_date" : 1475576408,
+  "last_edit_date" : 1475578624,
+  "question_id" : 39849790,
+  "link" : "https://stackoverflow.com/questions/39849790/jboss-gc-not-freeing-up-memory",
+  "title" : "Jboss GC not freeing up memory",
+  "body" : "<p>We have an an enterprise application deployed in wildfly 8.2 with min &amp; max heap set to 1.5 GB. One of the actions is causing too much objects to be loaded into the heap. Although the object is dereferenced after the action, the jvm heap usage is not coming down.</p>\n\n<p>But, if I manually trigger GC externally(using jcmd), I am seeing a huge dip in the heap usage. Why is normal GC not reducing the memory as much as GC.run?</p>\n\n<p><strong>JVM settings</strong></p>\n\n<blockquote>\n  <p>-Xms1536m -Xmx1536m -XX:MaxMetaspaceSize=512m -XX:ReservedCodeCacheSize=128M -server -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Djsse.enableSNIExtension=false -Dsun.rmi.dgc.client.gcInterval=600000 -Dsun.rmi.dgc.server.gcInterval=600000</p>\n</blockquote>\n"
+}

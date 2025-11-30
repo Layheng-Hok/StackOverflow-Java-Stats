@@ -1,0 +1,314 @@
+{
+  "tags" : [ "java", "spring", "spring-mvc", "spring-boot" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user4768611"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1488134214,
+      "post_id" : 35856496,
+      "comment_id" : 72085490,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Note that a filter gets configured in web.xml, a  HandlerInterceptor in the application context??? can u plz explain?"
+    }, {
+      "owner" : {
+        "account_id" : 1477692,
+        "reputation" : 48419,
+        "user_id" : 1393484,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/nJ3m0.jpg?s=256",
+        "display_name" : "Ali Dehghani",
+        "link" : "https://stackoverflow.com/users/1393484/ali-dehghani"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1488136440,
+      "post_id" : 35856496,
+      "comment_id" : 72086373,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<i>Filter</i> is related to the Servlet API and <code>HandlerIntercepter</code> is a Spring specific concept. In order to register a servlet filter, you can either register it using the old <code>web.xml</code> (Servlet  2.5 and older versions) or the new programmatic approach (Servlet 3+). Since the <code>HandlerIntercepter</code> is just a Spring abstraction, you should register in the Spring&#39;s context"
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user4768611"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1488136994,
+      "post_id" : 35856496,
+      "comment_id" : 72086550,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Filter is related to the Servlet API and HandlerIntercepter is a Spring specific concept. coorect! but whatever u r registering by web.xml is part of <code>WebApplication</code> which is single per dispatcher,so servlet and filter both ate associated with context,it is a good practice to associate interceptor and filter with <code>rootContext</code> so if u hv multiple dispatcher all can share same."
+    }, {
+      "owner" : {
+        "account_id" : 1646676,
+        "reputation" : 4435,
+        "user_id" : 1518100,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://i.sstatic.net/EW5RK.jpg?s=256",
+        "display_name" : "Lei Yang",
+        "link" : "https://stackoverflow.com/users/1518100/lei-yang"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1639656165,
+      "post_id" : 35856496,
+      "comment_id" : 124407322,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "which one is better suite for requst(body, headers) logging?"
+    }, {
+      "owner" : {
+        "account_id" : 22178568,
+        "reputation" : 288,
+        "user_id" : 21505152,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6d73ce21936530ef305c610308cad5f1?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "theMyth",
+        "link" : "https://stackoverflow.com/users/21505152/themyth"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1712063546,
+      "post_id" : 35856496,
+      "comment_id" : 137972432,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Which is better for Authentication, Authorisation, CORS, security ?"
+    } ],
+    "owner" : {
+      "account_id" : 1477692,
+      "reputation" : 48419,
+      "user_id" : 1393484,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/nJ3m0.jpg?s=256",
+      "display_name" : "Ali Dehghani",
+      "link" : "https://stackoverflow.com/users/1393484/ali-dehghani"
+    },
+    "is_accepted" : true,
+    "score" : 146,
+    "last_activity_date" : 1587602338,
+    "last_edit_date" : 1587602338,
+    "creation_date" : 1457394933,
+    "answer_id" : 35856496,
+    "question_id" : 35856454,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>From <code>HandlerIntercepter</code>'s <a href=\"http://docs.spring.io/autorepo/docs/spring/current/javadoc-api/org/springframework/web/servlet/HandlerInterceptor.html\" rel=\"noreferrer\">javadoc</a>:</p>\n\n<blockquote>\n  <p><code>HandlerInterceptor</code> is basically similar to a Servlet <code>Filter</code>, but in\n  contrast to the latter it just allows custom pre-processing with the\n  option of prohibiting the execution of the handler itself, and custom\n  post-processing. Filters are more powerful, for example they allow for\n  exchanging the request and response objects that are handed down the\n  chain. Note that a filter gets configured in <code>web.xml</code>, a\n  <code>HandlerInterceptor</code> in the application context.</p>\n  \n  <p>As a basic guideline, fine-grained handler-related pre-processing tasks\n  are candidates for <code>HandlerInterceptor</code> implementations, especially\n  factored-out common handler code and authorization checks. On the\n  other hand, a <code>Filter</code> is well-suited for request content and view\n  content handling, like multipart forms and GZIP compression. This\n  typically shows when one needs to map the filter to certain content\n  types (e.g. images), or to all requests.</p>\n</blockquote>\n\n<p>With that being said:</p>\n\n<blockquote>\n  <p>So where is the difference between <code>Interceptor#postHandle()</code> and\n  <code>Filter#doFilter()</code>?</p>\n</blockquote>\n\n<p><code>postHandle</code> will be called after handler method invocation but before the view being rendered. So, you can add more model objects to the view but you can <strong>not</strong> change the <code>HttpServletResponse</code> since it's already committed.</p>\n\n<p><code>doFilter</code> is much more versatile than the <code>postHandle</code>. You can change the request or response and pass it to the chain or even block the request processing.</p>\n\n<p>Also, in <code>preHandle</code> and <code>postHandle</code> methods, you have access to the <code>HandlerMethod</code> that processed the request. So, you can add pre/post-processing logic based on the handler itself. For example, you can add a logic for handler methods that have some annotations.</p>\n\n<blockquote>\n  <p>What is the best practise in which use cases it should be used?</p>\n</blockquote>\n\n<p>As the doc said, fine-grained handler-related pre-processing tasks are candidates for <code>HandlerInterceptor</code> implementations, especially factored-out common handler code and authorization checks. On the other hand, a <code>Filter</code> is well-suited for request content and view content handling, like multipart forms and GZIP compression. This typically shows when one needs to map the filter to certain content types (e.g. images), or to all requests.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1563409,
+      "reputation" : 771,
+      "user_id" : 1452740,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/34b75cdb58d640e22adb888396ed6eb0?s=256&d=identicon&r=PG",
+      "display_name" : "Satyam",
+      "link" : "https://stackoverflow.com/users/1452740/satyam"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1620213984,
+    "last_edit_date" : 1620213984,
+    "creation_date" : 1480685677,
+    "answer_id" : 40933447,
+    "question_id" : 35856454,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A HandlerInterceptor gives you more fine-grained control than a filter because you have access to the actual target &quot;handler&quot; - this means that whatever action you perform can vary depending on what the request is actually doing (whereas the servlet filter is generically applied to all requests - only able to take into account the parameters of each request). The handler interceptor also provides 3 different methods, so that you can apply behavior prior to calling a handler after the handler has completed but prior to view rendering (where you may even bypass view rendering altogether), or after the view itself has been rendered. Also, you can set up different interceptors for different groups of handlers - the interceptors are configured on the handler mapping, and there may be multiple handler mappings.</p>\n<p>Therefore, if you have a need to do something completely generic (e.g. log all requests), then a filter is sufficient - but if the behavior depends on the target handler or you want to do something between the request handling and view rendering, then the HandlerInterceptor provides that flexibility.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1875874,
+        "reputation" : 75425,
+        "user_id" : 1697099,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/gerXo.png?s=256",
+        "display_name" : "Premraj",
+        "link" : "https://stackoverflow.com/users/1697099/premraj"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1567048021,
+      "post_id" : 53880044,
+      "comment_id" : 101848329,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "source: <a href=\"http://www.mkjava.com/tutorial/filter-vs-interceptor/\" rel=\"nofollow noreferrer\">mkjava.com/tutorial/filter-vs-interceptor</a> have to mention source"
+    }, {
+      "owner" : {
+        "account_id" : 5684655,
+        "reputation" : 81,
+        "user_id" : 4494601,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9d8d2c2c11aa6887e38c47c25fed043b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Lovin",
+        "link" : "https://stackoverflow.com/users/4494601/lovin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1593406278,
+      "post_id" : 53880044,
+      "comment_id" : 110758820,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "what about Spring security filter , it gives you spring context also."
+    }, {
+      "owner" : {
+        "account_id" : 252032,
+        "reputation" : 1701,
+        "user_id" : 529793,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://www.gravatar.com/avatar/9a07497eec85f751eab962c0031305ed?s=256&d=identicon&r=PG",
+        "display_name" : "Dexter",
+        "link" : "https://stackoverflow.com/users/529793/dexter"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1618765074,
+      "post_id" : 53880044,
+      "comment_id" : 118695704,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "updated source: <a href=\"http://www.mkjava.com/tutorial/filter-vs-interceptor.html\" rel=\"nofollow noreferrer\">mkjava.com/tutorial/filter-vs-interceptor.html</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1376679,
+        "reputation" : 13359,
+        "user_id" : 1310566,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/5qiMO.jpg?s=256",
+        "display_name" : "Simon Forsberg",
+        "link" : "https://stackoverflow.com/users/1310566/simon-forsberg"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1624374431,
+      "post_id" : 53880044,
+      "comment_id" : 120338769,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "&quot;as the name suggests&quot;... it doesn&#39;t really suggest that though, does it?"
+    }, {
+      "owner" : {
+        "account_id" : 14661536,
+        "reputation" : 154,
+        "user_id" : 10588571,
+        "user_type" : "registered",
+        "profile_image" : "https://lh4.googleusercontent.com/-wScW7Uu9evA/AAAAAAAAAAI/AAAAAAAAHQ0/LkV-ON76VeY/s256-rj/photo.jpg",
+        "display_name" : "Erick Jhorman Romero",
+        "link" : "https://stackoverflow.com/users/10588571/erick-jhorman-romero"
+      },
+      "reply_to_user" : {
+        "account_id" : 5684655,
+        "reputation" : 81,
+        "user_id" : 4494601,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9d8d2c2c11aa6887e38c47c25fed043b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Lovin",
+        "link" : "https://stackoverflow.com/users/4494601/lovin"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1691180473,
+      "post_id" : 53880044,
+      "comment_id" : 135462403,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Lovin Abosolutly yes.  Spring Filter and intecerptor can acces all this context man because IOC conatiner stars before them."
+    } ],
+    "owner" : {
+      "account_id" : 8659601,
+      "reputation" : 955,
+      "user_id" : 6482564,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/9VR0a.png?s=256",
+      "display_name" : "Manas Kumar Maharana",
+      "link" : "https://stackoverflow.com/users/6482564/manas-kumar-maharana"
+    },
+    "is_accepted" : false,
+    "score" : 44,
+    "last_activity_date" : 1629316558,
+    "last_edit_date" : 1629316558,
+    "creation_date" : 1545372995,
+    "answer_id" : 53880044,
+    "question_id" : 35856454,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Filter</strong>: - A filter as the name suggests is a Java class executed by the servlet container for each incoming HTTP request and for each HTTP response. This way is possible to manage HTTP incoming requests before they reach the resource, such as a JSP page, a servlet or a simple static page; in the same way, is possible to manage HTTP outbound response after resource execution.</p>\n<p><strong>Interceptor</strong>: - Spring Interceptors are similar to Servlet Filters but they act in Spring Context so are powerful to manage HTTP Request and Response but they can implement more sophisticated behaviour because can access all Spring context.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 14661536,
+        "reputation" : 154,
+        "user_id" : 10588571,
+        "user_type" : "registered",
+        "profile_image" : "https://lh4.googleusercontent.com/-wScW7Uu9evA/AAAAAAAAAAI/AAAAAAAAHQ0/LkV-ON76VeY/s256-rj/photo.jpg",
+        "display_name" : "Erick Jhorman Romero",
+        "link" : "https://stackoverflow.com/users/10588571/erick-jhorman-romero"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1691180162,
+      "post_id" : 71227949,
+      "comment_id" : 135462360,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Good explanation and an example or Interceptor is the usage of AOP."
+    }, {
+      "owner" : {
+        "account_id" : 10187542,
+        "reputation" : 2667,
+        "user_id" : 20692967,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/NZSXm.jpg?s=256",
+        "display_name" : "Sergey Zolotarev",
+        "link" : "https://stackoverflow.com/users/20692967/sergey-zolotarev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1695885356,
+      "post_id" : 71227949,
+      "comment_id" : 136084106,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The best answer hands down. Thanks!"
+    } ],
+    "owner" : {
+      "account_id" : 5650603,
+      "reputation" : 1148,
+      "user_id" : 4471367,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fd6a32b538a4c1d44a9857348bf4bdc7?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "MMJ",
+      "link" : "https://stackoverflow.com/users/4471367/mmj"
+    },
+    "is_accepted" : false,
+    "score" : 103,
+    "last_activity_date" : 1645561989,
+    "creation_date" : 1645561989,
+    "answer_id" : 71227949,
+    "question_id" : 35856454,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>From <a href=\"https://www.baeldung.com/spring-mvc-handlerinterceptor-vs-filter#key-differences-and-use-cases\" rel=\"noreferrer\">baeldung</a>:</p>\n<p><a href=\"https://i.sstatic.net/9iCub.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/9iCub.png\" alt=\"filters_vs_interceptors\" /></a></p>\n<p>Filters intercept requests before they reach the DispatcherServlet, making them ideal for coarse-grained tasks such as:</p>\n<pre><code>Authentication\nLogging and auditing\nImage and data compression\nAny functionality we want to be decoupled from Spring MVC\n</code></pre>\n<p>HandlerIntercepors, on the other hand, intercepts requests between the DispatcherServlet and our Controllers. This is done within the Spring MVC framework, providing access to the Handler and ModelAndView objects. This reduces duplication and allows for more fine-grained functionality such as:</p>\n<pre><code>Handling cross-cutting concerns such as application logging\nDetailed authorization checks\nManipulating the Spring context or model\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5756545,
+    "reputation" : 2380,
+    "user_id" : 4544269,
+    "user_type" : "registered",
+    "accept_rate" : 40,
+    "profile_image" : "https://www.gravatar.com/avatar/eab40f2d509af1368f32818794ab594a?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "rpieniazek",
+    "link" : "https://stackoverflow.com/users/4544269/rpieniazek"
+  },
+  "is_answered" : true,
+  "view_count" : 212000,
+  "accepted_answer_id" : 35856496,
+  "answer_count" : 4,
+  "score" : 202,
+  "last_activity_date" : 1683135703,
+  "creation_date" : 1457394716,
+  "last_edit_date" : 1457396081,
+  "question_id" : 35856454,
+  "link" : "https://stackoverflow.com/questions/35856454/difference-between-interceptor-and-filter-in-spring-mvc",
+  "title" : "Difference between Interceptor and Filter in Spring MVC",
+  "body" : "<p>I'm a little bit confused about <code>Filter</code> and <code>Interceptor</code> purposes. </p>\n\n<p>As I understood from docs, <code>Interceptor</code> is run between requests. On the other hand <code>Filter</code> is run before rendering view, but after Controller rendered response. </p>\n\n<p>So where is the difference between <code>postHandle()</code> in Interceptor and <code>doFilter()</code> in Filter? </p>\n\n<p><a href=\"https://i.sstatic.net/1SMRk.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/1SMRk.png\" alt=\"Spring MVC sheme\"></a>\nWhat is the best practise in which use cases it should be used?\nIn this picture where works <code>Filter</code>s and <code>Interceptor</code>s?</p>\n"
+}

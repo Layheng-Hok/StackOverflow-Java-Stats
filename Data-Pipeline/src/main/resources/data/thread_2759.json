@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "ant", "annotations", "javac" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 117129,
+      "reputation" : 2672,
+      "user_id" : 306864,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/f28fe02d407f3973576fbe0ada5f32aa?s=256&d=identicon&r=PG",
+      "display_name" : "Hans-Christoph Steiner",
+      "link" : "https://stackoverflow.com/users/306864/hans-christoph-steiner"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1451374814,
+    "post_id" : 21435025,
+    "comment_id" : 56754649,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "From what I can tell, the warning message means that ant is compiling some classes that were not explicitly added to a <code>&lt;javac&gt;</code> task via <code>srcdir</code>, a <code>&lt;FileSet&gt;</code> or whatever.  Those classes were probably included since explicitly included classes <code>import</code> them.  Those classes then will not have their annotations processed, e.g. <code>@Override</code>, <code>@Deprecated</code>, etc."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4430471,
+      "reputation" : 3024,
+      "user_id" : 3607748,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9afd6568a3ed27776919df5efdc0f291?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Beck Yang",
+      "link" : "https://stackoverflow.com/users/3607748/beck-yang"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1455814614,
+    "creation_date" : 1455814614,
+    "answer_id" : 35487711,
+    "question_id" : 21435025,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I create a simple build.xml</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;project name=\"test\" default=\"build\" basedir=\".\"&gt;\n    &lt;target name=\"build\"&gt;\n        &lt;javac destdir=\"bin\" srcdir=\".\" includes=\"**/*.java\"&gt;\n        &lt;/javac&gt;\n    &lt;/target&gt;\n&lt;/project&gt;\n</code></pre>\n\n<p>With a simple .java which referenced to a custom annotation. But the source code is not offered.</p>\n\n<pre><code>public class T {\n    @TestAnn\n    public void test() {\n    }\n}\n</code></pre>\n\n<p>The output of <strong>ant</strong> command is the same as your first output. I try to execute <strong>javac</strong> command to compiled it, but <code>error: cannot find symbol @TestAnn</code> is printed. I don't know why the message is different.</p>\n\n<p>Then I add annotation class and run <strong>ant</strong> command again. The build successful without warning. </p>\n\n<p>For your question, the possible reason is:</p>\n\n<ul>\n<li>java code reference to custom annotation, but annotation class is not found</li>\n<li>Base on <a href=\"http://docs.oracle.com/javase/6/docs/technotes/tools/solaris/javac.html#processing\" rel=\"nofollow\">the ANNOTATION PROCESSING seciton of javac</a>, if the annotation required processor. But their jar doesn't include service provider-configuration files. You should specify <code>-processorpath</code> or <code>-processor</code> option, so <strong>javac</strong> can find a proper processor.</li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 62355,
+    "reputation" : 12353,
+    "user_id" : 185322,
+    "user_type" : "registered",
+    "accept_rate" : 67,
+    "profile_image" : "https://i.sstatic.net/1Qgtj.png?s=256",
+    "display_name" : "martinez314",
+    "link" : "https://stackoverflow.com/users/185322/martinez314"
+  },
+  "is_answered" : false,
+  "view_count" : 9787,
+  "answer_count" : 1,
+  "score" : 10,
+  "last_activity_date" : 1763974810,
+  "creation_date" : 1391008190,
+  "last_edit_date" : 1391015250,
+  "question_id" : 21435025,
+  "link" : "https://stackoverflow.com/questions/21435025/ant-warning-implicitly-compiled-files-were-not-subject-to-annotation-processing",
+  "title" : "Ant warning: Implicitly compiled files were not subject to annotation processing",
+  "body" : "<p>I am receiving this warning when running an Ant build script (Ant 1.8.2, Java 1.6).</p>\n\n<pre><code>[javac] warning: Implicitly compiled files were not subject to annotation processing.\n[javac] Use -proc:none to disable annotation processing or -implicit to specify a policy for implicit compilation.\n[javac] 1 warning\n</code></pre>\n\n<p>Adding <code>&lt;compilerarg value=\"implicit\" /&gt;</code> produces:</p>\n\n<pre><code>[javac] error: Class names, 'implicit', are only accepted if annotation processing is explicitly requested\n[javac] 1 error\n</code></pre>\n\n<p>Adding <code>&lt;compilerarg value=\"proc:none\" /&gt;</code> produces:</p>\n\n<pre><code>[javac] javac: invalid flag: proc:none\n[javac] Usage: javac &lt;options&gt; &lt;source files&gt;\n[javac] use -help for a list of possible options\n</code></pre>\n\n<p>Can someone shed some light on what the warning means and how do I get rid of it? </p>\n"
+}

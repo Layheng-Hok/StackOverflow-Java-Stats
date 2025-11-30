@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "algorithm", "data-structures", "tree" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2168743,
+      "reputation" : 10181,
+      "user_id" : 1921273,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/LREX2.png?s=256",
+      "display_name" : "MrSmith42",
+      "link" : "https://stackoverflow.com/users/1921273/mrsmith42"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1662020742,
+    "post_id" : 73564248,
+    "comment_id" : 129910959,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Where did you get stuck debugging your failing example?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 12931984,
+      "reputation" : 8236,
+      "user_id" : 9350720,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-LOfOt7q0Shw/AAAAAAAAAAI/AAAAAAAAB0U/toAqwJ3H9j4/s256-rj/photo.jpg",
+      "display_name" : "Abhinav Mathur",
+      "link" : "https://stackoverflow.com/users/9350720/abhinav-mathur"
+    },
+    "is_accepted" : true,
+    "score" : 4,
+    "last_activity_date" : 1662091855,
+    "last_edit_date" : 1662091855,
+    "creation_date" : 1662007816,
+    "answer_id" : 73564410,
+    "question_id" : 73564248,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Your queue contains <code>[1,2,3,4]</code> at the time of dequeuing.</p>\n<pre class=\"lang-java prettyprint-override\"><code>        while(!q.isEmpty()){\n            current.right = q.remove();\n            current.left = null;\n            current = current.right;\n        }\n</code></pre>\n<p>The block never processes <code>4</code> as current, since <code>3</code> is the last node with a right child. As such, you're never resetting <code>4's</code> children to <code>null</code>, and the right child still points to <code>3</code> from the original tree.</p>\n<p>This simple check would reset the children for the last node:</p>\n<pre class=\"lang-java prettyprint-override\"><code>        while(!q.isEmpty()){\n            current.right = q.remove();\n            current.left = null;\n            current = current.right;\n        }\n        current.right = null;\n        current.left = null;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 20043619,
+    "reputation" : 351,
+    "user_id" : 14693830,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/a496add0a098cc67d450a1651687e6a8?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Jeff",
+    "link" : "https://stackoverflow.com/users/14693830/jeff"
+  },
+  "is_answered" : true,
+  "view_count" : 159,
+  "accepted_answer_id" : 73564410,
+  "answer_count" : 1,
+  "score" : -1,
+  "last_activity_date" : 1759904743,
+  "creation_date" : 1662005748,
+  "last_edit_date" : 1662062299,
+  "question_id" : 73564248,
+  "link" : "https://stackoverflow.com/questions/73564248/leetcode-897-final-test-case-not-working-for-increasing-order-search-tree",
+  "title" : "Leetcode #897: final test case not working for Increasing Order Search Tree",
+  "body" : "<p>I have written a solution for Leetcode question number 897: Increasing Order Search Tree but the final test case gave a an error which said that it found a cycle in TreeNode. I hand traced the algorithm for that test case and looks fine in my eyes. Need help figuring out what it meant by &quot;found cycle in TreeNode&quot;.</p>\n<p>Question Description:</p>\n<p>Given the root of a binary search tree, rearrange the tree in in-order so that the leftmost node in the tree is now the root of the tree, and every node has no left child and only one right child.</p>\n<p>My solution passed for this test case:\nInput: [5,3,6,2,4,null,8,1,null,null,null,7,9]\nOutput/Expected: [1,null,2,null,3,null,4,null,5,null,6,null,7,null,8,null,9]</p>\n<p>This is the test case which it didn't work for:\nInput: [2,1,4,null,null,3]\nOutput: Error - Found cycle in the TreeNode</p>\n<p>Expected Output: [1,null,2,null,3,null,4]</p>\n<p>P.S. - i know this might not be the best/optimal solution but it's the one i came up with so I need to figure out why it doesn't work for a single test case.</p>\n<pre><code>/**\n * Definition for a binary tree node.\n * public class TreeNode {\n *     int val;\n *     TreeNode left;\n *     TreeNode right;\n *     TreeNode() {}\n *     TreeNode(int val) { this.val = val; }\n *     TreeNode(int val, TreeNode left, TreeNode right) {\n *         this.val = val;\n *         this.left = left;\n *         this.right = right;\n *     }\n * }\n */\nclass Solution {\n    public TreeNode increasingBST(TreeNode root) {\n        TreeNode current = root;\n        TreeNode newRoot = null;\n        Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();\n        Stack&lt;TreeNode&gt; stack = new Stack&lt;&gt;();\n        \n\n        \n        while(true){\n            if(current != null){\n                stack.push(current);\n                current = current.left;\n            }\n            \n            if(stack.isEmpty()){\n                break;\n            }\n            \n            if(current == null){\n                current = stack.pop();\n                q.add(current);\n                \n                current = current.right;\n            }\n        }\n        \n        newRoot = q.remove();\n        current = newRoot;\n        while(!q.isEmpty()){\n            current.right = q.remove();\n            current.left = null;\n            current = current.right;\n        }\n        \n        return newRoot;\n        \n        \n    }\n}\n</code></pre>\n"
+}

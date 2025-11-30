@@ -1,0 +1,1060 @@
+{
+  "tags" : [ "java", "threadpool", "runnable", "executorservice", "managedthreadfactory" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 279975,
+      "reputation" : 15437,
+      "user_id" : 575421,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/95093ef6858597d0455f6821ba4ae1a0?s=256&d=identicon&r=PG",
+      "display_name" : "Mikita Belahlazau",
+      "link" : "https://stackoverflow.com/users/575421/mikita-belahlazau"
+    },
+    "is_accepted" : false,
+    "score" : 127,
+    "last_activity_date" : 1638325172,
+    "last_edit_date" : 1638325172,
+    "creation_date" : 1306255087,
+    "answer_id" : 6113794,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can try to provide your own thread factory, which will create thread with appropriate names.  Here's one example:</p>\n<pre><code>class YourThreadFactory implements ThreadFactory {\n   public Thread newThread(Runnable r) {\n     return new Thread(r, &quot;Your name&quot;);\n   }\n }\n\nExecutors.newSingleThreadExecutor(new YourThreadFactory()).submit(someRunnable);\n</code></pre>\n<p>Or in Kotlin</p>\n<pre><code>Executors.newSingleThreadExecutor { r -&gt; Thread(r, &quot;Your name&quot;) }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 152622,
+      "reputation" : 503079,
+      "user_id" : 367273,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://www.gravatar.com/avatar/f1ed2b0c87f602ef30229f5c4b04eff6?s=256&d=identicon&r=PG",
+      "display_name" : "NPE",
+      "link" : "https://stackoverflow.com/users/367273/npe"
+    },
+    "is_accepted" : true,
+    "score" : 142,
+    "last_activity_date" : 1472809036,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1306255114,
+    "answer_id" : 6113801,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You could supply a <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadFactory.html\" rel=\"noreferrer\"><code>ThreadFactory</code></a> to <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newSingleThreadScheduledExecutor%28java.util.concurrent.ThreadFactory%29\" rel=\"noreferrer\"><code>newSingleThreadScheduledExecutor(ThreadFactory threadFactory)</code></a>. The factory will be responsibe for creating threads, and will be able to name them.</p>\n<p>To quote the <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html\" rel=\"noreferrer\">Javadoc</a>:</p>\n<blockquote>\n<p>Creating new threads</p>\n<p>New threads are created using a <code>ThreadFactory</code>. If not otherwise specified, a <code>Executors.defaultThreadFactory()</code> is used, that creates threads to all be in the same <code>ThreadGroup</code> and with the same <code>NORM_PRIORITY</code> priority and non-daemon status. By supplying a different <code>ThreadFactory</code>, you can alter the thread's name, thread group, priority, daemon status, etc. If a <code>ThreadFactory</code> fails to create a thread when asked by returning null from <code>newThread</code>, the executor will continue, but might not be able to execute any tasks</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 38846,
+      "reputation" : 30193,
+      "user_id" : 111777,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/730df0227780e818df8ce1e19c9a6c48?s=256&d=identicon&r=PG",
+      "display_name" : "Edward Dale",
+      "link" : "https://stackoverflow.com/users/111777/edward-dale"
+    },
+    "is_accepted" : false,
+    "score" : 63,
+    "last_activity_date" : 1399634947,
+    "last_edit_date" : 1399634947,
+    "creation_date" : 1306334753,
+    "answer_id" : 6126320,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The <a href=\"http://commons.apache.org/proper/commons-lang/javadocs/api-3.1/org/apache/commons/lang3/concurrent/BasicThreadFactory.html\" rel=\"noreferrer\"><code>BasicThreadFactory</code></a> from apache commons-lang is also useful to provide the naming behavior. Instead of writing an anonymous inner class, you can use the Builder to name the threads as you want. Here's the example from the javadocs:</p>\n\n<pre><code> // Create a factory that produces daemon threads with a naming pattern and\n // a priority\n BasicThreadFactory factory = new BasicThreadFactory.Builder()\n     .namingPattern(\"workerthread-%d\")\n     .daemon(true)\n     .priority(Thread.MAX_PRIORITY)\n     .build();\n // Create an executor service for single-threaded execution\n ExecutorService exec = Executors.newSingleThreadExecutor(factory);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 149396,
+        "reputation" : 12433,
+        "user_id" : 361855,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/68079962b0216cb8cf689ffe636555a8?s=256&d=identicon&r=PG",
+        "display_name" : "Jason",
+        "link" : "https://stackoverflow.com/users/361855/jason"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1588262166,
+      "post_id" : 9748697,
+      "comment_id" : 108837439,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;m not sure where to find &quot;guava&quot;. There are a lot of parts to Google&#39;s Guava and there are dozens of libraries with the same name. I assume you mean <a href=\"https://search.maven.org/artifact/com.google.guava/guava/29.0-jre/bundle\" rel=\"nofollow noreferrer\">search.maven.org/artifact/com.google.guava/guava/29.0-jre/&hellip;</a>. Is that right? The link you provide suggests it is from Google, but Google also has about half a dozen artifacts on Maven/Sonatype named &quot;guava&quot;."
+    }, {
+      "owner" : {
+        "account_id" : 216107,
+        "reputation" : 33707,
+        "user_id" : 471136,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://www.gravatar.com/avatar/70505981ff01b23b2d6da7ccb3c67785?s=256&d=identicon&r=PG",
+        "display_name" : "pathikrit",
+        "link" : "https://stackoverflow.com/users/471136/pathikrit"
+      },
+      "reply_to_user" : {
+        "account_id" : 149396,
+        "reputation" : 12433,
+        "user_id" : 361855,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/68079962b0216cb8cf689ffe636555a8?s=256&d=identicon&r=PG",
+        "display_name" : "Jason",
+        "link" : "https://stackoverflow.com/users/361855/jason"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1588341982,
+      "post_id" : 9748697,
+      "comment_id" : 108865423,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Jason - If you are writing a non trivial Java project, you most likely should already have guava as a dependency. And here it is: <a href=\"https://github.com/google/guava\" rel=\"nofollow noreferrer\">github.com/google/guava</a>"
+    }, {
+      "owner" : {
+        "account_id" : 149396,
+        "reputation" : 12433,
+        "user_id" : 361855,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/68079962b0216cb8cf689ffe636555a8?s=256&d=identicon&r=PG",
+        "display_name" : "Jason",
+        "link" : "https://stackoverflow.com/users/361855/jason"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1588611812,
+      "post_id" : 9748697,
+      "comment_id" : 108959534,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@pathikrit, thanks! I think I need to study up on Guava more :-)"
+    }, {
+      "owner" : {
+        "account_id" : 6365729,
+        "reputation" : 191,
+        "user_id" : 5007892,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/9phAM.png?s=256",
+        "display_name" : "Matt Y",
+        "link" : "https://stackoverflow.com/users/5007892/matt-y"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1612346845,
+      "post_id" : 9748697,
+      "comment_id" : 116735808,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you aren&#39;t using Guava, Apache Commons Lang also has BasicThreadFactory which is very similar."
+    } ],
+    "owner" : {
+      "account_id" : 216107,
+      "reputation" : 33707,
+      "user_id" : 471136,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/70505981ff01b23b2d6da7ccb3c67785?s=256&d=identicon&r=PG",
+      "display_name" : "pathikrit",
+      "link" : "https://stackoverflow.com/users/471136/pathikrit"
+    },
+    "is_accepted" : false,
+    "score" : 346,
+    "last_activity_date" : 1516555767,
+    "last_edit_date" : 1516555767,
+    "creation_date" : 1331975192,
+    "answer_id" : 9748697,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Guava almost always has what you <a href=\"https://google.github.io/guava/releases/snapshot/api/docs/com/google/common/util/concurrent/ThreadFactoryBuilder.html#setNameFormat%28java.lang.String%29\" rel=\"noreferrer\">need</a>. </p>\n\n<pre><code>ThreadFactory namedThreadFactory = \n  new ThreadFactoryBuilder().setNameFormat(\"my-sad-thread-%d\").build()\n</code></pre>\n\n<p>and pass it off to your <code>ExecutorService</code>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 771130,
+        "reputation" : 3974,
+        "user_id" : 1360592,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/c3y7W.jpg?s=256",
+        "display_name" : "Robin Zimmermann",
+        "link" : "https://stackoverflow.com/users/1360592/robin-zimmermann"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1388700534,
+      "post_id" : 19703483,
+      "comment_id" : 31357322,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This worked nicely because as FlorianT described, I have many different types of threads and didn&#39;t want to have to create multiple ThreadFactory objects just for the name.  I called Thread.currentThread().setName(&quot;FooName&quot;); as the first line in each run() method."
+    }, {
+      "owner" : {
+        "account_id" : 464237,
+        "reputation" : 2127,
+        "user_id" : 867620,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/85a3d947035a6a73b823b6fee2ccb933?s=256&d=identicon&r=PG",
+        "display_name" : "sethro",
+        "link" : "https://stackoverflow.com/users/867620/sethro"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1392751164,
+      "post_id" : 19703483,
+      "comment_id" : 33099187,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "One minor issue with this is when the failure behavior described in the docs occurs: <code>(Note however that if this single thread terminates due to a failure during execution prior to shutdown, a new one will take its place if needed to execute subsequent tasks.)</code>. If the ExecutorService replaces the thread, it will be named by the ThreadFactory. Then again, seeing the name disappear while debugging could be a useful indicator."
+    }, {
+      "owner" : {
+        "account_id" : 367164,
+        "reputation" : 3950,
+        "user_id" : 713168,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/4ZZ4i.jpg?s=256",
+        "display_name" : "Tano",
+        "link" : "https://stackoverflow.com/users/713168/tano"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1434960443,
+      "post_id" : 19703483,
+      "comment_id" : 49980747,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "As the other answer says, this is a quick and dirty method to set the name, and if you do so with multiple threads, all will be have the same name!!"
+    }, {
+      "owner" : {
+        "account_id" : 15242745,
+        "reputation" : 169,
+        "user_id" : 10998484,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-XrGAvblpr8U/AAAAAAAAAAI/AAAAAAAAAAs/IbQPEmasRSM/s256-rj/photo.jpg",
+        "display_name" : "Dustin K",
+        "link" : "https://stackoverflow.com/users/10998484/dustin-k"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1587178362,
+      "post_id" : 19703483,
+      "comment_id" : 108414544,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Might want to set the thread name back to original upon exit, because it may retain the name even if it is working on different unrelated tasks."
+    } ],
+    "owner" : {
+      "account_id" : 3514088,
+      "reputation" : 1267,
+      "user_id" : 2937955,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/6cd8fc6abd422ab7322c3fc893da3460?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "FlorianT",
+      "link" : "https://stackoverflow.com/users/2937955/floriant"
+    },
+    "is_accepted" : false,
+    "score" : 79,
+    "last_activity_date" : 1383213957,
+    "creation_date" : 1383213957,
+    "answer_id" : 19703483,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can also change the name of your thread afterwards, while the thread is executed:</p>\n\n<pre><code>Thread.currentThread().setName(\"FooName\");\n</code></pre>\n\n<p>That could be of interest if for instance you're using the same ThreadFactory for different type of tasks.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1761760,
+      "reputation" : 805,
+      "user_id" : 1608682,
+      "user_type" : "registered",
+      "accept_rate" : 20,
+      "profile_image" : "https://i.sstatic.net/SsxQc.jpg?s=256",
+      "display_name" : "I.Tyger",
+      "link" : "https://stackoverflow.com/users/1608682/i-tyger"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1389204999,
+    "creation_date" : 1389204999,
+    "answer_id" : 21003469,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>private class TaskThreadFactory implements ThreadFactory\n{\n\n    @Override\n    public Thread newThread(Runnable r) {\n        Thread t = new Thread(r, \"TASK_EXECUTION_THREAD\");\n\n        return t;\n    }\n\n}\n</code></pre>\n\n<p>Pass the ThreadFactory to an executorservice and you are good to go </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15387,
+        "reputation" : 67718,
+        "user_id" : 32453,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/bec38d63650c8912b6ba9b557fb953b9?s=256&d=identicon&r=PG",
+        "display_name" : "rogerdpack",
+        "link" : "https://stackoverflow.com/users/32453/rogerdpack"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1596044513,
+      "post_id" : 24819775,
+      "comment_id" : 111686556,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Duplicate of FlorianT&#39;s answer?"
+    } ],
+    "owner" : {
+      "account_id" : 425164,
+      "reputation" : 759,
+      "user_id" : 805608,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e2a731f26286c9c830be24e666730a5c?s=256&d=identicon&r=PG",
+      "display_name" : "Kirk",
+      "link" : "https://stackoverflow.com/users/805608/kirk"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1430321130,
+    "last_edit_date" : 1430321130,
+    "creation_date" : 1405669569,
+    "answer_id" : 24819775,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A quick and dirty way is to use <code>Thread.currentThread().setName(myName);</code> in the <code>run()</code> method.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2005139,
+        "reputation" : 679,
+        "user_id" : 1795240,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/973f06d22d385cf0cf2f69a3776e9aaf?s=256&d=identicon&r=PG",
+        "display_name" : "k.liakos",
+        "link" : "https://stackoverflow.com/users/1795240/k-liakos"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1550733229,
+      "post_id" : 30279532,
+      "comment_id" : 96379241,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You have missed a closing parenthesis in your last snippet"
+    }, {
+      "owner" : {
+        "account_id" : 2192195,
+        "reputation" : 23810,
+        "user_id" : 1938889,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://i.sstatic.net/C09Cy.jpg?s=256",
+        "display_name" : "Drakes",
+        "link" : "https://stackoverflow.com/users/1938889/drakes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1576368415,
+      "post_id" : 30279532,
+      "comment_id" : 104878002,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Just a quick note that SonarLint/Qube prefers to not use <code>ThreadGroup</code> in favor of <code>ThreadPoolExecutor</code>."
+    }, {
+      "owner" : {
+        "account_id" : 12616725,
+        "reputation" : 1467,
+        "user_id" : 9614332,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c1c817935badcae1d079ec47f5faa5d6?s=256&d=identicon&r=PG",
+        "display_name" : "Stefano Bossi",
+        "link" : "https://stackoverflow.com/users/9614332/stefano-bossi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1609778271,
+      "post_id" : 30279532,
+      "comment_id" : 115922297,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Exactly, SonarLint compliant with the code but if you change the class it doesn&#39;t compile anymore."
+    }, {
+      "owner" : {
+        "account_id" : 15387,
+        "reputation" : 67718,
+        "user_id" : 32453,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/bec38d63650c8912b6ba9b557fb953b9?s=256&d=identicon&r=PG",
+        "display_name" : "rogerdpack",
+        "link" : "https://stackoverflow.com/users/32453/rogerdpack"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1610560335,
+      "post_id" : 30279532,
+      "comment_id" : 116175332,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Very nice, it retains the pool number/thread number :)"
+    } ],
+    "owner" : {
+      "account_id" : 1629745,
+      "reputation" : 19491,
+      "user_id" : 1504556,
+      "user_type" : "registered",
+      "accept_rate" : 63,
+      "profile_image" : "https://www.gravatar.com/avatar/fdeaf6c510d511137faafdf8c790c21a?s=256&d=identicon&r=PG",
+      "display_name" : "peterh",
+      "link" : "https://stackoverflow.com/users/1504556/peterh"
+    },
+    "is_accepted" : false,
+    "score" : 30,
+    "last_activity_date" : 1551385364,
+    "last_edit_date" : 1551385364,
+    "creation_date" : 1431802336,
+    "answer_id" : 30279532,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There's an <a href=\"https://bugs.openjdk.java.net/browse/JDK-8016248\" rel=\"noreferrer\">open RFE</a> for this with Oracle. From the comments from the Oracle employee it seems they don't understand the issue and won't fix. It's one of these things that is dead simple to support in the JDK (without breaking backwards compatibility) so it is kind of a shame that the RFE gets misunderstood.</p>\n\n<p>As pointed out you need to implement your own <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadFactory.html\" rel=\"noreferrer\">ThreadFactory</a>. If you don't want to pull in Guava or Apache Commons just for this purpose I provide here a <code>ThreadFactory</code> implementation that you can use. It is exactly similar to what you get from the JDK except for the ability to set the thread name prefix to something else than \"pool\".</p>\n\n<pre><code>package org.demo.concurrency;\n\nimport java.util.concurrent.ThreadFactory;\nimport java.util.concurrent.atomic.AtomicInteger;\n\n/**\n * ThreadFactory with the ability to set the thread name prefix. \n * This class is exactly similar to \n * {@link java.util.concurrent.Executors#defaultThreadFactory()}\n * from JDK8, except for the thread naming feature.\n *\n * &lt;p&gt;\n * The factory creates threads that have names on the form\n * &lt;i&gt;prefix-N-thread-M&lt;/i&gt;, where &lt;i&gt;prefix&lt;/i&gt;\n * is a string provided in the constructor, &lt;i&gt;N&lt;/i&gt; is the sequence number of\n * this factory, and &lt;i&gt;M&lt;/i&gt; is the sequence number of the thread created \n * by this factory.\n */\npublic class ThreadFactoryWithNamePrefix implements ThreadFactory {\n\n    // Note:  The source code for this class was based entirely on \n    // Executors.DefaultThreadFactory class from the JDK8 source.\n    // The only change made is the ability to configure the thread\n    // name prefix.\n\n\n    private static final AtomicInteger poolNumber = new AtomicInteger(1);\n    private final ThreadGroup group;\n    private final AtomicInteger threadNumber = new AtomicInteger(1);\n    private final String namePrefix;\n\n    /**\n     * Creates a new ThreadFactory where threads are created with a name prefix\n     * of &lt;code&gt;prefix&lt;/code&gt;.\n     *\n     * @param prefix Thread name prefix. Never use a value of \"pool\" as in that\n     *      case you might as well have used\n     *      {@link java.util.concurrent.Executors#defaultThreadFactory()}.\n     */\n    public ThreadFactoryWithNamePrefix(String prefix) {\n        SecurityManager s = System.getSecurityManager();\n        group = (s != null) ? s.getThreadGroup()\n                : Thread.currentThread().getThreadGroup();\n        namePrefix = prefix + \"-\"\n                + poolNumber.getAndIncrement()\n                + \"-thread-\";\n    }\n\n\n    @Override\n    public Thread newThread(Runnable r) {\n        Thread t = new Thread(group, r,\n                namePrefix + threadNumber.getAndIncrement(),\n                0);\n        if (t.isDaemon()) {\n            t.setDaemon(false);\n        }\n        if (t.getPriority() != Thread.NORM_PRIORITY) {\n            t.setPriority(Thread.NORM_PRIORITY);\n        }\n        return t;\n    }\n}\n</code></pre>\n\n<p>When you want to use it you simply take advantage of the fact that all <code>Executors</code> methods allow you to provide your own <code>ThreadFactory</code>. </p>\n\n<p>This</p>\n\n<pre><code>    Executors.newSingleThreadExecutor();\n</code></pre>\n\n<p>will give an ExecutorService where threads are named <code>pool-N-thread-M</code> but by using </p>\n\n<pre><code>    Executors.newSingleThreadExecutor(new ThreadFactoryWithNamePrefix(\"primecalc\"));\n</code></pre>\n\n<p>you'll get an ExecutorService where threads are named <code>primecalc-N-thread-M</code>. Voila!</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 281715,
+        "reputation" : 4174,
+        "user_id" : 578178,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://i.sstatic.net/zW7of.jpg?s=256",
+        "display_name" : "Kamran Shahid",
+        "link" : "https://stackoverflow.com/users/578178/kamran-shahid"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1579768790,
+      "post_id" : 34650181,
+      "comment_id" : 105879091,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "can&#39;t find CustomizableThreadFactory? i am using jdk 1.7. any idea what am i missing here?"
+    }, {
+      "owner" : {
+        "account_id" : 213379,
+        "reputation" : 9985,
+        "user_id" : 466738,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/cd7d5ad7f0cd49262fcb6136f8db7760?s=256&d=identicon&r=PG",
+        "display_name" : "Adam Michalik",
+        "link" : "https://stackoverflow.com/users/466738/adam-michalik"
+      },
+      "reply_to_user" : {
+        "account_id" : 281715,
+        "reputation" : 4174,
+        "user_id" : 578178,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://i.sstatic.net/zW7of.jpg?s=256",
+        "display_name" : "Kamran Shahid",
+        "link" : "https://stackoverflow.com/users/578178/kamran-shahid"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1579771582,
+      "post_id" : 34650181,
+      "comment_id" : 105880454,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@KamranShahid this is a Spring Framework class, you must use Spring to have it"
+    } ],
+    "owner" : {
+      "account_id" : 213379,
+      "reputation" : 9985,
+      "user_id" : 466738,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://www.gravatar.com/avatar/cd7d5ad7f0cd49262fcb6136f8db7760?s=256&d=identicon&r=PG",
+      "display_name" : "Adam Michalik",
+      "link" : "https://stackoverflow.com/users/466738/adam-michalik"
+    },
+    "is_accepted" : false,
+    "score" : 56,
+    "last_activity_date" : 1574237426,
+    "last_edit_date" : 1574237426,
+    "creation_date" : 1452154439,
+    "answer_id" : 34650181,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you are using Spring, there is <a href=\"https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/concurrent/CustomizableThreadFactory.html\" rel=\"noreferrer\"><code>CustomizableThreadFactory</code></a> for which you can set a thread name prefix.</p>\n\n<p>Example:</p>\n\n<pre><code>ExecutorService alphaExecutor =\n    Executors.newFixedThreadPool(10, new CustomizableThreadFactory(\"alpha-\"));\n</code></pre>\n\n<p>Alternatively, you can create your <code>ExecutorService</code> as a Spring bean using <a href=\"https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/concurrent/ThreadPoolExecutorFactoryBean.html\" rel=\"noreferrer\"><code>ThreadPoolExecutorFactoryBean</code></a> - then the threads will all be named with the <code>beanName-</code> prefix.</p>\n\n<pre><code>@Bean\npublic ThreadPoolExecutorFactoryBean myExecutor() {\n    ThreadPoolExecutorFactoryBean executorFactoryBean = new ThreadPoolExecutorFactoryBean();\n    // configuration of your choice\n    return executorFactoryBean;\n}\n</code></pre>\n\n<p>In the example above, the threads will be named with <code>myExecutor-</code> prefix. You can set the prefix explicitly to a different value (eg. <code>\"myPool-\"</code>) by setting <code>executorFactoryBean.setThreadNamePrefix(\"myPool-\")</code> on the factory bean.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 350117,
+        "reputation" : 9573,
+        "user_id" : 685806,
+        "user_type" : "registered",
+        "accept_rate" : 44,
+        "profile_image" : "https://i.sstatic.net/ZKxUb.jpg?s=256",
+        "display_name" : "Pino",
+        "link" : "https://stackoverflow.com/users/685806/pino"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1478173532,
+      "post_id" : 35228382,
+      "comment_id" : 68051144,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You thread counter is not thread-safe: you should use an AtomicInteger."
+    }, {
+      "owner" : {
+        "account_id" : 6453072,
+        "reputation" : 39149,
+        "user_id" : 4999394,
+        "user_type" : "registered",
+        "accept_rate" : 98,
+        "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+        "display_name" : "Ravindra babu",
+        "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+      },
+      "reply_to_user" : {
+        "account_id" : 350117,
+        "reputation" : 9573,
+        "user_id" : 685806,
+        "user_type" : "registered",
+        "accept_rate" : 44,
+        "profile_image" : "https://i.sstatic.net/ZKxUb.jpg?s=256",
+        "display_name" : "Pino",
+        "link" : "https://stackoverflow.com/users/685806/pino"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1478174696,
+      "post_id" : 35228382,
+      "comment_id" : 68051924,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks for suggestion. I have incorporated your suggestion."
+    } ],
+    "owner" : {
+      "account_id" : 6453072,
+      "reputation" : 39149,
+      "user_id" : 4999394,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+      "display_name" : "Ravindra babu",
+      "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1478174676,
+    "last_edit_date" : 1478174676,
+    "creation_date" : 1454687956,
+    "answer_id" : 35228382,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Extend  <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadFactory.html\" rel=\"noreferrer\">ThreadFactory</a></p>\n\n<p><strong><em><code>public interface ThreadFactory</code></em></strong></p>\n\n<blockquote>\n  <p>An object that creates new threads on demand. Using thread factories removes hardwiring of calls to new Thread, enabling applications to use special thread subclasses, priorities, etc.</p>\n</blockquote>\n\n<p><strong><em><code>Thread newThread(Runnable r)</code></em></strong></p>\n\n<blockquote>\n  <p>Constructs a new Thread. Implementations may also initialize priority, name, daemon status, ThreadGroup, etc.</p>\n</blockquote>\n\n<p>Sample code:</p>\n\n<pre><code>import java.util.concurrent.*;\nimport java.util.concurrent.atomic.*;\n\nimport java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;\n\nclass SimpleThreadFactory implements ThreadFactory {\n   String name;\n   AtomicInteger threadNo = new AtomicInteger(0);\n\n   public SimpleThreadFactory (String name){\n       this.name = name;\n   }\n   public Thread newThread(Runnable r) {\n     String threadName = name+\":\"+threadNo.incrementAndGet();\n     System.out.println(\"threadName:\"+threadName);\n     return new Thread(r,threadName );\n   }\n   public static void main(String args[]){\n        SimpleThreadFactory factory = new SimpleThreadFactory(\"Factory Thread\");\n        ThreadPoolExecutor executor= new ThreadPoolExecutor(1,1,60,\n                    TimeUnit.SECONDS,new ArrayBlockingQueue&lt;Runnable&gt;(1),new ThreadPoolExecutor.DiscardPolicy());\n\n\n        final ExecutorService executorService = Executors.newFixedThreadPool(5,factory);\n\n        for ( int i=0; i &lt; 100; i++){\n            executorService.submit(new Runnable(){\n                 public void run(){\n                    System.out.println(\"Thread Name in Runnable:\"+Thread.currentThread().getName());\n                 }\n            });\n        }\n        executorService.shutdown();\n    }\n }\n</code></pre>\n\n<p>output:</p>\n\n<pre><code>java SimpleThreadFactory\n\nthread no:1\nthread no:2\nThread Name in Runnable:Factory Thread:1\nThread Name in Runnable:Factory Thread:2\nthread no:3\nthread no:4\nThread Name in Runnable:Factory Thread:3\nThread Name in Runnable:Factory Thread:4\nthread no:5\nThread Name in Runnable:Factory Thread:5\n</code></pre>\n\n<p>....etc  </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7995373,
+      "reputation" : 61,
+      "user_id" : 7246584,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1b49f8ed374375b68b3de18c01f283f8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "mbto",
+      "link" : "https://stackoverflow.com/users/7246584/mbto"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1480807522,
+    "creation_date" : 1480807522,
+    "answer_id" : 40953656,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>Executors.newSingleThreadExecutor(r -&gt; new Thread(r, \"someName\")).submit(getJob());\n\nRunnable getJob() {\n        return () -&gt; {\n            // your job\n        };\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7935600,
+      "reputation" : 1666,
+      "user_id" : 5991749,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d340b4e9eecda8e774f54344a47aa177?s=256&d=identicon&r=PG",
+      "display_name" : "K. Gol",
+      "link" : "https://stackoverflow.com/users/5991749/k-gol"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1486376741,
+    "creation_date" : 1486376741,
+    "answer_id" : 42065427,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can write your own implementation of ThreadFactory, using for example some existing implementation (like defaultThreadFactory) and change the name at the end.</p>\n\n<p>Example of implementing ThreadFactory: </p>\n\n<pre><code>class ThreadFactoryWithCustomName implements ThreadFactory {\n    private final ThreadFactory threadFactory;\n    private final String name;\n\n    public ThreadFactoryWithCustomName(final ThreadFactory threadFactory, final String name) {\n        this.threadFactory = threadFactory;\n        this.name = name;\n    }\n\n    @Override\n    public Thread newThread(final Runnable r) {\n        final Thread thread = threadFactory.newThread(r);\n        thread.setName(name);\n        return thread;\n    }\n}\n</code></pre>\n\n<p>And usage:</p>\n\n<pre><code>Executors.newSingleThreadExecutor(new ThreadFactoryWithCustomName(\n        Executors.defaultThreadFactory(),\n        \"customName\")\n    );\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user5644457"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1516773825,
+      "post_id" : 45879561,
+      "comment_id" : 83821125,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This worked really well for me, somewhat surprised it wasnt upvoted much. Either way cheers."
+    } ],
+    "owner" : {
+      "account_id" : 62450,
+      "reputation" : 10442,
+      "user_id" : 185565,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://www.gravatar.com/avatar/e47ed0b05ec5411f11fc1b19908717a7?s=256&d=identicon&r=PG",
+      "display_name" : "Whome",
+      "link" : "https://stackoverflow.com/users/185565/whome"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1503668051,
+    "last_edit_date" : 1503668051,
+    "creation_date" : 1503657566,
+    "answer_id" : 45879561,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This is my customized factory providing a customized names for thread dump analyzers. Usually I just give <code>tf=null</code> to reuse JVM default thread factory. <a href=\"http://wilddiary.com/understanding_custom_threadfactory_in_java/\" rel=\"nofollow noreferrer\">This website has more advanced thread factory.</a></p>\n\n<pre><code>public class SimpleThreadFactory implements ThreadFactory {\n    private ThreadFactory tf;\n    private String nameSuffix;\n\n    public SimpleThreadFactory (ThreadFactory tf, String nameSuffix) {\n        this.tf = tf!=null ? tf : Executors.defaultThreadFactory();\n        this.nameSuffix = nameSuffix; \n    }\n\n    @Override public Thread newThread(Runnable task) {\n        // default \"pool-1-thread-1\" to \"pool-1-thread-1-myapp-MagicTask\"\n        Thread thread=tf.newThread(task);\n        thread.setName(thread.getName()+\"-\"+nameSuffix);\n        return thread;\n    }\n}\n\n- - - - - \n\nExecutorService es = Executors.newFixedThreadPool(4, new SimpleThreadFactory(null, \"myapp-MagicTask\") );\n</code></pre>\n\n<p>For your convenience this is a thread dump loop for debug purpose.</p>\n\n<pre><code>    ThreadMXBean mxBean=ManagementFactory.getThreadMXBean();\n    long[] tids = mxBean.getAllThreadIds();\n    System.out.println(\"------------\");\n    System.out.println(\"ThreadCount=\"+tids.length);\n    for(long tid : tids) {\n        ThreadInfo mxInfo=mxBean.getThreadInfo(tid);\n        if (mxInfo==null) {\n            System.out.printf(\"%d %s\\n\", tid, \"Thread not found\");\n        } else {\n            System.out.printf(\"%d %s, state=%s, suspended=%d, lockowner=%d %s\\n\"\n                    , mxInfo.getThreadId(), mxInfo.getThreadName()\n                    , mxInfo.getThreadState().toString()\n                    , mxInfo.isSuspended()?1:0\n                    , mxInfo.getLockOwnerId(), mxInfo.getLockOwnerName()\n            );\n        }\n    }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 31954,
+        "reputation" : 32382,
+        "user_id" : 88111,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/6a285784d6695c4d2a503c7003f4af0f?s=256&d=identicon&r=PG",
+        "display_name" : "Craig Otis",
+        "link" : "https://stackoverflow.com/users/88111/craig-otis"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1539168364,
+      "post_id" : 51723696,
+      "comment_id" : 92401392,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Worth noting that <code>ThreadFactoryBuilder</code> is from the Google Guava library."
+    } ],
+    "owner" : {
+      "account_id" : 1150064,
+      "reputation" : 816,
+      "user_id" : 1131967,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f3ab6e3cf5c11b3a38f66faac774ab89?s=256&d=identicon&r=PG",
+      "display_name" : "bittu",
+      "link" : "https://stackoverflow.com/users/1131967/bittu"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1542012667,
+    "last_edit_date" : 1542012667,
+    "creation_date" : 1533635140,
+    "answer_id" : 51723696,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I use to do same like below (requires <code>guava</code> library) :</p>\n\n<pre><code>ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat(\"SO-POOL-%d\").build();\nExecutorService executorService = Executors.newFixedThreadPool(5,namedThreadFactory);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15387,
+        "reputation" : 67718,
+        "user_id" : 32453,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/bec38d63650c8912b6ba9b557fb953b9?s=256&d=identicon&r=PG",
+        "display_name" : "rogerdpack",
+        "link" : "https://stackoverflow.com/users/32453/rogerdpack"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1596044391,
+      "post_id" : 54360451,
+      "comment_id" : 111686493,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why the extra constructor?"
+    }, {
+      "owner" : {
+        "account_id" : 2570598,
+        "reputation" : 14191,
+        "user_id" : 2229438,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/o7UOwYA4.jpg?s=256",
+        "display_name" : "Grzegorz Piwowarek",
+        "link" : "https://stackoverflow.com/users/2229438/grzegorz-piwowarek"
+      },
+      "reply_to_user" : {
+        "account_id" : 15387,
+        "reputation" : 67718,
+        "user_id" : 32453,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/bec38d63650c8912b6ba9b557fb953b9?s=256&d=identicon&r=PG",
+        "display_name" : "rogerdpack",
+        "link" : "https://stackoverflow.com/users/32453/rogerdpack"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1596053018,
+      "post_id" : 54360451,
+      "comment_id" : 111690312,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you want to decorate an existing ThreadFactory instance. If you don&#39;t need it, just remove it"
+    } ],
+    "owner" : {
+      "account_id" : 2570598,
+      "reputation" : 14191,
+      "user_id" : 2229438,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://i.sstatic.net/o7UOwYA4.jpg?s=256",
+      "display_name" : "Grzegorz Piwowarek",
+      "link" : "https://stackoverflow.com/users/2229438/grzegorz-piwowarek"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1548399785,
+    "creation_date" : 1548399785,
+    "answer_id" : 54360451,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The home-grown core Java solution that I use to decorate existing factories:</p>\n\n<pre><code>public class ThreadFactoryNameDecorator implements ThreadFactory {\n    private final ThreadFactory defaultThreadFactory;\n    private final String suffix;\n\n    public ThreadFactoryNameDecorator(String suffix) {\n        this(Executors.defaultThreadFactory(), suffix);\n    }\n\n    public ThreadFactoryNameDecorator(ThreadFactory threadFactory, String suffix) {\n        this.defaultThreadFactory = threadFactory;\n        this.suffix = suffix;\n    }\n\n    @Override\n    public Thread newThread(Runnable task) {\n        Thread thread = defaultThreadFactory.newThread(task);\n        thread.setName(thread.getName() + \"-\" + suffix);\n        return thread;\n    }\n}\n</code></pre>\n\n<p>In action:</p>\n\n<pre><code>Executors.newSingleThreadExecutor(new ThreadFactoryNameDecorator(\"foo\"));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 287182,
+        "reputation" : 419,
+        "user_id" : 586841,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3c4132ee4409100f8cb01d83673334ca?s=256&d=identicon&r=PG",
+        "display_name" : "Systemsplanet",
+        "link" : "https://stackoverflow.com/users/586841/systemsplanet"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1575322134,
+      "post_id" : 54400298,
+      "comment_id" : 104519729,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "this creates two threads. One named &quot;Your name&quot; and another &quot;pool-N-thread-M&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 1956238,
+        "reputation" : 3379,
+        "user_id" : 1759190,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/b714fc7e779b3f8815990fe4cecc81e9?s=256&d=identicon&r=PG",
+        "display_name" : "CamW",
+        "link" : "https://stackoverflow.com/users/1759190/camw"
+      },
+      "reply_to_user" : {
+        "account_id" : 287182,
+        "reputation" : 419,
+        "user_id" : 586841,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3c4132ee4409100f8cb01d83673334ca?s=256&d=identicon&r=PG",
+        "display_name" : "Systemsplanet",
+        "link" : "https://stackoverflow.com/users/586841/systemsplanet"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1575457428,
+      "post_id" : 54400298,
+      "comment_id" : 104570870,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Systemsplanet No, it doesn&#39;t. Taking a thread dump from a minimal example which uses the executor to run a thread which sleeps shows the following threads: <code>main@1, Finalizer@667, Reference Handler@668, Your name@665, Signal Dispatcher@666</code>"
+    }, {
+      "owner" : {
+        "account_id" : 287182,
+        "reputation" : 419,
+        "user_id" : 586841,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3c4132ee4409100f8cb01d83673334ca?s=256&d=identicon&r=PG",
+        "display_name" : "Systemsplanet",
+        "link" : "https://stackoverflow.com/users/586841/systemsplanet"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1575566821,
+      "post_id" : 54400298,
+      "comment_id" : 104618516,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Hum, it did when I tried it. It makes sense that it would since if you pass it a new Runnable() it creates a thread for you, and you are creating a thread yourself."
+    }, {
+      "owner" : {
+        "account_id" : 1956238,
+        "reputation" : 3379,
+        "user_id" : 1759190,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/b714fc7e779b3f8815990fe4cecc81e9?s=256&d=identicon&r=PG",
+        "display_name" : "CamW",
+        "link" : "https://stackoverflow.com/users/1759190/camw"
+      },
+      "reply_to_user" : {
+        "account_id" : 287182,
+        "reputation" : 419,
+        "user_id" : 586841,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3c4132ee4409100f8cb01d83673334ca?s=256&d=identicon&r=PG",
+        "display_name" : "Systemsplanet",
+        "link" : "https://stackoverflow.com/users/586841/systemsplanet"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1575726171,
+      "post_id" : 54400298,
+      "comment_id" : 104666994,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I expect that you used a ThreadPoolExecutor instead or had one running for some other purpose. This code will not create a &quot;pool-N-thread-M&quot; thread. Also, I don&#39;t believe that it does make sense that it would. Your statement &quot;if you pass it a new Runnable() it creates a thread for you&quot; is not correct. It uses that runnable to create a thread and does that once because it&#39;s a single-thread executor. Only 1 thread is created."
+    } ],
+    "owner" : {
+      "account_id" : 1956238,
+      "reputation" : 3379,
+      "user_id" : 1759190,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/b714fc7e779b3f8815990fe4cecc81e9?s=256&d=identicon&r=PG",
+      "display_name" : "CamW",
+      "link" : "https://stackoverflow.com/users/1759190/camw"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1548672574,
+    "creation_date" : 1548672574,
+    "answer_id" : 54400298,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I find it easiest to use a lambda as a thread factory if you just want to change the name for a single thread executor.</p>\n\n<pre><code>Executors.newSingleThreadExecutor(runnable -&gt; new Thread(runnable, \"Your name\"));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4236743,
+        "reputation" : 196,
+        "user_id" : 3467692,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f305408484b65638fb68e1f502e63770?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "mchernyakov",
+        "link" : "https://stackoverflow.com/users/3467692/mchernyakov"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1576507042,
+      "post_id" : 56304432,
+      "comment_id" : 104911779,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You thread counter (threadsNum) is not threadsafe, you should use AtomicInteger."
+    }, {
+      "owner" : {
+        "account_id" : 4097768,
+        "reputation" : 963,
+        "user_id" : 3364064,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/3S9E3.jpg?s=256",
+        "display_name" : "V&#237;ctor Gil",
+        "link" : "https://stackoverflow.com/users/3364064/v%c3%adctor-gil"
+      },
+      "reply_to_user" : {
+        "account_id" : 4236743,
+        "reputation" : 196,
+        "user_id" : 3467692,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f305408484b65638fb68e1f502e63770?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "mchernyakov",
+        "link" : "https://stackoverflow.com/users/3467692/mchernyakov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1576610031,
+      "post_id" : 56304432,
+      "comment_id" : 104953312,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks for pointing it out, @mchernyakov I have just edited my answer accordingly."
+    } ],
+    "owner" : {
+      "account_id" : 4097768,
+      "reputation" : 963,
+      "user_id" : 3364064,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/3S9E3.jpg?s=256",
+      "display_name" : "V&#237;ctor Gil",
+      "link" : "https://stackoverflow.com/users/3364064/v%c3%adctor-gil"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1576610234,
+    "last_edit_date" : 1576610234,
+    "creation_date" : 1558784062,
+    "answer_id" : 56304432,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As other answers already said, you may create and use your own implementation of the <code>java.util.concurrent.ThreadFactory</code> interface (no external libraries required).\nI am pasting my code below because it is different than previous answers since it uses <code>String.format</code> method and takes a base name for the threads as a constructor argument:</p>\n\n<pre><code>import java.util.concurrent.ThreadFactory;\n\npublic class NameableThreadFactory implements ThreadFactory{\n    private int threadsNum;\n    private final String namePattern;\n\n    public NameableThreadFactory(String baseName){\n        namePattern = baseName + \"-%d\";\n    }\n\n    @Override\n    public Thread newThread(Runnable runnable){\n        threadsNum++;\n        return new Thread(runnable, String.format(namePattern, threadsNum));\n    }    \n}\n</code></pre>\n\n<p>And this is an example of usage:</p>\n\n<pre><code>ThreadFactory  threadFactory = new NameableThreadFactory(\"listenerThread\");        \nfinal ExecutorService executorService = Executors.newFixedThreadPool(5, threadFactory);\n</code></pre>\n\n<p><strong>EDIT</strong>: making my <code>ThreadFactory</code> implementation thread-safe, thanks to <a href=\"https://stackoverflow.com/users/3467692/mchernyakov\">@mchernyakov</a> for pointing it out.<br>\nEven though nowhere in the <code>ThreadFactory</code> documentation is said that its implementations must be thread-safe, the fact that the <code>DefaultThreadFactory</code> is thread-safe is a big hint:</p>\n\n<pre><code>import java.util.concurrent.ThreadFactory;\nimport java.util.concurrent.atomic.AtomicInteger;\n\npublic class NameableThreadFactory implements ThreadFactory{\n    private final AtomicInteger threadsNum = new AtomicInteger();\n\n    private final String namePattern;\n\n    public NameableThreadFactory(String baseName){\n        namePattern = baseName + \"-%d\";\n    }\n\n    @Override\n    public Thread newThread(Runnable runnable){\n        return new Thread(runnable, String.format(namePattern, threadsNum.addAndGet(1)));\n    }    \n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15387,
+        "reputation" : 67718,
+        "user_id" : 32453,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/bec38d63650c8912b6ba9b557fb953b9?s=256&d=identicon&r=PG",
+        "display_name" : "rogerdpack",
+        "link" : "https://stackoverflow.com/users/32453/rogerdpack"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1610560782,
+      "post_id" : 64925409,
+      "comment_id" : 116175549,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What&#39;s the %d for?  Is this supposed to be like NameableThreadFactory from the other answer?"
+    } ],
+    "owner" : {
+      "account_id" : 7458524,
+      "reputation" : 781,
+      "user_id" : 5670939,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0db172914ff4e06838a0a05b6718ebc4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Radioactive",
+      "link" : "https://stackoverflow.com/users/5670939/radioactive"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1605857261,
+    "creation_date" : 1605857261,
+    "answer_id" : 64925409,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Based on few of the comments above, difference is I just used lambda</p>\n<pre><code>Executors.newFixedThreadPool(10, r -&gt; new Thread(r, &quot;my-threads-%d&quot;))\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2005139,
+        "reputation" : 679,
+        "user_id" : 1795240,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/973f06d22d385cf0cf2f69a3776e9aaf?s=256&d=identicon&r=PG",
+        "display_name" : "k.liakos",
+        "link" : "https://stackoverflow.com/users/1795240/k-liakos"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1641291082,
+      "post_id" : 65699281,
+      "comment_id" : 124761188,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The only change I would make would be to create the Executors.defaultThreadFactory() in the class constructor. I don&#39;t see why it would be needed to recreate the factory on every new Thread creation."
+    }, {
+      "owner" : {
+        "account_id" : 221017,
+        "reputation" : 1245,
+        "user_id" : 478765,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/7d44423fad79530b59a084b2d15ee19a?s=256&d=identicon&r=PG",
+        "display_name" : "ed22",
+        "link" : "https://stackoverflow.com/users/478765/ed22"
+      },
+      "reply_to_user" : {
+        "account_id" : 2005139,
+        "reputation" : 679,
+        "user_id" : 1795240,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/973f06d22d385cf0cf2f69a3776e9aaf?s=256&d=identicon&r=PG",
+        "display_name" : "k.liakos",
+        "link" : "https://stackoverflow.com/users/1795240/k-liakos"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1641316597,
+      "post_id" : 65699281,
+      "comment_id" : 124771878,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@k.liakos not sure if Executors.defaultThreadFactory() creates a new factory. Are you sure that&#39;s the case?"
+    }, {
+      "owner" : {
+        "account_id" : 2005139,
+        "reputation" : 679,
+        "user_id" : 1795240,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/973f06d22d385cf0cf2f69a3776e9aaf?s=256&d=identicon&r=PG",
+        "display_name" : "k.liakos",
+        "link" : "https://stackoverflow.com/users/1795240/k-liakos"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1641400982,
+      "post_id" : 65699281,
+      "comment_id" : 124796813,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "public static ThreadFactory defaultThreadFactory() {         return new DefaultThreadFactory();     }"
+    } ],
+    "owner" : {
+      "account_id" : 221017,
+      "reputation" : 1245,
+      "user_id" : 478765,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/7d44423fad79530b59a084b2d15ee19a?s=256&d=identicon&r=PG",
+      "display_name" : "ed22",
+      "link" : "https://stackoverflow.com/users/478765/ed22"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1618413726,
+    "last_edit_date" : 1618413726,
+    "creation_date" : 1610530989,
+    "answer_id" : 65699281,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using the existing functionality of <a href=\"https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html#defaultThreadFactory()\" rel=\"noreferrer\">Executors.defaultThreadFactory()</a> but just setting the name:</p>\n<pre><code>import java.util.concurrent.Executors;\nimport java.util.concurrent.ThreadFactory;\n\npublic class NamingThreadFactory implements ThreadFactory {\n    private final String prefix;\n    private final AtomicInteger threadNumber = new AtomicInteger(0);\n\n    public NamingThreadFactory(String prefix){\n        this.prefix = prefix;\n    }\n\n    @Override\n    public Thread newThread(Runnable r) {\n        Thread t = Executors.defaultThreadFactory().newThread(r);\n        t.setName(prefix + threadNumber.addAndGet(1));\n        return t;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15387,
+      "reputation" : 67718,
+      "user_id" : 32453,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://www.gravatar.com/avatar/bec38d63650c8912b6ba9b557fb953b9?s=256&d=identicon&r=PG",
+      "display_name" : "rogerdpack",
+      "link" : "https://stackoverflow.com/users/32453/rogerdpack"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1610561658,
+    "creation_date" : 1610561658,
+    "answer_id" : 65707589,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Thought I'd throw in some simplified examples, just so the options are all out there:</p>\n<p>Unique number (could also put this into a method):</p>\n<pre><code>AtomicInteger threadNum = new AtomicInteger(0);\nExecutorService e = Executors.newSingleThreadExecutor(r -&gt; new Thread(r, &quot;my-name-&quot; + threadNum.incrementAndGet()));\n</code></pre>\n<p>Unique number and &quot;probably&quot; unique name (if you're generating new Runnable objects).  Useful if starting off the threads is within a method that gets called more than once, for instance:</p>\n<pre><code>AtomicInteger threadNum = new AtomicInteger(0);\nExecutorService e = Executors.newSingleThreadExecutor(r -&gt; new Thread(r, &quot;my-name-&quot; + threadNum.incrementAndGet() + &quot;-&quot; + r.hashCode()));\n</code></pre>\n<p>If you really wanted a unique name each time you'd need a class with a static var (and could also add a static pool number prefix in there as well, see other answers).</p>\n<p>and an equivalent in JDK &lt; 8 (you don't need a new class for it, or could return a ThreadFactory out of a method):</p>\n<pre><code>Executors.newSingleThreadExecutor(new ThreadFactory() {\n      AtomicInteger threadCount = new AtomicInteger(0);\n\n      @Override\n      public Thread newThread(Runnable r) {\n        return new Thread(r, &quot;your-name-&quot; + threadCount.getAndIncrement() + &quot;-&quot; + r.hashCode()); // could also use Integer.toHexString(r.hashCode()) for shorter\n      }\n    }));\n</code></pre>\n<p>And could make that into a method for the &quot;you-name-&quot; aspect as a variable.  Or use a separate class with a constructor like the other answers all seem to.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8348737,
+      "reputation" : 111,
+      "user_id" : 7757526,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/An9K6.jpg?s=256",
+      "display_name" : "pizzi",
+      "link" : "https://stackoverflow.com/users/7757526/pizzi"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1708108377,
+    "last_edit_date" : 1708108377,
+    "creation_date" : 1708108214,
+    "answer_id" : 78009348,
+    "question_id" : 6113746,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Since Java 21</p>\n<pre><code>Executors.newSingleThreadExecutor(Thread.ofPlatform().name(&quot;FooPool-FooThread-&quot;,1).factory());\n</code></pre>\n<p>or for a pool of 4 threads:</p>\n<pre><code>Executors.newFixedThreadPool(4,Thread.ofPlatform().name(&quot;FooPool-FooThread-&quot;,1).factory());\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 285919,
+    "reputation" : 44364,
+    "user_id" : 584862,
+    "user_type" : "registered",
+    "accept_rate" : 93,
+    "profile_image" : "https://www.gravatar.com/avatar/d718e680424ef02162271a6d825f252b?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "mre",
+    "link" : "https://stackoverflow.com/users/584862/mre"
+  },
+  "is_answered" : true,
+  "view_count" : 218388,
+  "accepted_answer_id" : 6113801,
+  "answer_count" : 21,
+  "score" : 307,
+  "last_activity_date" : 1708108377,
+  "creation_date" : 1306254826,
+  "last_edit_date" : 1454752963,
+  "question_id" : 6113746,
+  "link" : "https://stackoverflow.com/questions/6113746/naming-threads-and-thread-pools-of-executorservice",
+  "title" : "Naming threads and thread-pools of ExecutorService",
+  "body" : "<p>Let's say I have an application that utilizes the <code>Executor</code> framework as such</p>\n\n<pre><code>Executors.newSingleThreadExecutor().submit(new Runnable(){\n    @Override\n    public void run(){\n        // do stuff\n    }\n}\n</code></pre>\n\n<p>When I run this application in the debugger, a thread is created with the following (default) name: <code>Thread[pool-1-thread-1]</code>. As you can see, this isn't terribly useful and as far as I can tell, the <code>Executor</code> framework does not provide an easy way to name the created threads or thread-pools.</p>\n\n<p>So, how does one go about providing names for the threads/thread-pools? For instance, <code>Thread[FooPool-FooThread]</code>.</p>\n"
+}

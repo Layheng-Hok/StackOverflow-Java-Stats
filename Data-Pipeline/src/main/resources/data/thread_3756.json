@@ -1,0 +1,155 @@
+{
+  "tags" : [ "java", "parsing", "formatting", "localdate" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 45934,
+      "reputation" : 207606,
+      "user_id" : 135589,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/354d279a4def71b4541964105311709c?s=256&d=identicon&r=PG",
+      "display_name" : "Jesper",
+      "link" : "https://stackoverflow.com/users/135589/jesper"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1474826601,
+    "post_id" : 39689866,
+    "comment_id" : 66679408,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "A <code>LocalDate</code> object does not have a format - it cannot, by itself, remember that it has to be in a specific format such as <code>MM&#47;dd&#47;yyyy</code>."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1755777447,
+      "post_id" : 39689894,
+      "comment_id" : 140681870,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "but <code>d&#47;MM&#47;uuuu</code> is not as required in title of question: &quot;MM/dd/yyyy&quot;"
+    } ],
+    "owner" : {
+      "account_id" : 9001828,
+      "reputation" : 1308,
+      "user_id" : 6787033,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/bafdbdd3a0b3c649cf0f7f07fd18bb72?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Wojtek",
+      "link" : "https://stackoverflow.com/users/6787033/wojtek"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1755772775,
+    "last_edit_date" : 1755772775,
+    "creation_date" : 1474825618,
+    "answer_id" : 39689894,
+    "question_id" : 39689866,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Just format the date while printing it out:</p>\n<pre class=\"lang-java prettyprint-override\"><code>var date = LocalDate.now();\nvar locale = Locale.forLanguageTag(&quot;fa&quot;);\nvar formatter = DateTimeFormatter\n        .ofPattern(&quot;d/MM/uuuu&quot;)\n        .localizedBy(locale); // In Java 15+, this localizes the digits; you can comment it\nvar dateText = date.format(formatter);\nvar parsedDate = LocalDate.parse(dateText, formatter);\n\nSystem.out.println(&quot;date: &quot; + date);\nSystem.out.println(&quot;Text format &quot; + dateText);\nSystem.out.println(&quot;parsedDate: &quot; + parsedDate.format(formatter));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9186782,
+      "reputation" : 950,
+      "user_id" : 6828657,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-pYwVytkzaBo/AAAAAAAAAAI/AAAAAAAAABQ/sGYHbJ4UcLA/s256-rj/photo.jpg",
+      "display_name" : "Rebecca Close",
+      "link" : "https://stackoverflow.com/users/6828657/rebecca-close"
+    },
+    "is_accepted" : false,
+    "score" : 53,
+    "last_activity_date" : 1761744121,
+    "last_edit_date" : 1761744121,
+    "creation_date" : 1474825898,
+    "answer_id" : 39689935,
+    "question_id" : 39689866,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Just set parsedDate equal to your formatted text string, like so:</p>\n<pre><code>parsedDate = text;\n</code></pre>\n<hr />\n<p>A LocalDate object can only ever be printed in ISO8601 format (yyyy-MM-dd). In order to print the object in some other format, you need to format it and save the LocalDate as a string like you've demonstrated in your own example</p>\n<pre class=\"lang-java prettyprint-override\"><code>DateTimeFormatter formatter = DateTimeFormatter\n        .ofPattern(&quot;d/MM/uuuu&quot;)\n        .localizedBy(myLocale); // In Java 15+, this localizes the digits; you can comment it\nString text = myDate.format(formatter);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9165235,
+      "reputation" : 15784,
+      "user_id" : 6815131,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/aef8c87aded34f02a365fd60775b5975?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Joe C",
+      "link" : "https://stackoverflow.com/users/6815131/joe-c"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1474832761,
+    "creation_date" : 1474832761,
+    "answer_id" : 39691120,
+    "question_id" : 39689866,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Short answer: no.</p>\n\n<p>Long answer: A <code>LocalDate</code> is an object representing a year, month and day, and those are the three fields it will contain.  It does not have a format, because different locales will have different formats, and it will make it more difficult to perform the operations that one would want to perform on a <code>LocalDate</code> (such as adding or subtracting days or adding times).</p>\n\n<p>The String representation (produced by <code>toString()</code>) is the international standard on how to print dates.  If you want a different format, you should use a <code>DateTimeFormatter</code> of your choosing.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 11726648,
+        "reputation" : 26351,
+        "user_id" : 8583692,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/joGZ9.png?s=256",
+        "display_name" : "Mahozad",
+        "link" : "https://stackoverflow.com/users/8583692/mahozad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1755772947,
+      "post_id" : 63254879,
+      "comment_id" : 140681706,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In Java 15+, to get localized numbers/digits, you can add a call to <code>.localizedBy(myLocale)</code> on your formatter instance (after <code>.ofPattern(...)</code> in this example). See <a href=\"https://stackoverflow.com/q/62445359/8583692\">stackoverflow.com/q/62445359/8583692</a>"
+    } ],
+    "owner" : {
+      "account_id" : 15092683,
+      "reputation" : 181,
+      "user_id" : 10892085,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/2439275909633012/picture?type=large",
+      "display_name" : "Ignacio Mar&#237;n Reyes",
+      "link" : "https://stackoverflow.com/users/10892085/ignacio-mar%c3%adn-reyes"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1596574370,
+    "creation_date" : 1596574370,
+    "answer_id" : 63254879,
+    "question_id" : 39689866,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>No, you cannot have a format persist, because you cannot override toString of LocalDate (constructor of LocalDate is private, it is imposible extends) and there are not a method to change the format in LocalDate persistently.</p>\n<p>Maybe, you could create a new class and use an static method to change the format, but you have always to use MyLocalDate.myToString(localDate) instead localDate.toString() when you want other format.</p>\n<pre><code> public class MyLocalDate {\n    \n    public static String myToString(LocalDate localDate){\n        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;dd-MM-yyyy&quot;);\n        return localDate.format(formatter);\n    }   \n}\n</code></pre>\n<p>When you invoke you have to use this way</p>\n<pre><code>FechaInicioTextField.setText(MyLocalDate.myToString(fechaFacturaInicial));\n</code></pre>\n<p>instead of</p>\n<pre><code>FechaInicioTextField.setText(fechaFacturaInicial.toString());\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3700184,
+    "reputation" : 493,
+    "user_id" : 3080208,
+    "user_type" : "registered",
+    "accept_rate" : 18,
+    "profile_image" : "https://www.gravatar.com/avatar/414c22063f6678a1a2eea867e801e039?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "MOZAKATAK",
+    "link" : "https://stackoverflow.com/users/3080208/mozakatak"
+  },
+  "is_answered" : true,
+  "view_count" : 194453,
+  "answer_count" : 4,
+  "score" : 34,
+  "last_activity_date" : 1761744121,
+  "creation_date" : 1474825397,
+  "last_edit_date" : 1761744095,
+  "question_id" : 39689866,
+  "link" : "https://stackoverflow.com/questions/39689866/how-to-format-localdate-object-to-mm-dd-yyyy-and-have-format-persist",
+  "title" : "How to format LocalDate object to MM/dd/yyyy and have format persist",
+  "body" : "<p>I am reading text and storing the dates as LocalDate variables.</p>\n<p>Is there a way for me to preserve the formatting from DateTimeFormatter so that when I call the LocalDate variable it will still be in this format?</p>\n<p>I want the parsedDate to be stored in the correct format of 25/09/2016 rather than printing as a string.</p>\n<p>My code:</p>\n<pre><code>public static void main(String[] args)\n{\n    LocalDate date = LocalDate.now();\n    DateTimeFormatter formatters = DateTimeFormatter.ofPattern(&quot;d/MM/uuuu&quot;);\n    String text = date.format(formatters);\n    LocalDate parsedDate = LocalDate.parse(text, formatters);\n\n    System.out.println(&quot;date: &quot; + date); // date: 2016-09-25\n    System.out.println(&quot;Text format &quot; + text); // Text format 25/09/2016\n    System.out.println(&quot;parsedDate: &quot; + parsedDate); // parsedDate: 2016-09-25\n\n    // I want the LocalDate parsedDate to be stored as 25/09/2016\n}\n</code></pre>\n"
+}

@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "spring-boot", "junit", "jdbctemplate" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4375058,
+      "reputation" : 314,
+      "user_id" : 3568311,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WX2aG.jpg?s=256",
+      "display_name" : "Daniela Todorova",
+      "link" : "https://stackoverflow.com/users/3568311/daniela-todorova"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1610578213,
+    "creation_date" : 1610578213,
+    "answer_id" : 65710925,
+    "question_id" : 65036913,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Hi :) What spring boot version do you have? Overall seems like a generic application context configuration issue.\nI would rather refactor a bit before starting with the test. It is very good to use the @Autowired constructors in Spring Boot. It will make your life much easier when you want to test.</p>\n<ol>\n<li>Refactor the DAO class.</li>\n</ol>\n<pre><code>@Repository(&quot;assetDao&quot;)\npublic class AssetDao {\n\n    private final JdbcTemplate jdbcTemplate;\n    \n    //handy you can put also validation here if all is good\n    //we will use it later in the test\n    @Autowired\n    public AssetDao (JdbcTemplate jdbcTemplate){\n        jdbcTemplate = jdbcTemplate;\n    }\n    \n    public void deleteByPk (AssetKey assetKey, Connection con) throws DataAccessException \n    {\n        jdbcTemplate.update(&quot;DELETE FROM Asset WHERE id = ? &quot;, assetKey.getId());\n    }\n}\n</code></pre>\n<ol start=\"2\">\n<li>Now the test... seems you test the DAO via the Controller? What happens is the whole application context wants to load togather with your dao. You want to @Autowire. You have to init the spring context inside your test etc...there fore the errors you get. If you want to focus on the DAO you could do:</li>\n</ol>\n<pre><code>@JdbcTest\n@Sql({&quot;schema.sql&quot;, &quot;test-data.sql&quot;})\nclass AssetDaoTest {\n    private AssetDao assetDao;\n    private JdbcTemplate template;\n    \n    @Before\n    public void setup() {\n        template = new JdbcTemplate();\n        assetDao = new AssetDao(template);\n    }\n\n    @Test\n    void delete() throws DataAccessException {\n        assetDao.deleteByPk(new AssetKey(1), null);\n        assertEquals(0, assetDao.selectAll(null).size());\n    }\n}\n</code></pre>\n<p>Give it a try, did not run it on my PC yet.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 875339,
+      "reputation" : 1619,
+      "user_id" : 925098,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/d14e1202f8f6cecda78f99b2a4f854e8?s=256&d=identicon&r=PG",
+      "display_name" : "Moscow Boy",
+      "link" : "https://stackoverflow.com/users/925098/moscow-boy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760426125,
+    "creation_date" : 1760426125,
+    "answer_id" : 79789905,
+    "question_id" : 65036913,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<ul>\n<li>\n<pre><code>@ContextConfiguration(classes = [OperationListener123::class, ObjectMapper::class])\ninternal class OperationListener123Test { \n    @Autowired\n    lateinit var operationInfoListener: OperationListener123\n\n</code></pre>\n</li>\n</ul>\n<p>Do not forget to add ObjectMapper in the list of classes, if you use not End2End test where all the context is used.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 16409337,
+    "reputation" : 355,
+    "user_id" : 11853066,
+    "user_type" : "registered",
+    "profile_image" : "https://lh5.googleusercontent.com/-wwjqyaxDAnI/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rf_8ZMMAb8OteLKzpvPixSM6kYFag/s256-rj/photo.jpg",
+    "display_name" : "Ben123",
+    "link" : "https://stackoverflow.com/users/11853066/ben123"
+  },
+  "is_answered" : true,
+  "view_count" : 12005,
+  "accepted_answer_id" : 65710925,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1760426125,
+  "creation_date" : 1606477949,
+  "last_edit_date" : 1629649549,
+  "question_id" : 65036913,
+  "link" : "https://stackoverflow.com/questions/65036913/spring-boot-jdbctest-no-qualifying-bean-of-type-com-fasterxml-jackson-databi",
+  "title" : "Spring Boot/@JDBCTest - No qualifying bean of type &#39;com.fasterxml.jackson.databind.ObjectMapper&#39; available",
+  "body" : "<p>Bit of a Spring Boot rookie here, so appreciate any help!</p>\n<p>I've built a Spring Boot application with JDBCTemplate that runs and functions normally with no errors or exceptions.</p>\n<p>I have produced a test class and want to use @JdbcTest to test my Dao objects. However, every time I run a test, I get <code>java.lang.IllegalStateException: Failed to load ApplicationContext</code>. There seems to be an issue with my Controller classes. This IllegalStateException is caused by:</p>\n<pre><code>org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'assetApiController' defined in file [/PATH/TO/FILE]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.fasterxml.jackson.databind.ObjectMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}\n</code></pre>\n<p>My test class:</p>\n<pre><code>@JdbcTest\n@Sql({&quot;schema.sql&quot;, &quot;test-data.sql&quot;})\nclass AssetApiControllerTest {\n\n    @Autowired\n    private JdbcTemplate jdbcTemplate;\n\n    @Autowired\n    AssetDao assetDao;\n\n    @Test\n    void delete() throws DataAccessException {\n        assetDao.setJdbcTemplate(jdbcTemplate);\n\n        assetDao.deleteByPk(new AssetKey(1), null);\n        assertEquals(0, assetDao.selectAll(null).size());\n    }\n}\n</code></pre>\n<p>My Dao:</p>\n<pre><code>@Repository(&quot;assetDao&quot;)\npublic class AssetDao {\n\n    @Autowired\n    private JdbcTemplate jdbcTemplate;\n\n    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {\n        this.jdbcTemplate = jdbcTemplate;\n    }\n    \n    public void deleteByPk (AssetKey assetKey, Connection con) throws DataAccessException {\n\n        jdbcTemplate.update(&quot;DELETE FROM Asset WHERE id = ? &quot;, assetKey.getId());\n    }\n   }\n</code></pre>\n<p>My controller class:</p>\n<pre><code>@Controller\npublic class AssetApiController implements AssetApi {\n\n    private static final Logger log = LoggerFactory.getLogger(AssetApiController.class);\n\n    private final ObjectMapper objectMapper;\n\n    private final HttpServletRequest request;\n\n    @Autowired\n    private AssetDao assetDao;\n\n    @org.springframework.beans.factory.annotation.Autowired\n    public AssetApiController(ObjectMapper objectMapper, HttpServletRequest request) {\n        this.objectMapper = objectMapper;\n        this.request = request;\n    }\n\n    @Override\n    public ResponseEntity&lt;Void&gt; delete(@RequestBody AssetKey assetKey) {\n        try{\n            assetDao.deleteByPk(assetKey, null);\n        } catch (ApplicationException e) {\n            log.warn(e.getFormattedMessage(), e);\n            return new ResponseEntity&lt;Void&gt;(HttpStatus.INTERNAL_SERVER_ERROR);\n        }\n        return new ResponseEntity&lt;Void&gt;(HttpStatus.OK);\n    }\n\n }                       \n</code></pre>\n<p>My JacksonConfig:</p>\n<pre><code>@Configuration\npublic class JacksonConfiguration {\n\n  @Bean\n  @ConditionalOnMissingBean(ThreeTenModule.class)\n  ThreeTenModule threeTenModule() {\n    ThreeTenModule module = new ThreeTenModule();\n    module.addDeserializer(Instant.class, CustomInstantDeserializer.INSTANT);\n    module.addDeserializer(OffsetDateTime.class, CustomInstantDeserializer.OFFSET_DATE_TIME);\n    module.addDeserializer(ZonedDateTime.class, CustomInstantDeserializer.ZONED_DATE_TIME);\n    return module;\n  }\n\n}\n</code></pre>\n<p>Two more points that could help diagnose this:</p>\n<ol>\n<li><p>I followed this answer: <a href=\"https://stackoverflow.com/a/32842962/11853066\">https://stackoverflow.com/a/32842962/11853066</a> . And it fixed the problem, but then I got an equivalent error for HttpServletRequest: <code>No qualifying bean found for dependency [javax.servlet.http.HttpServletRequest]</code>. So the underlying issue had not been addressed.</p>\n</li>\n<li><p>When I try and produce tests for an entity other than Asset (e.g. 'Supplier' with SupplierController, SupplierDao), I get the same error: <code>Error creating bean with name 'assetApiController' defined in file</code>. This must be because assetApiController is the first controller to be scanned because of alphabetical order?</p>\n</li>\n</ol>\n"
+}

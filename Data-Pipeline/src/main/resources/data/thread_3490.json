@@ -1,0 +1,64 @@
+{
+  "tags" : [ "java", "file-io", "tree" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1159698,
+        "reputation" : 947,
+        "user_id" : 1139482,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/7f4d49eb35e3b2590d711e8d151a080d?s=256&d=identicon&r=PG",
+        "display_name" : "zakparks31191",
+        "link" : "https://stackoverflow.com/users/1139482/zakparks31191"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1365357248,
+      "post_id" : 15865639,
+      "comment_id" : 22583127,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This makes sense. So in your approach you would add in delimiters to the end of each branch and use that to jump to the root. Will this work as written for nodes with many children and grandchildren? For what I can tell, it will only do branches with no sub-branches."
+    } ],
+    "owner" : {
+      "account_id" : 2103622,
+      "reputation" : 27446,
+      "user_id" : 1870555,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/p5Q02.jpg?s=256",
+      "display_name" : "christopher",
+      "link" : "https://stackoverflow.com/users/1870555/christopher"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1673644754,
+    "last_edit_date" : 1673644754,
+    "creation_date" : 1365356700,
+    "answer_id" : 15865639,
+    "question_id" : 15865522,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I'm not sure if this will behave as you expect it to:</p>\n<pre><code>      if (curLine == &quot;model line&quot;)\n      {\n          curModelLine = new Node(fileData.get(nextDataLine+1), this.root);\n          this.root.children.add(curModelLine);    \n      }\n</code></pre>\n<p>With this <code>if</code> statement, you're checking the reference values; not the string values. To compare strings, you should be using the <code>equals()</code> operator. It should look more like this:</p>\n<pre><code>    if (curLine.equals(&quot;model line&quot;))\n    {\n        curModelLine = new Node(fileData.get(nextDataLine+1), this.root);\n        this.root.children.add(curModelLine);    \n    }\n</code></pre>\n<p><b>Your approach</b></p>\n<p>For me, I would have a nested loop. The structure would be something like this:</p>\n<pre><code>while(not at the end of the file) {\n    aLine := the next line.\n    while(!aLine.equals(the end of a branch delimiter) {\n        print out the next item.\n        print out a &quot;-&gt;&quot;\n    }\n    print out a new line character.\n}\n</code></pre>\n<p>Notice this is in pseudocode.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1159698,
+    "reputation" : 947,
+    "user_id" : 1139482,
+    "user_type" : "registered",
+    "accept_rate" : 89,
+    "profile_image" : "https://www.gravatar.com/avatar/7f4d49eb35e3b2590d711e8d151a080d?s=256&d=identicon&r=PG",
+    "display_name" : "zakparks31191",
+    "link" : "https://stackoverflow.com/users/1139482/zakparks31191"
+  },
+  "is_answered" : false,
+  "view_count" : 8599,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1762347710,
+  "creation_date" : 1365356129,
+  "last_edit_date" : 1365357475,
+  "question_id" : 15865522,
+  "link" : "https://stackoverflow.com/questions/15865522/building-a-tree-in-java-using-input-from-a-text-file",
+  "title" : "Building a tree in java using input from a text file",
+  "body" : "<p>I'm trying to build a tree of an arbitrary size using data from a file. In the file, each node is its own line, and the branches are delimited by certain keywords. Currently, I am reading the file into a List, reading it item by item, and looking for the keywords to build the branches down. I am having a hard time figuring out how to keep going after I start the first branch. Following is my tree class and test input file. I realize the test input may be considered too big for a test, but the actual one will have many, many models. The end goal is to have the tree represent the harley davidson bike lineup with all the available options for each bike once its fully built. For example, one section of a branch would look like:</p>\n\n<p><code>Harley(root) -&gt; Model Line -&gt; Model 1 -&gt; color -&gt; c1</code></p>\n\n<p>And so forth for all the other keywords per branch. My question would be if I am going in the right direction in <code>populate()</code>. The only way I can think of doing it would be to have a large <code>if...else if...</code> structure to check for each keyword in succession, with a loop in each <code>if...else</code> to populate the children of that keyword's node. Even if I did that, I don't know how to jump up to do the next branch, and i know it is a terribly inefficient way of making the tree. Any advice? Thank you.</p>\n\n<p>Tree.java</p>\n\n<pre><code>import java.io.BufferedReader;\nimport java.io.FileInputStream;\nimport java.io.IOException;\nimport java.io.InputStreamReader;\nimport java.util.ArrayList;\nimport java.util.List;\n\npublic class Tree\n{\n    private Node root;\n\n    public Tree(String rootData) \n    {\n        root = new Node();\n        root.data = rootData;\n        root.children = new ArrayList&lt;Node&gt;();\n    }\n\n    public static class Node\n    {\n        private String data;\n        private Node parent;\n        private List&lt;Node&gt; children;\n\n        public Node(){}\n\n        public Node(String newNodeData, Node newNodeParent)\n        {\n            data = newNodeData;\n            parent = newNodeParent;\n        }\n    }\n\n    public void populate() throws IOException\n    {\n        //keep track of nodes for jumping up branches quickly\n        Node curNode = this.root;\n        Node curModelLine;\n        Node curModel;\n\n        //get the data\n        List&lt;String&gt; fileData = getData();\n        int nextDataLine = 0;\n        while (!fileData.isEmpty())\n        {\n            String curLine = fileData.get(nextDataLine);\n            if (curLine == \"model line\")\n            {\n                curModelLine = new Node(fileData.get(nextDataLine+1), this.root);\n                this.root.children.add(curModelLine);    \n            }\n\n            /*Not sure where to go from here*/\n\n            nextDataLine++;\n        }\n    }\n\n    public static List&lt;String&gt; getData() throws IOException\n    {\n        List&lt;String&gt; filedata = new ArrayList&lt;String&gt;();\n        try\n        {\n            FileInputStream in = new FileInputStream(\"data.txt\");\n            BufferedReader br = new BufferedReader(new InputStreamReader(in));\n            String line;\n            while((line = br.readLine())!= null)\n            {\n                filedata.add(line);\n            }\n            br.close();\n        }catch(Exception e)\n        {\n            System.out.println(e);\n        }\n        return filedata;\n    }\n}\n</code></pre>\n\n<p>data.txt:</p>\n\n<pre><code>harley\nmodel line\nlinename1\nmodelname1\ncolor\nc1\nc2\nengine size\nes1\nes2\nwindsheild\nw1\nw2\nlights\nl1\nl2\ntire size\nt1\nt2\nradio\nr1\nr2\nabs\na1\na2\nalarm\na1\na2\nseat\ns1\ns2\nbags\nb1\nb2\nmodelname2\ncolor\nc1\nc2\nengine size\nes1\nes2\nwindsheild\nw1\nw2\nlights\nl1\nl2\ntire size\nt1\nt2\nradio\nr1\nr2\nabs\na1\na2\nalarm\na1\na2\nseat\ns1\ns2\nbags\nb1\nb2\nlinename2\nmodelname1\ncolor\nc1\nc2\nengine size\nes1\nes2\nwindsheild\nw1\nw2\nlights\nl1\nl2\ntire size\nt1\nt2\nradio\nr1\nr2\nabs\na1\na2\nalarm\na1\na2\nseat\ns1\ns2\nbags\nb1\nb2\nmodelname2\ncolor\nc1\nc2\nengine size\nes1\nes2\nwindsheild\nw1\nw2\nlights\nl1\nl2\ntire size\nt1\nt2\nradio\nr1\nr2\nabs\na1\na2\nalarm\na1\na2\nseat\ns1\ns2\nbags\nb1\nb2\n</code></pre>\n"
+}

@@ -1,0 +1,78 @@
+{
+  "tags" : [ "java", "apache-commons-beanutils", "java-record" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2053598,
+      "reputation" : 44936,
+      "user_id" : 1831987,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/38b1c37530189ec4471a43a618e33f67?s=256&d=identicon&r=PG",
+      "display_name" : "VGR",
+      "link" : "https://stackoverflow.com/users/1831987/vgr"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1726062551,
+    "post_id" : 78973914,
+    "comment_id" : 139245365,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "There’s always <code>value = object instanceof Record ? object.getClass().getDeclaredMethod(property).invoke(object) : BeanUtils.getProperty(object, property);</code>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1763116735,
+      "post_id" : 79819799,
+      "comment_id" : 140853962,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Your answer could be improved with additional supporting information. Please <a href=\"https://stackoverflow.com/posts/79819799/edit\">edit</a> to add further details, such as citations or documentation, so that others can confirm that your answer is correct. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    } ],
+    "owner" : {
+      "account_id" : 44674483,
+      "reputation" : 11,
+      "user_id" : 31876858,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/9f3f5a0c704e2badd7a042155df6b053?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user31876858",
+      "link" : "https://stackoverflow.com/users/31876858/user31876858"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1763109511,
+    "creation_date" : 1763109511,
+    "answer_id" : 79819799,
+    "question_id" : 78973914,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use a BeanIntrospector for records:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public final class RecordBeanIntrospector implements BeanIntrospector {\n\n   /** the single instance */\n   public static final RecordBeanIntrospector INSTANCE = new RecordBeanIntrospector();\n\n   static {\n      PropertyUtils.addBeanIntrospector(RecordBeanIntrospector.INSTANCE);\n   }\n\n   private RecordBeanIntrospector() {\n      // only one instance\n   }\n\n   public static synchronized void init() {\n      // does nothing, but by calling it we make sure that the class is loaded and the instance added to PropertyUtils\n   }\n\n   @Override\n   public void introspect(final IntrospectionContext context) throws IntrospectionException {\n      final Class&lt;?&gt; clazz = context.getTargetClass();\n      if (clazz.isRecord()) {\n         for (final RecordComponent rc : clazz.getRecordComponents()) {\n            final PropertyDescriptor pd = new PropertyDescriptor(rc.getName(), rc.getAccessor(), null);\n            context.addPropertyDescriptor(pd);\n         }\n      }\n   }\n\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 134484,
+    "reputation" : 3704,
+    "user_id" : 336657,
+    "user_type" : "registered",
+    "accept_rate" : 65,
+    "profile_image" : "https://i.sstatic.net/6TEcm.jpg?s=256",
+    "display_name" : "jpprade",
+    "link" : "https://stackoverflow.com/users/336657/jpprade"
+  },
+  "is_answered" : true,
+  "view_count" : 132,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1763109511,
+  "creation_date" : 1726059521,
+  "question_id" : 78973914,
+  "link" : "https://stackoverflow.com/questions/78973914/beanutils-getproperty-not-working-for-record",
+  "title" : "BeanUtils getProperty not working for record",
+  "body" : "<p>If my object is a record this is not working :</p>\n<pre><code>value = BeanUtils.getProperty(object, property);\n</code></pre>\n<p>I guess it is looking for a getter which does not exist.</p>\n<p>Is there an alternative for java 17, that will work for classes and record ?</p>\n"
+}

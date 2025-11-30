@@ -1,0 +1,101 @@
+{
+  "tags" : [ "java" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 4728704,
+      "reputation" : 17727,
+      "user_id" : 3824919,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/0HpYR.png?s=256",
+      "display_name" : "Tom",
+      "link" : "https://stackoverflow.com/users/3824919/tom"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1456000083,
+    "post_id" : 35528560,
+    "comment_id" : 58746661,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<i>&quot;If not, what are some other ways I can accomplish this?&quot;</i> Just <a href=\"http://stackoverflow.com/questions/3962766/java-reverse-list\">reverse</a> the list."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1895197,
+        "reputation" : 1988,
+        "user_id" : 1712334,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://www.gravatar.com/avatar/b4907dc5d386ff096ddfec4d4920aab6?s=256&d=identicon&r=PG",
+        "display_name" : "Talen Kylon",
+        "link" : "https://stackoverflow.com/users/1712334/talen-kylon"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1456001414,
+      "post_id" : 35528605,
+      "comment_id" : 58747165,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This was a doh! moment for sure. Just reverse the list.. beautiful!"
+    } ],
+    "owner" : {
+      "account_id" : 6386303,
+      "reputation" : 1495,
+      "user_id" : 4954114,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/Zhh5j.jpg?s=256",
+      "display_name" : "NonameSL",
+      "link" : "https://stackoverflow.com/users/4954114/nonamesl"
+    },
+    "is_accepted" : true,
+    "score" : 4,
+    "last_activity_date" : 1456000093,
+    "creation_date" : 1456000093,
+    "answer_id" : 35528605,
+    "question_id" : 35528560,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You could make the list descending by reversing it:</p>\n\n<pre><code>Collection&lt;?&gt; collection = ...;\nCollections.reverse(collection);\n</code></pre>\n\n<p><strong>PS:</strong> why is your class named States? From what I see the class represents a State...</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759549416,
+    "creation_date" : 1759549416,
+    "answer_id" : 79782286,
+    "question_id" : 35528560,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2><code>SequencedCollection</code></h2>\n<p>In Java 21+, define your <code>edges</code> as a <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/SequencedCollection.html\" rel=\"nofollow noreferrer\"><code>SequencedCollection</code></a>, a new super-interface of <code>ArrayList</code>, <code>LinkedList</code>, <code>LinkedHashSet</code>, <code>TreeSet</code>, and more. (See <a href=\"https://openjdk.org/jeps/431\" rel=\"nofollow noreferrer\">JEP 431</a>.)</p>\n<p>As the implementation of <code>SequencedCollection</code>, choose a class that automatically sorts objects as you add them. Here we choose <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/TreeSet.html\" rel=\"nofollow noreferrer\"><code>TreeSet</code></a> as such a class.</p>\n<h2><code>Comparable</code> &amp; <code>Comparator</code></h2>\n<p>But how will the <code>TreeSet</code> know how to sort objects of type <code>State</code>? We need to declare that our <code>State</code> class implements <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Comparable.html\" rel=\"nofollow noreferrer\"><code>Comparable</code></a>. Then we implement the single required method <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Comparable.html#compareTo(T)\" rel=\"nofollow noreferrer\"><code>compareTo</code>.</a> Our implementation of that method leverages the handy <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Comparator.html\" rel=\"nofollow noreferrer\"><code>Comparator</code></a> interface with its <code>static</code> method <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Comparator.html#comparing(java.util.function.Function)\" rel=\"nofollow noreferrer\"><code>comparing</code></a>.</p>\n<p>And our <code>State</code> class needs to override <code>Object#toString</code> to print the name of the state.</p>\n<pre class=\"lang-java prettyprint-override\"><code>package work.basil.example.collections;\n\nimport org.jspecify.annotations.NonNull;\n\nimport java.util.Comparator;\nimport java.util.SequencedCollection;\nimport java.util.TreeSet;\n\npublic class State implements Comparable &lt; State &gt;\n{\n    private static final Comparator &lt; State &gt; comparator = Comparator.comparing( State :: name );\n\n    final String name;\n    final SequencedCollection &lt; State &gt; edges = new TreeSet &lt;&gt;();\n\n    public State ( final String theName )\n    {\n        this.name = theName;\n    }\n\n    public String name ( ) { return this.name; }\n\n    // Implement `Comparable`.\n    @Override\n    public int compareTo ( @NonNull final State other )\n    {\n        return State.comparator.compare( this , other );\n    }\n\n    // Override `Object#toString`.\n    @Override\n    public String toString ( )\n    {\n        return &quot;State{&quot; +\n                &quot;name='&quot; + name + '\\'' +\n                '}';\n    }\n}\n</code></pre>\n<p>Example usage follows. Notice the call to <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/SequencedCollection.html#reversed()\" rel=\"nofollow noreferrer\"><code>SequencedCollection#reversed</code></a> which seturns a reverse-ordered view of the collection.</p>\n<pre class=\"lang-java prettyprint-override\"><code>State wa = new State( &quot;Washington&quot; );\nState id = new State( &quot;Idaho&quot; );\nState or = new State( &quot;Oregon&quot; );\nState ca = new State( &quot;California&quot; );\n\nwa.edges.addAll( List.of( or , id ) ); // `TreeSet` automatically sorts the added objects.\n\nSystem.out.println( &quot;Edges sorted: &quot; + wa.edges );\nSystem.out.println( &quot;Edges reversed: &quot; + wa.edges.reversed() );\n</code></pre>\n<blockquote>\n<p>Edges sorted: [State{name='Idaho'}, State{name='Oregon'}]</p>\n<p>Edges reversed: [State{name='Oregon'}, State{name='Idaho'}]</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1895197,
+    "reputation" : 1988,
+    "user_id" : 1712334,
+    "user_type" : "registered",
+    "accept_rate" : 68,
+    "profile_image" : "https://www.gravatar.com/avatar/b4907dc5d386ff096ddfec4d4920aab6?s=256&d=identicon&r=PG",
+    "display_name" : "Talen Kylon",
+    "link" : "https://stackoverflow.com/users/1712334/talen-kylon"
+  },
+  "is_answered" : true,
+  "view_count" : 892,
+  "accepted_answer_id" : 35528605,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1759549416,
+  "creation_date" : 1455999869,
+  "last_edit_date" : 1456000116,
+  "question_id" : 35528560,
+  "link" : "https://stackoverflow.com/questions/35528560/design-a-compareto-that-can-sort-in-ascending-or-descending-order",
+  "title" : "Design a compareTo that can sort in ascending or descending order",
+  "body" : "<p>I have a class States that is an object that contains a name, and a list of states that we consider edges. I would like to sort this list of edges by name, in both ascending and descending order. I had an idea of overriding the compareTo function and leveraging Collections.sort(). </p>\n\n<pre><code>public class State { \n    private String name;\n    private ArrayList&lt;States&gt; edges;      \n    ...\n\n    public ArrayList&lt;States&gt; getEdges(){\n        return edges;\n    }\n\n    public int compareTo(State s, int type){\n        switch(type){\n            case 0: \n                // we want ascending order, return as normal\n                return this.name.compareTo(s.getName());\n            case 1:\n                // we want descending order, negate our answer\n                return -this.name.compareTo(s.getName());\n        }\n        return -1;\n     }\n</code></pre>\n\n<p>Is it possible to use Collection.sort(), but be able to provide the 'type' parameter to specify whether I want ascending or descending order? If not, what are some other ways I can accomplish this?</p>\n"
+}

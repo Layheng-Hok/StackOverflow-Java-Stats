@@ -1,0 +1,211 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "spring-security", "deprecated" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1975861,
+      "reputation" : 612,
+      "user_id" : 1773664,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ddfef5404b30c02c211973c832ad6697?s=256&d=identicon&r=PG",
+      "display_name" : "Santiago Carrillo",
+      "link" : "https://stackoverflow.com/users/1773664/santiago-carrillo"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1676418795,
+    "post_id" : 73576686,
+    "comment_id" : 133132458,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Check this answer: <a href=\"https://stackoverflow.com/questions/55102937/how-to-create-a-spring-security-key-for-signing-a-jwt-token\" title=\"how to create a spring security key for signing a jwt token\">stackoverflow.com/questions/55102937/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9013600,
+        "reputation" : 1051,
+        "user_id" : 6717287,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://i.sstatic.net/amk1r.png?s=256",
+        "display_name" : "Amir Choubani",
+        "link" : "https://stackoverflow.com/users/6717287/amir-choubani"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1709888344,
+      "post_id" : 73576774,
+      "comment_id" : 137734023,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "same thing, this method signature is always deprecated"
+    } ],
+    "owner" : {
+      "account_id" : 1324952,
+      "reputation" : 6437,
+      "user_id" : 1270000,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/43931a46da4ec8856dfea56f2b165bf1?s=256&d=identicon&r=PG",
+      "display_name" : "sorifiend",
+      "link" : "https://stackoverflow.com/users/1270000/sorifiend"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1662602523,
+    "last_edit_date" : 1662602523,
+    "creation_date" : 1662080158,
+    "answer_id" : 73576774,
+    "question_id" : 73576686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As per the <a href=\"https://github.com/jwtk/jjwt/blob/master/api/src/main/java/io/jsonwebtoken/JwtBuilder.java#L448\" rel=\"nofollow noreferrer\">source code</a> you need to flip the variables so that Key comes first:</p>\n<blockquote>\n<p>@deprecated since 0.10.0: use {@link #signWith(Key, SignatureAlgorithm)} instead.  This method will be removed in the 1.0 release.</p>\n<pre><code>@Deprecated\nJwtBuilder signWith(SignatureAlgorithm alg, Key key) throws InvalidKeyException;\n</code></pre>\n</blockquote>\n<p>So as per the deprecated comment, the correct usage would be:</p>\n<pre><code>signWith(KEY, SignatureAlgorithm)\n</code></pre>\n<p>Using the deprecated method and @deprecated annotation is not a solution if you ever intend to upgrade to version 1.0 or a newer version of the library in the future.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7312824,
+        "reputation" : 1986,
+        "user_id" : 5571441,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/81dc262f20e696c597b4c3a19eba61f1?s=256&d=identicon&r=PG",
+        "display_name" : "Eduard Streltsov",
+        "link" : "https://stackoverflow.com/users/5571441/eduard-streltsov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1728419214,
+      "post_id" : 77049357,
+      "comment_id" : 139416653,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "is also deprecated"
+    } ],
+    "owner" : {
+      "account_id" : 5242589,
+      "reputation" : 280,
+      "user_id" : 4189222,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/lp734.jpg?s=256",
+      "display_name" : "Hiren",
+      "link" : "https://stackoverflow.com/users/4189222/hiren"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1693980521,
+    "creation_date" : 1693980521,
+    "answer_id" : 77049357,
+    "question_id" : 73576686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use something like this:\nThe new signWith API needs <code>Key</code> object to be passed which you can create using <code>Keys.hmacShaKeyFor</code> method. Thus you can ignore the deprecated one.</p>\n<pre><code>    private String doGenerateToken(Map&lt;String, Object&gt; claims, String username) {\n            return Jwts.builder()\n                .setClaims(claims)\n                .setSubject(username)\n                .setIssuedAt(new Date(System.currentTimeMillis()))\n                .setExpiration(new Date(System.currentTimeMillis() + jwtTokenValidityInMs))\n                .signWith(getSigningKey(), SignatureAlgorithm.HS512) // &lt;-- This can be helpful to you\n                .compact();\n    }\n\n    private Key getSigningKey() {\n        byte[] keyBytes = this.secret.getBytes(StandardCharsets.UTF_8);\n        return Keys.hmacShaKeyFor(keyBytes);\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1972221,
+      "reputation" : 17181,
+      "user_id" : 1770868,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/khueQ.jpg?s=256",
+      "display_name" : "Ahmad Aghazadeh",
+      "link" : "https://stackoverflow.com/users/1770868/ahmad-aghazadeh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1694893809,
+    "creation_date" : 1694893809,
+    "answer_id" : 77119376,
+    "question_id" : 73576686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use this code snippet</p>\n<pre><code>SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256); //or HS384 or HS512\n Jwts.builder()\n//...\n.signWith(key) \n.compact();\n</code></pre>\n<p><a href=\"https://stackoverflow.com/questions/40252903/static-secret-as-byte-key-or-string/40274325#40274325\">More info</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25488975,
+      "reputation" : 141,
+      "user_id" : 19284103,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJzqCi6CUaSx6STdx65l57DPizeZ6Uf3lfOdAOiY=k-s256",
+      "display_name" : "hariprasaath ravi",
+      "link" : "https://stackoverflow.com/users/19284103/hariprasaath-ravi"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1699422167,
+    "last_edit_date" : 1699422167,
+    "creation_date" : 1699421996,
+    "answer_id" : 77443064,
+    "question_id" : 73576686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As per source code <code>signWith(SignatureAlgorithm var1, byte[] var2)</code> got deprecated.</p>\n<pre><code>@Deprecated\nJwtBuilder signWith(SignatureAlgorithm var1, byte[] var2) throws InvalidKeyException;\n@Deprecated\nJwtBuilder signWith(SignatureAlgorithm var1, String var2) throws InvalidKeyException;\n</code></pre>\n<p>you can do something like this.</p>\n<pre><code>SecretKey key = Keys.hmacShaKeyFor(secretkey.getBytes(StandardCharsets.UTF_8));\njwtBuilder.signWith(key).compact();\n</code></pre>\n<p>Here <code>hmacShaKeyFor()</code> method determines the Algorithm to be used based on the bit length of Secretkey.</p>\n<p>Too lazy get the sources so maven dependency</p>\n<pre><code>&lt;dependency&gt;\n        &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;\n        &lt;artifactId&gt;jjwt&lt;/artifactId&gt;\n        &lt;version&gt;0.12.3&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7292926,
+      "reputation" : 795,
+      "user_id" : 5558746,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/E6UGd.png?s=256",
+      "display_name" : "Ghost Rider",
+      "link" : "https://stackoverflow.com/users/5558746/ghost-rider"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1701495326,
+    "last_edit_date" : 1701495326,
+    "creation_date" : 1701451768,
+    "answer_id" : 77587071,
+    "question_id" : 73576686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<p>SignatureAlgorithm is Deprecated.  since 0.12.0; use Jwts.SIG instead</p>\n</blockquote>\n<p>Below is the way I am doing it in my spring boot project.</p>\n<pre><code>SecretKey key = Keys.hmacShaKeyFor(environment.getProperty(&quot;jwt.token.secret&quot;).getBytes(StandardCharsets.UTF_8));\n//.....\n.signWith(key ,Jwts.SIG.HS512).compact();\n</code></pre>\n<p>I have declared <code>jwt.token.secret</code> property in my <code>application.properties</code> file.</p>\n<pre><code>'io.jsonwebtoken:jjwt:0.12.3'\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25523755,
+      "reputation" : 59,
+      "user_id" : 19313176,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/NJ0go.jpg?s=256",
+      "display_name" : "Mr ismail alla",
+      "link" : "https://stackoverflow.com/users/19313176/mr-ismail-alla"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1711743160,
+    "creation_date" : 1711743160,
+    "answer_id" : 78245770,
+    "question_id" : 73576686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use this</p>\n<pre><code>.signWith(key, Jwts.SIG.HS256)\n</code></pre>\n<p>Full Function</p>\n<pre><code> public String generateToken(Map&lt;String, Object&gt; extraClaims, UserDetails userDetails) {\n        return Jwts.builder()\n                .claims()\n                .add(extraClaims)\n                .subject(userDetails.getUsername())\n                .issuedAt(new Date(System.currentTimeMillis()))\n                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 + 24))\n                .and()\n                .signWith(getSignInKey(), Jwts.SIG.HS256)\n                .compact();\n\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 21003286,
+      "reputation" : 1,
+      "user_id" : 15433644,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/153912499d4bb17d9d513bdde2ac0e78?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "ibrahimqarayev",
+      "link" : "https://stackoverflow.com/users/15433644/ibrahimqarayev"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761033778,
+    "last_edit_date" : 1761033778,
+    "creation_date" : 1761033658,
+    "answer_id" : 79795575,
+    "question_id" : 73576686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I’m using SecureDigestAlgorithm, which is a generic interface.</p>\n<p><em><strong>public interface SecureDigestAlgorithm&lt;S extends Key, V extends Key&gt; ...</strong></em></p>\n<p><em>&lt;S&gt; → the type of Key used to create/sign a digital signature or MAC</em></p>\n<p><em>&lt;V&gt; → the type of Key used to verify a digital signature or MAC</em></p>\n<pre><code>private final SecureDigestAlgorithm algorithm = Jwts.SIG.HS512; // or another algorithm\n\n    public TokenResponseDto issueToken(User user) {\n        var token = Jwts.builder()\n                //\n                .signWith(key,algorithm)\n                .compact();\n        return new TokenResponseDto(token);\n    }\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 23295747,
+    "reputation" : 177,
+    "user_id" : 19416927,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/QsMmy.jpg?s=256",
+    "display_name" : "EFF",
+    "link" : "https://stackoverflow.com/users/19416927/eff"
+  },
+  "is_answered" : true,
+  "view_count" : 45405,
+  "answer_count" : 7,
+  "score" : 13,
+  "last_activity_date" : 1761033778,
+  "creation_date" : 1662079226,
+  "question_id" : 73576686,
+  "link" : "https://stackoverflow.com/questions/73576686/what-substitute-can-i-use-for-java-springs-jwts-signwith-deprecated-method",
+  "title" : "What substitute can I use for Java Spring&#39;s Jwts.signWith() deprecated method?",
+  "body" : "<p>I need to use JWT in mi API, and the IDE tells me that the .signWith() method is deprecated. So far I use the @Deprecated annotation, but I think this is not so good practice.</p>\n<p>This is my example code:</p>\n<pre><code>@Deprecated\npublic String generateToken(UserDetails userDetails) {\n    return Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date())\n            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))\n            .signWith(SignatureAlgorithm.HS256, KEY).compact();\n}\n</code></pre>\n"
+}

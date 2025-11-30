@@ -1,0 +1,334 @@
+{
+  "tags" : [ "java", "unit-testing", "mocking", "mockito", "spy" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3578773,
+      "reputation" : 1240,
+      "user_id" : 2987450,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/S6Ov2.jpg?s=256",
+      "display_name" : "Jaimie Whiteside",
+      "link" : "https://stackoverflow.com/users/2987450/jaimie-whiteside"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1422957996,
+    "creation_date" : 1422957996,
+    "answer_id" : 28296187,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The best place to start is probably <a href=\"http://site.mockito.org/mockito/docs/current/org/mockito/Mockito.html\" rel=\"noreferrer\">the docs for mockito</a>.</p>\n\n<p>On a general note the mockito mock allows you to create stubs.  </p>\n\n<p>You would create a stub method if, for example, that method does an expensive operation.  Say, it gets a database connection, retrieves a value from the database and returns it to the caller.  Getting the db connection might take 30 seconds, slowing your test execution to the point where you'll likely context switch (or stop running the test).  </p>\n\n<p>If the logic you are testing doesn't care about the database connection then you could replace that method with a stub which returns a hard coded value.</p>\n\n<p>The mockito spy lets you check whether a method calls other methods.  This can be very useful when trying to get legacy code under test.</p>\n\n<p>It is usful if you are testing a method that works through side effects, then you would use a mockito spy.  This delegates calls to the real object and allows you to verify method invocation, number of times invoked etc.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1338540,
+      "reputation" : 9767,
+      "user_id" : 1280723,
+      "user_type" : "registered",
+      "accept_rate" : 76,
+      "profile_image" : "https://www.gravatar.com/avatar/bca74bf803900a4535b642b29a8b9156?s=256&d=identicon&r=PG",
+      "display_name" : "Crazyjavahacking",
+      "link" : "https://stackoverflow.com/users/1280723/crazyjavahacking"
+    },
+    "is_accepted" : false,
+    "score" : 178,
+    "last_activity_date" : 1505318669,
+    "last_edit_date" : 1505318669,
+    "creation_date" : 1422980421,
+    "answer_id" : 28303755,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Technically speaking both \"mocks\" and \"spies\" are a special kind of \"test doubles\".</p>\n\n<p>Mockito is unfortunately making the distinction weird.</p>\n\n<p><strong>A mock in mockito is a normal mock</strong> in other mocking frameworks (allows you to stub invocations; that is, return specific values out of method calls).</p>\n\n<p><strong>A spy in mockito is a partial mock</strong> in other mocking frameworks (part of the object will be mocked and part will use real method invocations).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1052025,
+      "reputation" : 5938,
+      "user_id" : 1055715,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/Nxt74.jpg?s=256",
+      "display_name" : "Surasin Tancharoen",
+      "link" : "https://stackoverflow.com/users/1055715/surasin-tancharoen"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1730928665,
+    "last_edit_date" : 1730928665,
+    "creation_date" : 1491159969,
+    "answer_id" : 43172374,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have created a runable example here <a href=\"https://www.surasint.com/mockito-with-spy/\" rel=\"nofollow noreferrer\">https://www.surasint.com/mockito-with-spy/</a></p>\n<p>I copy some of it here.</p>\n<p>If you have something like this code:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public void transfer( DepositMoneyService depositMoneyService, \n                      WithdrawMoneyService withdrawMoneyService, \n                      double amount, String fromAccount, String toAccount) {\n    withdrawMoneyService.withdraw(fromAccount,amount);\n    depositMoneyService.deposit(toAccount,amount);\n}\n</code></pre>\n<p>You may don't need spy because you can just mock DepositMoneyService and WithdrawMoneyService.</p>\n<p>But with some legacy code, dependency is in the code like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public void transfer(String fromAccount, String toAccount, double amount) {\n    this.depositeMoneyService = new DepositMoneyService();\n    this.withdrawMoneyService = new WithdrawMoneyService();\n    withdrawMoneyService.withdraw(fromAccount,amount);\n    depositeMoneyService.deposit(toAccount,amount);\n}\n</code></pre>\n<p>Yes, you can change to the first code but then API is changed. If this method is being used by many places, you have to change all of them.</p>\n<p>Alternative is that you can extract the dependency out like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public void transfer(String fromAccount, String toAccount, double amount){\n    this.depositeMoneyService = proxyDepositMoneyServiceCreator();\n    this.withdrawMoneyService = proxyWithdrawMoneyServiceCreator();\n    withdrawMoneyService.withdraw(fromAccount,amount);\n    depositeMoneyService.deposit(toAccount,amount);\n}\n\nDepositMoneyService proxyDepositMoneyServiceCreator() {\n    return new DepositMoneyService();\n}\n\nWithdrawMoneyService proxyWithdrawMoneyServiceCreator() {\n    return new WithdrawMoneyService();\n}\n</code></pre>\n<p>Then you can use the spy the inject the dependency like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>DepositMoneyService mockDepositMoneyService = mock(DepositMoneyService.class);\nWithdrawMoneyService mockWithdrawMoneyService = mock(WithdrawMoneyService.class);\n\nTransferMoneyService target = spy(new TransferMoneyService());\n\ndoReturn(mockDepositMoneyService)\n    .when(target)\n    .proxyDepositMoneyServiceCreator();\n\ndoReturn(mockWithdrawMoneyService)\n    .when(target)\n    .proxyWithdrawMoneyServiceCreator();\n</code></pre>\n<p>More detail in the link above.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 16655492,
+        "reputation" : 1150,
+        "user_id" : 12037019,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nS0V1.png?s=256",
+        "display_name" : "pochopsp",
+        "link" : "https://stackoverflow.com/users/12037019/pochopsp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1730897389,
+      "post_id" : 45926269,
+      "comment_id" : 139590190,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "what do you mean with <i>&quot;the class has a parameterized constructor, you want to create the object first.&quot;</i> ?"
+    } ],
+    "owner" : {
+      "account_id" : 4212995,
+      "reputation" : 1172,
+      "user_id" : 3450122,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/yR1sJ.jpg?s=256",
+      "display_name" : "del bao",
+      "link" : "https://stackoverflow.com/users/3450122/del-bao"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1503949314,
+    "creation_date" : 1503949314,
+    "answer_id" : 45926269,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>TL;DR version,</p>\n\n<p>With <strong>mock</strong>, it creates a bare-bone shell instance for you.</p>\n\n<pre><code>List&lt;String&gt; mockList = Mockito.mock(ArrayList.class);\n</code></pre>\n\n<p>With <strong>spy</strong> you can partially mock on an <strong>existing</strong> instance</p>\n\n<pre><code>List&lt;String&gt; spyList = Mockito.spy(new ArrayList&lt;String&gt;());\n</code></pre>\n\n<p>Typical use case for Spy: the class has a parameterized constructor, you want to create the object first.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4063582,
+        "reputation" : 3777,
+        "user_id" : 3339394,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ciehO.jpg?s=256",
+        "display_name" : "The_Martian",
+        "link" : "https://stackoverflow.com/users/3339394/the-martian"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1562009376,
+      "post_id" : 47890101,
+      "comment_id" : 100234820,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Good answer but it will throw verify() on a mock only error and will not run the tests unless you initialize your lists in @Before setUp() method just like here                         mockList = mock(ArrayList.class);         spyList = spy(ArrayList.class); and remove the mock and spy annotation suggested here. I have tested it and my tests are passing now."
+    }, {
+      "owner" : {
+        "account_id" : 18958915,
+        "reputation" : 1212,
+        "user_id" : 13834895,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Gg8Q010y8-yP5_yXDrjFWG22q5Ty94-8ed2s8CU=k-s256",
+        "display_name" : "Andrew Chelix",
+        "link" : "https://stackoverflow.com/users/13834895/andrew-chelix"
+      },
+      "reply_to_user" : {
+        "account_id" : 4063582,
+        "reputation" : 3777,
+        "user_id" : 3339394,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ciehO.jpg?s=256",
+        "display_name" : "The_Martian",
+        "link" : "https://stackoverflow.com/users/3339394/the-martian"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1620629204,
+      "post_id" : 47890101,
+      "comment_id" : 119246694,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@The_Martian It is throwing because MockitoAnnotations.initMocks(this) is not being called in the Before setUp() method."
+    } ],
+    "owner" : {
+      "account_id" : 1059488,
+      "reputation" : 1913,
+      "user_id" : 1061409,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/UFj16.jpg?s=256",
+      "display_name" : "Vu Truong",
+      "link" : "https://stackoverflow.com/users/1061409/vu-truong"
+    },
+    "is_accepted" : false,
+    "score" : 150,
+    "last_activity_date" : 1513696972,
+    "creation_date" : 1513696972,
+    "answer_id" : 47890101,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Both can be used to mock methods or fields. The difference is that in mock, you are creating a complete mock or fake object while in spy, there is the real object and you just spying or stubbing specific methods of it.</p>\n\n<p>While in spy objects, of course, since it is a real method, when you are not stubbing the method, then it will call the real method behavior. If you want to change and mock the method, then you need to stub it.</p>\n\n<p>Consider the example below as a comparison.</p>\n\n<pre><code>import org.junit.Test;\nimport org.junit.runner.RunWith;\nimport org.mockito.Mock;\nimport org.mockito.Spy;\nimport org.mockito.runners.MockitoJUnitRunner;\n \nimport java.util.ArrayList;\nimport java.util.List;\n \nimport static org.junit.Assert.assertEquals;\nimport static org.junit.Assert.assertNull;\nimport static org.mockito.Mockito.doReturn;\nimport static org.mockito.Mockito.when;\n \n@RunWith(MockitoJUnitRunner.class)\npublic class MockSpy {\n \n    @Mock\n    private List&lt;String&gt; mockList;\n \n    @Spy\n    private List&lt;String&gt; spyList = new ArrayList();\n \n    @Test\n    public void testMockList() {\n        //by default, calling the methods of mock object will do nothing\n        mockList.add(\"test\");\n\n        Mockito.verify(mockList).add(\"test\");\n        assertEquals(0, mockList.size());\n        assertNull(mockList.get(0));\n    }\n \n    @Test\n    public void testSpyList() {\n        //spy object will call the real method when not stub\n        spyList.add(\"test\");\n\n        Mockito.verify(spyList).add(\"test\");\n        assertEquals(1, spyList.size());\n        assertEquals(\"test\", spyList.get(0));\n    }\n \n    @Test\n    public void testMockWithStub() {\n        //try stubbing a method\n        String expected = \"Mock 100\";\n        when(mockList.get(100)).thenReturn(expected);\n \n        assertEquals(expected, mockList.get(100));\n    }\n \n    @Test\n    public void testSpyWithStub() {\n        //stubbing a spy method will result the same as the mock object\n        String expected = \"Spy 100\";\n        //take note of using doReturn instead of when\n        doReturn(expected).when(spyList).get(100);\n \n        assertEquals(expected, spyList.get(100));\n    }\n}\n</code></pre>\n\n<p>When shoud you use mock or spy? If you want to be safe and avoid calling external services and just want to test the logic inside of the unit, then use mock. If you want to call external service and perform calling of real dependency, or simply say, you want to run the program as it is and just stub specific methods, then use spy. So that’s the difference between spy and mock in mockito.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2894895,
+        "reputation" : 2047,
+        "user_id" : 2482894,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a1edf964ba9c94871241fe26b765dd8d?s=256&d=identicon&r=PG",
+        "display_name" : "leo9r",
+        "link" : "https://stackoverflow.com/users/2482894/leo9r"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1552346783,
+      "post_id" : 53623296,
+      "comment_id" : 96966281,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note that Spy and Mock are always meant for dependencies, and not for the system under test."
+    } ],
+    "owner" : {
+      "account_id" : 2894895,
+      "reputation" : 2047,
+      "user_id" : 2482894,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a1edf964ba9c94871241fe26b765dd8d?s=256&d=identicon&r=PG",
+      "display_name" : "leo9r",
+      "link" : "https://stackoverflow.com/users/2482894/leo9r"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1553292120,
+    "last_edit_date" : 1553292120,
+    "creation_date" : 1543968658,
+    "answer_id" : 53623296,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I like the simplicity of this recommendation:</p>\n\n<blockquote>\n  <ul>\n  <li>If you want to be safe and avoid calling external services and just want to test the logic inside of the unit, then use <strong>mock</strong>.</li>\n  <li>If you want to call external service and perform calling of real dependencies, or simply say, you want to run the program as it is and just stub specific methods, then use <strong>spy</strong>.</li>\n  </ul>\n</blockquote>\n\n<p>Source: <a href=\"https://javapointers.com/tutorial/difference-between-spy-and-mock-in-mockito/\" rel=\"noreferrer\">https://javapointers.com/tutorial/difference-between-spy-and-mock-in-mockito/</a></p>\n\n<p>A common difference is:</p>\n\n<blockquote>\n  <ul>\n  <li>If you want to directly stub the method(s) of a dependency, then <strong>Mock</strong> that dependency.</li>\n  <li>If you want to stub the data in a dependency so that all its methods return testing values that you need, then <strong>Spy</strong> that dependency.</li>\n  </ul>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1778502,
+        "reputation" : 950,
+        "user_id" : 1621777,
+        "user_type" : "registered",
+        "accept_rate" : 17,
+        "profile_image" : "https://i.sstatic.net/cnmnU.jpg?s=256",
+        "display_name" : "Ashish Bansal",
+        "link" : "https://stackoverflow.com/users/1621777/ashish-bansal"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1621439977,
+      "post_id" : 59930840,
+      "comment_id" : 119497958,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "what a explanation"
+    }, {
+      "owner" : {
+        "account_id" : 4833528,
+        "reputation" : 1260,
+        "user_id" : 3901029,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/pyayF.jpg?s=256",
+        "display_name" : "F.S.",
+        "link" : "https://stackoverflow.com/users/3901029/f-s"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1723316296,
+      "post_id" : 59930840,
+      "comment_id" : 139031602,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;m sure it&#39;s with good intention but all these election context just adds unnecessary mental burden while I&#39;m trying to digest the answer"
+    } ],
+    "owner" : {
+      "account_id" : 6401714,
+      "reputation" : 6520,
+      "user_id" : 4964136,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/4RUpd.jpg?s=256",
+      "display_name" : "Vishwa Ratna",
+      "link" : "https://stackoverflow.com/users/4964136/vishwa-ratna"
+    },
+    "is_accepted" : false,
+    "score" : 41,
+    "last_activity_date" : 1580126754,
+    "creation_date" : 1580126754,
+    "answer_id" : 59930840,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In short:</p>\n\n<p><code>@Spy</code> and <code>@Mock</code> are used heavily in testing of code, but developers do confuse in cases when to use one of them and thus developers end up in using <code>@Mock</code> to be safe.</p>\n\n<ul>\n<li>Use <code>@Mock</code> when you want to just test the functionality <strong>externally</strong>\nwithout actually calling that method.</li>\n<li>Use <code>@Spy</code> when you want to test the functionality <strong>externally +\ninternally</strong> with the very method being called.</li>\n</ul>\n\n<p>Below is the example where i have taken the scenario of <strong>Election20xx</strong> in America.</p>\n\n<p>Voters can be divided according to <code>VotersOfBelow21</code> and <code>VotersOfABove21</code>.</p>\n\n<p>The ideal Exit poll says that Trump will win the election because <code>VotersOfBelow21</code> and <code>VotersOfABove21</code> both will vote for trump  saying \"<strong>We elected President Trump</strong> \"</p>\n\n<p><strong>But this is not the real scenario:</strong></p>\n\n<blockquote>\n  <p>Voters of both age group voted for Trump because they had No other\n  effective choice other than Mr Trump.</p>\n</blockquote>\n\n<p><strong>So how do you Test it??</strong></p>\n\n<pre><code>public class VotersOfAbove21 {\npublic void weElected(String myVote){\n  System.out.println(\"Voters of above 21 has no Choice Than Thrump in 20XX \");\n}\n}\n</code></pre>\n\n<hr>\n\n<pre><code>public class VotersOfBelow21 {\n  public void weElected(String myVote){\n    System.out.println(\"Voters of below 21 has no Choice Than Thrump in 20XX\");\n  }\n}\n</code></pre>\n\n<hr>\n\n<pre><code>public class ElectionOfYear20XX {\n  VotersOfAbove21 votersOfAbove21;\n  VotersOfBelow21 votersOfBelow21;\n  public boolean weElected(String WeElectedTrump){\n    votersOfAbove21.weElected(WeElectedTrump);\n    System.out.println(\"We elected President Trump \");\n\n    votersOfBelow21.weElected(WeElectedTrump);\n    System.out.println(\"We elected President Trump \");\n    return true;\n  }\n\n}\n</code></pre>\n\n<hr>\n\n<p>Now Note in above first two classes, both the age group people says that they do not have a better choice than trump. Which explicitly means that they voted for Trump just because they had no choice.</p>\n\n<p>Now the <code>ElectionOfYear20XX</code>  says that Trump Won because both age group voted for him overwhelmingly.</p>\n\n<p>If we were to Test the <code>ElectionOfYear20XX</code> with @Mock, then we might not be able to get the real reason why Trump won, we will be just testing the external reason.</p>\n\n<p>If we test the <code>ElectionOfYear20XX</code> with @Spy, then we get the real reason why Trump won with the external exit poll results, i.e internally + externally.</p>\n\n<hr>\n\n<p>Our <code>ELectionOfYear20XX_Test</code> class:</p>\n\n<pre><code>@RunWith(MockitoJUnitRunner.class)\npublic class ELectionOfYear20XX_Test {\n\n  @Mock\n  VotersOfBelow21 votersOfBelow21;\n  @Mock\n  VotersOfAbove21 votersOfAbove21;\n  @InjectMocks\n  ElectionOfYear20XX electionOfYear20XX;\n  @Test\n  public void testElectionResults(){\n    Assert.assertEquals(true,electionOfYear20XX.weElected(\"No Choice\"));\n  }\n\n}\n</code></pre>\n\n<p>This should <strong>output</strong> just the logic test results i.e. external check:</p>\n\n<pre><code>We elected President Trump \nWe elected President Trump \n</code></pre>\n\n<hr>\n\n<p>Testing with <code>@Spy</code> externally as well as internally with actual method invocation.</p>\n\n<pre><code>@RunWith(MockitoJUnitRunner.class)\npublic class ELectionOfYear20XX_Test {\n\n  @Spy\n  VotersOfBelow21 votersOfBelow21;\n  @Spy\n  VotersOfAbove21 votersOfAbove21;\n  @InjectMocks\n  ElectionOfYear20XX electionOfYear20XX;\n  @Test\n  public void testElectionResults(){\n    Assert.assertEquals(true,electionOfYear20XX.weElected(\"No Choice\"));\n  }\n\n}\n</code></pre>\n\n<p><strong>Output:</strong></p>\n\n<pre><code>Voters of above 21 has no Choice Than Thrump in 20XX \nWe elected President Trump \nVoters of below 21 has no Choice Than Thrump in 20XX\nWe elected President Trump \n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13084532,
+        "reputation" : 337,
+        "user_id" : 9453953,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/APWdQ.jpg?s=256",
+        "display_name" : "redd77",
+        "link" : "https://stackoverflow.com/users/9453953/redd77"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1643503132,
+      "post_id" : 70165346,
+      "comment_id" : 125357789,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Simple  good answer"
+    } ],
+    "owner" : {
+      "account_id" : 6443880,
+      "reputation" : 494,
+      "user_id" : 4992961,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1d4762d8153bec51afcd28cb98776c3c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Hamdhan Azeez T",
+      "link" : "https://stackoverflow.com/users/4992961/hamdhan-azeez-t"
+    },
+    "is_accepted" : false,
+    "score" : 29,
+    "last_activity_date" : 1638265585,
+    "last_edit_date" : 1638265585,
+    "creation_date" : 1638254892,
+    "answer_id" : 70165346,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>mock</strong> is used if we want to mock <em>all</em> the methods of a class.</p>\n<p><strong>spy</strong> is used if we want to mock <em>some</em> methods and for remaining methods actual call has to be made.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14148561,
+      "reputation" : 160,
+      "user_id" : 13052285,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/152a519eff7d3bf7beb5d41cef5ed4cb?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "James Wagstaff",
+      "link" : "https://stackoverflow.com/users/13052285/james-wagstaff"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1664789234,
+    "last_edit_date" : 1664789234,
+    "creation_date" : 1657735404,
+    "answer_id" : 72970733,
+    "question_id" : 28295625,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A bit late to the show, but I feel the other responses don't do a very good job at illustrating the differences between Spies and Mocks. So here is a small demo</p>\n<p>Given a service to test</p>\n<pre><code>public class EmailService {\n\npublic String sendMail(String email) {\n    return String.format(&quot;Email successfully sent to %s&quot;, email);\n   }\n}\n</code></pre>\n<p>We can now do some testing with four different scenarios.</p>\n<ol>\n<li>Calling and stubbing a mock</li>\n<li>Calling a mock without stubbing</li>\n<li>Calling a spy without stubbing</li>\n<li>Calling and stubbing a spy</li>\n</ol>\n<p>Setup:</p>\n<pre><code>private final String testEmail = &quot;randomuser@domain.com&quot;;\nprivate final String success = &quot;SUCCESS&quot;;\n@Mock EmailService emailService;\n@Spy EmailService emailServiceSpy;\n</code></pre>\n<p>Tests:</p>\n<pre><code>@Test\n@Description(&quot;When mock is called, we can return any response we like&quot;)\npublic void simpleTest1() {\n\n    when(emailService.sendMail(testEmail)).thenReturn(success);\n    assertEquals(success, emailService.sendMail(testEmail));\n}\n\n@Test\n@Description(&quot;When mock is called but not stubbed, we receive a null value&quot;)\npublic void simpleTest2() {\n    assertNull(emailService.sendMail(testEmail));\n}\n\n@Test\n@Description(&quot;When a spy is called but not stubbed, the concrete impl is called&quot;)\npublic void simpleTest3() {\n    assertTrue(emailServiceSpy.sendMail(testEmail).contains(testEmail));\n}\n\n@Test\n@Description(&quot;When a spy is called and stubbed, stubbed value is returned&quot;)\npublic void simpleTest4() {\n    when(emailServiceSpy.sendMail(testEmail)).thenReturn(success);\n    assertEquals(success, emailServiceSpy.sendMail(testEmail));\n}\n</code></pre>\n<p>A Mock if not stubbed will return a null value, whereas a Spy if not stubbed will call the implemented method inside of the concrete class.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5722372,
+    "reputation" : 2141,
+    "user_id" : 4520450,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/927a22d8ab789fe4f83bed7e6dd1e5a0?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Abhinav",
+    "link" : "https://stackoverflow.com/users/4520450/abhinav"
+  },
+  "is_answered" : true,
+  "view_count" : 227908,
+  "closed_date" : 1698928842,
+  "answer_count" : 9,
+  "score" : 207,
+  "last_activity_date" : 1730928665,
+  "creation_date" : 1422956294,
+  "last_edit_date" : 1671370961,
+  "question_id" : 28295625,
+  "link" : "https://stackoverflow.com/questions/28295625/mockito-spy-vs-mock",
+  "closed_reason" : "Duplicate",
+  "title" : "Mockito - @Spy vs @Mock",
+  "body" : "<p>I understand a spy calls the real methods on an object, while a mock calls methods on the double object. Also spies are to be avoided unless there is a code smell.</p>\n<p>However, how do spies work and when should I actually use them?\nHow are they different from mocks?</p>\n"
+}

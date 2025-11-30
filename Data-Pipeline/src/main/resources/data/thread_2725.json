@@ -1,0 +1,70 @@
+{
+  "tags" : [ "java", "oracle10g" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 79923,
+      "reputation" : 292,
+      "user_id" : 226324,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/06bf5c91231198224691a5682b4be4f9?s=256&d=identicon&r=PG",
+      "display_name" : "Roy",
+      "link" : "https://stackoverflow.com/users/226324/roy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1349992039,
+    "creation_date" : 1349992039,
+    "answer_id" : 12850408,
+    "question_id" : 12850407,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The listener does not know about the database. Is the instance running?</p>\n\n<p>You can refer to Oracle documentation at <a href=\"http://docs.oracle.com\" rel=\"nofollow\">http://docs.oracle.com</a> or even an old howto found at <a href=\"http://www.tldp.org/HOWTO/Oracle-7-HOWTO-4.html\" rel=\"nofollow\">http://www.tldp.org/HOWTO/Oracle-7-HOWTO-4.html</a> for different listener configurations.</p>\n\n<p>The Network Configuration Assistant (netca) will in most cases be able to give you a working basic configuration, where the database automatically registers with the listener.</p>\n"
+  } ],
+  "migrated_from" : {
+    "other_site" : {
+      "styling" : {
+        "tag_background_color" : "#F3F1D9",
+        "tag_foreground_color" : "#444444",
+        "link_color" : "#10456A"
+      },
+      "related_sites" : [ {
+        "relation" : "meta",
+        "api_site_parameter" : "meta.serverfault",
+        "site_url" : "https://meta.serverfault.com",
+        "name" : "Meta Server Fault"
+      }, {
+        "relation" : "chat",
+        "site_url" : "https://chat.stackexchange.com?tab=site&host=serverfault.com",
+        "name" : "Chat Stack Exchange"
+      } ],
+      "markdown_extensions" : [ "Prettify" ],
+      "launch_date" : 1243296000,
+      "open_beta_date" : 1241049600,
+      "site_state" : "normal",
+      "high_resolution_icon_url" : "https://serverfault.com/Content/Sites/serverfault/Img/apple-touch-icon@2.png",
+      "favicon_url" : "https://serverfault.com/Content/Sites/serverfault/Img/favicon.ico",
+      "icon_url" : "https://serverfault.com/Content/Sites/serverfault/Img/apple-touch-icon.png",
+      "audience" : "system and network administrators",
+      "site_url" : "https://serverfault.com",
+      "api_site_parameter" : "serverfault",
+      "logo_url" : "https://serverfault.com/Content/Sites/serverfault/Img/logo.png",
+      "name" : "Server Fault",
+      "site_type" : "main_site"
+    },
+    "on_date" : 1350000094,
+    "question_id" : 410029
+  },
+  "owner" : {
+    "user_type" : "does_not_exist",
+    "display_name" : "animark"
+  },
+  "is_answered" : false,
+  "view_count" : 11277,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1764018165,
+  "creation_date" : 1342954298,
+  "question_id" : 12850407,
+  "link" : "https://stackoverflow.com/questions/12850407/getting-exception-the-network-adapter-could-not-establish-the-connection-in-sim",
+  "title" : "getting exception: The Network Adapter could not establish the connection in simple jdbc program",
+  "body" : "<p>I was trying to run a simple jdbc code [ using jdk 1.6, oracle 10g] as,</p>\n\n<pre><code>package javaapplication2;\nimport java.text.*;\nimport java.sql.*;\nimport java.io.FileWriter;\nimport java.io.PrintWriter;\nimport java.io.BufferedWriter;\n/**\n * @author animark\n */\npublic class CallableStatementEx1 {\n    public CallableStatementEx1(){;}\n\npublic static void main(String s[]) throws Exception {\n    try\n    {\n        Class.forName(\"oracle.jdbc.driver.OracleDriver\").newInstance();\n        Connection con=null;\n        String url= \"jdbc:oracle:thin:@//localhost:1521:orcl\" ;   \n        con = DriverManager.getConnection(url,\"scott\",\"password\");\n\n        String query=\"update emp set HIREDATE=?,ENAME=? where empno=?\";\n\n        //Step1: Get PreparedStatement\n        PreparedStatement ps=con.prepareStatement(query);\n\n        //Prepare java.sql.Date object\n        /*\n        This logic shows how to convert simple String that is in \n        dd-MM-yyyy format into Date object\n        */\n        SimpleDateFormat sdf=new SimpleDateFormat(\"dd-MM-yyyy\");\n        java.util.Date d=sdf.parse(\"26-12-2001\");\n        java.sql.Date newdate=new java.sql.Date(d.getTime());\n\n        //Step2: set parameters\n        ps.setDate(1,newdate);\n        ps.setString(2,\"animark\");\n        ps.setInt(3,7839);\n\n        //Step3: execute the query\n        int i=ps.executeUpdate();\n\n        System.out.println(\"record updated count: \"+i);\n        con.close();\n    }\n    catch(Exception e)\n    {\n                    e.printStackTrace();\n\n    }\n    }//main\n}//class\n</code></pre>\n\n<p>The code is getting compiled properly. But when I'm trying to run it, i'm getting the following exception..</p>\n\n<pre><code>java.sql.SQLException: Io exception: The Network Adapter could not establish the connection\n    at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:112)\n    at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:146)\n    at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:255)\n    at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:387)\n    at oracle.jdbc.driver.PhysicalConnection.&lt;init&gt;(PhysicalConnection.java:414)\n    at oracle.jdbc.driver.T4CConnection.&lt;init&gt;(T4CConnection.java:165)\n    at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:35)\n    at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:801)\n    at java.sql.DriverManager.getConnection(Unknown Source)\n    at java.sql.DriverManager.getConnection(Unknown Source)\nat javaapplication2.CallableStatementEx1.main(CallableStatementEx1.java:19)\n</code></pre>\n\n<p>I've checked the oracle services and all of them are up and running.</p>\n\n<p>Also, please find the contents of other files as</p>\n\n<p>================================================================================= tnsnames.ora:</p>\n\n<pre><code># tnsnames.ora Network Configuration File: C:\\oraclexe\\app\\oracle\\product\\10.2.0\\server\\BIN\\network\\admin\\tnsnames.ora\n# Generated by Oracle configuration tools.\n\nORCL =\n  (DESCRIPTION =\n    (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))\n    (CONNECT_DATA =\n      (SERVER = DEDICATED)\n      (SERVICE_NAME = orcl)\n    )\n  )\n\nEXTPROC_CONNECTION_DATA =\n  (DESCRIPTION =\n    (ADDRESS_LIST =\n      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1))\n    )\n    (CONNECT_DATA =\n      (SID = PLSExtProc)\n      (PRESENTATION = RO)\n    )\n  )\n</code></pre>\n\n<p>====================================================================================</p>\n\n<p>sqlnet.ora</p>\n\n<pre><code># sqlnet.ora Network Configuration File: C:\\oraclexe\\app\\oracle\\product\\10.2.0\\server\\BIN\\network\\admin\\sqlnet.ora\n# Generated by Oracle configuration tools.\n\n# This file is actually generated by netca. But if customers choose to \n# install \"Software Only\", this file wont exist and without the native \n# authentication, they will not be able to connect to the database on NT.\n\nSQLNET.AUTHENTICATION_SERVICES= (NTS)\n\nNAMES.DIRECTORY_PATH= (TNSNAMES, EZCONNECT)\n</code></pre>\n\n<p>================================================================================</p>\n\n<pre><code># listener.ora Network Configuration File: C:\\oraclexe\\app\\oracle\\product\\10.2.0\\server\\BIN\\network\\admin\\listener.ora\n# Generated by Oracle configuration tools.\n\nSID_LIST_LISTENER =\n  (SID_LIST =\n    (SID_DESC =\n      (SID_NAME = PLSExtProc)\n      (ORACLE_HOME = C:\\oraclexe\\app\\oracle\\product\\10.2.0\\server\\BIN)\n      (PROGRAM = extproc)\n    )\n  )\n\nLISTENER =\n  (DESCRIPTION_LIST =\n    (DESCRIPTION =\n      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1))\n      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))\n    )\n  )\n</code></pre>\n\n<p>===============================================================================</p>\n\n<p>I'm being able to connect to the instance \"orcl\" using credentials \"scott/password\", but when i'm trying to connect using statement</p>\n\n<p>SQL> connect sys/password@orcl as sysdba</p>\n\n<p>I'm getting the following error.. ORA-12514: TNS:listener does not currently know of service requested in connect</p>\n\n<p>descriptor.</p>\n\n<p>I've also run LSNRCTL for orcl and found</p>\n\n<p>LSNRCTL for 32-bit Windows: Version 10.2.0.1.0 - Production on 22-JUL-2012 13:42:30</p>\n\n<p>Copyright (c) 1991, 2005, Oracle. All rights reserved.</p>\n\n<pre><code>Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=orcl)))\nServices Summary...\nService \"PLSExtProc\" has 1 instance(s).\n  Instance \"PLSExtProc\", status UNKNOWN, has 1 handler(s) for this service...\n    Handler(s):\n      \"DEDICATED\" established:0 refused:0\n         LOCAL SERVER\nThe command completed successfully\n</code></pre>\n\n<p>Please advice.</p>\n"
+}

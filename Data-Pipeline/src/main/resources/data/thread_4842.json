@@ -1,0 +1,89 @@
+{
+  "tags" : [ "java", "spring-boot", "apache-kafka", "spring-kafka" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1288095,
+        "reputation" : 175832,
+        "user_id" : 1240763,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/OMgXO.png?s=256",
+        "display_name" : "Gary Russell",
+        "link" : "https://stackoverflow.com/users/1240763/gary-russell"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1659983116,
+      "post_id" : 73279743,
+      "comment_id" : 129420323,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It would not be normal to add the latch to the actual listener, though, but use some other mechanism to count it down, e.g. injecting a mock or stub for <code>persistEventToDB</code>."
+    }, {
+      "owner" : {
+        "account_id" : 3273937,
+        "reputation" : 122596,
+        "user_id" : 2756547,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/2158ce6e7c048277890eb64458864c1c?s=256&d=identicon&r=PG",
+        "display_name" : "Artem Bilan",
+        "link" : "https://stackoverflow.com/users/2756547/artem-bilan"
+      },
+      "reply_to_user" : {
+        "account_id" : 1288095,
+        "reputation" : 175832,
+        "user_id" : 1240763,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/OMgXO.png?s=256",
+        "display_name" : "Gary Russell",
+        "link" : "https://stackoverflow.com/users/1240763/gary-russell"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1659983869,
+      "post_id" : 73279743,
+      "comment_id" : 129420563,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Correct, but looks like reporter has a concern from some non-official articles about <code>@KafkaListener</code>"
+    } ],
+    "owner" : {
+      "account_id" : 3273937,
+      "reputation" : 122596,
+      "user_id" : 2756547,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/2158ce6e7c048277890eb64458864c1c?s=256&d=identicon&r=PG",
+      "display_name" : "Artem Bilan",
+      "link" : "https://stackoverflow.com/users/2756547/artem-bilan"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1659969806,
+    "creation_date" : 1659969806,
+    "answer_id" : 73279743,
+    "question_id" : 73279474,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You probably didn't look into a testing part of those articles where the unit test uses this latch like: <code>eventLatch.await(10, TimeUnit.SECONDS)</code>.</p>\n<p>The point is that unit test is ran in one thread, but this <code>@KafkaListener</code> in the other, so to have some assertions in the test, you need to ensure some asynchronous barrier.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8469968,
+    "reputation" : 700,
+    "user_id" : 9311364,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://graph.facebook.com/1140657022651489/picture?type=large",
+    "display_name" : "Ladu anand",
+    "link" : "https://stackoverflow.com/users/9311364/ladu-anand"
+  },
+  "is_answered" : true,
+  "view_count" : 1949,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1759289511,
+  "creation_date" : 1659968709,
+  "last_edit_date" : 1759289511,
+  "question_id" : 73279474,
+  "link" : "https://stackoverflow.com/questions/73279474/what-is-the-use-of-countdown-latch-in-kafka-listener",
+  "title" : "What is the use of CountDown Latch in Kafka Listener?",
+  "body" : "<p>I have seen a lot of articles where they use CountDownLatch in Kafka Listener, but I am not able to understand why it's being used here.</p>\n<p>What happens when we increase the initial count in the latch? Does it configure the number of messages the listener can consume concurrently?</p>\n<pre><code>private CountDownLatch eventLatch = new CountDownLatch(1);\n\n@KafkaListener(topics = &quot;${message.topic.name}&quot;, containerFactory = &quot;eventKafkaListenerContainerFactory&quot;, groupId = &quot;${kafka.consumer.groupId}&quot;)\npublic void eventListener(\n        @Payload Event event,\n        @Header(KafkaHeaders.OFFSET) Long offset,\n        @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,\n        @Nullable @Header(&quot;X-Retry&quot;) String retryCountHeader, \n        Acknowledgment ack\n) {\n    log.info(&quot;Received event message: {} from partition : {} and offset : {} &quot;, event, partition, offset);\n    try {\n        persistEventToDB(event);\n    } catch (Exception e) {\n        log.info(&quot;Exception occured : {}&quot;, e.getClass().getName());\n        if (e instanceof DateTimeParseException) {\n            log.info(&quot;Non Recoverable exception , hence sending to DLT without any retry for message : {}&quot;, event);\n            sendToDLT(event, null, false);\n        } else {\n            log.info(&quot;Sending to DLT for retry as message consumption failed for message {} &quot;, event);\n            sendToDLT(event, retryCountHeader, true);\n        }\n    } finally {\n        ack.acknowledge();\n        this.eventLatch.countDown();\n    }\n}\n</code></pre>\n"
+}

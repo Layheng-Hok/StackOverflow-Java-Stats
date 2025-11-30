@@ -1,0 +1,691 @@
+{
+  "tags" : [ "java", "sql-server", "jdbc", "mssql-jdbc", "smartfoxserver" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5011,
+        "reputation" : 38241,
+        "user_id" : 7850,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/RM3XT.jpg?s=256",
+        "display_name" : "Shaul Behr",
+        "link" : "https://stackoverflow.com/users/7850/shaul-behr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1306068934,
+      "post_id" : 6087911,
+      "comment_id" : 7054764,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Everything is 64 bit; the SFS installation is running out of my &quot;Program Files&quot; folder (as opp to &quot;Program Files (x86)&quot;).  Can I assume the JVM is also 64 bit?  How would I be able to tell?"
+    }, {
+      "owner" : {
+        "account_id" : 5011,
+        "reputation" : 38241,
+        "user_id" : 7850,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/RM3XT.jpg?s=256",
+        "display_name" : "Shaul Behr",
+        "link" : "https://stackoverflow.com/users/7850/shaul-behr"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1306069401,
+      "post_id" : 6087911,
+      "comment_id" : 7054821,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "OMG, this is wild.  I experimented and copied over the x86 version of the DLL into the extensions folder - and it worked!  That is totally wild - supposedly a 64-bit server, but it&#39;s running a 32 bit version of the JVM!  (In other words, you hit the jackpot!)"
+    }, {
+      "owner" : {
+        "account_id" : 20338,
+        "reputation" : 65322,
+        "user_id" : 48503,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/672f798341250dd228b286738e8d6309?s=256&d=identicon&r=PG",
+        "display_name" : "Luke Woodward",
+        "link" : "https://stackoverflow.com/users/48503/luke-woodward"
+      },
+      "reply_to_user" : {
+        "account_id" : 5011,
+        "reputation" : 38241,
+        "user_id" : 7850,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/RM3XT.jpg?s=256",
+        "display_name" : "Shaul Behr",
+        "link" : "https://stackoverflow.com/users/7850/shaul-behr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1306070831,
+      "post_id" : 6087911,
+      "comment_id" : 7054957,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Shaul: glad you figured it out.  I was in the process of adding further info to my answer to help you, but it looks like you didn&#39;t need it! :)"
+    } ],
+    "owner" : {
+      "account_id" : 20338,
+      "reputation" : 65322,
+      "user_id" : 48503,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/672f798341250dd228b286738e8d6309?s=256&d=identicon&r=PG",
+      "display_name" : "Luke Woodward",
+      "link" : "https://stackoverflow.com/users/48503/luke-woodward"
+    },
+    "is_accepted" : true,
+    "score" : 31,
+    "last_activity_date" : 1586038727,
+    "last_edit_date" : 1586038727,
+    "creation_date" : 1306067212,
+    "answer_id" : 6087911,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are different versions of sqljdbc_auth.dll for different processor architectures (x86/x64/ia64).  Which one are you using on your SFS server?</p>\n\n<p>You must choose the one to match the architecture of the JVM under which SFS is running.  So, if you're running 32-bit Java on a 64-bit machine, you'll need the x86 version, not the x64 version.</p>\n\n<p>I've not used SFS before, so I don't know whether it writes any logs anywhere.  If it does, it might be worth taking a look at these logs to see if anything helpful has been written to them.</p>\n\n<p><strong>EDIT</strong>:  I can't be 100% sure that SFS is using 64-bit Java just because it runs out of C:\\Program Files as opposed to C:\\Program Files (x86).</p>\n\n<p>I found the following line in the <a href=\"http://smartfoxserver.com/docs/\" rel=\"noreferrer\">SFS docs</a> under Introduction > Requirements and Installation.  Whilst this line applies only to Linux as opposed to Windows, it might suggest that SFS on Windows also uses 32-bit Java:</p>\n\n<blockquote>\n  <p>Since version 1.5 SmartFoxServer comes with its own x86 32-bit Sun Java Runtime. </p>\n</blockquote>\n\n<p>One quick way to determine which version(s) of Java you have installed is, give the following command in your cmd: <code>Java -version</code></p>\n\n<p>It will display the following to the console:</p>\n\n<pre><code>C:\\Users\\967097&gt;java -version\njava version \"1.8.0_131\"\nJava(TM) SE Runtime Environment (build 1.8.0_131-b11)\nJava HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)\n</code></pre>\n\n<p>Here,you can see the bit type of the java version installed.</p>\n\n<p>Does your application work if you use the x86 version of sqljdbc_auth.dll instead of the x64 version?  If it suddenly starts working with the x86 DLL, then SFS must be using 32-bit Java.</p>\n\n<p>Is there a batch-file used to start SFS?  If so, reading through that might help point out where SFS is running Java from.  Also look out for any changes to the <code>PATH</code>.  Java can only load DLLs in the <code>java.library.path</code> system property, and on Windows, this is set to the value of the <code>PATH</code> environment variable.</p>\n\n<p>If you still can't determine whether SFS is using 32-bit or 64-bit Java, try using Process Explorer to look at the environment that the java.exe process running SFS was started with.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7391810,
+      "reputation" : 467,
+      "user_id" : 5624977,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/f96d6574842ffb748ede543138200f71?s=256&d=identicon&r=PG",
+      "display_name" : "Mohammad Hani",
+      "link" : "https://stackoverflow.com/users/5624977/mohammad-hani"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1448963209,
+    "creation_date" : 1448963209,
+    "answer_id" : 34017248,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><strong>Place .dll File In Your JRE Folder:-</strong></b><br/>\nI was also facing the same problem and after that I placed sqljdbc_auth.dll (x86 or x64) depending upon your operating system in JRE folder i.e jre7/bin/file.dll and then run my application.jar &amp; it worked perfectly. This worked for me you can also try this may this also help's to you :)  </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 940012,
+        "reputation" : 24024,
+        "user_id" : 968244,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://i.sstatic.net/I9DXX.jpg?s=256",
+        "display_name" : "isapir",
+        "link" : "https://stackoverflow.com/users/968244/isapir"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1528910876,
+      "post_id" : 45802582,
+      "comment_id" : 88689580,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Copying to the Java bin directory is sufficient"
+    }, {
+      "owner" : {
+        "account_id" : 1965862,
+        "reputation" : 3785,
+        "user_id" : 1766166,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/eb10957bb63df3ecabe7e4ff94710d7e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "zygimantus",
+        "link" : "https://stackoverflow.com/users/1766166/zygimantus"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1587302158,
+      "post_id" : 45802582,
+      "comment_id" : 108452063,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "For me putting into corresponding jdk/bin and jre/bin was sufficient."
+    }, {
+      "owner" : {
+        "account_id" : 189466,
+        "reputation" : 5377,
+        "user_id" : 428811,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/9c08c7f05e0d0444cd72807e8911d728?s=256&d=identicon&r=PG",
+        "display_name" : "Mr. TA",
+        "link" : "https://stackoverflow.com/users/428811/mr-ta"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1615388941,
+      "post_id" : 45802582,
+      "comment_id" : 117675860,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I copied that file EVERYWHERE. I needed this to use Oracle DataModeler, so I opened C:\\Program Files\\OracleDataModeler and copied this file to <code>.\\jdk\\lib</code>, <code>.\\jdk\\jre\\bin</code>, <code>.\\jdk\\jre\\lib</code>, <code>.\\jdbc\\lib</code>, and <code>.\\jlib</code>. And it works!"
+    }, {
+      "owner" : {
+        "account_id" : 1525184,
+        "reputation" : 1547,
+        "user_id" : 1423806,
+        "user_type" : "registered",
+        "accept_rate" : 33,
+        "profile_image" : "https://www.gravatar.com/avatar/12c5db3400c267da7d13c15dae948287?s=256&d=identicon&r=PG",
+        "display_name" : "Bemipefe",
+        "link" : "https://stackoverflow.com/users/1423806/bemipefe"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1650978932,
+      "post_id" : 45802582,
+      "comment_id" : 127248183,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<i>NOTE:</i> Starting from the Microsoft JDBC driver version 8 the file <b>sqljdbc_auth.dll</b> has been renamed to <b>mssql-jdbc_auth-x.x.x.xxx.dll</b> while the JDK/JRE may still want the <b>sqljdbc_auth.dll</b> name. Also make sure to copy the files from the proper folder. If you have a 32-bit JDK/JRE you need the dll under x86 otherwise you need to copy the dll under x64"
+    }, {
+      "owner" : {
+        "account_id" : 210597,
+        "reputation" : 995,
+        "user_id" : 462291,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/1fe0140435f110d1cea20ad31d68ea23?s=256&d=identicon&r=PG",
+        "display_name" : "Hammer Bro.",
+        "link" : "https://stackoverflow.com/users/462291/hammer-bro"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1666117397,
+      "post_id" : 45802582,
+      "comment_id" : 130858361,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Make very certain that the version of your .dll exactly matches the version of the sqljdbc.jar file.  Lost an hour to an off-by-0.1 error."
+    } ],
+    "owner" : {
+      "account_id" : 1489655,
+      "reputation" : 1309,
+      "user_id" : 1397066,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6An3U.jpg?s=256",
+      "display_name" : "Pavan",
+      "link" : "https://stackoverflow.com/users/1397066/pavan"
+    },
+    "is_accepted" : false,
+    "score" : 54,
+    "last_activity_date" : 1503336002,
+    "creation_date" : 1503336002,
+    "answer_id" : 45802582,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When using Windows Authentication Integrated Security</p>\n\n<ol>\n<li>Download the <strong>sqljdbc_6.0.8112.100_enu.exe</strong> from Microsoft Site</li>\n<li>Install the exe (read the instructions in the zip path)</li>\n<li><p>copy sqljdbc_4.0/enu/auth/x64/sqljdbc_auth.dll to</p>\n\n<p>Java/jre7/bin <strong>and to</strong></p>\n\n<p>Java/jre7/lib</p></li>\n</ol>\n\n<p>After this youj should be able to connect to hibernate tools to pull the database in Data Tools</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14062975,
+      "reputation" : 1945,
+      "user_id" : 10158524,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-x-cnMXUgY3U/AAAAAAAAAAI/AAAAAAAAAms/NIoGf06EXoA/s256-rj/photo.jpg",
+      "display_name" : "Wes",
+      "link" : "https://stackoverflow.com/users/10158524/wes"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1556863458,
+    "creation_date" : 1556863458,
+    "answer_id" : 55964093,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Download the jdbc driver (ver 7.2) from Microsoft and copy the <strong>sqljdbc_auth.dll</strong> to C:\\Program Files\\Java\\jre\\bin and C:\\Program Files\\Java\\jdk\\bin folder. You would go to Program Files (x86) folder if you're running Java 32-bit.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1488796,
+        "reputation" : 182,
+        "user_id" : 1396422,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/719483a647fca97bd7492fb1cd1c7ec4?s=256&d=identicon&r=PG",
+        "display_name" : "juanchavezlive",
+        "link" : "https://stackoverflow.com/users/1396422/juanchavezlive"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1628288235,
+      "post_id" : 63176862,
+      "comment_id" : 121389287,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is in fact, the easier and the correct answer too"
+    }, {
+      "owner" : {
+        "account_id" : 8010146,
+        "reputation" : 898,
+        "user_id" : 6042172,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/582851cd504092012fe4de00e5e8c41c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "glezo",
+        "link" : "https://stackoverflow.com/users/6042172/glezo"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1649333549,
+      "post_id" : 63176862,
+      "comment_id" : 126852201,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I found this very useful to solve the SSL error when connecting Oracle Data Modeler to a mssql that refuses non-SSL connections."
+    }, {
+      "owner" : {
+        "account_id" : 3011691,
+        "reputation" : 781,
+        "user_id" : 2555056,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/q9ypc.jpg?s=256",
+        "display_name" : "Anjan Biswas",
+        "link" : "https://stackoverflow.com/users/2555056/anjan-biswas"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1707817274,
+      "post_id" : 63176862,
+      "comment_id" : 137486293,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "is it necessery to restart my computer?"
+    } ],
+    "owner" : {
+      "account_id" : 6224774,
+      "reputation" : 1780,
+      "user_id" : 4843412,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6jpnNoBM.png?s=256",
+      "display_name" : "Will Buffington",
+      "link" : "https://stackoverflow.com/users/4843412/will-buffington"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1596124350,
+    "creation_date" : 1596124350,
+    "answer_id" : 63176862,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In my case, I did the following to resolve:</p>\n<p>Downloaded the Microsoft JDBC Driver 8.2 for SQL Server (zip) (found here - <a href=\"https://learn.microsoft.com/en-us/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15\" rel=\"noreferrer\">https://learn.microsoft.com/en-us/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15</a>).</p>\n<p>Then in the zip file, I went into the following folders:</p>\n<p>sqljdbc_8.2 &gt; enu &gt; auth &gt; x64</p>\n<p>and the copied &quot;mssql-jdbc_auth-8.2.2.x64.dll&quot; to C:\\Program Files\\Java\\jdk-12.0.1\\bin</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 267679,
+        "reputation" : 333,
+        "user_id" : 556003,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/AGPWo.jpg?s=256",
+        "display_name" : "Tony B",
+        "link" : "https://stackoverflow.com/users/556003/tony-b"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1614290646,
+      "post_id" : 63773348,
+      "comment_id" : 117348539,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Adding authenticationScheme=NTLM was what I needed to get JPA tools to work in Eclipse with Windows Integrated Authentication (WIA). Userid and password is then required but authentication is with WIA. Nothing else worked."
+    }, {
+      "owner" : {
+        "account_id" : 4262636,
+        "reputation" : 546,
+        "user_id" : 3486601,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/TuudA.jpg?s=256",
+        "display_name" : "Danish Ansari",
+        "link" : "https://stackoverflow.com/users/3486601/danish-ansari"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1628008018,
+      "post_id" : 63773348,
+      "comment_id" : 121305353,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What&#39;s &quot;myDomain&quot; in connection string?"
+    }, {
+      "owner" : {
+        "account_id" : 8625831,
+        "reputation" : 784,
+        "user_id" : 6459098,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ddee3210609f8277608f362b557dc185?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "U_R_Naveen UR_Naveen",
+        "link" : "https://stackoverflow.com/users/6459098/u-r-naveen-ur-naveen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1628083252,
+      "post_id" : 63773348,
+      "comment_id" : 121326436,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "domain for windows username"
+    }, {
+      "owner" : {
+        "account_id" : 3472249,
+        "reputation" : 308,
+        "user_id" : 2906290,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b36457a32fb3858edee0e79f6cd7452c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Ra&#250;l Moreno",
+        "link" : "https://stackoverflow.com/users/2906290/ra%c3%bal-moreno"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1631276285,
+      "post_id" : 63773348,
+      "comment_id" : 122185047,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great! I didn&#39;t need the NTLM but this (together with copying the sqljdbc_auth.dll in the appropiate path, in my case /libswt for Pentaho Data Integration as the documentatino states) did the job."
+    }, {
+      "owner" : {
+        "account_id" : 5473999,
+        "reputation" : 695,
+        "user_id" : 4352497,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/ggXQ9.jpg?s=256",
+        "display_name" : "Shanemeister",
+        "link" : "https://stackoverflow.com/users/4352497/shanemeister"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1638398399,
+      "post_id" : 63773348,
+      "comment_id" : 124081117,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Was able to connect to an SQL Server database using Erwin Data Modeler -- reverse engineered.  Didn&#39;t need the domain, but needed the authenticationScheme=NTLM, and integratedSecurity=true.  Thank you!"
+    } ],
+    "owner" : {
+      "account_id" : 8625831,
+      "reputation" : 784,
+      "user_id" : 6459098,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ddee3210609f8277608f362b557dc185?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "U_R_Naveen UR_Naveen",
+      "link" : "https://stackoverflow.com/users/6459098/u-r-naveen-ur-naveen"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1599464838,
+    "creation_date" : 1599464838,
+    "answer_id" : 63773348,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>i had faced same issue for the following windows authentication string</p>\n<pre><code>jdbc:sqlserver://host:1433;integratedSecurity=true\n</code></pre>\n<p>the default authenticationScheme=NativeAuthentication, So it might depends on some microsoft dlls. To fix it, the update authenticationScheme as NTLM as below</p>\n<pre><code>jdbc:sqlserver://host:1433;authenticationScheme=NTLM;integratedSecurity=true;domain=myDomain\n</code></pre>\n<p><strong>note</strong>: username given was without domain</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14296520,
+      "reputation" : 11,
+      "user_id" : 10327040,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2f14d4c6699f5959adb908e17deb848a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "raj",
+      "link" : "https://stackoverflow.com/users/10327040/raj"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1603399163,
+    "creation_date" : 1603399163,
+    "answer_id" : 64490208,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>i had a similar issue and i placed location of .dll file in pom.xml  under</p>\n<p>&lt; configuration &gt;</p>\n<p>&lt; argLine &gt; -Djava.library.path=&quot;C:\\*<strong>\\</strong>\\**&quot;&lt; argLine&gt;</p>\n<p>and that worked for me</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 20250997,
+      "reputation" : 11,
+      "user_id" : 14852133,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/a8939b9aa63fe8709c3ed673dbb06f95?s=256&d=identicon&r=PG",
+      "display_name" : "Dipu",
+      "link" : "https://stackoverflow.com/users/14852133/dipu"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1608326667,
+    "last_edit_date" : 1608326667,
+    "creation_date" : 1608316200,
+    "answer_id" : 65362184,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This worked for me:</p>\n<p>Download Microsoft JDBC Driver for SQL Server and extract the content.\nThere you will find a <code>sqljdbc_auth.dll</code> from <code>Microsoft JDBC Driver x.x for SQL Server\\sqljdbc_x.x\\enu\\auth\\x64</code>.\nCopy that file to the <code>System32</code> folder of Windows.</p>\n<p>Now test the connection.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 32670,
+      "reputation" : 6969,
+      "user_id" : 90802,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/63ff48b036f247c711f68d51a7f1a21e?s=256&d=identicon&r=PG",
+      "display_name" : "charlie arehart",
+      "link" : "https://stackoverflow.com/users/90802/charlie-arehart"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1610339204,
+    "last_edit_date" : 1610339204,
+    "creation_date" : 1610338872,
+    "answer_id" : 65661293,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have a slightly different take on the other answers here, both in terms or what file (name) may need to be copied to a special place, and where it should be copied. (It isn't ALWAYS going to be sqljdbc_auth.dll, and it isn't ALWAYS to be placed in the jre/bin of whatever is your public JRE. More follows.</p>\n<p>First, in later versions of the MS SQL Server driver, I found that the filename is not sqljdbc_auth.dll but instead mssql-jdbc_auth-8.4.1.x64.dll (in a specific recent version, of course). As for the exact name of the file (and where to look for it if you don't yet have it), it would be whatever is found in the zip you downloaded from MS.</p>\n<p>Specifically, in my case, that zip was sqljdbc_8.4.1.0_enu.zip, and the dll was found within that in sqljdbc_8.4\\enu\\auth\\x64 (since I am running on 64-bit Windows and plan to implement the DLL within my 64-bit JVM).</p>\n<p>Second, as for WHERE that file needed to be placed on my machine, while many people here understandably suggest placing it in such places as Windows system32 or the jre/bin of whatever is their public JRE (and tha tmay work for them), it did not work for me.</p>\n<p>In my case, it's that the app server I am using (such as Tomcat) was configured to use a SPECIFIC JVM/JRE on my machine. And I needed to put this DLL into the jre/bin folder of THAT JVM (or just the bin folder, in case of Java 11 and above, which by default is implemented as a JRE).</p>\n<p>Then restart your app server (or JVM).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1866848,
+      "reputation" : 19425,
+      "user_id" : 1690193,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/f5efb48f4c543bb85076393323c8d818?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Nick.Mc",
+      "link" : "https://stackoverflow.com/users/1690193/nick-mc"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1610341710,
+    "creation_date" : 1610341710,
+    "answer_id" : 65661595,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For anyone coming here because this error has appeared in their Cognos log, (cognosserver.log)</p>\n<p>You need to copy the 64 bit version of <code>sqljdbcauth.dll</code> into <code>D:\\Program Files\\IBM\\Cognos\\Analytics\\bin64</code></p>\n<p>You need to copy the 32 bit version of <code>sqljdbcauth.dll</code> into <code>D:\\Program Files\\IBM\\Cognos\\Analytics\\bin</code></p>\n<p>When I upgraded a working install (11.1.3) to a newer version (11.1.7), it helpfully deleted these files.</p>\n<p>The is of course not mentioned anywhere in the doco. It only talks about the <code>install_location\\drivers</code> folder</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 21433982,
+      "reputation" : 1,
+      "user_id" : 15789779,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/118a47fb076a886de299fd3aadfc5462?s=256&d=identicon&r=PG",
+      "display_name" : "Suresh",
+      "link" : "https://stackoverflow.com/users/15789779/suresh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1619678753,
+    "last_edit_date" : 1619678753,
+    "creation_date" : 1619666261,
+    "answer_id" : 67310570,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have included <code>c:\\full-path\\mssql-jdbc_auth-9.2.1.x64.dll</code>  in <strong>CLASSPATH ( windows environment )</strong>\nthis concept is similar to  <code>om.xml</code> concept of using directive:  -<code>Djava.library.path=&quot;C:\\*\\\\**&quot;</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4751922,
+      "reputation" : 923,
+      "user_id" : 3841784,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/65491ee84691362bfa498eedf3133890?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Dragoon",
+      "link" : "https://stackoverflow.com/users/3841784/dragoon"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1648868365,
+    "creation_date" : 1648868365,
+    "answer_id" : 71714527,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If anybody here is using gradle or maven, and isn't already explicitly importing a specific version of the mssql jdbc driver, then none of these solutions are going to work. You almost certainly have a transitive dependency for a version of the mssql library that either isn't compatible with your system or doesn't have the mssql-jdbc-auth dll included.</p>\n<p>So do this instead: (and the equivalent for Maven, if you use it.)</p>\n<pre><code>dependencies {\n    implementation('com.some.dependencie:that-depends-on-mssql:0.0.1beta')\n    implementation('com.microsoft.sqlserver:mssql-jdbc') {\n        version {\n            strictly '10.2.0.jre8'\n            // Or whatever version you need, i.e. 10.2.0.jre11, etc\n        }\n    }\n}\n</code></pre>\n<p>That will replace your transitive dependency with whatever version you specify.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4776516,
+      "reputation" : 586,
+      "user_id" : 3859455,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ff45c522cd1db2b19725eddca2715e00?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Nakesh",
+      "link" : "https://stackoverflow.com/users/3859455/nakesh"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1674711141,
+    "creation_date" : 1674711141,
+    "answer_id" : 75242541,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I got same exception when i tried to use <strong>Java 17 and mssql-jdbc version 11.2.3.jre17</strong></p>\n<p>My exception was</p>\n<ol>\n<li><strong>jdbc.SQLServerException: This driver is not configured for integrated authentication</strong></li>\n<li><strong>java.lang.UnsatisfiedLinkError: Unable to load authentication DLL mssql-jdbc_auth-11.2.3.x64</strong></li>\n</ol>\n<p>In this case I downloaded MSSQL JDBC driver <strong>sqljdbc_11.2.3.0_enu</strong> from link <a href=\"https://learn.microsoft.com/en-us/sql/connect/jdbc/release-notes-for-the-jdbc-driver?view=sql-server-ver16\" rel=\"nofollow noreferrer\">https://learn.microsoft.com/en-us/sql/connect/jdbc/release-notes-for-the-jdbc-driver?view=sql-server-ver16</a></p>\n<p>Extract Zip file <strong>sqljdbc_11.2.3.0_enu</strong> and follow below 2 steps</p>\n<ol>\n<li><p>copy dll <strong>mssql-jdbc_auth-11.2.3.x64.dll</strong> from path <strong>&quot;extracted-folderpath&quot;\\sqljdbc_11.2.3.0_enu\\sqljdbc_11.2\\enu\\auth\\x64</strong></p>\n</li>\n<li><p>paste in bin folder of Java 17 <strong>C:\\Program Files\\Java\\jdk-17.0.5\\bin</strong></p>\n</li>\n</ol>\n<p>After this issue fixed</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9601596,
+      "reputation" : 1261,
+      "user_id" : 7128910,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7bad2d9190f9e7597325b1147dfb3d83?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Nik",
+      "link" : "https://stackoverflow.com/users/7128910/nik"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1686813158,
+    "creation_date" : 1686813158,
+    "answer_id" : 76479969,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For anyone who has this problem in DBeaver, you have to copy the .dll file that is mentioned in the other answers to <code>C:\\Users\\myuser\\AppData\\Local\\DBeaver\\jre\\bin</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 29489671,
+      "reputation" : 1,
+      "user_id" : 22598880,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocLl9HAXQO_gf8XfMSxjRShD2aMGbfjLIDyzhyIYw-xpTsg=k-s256",
+      "display_name" : "Harsha",
+      "link" : "https://stackoverflow.com/users/22598880/harsha"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1695296661,
+    "creation_date" : 1695296661,
+    "answer_id" : 77149926,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think all the above answers should solve the issue as expected. But, it didn't for me. Additionally, try looking at the configurations of your Tomcat server by double clicking on Tomcat in the Servers section of the Eclipse IDE and configure the server.</p>\n<blockquote>\n<p>Add an argument in VM Arguments as :</p>\n</blockquote>\n<p><code>-Djava.library.path=&quot;your_path\\sqljdbc_12.4.0.0_enu\\sqljdbc_12.4\\enu\\auth\\x64&quot;</code></p>\n<p><a href=\"https://i.sstatic.net/Q37LM.png\" rel=\"nofollow noreferrer\">Tomcat Configurations window</a></p>\n<p><a href=\"https://i.sstatic.net/k3Xag.png\" rel=\"nofollow noreferrer\">Edit Launch Configurations properties -&gt; Arguments</a></p>\n<p>Also, check the dependencies you're trying to add. If you're using MSSQL 12.4.1 driver dependency and trying to add 12.4.0 version's <code>auth.dll</code> files, this may also give rise to such exception especially in web applications. Use the same <code>auth.dll</code> files as per your system's architecture(x64/x86) and same maven dependencies in <code>pom.xml</code>\nThe maven dependency should be:</p>\n<pre><code>&lt;dependency&gt;\n        &lt;groupId&gt;com.microsoft.sqlserver&lt;/groupId&gt;\n        &lt;artifactId&gt;mssql-jdbc&lt;/artifactId&gt;\n        &lt;version&gt;12.4.0.jre8&lt;/version&gt;\n&lt;/dependency&gt;\nJRE version might vary as per the JRE your java is using. \n \n</code></pre>\n<blockquote>\n<p>check it using: <code>java -version</code> in cmdprompt</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 19191413,
+      "reputation" : 137,
+      "user_id" : 14021064,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/997328547351626/picture?type=large",
+      "display_name" : "Phương Nguyễn",
+      "link" : "https://stackoverflow.com/users/14021064/ph%c6%b0%c6%a1ng-nguy%e1%bb%85n"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1697850481,
+    "creation_date" : 1697850481,
+    "answer_id" : 77334414,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I get this error when my file path has spaces in the folder or file name. I deleted spaces and this error went away</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4597208,
+      "reputation" : 1,
+      "user_id" : 3728901,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://www.gravatar.com/avatar/8621a1f0563a46ea809098b960d7923f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vy Do",
+      "link" : "https://stackoverflow.com/users/3728901/vy-do"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1729756628,
+    "creation_date" : 1729756628,
+    "answer_id" : 79120908,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>My case it works, SQL Server 2014 Express, Integrated authentication.</p>\n<pre><code>jdbc:sqlserver://MYPCNAME\\\\SQLEXPRESS2014:1433;databaseName=MyDBName;authenticationScheme=NTLM;integratedSecurity=true;encrypt=true;trustServerCertificate=true;domain=FOOCORPORATE;UserName=myname;Password=mypassword\n</code></pre>\n<p>related: <a href=\"https://learn.microsoft.com/en-us/sql/connect/jdbc/using-ntlm-authentication-to-connect-to-sql-server?view=sql-server-ver16\" rel=\"nofollow noreferrer\">https://learn.microsoft.com/en-us/sql/connect/jdbc/using-ntlm-authentication-to-connect-to-sql-server?view=sql-server-ver16</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7137406,
+      "reputation" : 114,
+      "user_id" : 5456465,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/df17eccc8b9f1381cd4460879e3e8e09?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "that_roy",
+      "link" : "https://stackoverflow.com/users/5456465/that-roy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1731532608,
+    "creation_date" : 1731532608,
+    "answer_id" : 79186711,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had a similar issue with Liquibase needing the library in order to do integrated authentication. I followed some of the suggestions here.</p>\n<ol>\n<li>Download the newest sqljdbc from Microsoft (I used the zip file)</li>\n<li>Extract the zip and look for the 'enu/auth/x64/mssql-jdbc-auth-.x64.dll', copy this file.</li>\n<li>Place the copied file into your Liquibase installation folder (C:\\Program Files\\liquibase\\jre\\bin)</li>\n</ol>\n<p>I hope that this helps someone who came across this thread during Liquibase installation and needed an assist with integratedAuth</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760597566,
+      "post_id" : 79791537,
+      "comment_id" : 140798746,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Your answer could be improved with additional supporting information. Please <a href=\"https://stackoverflow.com/posts/79791537/edit\">edit</a> to add further details, such as citations or documentation, so that others can confirm that your answer is correct. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    } ],
+    "owner" : {
+      "account_id" : 44326245,
+      "reputation" : 1,
+      "user_id" : 31695615,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/90bb9783c0fcaf1e2107140a1aca5b70?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Advaith P Nair",
+      "link" : "https://stackoverflow.com/users/31695615/advaith-p-nair"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760596481,
+    "last_edit_date" : 1760596481,
+    "creation_date" : 1760555729,
+    "answer_id" : 79791537,
+    "question_id" : 6087819,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I was facing this error for my karate automation scripts and I couldn't copy paste any files to my <code>C:\\Program Files</code> path. What I did is I downloaded and extracted the jdbc auth file to a folder I could paste to, e.g. <code>C:\\user\\username\\jdbcauth.dll</code></p>\n<p>Since I was using IntelliJ,  I went to run -&gt; build config -&gt; in VM option I added this line: <code>Djava.library.path=C:\\user\\username</code> (path of the folder containing the jdbcauth.dll)</p>\n<p>And now it's not throwing this error.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5011,
+    "reputation" : 38241,
+    "user_id" : 7850,
+    "user_type" : "registered",
+    "accept_rate" : 88,
+    "profile_image" : "https://i.sstatic.net/RM3XT.jpg?s=256",
+    "display_name" : "Shaul Behr",
+    "link" : "https://stackoverflow.com/users/7850/shaul-behr"
+  },
+  "is_answered" : true,
+  "view_count" : 221532,
+  "accepted_answer_id" : 6087911,
+  "answer_count" : 19,
+  "score" : 69,
+  "last_activity_date" : 1760596481,
+  "creation_date" : 1306066105,
+  "last_edit_date" : 1567697256,
+  "question_id" : 6087819,
+  "link" : "https://stackoverflow.com/questions/6087819/jdbc-sqlserverexception-this-driver-is-not-configured-for-integrated-authentic",
+  "title" : "JDBC SQLServerException: &quot;This driver is not configured for integrated authentication.&quot;",
+  "body" : "<p>I am writing a \"server-side extension\" for <a href=\"http://smartfoxserver.com\" rel=\"noreferrer\">SmartFoxServer</a> (SFS).  In my login script, I need to make a connection to MS SQL Server, which I am attempting to do using JDBC.  I have tested the JDBC code in my debug environment, and it works fine.</p>\n\n<p>BUT</p>\n\n<p>When I put the server-side extension in the SFS \"extensions\" folder (as per spec), I'm getting a <code>com.microsoft.sqlserver.jdbc.SQLServerException</code>:</p>\n\n<blockquote>\n  <p>\"This driver is not configured for integrated authentication.\".</p>\n</blockquote>\n\n<p>I Googled for this error, and found that it's usually because the file <code>sqljdbc_auth.dll</code> is not in the system path; I have copied this file into a folder in my system path, and still it does not work!</p>\n\n<p>Any other suggestions?</p>\n"
+}

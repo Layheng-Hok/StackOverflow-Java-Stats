@@ -1,0 +1,260 @@
+{
+  "tags" : [ "java", "swing" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 969721,
+      "reputation" : 347625,
+      "user_id" : 992484,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/K1mTV.jpg?s=256",
+      "display_name" : "MadProgrammer",
+      "link" : "https://stackoverflow.com/users/992484/madprogrammer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1441945249,
+    "post_id" : 32515391,
+    "comment_id" : 52889231,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "You want to disable the &quot;selection&quot; support"
+  }, {
+    "owner" : {
+      "account_id" : 969721,
+      "reputation" : 347625,
+      "user_id" : 992484,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/K1mTV.jpg?s=256",
+      "display_name" : "MadProgrammer",
+      "link" : "https://stackoverflow.com/users/992484/madprogrammer"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1441945379,
+    "post_id" : 32515391,
+    "comment_id" : 52889261,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I don&#39;t know if you can, you could make the selection background the same color as the text area&#39;s background and the selection foreground the same color as the text area&#39;s foreground, that&#39;ll &quot;mask&quot; it.  Alternatively, you could use a <code>JLabel</code> and wrap the text in <code>&lt;html&gt;...&lt;&#47;html&gt;</code> which might provide you with some text wrapping capabilities, without the selection or editabity"
+  }, {
+    "owner" : {
+      "account_id" : 6437790,
+      "reputation" : 904,
+      "user_id" : 4988686,
+      "user_type" : "registered",
+      "accept_rate" : 63,
+      "profile_image" : "https://graph.facebook.com/857929067612539/picture?type=large",
+      "display_name" : "Phạm Quốc Bảo",
+      "link" : "https://stackoverflow.com/users/4988686/ph%e1%ba%a1m-qu%e1%bb%91c-b%e1%ba%a3o"
+    },
+    "reply_to_user" : {
+      "account_id" : 969721,
+      "reputation" : 347625,
+      "user_id" : 992484,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/K1mTV.jpg?s=256",
+      "display_name" : "MadProgrammer",
+      "link" : "https://stackoverflow.com/users/992484/madprogrammer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1441946198,
+    "post_id" : 32515391,
+    "comment_id" : 52889492,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@MadProgrammer: This is special case, I have to force use TextArea, but I don&#39;t want the author to selection the text on textarea...."
+  }, {
+    "owner" : {
+      "account_id" : 183279,
+      "reputation" : 168989,
+      "user_id" : 418556,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/yOfDr.png?s=256",
+      "display_name" : "Andrew Thompson",
+      "link" : "https://stackoverflow.com/users/418556/andrew-thompson"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1441955496,
+    "post_id" : 32515391,
+    "comment_id" : 52893238,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<i>&quot;Could you give me advise.&quot;</i> Don&#39;t attempt such a silly thing.  What is your interest in suppressing the user&#39;s ability to select information seen in the app.?  I&#39;d bet that whatever that objectives is, suppressing the ability of user&#39;s to select text will not fulfill it.."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 44852,
+      "reputation" : 324691,
+      "user_id" : 131872,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+      "display_name" : "camickr",
+      "link" : "https://stackoverflow.com/users/131872/camickr"
+    },
+    "is_accepted" : true,
+    "score" : 8,
+    "last_activity_date" : 1441945935,
+    "creation_date" : 1441945935,
+    "answer_id" : 32515501,
+    "question_id" : 32515391,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can set the \"mark\" equal to the \"dot\" of the caret. When these values are equal there is no text selection:</p>\n\n<pre><code>import java.awt.*;\nimport javax.swing.*;\nimport javax.swing.text.*;\n\npublic class NoTextSelectionCaret extends DefaultCaret\n{\n    public NoTextSelectionCaret(JTextComponent textComponent)\n    {\n        setBlinkRate( textComponent.getCaret().getBlinkRate() );\n        textComponent.setHighlighter( null );\n    }\n\n    @Override\n    public int getMark()\n    {\n        return getDot();\n    }\n\n    private static void createAndShowUI()\n    {\n        JTextField textField1 = new JTextField(\"No Text Selection Allowed\");\n        textField1.setCaret( new NoTextSelectionCaret( textField1 ) );\n        textField1.setEditable(false);\n\n        JTextField textField2 = new JTextField(\"Text Selection Allowed\");\n\n        JFrame frame = new JFrame(\"No Text Selection Caret\");\n        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        frame.add(textField1, BorderLayout.NORTH);\n        frame.add(textField2, BorderLayout.SOUTH);\n        frame.pack();\n        frame.setLocationByPlatform( true );\n        frame.setVisible( true );\n    }\n\n    public static void main(String[] args)\n    {\n        EventQueue.invokeLater(new Runnable()\n        {\n            public void run()\n            {\n                createAndShowUI();\n            }\n        });\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4182650,
+        "reputation" : 566,
+        "user_id" : 3427178,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/552d37be724363f9e94fec8890740697?s=256&d=identicon&r=PG",
+        "display_name" : "jkmartindale",
+        "link" : "https://stackoverflow.com/users/3427178/jkmartindale"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1631895518,
+      "post_id" : 38219870,
+      "comment_id" : 122355966,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This disables visual display of highlighted text, but it does not disable text selection"
+    } ],
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user6139543"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1467795121,
+    "creation_date" : 1467795121,
+    "answer_id" : 38219870,
+    "question_id" : 32515391,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you would like to just disable text selection on any swing control such as <code>JtextArea</code> you can use the coding below:</p>\n\n<pre><code>JtextArea.setHighlighter(null);\n</code></pre>\n\n<p>This one line of coding will help disable the text selection and can be placed in the constructor or within a initialized method upon Frame execution.</p>\n\n<p>Hope this helps </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 20228,
+        "reputation" : 42661,
+        "user_id" : 48136,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f31c7fbcbb0766d0632d96fd7e74b649?s=256&d=identicon&r=PG",
+        "display_name" : "bric3",
+        "link" : "https://stackoverflow.com/users/48136/bric3"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1681385209,
+      "post_id" : 74501245,
+      "comment_id" : 134049393,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Ah thanks I had issues with other technichs involving the highlighter, and the caret deinstallation ; <code>setEditable(false)</code> and <code>setFocusable(false)</code> works well !"
+    } ],
+    "owner" : {
+      "account_id" : 5209321,
+      "reputation" : 346,
+      "user_id" : 4166251,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-kehhW9yUutg/AAAAAAAAAAI/AAAAAAAAAO0/9nBm9gXNH-A/s256-rj/photo.jpg",
+      "display_name" : "Stanimir",
+      "link" : "https://stackoverflow.com/users/4166251/stanimir"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1668871452,
+    "creation_date" : 1668871452,
+    "answer_id" : 74501245,
+    "question_id" : 32515391,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Late to the party, but here are my findings.  I had tried using <a href=\"https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setEnabled-boolean-\" rel=\"nofollow noreferrer\"><code>setEnabled(false)</code></a> on a <code>JTextPane</code> displaying static (not user-modifiable) content such as line numbers (for another text component).  This one alone prevents the component from getting focus and text selection on it:</p>\n<pre class=\"lang-java prettyprint-override\"><code>        JTextArea textArea = new JTextArea(&quot;Static text&quot;);\n        textArea.setEnabled(false);\n</code></pre>\n<p>My problem with <code>setEnabled(false)</code> is that it forces a single <a href=\"https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getDisabledTextColor--\" rel=\"nofollow noreferrer\"><code>disabledTextColor</code></a> for all of the text (I've traced it down to <a href=\"https://github.com/openjdk/jdk/blob/251e065a1721/src/java.desktop/share/classes/javax/swing/text/GlyphView.java#L380-L384\" rel=\"nofollow noreferrer\"><code>javax.swing.text.GlyphView.paint()</code></a>), while I want to style individual lines/chunks.  I've finally tried <a href=\"https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setFocusable-boolean-\" rel=\"nofollow noreferrer\"><code>setFocusable(false)</code></a> that appears to satisfy both needs:</p>\n<ul>\n<li>Not user focusable and no user selection on it;</li>\n<li>Custom text color could be applied to individual parts of the content, or it just doesn't change the text color to the <em>disabled</em> one.</li>\n</ul>\n<p>The complete solution needs additional <a href=\"https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setEditable-boolean-\" rel=\"nofollow noreferrer\"><code>setEditable(false)</code></a> to prevent the mouse cursor from changing but that's it – two properties:</p>\n<pre class=\"lang-java prettyprint-override\"><code>        JTextArea textArea = new JTextArea(&quot;Static text&quot;);\n        textArea.setEditable(false);\n        textArea.setFocusable(false);    \n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 44852,
+        "reputation" : 324691,
+        "user_id" : 131872,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+        "display_name" : "camickr",
+        "link" : "https://stackoverflow.com/users/131872/camickr"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1760021277,
+      "post_id" : 79786538,
+      "comment_id" : 140786575,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Not sure your exact requirement but remember text can also be selected by holding the shift key and using the left/right arrow keys. Also, you can use double click to select an entire word. If you take a look at <a href=\"https://tips4java.wordpress.com/2008/10/10/key-bindings/\" rel=\"nofollow noreferrer\">Key Bindings</a> you will find that there are lots of Actions that affect the caret position."
+    }, {
+      "owner" : {
+        "account_id" : 10482040,
+        "reputation" : 126,
+        "user_id" : 7726772,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/poe4v.png?s=256",
+        "display_name" : "Fraŋkini",
+        "link" : "https://stackoverflow.com/users/7726772/fra%c5%8bkini"
+      },
+      "reply_to_user" : {
+        "account_id" : 44852,
+        "reputation" : 324691,
+        "user_id" : 131872,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+        "display_name" : "camickr",
+        "link" : "https://stackoverflow.com/users/131872/camickr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760128671,
+      "post_id" : 79786538,
+      "comment_id" : 140789309,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@camickr no, my question is not about dragging.... I reformulate. I need to disable selection for my own reasons, which happens to be dragging. If you can&#39;t see the selection but the caret is till moving and you can get the selected text with getSelectedText(), then I&#39;m sorry, but the text is still invisibly getting selected... just because you cannot see it it doesn&#39;t mean it&#39;s not happening... hope it clears it up..."
+    } ],
+    "owner" : {
+      "account_id" : 10482040,
+      "reputation" : 126,
+      "user_id" : 7726772,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/poe4v.png?s=256",
+      "display_name" : "Fraŋkini",
+      "link" : "https://stackoverflow.com/users/7726772/fra%c5%8bkini"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1760822876,
+    "last_edit_date" : 1760822876,
+    "creation_date" : 1760020213,
+    "answer_id" : 79786538,
+    "question_id" : 32515391,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Most suggestions did not manage to disable selection, just to hide it.\nI understand that the original accepted answer probably is enough for most people, but in my opinion, disabling selection or any other user interaction wit the caret can be done more elegantly as shown below.</p>\n<p><strong>My issues with the other solutions:</strong></p>\n<p>As suggested, the below code will effectually disable selection visually.</p>\n<pre><code>textArea.setEditable(false);\ntextArea.setHighlater(null);\ntextArea.setFocusable(false);\n</code></pre>\n<p>But the text will still invisibly get selected, and you can easily check it by calling <code>textArea.getSelectedText();</code> as it will still give out the selected text.</p>\n<p>The accepted answer of replacing the caret fixes this by keeping the selection start and selection end the same value, but if you drag the mouse or use arrow keys, the caret position still moves.\nThis will cause the <code>Viewport</code> of a <code>JScrollPane</code> to scroll to the new caret position, keeping it inside the visible bounds. In short, the user can drag or move the caret position and still have an effect on the text area.</p>\n<p><strong>My Implementation/suggestion:</strong></p>\n<p>For anyone interested in my implemention in disabling selection and any user interaction:</p>\n<pre><code>private class NoSelectCaret extends DefaultCaret {\n    public NoSelectCaret() { setUpdatePolicy(NEVER_UPDATE); }\n    @Override protected void moveCaret(MouseEvent e) {  }\n    @Override public void mousePressed(MouseEvent e) {  }\n}\n</code></pre>\n<p>And used like so:</p>\n<pre><code>textArea.setEditable(false);\ntextArea.setCaret(new NoSelectCaret());\n</code></pre>\n<p>Yes, I checked and it seems to disable keyboard interactions, too.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6437790,
+    "reputation" : 904,
+    "user_id" : 4988686,
+    "user_type" : "registered",
+    "accept_rate" : 63,
+    "profile_image" : "https://graph.facebook.com/857929067612539/picture?type=large",
+    "display_name" : "Phạm Quốc Bảo",
+    "link" : "https://stackoverflow.com/users/4988686/ph%e1%ba%a1m-qu%e1%bb%91c-b%e1%ba%a3o"
+  },
+  "is_answered" : true,
+  "view_count" : 9985,
+  "accepted_answer_id" : 32515501,
+  "answer_count" : 4,
+  "score" : 6,
+  "last_activity_date" : 1760822876,
+  "creation_date" : 1441945205,
+  "last_edit_date" : 1441945420,
+  "question_id" : 32515391,
+  "link" : "https://stackoverflow.com/questions/32515391/how-to-disable-text-selection-on-jtextarea-swing",
+  "title" : "How to disable text selection on JTextArea Swing",
+  "body" : "<p>I don't want the user to select the content on <code>JTextArea</code>.  I use <code>setEditable(false)</code> but it's not working. How to disable this feature of <code>JTextArea</code> component. Could you give me advise. Thanks.</p>\n\n<p><a href=\"https://i.sstatic.net/nALQ7.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/nALQ7.png\" alt=\"enter image description here\"></a></p>\n"
+}

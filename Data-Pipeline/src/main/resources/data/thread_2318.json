@@ -1,0 +1,282 @@
+{
+  "tags" : [ "java", "multithreading", "concurrency", "thread-safety", "concurrenthashmap" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 51415,
+      "reputation" : 24858,
+      "user_id" : 153621,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://www.gravatar.com/avatar/49b22595ac63d5b9238e664da92faa56?s=256&d=identicon&r=PG",
+      "display_name" : "nanda",
+      "link" : "https://stackoverflow.com/users/153621/nanda"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1285154268,
+    "last_edit_date" : 1285154268,
+    "creation_date" : 1285153890,
+    "answer_id" : 3768619,
+    "question_id" : 3768554,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p><a href=\"http://www.ibm.com/developerworks/java/library/j-jtp07233.html\" rel=\"noreferrer\">This</a> might give you a good insight </p>\n\n<blockquote>\n  <p>ConcurrentHashMap achieves higher concurrency by slightly relaxing the promises it makes to callers. A retrieval operation will return the value inserted by the most recent completed insert operation, and may also return a value added by an insertion operation that is concurrently in progress (but in no case will it return a nonsense result). <strong>Iterators returned by ConcurrentHashMap.iterator() will return each element once at most and will not ever throw ConcurrentModificationException, but may or may not reflect insertions or removals that occurred since the iterator was constructed</strong>. No table-wide locking is needed (or even possible) to provide thread-safety when iterating the collection. ConcurrentHashMap may be used as a replacement for synchronizedMap or Hashtable in any application that does not rely on the ability to lock the entire table to prevent updates.</p>\n</blockquote>\n\n<p>Regarding this:</p>\n\n<blockquote>\n  <p>However, iterators are designed to be used by only one thread at a time.</p>\n</blockquote>\n\n<p>It means, while using iterators produced by ConcurrentHashMap in two threads are safe, it may cause an unexpected result in the application.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5059,
+        "reputation" : 8350,
+        "user_id" : 7938,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ab0683ff92f1c522ae1c5b4aaf31aa2c?s=256&d=identicon&r=PG",
+        "display_name" : "Bill Michell",
+        "link" : "https://stackoverflow.com/users/7938/bill-michell"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1285159687,
+      "post_id" : 3768636,
+      "comment_id" : 3989036,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Any reason you didn&#39;t capitalise the I in Iterator? Since it is the name of the class, it might be less confusing."
+    }, {
+      "owner" : {
+        "account_id" : 41994,
+        "reputation" : 20468,
+        "user_id" : 122207,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/9AF1m.jpg?s=256",
+        "display_name" : "Tim Bender",
+        "link" : "https://stackoverflow.com/users/122207/tim-bender"
+      },
+      "reply_to_user" : {
+        "account_id" : 5059,
+        "reputation" : 8350,
+        "user_id" : 7938,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ab0683ff92f1c522ae1c5b4aaf31aa2c?s=256&d=identicon&r=PG",
+        "display_name" : "Bill Michell",
+        "link" : "https://stackoverflow.com/users/7938/bill-michell"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1285208580,
+      "post_id" : 3768636,
+      "comment_id" : 3996639,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@Bill Michell, now we are in the semantics of posting etiquette. I think that he should have made Iterator a link back to the javadoc for an Iterator, or at the very least placed it inside the inline code annotations (`)."
+    } ],
+    "owner" : {
+      "account_id" : 46305,
+      "reputation" : 4117,
+      "user_id" : 136725,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://www.gravatar.com/avatar/c8c73ac5dc90f719c1436a7ea96209b2?s=256&d=identicon&r=PG",
+      "display_name" : "Tuure Laurinolli",
+      "link" : "https://stackoverflow.com/users/136725/tuure-laurinolli"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1285154062,
+    "creation_date" : 1285154062,
+    "answer_id" : 3768636,
+    "question_id" : 3768554,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>It means that you should not share an iterator object among multiple threads. Creating multiple iterators and using them concurrently in separate threads is fine.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2529165,
+        "reputation" : 3016,
+        "user_id" : 2197820,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/d43f4897bac3e108d3b563157550746c?s=256&d=identicon&r=PG",
+        "display_name" : "Alex",
+        "link" : "https://stackoverflow.com/users/2197820/alex"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1443821340,
+      "post_id" : 3768659,
+      "comment_id" : 53660134,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "So what will happen if during the iteration, another thread removed an object o10 from the map? Can I still see o10 in the iteration even if it has been removed? @Waldheinz"
+    }, {
+      "owner" : {
+        "account_id" : 203255,
+        "reputation" : 10527,
+        "user_id" : 450811,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://www.gravatar.com/avatar/b1a81486c967643c2f05cddb94841d27?s=256&d=identicon&r=PG",
+        "display_name" : "Waldheinz",
+        "link" : "https://stackoverflow.com/users/450811/waldheinz"
+      },
+      "reply_to_user" : {
+        "account_id" : 2529165,
+        "reputation" : 3016,
+        "user_id" : 2197820,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/d43f4897bac3e108d3b563157550746c?s=256&d=identicon&r=PG",
+        "display_name" : "Alex",
+        "link" : "https://stackoverflow.com/users/2197820/alex"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1443859588,
+      "post_id" : 3768659,
+      "comment_id" : 53667776,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "As stated above, it is really not specified if an existing iterator will reflect later changes to the map. So I don&#39;t know, and by specification no one does (without looking at the code, and that may change with every update of the runtime). So you can&#39;t rely on it."
+    }, {
+      "owner" : {
+        "account_id" : 3739249,
+        "reputation" : 2173,
+        "user_id" : 3109401,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://i.sstatic.net/VK6In.jpg?s=256",
+        "display_name" : "Kimi Chiu",
+        "link" : "https://stackoverflow.com/users/3109401/kimi-chiu"
+      },
+      "edited" : false,
+      "score" : 12,
+      "creation_date" : 1488760349,
+      "post_id" : 3768659,
+      "comment_id" : 72360629,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "But I still got a <code>ConcurrentModificationException</code> while iterating a <code>ConcurrentHashMap</code>, why?"
+    }, {
+      "owner" : {
+        "account_id" : 203255,
+        "reputation" : 10527,
+        "user_id" : 450811,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://www.gravatar.com/avatar/b1a81486c967643c2f05cddb94841d27?s=256&d=identicon&r=PG",
+        "display_name" : "Waldheinz",
+        "link" : "https://stackoverflow.com/users/450811/waldheinz"
+      },
+      "reply_to_user" : {
+        "account_id" : 3739249,
+        "reputation" : 2173,
+        "user_id" : 3109401,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://i.sstatic.net/VK6In.jpg?s=256",
+        "display_name" : "Kimi Chiu",
+        "link" : "https://stackoverflow.com/users/3109401/kimi-chiu"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1522940062,
+      "post_id" : 3768659,
+      "comment_id" : 86361809,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@KimiChiu you should probably post a new question providing the code triggering that exception, but i highly doubt it stems directly from iteration a concurrent container. unless the Java implementation is buggy."
+    } ],
+    "owner" : {
+      "account_id" : 203255,
+      "reputation" : 10527,
+      "user_id" : 450811,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/b1a81486c967643c2f05cddb94841d27?s=256&d=identicon&r=PG",
+      "display_name" : "Waldheinz",
+      "link" : "https://stackoverflow.com/users/450811/waldheinz"
+    },
+    "is_accepted" : true,
+    "score" : 221,
+    "last_activity_date" : 1328322953,
+    "last_edit_date" : 1328322953,
+    "creation_date" : 1285154270,
+    "answer_id" : 3768659,
+    "question_id" : 3768554,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p>What does it mean?</p>\n</blockquote>\n\n<p>That means that each iterator you obtain from a <code>ConcurrentHashMap</code> is designed to be used by a single thread and should not be passed around. This includes the syntactic sugar that the for-each loop provides.</p>\n\n<blockquote>\n  <p>What happens if I try to iterate the map with two threads at the same time?</p>\n</blockquote>\n\n<p>It will work as expected if each of the threads uses it's own iterator. </p>\n\n<blockquote>\n  <p>What happens if I put or remove a value from the map while iterating it?</p>\n</blockquote>\n\n<p>It is guaranteed that things will not break if you do this (that's part of what the \"concurrent\" in <code>ConcurrentHashMap</code> means). However, there is no guarantee that one thread will see the changes to the map that the other thread performs (without obtaining a new iterator from the map). The iterator is guaranteed to reflect the state of the map at the time of it's creation. Futher changes may be reflected in the iterator, but they do not have to be.</p>\n\n<p>In conclusion, a statement like</p>\n\n<pre><code>for (Object o : someConcurrentHashMap.entrySet()) {\n    // ...\n}\n</code></pre>\n\n<p>will be fine (or at least safe) almost every time you see it. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3424165,
+        "reputation" : 6208,
+        "user_id" : 2870532,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://www.gravatar.com/avatar/88f88a2289c2429b35dd68c217e171e3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tony",
+        "link" : "https://stackoverflow.com/users/2870532/tony"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1461123666,
+      "post_id" : 3768661,
+      "comment_id" : 61050123,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Are you sure about &#39;Sharing the same iterator between accessor threads can lead to deadlock&#39;? The document says read is not blocked and I tried your program and no deadlock happen yet. Although the iterate result will be wrong."
+    } ],
+    "owner" : {
+      "account_id" : 15271,
+      "reputation" : 64915,
+      "user_id" : 32090,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/pbhqF.jpg?s=256",
+      "display_name" : "Boris Pavlović",
+      "link" : "https://stackoverflow.com/users/32090/boris-pavlovi%c4%87"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1285154762,
+    "last_edit_date" : 1285154762,
+    "creation_date" : 1285154284,
+    "answer_id" : 3768661,
+    "question_id" : 3768554,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You may use this class to test two accessing threads and one mutating the shared instance of <code>ConcurrentHashMap</code>:</p>\n\n<pre><code>import java.util.Map;\nimport java.util.Random;\nimport java.util.UUID;\nimport java.util.concurrent.ConcurrentHashMap;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\n\npublic class ConcurrentMapIteration\n{\n  private final Map&lt;String, String&gt; map = new ConcurrentHashMap&lt;String, String&gt;();\n\n  private final static int MAP_SIZE = 100000;\n\n  public static void main(String[] args)\n  {\n    new ConcurrentMapIteration().run();\n  }\n\n  public ConcurrentMapIteration()\n  {\n    for (int i = 0; i &lt; MAP_SIZE; i++)\n    {\n      map.put(\"key\" + i, UUID.randomUUID().toString());\n    }\n  }\n\n  private final ExecutorService executor = Executors.newCachedThreadPool();\n\n  private final class Accessor implements Runnable\n  {\n    private final Map&lt;String, String&gt; map;\n\n    public Accessor(Map&lt;String, String&gt; map)\n    {\n      this.map = map;\n    }\n\n    @Override\n    public void run()\n    {\n      for (Map.Entry&lt;String, String&gt; entry : this.map.entrySet())\n      {\n        System.out.println(\n            Thread.currentThread().getName() + \" - [\" + entry.getKey() + \", \" + entry.getValue() + ']'\n        );\n      }\n    }\n  }\n\n  private final class Mutator implements Runnable\n  {\n\n    private final Map&lt;String, String&gt; map;\n    private final Random random = new Random();\n\n    public Mutator(Map&lt;String, String&gt; map)\n    {\n      this.map = map;\n    }\n\n    @Override\n    public void run()\n    {\n      for (int i = 0; i &lt; 100; i++)\n      {\n        this.map.remove(\"key\" + random.nextInt(MAP_SIZE));\n        this.map.put(\"key\" + random.nextInt(MAP_SIZE), UUID.randomUUID().toString());\n        System.out.println(Thread.currentThread().getName() + \": \" + i);\n      }\n    }\n  }\n\n  private void run()\n  {\n    Accessor a1 = new Accessor(this.map);\n    Accessor a2 = new Accessor(this.map);\n    Mutator m = new Mutator(this.map);\n\n    executor.execute(a1);\n    executor.execute(m);\n    executor.execute(a2);\n  }\n}\n</code></pre>\n\n<p>No exception will be thrown.</p>\n\n<p>Sharing the same iterator between accessor threads can lead to deadlock:</p>\n\n<pre><code>import java.util.Iterator;\nimport java.util.Map;\nimport java.util.Random;\nimport java.util.UUID;\nimport java.util.concurrent.ConcurrentHashMap;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\n\npublic class ConcurrentMapIteration\n{\n  private final Map&lt;String, String&gt; map = new ConcurrentHashMap&lt;String, String&gt;();\n  private final Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator;\n\n  private final static int MAP_SIZE = 100000;\n\n  public static void main(String[] args)\n  {\n    new ConcurrentMapIteration().run();\n  }\n\n  public ConcurrentMapIteration()\n  {\n    for (int i = 0; i &lt; MAP_SIZE; i++)\n    {\n      map.put(\"key\" + i, UUID.randomUUID().toString());\n    }\n    this.iterator = this.map.entrySet().iterator();\n  }\n\n  private final ExecutorService executor = Executors.newCachedThreadPool();\n\n  private final class Accessor implements Runnable\n  {\n    private final Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator;\n\n    public Accessor(Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator)\n    {\n      this.iterator = iterator;\n    }\n\n    @Override\n    public void run()\n    {\n      while(iterator.hasNext()) {\n        Map.Entry&lt;String, String&gt; entry = iterator.next();\n        try\n        {\n          String st = Thread.currentThread().getName() + \" - [\" + entry.getKey() + \", \" + entry.getValue() + ']';\n        } catch (Exception e)\n        {\n          e.printStackTrace();\n        }\n\n      }\n    }\n  }\n\n  private final class Mutator implements Runnable\n  {\n\n    private final Map&lt;String, String&gt; map;\n    private final Random random = new Random();\n\n    public Mutator(Map&lt;String, String&gt; map)\n    {\n      this.map = map;\n    }\n\n    @Override\n    public void run()\n    {\n      for (int i = 0; i &lt; 100; i++)\n      {\n        this.map.remove(\"key\" + random.nextInt(MAP_SIZE));\n        this.map.put(\"key\" + random.nextInt(MAP_SIZE), UUID.randomUUID().toString());\n      }\n    }\n  }\n\n  private void run()\n  {\n    Accessor a1 = new Accessor(this.iterator);\n    Accessor a2 = new Accessor(this.iterator);\n    Mutator m = new Mutator(this.map);\n\n    executor.execute(a1);\n    executor.execute(m);\n    executor.execute(a2);\n  }\n}\n</code></pre>\n\n<p>As soon as you start sharing the same <code>Iterator&lt;Map.Entry&lt;String, String&gt;&gt;</code> among accessor and mutator threads <code>java.lang.IllegalStateException</code>s will start popping up.</p>\n\n<pre><code>import java.util.Iterator;\nimport java.util.Map;\nimport java.util.Random;\nimport java.util.UUID;\nimport java.util.concurrent.ConcurrentHashMap;\nimport java.util.concurrent.ExecutorService;\nimport java.util.concurrent.Executors;\n\npublic class ConcurrentMapIteration\n{\n  private final Map&lt;String, String&gt; map = new ConcurrentHashMap&lt;String, String&gt;();\n  private final Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator;\n\n  private final static int MAP_SIZE = 100000;\n\n  public static void main(String[] args)\n  {\n    new ConcurrentMapIteration().run();\n  }\n\n  public ConcurrentMapIteration()\n  {\n    for (int i = 0; i &lt; MAP_SIZE; i++)\n    {\n      map.put(\"key\" + i, UUID.randomUUID().toString());\n    }\n    this.iterator = this.map.entrySet().iterator();\n  }\n\n  private final ExecutorService executor = Executors.newCachedThreadPool();\n\n  private final class Accessor implements Runnable\n  {\n    private final Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator;\n\n    public Accessor(Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator)\n    {\n      this.iterator = iterator;\n    }\n\n    @Override\n    public void run()\n    {\n      while (iterator.hasNext())\n      {\n        Map.Entry&lt;String, String&gt; entry = iterator.next();\n        try\n        {\n          String st =\n              Thread.currentThread().getName() + \" - [\" + entry.getKey() + \", \" + entry.getValue() + ']';\n        } catch (Exception e)\n        {\n          e.printStackTrace();\n        }\n\n      }\n    }\n  }\n\n  private final class Mutator implements Runnable\n  {\n\n    private final Random random = new Random();\n\n    private final Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator;\n\n    private final Map&lt;String, String&gt; map;\n\n    public Mutator(Map&lt;String, String&gt; map, Iterator&lt;Map.Entry&lt;String, String&gt;&gt; iterator)\n    {\n      this.map = map;\n      this.iterator = iterator;\n    }\n\n    @Override\n    public void run()\n    {\n      while (iterator.hasNext())\n      {\n        try\n        {\n          iterator.remove();\n          this.map.put(\"key\" + random.nextInt(MAP_SIZE), UUID.randomUUID().toString());\n        } catch (Exception ex)\n        {\n          ex.printStackTrace();\n        }\n      }\n\n    }\n  }\n\n  private void run()\n  {\n    Accessor a1 = new Accessor(this.iterator);\n    Accessor a2 = new Accessor(this.iterator);\n    Mutator m = new Mutator(map, this.iterator);\n\n    executor.execute(a1);\n    executor.execute(m);\n    executor.execute(a2);\n  }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1634609150,
+    "last_edit_date" : 1634609150,
+    "creation_date" : 1285157121,
+    "answer_id" : 3769000,
+    "question_id" : 3768554,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<p>What does it mean?</p>\n</blockquote>\n<p>It means that you should not try to use the same iterator in two threads.  If you have two threads that need to iterate over the keys, values or entries, then they each should create and use their own iterators.</p>\n<blockquote>\n<p>What happens if I try to iterate the map with two threads at the same time?</p>\n</blockquote>\n<p>It is not entirely clear what would happen if you broke this rule.  You could just get confusing behavior, in the same way that you do if (for example) two threads try to read from standard input without synchronizing.  You could also get non-thread-safe behavior.</p>\n<p>But if the two threads used different iterators, you should be fine.</p>\n<blockquote>\n<p>What happens if I put or remove a value from the map while iterating it?</p>\n</blockquote>\n<p>If the two threads are using the same iterator: see above.  You are liable to get confusing and possibly non-thread-safe behavior.</p>\n<p>If the threads are using different iterators, the javadoc section that you quoted adequately answers it.  Basically, it is not defined whether one thread / iterator will see the effects of any concurrent insertions, updates or deletions made by the other thread / iterator.  However, the insertions / updates / deletes will be made according to the concurrency properties of the map.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 107204,
+    "reputation" : 10811,
+    "user_id" : 285174,
+    "user_type" : "registered",
+    "accept_rate" : 83,
+    "profile_image" : "https://www.gravatar.com/avatar/778e82c43bc9145f3b2d509ae022158b?s=256&d=identicon&r=PG",
+    "display_name" : "Palo",
+    "link" : "https://stackoverflow.com/users/285174/palo"
+  },
+  "is_answered" : true,
+  "view_count" : 127661,
+  "protected_date" : 1393340554,
+  "accepted_answer_id" : 3768659,
+  "answer_count" : 5,
+  "score" : 177,
+  "last_activity_date" : 1634609150,
+  "creation_date" : 1285153291,
+  "last_edit_date" : 1297791400,
+  "question_id" : 3768554,
+  "link" : "https://stackoverflow.com/questions/3768554/is-iterating-concurrenthashmap-values-thread-safe",
+  "title" : "Is iterating ConcurrentHashMap values thread safe?",
+  "body" : "<p>In javadoc for <a href=\"http://download.oracle.com/javase/1.5.0/docs/api/java/util/concurrent/ConcurrentHashMap.html\" rel=\"noreferrer\">ConcurrentHashMap</a> is the following:</p>\n\n<blockquote>\n  <p>Retrieval operations (including get) generally do not block, so may overlap with update operations (including put and remove). Retrievals reflect the results of the most recently completed update operations holding upon their onset. For aggregate operations such as putAll  and clear, concurrent retrievals may reflect insertion or removal of only some entries. Similarly, Iterators and Enumerations return elements reflecting the state of the hash table at some point at or since the creation of the iterator/enumeration. They do not throw ConcurrentModificationException. <strong>However, iterators are designed to be used by only one thread at a time.</strong></p>\n</blockquote>\n\n<p>What does it mean? What happens if I try to iterate the map with two threads at the same time? What happens if I put or remove a value from the map while iterating it?</p>\n"
+}

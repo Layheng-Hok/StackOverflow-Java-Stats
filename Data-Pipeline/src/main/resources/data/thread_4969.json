@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "android", "android-studio", "qr-code", "zxing" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 14945422,
+      "reputation" : 19,
+      "user_id" : 10790846,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-MSQKsVcnZ7U/AAAAAAAAAAI/AAAAAAAAAAA/AGDgw-hazjxdP0K-5TW6sS3W2QrAj7dzGw/mo/s256-rj/photo.jpg",
+      "display_name" : "Ruchit Patel",
+      "link" : "https://stackoverflow.com/users/10790846/ruchit-patel"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1638215022,
+    "last_edit_date" : 1638215022,
+    "creation_date" : 1546778567,
+    "answer_id" : 54061594,
+    "question_id" : 54061561,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There is a really simple solution to your problem. Inside the <code>onCreate</code> provide runtime permissions. I suggest you use the dexter library as it's the simplest way of implementing runtime permissions. Here is the link to the library:\n<a href=\"https://github.com/Karumi/Dexter\" rel=\"nofollow noreferrer\">https://github.com/Karumi/Dexter</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15003085,
+      "reputation" : 1,
+      "user_id" : 10830072,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WZzFc.jpg?s=256",
+      "display_name" : "MadCreatorX",
+      "link" : "https://stackoverflow.com/users/10830072/madcreatorx"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1638299333,
+    "last_edit_date" : 1638299333,
+    "creation_date" : 1546792139,
+    "answer_id" : 54063574,
+    "question_id" : 54061561,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had the same problem after building your cameSource. Add this line to your code, it works for me</p>\n<pre><code>final String[] permissions = new String[] Manifest.permission.CAMERA};\n\nif (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.CAMERA)) {\n    ActivityCompat.requestPermissions(MainActivity.this, permissions, RC_HANDLE_CAMERA_PERM);\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 14791670,
+    "reputation" : 33,
+    "user_id" : 10682424,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/bf5885dc565bd2e38591f57458e8814d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Java999",
+    "link" : "https://stackoverflow.com/users/10682424/java999"
+  },
+  "is_answered" : false,
+  "view_count" : 9234,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1759007200,
+  "creation_date" : 1546778245,
+  "question_id" : 54061561,
+  "link" : "https://stackoverflow.com/questions/54061561/permissions-for-android-camera-qr-scanner",
+  "title" : "Permissions for Android Camera QR Scanner",
+  "body" : "<p>I am creating an android application and want to integrate ZXing QR Scanner. When i launch the QRScanner activity from an Intent I get the toast saying \"Permission Denied, You cannot access and camera\" and the app freezes instead of asking for permission for camera.</p>\n\n<p>Any help to how to correctly implement permission requests or identification of any errors I looked over would be appreciated.</p>\n\n<pre><code>      public class Qrscanner extends AppCompatActivity implements \n      ZXingScannerView.ResultHandler {\n\n    private static final int REQUEST_CAMERA = 1;\n    private ZXingScannerView scannerView;\n    private static int camId = Camera.CameraInfo.CAMERA_FACING_BACK;\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n\n        scannerView = new ZXingScannerView(this);\n        setContentView(scannerView);\n        int currentApiVersion = Build.VERSION.SDK_INT;\n\n        if(currentApiVersion &gt;=  Build.VERSION_CODES.M)\n        {\n            if(checkPermission())\n            {\n                Toast.makeText(getApplicationContext(), \"Permission already granted!\", Toast.LENGTH_LONG).show();\n            }\n            else\n            {\n                requestPermission();\n            }\n        }\n    }\n\n    private boolean checkPermission()\n    {\n        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);\n    }\n\n    private void requestPermission()\n    {\n        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);\n    }\n\n    @Override\n    public void onResume() {\n        super.onResume();\n\n        int currentapiVersion = android.os.Build.VERSION.SDK_INT;\n        if (currentapiVersion &gt;= android.os.Build.VERSION_CODES.M) {\n            if (checkPermission()) {\n                if(scannerView == null) {\n                    scannerView = new ZXingScannerView(this);\n                    setContentView(scannerView);\n                }\n                scannerView.setResultHandler(this);\n                scannerView.startCamera();\n            } else {\n                requestPermission();\n            }\n        }\n    }\n\n    @Override\n    public void onDestroy() {\n        super.onDestroy();\n        scannerView.stopCamera();\n    }\n\n    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {\n        final int req = requestCode;\n        switch (requestCode) {\n\n            case REQUEST_CAMERA:\n                if (grantResults.length &gt; 0) {\n\n                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;\n                    if (cameraAccepted){\n                        Toast.makeText(getApplicationContext(), \"Permission Granted, Now you can access camera\", Toast.LENGTH_LONG).show();\n                    }else {\n                        Toast.makeText(getApplicationContext(), \"Permission Denied, You cannot access and camera\", Toast.LENGTH_LONG).show();\n                        if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) {\n                            if (shouldShowRequestPermissionRationale(CAMERA)) {\n                                showMessageOKCancel(\"You need to allow access to both the permissions\",\n                                        new DialogInterface.OnClickListener() {\n                                            @Override\n                                            public void onClick(DialogInterface dialog, int which) {\n                                                if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) {\n  //                                                    \n   requestPermissions(new String[]{CAMERA},\n   //                                                            \n   REQUEST_CAMERA);\n\n    ActivityCompat.requestPermissions(getParent(), new String[] \n    {Manifest.permission.CAMERA}, req);\n\n                                                }\n                                            }\n                                        });\n                                return;\n                            }\n                        }\n                    }\n                }\n                break;\n        }\n    }\n\n    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {\n        new android.support.v7.app.AlertDialog.Builder(Qrscanner.this)\n                .setMessage(message)\n                .setPositiveButton(\"OK\", okListener)\n                .setNegativeButton(\"Cancel\", null)\n                .create()\n                .show();\n    }\n\n    @Override\n    public void handleResult(final Result result) {\n        final String myResult = result.getText();\n        Log.d(\"QRCodeScanner\", result.getText());\n        Log.d(\"QRCodeScanner\", result.getBarcodeFormat().toString());\n\n        AlertDialog.Builder builder = new AlertDialog.Builder(this);\n        builder.setTitle(\"Scan Result\");\n        builder.setPositiveButton(\"Try Again\", new DialogInterface.OnClickListener() {\n            @Override\n            public void onClick(DialogInterface dialog, int which) {\n                scannerView.resumeCameraPreview(Qrscanner.this);\n            }\n        });\n        builder.setNeutralButton(\"Confirm\", new DialogInterface.OnClickListener() {\n            @Override\n            public void onClick(DialogInterface dialog, int which) {\n               Intent intent = new Intent(getApplicationContext(),AddKeys.class);\n               intent.putExtra(\"publicKey\",result.getText());\n               startActivity(intent);\n            }\n        });\n        builder.setMessage(result.getText());\n        AlertDialog alert1 = builder.create();\n        alert1.show();\n    }\n}\n</code></pre>\n"
+}

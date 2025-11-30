@@ -1,0 +1,632 @@
+{
+  "tags" : [ "java", "hashmap", "load-factor" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2190504,
+      "reputation" : 1514,
+      "user_id" : 1937681,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/73c26743bab6d7c851410768b17662a9?s=256&d=identicon&r=PG",
+      "display_name" : "blackr1234",
+      "link" : "https://stackoverflow.com/users/1937681/blackr1234"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1632680018,
+    "post_id" : 10901752,
+    "comment_id" : 122552404,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Java has many different distributions and versions. This is a very old question but those who visit this post may be using newer Java versions. A very important point is that before Java 8, <code>HashMap</code> isn&#39;t really well written. That&#39;s why the JDK developers rewrite <code>HashMap</code> in Java 8."
+  }, {
+    "owner" : {
+      "account_id" : 2190504,
+      "reputation" : 1514,
+      "user_id" : 1937681,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/73c26743bab6d7c851410768b17662a9?s=256&d=identicon&r=PG",
+      "display_name" : "blackr1234",
+      "link" : "https://stackoverflow.com/users/1937681/blackr1234"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1632680217,
+    "post_id" : 10901752,
+    "comment_id" : 122552441,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "If you look at the source code of <code>HashMap</code> in Oracle JDK 7, you can see that in the <code>addEntry</code> method (called from <code>put(k, v)</code>), the <code>resize</code> method will only be called when <code>(size &gt;= threshold) &amp;&amp; (null != table[bucketIndex])</code> which means that size has to reach the load factor (i.e. <code>75%</code>) of the capacity, <b>AND</b>, the current bucket has collision. Therefore, load factor is only part of the story in Oracle JDK 7. In Oracle JDK 8, the latter condition no longer exists."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1287161,
+        "reputation" : 149,
+        "user_id" : 1240019,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/cd10e833d7a93d3cad1cbe7dae3dfbe2?s=256&d=identicon&r=PG",
+        "display_name" : "ferekdoley",
+        "link" : "https://stackoverflow.com/users/1240019/ferekdoley"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1499328608,
+      "post_id" : 10901816,
+      "comment_id" : 76862030,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The documentation also says; &quot;As a general rule, the default load factor (.75) offers a good tradeoff between time and space costs.&quot;. So for anyone who&#39;s unsure, the default is a good rule of thumb."
+    } ],
+    "owner" : {
+      "account_id" : 69149,
+      "reputation" : 236806,
+      "user_id" : 201359,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/t7odj.jpg?s=256",
+      "display_name" : "&#211;scar L&#243;pez",
+      "link" : "https://stackoverflow.com/users/201359/%c3%93scar-l%c3%b3pez"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1338916967,
+    "last_edit_date" : 1338916967,
+    "creation_date" : 1338916610,
+    "answer_id" : 10901816,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>From the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/Hashtable.html\" rel=\"noreferrer\">documentation</a>:</p>\n\n<blockquote>\n  <p>The load factor is a measure of how full the hash table is allowed to get before its capacity is automatically increased</p>\n</blockquote>\n\n<p>It really depends on your particular requirements, there's no \"rule of thumb\" for specifying an initial load factor.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 243292,
+        "reputation" : 3202,
+        "user_id" : 515368,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/KIoSy.png?s=256",
+        "display_name" : "supermitch",
+        "link" : "https://stackoverflow.com/users/515368/supermitch"
+      },
+      "edited" : false,
+      "score" : 17,
+      "creation_date" : 1385849158,
+      "post_id" : 10901821,
+      "comment_id" : 30300228,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Other answers are suggesting specify <code>capacity = N&#47;0.75</code> to avoid rehashing, but my initial thought was just set <code>load factor = 1</code>. Would there be downsides to that approach? Why would load factor affect <code>get()</code> and <code>put()</code> operation costs?"
+    }, {
+      "owner" : {
+        "account_id" : 934039,
+        "reputation" : 1092,
+        "user_id" : 963316,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1bd0a8cb2cdd61dfee295a03d432efb5?s=256&d=identicon&r=PG",
+        "display_name" : "atimb",
+        "link" : "https://stackoverflow.com/users/963316/atimb"
+      },
+      "edited" : false,
+      "score" : 23,
+      "creation_date" : 1395866916,
+      "post_id" : 10901821,
+      "comment_id" : 34538443,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "A load factor=1 hashmap with number of entries=capacity will statistically have significant amount of collisions (=when multiple keys are producing the same hash). When collision occurs the lookup time increases, as in one bucket there will be &gt;1 matching entries, for which the key must be individually checked for equality. Some detailed math: <a href=\"http://preshing.com/20110504/hash-collision-probabilities/\" rel=\"nofollow noreferrer\">preshing.com/20110504/hash-collision-probabilities</a>"
+    }, {
+      "owner" : {
+        "account_id" : 171301,
+        "reputation" : 6464,
+        "user_id" : 398630,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/8ac777cca059f2e12510475f85dcc19a?s=256&d=identicon&r=PG",
+        "display_name" : "BrainSlugs83",
+        "link" : "https://stackoverflow.com/users/398630/brainslugs83"
+      },
+      "reply_to_user" : {
+        "account_id" : 934039,
+        "reputation" : 1092,
+        "user_id" : 963316,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1bd0a8cb2cdd61dfee295a03d432efb5?s=256&d=identicon&r=PG",
+        "display_name" : "atimb",
+        "link" : "https://stackoverflow.com/users/963316/atimb"
+      },
+      "edited" : false,
+      "score" : 12,
+      "creation_date" : 1414909992,
+      "post_id" : 10901821,
+      "comment_id" : 41988003,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;m not following you @atimb; The loadset property is only used to determine when to increase the storage size right? -- How would having a loadset of one increase the likelyhood of hash collisions? -- The hashing algorithm has no knowledge of how many items are in the map or how often it acquires new storage &quot;buckets&quot;, etc.  For any set of objects of the same size, regardless of how they are stored, you should have the same probability of repeated hash values..."
+    }, {
+      "owner" : {
+        "account_id" : 300800,
+        "reputation" : 11360,
+        "user_id" : 608164,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/a242cd7866367e3df7a23e048ca1acfb?s=256&d=identicon&r=PG",
+        "display_name" : "30thh",
+        "link" : "https://stackoverflow.com/users/608164/30thh"
+      },
+      "edited" : false,
+      "score" : 21,
+      "creation_date" : 1415912169,
+      "post_id" : 10901821,
+      "comment_id" : 42384823,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The probability of the hash collision is less, if the size of the map is bigger. For example elements with hash codes 4, 8, 16 and 32 will be placed in the same bucket, if the size of the map is 4, but every item will get an own bucket, if the size of the map is more than 32.   The map with initial size 4 and load factor 1.0 (4 buckets, but all the 4 element in a single bucket) will be in this example in average two times slower than another one with the load factor 0.75 (8 buckets, two buckets filled - with element &quot;4&quot; and with elements &quot;8&quot;, &quot;16&quot;, &quot;32&quot;)."
+    }, {
+      "owner" : {
+        "account_id" : 1199784,
+        "reputation" : 19161,
+        "user_id" : 1170677,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/ce2bdf03db9d6eea0cf5adb14f0c7853?s=256&d=identicon&r=PG",
+        "display_name" : "Adelin",
+        "link" : "https://stackoverflow.com/users/1170677/adelin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1534156986,
+      "post_id" : 10901821,
+      "comment_id" : 90594702,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "why higher values &quot; increase the lookup cost &quot;, can you explain ?"
+    }, {
+      "owner" : {
+        "account_id" : 5897309,
+        "reputation" : 1014,
+        "user_id" : 5547232,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/4fnkl.png?s=256",
+        "display_name" : "Gigi Bayte 2",
+        "link" : "https://stackoverflow.com/users/5547232/gigi-bayte-2"
+      },
+      "reply_to_user" : {
+        "account_id" : 1199784,
+        "reputation" : 19161,
+        "user_id" : 1170677,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/ce2bdf03db9d6eea0cf5adb14f0c7853?s=256&d=identicon&r=PG",
+        "display_name" : "Adelin",
+        "link" : "https://stackoverflow.com/users/1170677/adelin"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1577129034,
+      "post_id" : 10901821,
+      "comment_id" : 105101917,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Adelin Lookup cost is increased for higher load factors because there will be more collisions for higher values, and the way that Java handles collisions is by putting the items with the same hashcode in the same bucket using a data structure. Starting in Java 8, this data structure is a binary search tree. This makes the lookup worst-case time complexity O(lg(n)) with the very worst case occurring if all of the elements added happen to have the same hashcode."
+    }, {
+      "owner" : {
+        "account_id" : 13366317,
+        "reputation" : 133,
+        "user_id" : 9646463,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/IMfAL.jpg?s=256",
+        "display_name" : "Abhay Nagaraj",
+        "link" : "https://stackoverflow.com/users/9646463/abhay-nagaraj"
+      },
+      "reply_to_user" : {
+        "account_id" : 1199784,
+        "reputation" : 19161,
+        "user_id" : 1170677,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/ce2bdf03db9d6eea0cf5adb14f0c7853?s=256&d=identicon&r=PG",
+        "display_name" : "Adelin",
+        "link" : "https://stackoverflow.com/users/1170677/adelin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1630684140,
+      "post_id" : 10901821,
+      "comment_id" : 122032336,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Adelin The lookup costs go high as they are directly proportional to the time we have, in order to increase the size of the hashtable&#39;s memory allocation when the threshold (LF*current capacity) is hit. As rehashing involves re-allocating contiguous memory locations to the entries and the fact that contiguous memory locations are not guaranteed to be available from currently allocated locations, makes it inevitable to perform move operations on each map entry, while it is being used to either put() into/get() from. If the LF is lower we get more time to reallocate before we hit the max limit."
+    }, {
+      "owner" : {
+        "account_id" : 248321,
+        "reputation" : 61371,
+        "user_id" : 523612,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/4ae512dd708a619496d36b1f681f95e0?s=256&d=identicon&r=PG",
+        "display_name" : "Karl Knechtel",
+        "link" : "https://stackoverflow.com/users/523612/karl-knechtel"
+      },
+      "reply_to_user" : {
+        "account_id" : 1199784,
+        "reputation" : 19161,
+        "user_id" : 1170677,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/ce2bdf03db9d6eea0cf5adb14f0c7853?s=256&d=identicon&r=PG",
+        "display_name" : "Adelin",
+        "link" : "https://stackoverflow.com/users/1170677/adelin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1715069759,
+      "post_id" : 10901821,
+      "comment_id" : 138289703,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Adelin more simply: a higher load factor means that a larger fraction of the buckets are allowed to be filled, before the entire structure is re-created (with more buckets). If a lot of the buckets are already used when you try to fill a new one (insert a key), that means there&#39;s a high chance that the bucket you pick (pseudo-randomly, via the hash calculation) is already full. When that happens, you have to try again - and again, until you find an empty one. You don&#39;t know which ones are full ahead of time, and the point is to avoid searching. (See also Sujal Mandal&#39;s answer.)"
+    } ],
+    "owner" : {
+      "account_id" : 152622,
+      "reputation" : 503079,
+      "user_id" : 367273,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://www.gravatar.com/avatar/f1ed2b0c87f602ef30229f5c4b04eff6?s=256&d=identicon&r=PG",
+      "display_name" : "NPE",
+      "link" : "https://stackoverflow.com/users/367273/npe"
+    },
+    "is_accepted" : true,
+    "score" : 323,
+    "last_activity_date" : 1338916633,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1338916633,
+    "answer_id" : 10901821,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <a href=\"http://docs.oracle.com/javase/6/docs/api/java/util/HashMap.html\" rel=\"noreferrer\">documentation</a> explains it pretty well:</p>\n<blockquote>\n<p>An instance of HashMap has two parameters that affect its performance: initial capacity and load factor. The capacity is the number of buckets in the hash table, and the initial capacity is simply the capacity at the time the hash table is created. The load factor is a measure of how full the hash table is allowed to get before its capacity is automatically increased. When the number of entries in the hash table exceeds the product of the load factor and the current capacity, the hash table is rehashed (that is, internal data structures are rebuilt) so that the hash table has approximately twice the number of buckets.</p>\n<p>As a general rule, the default load factor (.75) offers a good tradeoff between time and space costs. Higher values decrease the space overhead but increase the lookup cost (reflected in most of the operations of the HashMap class, including get and put). The expected number of entries in the map and its load factor should be taken into account when setting its initial capacity, so as to minimize the number of rehash operations. If the initial capacity is greater than the maximum number of entries divided by the load factor, no rehash operations will ever occur.</p>\n</blockquote>\n<p>As with all performance optimizations, it is a good idea to avoid optimizing things prematurely (i.e. without hard data on where the bottlenecks are).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6250894,
+        "reputation" : 573,
+        "user_id" : 4860979,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/V2RtQ.png?s=256",
+        "display_name" : "userab",
+        "link" : "https://stackoverflow.com/users/4860979/userab"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1493147455,
+      "post_id" : 19426871,
+      "comment_id" : 74287020,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Although your answer is clear, can you please tell whether just after storing 12 key-value pair the capacity becomes 32 or is it that when 13th entry is added, at that time capacity changes and then the entry is inserted."
+    }, {
+      "owner" : {
+        "account_id" : 373762,
+        "reputation" : 4058,
+        "user_id" : 723597,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/6583052605d97cd00338bb9c7d16846f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "LoveMeow",
+        "link" : "https://stackoverflow.com/users/723597/lovemeow"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1506594652,
+      "post_id" : 19426871,
+      "comment_id" : 79888622,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "does that mean the number of buckets are increased by 2?"
+    }, {
+      "owner" : {
+        "account_id" : 3391678,
+        "reputation" : 385,
+        "user_id" : 2846382,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/e16a66cde94001236bc549a3b518fad4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user2846382",
+        "link" : "https://stackoverflow.com/users/2846382/user2846382"
+      },
+      "reply_to_user" : {
+        "account_id" : 6250894,
+        "reputation" : 573,
+        "user_id" : 4860979,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/V2RtQ.png?s=256",
+        "display_name" : "userab",
+        "link" : "https://stackoverflow.com/users/4860979/userab"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1611981690,
+      "post_id" : 19426871,
+      "comment_id" : 116630562,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@userab it will be on 13th entry, you might not be looking for that answer anymore but for others."
+    }, {
+      "owner" : {
+        "account_id" : 2190504,
+        "reputation" : 1514,
+        "user_id" : 1937681,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/73c26743bab6d7c851410768b17662a9?s=256&d=identicon&r=PG",
+        "display_name" : "blackr1234",
+        "link" : "https://stackoverflow.com/users/1937681/blackr1234"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1632679528,
+      "post_id" : 19426871,
+      "comment_id" : 122552278,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It should be the <code>13</code>th entry when resizing takes place. However, this answer applies to Oracle JDK 8 but not Oracle JDK 7. In Oracle JDK 7, there are <code>2</code> criteria for resizing to takes place. First, size must be <code>&gt;=</code> threshold (cap * load factor). Second, the current bucket must already have an entry, which implies a collision. Refer to Oracle JDK 7u80 source code: <code>null != table[bucketIndex]</code> in the <code>addEntry</code> method."
+    } ],
+    "owner" : {
+      "account_id" : 3319834,
+      "reputation" : 1711,
+      "user_id" : 2791282,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8bf764f26e163c2a0ae243c1b5bdfbdb?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user2791282",
+      "link" : "https://stackoverflow.com/users/2791282/user2791282"
+    },
+    "is_accepted" : false,
+    "score" : 171,
+    "last_activity_date" : 1437712463,
+    "last_edit_date" : 1437712463,
+    "creation_date" : 1382013224,
+    "answer_id" : 19426871,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Default initial capacity of the <code>HashMap</code> takes is 16 and load factor is 0.75f (i.e 75% of current map size).  The load factor represents at what level the <code>HashMap</code> capacity should be doubled. </p>\n\n<p><strong>For example</strong> product of capacity and load factor as <code>16 * 0.75 = 12</code>. This represents that after storing the 12th key – value pair into the <code>HashMap</code> , its capacity becomes 32.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2312862,
+        "reputation" : 1145,
+        "user_id" : 2030601,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/8d18T.jpg?s=256",
+        "display_name" : "Decoded",
+        "link" : "https://stackoverflow.com/users/2030601/decoded"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1497409897,
+      "post_id" : 31401836,
+      "comment_id" : 76060748,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Math nerds FTW! Likely the <code>.75</code> was rounded to the nearest easy to understand fraction to <code>log(2)</code>, and looks like less of a magic number. I&#39;d love to see an update to the JDK default value, with said comment above its implementation :D"
+    }, {
+      "owner" : {
+        "account_id" : 7409925,
+        "reputation" : 1377,
+        "user_id" : 5637606,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Tyfe9.jpg?s=256",
+        "display_name" : "ssynhtn",
+        "link" : "https://stackoverflow.com/users/5637606/ssynhtn"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1595247578,
+      "post_id" : 31401836,
+      "comment_id" : 111399158,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The premise that a bucket having the probability of 0.5 of fullness/emptyness would lead to optimal performance is simply unwarranted"
+    }, {
+      "owner" : {
+        "account_id" : 1486568,
+        "reputation" : 3810,
+        "user_id" : 1394710,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/0da2f1f5c2e83c6a2fd2291f28651175?s=256&d=identicon&r=PG",
+        "display_name" : "HelloWorld",
+        "link" : "https://stackoverflow.com/users/1394710/helloworld"
+      },
+      "reply_to_user" : {
+        "account_id" : 7409925,
+        "reputation" : 1377,
+        "user_id" : 5637606,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Tyfe9.jpg?s=256",
+        "display_name" : "ssynhtn",
+        "link" : "https://stackoverflow.com/users/5637606/ssynhtn"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1595932854,
+      "post_id" : 31401836,
+      "comment_id" : 111638392,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ssynhtn Second sentence: Although any load factor less than this will yield better performance."
+    }, {
+      "owner" : {
+        "account_id" : 10108456,
+        "reputation" : 4013,
+        "user_id" : 7470253,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b8838b740a8c26535020a06d2a6d4735?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "M. Prokhorov",
+        "link" : "https://stackoverflow.com/users/7470253/m-prokhorov"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1597413803,
+      "post_id" : 31401836,
+      "comment_id" : 112132834,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<code>.75</code> may also be a good value that produces predictable integers when any power-of-two (above 1 and 2) integer is multiplied by it. It yields 3 for <code>4 * LF</code>, 6 for <code>8 * LF</code> and so on."
+    } ],
+    "owner" : {
+      "account_id" : 1486568,
+      "reputation" : 3810,
+      "user_id" : 1394710,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/0da2f1f5c2e83c6a2fd2291f28651175?s=256&d=identicon&r=PG",
+      "display_name" : "HelloWorld",
+      "link" : "https://stackoverflow.com/users/1394710/helloworld"
+    },
+    "is_accepted" : false,
+    "score" : 55,
+    "last_activity_date" : 1478858102,
+    "last_edit_date" : 1478858102,
+    "creation_date" : 1436863330,
+    "answer_id" : 31401836,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Actually, from my calculations, the \"perfect\" load factor is closer to log 2 (~ 0.7). Although any load factor less than this will yield better performance. I think that .75 was probably pulled out of a hat.</p>\n\n<p>Proof:</p>\n\n<p>Chaining can be avoided and branch prediction exploited by predicting if a\nbucket is empty or not. A bucket is probably empty if the probability of it\nbeing empty exceeds .5.</p>\n\n<p>Let s represent the size and n the number of keys added. Using the binomial\ntheorem, the probability of a bucket being empty is:</p>\n\n<pre><code>P(0) = C(n, 0) * (1/s)^0 * (1 - 1/s)^(n - 0)\n</code></pre>\n\n<p>Thus, a bucket is probably empty if there are less than</p>\n\n<pre><code>log(2)/log(s/(s - 1)) keys\n</code></pre>\n\n<p>As s reaches infinity and if the number of keys added is such that\nP(0) = .5, then n/s approaches log(2) rapidly:</p>\n\n<pre><code>lim (log(2)/log(s/(s - 1)))/s as s -&gt; infinity = log(2) ~ 0.693...\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7848579,
+      "reputation" : 9,
+      "user_id" : 5932757,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fd1935a271b8481c05b9b490d5c74e9a?s=256&d=identicon&r=PG",
+      "display_name" : "Brett Greenfield",
+      "link" : "https://stackoverflow.com/users/5932757/brett-greenfield"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1455588795,
+    "creation_date" : 1455588795,
+    "answer_id" : 35422485,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I would pick a table size of n * 1.5 or n + (n >> 1), this would give a load factor of .66666~ without division, which is slow on most systems, especially on portable systems where there is no division in the hardware.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1137268,
+        "reputation" : 1827,
+        "user_id" : 1122069,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://www.gravatar.com/avatar/13e684077a0f473d0da8c089b686dc65?s=256&d=identicon&r=PG",
+        "display_name" : "user1122069",
+        "link" : "https://stackoverflow.com/users/1122069/user1122069"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1471987944,
+      "post_id" : 39060469,
+      "comment_id" : 65569482,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You could add a bit about how the hashCode is stripped down to a number with the range of 1-{count bucket}, and so it is not per-se the number of buckets, but that end-result of the hash algorithm covers a larger range. HashCode is not the full hash algorithm, it is just small enough to be easily re-processed.  So there is no concept of &quot;free buckets&quot;, but &quot;minimum number of free buckets&quot;, since you could be storing all your elements in the same bucket. Rather, it is the key-space of your hashcode, which is equal to capacity*(1/load_factor). 40 elements, 0.25 load factor = 160 buckets."
+    }, {
+      "owner" : {
+        "account_id" : 1268826,
+        "reputation" : 7649,
+        "user_id" : 1225551,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/b19790476cb50c3aa126548d563d2ee6?s=256&d=identicon&r=PG",
+        "display_name" : "Raf",
+        "link" : "https://stackoverflow.com/users/1225551/raf"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1525876842,
+      "post_id" : 39060469,
+      "comment_id" : 87529907,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I think the lookup time for an object from the <code>LinkedList</code> is referred to as <code>Amortized Constant Execution Time</code> and denoted with a <code>+</code> as <code>O(1)+</code>"
+    } ],
+    "owner" : {
+      "account_id" : 3378015,
+      "reputation" : 1039,
+      "user_id" : 2835764,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/UucHg.png?s=256",
+      "display_name" : "Sujal Mandal",
+      "link" : "https://stackoverflow.com/users/2835764/sujal-mandal"
+    },
+    "is_accepted" : false,
+    "score" : 41,
+    "last_activity_date" : 1646948975,
+    "last_edit_date" : 1646948975,
+    "creation_date" : 1471748205,
+    "answer_id" : 39060469,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>What is load factor ?</h2>\n<p>The amount of capacity which is to be exhausted for the HashMap to increase its capacity.</p>\n<h2>Why load factor ?</h2>\n<p>Load factor is by default 0.75 of the initial capacity (16) therefore 25% of the buckets will be free before there is an increase in the capacity &amp; this makes many new buckets with new hashcodes pointing to them to exist just after the increase in the number of buckets.</p>\n<h2>Why should you keep many free buckets &amp; what is the impact of keeping free buckets on the performance ?</h2>\n<p>If you set the loading factor to say 1.0 then something very interesting might happen.</p>\n<p>Say you are adding an object x to your hashmap whose hashCode is 888 &amp; in your hashmap the bucket representing the hashcode is free , so the <strong>object x</strong> gets added to the bucket, but now again say if you are adding another object y whose hashCode is also 888 then your object y will get added for sure BUT at the end of the bucket (<em>because the buckets are nothing but linkedList implementation storing key,value &amp; next</em>) now this has a performance impact ! Since your <strong>object y</strong> is no longer present in the head of the bucket if you perform a lookup the time taken is not going to be <strong>O(1)</strong> this time it depends on how many items are there in the same bucket. This is called hash collision by the way &amp; this even happens when your loading factor is less than 1.</p>\n<h2>Correlation between performance, hash collision &amp; loading factor</h2>\n<ul>\n<li><strong>Lower load factor</strong> = more free buckets = <strong>less chances of collision</strong> = high performance = high space requirement.</li>\n<li><strong>Higher load factor</strong> = fewer free buckets = <strong>higher chance of collision</strong> = lower performance = lower space requirement.</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11897952,
+      "reputation" : 1308,
+      "user_id" : 8706759,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/48tgN.jpg?s=256",
+      "display_name" : "Ganesh Chowdhary Sadanala",
+      "link" : "https://stackoverflow.com/users/8706759/ganesh-chowdhary-sadanala"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1538066666,
+    "creation_date" : 1538066666,
+    "answer_id" : 52541653,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If the buckets get too full, then we have to look through </p>\n\n<p>a very long linked list.</p>\n\n<p>And that's kind of defeating the point.</p>\n\n<p>So here's an example where I have four buckets.</p>\n\n<p>I have elephant and badger in my HashSet so far.</p>\n\n<p>This is a pretty good situation, right?</p>\n\n<p>Each element has zero or one elements.</p>\n\n<p>Now we put two more elements into our HashSet.</p>\n\n<pre><code>     buckets      elements\n      -------      -------\n        0          elephant\n        1          otter\n         2          badger\n         3           cat\n</code></pre>\n\n<p>This isn't too bad either.</p>\n\n<p>Every bucket only has one element\n.\nSo if I wanna know, does this contain panda?</p>\n\n<p>I can very quickly look at bucket number 1 and it's not</p>\n\n<p>there and</p>\n\n<p>I known it's not in our collection.</p>\n\n<p>If I wanna know if it contains cat, I look at bucket </p>\n\n<p>number 3,</p>\n\n<p>I find cat, I very quickly know if it's in our </p>\n\n<p>collection.</p>\n\n<p>What if I add koala, well that's not so bad.</p>\n\n<pre><code>             buckets      elements\n      -------      -------\n        0          elephant\n        1          otter -&gt; koala \n         2          badger\n         3           cat\n</code></pre>\n\n<p>Maybe now instead of in bucket number 1 only looking at </p>\n\n<p>one element,</p>\n\n<p>I need to look at two.</p>\n\n<p>But at least I don't have to look at elephant, badger and </p>\n\n<p>cat.</p>\n\n<p>If I'm again looking for panda, it can only be in bucket </p>\n\n<p>number 1 and</p>\n\n<p>I don't have to look at anything other then otter and </p>\n\n<p>koala.</p>\n\n<p>But now I put alligator in bucket number 1 and you can </p>\n\n<p>see maybe where this is going.</p>\n\n<p>That if bucket number 1 keeps getting bigger and bigger \nand</p>\n\n<p>bigger, then I'm basically having to look through all of </p>\n\n<p>those elements to find</p>\n\n<p>something that should be in bucket number 1.</p>\n\n<pre><code>            buckets      elements\n      -------      -------\n        0          elephant\n        1          otter -&gt; koala -&gt;alligator\n         2          badger\n         3           cat\n</code></pre>\n\n<p>If I start adding strings to other buckets,</p>\n\n<p>right, the problem just gets bigger and bigger in every </p>\n\n<p>single bucket.</p>\n\n<p>How do we stop our buckets from getting too full?</p>\n\n<p>The solution here is that </p>\n\n<pre><code>          \"the HashSet can automatically\n\n        resize the number of buckets.\"\n</code></pre>\n\n<p>There's the HashSet realizes that the buckets are getting </p>\n\n<p>too full.</p>\n\n<p>It's losing this advantage of this all of one lookup for </p>\n\n<p>elements.</p>\n\n<p>And it'll just create more buckets(generally twice as before) and</p>\n\n<p>then place the elements into the correct bucket.</p>\n\n<p>So here's our basic HashSet implementation with separate </p>\n\n<p>chaining.\nNow I'm going to create a \"self-resizing HashSet\".</p>\n\n<p>This HashSet is going to realize that the buckets are </p>\n\n<p>getting too full and</p>\n\n<p>it needs more buckets.</p>\n\n<p>loadFactor is another field in our HashSet class.</p>\n\n<p>loadFactor represents the average number of elements per </p>\n\n<p>bucket,</p>\n\n<p>above which we want to resize.</p>\n\n<p>loadFactor is a balance between space and time.</p>\n\n<p>If the buckets get too full then we'll resize.</p>\n\n<p>That takes time, of course, but</p>\n\n<p>it may save us time down the road if the buckets are a </p>\n\n<p>little more empty.</p>\n\n<p>Let's see an example.</p>\n\n<p>Here's a HashSet, we've added four elements so far.</p>\n\n<p>Elephant, dog, cat and fish.</p>\n\n<pre><code>          buckets      elements\n      -------      -------\n        0          \n        1          elephant\n         2          cat -&gt;dog\n         3           fish\n          4         \n           5\n</code></pre>\n\n<p>At this point, I've decided that the loadFactor, the </p>\n\n<p>threshold,</p>\n\n<p>the average number of elements per bucket that I'm okay </p>\n\n<p>with, is 0.75.</p>\n\n<p>The number of buckets is buckets.length, which is 6, and</p>\n\n<p>at this point our HashSet has four elements, so the </p>\n\n<p>current size is 4.</p>\n\n<p>We'll resize our HashSet, that is we'll add more buckets,</p>\n\n<p>when the average number of elements per bucket exceeds </p>\n\n<p>the loadFactor.</p>\n\n<p>That is when current size divided by buckets.length is </p>\n\n<p>greater than loadFactor.</p>\n\n<p>At this point, the average number of elements per bucket </p>\n\n<p>is 4 divided by 6.</p>\n\n<p>4 elements, 6 buckets, that's 0.67.</p>\n\n<p>That's less than the threshold I set of 0.75 so we're </p>\n\n<p>okay.</p>\n\n<p>We don't need to resize.</p>\n\n<p>But now let's say we add woodchuck.</p>\n\n<pre><code>                  buckets      elements\n      -------      -------\n        0          \n        1          elephant\n         2        woodchuck-&gt; cat -&gt;dog\n         3           fish\n          4         \n           5\n</code></pre>\n\n<p>Woodchuck would end up in bucket number 3.</p>\n\n<p>At this point, the currentSize is 5.</p>\n\n<p>And now the average number of elements per bucket</p>\n\n<p>is the currentSize divided by buckets.length.</p>\n\n<p>That's 5 elements divided by 6 buckets is 0.83.</p>\n\n<p>And this exceeds the loadFactor which was 0.75.</p>\n\n<p>In order to address this problem, in order to make the </p>\n\n<p>buckets perhaps a little</p>\n\n<p>more empty so that operations like determining whether a </p>\n\n<p>bucket contains</p>\n\n<p>an element will be a little less complex, I wanna resize </p>\n\n<p>my HashSet.</p>\n\n<p>Resizing the HashSet takes two steps.</p>\n\n<p>First I'll double the number of buckets, I had 6 buckets,</p>\n\n<p>now I'm going to have 12 buckets.</p>\n\n<p>Note here that the loadFactor which I set to 0.75 stays the same.</p>\n\n<p>But the number of buckets changed is 12,</p>\n\n<p>the number of elements stayed the same, is 5.</p>\n\n<p>5 divided by 12 is around 0.42, that's well under our </p>\n\n<p>loadFactor,</p>\n\n<p>so we're okay now.</p>\n\n<p>But we're not done because some of these elements are in </p>\n\n<p>the wrong bucket now.</p>\n\n<p>For instance, elephant.</p>\n\n<p>Elephant was in bucket number 2 because the number of </p>\n\n<p>characters in elephant</p>\n\n<p>was 8.</p>\n\n<p>We have 6 buckets, 8 minus 6 is 2.</p>\n\n<p>That's why it ended up in number 2.</p>\n\n<p>But now that we have 12 buckets, 8 mod 12 is 8, so</p>\n\n<p>elephant does not belong in bucket number 2 anymore.</p>\n\n<p>Elephant belongs in bucket number 8.</p>\n\n<p>What about woodchuck?</p>\n\n<p>Woodchuck was the one that started this whole problem.</p>\n\n<p>Woodchuck ended up in bucket number 3.</p>\n\n<p>Because 9 mod 6 is 3.</p>\n\n<p>But now we do 9 mod 12.</p>\n\n<p>9 mod 12 is 9, woodchuck goes to bucket number 9.</p>\n\n<p>And you see the advantage of all this.</p>\n\n<p>Now bucket number 3 only has two elements whereas before \nit had 3.</p>\n\n<p>So here's our code,</p>\n\n<p>where we had our HashSet with separate chaining that </p>\n\n<p>didn't do any resizing.</p>\n\n<p>Now, here's a new implementation where we use resizing.</p>\n\n<p>Most of this code is the same,</p>\n\n<p>we're still going to determine whether it contains the </p>\n\n<p>value already.</p>\n\n<p>If it doesn't, then we'll figure it out which bucket it </p>\n\n<p>should go into and</p>\n\n<p>then add it to that bucket, add it to that LinkedList.</p>\n\n<p>But now we increment the currentSize field.</p>\n\n<p>currentSize was the field that kept track of the number </p>\n\n<p>of elements in our HashSet.</p>\n\n<p>We're going to increment it and then we're going to look </p>\n\n<p>at the average load,</p>\n\n<p>the average number of elements per bucket.</p>\n\n<p>We'll do that division down here.</p>\n\n<p>We have to do a little bit of casting here to make sure </p>\n\n<p>that we get a double.</p>\n\n<p>And then, we'll compare that average load to the field </p>\n\n<p>that I've set as</p>\n\n<p>0.75 when I created this HashSet, for instance, which was </p>\n\n<p>the loadFactor.</p>\n\n<p>If the average load is greater than the loadFactor,</p>\n\n<p>that means there's too many elements per bucket on </p>\n\n<p>average, and I need to reinsert.</p>\n\n<p>So here's our implementation of the method to reinsert </p>\n\n<p>all the elements.</p>\n\n<p>First, I'll create a local variable called oldBuckets.</p>\n\n<p>Which is referring to the buckets as they currently stand</p>\n\n<p>before I start resizing everything.</p>\n\n<p>Note I'm not creating a new array of linked lists just yet.</p>\n\n<p>I'm just renaming buckets as oldBuckets.</p>\n\n<p>Now remember buckets was a field in our class, I'm going </p>\n\n<p>to now create a new array</p>\n\n<p>of linked lists but this will have twice as many elements </p>\n\n<p>as it did the first time.</p>\n\n<p>Now I need to actually do the reinserting,</p>\n\n<p>I'm going to iterate through all of the old buckets.</p>\n\n<p>Each element in oldBuckets is a LinkedList of strings </p>\n\n<p>that is a bucket.</p>\n\n<p>I'll go through that bucket and get each element in that </p>\n\n<p>bucket.</p>\n\n<p>And now I'm gonna reinsert it into the newBuckets.</p>\n\n<p>I will get its hashCode.</p>\n\n<p>I will figure out which index it is.</p>\n\n<p>And now I get the new bucket, the new LinkedList of </p>\n\n<p>strings and</p>\n\n<p>I'll add it to that new bucket.</p>\n\n<p>So to recap, HashSets as we've seen are arrays of Linked </p>\n\n<p>Lists, or buckets.</p>\n\n<p>A self resizing HashSet can realize using some ratio or</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4103600,
+      "reputation" : 1688,
+      "user_id" : 3368395,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bb05c210da81fce66886ccf2d50fa7bb?s=256&d=identicon&r=PG",
+      "display_name" : "provisota",
+      "link" : "https://stackoverflow.com/users/3368395/provisota"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1555766540,
+    "creation_date" : 1555766540,
+    "answer_id" : 55773938,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For HashMap <strong>DEFAULT_INITIAL_CAPACITY = 16</strong> and <strong>DEFAULT_LOAD_FACTOR = 0.75f</strong> \nit means that MAX number of ALL Entries in the HashMap = <strong>16 * 0.75 = 12</strong>. When the thirteenth element will be added capacity (array size) of HashMap will be doubled!\nPerfect illustration answered this question:\n<a href=\"https://i.sstatic.net/sRa6z.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/sRa6z.png\" alt=\"enter image description here\"></a>\nimage is taken from here:</p>\n\n<p><a href=\"https://javabypatel.blogspot.com/2015/10/what-is-load-factor-and-rehashing-in-hashmap.html\" rel=\"noreferrer\">https://javabypatel.blogspot.com/2015/10/what-is-load-factor-and-rehashing-in-hashmap.html</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 27567623,
+      "reputation" : 1,
+      "user_id" : 21039480,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0a1cfca4cb798c1f7f530035445decee?s=256&d=identicon&r=PG",
+      "display_name" : "rogueranger",
+      "link" : "https://stackoverflow.com/users/21039480/rogueranger"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1683079329,
+    "last_edit_date" : 1683079329,
+    "creation_date" : 1682949742,
+    "answer_id" : 76147553,
+    "question_id" : 10901752,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Load Factor in hashmap is responsible for increasing the capacity of hash map ,the default load factor is 75 percent of the capacity of hashmap the default value of load factor is 0.75f. we can use it in hashset as HashSet(int i[intial capacity],float a[load factor]); decalaration and intialization:-</p>\n<pre><code>HashSet&lt;&gt;myHashset=new HashSet&lt;&gt;(8,0.8f);\n</code></pre>\n<p>here 8 is the intial capacity of hashset and 0.8 is the load factor of hash set.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1484409,
+    "reputation" : 13181,
+    "user_id" : 1392956,
+    "user_type" : "registered",
+    "accept_rate" : 62,
+    "profile_image" : "https://i.sstatic.net/Mv7ij.jpg?s=256",
+    "display_name" : "Priyank Doshi",
+    "link" : "https://stackoverflow.com/users/1392956/priyank-doshi"
+  },
+  "is_answered" : true,
+  "view_count" : 248792,
+  "accepted_answer_id" : 10901821,
+  "answer_count" : 9,
+  "score" : 286,
+  "last_activity_date" : 1683079329,
+  "creation_date" : 1338916340,
+  "last_edit_date" : 1519287021,
+  "question_id" : 10901752,
+  "link" : "https://stackoverflow.com/questions/10901752/what-is-the-significance-of-load-factor-in-hashmap",
+  "title" : "What is the significance of load factor in HashMap?",
+  "body" : "<p><code>HashMap</code> has two important properties: <code>size</code> and <code>load factor</code>. I went through the Java documentation and it says <code>0.75f</code> is the initial load factor. But I can't find the actual use of it. </p>\n\n<p>Can someone describe what are the different scenarios where we need to set load factor and what are some sample ideal values for different cases?</p>\n"
+}

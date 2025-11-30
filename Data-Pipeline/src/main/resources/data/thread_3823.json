@@ -1,0 +1,88 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "logback" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3004650,
+      "reputation" : 2518,
+      "user_id" : 2549398,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/4HCRH.gif?s=256",
+      "display_name" : "officer",
+      "link" : "https://stackoverflow.com/users/2549398/officer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1676553570,
+    "post_id" : 72487000,
+    "comment_id" : 133162642,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Could you come up with a solution for this problem?"
+  }, {
+    "owner" : {
+      "account_id" : 88165,
+      "reputation" : 1757,
+      "user_id" : 244051,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ef0f2b9d9a7a5b6cf020ab80a4f7e2d6?s=256&d=identicon&r=PG",
+      "display_name" : "Erik Finnman",
+      "link" : "https://stackoverflow.com/users/244051/erik-finnman"
+    },
+    "reply_to_user" : {
+      "account_id" : 3004650,
+      "reputation" : 2518,
+      "user_id" : 2549398,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/4HCRH.gif?s=256",
+      "display_name" : "officer",
+      "link" : "https://stackoverflow.com/users/2549398/officer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1676621616,
+    "post_id" : 72487000,
+    "comment_id" : 133177805,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Unfortunately not - I had to extract the pre-defined configuration from Spring and include it in my configuration."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 912159,
+      "reputation" : 3417,
+      "user_id" : 945742,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/b7f1b28ba834b71935429196dbc81411?s=256&d=identicon&r=PG",
+      "display_name" : "pedorro",
+      "link" : "https://stackoverflow.com/users/945742/pedorro"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1761581478,
+    "creation_date" : 1761581478,
+    "answer_id" : 79802025,
+    "question_id" : 72487000,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Unfortunately I'm pretty sure there is no way to do this. It seems that in Logback, encoder &amp; filter configurations are tightly coupled on an appender, with no option to separate them.  Once an appender is defined, I believe it is immutable at that point, including any applied filters. I think the best you can do is use the Spring Boot provided encoder pattern in a new appender configuration.</p>\n<p>The Spring Boot <code>defaults.xml</code> file exposes the pattern they use for their console appender, so you can alt least get the same output format as their default. Like this:</p>\n<pre><code>&lt;configuration&gt;\n    &lt;include resource=&quot;org/springframework/boot/logging/logback/defaults.xml&quot;/&gt;\n\n    &lt;appender name=&quot;CONSOLE&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;\n        &lt;encoder&gt;\n            &lt;pattern&gt;${CONSOLE_LOG_PATTERN}&lt;/pattern&gt;\n        &lt;/encoder&gt;\n        &lt;filter class=...&gt;\n          &lt;!-- your filter configuration goes here --&gt;\n        &lt;/filter&gt;\n    &lt;/appender&gt;\n\n    &lt;root level=&quot;INFO&quot;&gt;\n        &lt;appender-ref ref=&quot;CONSOLE&quot; /&gt;\n    &lt;/root&gt;\n&lt;/configuration&gt;\n</code></pre>\n<p>Not the preferred answer I imagine, but I think it's the best we can do.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 88165,
+    "reputation" : 1757,
+    "user_id" : 244051,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/ef0f2b9d9a7a5b6cf020ab80a4f7e2d6?s=256&d=identicon&r=PG",
+    "display_name" : "Erik Finnman",
+    "link" : "https://stackoverflow.com/users/244051/erik-finnman"
+  },
+  "is_answered" : true,
+  "view_count" : 1449,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761581478,
+  "creation_date" : 1654246002,
+  "question_id" : 72487000,
+  "link" : "https://stackoverflow.com/questions/72487000/add-logback-filter-to-included-appender",
+  "title" : "Add logback filter to included appender",
+  "body" : "<p>In a Spring Boot application, we take advantage of the pre-configured Logback configuration from Spring by including these configuration files and then just configure the loggers, something like this:</p>\n<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n&lt;configuration&gt;\n    &lt;include resource=&quot;org/springframework/boot/logging/logback/defaults.xml&quot;/&gt;\n    &lt;include resource=&quot;org/springframework/boot/logging/logback/console-appender.xml&quot;/&gt;\n\n    &lt;logger name=&quot;com.bla.bla&quot; level=&quot;DEBUG&quot; additivity=&quot;false&quot;&gt;\n        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;\n    &lt;/logger&gt;\n    &lt;root level=&quot;INFO&quot;&gt;\n        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;\n    &lt;/root&gt;\n&lt;/configuration&gt;\n</code></pre>\n<p>Now I would like to add a <code>ch.qos.logback.core.filter.EvaluatorFilter</code> to do some filtering, but I cannot figure out if it's possible to add this to the appender defined in the included files, since it looks like the filter must be attached to the appender configuration (according to the Logback documentation). Ideally I would like to have the filter configuration in my application configuration and not touch the pre-defined configuration from Spring, something like this:</p>\n<pre><code>&lt;filter class=&quot;ch.qos.logback.core.filter.EvaluatorFilter&quot;&gt;\n    &lt;evaluator&gt; &lt;!-- defaults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator --&gt;\n        &lt;expression&gt;return logger.equals(&quot;org.hibernate.engine.jdbc.spi.SqlExceptionHelper&quot;) &amp;amp;&amp;amp; message.contains(&quot;duplicate key value violates unique constraint \\&quot;source_data_version\\&quot;&quot;);&lt;/expression&gt;\n    &lt;/evaluator&gt;\n    &lt;OnMismatch&gt;NEUTRAL&lt;/OnMismatch&gt;\n    &lt;OnMatch&gt;DENY&lt;/OnMatch&gt;\n&lt;/filter&gt;\n</code></pre>\n<p>Is this possible somehow or do I really need to re-define the appender so to speak in my own configuration file?</p>\n<p>I started looking into writing my own filter class, but it doesn't seem to help with this configuration issue, since the custom filter still needs to be added to the appender as far as I understand.</p>\n"
+}

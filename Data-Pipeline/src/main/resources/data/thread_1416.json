@@ -1,0 +1,739 @@
+{
+  "tags" : [ "java", "orm", "jpa" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 17512,
+        "reputation" : 2222,
+        "user_id" : 39268,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/izfqd.jpg?s=256",
+        "display_name" : "Chris Dale",
+        "link" : "https://stackoverflow.com/users/39268/chris-dale"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1240240342,
+      "post_id" : 287257,
+      "comment_id" : 580218,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Changing from ArrayList&lt;String&gt; to String with comma separated values worked for me."
+    }, {
+      "owner" : {
+        "account_id" : 82795,
+        "reputation" : 5120,
+        "user_id" : 232539,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/99a223da96298775aedc58a668c48a21?s=256&d=identicon&r=PG",
+        "display_name" : "whiskeysierra",
+        "link" : "https://stackoverflow.com/users/232539/whiskeysierra"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1263131668,
+      "post_id" : 287257,
+      "comment_id" : 1962026,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "But this forces you to use (imho) ugly like statements when querying that field."
+    }, {
+      "owner" : {
+        "account_id" : 7862,
+        "reputation" : 14670,
+        "user_id" : 13824,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/592c1eaba2f1a52a9469c3ff0380cb1f?s=256&d=identicon&r=PG",
+        "display_name" : "billjamesdev",
+        "link" : "https://stackoverflow.com/users/13824/billjamesdev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1263147591,
+      "post_id" : 287257,
+      "comment_id" : 1963117,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Yes, as I said... do the first option, it&#39;s better.  If you just can&#39;t bring yourself to do it, option 2 can work."
+    } ],
+    "owner" : {
+      "account_id" : 7862,
+      "reputation" : 14670,
+      "user_id" : 13824,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/592c1eaba2f1a52a9469c3ff0380cb1f?s=256&d=identicon&r=PG",
+      "display_name" : "billjamesdev",
+      "link" : "https://stackoverflow.com/users/13824/billjamesdev"
+    },
+    "is_accepted" : false,
+    "score" : 33,
+    "last_activity_date" : 1446565676,
+    "last_edit_date" : 1446565676,
+    "creation_date" : 1226590486,
+    "answer_id" : 287257,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This answer was made pre-JPA2 implementations, if you're using JPA2, see the ElementCollection answer above:</p>\n\n<p>Lists of objects inside a model object are generally considered \"OneToMany\" relationships with another object.  However, a String is not (by itself) an allowable client of a One-to-Many relationship, as it doesn't have an ID.</p>\n\n<p>So, you <em>should</em> convert your list of Strings to a list of Argument-class JPA objects containing an ID and a String.  You could potentially use the String as the ID, which would save a little space in your table both from removing the ID field and by consolidating rows where the Strings are equal, but you would lose the ability to order the arguments back into their original order (as you didn't store any ordering information).</p>\n\n<p>Alternatively, you could convert your list to @Transient and add another field (argStorage) to your class that is either a VARCHAR() or a CLOB.  You'll then need to add 3 functions: 2 of them are the same and should convert your list of Strings into a single String (in argStorage) delimited in a fashion that you can easily separate them.  Annotate these two functions (that each do the same thing) with @PrePersist and @PreUpdate.  Finally, add the third function that splits the argStorage into the list of Strings again and annotate it @PostLoad.  This will keep your CLOB updated with the strings whenever you go to store the Command, and keep the argStorage field updated before you store it to the DB.</p>\n\n<p>I still suggest doing the first case.  It's good practice for real relationships later.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 16536,
+        "reputation" : 10057,
+        "user_id" : 36131,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/e00c999fe29606c86925cd6c8156d771?s=256&d=identicon&r=PG",
+        "display_name" : "Andrea Francia",
+        "link" : "https://stackoverflow.com/users/36131/andrea-francia"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1230247927,
+      "post_id" : 391297,
+      "comment_id" : 220220,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks. This work with all JPA implementations, Arraylist is Serializable is saved in a BLOB field. The problems with this method are that 1) the BLOB size is fixed 2) you can search or index the array elements 3) only a client aware about the Java serialization format can read these elements."
+    }, {
+      "owner" : {
+        "account_id" : 3228095,
+        "reputation" : 616,
+        "user_id" : 2723942,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/soj2i.jpg?s=256",
+        "display_name" : "Paramvir Singh Karwal",
+        "link" : "https://stackoverflow.com/users/2723942/paramvir-singh-karwal"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1553330358,
+      "post_id" : 391297,
+      "comment_id" : 97351169,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In case if you try this approach with <code>@OneToMany</code> <code>@ManyToOne</code> <code>@ElementCollection</code> it will give you <code>Caused by: org.hibernate.AnnotationException: Illegal attempt to map a non collection as a @OneToMany, @ManyToMany or @CollectionOfElements</code> exception on server startup. Because hibernates wants you to use collection interfaces."
+    } ],
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "pete_c"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1230118719,
+    "creation_date" : 1230118719,
+    "answer_id" : 391297,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>When using the Hibernate implementation of JPA , I've found that simply declaring the type as an ArrayList instead of List allows hibernate to store the list of data.  </p>\n\n<p>Clearly this has a number of disadvantages compared to creating a list of Entity objects.  No lazy loading, no ability to reference the entities in the list from other objects, perhaps more difficulty in constructing database queries.  However when you are dealing with lists of fairly primitive types that you will always want to eagerly fetch along with the entity, then this approach seems fine to me.</p>\n\n<pre><code>@Entity\npublic class Command implements Serializable {\n\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    Long id;\n\n    ArrayList&lt;String&gt; arguments = new ArrayList&lt;String&gt;();\n\n\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1995799,
+        "reputation" : 30180,
+        "user_id" : 1788806,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/0ca4c6bc08e59c34de7fc39e09de8dbe?s=256&d=identicon&r=PG",
+        "display_name" : "Willi Mentzel",
+        "link" : "https://stackoverflow.com/users/1788806/willi-mentzel"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1497361288,
+      "post_id" : 1428480,
+      "comment_id" : 76038429,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "My mistake was to add @ OneToMany annotation as well... after removing it and just leaving @ ElementCollection it worked"
+    } ],
+    "owner" : {
+      "account_id" : 55825,
+      "reputation" : 2910,
+      "user_id" : 167264,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/679521022c9843f54367d63991702467?s=256&d=identicon&r=PG",
+      "display_name" : "Thiago H. de Paula Figueiredo",
+      "link" : "https://stackoverflow.com/users/167264/thiago-h-de-paula-figueiredo"
+    },
+    "is_accepted" : true,
+    "score" : 247,
+    "last_activity_date" : 1467625821,
+    "last_edit_date" : 1467625821,
+    "creation_date" : 1253034883,
+    "answer_id" : 1428480,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Use some JPA 2 implementation: it adds a @ElementCollection annotation, similar to the Hibernate one, that does exactly what you need. There's one example <a href=\"http://jazzy.id.au/2008/03/24/jpa_2_0_new_features_part_1.html\" rel=\"noreferrer\">here</a>.</p>\n\n<p><b>Edit</b></p>\n\n<p>As mentioned in the comments below, the correct JPA 2 implementation is</p>\n\n<pre><code>javax.persistence.ElementCollection\n\n@ElementCollection\nMap&lt;Key, Value&gt; collection;\n</code></pre>\n\n<p><b>See: <a href=\"http://docs.oracle.com/javaee/6/api/javax/persistence/ElementCollection.html\" rel=\"noreferrer\">http://docs.oracle.com/javaee/6/api/javax/persistence/ElementCollection.html</a></b></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 82795,
+        "reputation" : 5120,
+        "user_id" : 232539,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/99a223da96298775aedc58a668c48a21?s=256&d=identicon&r=PG",
+        "display_name" : "whiskeysierra",
+        "link" : "https://stackoverflow.com/users/232539/whiskeysierra"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1263131788,
+      "post_id" : 1940978,
+      "comment_id" : 1962030,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "This is totally valid but consider the growth of your application and the schema evolution. Sometime in the (near) future you might eventually switch to the entity based approach."
+    }, {
+      "owner" : {
+        "account_id" : 86417,
+        "reputation" : 38765,
+        "user_id" : 240337,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/10c3b52f94486dc6c12f68a6642f1f1a?s=256&d=identicon&r=PG",
+        "display_name" : "Thang Pham",
+        "link" : "https://stackoverflow.com/users/240337/thang-pham"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1283367121,
+      "post_id" : 1940978,
+      "comment_id" : 3803651,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I agree, that is totally valid. However, I do suggest to fully review the logic as well as the implementation of the code. If String <code>arguments</code> is a list of access permissions, then having a special character, a <code>separator</code>, might be vulnerable for privilege escalation attacks."
+    }, {
+      "owner" : {
+        "account_id" : 1285793,
+        "reputation" : 6263,
+        "user_id" : 1238944,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/IoIDD.jpg?s=256",
+        "display_name" : "agilob",
+        "link" : "https://stackoverflow.com/users/1238944/agilob"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1533571050,
+      "post_id" : 1940978,
+      "comment_id" : 90384322,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is really bad advice, your string might contain <code>;</code> which will break your app."
+    }, {
+      "owner" : {
+        "account_id" : 2644837,
+        "reputation" : 591,
+        "user_id" : 2287766,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/HJj0K.jpg?s=256",
+        "display_name" : "nacho",
+        "link" : "https://stackoverflow.com/users/2287766/nacho"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1628254403,
+      "post_id" : 1940978,
+      "comment_id" : 121378150,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Maybe it&#39;s better to check that you can do the split <code>return (arguments.contains(&quot;;&quot;)) ? Arrays.asList(arguments.split(&quot;;&quot;)) : null;</code>"
+    } ],
+    "owner" : {
+      "account_id" : 84493,
+      "reputation" : 1343,
+      "user_id" : 236152,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e2514ff657ac2a535bb076629cd60266?s=256&d=identicon&r=PG",
+      "display_name" : "Anthony",
+      "link" : "https://stackoverflow.com/users/236152/anthony"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1261411679,
+    "creation_date" : 1261411679,
+    "answer_id" : 1940978,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I had the same problem so I invested the possible solution given but at the end I decided to implement my ';' separated list of String.</p>\n\n<p>so I have</p>\n\n<pre><code>// a ; separated list of arguments\nString arguments;\n\npublic List&lt;String&gt; getArguments() {\n    return Arrays.asList(arguments.split(\";\"));\n}\n</code></pre>\n\n<p>This way the list is easily readable/editable in the database table;</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1434290,
+      "reputation" : 11,
+      "user_id" : 1356021,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4edc708971e3069228866c73d868bd55?s=256&d=identicon&r=PG",
+      "display_name" : "powers meat",
+      "link" : "https://stackoverflow.com/users/1356021/powers-meat"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1335357287,
+    "creation_date" : 1335357287,
+    "answer_id" : 10315725,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>My fix for this issue was to separate the primary key with the foreign key. If you are using eclipse and made the above changes please remember to refresh the database explorer. Then recreate the entities from the tables.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7829937,
+        "reputation" : 703,
+        "user_id" : 5941527,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/xVna2.jpg?s=256",
+        "display_name" : "Dzhao",
+        "link" : "https://stackoverflow.com/users/5941527/dzhao"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1555947089,
+      "post_id" : 40709802,
+      "comment_id" : 98262725,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "tried this but the sql table made the datatype a tinyblob. Doesn&#39;t this make inserting and retrieving the list of strings very inconvenient? Or does jpa automatically serialize and deserialize for you?"
+    }, {
+      "owner" : {
+        "account_id" : 3828873,
+        "reputation" : 1506,
+        "user_id" : 3175019,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/100000797640736/picture?type=large",
+        "display_name" : "Inverce",
+        "link" : "https://stackoverflow.com/users/3175019/inverce"
+      },
+      "reply_to_user" : {
+        "account_id" : 7829937,
+        "reputation" : 703,
+        "user_id" : 5941527,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/xVna2.jpg?s=256",
+        "display_name" : "Dzhao",
+        "link" : "https://stackoverflow.com/users/5941527/dzhao"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1605691623,
+      "post_id" : 40709802,
+      "comment_id" : 114726264,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "jpa will automatically deserialize this for you"
+    } ],
+    "owner" : {
+      "account_id" : 3828873,
+      "reputation" : 1506,
+      "user_id" : 3175019,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/100000797640736/picture?type=large",
+      "display_name" : "Inverce",
+      "link" : "https://stackoverflow.com/users/3175019/inverce"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1494507726,
+    "last_edit_date" : 1494507726,
+    "creation_date" : 1479678740,
+    "answer_id" : 40709802,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Ok i know its bit late. But for those brave souls that will see this as time passes. </p>\n\n<p>As written in <a href=\"http://docs.oracle.com/javaee/6/api/javax/persistence/Basic.html\" rel=\"noreferrer\">documentation</a>:</p>\n\n<blockquote>\n  <p>@Basic:\n  The simplest type of mapping to a database column. The Basic annotation can be applied to a persistent property or instance variable of any of the following types: Java primitive types, [...], enums, and any other type that implements java.io.Serializable.</p>\n</blockquote>\n\n<p>The important part is <strong>type that implements Serializable</strong></p>\n\n<p>So by far the most simple and easiest to use solution is simply using ArrayList instead of List (or any serializable container):</p>\n\n<pre><code>@Basic\nArrayList&lt;Color&gt; lovedColors;\n\n@Basic\nArrayList&lt;String&gt; catNames;\n</code></pre>\n\n<p>Remember however that this will use system serialization, so it will come with some price, such as: </p>\n\n<ul>\n<li><p>if serialized object model will change, u might not be able to restore data</p></li>\n<li><p>small overhead is added for each element stored.</p></li>\n</ul>\n\n<p>In short</p>\n\n<p>it is quite simple to store flags or few elements, but i would not\n   recomend it to store data that might grow big.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3265677,
+      "reputation" : 2415,
+      "user_id" : 2750224,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YVZYK.jpg?s=256",
+      "display_name" : "Zia",
+      "link" : "https://stackoverflow.com/users/2750224/zia"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1496043386,
+    "creation_date" : 1496043386,
+    "answer_id" : 44236970,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Thiago answer is correct, adding sample more specific to question, <strong>@ElementCollection</strong> will create new table in your database, but without mapping two tables, It means that the collection is not a collection of entities, but a collection of simple types (Strings, etc.) or a collection of embeddable elements (class annotated with <strong>@Embeddable</strong>). </p>\n\n<p>Here is the sample to persist list of <strong>String</strong></p>\n\n<pre><code>@ElementCollection\nprivate Collection&lt;String&gt; options = new ArrayList&lt;String&gt;();\n</code></pre>\n\n<p>Here is the sample to persist list of <strong>Custom object</strong></p>\n\n<pre><code>@Embedded\n@ElementCollection\nprivate Collection&lt;Car&gt; carList = new ArrayList&lt;Car&gt;();\n</code></pre>\n\n<p>For this case we need to make class <strong>Embeddable</strong> </p>\n\n<pre><code>@Embeddable\npublic class Car {\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4667026,
+        "reputation" : 11063,
+        "user_id" : 3779853,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/1b1f06ddfc008930b55cf8e7f3cf0924?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "phil294",
+        "link" : "https://stackoverflow.com/users/3779853/phil294"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1510964131,
+      "post_id" : 45574061,
+      "comment_id" : 81675218,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "probably plus @JoinTable."
+    } ],
+    "owner" : {
+      "account_id" : 10528721,
+      "reputation" : 183,
+      "user_id" : 7758868,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://lh3.googleusercontent.com/-WDRsCETxM3M/AAAAAAAAAAI/AAAAAAAAUoM/GAzYvLio6-k/s256-rj/photo.jpg",
+      "display_name" : "Jaimin Patel",
+      "link" : "https://stackoverflow.com/users/7758868/jaimin-patel"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1502211529,
+    "creation_date" : 1502211529,
+    "answer_id" : 45574061,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>We can also use this.</p>\n\n<pre><code>@Column(name=\"arguments\")\n@ElementCollection(targetClass=String.class)\nprivate List&lt;String&gt; arguments;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1061383,
+        "reputation" : 9234,
+        "user_id" : 1062933,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/91b38aff2da6a1f911bd70976c52f107?s=256&d=identicon&r=PG",
+        "display_name" : "NaN",
+        "link" : "https://stackoverflow.com/users/1062933/nan"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1551418913,
+      "post_id" : 50448142,
+      "comment_id" : 96640663,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Will it work with jpa repositories for filtering results by content of that field?"
+    }, {
+      "owner" : {
+        "account_id" : 370719,
+        "reputation" : 3325,
+        "user_id" : 718849,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/e60330cbf169096be1c83cfdc7219ec9?s=256&d=identicon&r=PG",
+        "display_name" : "Jonck van der Kogel",
+        "link" : "https://stackoverflow.com/users/718849/jonck-van-der-kogel"
+      },
+      "reply_to_user" : {
+        "account_id" : 1061383,
+        "reputation" : 9234,
+        "user_id" : 1062933,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/91b38aff2da6a1f911bd70976c52f107?s=256&d=identicon&r=PG",
+        "display_name" : "NaN",
+        "link" : "https://stackoverflow.com/users/1062933/nan"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1551515448,
+      "post_id" : 50448142,
+      "comment_id" : 96675233,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Please_Dont_Bully_Me_SO_Lords  It is less suitable for that use case since your data will be in the database as &quot;foo;bar;foobar&quot;. If you want to query for the data then probably an ElementCollection + JoinTable is the way to go for your situation."
+    }, {
+      "owner" : {
+        "account_id" : 1230575,
+        "reputation" : 17103,
+        "user_id" : 1195273,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/392b9a49e8a308036d37c9d07e9c7d9b?s=256&d=identicon&r=PG",
+        "display_name" : "crush",
+        "link" : "https://stackoverflow.com/users/1195273/crush"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1551727358,
+      "post_id" : 50448142,
+      "comment_id" : 96737958,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This also means that you can&#39;t have any <code>SPLIT_CHAR</code> occurrences in your string."
+    }, {
+      "owner" : {
+        "account_id" : 370719,
+        "reputation" : 3325,
+        "user_id" : 718849,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/e60330cbf169096be1c83cfdc7219ec9?s=256&d=identicon&r=PG",
+        "display_name" : "Jonck van der Kogel",
+        "link" : "https://stackoverflow.com/users/718849/jonck-van-der-kogel"
+      },
+      "reply_to_user" : {
+        "account_id" : 1230575,
+        "reputation" : 17103,
+        "user_id" : 1195273,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/392b9a49e8a308036d37c9d07e9c7d9b?s=256&d=identicon&r=PG",
+        "display_name" : "crush",
+        "link" : "https://stackoverflow.com/users/1195273/crush"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1551886751,
+      "post_id" : 50448142,
+      "comment_id" : 96806457,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@crush that is correct. Though of course you could allow for it by for example encoding your string after you have correctly delimited it. But the solution I posted here is primarily meant for simple use cases; for more complex situations probably you&#39;ll fare better with an ElementCollection + JoinTable"
+    }, {
+      "owner" : {
+        "account_id" : 1810034,
+        "reputation" : 2014,
+        "user_id" : 1646298,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/f4cbd3b26e9904b80405f7b2f27db2c9?s=256&d=identicon&r=PG",
+        "display_name" : "ZZ 5",
+        "link" : "https://stackoverflow.com/users/1646298/zz-5"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1581497493,
+      "post_id" : 50448142,
+      "comment_id" : 106450023,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Please fix your code. I consider it as &#39;library code&#39; so it should be defensive e.g. at least it should have null checks"
+    }, {
+      "owner" : {
+        "account_id" : 755765,
+        "reputation" : 8259,
+        "user_id" : 765965,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/ca44d9d17e752930c3f825bb7d815fed?s=256&d=identicon&r=PG",
+        "display_name" : "Al-Mothafar",
+        "link" : "https://stackoverflow.com/users/765965/al-mothafar"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1606745489,
+      "post_id" : 50448142,
+      "comment_id" : 115046277,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@JonckvanderKogel for me this is the best solution, but you need to check null, I edited the answer for that, the return value of check null, for now, is returning null."
+    }, {
+      "owner" : {
+        "account_id" : 370719,
+        "reputation" : 3325,
+        "user_id" : 718849,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/e60330cbf169096be1c83cfdc7219ec9?s=256&d=identicon&r=PG",
+        "display_name" : "Jonck van der Kogel",
+        "link" : "https://stackoverflow.com/users/718849/jonck-van-der-kogel"
+      },
+      "reply_to_user" : {
+        "account_id" : 755765,
+        "reputation" : 8259,
+        "user_id" : 765965,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/ca44d9d17e752930c3f825bb7d815fed?s=256&d=identicon&r=PG",
+        "display_name" : "Al-Mothafar",
+        "link" : "https://stackoverflow.com/users/765965/al-mothafar"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1606753546,
+      "post_id" : 50448142,
+      "comment_id" : 115050263,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Al-Mothafar thanks, good addition. Since I generally dislike returning null I have edited the code to either return an empty string or an empty list. But of course if someone else prefers a null instead they are free to do so."
+    }, {
+      "owner" : {
+        "account_id" : 10003782,
+        "reputation" : 199,
+        "user_id" : 7398924,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-uF3-0rZE7iE/AAAAAAAAAAI/AAAAAAAARNQ/mnS_OgRO0H0/s256-rj/photo.jpg",
+        "display_name" : "Nirostar",
+        "link" : "https://stackoverflow.com/users/7398924/nirostar"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1640776709,
+      "post_id" : 50448142,
+      "comment_id" : 124655230,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@JonckvanderKogel That introduces the problem, that if you save an empty List and query it again you will get a List with an empty string. Please fixed it in the post. the queue is full <code>return string != null &amp;&amp; !string.isEmpty() ? string.split(SPLIT_CHAR) : new String[0];</code>"
+    }, {
+      "owner" : {
+        "account_id" : 57776,
+        "reputation" : 9535,
+        "user_id" : 173101,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/z732j.jpg?s=256",
+        "display_name" : "Tom Seidel",
+        "link" : "https://stackoverflow.com/users/173101/tom-seidel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1675434323,
+      "post_id" : 50448142,
+      "comment_id" : 132933988,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You have to escape the character on split if you want to use some RegExp relevant characters lile &quot;|&quot; like <code>string.split(Pattern.quote(SPLIT_CHAR))</code>"
+    } ],
+    "owner" : {
+      "account_id" : 370719,
+      "reputation" : 3325,
+      "user_id" : 718849,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/e60330cbf169096be1c83cfdc7219ec9?s=256&d=identicon&r=PG",
+      "display_name" : "Jonck van der Kogel",
+      "link" : "https://stackoverflow.com/users/718849/jonck-van-der-kogel"
+    },
+    "is_accepted" : false,
+    "score" : 127,
+    "last_activity_date" : 1636140550,
+    "last_edit_date" : 1636140550,
+    "creation_date" : 1526903015,
+    "answer_id" : 50448142,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Should anyone be looking for an alternative solution where you store your string lists as one field in your database, here's how I solved that. Create a Converter like this:</p>\n<pre><code>import java.util.Arrays;\nimport java.util.List;\n\nimport javax.persistence.AttributeConverter;\nimport javax.persistence.Converter;\n\nimport static java.util.Collections.*;\n\n@Converter\npublic class StringListConverter implements AttributeConverter&lt;List&lt;String&gt;, String&gt; {\n    private static final String SPLIT_CHAR = &quot;;&quot;;\n    \n    @Override\n    public String convertToDatabaseColumn(List&lt;String&gt; stringList) {\n        return stringList != null ? String.join(SPLIT_CHAR, stringList) : &quot;&quot;;\n    }\n\n    @Override\n    public List&lt;String&gt; convertToEntityAttribute(String string) {\n        return string != null ? Arrays.asList(string.split(SPLIT_CHAR)) : emptyList();\n    }\n}\n</code></pre>\n<p>Now use it on your Entities like this:</p>\n<pre><code>@Convert(converter = StringListConverter.class)\nprivate List&lt;String&gt; yourList;\n</code></pre>\n<p>In the database, your list will be stored as <code>foo;bar;foobar</code>, and in your Java object you will get a list with those strings.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 357783,
+        "reputation" : 5376,
+        "user_id" : 698168,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b81aac86149a52c3ebed2aa59e98d4b7?s=256&d=identicon&r=PG",
+        "display_name" : "Julien Kronegg",
+        "link" : "https://stackoverflow.com/users/698168/julien-kronegg"
+      },
+      "edited" : false,
+      "score" : 24,
+      "creation_date" : 1579859143,
+      "post_id" : 57241586,
+      "comment_id" : 105915379,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I like this solution because it is the only proposed solution which gives the full description including the TABLE structures and explains why we need the different annotations."
+    }, {
+      "owner" : {
+        "account_id" : 410264,
+        "reputation" : 3911,
+        "user_id" : 782011,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://i.sstatic.net/MCSoz.jpg?s=256",
+        "display_name" : "pacoverflow",
+        "link" : "https://stackoverflow.com/users/782011/pacoverflow"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1683070976,
+      "post_id" : 57241586,
+      "comment_id" : 134309484,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In this example, is it possible to have a third column in the table <code>my_list</code> that acts as a primary key, or must the primary key be a combination of the <code>id</code> and <code>list</code> columns?"
+    } ],
+    "owner" : {
+      "account_id" : 1324402,
+      "reputation" : 3986,
+      "user_id" : 1269558,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8103fd7c5a6a53c54891864d40deb4ff?s=256&d=identicon&r=PG",
+      "display_name" : "diogo",
+      "link" : "https://stackoverflow.com/users/1269558/diogo"
+    },
+    "is_accepted" : false,
+    "score" : 99,
+    "last_activity_date" : 1635509173,
+    "last_edit_date" : 1635509173,
+    "creation_date" : 1564322196,
+    "answer_id" : 57241586,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It seems none of the answers explored the most important settings for an <a href=\"https://docs.oracle.com/javaee/7/api/javax/persistence/ElementCollection.html\" rel=\"noreferrer\"><code>@ElementCollection</code></a> mapping.</p>\n<p>When you map a list with this annotation and let JPA/Hibernate auto-generate the tables, columns, etc., it'll use auto-generated names as well.</p>\n<p>So, let's analyze a basic example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Entity\n@Table(name = &quot;sample&quot;)\npublic class MySample {\n\n    @Id\n    @GeneratedValue\n    private Long id;\n\n    @ElementCollection // 1\n    @CollectionTable(name = &quot;my_list&quot;, joinColumns = @JoinColumn(name = &quot;id&quot;)) // 2\n    @Column(name = &quot;list&quot;) // 3\n    private List&lt;String&gt; list;\n    \n}\n</code></pre>\n<ol>\n<li>The basic <code>@ElementCollection</code> annotation (where you can define the known <code>fetch</code> and <code>targetClass</code> preferences)</li>\n<li>The <a href=\"https://docs.oracle.com/javaee/7/api/javax/persistence/CollectionTable.html\" rel=\"noreferrer\"><code>@CollectionTable</code></a> annotation is very useful when it comes to giving a name to the table that'll be generated, as well as definitions like <code>joinColumns</code>, <code>foreignKey</code>'s, <code>indexes</code>, <code>uniqueConstraints</code>, etc.</li>\n<li><code>@Column</code> is important to define the name of the column that'll store the <code>varchar</code> value of the list.</li>\n</ol>\n<p>The generated DDL would be:</p>\n<pre class=\"lang-sql prettyprint-override\"><code>-- table sample\nCREATE TABLE sample (\n  id bigint(20) NOT NULL AUTO_INCREMENT,\n  PRIMARY KEY (id)\n);\n\n-- table my_list\nCREATE TABLE IF NOT EXISTS my_list (\n  id bigint(20) NOT NULL,\n  list varchar(255) DEFAULT NULL,\n  FOREIGN KEY (id) REFERENCES sample (id)\n);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1972228,
+      "reputation" : 141,
+      "user_id" : 1770873,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/acb784269cd80fceede1953b8b80572d?s=256&d=identicon&r=PG",
+      "display_name" : "Andrey",
+      "link" : "https://stackoverflow.com/users/1770873/andrey"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1587120295,
+    "creation_date" : 1587120295,
+    "answer_id" : 61269717,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is the solution for storing a Set using @Converter and StringTokenizer. A bit more checks against <a href=\"https://stackoverflow.com/users/718849/jonck-van-der-kogel\">@jonck-van-der-kogel</a> solution.</p>\n\n<p>In your Entity class:</p>\n\n<pre><code>@Convert(converter = StringSetConverter.class)\n@Column\nprivate Set&lt;String&gt; washSaleTickers;\n</code></pre>\n\n<p>StringSetConverter:</p>\n\n<pre><code>package com.model.domain.converters;\n\nimport javax.persistence.AttributeConverter;\nimport javax.persistence.Converter;\nimport java.util.HashSet;\nimport java.util.Set;\nimport java.util.StringTokenizer;\n\n@Converter\npublic class StringSetConverter implements AttributeConverter&lt;Set&lt;String&gt;, String&gt; {\n    private final String GROUP_DELIMITER = \"=IWILLNEVERHAPPEN=\";\n\n    @Override\n    public String convertToDatabaseColumn(Set&lt;String&gt; stringList) {\n        if (stringList == null) {\n            return new String();\n        }\n        return String.join(GROUP_DELIMITER, stringList);\n    }\n\n    @Override\n    public Set&lt;String&gt; convertToEntityAttribute(String string) {\n        Set&lt;String&gt; resultingSet = new HashSet&lt;&gt;();\n        StringTokenizer st = new StringTokenizer(string, GROUP_DELIMITER);\n        while (st.hasMoreTokens())\n            resultingSet.add(st.nextToken());\n        return resultingSet;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2095815,
+      "reputation" : 1345,
+      "user_id" : 1864614,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b25af0bbda588401cf84e4ce878efd80?s=256&d=identicon&r=PG",
+      "display_name" : "razvang",
+      "link" : "https://stackoverflow.com/users/1864614/razvang"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1621500758,
+    "creation_date" : 1621500758,
+    "answer_id" : 67617077,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What I wanted was a simple way of persisting a set of Strings, in a table column.</p>\n<p>I ended up using JSON, as MySQL 5.7+, has native support.\nHere's my solution</p>\n<pre><code>    @Column(name = &quot;eligible_approvers&quot;, columnDefinition = &quot;json&quot;)\n    @Convert(converter = ArrayJsonConverter.class)\n    private Set&lt;String&gt; eligibleApprovers;\n</code></pre>\n<p>And then write a very basic converter</p>\n<pre><code>@Converter(autoApply = true)\npublic class ArrayJsonConverter implements AttributeConverter&lt;Set, String&gt; {\n\n    static final ObjectMapper mapper = new ObjectMapper();\n\n    @Override\n    public String convertToDatabaseColumn(Set list) {\n        if (list == null)\n            return null;\n        try {\n            return mapper.writeValueAsString(list);\n        } catch (JsonProcessingException e) {\n            throw new RuntimeException(e);\n        }\n    }\n\n\n    @Override\n    public Set convertToEntityAttribute(String dbJson) {\n        if (dbJson == null)\n            return null;\n        try {\n            return mapper.readValue(dbJson, new TypeReference&lt;Set&lt;String&gt;&gt;() {\n            });\n        } catch (JsonProcessingException e) {\n            throw new RuntimeException(e);\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10004597,
+      "reputation" : 328,
+      "user_id" : 7399497,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3ac7b0a2a3ca11753350b0c8e5233bc4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Julian Eckhardt",
+      "link" : "https://stackoverflow.com/users/7399497/julian-eckhardt"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1683904318,
+    "last_edit_date" : 1683904318,
+    "creation_date" : 1639138159,
+    "answer_id" : 70304277,
+    "question_id" : 287201,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As my reputation is not enough yet to comment on the much underrated answer written by @razvang:</p>\n<p>This question was asked over a decade ago - the world has changed by quite a bit in the time since. We now have databases with native JSON column support and can use this functionality instead of using separate entities, joins or custom String-to-List converters, which are used by many other answers.</p>\n<p>This is why I find that the solution provided by @razvang should be regarded as the correct answer.</p>\n<p>Let me suggest two purely optional changes, though, which might be interesting depending on <em>your specific situation</em>:</p>\n<ol>\n<li>You could omit the <code>auto_apply = true</code> and add <code>@Convert(converter = &lt;CONVERTER_CLASS_NAME&gt;.class)</code> to the entity field to keep control over when your converter is used.</li>\n<li>Instead of throwing a <code>RuntimeException</code> whenever a conversion fails, you could handle the error right there (for example pass an empty list and write a log message) to make it fail somewhat gracefully.</li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 16536,
+    "reputation" : 10057,
+    "user_id" : 36131,
+    "user_type" : "registered",
+    "accept_rate" : 63,
+    "profile_image" : "https://www.gravatar.com/avatar/e00c999fe29606c86925cd6c8156d771?s=256&d=identicon&r=PG",
+    "display_name" : "Andrea Francia",
+    "link" : "https://stackoverflow.com/users/36131/andrea-francia"
+  },
+  "is_answered" : true,
+  "view_count" : 401372,
+  "accepted_answer_id" : 1428480,
+  "answer_count" : 13,
+  "score" : 242,
+  "last_activity_date" : 1683904318,
+  "creation_date" : 1226589323,
+  "last_edit_date" : 1382948594,
+  "question_id" : 287201,
+  "link" : "https://stackoverflow.com/questions/287201/how-to-persist-a-property-of-type-liststring-in-jpa",
+  "title" : "How to persist a property of type List&lt;String&gt; in JPA?",
+  "body" : "<p>What is the smartest way to get an entity with a field of type List persisted?</p>\n\n<h2>Command.java</h2>\n\n<pre><code>package persistlistofstring;\n\nimport java.io.Serializable;\nimport java.util.ArrayList;\nimport java.util.List;\nimport javax.persistence.Basic;\nimport javax.persistence.Entity;\nimport javax.persistence.EntityManager;\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.GenerationType;\nimport javax.persistence.Id;\nimport javax.persistence.Persistence;\n\n@Entity\npublic class Command implements Serializable {\n\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    Long id;\n    @Basic\n    List&lt;String&gt; arguments = new ArrayList&lt;String&gt;();\n\n    public static void main(String[] args) {\n        Command command = new Command();\n\n        EntityManager em = Persistence\n                .createEntityManagerFactory(\"pu\")\n                .createEntityManager();\n        em.getTransaction().begin();\n        em.persist(command);\n        em.getTransaction().commit();\n        em.close();\n\n        System.out.println(\"Persisted with id=\" + command.id);\n    }\n}\n</code></pre>\n\n<hr>\n\n<p>This code produces:</p>\n\n<pre><code>&gt; Exception in thread \"main\" javax.persistence.PersistenceException: No Persistence provider for EntityManager named pu: Provider named oracle.toplink.essentials.PersistenceProvider threw unexpected exception at create EntityManagerFactory: \n&gt; oracle.toplink.essentials.exceptions.PersistenceUnitLoadingException\n&gt; Local Exception Stack: \n&gt; Exception [TOPLINK-30005] (Oracle TopLink Essentials - 2.0.1 (Build b09d-fcs (12/06/2007))): oracle.toplink.essentials.exceptions.PersistenceUnitLoadingException\n&gt; Exception Description: An exception was thrown while searching for persistence archives with ClassLoader: sun.misc.Launcher$AppClassLoader@11b86e7\n&gt; Internal Exception: javax.persistence.PersistenceException: Exception [TOPLINK-28018] (Oracle TopLink Essentials - 2.0.1 (Build b09d-fcs (12/06/2007))): oracle.toplink.essentials.exceptions.EntityManagerSetupException\n&gt; Exception Description: predeploy for PersistenceUnit [pu] failed.\n&gt; Internal Exception: Exception [TOPLINK-7155] (Oracle TopLink Essentials - 2.0.1 (Build b09d-fcs (12/06/2007))): oracle.toplink.essentials.exceptions.ValidationException\n&gt; Exception Description: The type [interface java.util.List] for the attribute [arguments] on the entity class [class persistlistofstring.Command] is not a valid type for a serialized mapping. The attribute type must implement the Serializable interface.\n&gt;         at oracle.toplink.essentials.exceptions.PersistenceUnitLoadingException.exceptionSearchingForPersistenceResources(PersistenceUnitLoadingException.java:143)\n&gt;         at oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider.createEntityManagerFactory(EntityManagerFactoryProvider.java:169)\n&gt;         at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:110)\n&gt;         at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:83)\n&gt;         at persistlistofstring.Command.main(Command.java:30)\n&gt; Caused by: \n&gt; ...\n</code></pre>\n"
+}

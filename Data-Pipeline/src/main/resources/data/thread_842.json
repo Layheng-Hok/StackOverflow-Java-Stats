@@ -1,0 +1,620 @@
+{
+  "tags" : [ "java", "spring", "type-safety", "unchecked" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 9733,
+      "reputation" : 103865,
+      "user_id" : 18103,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://www.gravatar.com/avatar/f224e093f5d375d77316a1c4835bcfcc?s=256&d=identicon&r=PG",
+      "display_name" : "skiphoppy",
+      "link" : "https://stackoverflow.com/users/18103/skiphoppy"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1233768442,
+    "post_id" : 262367,
+    "comment_id" : 51963476,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "I came up with a routine to actually check the cast to parameterized HashMap, which eliminates the unchecked cast warning: <a href=\"http://stackoverflow.com/questions/509076/how-do-i-address-unchecked-cast-warnings/509230#509230\">link</a> I&#39;d say this is the &quot;correct&quot; solution, but whether or not its worth it might be debatable. :)"
+  }, {
+    "owner" : {
+      "account_id" : 31330,
+      "reputation" : 34411,
+      "user_id" : 85950,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/1199ab2f67a6c2b59d1fc916b58d337f?s=256&d=identicon&r=PG",
+      "display_name" : "blahdiblah",
+      "link" : "https://stackoverflow.com/users/85950/blahdiblah"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1363029318,
+    "post_id" : 262367,
+    "comment_id" : 21677431,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Related/dupe: <a href=\"http://stackoverflow.com/q/509076\">How do I address unchecked cast warnings?</a>"
+  }, {
+    "owner" : {
+      "account_id" : 472669,
+      "reputation" : 9991,
+      "user_id" : 881272,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/f4daab0a92c07d1ec95556c4ab5f0159?s=256&d=identicon&r=PG",
+      "display_name" : "Angelo Fuchs",
+      "link" : "https://stackoverflow.com/users/881272/angelo-fuchs"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1408446984,
+    "post_id" : 262367,
+    "comment_id" : 39582895,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "possible duplicate of <a href=\"http://stackoverflow.com/questions/509076/how-do-i-address-unchecked-cast-warnings\">How do I address unchecked cast warnings?</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 873962,
+        "reputation" : 6858,
+        "user_id" : 924177,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/0e609df9d2b612dca6dfcd150d609724?s=256&d=identicon&r=PG",
+        "display_name" : "dubmojo",
+        "link" : "https://stackoverflow.com/users/924177/dubmojo"
+      },
+      "edited" : false,
+      "score" : 20,
+      "creation_date" : 1329234968,
+      "post_id" : 262416,
+      "comment_id" : 11699773,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This was a while ago, but I was looking for an answer on type checking a Set&lt;CustomClass&gt; before a cast, and you can&#39;t instanceof on a parametrized generic. e.g. if(event.getTarget instanceof Set&lt;CustomClass&gt;) You can only type check a generic with a ? and that won&#39;t remove the cast warning. e.g. if(event.getTarget instanceof Set&lt;?&gt;)"
+    } ],
+    "owner" : {
+      "account_id" : 5100,
+      "reputation" : 30089,
+      "user_id" : 8026,
+      "user_type" : "registered",
+      "accept_rate" : 63,
+      "profile_image" : "https://www.gravatar.com/avatar/60929e8e0445f0070e501f5ded8ad348?s=256&d=identicon&r=PG",
+      "display_name" : "MetroidFan2002",
+      "link" : "https://stackoverflow.com/users/8026/metroidfan2002"
+    },
+    "is_accepted" : false,
+    "score" : 291,
+    "last_activity_date" : 1518008144,
+    "last_edit_date" : 1518008144,
+    "creation_date" : 1225817047,
+    "answer_id" : 262416,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Well, first of all, you're wasting memory with the new <code>HashMap</code> creation call. Your second line completely disregards the reference to this created hashmap, making it then available to the garbage collector. So, don't do that, use:</p>\n\n<pre><code>private Map&lt;String, String&gt; someMap = (HashMap&lt;String, String&gt;)getApplicationContext().getBean(\"someMap\");\n</code></pre>\n\n<p>Secondly, the compiler is complaining that you cast the object to a <code>HashMap</code> without checking if it is a <code>HashMap</code>. But, even if you were to do:</p>\n\n<pre><code>if(getApplicationContext().getBean(\"someMap\") instanceof HashMap) {\n    private Map&lt;String, String&gt; someMap = (HashMap&lt;String, String&gt;)getApplicationContext().getBean(\"someMap\");\n}\n</code></pre>\n\n<p>You would probably still get this warning. The problem is, <code>getBean</code> returns <code>Object</code>, so it is unknown what the type is. Converting it to <code>HashMap</code> directly would not cause the problem with the second case (and perhaps there would not be a warning in the first case, I'm not sure how pedantic the Java compiler is with warnings for Java 5). However, you are converting it to a <code>HashMap&lt;String, String&gt;</code>.</p>\n\n<p>HashMaps are really maps that take an object as a key and have an object as a value, <code>HashMap&lt;Object, Object&gt;</code> if you will. Thus, there is no guarantee that when you get your bean that it can be represented as a <code>HashMap&lt;String, String&gt;</code> because you could have <code>HashMap&lt;Date, Calendar&gt;</code> because the non-generic representation that is returned can have any objects.</p>\n\n<p>If the code compiles, and you can execute <code>String value = map.get(\"thisString\");</code> without any errors, don't worry about this warning. But if the map isn't completely of string keys to string values, you will get a <code>ClassCastException</code> at runtime, because the generics cannot block this from happening in this case.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1161723,
+        "reputation" : 6890,
+        "user_id" : 1141095,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/14e65b489bf1aefb20286ea15302f032?s=256&d=identicon&r=PG",
+        "display_name" : "ezdazuzena",
+        "link" : "https://stackoverflow.com/users/1141095/ezdazuzena"
+      },
+      "edited" : false,
+      "score" : 25,
+      "creation_date" : 1381917501,
+      "post_id" : 262417,
+      "comment_id" : 28755207,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "-1: a warning should never be accepted. Or suppress these kind of warnings or fix it. There will come the moment where you&#39;ll have to many warnings and you won&#39;t see the relevant once."
+    }, {
+      "owner" : {
+        "account_id" : 4551456,
+        "reputation" : 6787,
+        "user_id" : 3696510,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/Sq34R.jpg?s=256",
+        "display_name" : "muttonUp",
+        "link" : "https://stackoverflow.com/users/3696510/muttonup"
+      },
+      "edited" : false,
+      "score" : 20,
+      "creation_date" : 1425813039,
+      "post_id" : 262417,
+      "comment_id" : 46107737,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You can&#39;t really avoid class cast warnings when casting parameterised generics i.e Map, so this is the best answer for the original question."
+    }, {
+      "owner" : {
+        "account_id" : 1312133,
+        "reputation" : 3322,
+        "user_id" : 1259924,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/0cc57bb88e4314676b158471aa4d94bd?s=256&d=identicon&r=PG",
+        "display_name" : "Greg Brown",
+        "link" : "https://stackoverflow.com/users/1259924/greg-brown"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1660395312,
+      "post_id" : 262417,
+      "comment_id" : 129525853,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "From my experience, it is more common to omit the &quot;value=&quot; part since that is the default: @SuppressWarnings(&quot;unchecked&quot;)"
+    }, {
+      "owner" : {
+        "account_id" : 6284,
+        "reputation" : 15333,
+        "user_id" : 10508,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://lh5.googleusercontent.com/-LZXZjjvwcbI/AAAAAAAAAAI/AAAAAAAAAAA/yrK7kN7rvVw/s256-rj/photo.jpg",
+        "display_name" : "David M. Karr",
+        "link" : "https://stackoverflow.com/users/10508/david-m-karr"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1660400399,
+      "post_id" : 262417,
+      "comment_id" : 129526885,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Huh. Glad someone commented on this answer I gave 14 years ago. I never do this anymore. Sometimes warnings can&#39;t be practically fixed, but I would much rather see them than hide them."
+    } ],
+    "owner" : {
+      "account_id" : 6284,
+      "reputation" : 15333,
+      "user_id" : 10508,
+      "user_type" : "registered",
+      "accept_rate" : 53,
+      "profile_image" : "https://lh5.googleusercontent.com/-LZXZjjvwcbI/AAAAAAAAAAI/AAAAAAAAAAA/yrK7kN7rvVw/s256-rj/photo.jpg",
+      "display_name" : "David M. Karr",
+      "link" : "https://stackoverflow.com/users/10508/david-m-karr"
+    },
+    "is_accepted" : false,
+    "score" : 39,
+    "last_activity_date" : 1225817064,
+    "creation_date" : 1225817064,
+    "answer_id" : 262417,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>A warning is just that.  A warning.  Sometimes warnings are irrelevant, sometimes they're not.  They're used to call your attention to something that the compiler thinks could be a problem, but may not be.</p>\n\n<p>In the case of casts, it's always going to give a warning in this case.  If you are absolutely certain that a particular cast will be safe, then you should consider adding an annotation like this (I'm not sure of the syntax) just before the line:</p>\n\n<pre><code>@SuppressWarnings (value=\"unchecked\")\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8022,
+      "reputation" : 21687,
+      "user_id" : 14167,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/HYgOI.jpg?s=256",
+      "display_name" : "David Nehme",
+      "link" : "https://stackoverflow.com/users/14167/david-nehme"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1225817099,
+    "creation_date" : 1225817099,
+    "answer_id" : 262418,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You are getting this message because getBean returns an Object reference and you are casting it to the correct type.  Java 1.5 gives you a warning.  That's the nature of using Java 1.5 or better with code that works like this.  Spring has the typesafe version</p>\n\n<pre><code>someMap=getApplicationContext().getBean&lt;HashMap&lt;String, String&gt;&gt;(\"someMap\");\n</code></pre>\n\n<p>on its todo list.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5110,
+        "reputation" : 69986,
+        "user_id" : 8047,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://www.gravatar.com/avatar/771d6811baa1b117dd8a5ff0708fc66b?s=256&d=identicon&r=PG",
+        "display_name" : "Dan Rosenstark",
+        "link" : "https://stackoverflow.com/users/8047/dan-rosenstark"
+      },
+      "edited" : false,
+      "score" : 20,
+      "creation_date" : 1312402890,
+      "post_id" : 262539,
+      "comment_id" : 8261387,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;ll take Java&#39;s reified generics over untyped NSMutableWhatever, which feels like a ten-year leap backwards, any day of the week. At least Java is trying."
+    }, {
+      "owner" : {
+        "account_id" : 873962,
+        "reputation" : 6858,
+        "user_id" : 924177,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/0e609df9d2b612dca6dfcd150d609724?s=256&d=identicon&r=PG",
+        "display_name" : "dubmojo",
+        "link" : "https://stackoverflow.com/users/924177/dubmojo"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1329235223,
+      "post_id" : 262539,
+      "comment_id" : 11699876,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Exactly. If you insist on type checking, it can only be done with HashMap&lt;?,?&gt; and that won&#39;t remove the warning since its the same as not type checking the generic types. It&#39;s not the end of the world, but annoying that you&#39;re caught either suppressing a warning or living with it."
+    }, {
+      "owner" : {
+        "account_id" : 193067,
+        "reputation" : 14859,
+        "user_id" : 434562,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/db0ffc046fd218d4a2a0d7314e6c1d98?s=256&d=identicon&r=PG",
+        "display_name" : "SasQ",
+        "link" : "https://stackoverflow.com/users/434562/sasq"
+      },
+      "edited" : false,
+      "score" : 15,
+      "creation_date" : 1461565678,
+      "post_id" : 262539,
+      "comment_id" : 61237310,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@JonSkeet What&#39;s a reified generic?"
+    }, {
+      "owner" : {
+        "account_id" : 22426002,
+        "reputation" : 408,
+        "user_id" : 16632604,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/CZHgX.jpg?s=256",
+        "display_name" : "Flimtix",
+        "link" : "https://stackoverflow.com/users/16632604/flimtix"
+      },
+      "reply_to_user" : {
+        "account_id" : 193067,
+        "reputation" : 14859,
+        "user_id" : 434562,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/db0ffc046fd218d4a2a0d7314e6c1d98?s=256&d=identicon&r=PG",
+        "display_name" : "SasQ",
+        "link" : "https://stackoverflow.com/users/434562/sasq"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1646844883,
+      "post_id" : 262539,
+      "comment_id" : 126226168,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@SasQ and all others who are wondering should take a look at this <a href=\"https://stackoverflow.com/questions/879855/what-are-reified-generics-how-do-they-solve-type-erasure-problems-and-why-cant\">question</a>."
+    } ],
+    "owner" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "is_accepted" : true,
+    "score" : 404,
+    "last_activity_date" : 1225818559,
+    "creation_date" : 1225818559,
+    "answer_id" : 262539,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The problem is that a cast is a runtime check - but due to type erasure, at runtime there's actually no difference between a <code>HashMap&lt;String,String&gt;</code> and <code>HashMap&lt;Foo,Bar&gt;</code> for any other <code>Foo</code> and <code>Bar</code>.</p>\n\n<p>Use <code>@SuppressWarnings(\"unchecked\")</code> and hold your nose. Oh, and campaign for reified generics in Java :)</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2782694,
+        "reputation" : 4035,
+        "user_id" : 2394901,
+        "user_type" : "registered",
+        "accept_rate" : 36,
+        "profile_image" : "https://i.sstatic.net/tGFK1.png?s=256",
+        "display_name" : "juan Isaza",
+        "link" : "https://stackoverflow.com/users/2394901/juan-isaza"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1444015767,
+      "post_id" : 13387897,
+      "comment_id" : 53706995,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "you are right my friend. Instead of casting the list, just iterate it and cast each element, the warning will not appear, awesome."
+    }, {
+      "owner" : {
+        "account_id" : 1943548,
+        "reputation" : 2838,
+        "user_id" : 1749165,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://i.sstatic.net/MVxNw.jpg?s=256",
+        "display_name" : "mumair",
+        "link" : "https://stackoverflow.com/users/1749165/mumair"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1483440733,
+      "post_id" : 13387897,
+      "comment_id" : 70089610,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This removed the warning but still I am not confident :P"
+    }, {
+      "owner" : {
+        "account_id" : 7285437,
+        "reputation" : 1031,
+        "user_id" : 5553654,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/50ae13a98fd07d75031df586b91fdc27?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "channae",
+        "link" : "https://stackoverflow.com/users/5553654/channae"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1538849291,
+      "post_id" : 13387897,
+      "comment_id" : 92292048,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes feels like blindfolding the compiler but not runtime :D So I don&#39;t see any difference between this and @SuppressWarnings(&quot;unchecked&quot;)"
+    }, {
+      "owner" : {
+        "account_id" : 1689889,
+        "reputation" : 1460,
+        "user_id" : 1552468,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/xQjZ0.jpg?s=256",
+        "display_name" : "Edu Costa",
+        "link" : "https://stackoverflow.com/users/1552468/edu-costa"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1560346001,
+      "post_id" : 13387897,
+      "comment_id" : 99706184,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That&#180;s awesome! The main difference of using @SupressWarning is that it that use the annotation eliminates the warning from your IDE and code analysis tools but if you are using the -Werror flag compile you will end up with error yet. Using this approach both warnings are fixed."
+    }, {
+      "owner" : {
+        "account_id" : 5289146,
+        "reputation" : 9940,
+        "user_id" : 4222206,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/416696430ab23f397a5dbeda73e72896?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "queeg",
+        "link" : "https://stackoverflow.com/users/4222206/queeg"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1644593734,
+      "post_id" : 13387897,
+      "comment_id" : 125655299,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In <a href=\"https://www.baeldung.com/java-warning-unchecked-cast\" rel=\"nofollow noreferrer\">baeldung.com/java-warning-unchecked-cast</a> it is explained that a ClassCastException might be thrown anywhere in your code without reference to this offending unchecked cast. The workaround is to move the cast to something that has a very concise ClassCastException and thus can be fixed easier if need be."
+    } ],
+    "owner" : {
+      "account_id" : 1584941,
+      "reputation" : 1321,
+      "user_id" : 1469526,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3f9331c12bb8b6b9dcccf21a46afc980?s=256&d=identicon&r=PG",
+      "display_name" : "Larry Landry",
+      "link" : "https://stackoverflow.com/users/1469526/larry-landry"
+    },
+    "is_accepted" : false,
+    "score" : 129,
+    "last_activity_date" : 1501668302,
+    "last_edit_date" : 1501668302,
+    "creation_date" : 1352929580,
+    "answer_id" : 13387897,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>As the messages above indicate, the List cannot be differentiated between a <code>List&lt;Object&gt;</code> and a <code>List&lt;String&gt;</code> or <code>List&lt;Integer&gt;</code>.</p>\n\n<p>I've solved this error message for a similar problem:</p>\n\n<pre><code>List&lt;String&gt; strList = (List&lt;String&gt;) someFunction();\nString s = strList.get(0);\n</code></pre>\n\n<p>with the following:</p>\n\n<pre><code>List&lt;?&gt; strList = (List&lt;?&gt;) someFunction();\nString s = (String) strList.get(0);\n</code></pre>\n\n<p>Explanation: The first type conversion verifies that the object is a List without caring about the types held within (since we cannot verify the internal types at the List level).  The second conversion is now required because the compiler only knows the List contains some sort of objects.  This verifies the type of each object in the List as it is accessed.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1510562,
+      "reputation" : 125,
+      "user_id" : 1412805,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/37f3b699648f54cc4e8c6721d3749e69?s=256&d=identicon&r=PG",
+      "display_name" : "Rabbit",
+      "link" : "https://stackoverflow.com/users/1412805/rabbit"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1460562931,
+    "creation_date" : 1460562931,
+    "answer_id" : 36603684,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you really want to get rid of the warnings, one thing you can do is create a class that extends from the generic class.</p>\n\n<p>For example, if you're trying to use</p>\n\n<pre><code>private Map&lt;String, String&gt; someMap = new HashMap&lt;String, String&gt;();\n</code></pre>\n\n<p>You can create a new class like such</p>\n\n<pre><code>public class StringMap extends HashMap&lt;String, String&gt;()\n{\n    // Override constructors\n}\n</code></pre>\n\n<p>Then when you use</p>\n\n<pre><code>someMap = (StringMap) getApplicationContext().getBean(\"someMap\");\n</code></pre>\n\n<p>The compiler DOES know what the (no longer generic) types are, and there will be no warning. This may not always be the perfect solution, some might argue this kind of defeats the purpose of generic classes, but you're still re-using all of the same code from the generic class, you're just declaring at compile time what type you want to use.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 53772,
+      "reputation" : 22485,
+      "user_id" : 160811,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/baQSk.jpg?s=256",
+      "display_name" : "Jeremy",
+      "link" : "https://stackoverflow.com/users/160811/jeremy"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1476991517,
+    "creation_date" : 1476991517,
+    "answer_id" : 40162894,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Another solution, if you find yourself casting the same object a lot and you don't want to litter your code with <code>@SupressWarnings(\"unchecked\")</code>, would be to create a method with the annotation. This way you're centralizing the cast, and hopefully reducing the possibility for error.</p>\n\n<pre><code>@SuppressWarnings(\"unchecked\")\npublic static List&lt;String&gt; getFooStrings(Map&lt;String, List&lt;String&gt;&gt; ctx) {\n    return (List&lt;String&gt;) ctx.get(\"foos\");\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2729652,
+      "reputation" : 6569,
+      "user_id" : 2353713,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/937215035f41f25df47dc4a69b40fefe?s=256&d=identicon&r=PG",
+      "display_name" : "Andy",
+      "link" : "https://stackoverflow.com/users/2353713/andy"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1481898205,
+    "creation_date" : 1481898205,
+    "answer_id" : 41186419,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>Below code causes Type safety Warning</strong></p>\n\n<p><code>Map&lt;String, Object&gt; myInput = (Map&lt;String, Object&gt;) myRequest.get();</code> </p>\n\n<blockquote>\n  <p><strong>Workaround</strong></p>\n</blockquote>\n\n<p>Create a new Map Object without mentioning the parameters because the type of object held within the list is not verified.</p>\n\n<p><strong><em>Step 1:</em></strong> Create a new temporary Map</p>\n\n<p><code>Map&lt;?, ?&gt; tempMap = (Map&lt;?, ?&gt;) myRequest.get();</code></p>\n\n<p><strong><em>Step 2:</em></strong> Instantiate the main Map</p>\n\n<pre><code>Map&lt;String, Object&gt; myInput=new HashMap&lt;&gt;(myInputObj.size());\n</code></pre>\n\n<p><strong><em>Step 3:</em></strong> Iterate the temporary Map and set the values into the main Map</p>\n\n<pre><code> for(Map.Entry&lt;?, ?&gt; entry :myInputObj.entrySet()){\n        myInput.put((String)entry.getKey(),entry.getValue()); \n    }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2301616,
+        "reputation" : 7198,
+        "user_id" : 2021812,
+        "user_type" : "registered",
+        "accept_rate" : 52,
+        "profile_image" : "https://i.sstatic.net/8MuLbr8T.jpg?s=256",
+        "display_name" : "Malwinder Singh",
+        "link" : "https://stackoverflow.com/users/2021812/malwinder-singh"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1576836698,
+      "post_id" : 52061219,
+      "comment_id" : 105033137,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Looks like a hack not a solution."
+    }, {
+      "owner" : {
+        "account_id" : 395044,
+        "reputation" : 2922,
+        "user_id" : 757808,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/3d68e27bc7504fe519d4d8c93f5204c7?s=256&d=identicon&r=PG",
+        "display_name" : "Ulterior",
+        "link" : "https://stackoverflow.com/users/757808/ulterior"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1580470805,
+      "post_id" : 52061219,
+      "comment_id" : 106116954,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "- The serializable class MyMap does not declare a static final serialVersionUID field of type long :{"
+    }, {
+      "owner" : {
+        "account_id" : 2464526,
+        "reputation" : 1659,
+        "user_id" : 2147927,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/61db3527d478220b5326596628ff4a8b?s=256&d=identicon&r=PG",
+        "display_name" : "Line",
+        "link" : "https://stackoverflow.com/users/2147927/line"
+      },
+      "reply_to_user" : {
+        "account_id" : 395044,
+        "reputation" : 2922,
+        "user_id" : 757808,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/3d68e27bc7504fe519d4d8c93f5204c7?s=256&d=identicon&r=PG",
+        "display_name" : "Ulterior",
+        "link" : "https://stackoverflow.com/users/757808/ulterior"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1605361660,
+      "post_id" : 52061219,
+      "comment_id" : 114629404,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Ulterior then add such a field: <a href=\"https://stackoverflow.com/questions/2288937/what-does-it-mean-the-serializable-class-does-not-declare-a-static-final-serial\" title=\"what does it mean the serializable class does not declare a static final serial\">stackoverflow.com/questions/2288937/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1312133,
+        "reputation" : 3322,
+        "user_id" : 1259924,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/0cc57bb88e4314676b158471aa4d94bd?s=256&d=identicon&r=PG",
+        "display_name" : "Greg Brown",
+        "link" : "https://stackoverflow.com/users/1259924/greg-brown"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1660395449,
+      "post_id" : 52061219,
+      "comment_id" : 129525883,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This would only work if &quot;someMap&quot; is actually an instance of the local MyMap class, which seems unlikely."
+    } ],
+    "owner" : {
+      "account_id" : 2545570,
+      "reputation" : 478,
+      "user_id" : 2210454,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a348a3c671a6cd6cd2762e4105127cb8?s=256&d=identicon&r=PG",
+      "display_name" : "ochakov",
+      "link" : "https://stackoverflow.com/users/2210454/ochakov"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1535471410,
+    "last_edit_date" : 1535471410,
+    "creation_date" : 1535469214,
+    "answer_id" : 52061219,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The solution to avoid the unchecked warning:</p>\n\n<pre><code>class MyMap extends HashMap&lt;String, String&gt; {};\nsomeMap = (MyMap)getApplicationContext().getBean(\"someMap\");\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 100270,
+      "reputation" : 132415,
+      "user_id" : 270371,
+      "user_type" : "registered",
+      "accept_rate" : 33,
+      "profile_image" : "https://i.sstatic.net/LSTUa.png?s=256",
+      "display_name" : "davidxxx",
+      "link" : "https://stackoverflow.com/users/270371/davidxxx"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1688571079,
+    "last_edit_date" : 1688571079,
+    "creation_date" : 1565618542,
+    "answer_id" : 57462703,
+    "question_id" : 262367,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<p>What did I do wrong? How do I resolve the issue?</p>\n</blockquote>\n<p>Here :</p>\n<p><code>Map&lt;String,String&gt; someMap = (Map&lt;String,String&gt;)getApplicationContext().getBean(&quot;someMap&quot;);</code></p>\n<p>You use a legacy method that we generally don't want to use since that returns <code>Object</code>:</p>\n<pre><code>Object getBean(String name) throws BeansException;\n</code></pre>\n<p>The method to favor to get (for singleton) / create (for prototype) a bean from a bean factory is :</p>\n<pre><code>&lt;T&gt; T getBean(String name, Class&lt;T&gt; requiredType) throws BeansException;\n</code></pre>\n<p>Using it such as  :</p>\n<pre><code>Map&lt;String,String&gt; someMap = app.getBean(&quot;someMap&quot;, Map.class);\n</code></pre>\n<p>will compile but still with a unchecked conversion warning since all <code>Map</code> objects are not necessarily <code>Map&lt;String, String&gt;</code> objects.</p>\n<p>But <code>&lt;T&gt; T getBean(String name, Class&lt;T&gt; requiredType) throws BeansException;</code> is not enough in bean generic classes such as generic collections since that requires to specify more than one class as parameter : the collection type and its generic type(s).</p>\n<p>In this kind of scenario and in general, a better approach is not to use directly <code>BeanFactory</code> methods but let the framework to inject the bean.</p>\n<p>The bean declaration :</p>\n<pre><code>@Configuration\npublic class MyConfiguration{\n\n    @Bean\n    public Map&lt;String, String&gt; someMap() {\n        Map&lt;String, String&gt; someMap = new HashMap();\n        someMap.put(&quot;some_key&quot;, &quot;some value&quot;);\n        someMap.put(&quot;some_key_2&quot;, &quot;some value&quot;);\n        return someMap;\n    }\n}\n</code></pre>\n<p>The bean injection :</p>\n<pre><code>@Autowired\n@Qualifier(&quot;someMap&quot;)\nMap&lt;String, String&gt; someMap;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 963,
+    "reputation" : 18770,
+    "user_id" : 37740,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://www.gravatar.com/avatar/5e343311e1ed77e61a5faa8ed648e455?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Saj",
+    "link" : "https://stackoverflow.com/users/37740/saj"
+  },
+  "is_answered" : true,
+  "view_count" : 565512,
+  "protected_date" : 1540562056,
+  "accepted_answer_id" : 262539,
+  "answer_count" : 10,
+  "score" : 337,
+  "last_activity_date" : 1699922077,
+  "creation_date" : 1225816143,
+  "last_edit_date" : 1699922077,
+  "question_id" : 262367,
+  "link" : "https://stackoverflow.com/questions/262367/type-safety-unchecked-cast",
+  "title" : "Type safety: Unchecked cast",
+  "body" : "<p>In my spring application context file, I have something like:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;util:map id=&quot;someMap&quot; map-class=&quot;java.util.HashMap&quot; key-type=&quot;java.lang.String&quot; value-type=&quot;java.lang.String&quot;&gt;\n    &lt;entry key=&quot;some_key&quot; value=&quot;some value&quot; /&gt;\n    &lt;entry key=&quot;some_key_2&quot; value=&quot;some value&quot; /&gt;   \n&lt;/util:map&gt;\n</code></pre>\n<p>In java class, the implementation looks like:</p>\n<pre><code>private Map&lt;String, String&gt; someMap = new HashMap&lt;String, String&gt;();\nsomeMap = (HashMap&lt;String, String&gt;)getApplicationContext().getBean(&quot;someMap&quot;);\n</code></pre>\n<p>In Eclipse, I see a warning that says:</p>\n<p><strong>Type safety: Unchecked cast from Object to HashMap&lt;String,String&gt;</strong></p>\n<p>What went wrong?</p>\n"
+}

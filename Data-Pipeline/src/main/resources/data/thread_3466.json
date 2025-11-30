@@ -1,0 +1,98 @@
+{
+  "tags" : [ "java", "java-8", "akka" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2269593,
+      "reputation" : 45235,
+      "user_id" : 1997376,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/3AtSv.png?s=256",
+      "display_name" : "Nicolas Filotto",
+      "link" : "https://stackoverflow.com/users/1997376/nicolas-filotto"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1472909026,
+    "post_id" : 39307364,
+    "comment_id" : 65947497,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "show your class ChatMessage"
+  }, {
+    "owner" : {
+      "account_id" : 2269593,
+      "reputation" : 45235,
+      "user_id" : 1997376,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/3AtSv.png?s=256",
+      "display_name" : "Nicolas Filotto",
+      "link" : "https://stackoverflow.com/users/1997376/nicolas-filotto"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1472909134,
+    "post_id" : 39307364,
+    "comment_id" : 65947525,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "where thenApplyAsync is coming from?"
+  }, {
+    "owner" : {
+      "account_id" : 2151498,
+      "reputation" : 9029,
+      "user_id" : 1907755,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/bdb9b8bd2aa1e9d5da66a24ee0a24390?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Shankar",
+      "link" : "https://stackoverflow.com/users/1907755/shankar"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1472911906,
+    "post_id" : 39307364,
+    "comment_id" : 65948214,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@avy : The question is not clear, you might need to look at <a href=\"http://stackoverflow.com/questions/27522741/incompatible-types-inference-variable-t-has-incompatible-bounds\" title=\"incompatible types inference variable t has incompatible bounds\">stackoverflow.com/questions/27522741/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1473071085,
+    "creation_date" : 1473071085,
+    "answer_id" : 39328562,
+    "question_id" : 39307364,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The method <code>.thenApplyAsync(httpResponse -&gt; new ChatActor.ChatMessage(httpResponse,\"1234\"))</code> returns a <code>CompletionStage&lt;ChatActor.ChatMessage&gt;</code> rather than <code>CompletionStage&lt;HttpResponse&gt;</code>, as with your function <code>httpResponse -&gt; new ChatActor.ChatMessage(httpResponse,\"1234\")</code>, you are converting the instance of type <code>HttpResponse</code> to an instance of type <code>ChatActor.ChatMessage</code>.</p>\n\n<p>So simply change the variable’s type:</p>\n\n<pre><code>CompletionStage&lt;ChatActor.ChatMessage&gt; httpResponse =\n     postChat(url, context().system(), chatData)\n    .thenApplyAsync(httpResponse -&gt; new ChatActor.ChatMessage(httpResponse,\"1234\"));\n</code></pre>\n\n<p>The reason why the compiler doesn’t simply say “<em>cannot assign an instance of type <code>CompletionStage&lt;ChatActor.ChatMessage&gt;</code> to a variable of type <code>CompletionStage&lt;HttpResponse&gt;</code></em>” lies in the new type inference applied to the generic method <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html#thenApplyAsync-java.util.function.Function-\" rel=\"nofollow\"><code>thenApplyAsync</code></a>. The compiler tries to find a type for the method’s type parameter <code>U</code> that could make the invocation valid, i.e. if there was a subtype relationship between <code>ChatActor.ChatMessage</code> and <code>HttpResponse</code>, it would be possible. Since this fails, the compiler tells you that it can’t find a valid type for <code>U</code>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7782169,
+    "reputation" : 457,
+    "user_id" : 6559020,
+    "user_type" : "registered",
+    "accept_rate" : 41,
+    "profile_image" : "https://www.gravatar.com/avatar/3a0de28fadf889e923bf0aff2a3e1f15?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "avy",
+    "link" : "https://stackoverflow.com/users/6559020/avy"
+  },
+  "is_answered" : true,
+  "view_count" : 4126,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762390204,
+  "creation_date" : 1472908819,
+  "last_edit_date" : 1762390204,
+  "question_id" : 39307364,
+  "link" : "https://stackoverflow.com/questions/39307364/java-incompatible-types-inference-variable-u-has-incompatible-bounds",
+  "title" : "java: incompatible types: inference variable U has incompatible bounds",
+  "body" : "<blockquote>\n<p><em>Error:(65, 52) java: incompatible types: inference variable U has incompatible bounds<br />\nequality constraints: akka.http.javadsl.model.HttpResponse<br />\nlower bounds: com.myactors.ChatActor.ChatMessage</em></p>\n</blockquote>\n<p>When compiling the following lines, it shows the error above:</p>\n<pre><code> CompletionStage&lt;HttpResponse&gt; httpResponse =\n                        postChat(url,\n                                context().system(), chatData)\n                                .thenApplyAsync(httpResponse -&gt; new ChatActor.ChatMessage(httpResponse,&quot;1234&quot;));\n\n\npublic static class ChatMessage{\n   HttpResponse httpResponse;\n    String name;\n\n    public ChatMessage( HttpResponse httpResponse, String name) {\n        this.httpResponse = httpResponse;\n        this.name = name;\n    }\n\n    public HttpResponse getHttpResponse() {\n        return httpResponse;\n    }\n\n    public String getname() {\n        return name;\n    }\n}\n</code></pre>\n<p>Here is HttpResponse is of Akka Http.</p>\n<p>I don't understand what it is saying.<br />\nWhat would be the way to resolve this?</p>\n"
+}

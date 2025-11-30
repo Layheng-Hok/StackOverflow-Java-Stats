@@ -1,0 +1,45 @@
+{
+  "tags" : [ "java", "aop", "aspectj" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 99792,
+      "reputation" : 11906,
+      "user_id" : 269377,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/b7b436ed2c0ca8639767ee2d86ca07e4?s=256&d=identicon&r=PG",
+      "display_name" : "Maxym",
+      "link" : "https://stackoverflow.com/users/269377/maxym"
+    },
+    "is_accepted" : true,
+    "score" : 64,
+    "last_activity_date" : 1299355920,
+    "creation_date" : 1299355920,
+    "answer_id" : 5206497,
+    "question_id" : 5205916,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>cflow helps you to advice the whole control flow. Let's try an example, I have 4 small classes</p>\n\n<pre><code>public class A {\n\n    public static void methodA() {\n        B.methodB();\n    }\n\n}\n\npublic class B {\n\n    public static void methodB() {\n        C.methodC();\n        int a = 1;\n        int b = 2;\n        System.out.println( a + b );\n    }\n\n}\n\npublic class C {\n\n    public static void methodC() {\n        D.methodD();\n    }\n\n}\n\npublic class D {\n\n    public static void methodD() {\n\n    }\n\n}\n</code></pre>\n\n<p>my aspect:</p>\n\n<pre><code>public aspect CFlow {\n\n    public pointcut flow() : cflow(call( * B.methodB() ) ) &amp;&amp; !within(CFlow);\n\n    before() : flow() {\n        System.out.println( thisJoinPoint );\n    }\n\n}\n</code></pre>\n\n<p>and my runner (just to see what happens):</p>\n\n<pre><code>public class Test {\n\n    public static void main(String[] args) {\n        A.methodA();\n    }\n\n}\n</code></pre>\n\n<p>in my pointcut you could see <code>cflow(call( * B.methodB() ) )</code>, so I want to aspect control flow starting from <code>B.methodB</code> calling, and when you run Test class you see on console:</p>\n\n<pre><code>call(void test.B.methodB())\nstaticinitialization(test.B.&lt;clinit&gt;)\nexecution(void test.B.methodB())\ncall(void test.C.methodC())\nstaticinitialization(test.C.&lt;clinit&gt;)\nexecution(void test.C.methodC())\ncall(void test.D.methodD())\nstaticinitialization(test.D.&lt;clinit&gt;)\nexecution(void test.D.methodD())\nget(PrintStream java.lang.System.out)\ncall(void java.io.PrintStream.println(int))\n3\n</code></pre>\n\n<p>last string does not belong to aspect, it is just because of <code>System.out.println</code> inside <code>methodB</code>. All printed shows you control flow - chains of methods and 'events' (execution, calling, initializations...). You see, I started from <code>Test</code> class, which called <code>methodA</code> but they are not in 'stack', because we were interested in <code>methodB</code> control flow.</p>\n\n<p>If you want to get that stack, but without first line (calling itself), you could try to define</p>\n\n<pre><code>public pointcut flow() :  cflowbelow(call( * B.methodB() ) ) &amp;&amp; !within(CFlow);\n</code></pre>\n\n<p>cflowbelow is another pointcut, which means control flow excluding specified (in our case calling <code>B.methodB</code>).</p>\n\n<p>Be careful to add <code>!within(_aspect_)</code> in pointcut, otherwise you will get nothing good but <code>StackOverflowError</code>. It happens because cflow can't be defined at compile time, and at runtime aspect belongs to control flow too (so it leads to eternal recursion...)</p>\n\n<p>well, think of control flow as similar to call stack, then you will get an idea of its usage ;)</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 259956,
+    "reputation" : 7357,
+    "user_id" : 543220,
+    "user_type" : "registered",
+    "accept_rate" : 97,
+    "profile_image" : "https://www.gravatar.com/avatar/923b055972d0ed80f669ea8f2c6aa77e?s=256&d=identicon&r=PG",
+    "display_name" : "Joeblackdev",
+    "link" : "https://stackoverflow.com/users/543220/joeblackdev"
+  },
+  "is_answered" : true,
+  "view_count" : 13236,
+  "accepted_answer_id" : 5206497,
+  "answer_count" : 1,
+  "score" : 37,
+  "last_activity_date" : 1761949963,
+  "creation_date" : 1299350121,
+  "last_edit_date" : 1761949963,
+  "question_id" : 5205916,
+  "link" : "https://stackoverflow.com/questions/5205916/aspect-oriented-programming-what-is-cflow",
+  "title" : "Aspect-oriented programming - what is &#39;cflow&#39;?",
+  "body" : "<p>I have referred to the <a href=\"https://en.wikipedia.org/wiki/AspectJ\" rel=\"nofollow noreferrer\">AspectJ</a> reference <a href=\"http://www.eclipse.org/aspectj/doc/released/progguide/quick.html\" rel=\"nofollow noreferrer\">here</a>. It states that the 'cflow' is</p>\n<blockquote>\n<p><code>cflow(Pointcut)</code> - every join point in\nthe control flow of each join point P\npicked out by Pointcut, including P\nitself</p>\n</blockquote>\n<p>This isn't entirely lucid for me. What is the meaning of cflow, please? Why use it?</p>\n"
+}

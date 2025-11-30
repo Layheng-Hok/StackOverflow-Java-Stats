@@ -1,0 +1,165 @@
+{
+  "tags" : [ "java", "character-encoding", "io" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 62515,
+      "reputation" : 45756,
+      "user_id" : 185722,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/f6c15e21ea2efa8c15aa959a0d790b36?s=256&d=identicon&r=PG",
+      "display_name" : "Alexander Pogrebnyak",
+      "link" : "https://stackoverflow.com/users/185722/alexander-pogrebnyak"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1303561004,
+    "creation_date" : 1303561004,
+    "answer_id" : 5764111,
+    "question_id" : 5764065,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You have to give reader a hint, by providing a character set that your binary file is written in. E.g</p>\n\n<pre><code>Reader reader =\n   new InputStreamReader(\n       new FileInputStream( \"/path/to/file\" ),\n       \"UTF-8\" // most likely that the encoding of the file\n   )\n</code></pre>\n\n<p>Without a hint it will use your platform default encoding, which in many cases is not what you want.</p>\n\n<p>This link has a nice explanation of encodings: <a href=\"http://www.joelonsoftware.com/articles/Unicode.html\" rel=\"noreferrer\">http://www.joelonsoftware.com/articles/Unicode.html</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 246,
+      "reputation" : 109219,
+      "user_id" : 304,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/9061706d2661cf0fa9f2df0eee56cf9b?s=256&d=identicon&r=PG",
+      "display_name" : "McDowell",
+      "link" : "https://stackoverflow.com/users/304/mcdowell"
+    },
+    "is_accepted" : true,
+    "score" : 31,
+    "last_activity_date" : 1303564431,
+    "last_edit_date" : 1495540477,
+    "creation_date" : 1303564431,
+    "answer_id" : 5764357,
+    "question_id" : 5764065,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>An <code>InputStream</code> reads raw octet (8 bit) data. In Java, the <code>byte</code> type is equivalent to the <code>char</code> type in C. In C, this type can be used to represent character data or binary data. In Java, the <code>char</code> type shares greater similarities with the C <code>wchar_t</code> type.</p>\n\n<p>An <code>InputStreamReader</code> then will transform data from some encoding into UTF-16. If \"a你们\" is encoded as UTF-8 on disk, it will be the byte sequence <code>61 E4 BD A0 E4 BB AC</code>. When you pass the <code>InputStream</code> to <code>InputStreamReader</code> with the UTF-8 encoding, it will be read as the char sequence <code>0061 4F60 4EEC</code>.</p>\n\n<p><strong>The character encoding API in Java contains the algorithms to perform this transformation. You can find a list of encodings supported by the Oracle JRE <a href=\"http://download.oracle.com/javase/6/docs/technotes/guides/intl/encoding.doc.html\" rel=\"noreferrer\">here</a>. The <a href=\"http://userguide.icu-project.org/conversion\" rel=\"noreferrer\">ICU project</a> is a good place to start if you want to understand the internals of how this works in practice.</strong></p>\n\n<p>As Alexander Pogrebnyak <a href=\"https://stackoverflow.com/questions/5764065/inputstream-and-reader-in-java-io/5764111#5764111\">points out</a>, you should almost always provide the encoding explicitly. <code>byte</code>-to-<code>char</code> methods that do not specify an encoding rely on the <a href=\"http://download.oracle.com/javase/6/docs/api/java/nio/charset/Charset.html#defaultCharset%28%29\" rel=\"noreferrer\">JRE default</a>, which is dependent on operating systems and user settings.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1762508757,
+      "post_id" : 79812125,
+      "comment_id" : 140841514,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "this is assuming a (the) default <code>Charset</code>... <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/InputStreamReader.html\" rel=\"nofollow noreferrer\">javadoc</a> of <code>InputStreamReader</code>: &quot;<i>It reads bytes and decodes them into characters using a specified charset.</i>&quot; (e.g. using <code>UTF-32</code> would <i>force</i> reading 4 bytes/character, <code>US-ASCII</code> only 1 byte/character)"
+    }, {
+      "owner" : {
+        "account_id" : 29122799,
+        "reputation" : 1,
+        "user_id" : 22309863,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a/AAcHTtd2KvoUcYJql5CHjYSXWLctbA4Qbuqq1sOcERm1fvsY=k-s256",
+        "display_name" : "Vamshi Krishna",
+        "link" : "https://stackoverflow.com/users/22309863/vamshi-krishna"
+      },
+      "reply_to_user" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1762543063,
+      "post_id" : 79812125,
+      "comment_id" : 140842495,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@user85421 Yes I took default charset for explanation, if we don&#39;t pass any charset as input, then this is the process happens actually."
+    }, {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1762555824,
+      "post_id" : 79812125,
+      "comment_id" : 140842761,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "and converting bytes to char using the (default) <code>Charset</code> is kind of the most important part of that process ... are you sure about &quot;<i>01xxxxxx---&gt; it&#39;s a standalone byte (i.e, 0-127)</i>&quot; ? It should be <code>0xxx xxxx</code> (7 bits needed for 0-127), sure for UTF-8"
+    }, {
+      "owner" : {
+        "account_id" : 29122799,
+        "reputation" : 1,
+        "user_id" : 22309863,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a/AAcHTtd2KvoUcYJql5CHjYSXWLctbA4Qbuqq1sOcERm1fvsY=k-s256",
+        "display_name" : "Vamshi Krishna",
+        "link" : "https://stackoverflow.com/users/22309863/vamshi-krishna"
+      },
+      "reply_to_user" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1762580620,
+      "post_id" : 79812125,
+      "comment_id" : 140842958,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@user85421 Yeah, if any byte is starting with 0 then it is standalone byte, the remaining 7 bits are used to encode or decode, the second bit can be anything as per the character"
+    } ],
+    "owner" : {
+      "account_id" : 29122799,
+      "reputation" : 1,
+      "user_id" : 22309863,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AAcHTtd2KvoUcYJql5CHjYSXWLctbA4Qbuqq1sOcERm1fvsY=k-s256",
+      "display_name" : "Vamshi Krishna",
+      "link" : "https://stackoverflow.com/users/22309863/vamshi-krishna"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1762580711,
+    "last_edit_date" : 1762580711,
+    "creation_date" : 1762506614,
+    "answer_id" : 79812125,
+    "question_id" : 5764065,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I will try to explain the actual behind the scene, how InputStreamReader <strong>recognize characters,</strong> but Inputstream can't</p>\n<p>Ascii Characters (0 to 127---all the alphabets, numbes and keyboard symbols) can be represented in 1 byte (8-bits), means, when you write 'a' in a file, it will be written as 01100001 (97--because a's ascii value is 97),</p>\n<p>Now the thing is, Inputstream can Read one byte at a time, and decodes that 1 byte to it's decimal value, so anyway ASCII values are within the range of 0-127, they can be easily readable with inputstream also</p>\n<p>But coming to the characters which can't be represented in 1 byte (like Chinese chars). Actually as I said, they will be stored in 2 bytes in the file, when we use Inputstreams, it will gives 2 wrong decimal values, instead of 1 correct character value</p>\n<p><strong>How InputStreamReader works internally to recognise correct character</strong></p>\n<p>InputStreamReader and Writers will follows a special UTF encoding and decoding mechanism, this mechanism helps java to identify <strong>how many bytes does a particular character contains</strong></p>\n<p>Encoding rules</p>\n<p>111xxxxx---&gt; means it's a 3 bytes character, I need to wait for 2 more bytes to start decoding (java thinks) (number of 1's = number of bytes)</p>\n<p>11xxxxxx---&gt; it's a 2 bytes character, I need to wait for one more byte</p>\n<p>10xxxxxx---&gt;it's a continuation byte for previously stated byte</p>\n<p>0xxxxxxx---&gt; it's a standalone byte (i.e, 0-127)</p>\n<p>Example:</p>\n<pre><code> 300th character (utf) is  &quot;CAPITAL LETTER I WITH BREVE&quot;\n</code></pre>\n<p>File stores it as -</p>\n<p><strong>11</strong>000100 <strong>10</strong>101100</p>\n<p><strong>Now when InputStreamReader reads 1st byte, it will see 11 (so it understands that this byte is a start of 2 byte character, so I will wait for one more byte)</strong></p>\n<p>After reading one more byte :</p>\n<p>It will combine both together ---&gt; removes those padded 11 (from first byte) 10 (from 2nd byte) because they are just for identifying number of bytes--&gt; then it will decodes it to <strong>300</strong></p>\n<p>And returns 300</p>\n<p>This machanism is possible only if we use InputStreamReader or writers (because these classes are meant to read characters) so java designers wrote the utf encoding and decoding logic in Readers and writes, not in Inputstreams</p>\n<p>I hope this helps understanding behind the scene</p>\n<p>Thank you.</p>\n"
+  } ],
+  "owner" : {
+    "user_type" : "does_not_exist",
+    "display_name" : "user707549"
+  },
+  "is_answered" : true,
+  "view_count" : 23650,
+  "accepted_answer_id" : 5764357,
+  "answer_count" : 3,
+  "score" : 32,
+  "last_activity_date" : 1762580711,
+  "creation_date" : 1303560424,
+  "last_edit_date" : 1365555390,
+  "question_id" : 5764065,
+  "link" : "https://stackoverflow.com/questions/5764065/the-difference-between-inputstream-and-inputstreamreader-when-reading-multi-byte",
+  "title" : "The difference between InputStream and InputStreamReader when reading multi-byte characters",
+  "body" : "<p>The difference between <code>InputStream</code> and <code>InputStreamReader</code> is that <code>InputStream</code> reads as <code>byte</code>, while <code>InputStreamReader</code> reads as <code>char</code>. For example, if the text in a file is <code>abc</code>,then both of them work fine. But if the text is <code>a你们</code>, which is composed of an <code>a</code> and two Chinese characters, then the <code>InputStream</code> does not work.</p>\n\n<p>So we should use <code>InputStreamReader</code>, but my question is:</p>\n\n<p><strong>How does <code>InputStreamReader</code> recognize characters?</strong></p>\n\n<p><code>a</code> is one byte, but a Chinese character is two bytes. Does it read <code>a</code> as one byte and recognize the other of characters as two bytes, or for every character in this text, does the <code>InputStreamReader</code> read it as two bytes?</p>\n"
+}

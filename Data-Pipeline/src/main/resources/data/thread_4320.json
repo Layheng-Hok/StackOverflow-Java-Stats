@@ -1,0 +1,125 @@
+{
+  "tags" : [ "java", "outlook", "smtp", "office365", "jakarta-mail" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1032936,
+      "reputation" : 30021,
+      "user_id" : 1040885,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/NXgVZ.jpg?s=256",
+      "display_name" : "Bill Shannon",
+      "link" : "https://stackoverflow.com/users/1040885/bill-shannon"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1587782183,
+    "post_id" : 61406799,
+    "comment_id" : 108652407,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Start by simplifying your code by fixing these <a href=\"https://javaee.github.io/javamail/FAQ#commonmistakes\" rel=\"nofollow noreferrer\">common mistakes</a>.  Are you using the same user name that you use with the web UI?  Can you configure Thunderbird to login with the same username and password?"
+  }, {
+    "owner" : {
+      "account_id" : 3195669,
+      "reputation" : 31,
+      "user_id" : 2698893,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/186c4b20351f5ea5feed25ef4e21f981?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vineed Gangadharan",
+      "link" : "https://stackoverflow.com/users/2698893/vineed-gangadharan"
+    },
+    "reply_to_user" : {
+      "account_id" : 1032936,
+      "reputation" : 30021,
+      "user_id" : 1040885,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/NXgVZ.jpg?s=256",
+      "display_name" : "Bill Shannon",
+      "link" : "https://stackoverflow.com/users/1040885/bill-shannon"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1587902319,
+    "post_id" : 61406799,
+    "comment_id" : 108686059,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Yes I am using same user name as the web and in thunderbird it gives SSL/TLS erro"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6104455,
+        "reputation" : 4618,
+        "user_id" : 4762502,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://lh3.googleusercontent.com/-JBluz4YbEjk/AAAAAAAAAAI/AAAAAAAAAKM/0RsG_lxMbLs/s256-rj/photo.jpg",
+        "display_name" : "Gaurav Jeswani",
+        "link" : "https://stackoverflow.com/users/4762502/gaurav-jeswani"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1599662059,
+      "post_id" : 63810553,
+      "comment_id" : 112843331,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It&#39;s better to add some details around the answer."
+    } ],
+    "owner" : {
+      "account_id" : 12038388,
+      "reputation" : 1,
+      "user_id" : 8806159,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4c16356df42f09463771b2139fdd3e4e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sello Motloung",
+      "link" : "https://stackoverflow.com/users/8806159/sello-motloung"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1599662021,
+    "last_edit_date" : 1599662021,
+    "creation_date" : 1599650323,
+    "answer_id" : 63810553,
+    "question_id" : 61406799,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>public class EWS {\n\n    private static ExchangeService service;\n    private static Integer NUMBER_EMAILS_FETCH = 5; // only latest 5 emails/appointments are fetched.\n\n    static {\n        try {\n            service = new ExchangeService(ExchangeVersion.Exchange2010_SP1);\n            service.setUrl(new URI(&quot;https://outlook.office365.com/EWS/exchange.asmx&quot;));\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n    }\n\n    /**\n     * Initialize the Exchange Credentials.\n     */\n    public EWS() throws Exception {\n         ExchangeCredentials credentials = new WebCredentials(&quot;User Name&quot;, &quot;Password&quot;);\n        service.setCredentials(credentials);\n    }\n\n     /**\n     * Reading one email at a time. Using Item ID of the email. Creating a\n     * message data map as a return value.\n     */\n    public Map readEmailItem(ItemId itemId) {\n        Map messageData = new HashMap();\n        try {\n            Item itm = Item.bind(service, itemId, PropertySet.FirstClassProperties);\n            EmailMessage emailMessage = EmailMessage.bind(service, itm.getId());\n            messageData.put(&quot;emailItemId&quot;, emailMessage.getId().toString());\n            messageData.put(&quot;subject&quot;, emailMessage.getSubject());\n            messageData.put(&quot;fromAddress&quot;, emailMessage.getFrom().getAddress());\n            messageData.put(&quot;senderName&quot;, emailMessage.getSender().getName());\n            Date dateTimeCreated = emailMessage.getDateTimeCreated();\n            messageData.put(&quot;SendDate&quot;, dateTimeCreated.toString());\n            Date dateTimeRecieved = emailMessage.getDateTimeReceived();\n            messageData.put(&quot;RecievedDate&quot;, dateTimeRecieved.toString());\n            messageData.put(&quot;Size&quot;, emailMessage.getSize() + &quot;&quot;);\n            messageData.put(&quot;emailBody&quot;, emailMessage.getBody().toString());\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n        return messageData;\n    }\n    /**\n     * Number of email we want to read is defined as NUMBER_EMAILS_FETCH,\n     */\n    public List&lt;Map&gt; readEmails() {\n        List&lt;Map&gt; msgDataList = new ArrayList&lt;&gt;();\n        try {\n            service.setTraceEnabled(true);\n            System.out.println(&quot;|---------------------&gt; service = {}&quot; + service);\n            Folder folder = Folder.bind(service, WellKnownFolderName.Inbox);\n            FindItemsResults&lt;Item&gt; results = service.findItems(folder.getId(), new ItemView(NUMBER_EMAILS_FETCH));\n            int i = 1;\n            for (Item item : results) {\n                Map messageData = readEmailItem(item.getId());\n                System.out.println(&quot;|---------------------&gt; service = {}&quot; + (i++) + &quot;:&quot;);\n                System.out.println(&quot;|---------------------&gt; service = {}&quot; + messageData.get(&quot;subject&quot;).toString());\n                System.out.println(&quot;|---------------------&gt; service = {}&quot; + messageData.get(&quot;senderName&quot;).toString());\n                msgDataList.add(messageData);\n            }\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n        return msgDataList;\n    }\n    public static void main(String[] args) throws Exception {\n        EWS msees = new EWS();\n        List&lt;Map&gt; emails = msees.readEmails();\n        System.out.println(&quot;|---------------------&gt; service = {}&quot; + emails.size());\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 19944053,
+      "reputation" : 1,
+      "user_id" : 14615173,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GjxjwIUxurbiOI1t7krrc-SHajnFuA_ESd7OZahHi0=k-s256",
+      "display_name" : "Edivaldo Merlo Stens",
+      "link" : "https://stackoverflow.com/users/14615173/edivaldo-merlo-stens"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1605043021,
+    "last_edit_date" : 1605043021,
+    "creation_date" : 1605039237,
+    "answer_id" : 64776130,
+    "question_id" : 61406799,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Disable Modern authentication for STMP in:</p>\n<p><a href=\"https://admin.microsoft.com/Adminportal/Home?source=applauncher#/Settings/Services/:/Settings/L1/ModernAuthentication\" rel=\"nofollow noreferrer\">https://admin.microsoft.com/Adminportal/Home?source=applauncher#/Settings/Services/:/Settings/L1/ModernAuthentication</a></p>\n<p><img src=\"https://i.sstatic.net/bu9pq.jpg\" alt=\"Authenticated SMTP unchecked\" /></p>\n<p>Wait a few minutes to test making these changes.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3195669,
+    "reputation" : 31,
+    "user_id" : 2698893,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/186c4b20351f5ea5feed25ef4e21f981?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Vineed Gangadharan",
+    "link" : "https://stackoverflow.com/users/2698893/vineed-gangadharan"
+  },
+  "is_answered" : false,
+  "view_count" : 9371,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1760465070,
+  "creation_date" : 1587725953,
+  "last_edit_date" : 1587726322,
+  "question_id" : 61406799,
+  "link" : "https://stackoverflow.com/questions/61406799/send-mail-via-java-api-for-office-365",
+  "title" : "Send Mail via Java Api for Office 365",
+  "body" : "<p>Hi i am currently developing java application which will send mail to multiple recipients via Java Mail Api(1.6.2), i have configure the SMTP as per the Microsoft docs problem is the code is working with my personal hotmail email id but it fails for corporate office 365 account.</p>\n\n<p>Error : javax.mail.AuthenticationFailedException: 535 5.7.3 Authentication unsuccessful [PN1PR0101CA0066.INDPRD01.PROD.OUTLOOK.COM]</p>\n\n<p>POP and IMAP are working(Receiving mails) and i can login with the password in Office 365 Web, i have tried changing password too.</p>\n\n<p>Code :</p>\n\n<pre><code>User user = Credentials.ACC;\nProperties props = new Properties();\nprops.put(\"mail.smtp.host\", \"smtp.office365.com\");//outlook.office365.com\nprops.put(\"mail.smtp.auth\", \"true\");\nprops.put(\"mail.smtp.port\", \"587\");//25\nprops.put(\"mail.smtp.starttls.enable\", \"true\");\nprops.put(\"mail.transport.protocol\", \"smtp\");\n//props.put(\"mail.smtp.ssl.enable\", true);\n\nSession session = Session.getInstance(props, new Authenticator() {\n    @Override\n    protected PasswordAuthentication getPasswordAuthentication() {\n        return new PasswordAuthentication(user.getUsername(), user.getPassword());\n    }\n});\nsession.setDebug(true);\n\ntry {\n    MimeMessage msg = new MimeMessage(session);\n    msg.setFrom(user.getUsername());\n\n    msg.setRecipients(Message.RecipientType.TO,\n            \"some@mail.com\");\n    msg.setSubject(\"Testing SMTP using [\" + user.getUsername() + \"]\");\n    msg.setSentDate(new Date());\n    msg.setText(\"Hey, this is a test from [\" + user.getUsername() + \"], Sending via Java Mail API\");\n\n    Transport.send(msg);\n    System.out.println(\"Sent Ok\");\n} catch (MessagingException e) {\n    System.out.println(\"Something went wrong\");\n    e.printStackTrace();\n}\n</code></pre>\n"
+}

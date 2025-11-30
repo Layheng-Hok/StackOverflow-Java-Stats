@@ -1,0 +1,145 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "spring-boot-test", "qualifiers" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 13798611,
+      "reputation" : 40443,
+      "user_id" : 9959152,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/QZ0Cl.png?s=256",
+      "display_name" : "Ryuzaki L",
+      "link" : "https://stackoverflow.com/users/9959152/ryuzaki-l"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1555419493,
+    "post_id" : 55708446,
+    "comment_id" : 98098169,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "annotate <code>CastorClientWebTest</code> with <code>@SpringBootTest</code>"
+  }, {
+    "owner" : {
+      "account_id" : 435063,
+      "reputation" : 4659,
+      "user_id" : 821436,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/35b4959a533a3ed35013ab149483f883?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Martin Schr&#246;der",
+      "link" : "https://stackoverflow.com/users/821436/martin-schr%c3%b6der"
+    },
+    "reply_to_user" : {
+      "account_id" : 13798611,
+      "reputation" : 40443,
+      "user_id" : 9959152,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/QZ0Cl.png?s=256",
+      "display_name" : "Ryuzaki L",
+      "link" : "https://stackoverflow.com/users/9959152/ryuzaki-l"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1555421151,
+    "post_id" : 55708446,
+    "comment_id" : 98099273,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@Deadpool Nope, that explodes very loudly."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 435063,
+        "reputation" : 4659,
+        "user_id" : 821436,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/35b4959a533a3ed35013ab149483f883?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Martin Schr&#246;der",
+        "link" : "https://stackoverflow.com/users/821436/martin-schr%c3%b6der"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1555421105,
+      "post_id" : 55708680,
+      "comment_id" : 98099232,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Nope. The config class is <code>RestTemplateConfig</code> and simply importing that doesn&#39;t help. How would I declare my own <code>RestTemplate</code> for use with <code>@RestClientTest</code>? I already have <code>@TestConfiguration</code> class in the test class."
+    } ],
+    "owner" : {
+      "account_id" : 15281247,
+      "reputation" : 3612,
+      "user_id" : 11025582,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/564cb4ff1f2487592ceaf35e4e6b423e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "HTN",
+      "link" : "https://stackoverflow.com/users/11025582/htn"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1555419266,
+    "creation_date" : 1555419266,
+    "answer_id" : 55708680,
+    "question_id" : 55708446,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You should not use <code>(registerRestTemplate = true)</code> as it will create a RestTemplate bean for you which is not the one you use.</p>\n\n<p>If your qualified RestTemplate bean is declared in your <code>CastorConfiguration</code>, try using <code>@Import(CastorConfiguration.class)</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 435063,
+      "reputation" : 4659,
+      "user_id" : 821436,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/35b4959a533a3ed35013ab149483f883?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Martin Schr&#246;der",
+      "link" : "https://stackoverflow.com/users/821436/martin-schr%c3%b6der"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1555510645,
+    "last_edit_date" : 1555510645,
+    "creation_date" : 1555502864,
+    "answer_id" : 55727232,
+    "question_id" : 55708446,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Solution that worked for me: <code>@AutoConfigureWebClient</code> (without <code>(registerRestTemplate = true)</code>). \nIn the <code>@TestConfiguration</code> class create a bean of <code>RestTemplate</code> with the right <code>@Qualifier</code></p>\n\n<pre><code>@Bean\n@Qualifier(\"eureka\")\npublic RestTemplate eurekaRestTemplate() {\n  return new RestTemplate();\n}\n</code></pre>\n\n<p>Inject that into the test class</p>\n\n<pre><code>@Autowired\n@Qualifier(\"eureka\")\nprivate RestTemplate restTemplate;\n</code></pre>\n\n<p>Now we need to wire that into the <code>MockRestServiceServer</code>. We do that via <code>@BeforeEach</code></p>\n\n<pre><code>private MockRestServiceServer server;\n@BeforeEach\n  void setUp () {\n    server = MockRestServiceServer.bindTo(restTemplate).build();\n  }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2004750,
+      "reputation" : 8996,
+      "user_id" : 1795426,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9c233d3880e225df775d5dbaa12a9658?s=256&d=identicon&r=PG",
+      "display_name" : "user11153",
+      "link" : "https://stackoverflow.com/users/1795426/user11153"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1762422632,
+    "creation_date" : 1762422632,
+    "answer_id" : 79811089,
+    "question_id" : 55708446,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using global <code>@TestConfiguration</code> can interfere with other <code>@SpringBootTest</code> tests.</p>\n<p>I used much simpler solution, partially inspired by <code>WebClientRestTemplateAutoConfiguration</code> class (used when you set <code>registerRestTemplate = true</code>):</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Import(CastorClientWebTest.RestConfig.class)\n@RestClientTest({CastorClient.class, CastorConfiguration.class})\n@AutoConfigureWebClient\nclass CastorClientWebTest {\n\n    static class RestConfig {\n\n        @Bean // method named the same as your Qualifier\n        public RestTemplate eureka(RestTemplateBuilder builder) {\n            return builder.build();\n        }\n    }\n\n  @Autowired\n  private CastorClient cut;\n\n  @Autowired\n  private MockRestServiceServer server;\n\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 435063,
+    "reputation" : 4659,
+    "user_id" : 821436,
+    "user_type" : "registered",
+    "accept_rate" : 79,
+    "profile_image" : "https://www.gravatar.com/avatar/35b4959a533a3ed35013ab149483f883?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Martin Schr&#246;der",
+    "link" : "https://stackoverflow.com/users/821436/martin-schr%c3%b6der"
+  },
+  "is_answered" : true,
+  "view_count" : 6416,
+  "accepted_answer_id" : 55727232,
+  "answer_count" : 3,
+  "score" : 3,
+  "last_activity_date" : 1762422632,
+  "creation_date" : 1555418572,
+  "question_id" : 55708446,
+  "link" : "https://stackoverflow.com/questions/55708446/spring-how-to-combine-restclienttest-with-a-resttemplate-with-qualifier",
+  "title" : "Spring: How to combine @RestClientTest with a RestTemplate with @Qualifier?",
+  "body" : "<p>I have changed a Spring Boot (2.1.4) service that consumes a <code>RestTemplate</code> to use a <code>@Qualifier</code>. Now my Test (with <code>@RestClientTest</code> and <code>@AutoConfigureWebClient</code>) fails because it can not resolve the bean. </p>\n\n<p>How do I fix this?</p>\n\n<p>The config:</p>\n\n<pre><code>  @Bean\n  @Qualifier(\"eureka\")\n  @LoadBalanced\n  RestTemplate eurekaRestTemplate() {\n</code></pre>\n\n<p>The service:</p>\n\n<pre><code>  public ClarkClient(\n      @Qualifier(\"eureka\") RestTemplate restTemplate, ClarkConfiguration configuration)\n      throws URISyntaxException {\n</code></pre>\n\n<p>The test:</p>\n\n<pre><code>@ExtendWith({SpringExtension.class, MockitoExtension.class})\n@RestClientTest({CastorClient.class, CastorConfiguration.class})\n@AutoConfigureWebClient(registerRestTemplate = true)\nclass CastorClientWebTest {\n\n  @Autowired\n  private CastorClient cut;\n\n  @Autowired\n  private MockRestServiceServer server;\n</code></pre>\n\n<p>The error:</p>\n\n<pre><code>[2019-04-16T14:02:22,614] [WARN ] [            ....AnnotationConfigApplicationContext] [refresh 557] : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'castorClient' defined in file [/home/martinsc/java/routing/route-testing-batch-manager/out/production/classes/com/tyntec/routetesting/batchmanager/core/clients/CastorClient.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'org.springframework.web.client.RestTemplate' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Qualifier(value=eureka)}\n</code></pre>\n"
+}

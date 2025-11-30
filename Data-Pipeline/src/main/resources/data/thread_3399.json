@@ -1,0 +1,237 @@
+{
+  "tags" : [ "java", "xml", "xslt" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 22226004,
+      "reputation" : 18210,
+      "user_id" : 16462950,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Gjy1a31kVAiCn_hJAWq34vNkEHuXwBWbuL00Eakf4g=k-s256",
+      "display_name" : "Heiko Thei&#223;en",
+      "link" : "https://stackoverflow.com/users/16462950/heiko-thei%c3%9fen"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1653641705,
+    "post_id" : 72401149,
+    "comment_id" : 127904971,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Welcome to StackOverflow! Does it help if you <a href=\"https://xml.apache.org/xalan-j/apidocs/javax/xml/transform/TransformerFactory.html#setFeature(java.lang.String,%20boolean)\" rel=\"nofollow noreferrer\">set the feature</a> <code>XMLConstants.FEATURE_SECURE_PROCESSING</code> to false?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 25703034,
+      "reputation" : 146,
+      "user_id" : 19462805,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e09d805d478d42838383e508f218351e?s=256&d=identicon&r=PG",
+      "display_name" : "Ingo Wilkening",
+      "link" : "https://stackoverflow.com/users/19462805/ingo-wilkening"
+    },
+    "is_accepted" : true,
+    "score" : 13,
+    "last_activity_date" : 1656700490,
+    "creation_date" : 1656700490,
+    "answer_id" : 72833393,
+    "question_id" : 72401149,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>That behaviour seems to come from new FEATURE_SECURE_PROCESSING, which Oracle introduced in a recent &quot;update&quot; of their Java. See: <a href=\"https://www.oracle.com/java/technologies/javase/11-0-15-relnotes.html\" rel=\"noreferrer\">https://www.oracle.com/java/technologies/javase/11-0-15-relnotes.html</a></p>\n<p>It is 3 parameters they introduced:</p>\n<ol>\n<li>jdk.xml.xpathExprGrpLimit Description: Limits the number of groups\nan XPath expression can contain. Default 10.</li>\n<li>jdk.xml.xpathExprOpLimit Description: Limits the number of operators\nan XPath expression can contain. Default 100.</li>\n<li>jdk.xml.xpathTotalOpLimit Description: Limits the total number of\nXPath operators in an XSL Stylesheet. Default 10000.</li>\n</ol>\n<p>Your problem is on #2 (JAXP0801002, default 100).\nWe got a very similar issue on #3 (JAXP0801003, default 10.000), with this message (quoted, so google will find it):</p>\n<pre><code>ERROR:  'JAXP0801003: the compiler encountered XPath expressions with an accumulated '10.002' operators that exceeds the '10.000' limit set by 'FEATURE_SECURE_PROCESSING'.'\nFATAL ERROR:  'JAXP0801003: the compiler encountered XPath expressions with an accumulated '10.002' operators that exceeds the '10.000' limit set by 'FEATURE_SECURE_PROCESSING'.'\n</code></pre>\n<p>We wasted 2 days in getting away of that sh*t.</p>\n<p>We added some parameters to the java call:</p>\n<pre><code>    java -Djdk.xml.xpathExprGrpLimit=0 -Djdk.xml.xpathExprOpLimit=0 -Djdk.xml.xpathTotalOpLimit=0 -Xmx2g -Xms512m -XX:-UseGCOverheadLimit ....\n\n</code></pre>\n<p>Parameters 1,2,3 to to solve the issue. Values &quot;0&quot; set the limits to &quot;off&quot;. As XPath can now get huge, it might be advisable to set the heap and stack size and change behaviour of the garbage collection (parameters 4-6).</p>\n<p>I hope it will help you too. Have fun!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 26347521,
+      "reputation" : 1,
+      "user_id" : 20005652,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7bb7a8c7173c0b9217589dc7b06d2b04?s=256&d=identicon&r=PG",
+      "display_name" : "Sam B",
+      "link" : "https://stackoverflow.com/users/20005652/sam-b"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1663260449,
+    "last_edit_date" : 1663260449,
+    "creation_date" : 1663260293,
+    "answer_id" : 73734773,
+    "question_id" : 72401149,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you are running into this problem on MacBook M1 or newer. Try a compatible jdk version from either amazon corretto or zulu. I had to try multiple versions for it to work but specifically 8.275.\n<a href=\"https://www.azul.com/downloads/?version=java-8-lts&amp;os=macos&amp;architecture=arm-64-bit&amp;package=jdk&amp;show-old-builds=true\" rel=\"nofollow noreferrer\">https://www.azul.com/downloads/?version=java-8-lts&amp;os=macos&amp;architecture=arm-64-bit&amp;package=jdk&amp;show-old-builds=true</a></p>\n<p>Hope this helps!</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1663752651,
+      "post_id" : 73740690,
+      "comment_id" : 130311405,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "As it’s currently written, your answer is unclear. Please <a href=\"https://stackoverflow.com/posts/73740690/edit\">edit</a> to add additional details that will help others understand how this addresses the question asked. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    } ],
+    "owner" : {
+      "account_id" : 26352361,
+      "reputation" : 1,
+      "user_id" : 20009784,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/8f8941d4b522cbd88bfa3b4172f2999c?s=256&d=identicon&r=PG",
+      "display_name" : "Rahul Meena",
+      "link" : "https://stackoverflow.com/users/20009784/rahul-meena"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1663309509,
+    "last_edit_date" : 1663309509,
+    "creation_date" : 1663309388,
+    "answer_id" : 73740690,
+    "question_id" : 72401149,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Rahul Meena\n-Djdk.xml.xpathExprGrpLimit=0 -Djdk.xml.xpathExprOpLimit=0 -Djdk.xml.xpathTotalOpLimit=0</p>\n<p>Put 3 steps in your restart files.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12256558,
+      "reputation" : 21,
+      "user_id" : 8945448,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-QvrSqRbaKLU/AAAAAAAAAAI/AAAAAAAAABE/KFrmMtccuno/s256-rj/photo.jpg",
+      "display_name" : "Leon Dong",
+      "link" : "https://stackoverflow.com/users/8945448/leon-dong"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1676558801,
+    "creation_date" : 1676558801,
+    "answer_id" : 75473918,
+    "question_id" : 72401149,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I encounter this error in my M1 mbp with Oracle OpenJDK17. It also occurs when running in product env that is based on OpenJDK17 and centos.</p>\n<p>This <a href=\"https://stackoverflow.com/a/72833393/8945448\">answer</a> surely helps me. But I can not modify all JVM configurations in our product cluster.</p>\n<p>So I just set these three parameters using Java code:</p>\n<pre><code>System.setProperty(&quot;jdk.xml.xpathExprGrpLimit&quot;, &quot;0&quot;);\nSystem.setProperty(&quot;jdk.xml.xpathExprOpLimit&quot;, &quot;0&quot;);\nSystem.setProperty(&quot;jdk.xml.xpathTotalOpLimit&quot;, &quot;0&quot;);\n</code></pre>\n<p>Notice: Set these parameters before TransformerFactory initialization.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 422488,
+      "reputation" : 1072,
+      "user_id" : 801300,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/9pNBI.png?s=256",
+      "display_name" : "Dapper Dan",
+      "link" : "https://stackoverflow.com/users/801300/dapper-dan"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1688658804,
+    "creation_date" : 1688658804,
+    "answer_id" : 76630597,
+    "question_id" : 72401149,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Thanks to @<code>Ingo Wilkening</code> for providing a solution that worked effectively for me. If your application is running on the Tomcat web server,</p>\n<p>Locate the <code>catalina.sh</code> script in your Tomcat installation directory. You can use the find command as follows:</p>\n<pre><code>find /path/to/tomcat -name catalina.sh\n</code></pre>\n<p>Once you have found the catalina.sh file, open it in a text editor. You can use the vi editor,</p>\n<pre><code>vi /path/to/tomcat/bin/catalina.sh\n</code></pre>\n<p>Within the catalina.sh file, look for the section where Java options (JAVA_OPTS) are typically set.\nAdd the following lines to set the desired Java system properties:</p>\n<pre><code>JAVA_OPTS=&quot;$JAVA_OPTS -Djdk.xml.xpathExprGrpLimit=0 -Djdk.xml.xpathExprOpLimit=0 -Djdk.xml.xpathTotalOpLimit=0&quot;\n</code></pre>\n<p>Save the changes and restart tomcat.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 496224,
+        "reputation" : 991,
+        "user_id" : 2277627,
+        "user_type" : "registered",
+        "accept_rate" : 20,
+        "profile_image" : "https://www.gravatar.com/avatar/84f64b600182cf6afb9f5007a8abd72e?s=256&d=identicon&r=PG",
+        "display_name" : "Elliotte Rusty Harold",
+        "link" : "https://stackoverflow.com/users/2277627/elliotte-rusty-harold"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1762015825,
+      "post_id" : 79421176,
+      "comment_id" : 140831159,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This attack is vastly overstated. It can be an issue, but it depends a lot on where the XML and XSL is coming from. If you&#39;re accepting documents from untrusted sources over the public internet, then, yes you need this. On the other hand, if you&#39;re processing known XML with known stylesheets all checked into the source repository as part of the normal build process, these security measures are pointless and can be safely turned off."
+    }, {
+      "owner" : {
+        "account_id" : 7327751,
+        "reputation" : 575,
+        "user_id" : 5581662,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a9dd1629b55b90af1c36062266fa5cbb?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Georg Muehlenberg",
+        "link" : "https://stackoverflow.com/users/5581662/georg-muehlenberg"
+      },
+      "reply_to_user" : {
+        "account_id" : 496224,
+        "reputation" : 991,
+        "user_id" : 2277627,
+        "user_type" : "registered",
+        "accept_rate" : 20,
+        "profile_image" : "https://www.gravatar.com/avatar/84f64b600182cf6afb9f5007a8abd72e?s=256&d=identicon&r=PG",
+        "display_name" : "Elliotte Rusty Harold",
+        "link" : "https://stackoverflow.com/users/2277627/elliotte-rusty-harold"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1762524200,
+      "post_id" : 79421176,
+      "comment_id" : 140841935,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ElliotteRustyHarold Thank you for the clarification. I rephrased my answer to point out that only XML from untrusted sources needs these security measures. But isn&#39;t it crazy that no other answers even considered setting reasonable limits?"
+    } ],
+    "owner" : {
+      "account_id" : 7327751,
+      "reputation" : 575,
+      "user_id" : 5581662,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a9dd1629b55b90af1c36062266fa5cbb?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Georg Muehlenberg",
+      "link" : "https://stackoverflow.com/users/5581662/georg-muehlenberg"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1762524061,
+    "last_edit_date" : 1762524061,
+    "creation_date" : 1738937746,
+    "answer_id" : 79421176,
+    "question_id" : 72401149,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you receive XML from untrusted sources, for example internet uploads, do <strong>NOT</strong> disable your XML Parsing Security and do <strong>NOT</strong> set your processing limits to 0 as all the answers suggest. It will introduce a critical security misconfiguration. Instead, try to find reasonable processing limits.</p>\n<h1>What to do if we receive XML from untrusted sources?</h1>\n<p>Try and find which processing limit works best for your case and set it accordingly when creating the Transformer. The <a href=\"https://docs.oracle.com/en/java/javase/23/security/java-api-xml-processing-jaxp-security-guide.html\" rel=\"nofollow noreferrer\">Oracle Java Security Developer's Guide</a> offers some great guidance for your parser configuration. It says in their guide which are the default values, which processing limits are there and how to set the processing limits for the different XSLT Transformer libraries. <p> If you have hundreds of thousands of XML elements in your file, you might need tens of hundreds of thousands in the entity number limits.</p>\n<h1>Why is it such a bad idea to just set the processing limits to zero?</h1>\n<p>If you set the processing limits to zero, it will disable this security mechanism of Java XML Parsing. It will open up your parsing process to maliciously crafted XMLs. <p>\nOWASP categorized this lack of security as <a href=\"https://cwe.mitre.org/data/definitions/776.html\" rel=\"nofollow noreferrer\">CWE-776</a> into Security Misconfiguration, <strong><a href=\"https://owasp.org/Top10/A05_2021-Security_Misconfiguration/\" rel=\"nofollow noreferrer\">number 5</a> in their Top10 Software Security Flaw List</strong>.<p>\nA popular example attack is the <a href=\"https://en.wikipedia.org/wiki/Billion_laughs_attack\" rel=\"nofollow noreferrer\">Billion Laughs Attack</a>, where malicious third parties upload XML to your Parser that contains just a few simple element references of data, but will blow up to Gigabytes and more in memory upon processing, shutting down your process. That's why these processing limits were introduced and you should not deactivate them.<p></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7123979,
+      "reputation" : 573,
+      "user_id" : 5853892,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/7a09648fe54e850e943ae4bb42f33411?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "BlueDogRanch",
+      "link" : "https://stackoverflow.com/users/5853892/bluedogranch"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760715330,
+    "creation_date" : 1760715330,
+    "answer_id" : 79793223,
+    "question_id" : 72401149,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I'm on a M1 Mac and installed Java from the Oracle download, and for some reason, using shell configs like <code>-Djdk.xml.xpathExprOpLimit=0</code> , etc. didn't work for me.</p>\n<p>Though it is insecure, as stated in other answers, I edited the configs in /Library/Java/JavaVirtualMachines/Contents/Home/conf/jaxp.properties to set the various limits to 0 and I was able to process a 400K line file with no errors.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22606522,
+    "reputation" : 143,
+    "user_id" : 16787371,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GgI3cj2p9fprDDr6R_4b3p5gAcjG9sQe7hptGApvw=k-s256",
+    "display_name" : "Vladimir Hambalek",
+    "link" : "https://stackoverflow.com/users/16787371/vladimir-hambalek"
+  },
+  "is_answered" : true,
+  "view_count" : 16233,
+  "accepted_answer_id" : 72833393,
+  "answer_count" : 7,
+  "score" : 14,
+  "last_activity_date" : 1762524061,
+  "creation_date" : 1653631843,
+  "question_id" : 72401149,
+  "link" : "https://stackoverflow.com/questions/72401149/limit-set-by-feature-secure-processing",
+  "title" : "limit set by &#39;FEATURE_SECURE_PROCESSING&#39;",
+  "body" : "<p>I used my own xlst transformator in java (XSLTTransformator) but transformation is very big and I have got error:</p>\n<pre><code>Caused by: javax.xml.transform.TransformerConfigurationException: JAXP0801002: the compiler encountered an XPath expression containing '107' operators that exceeds the '100' limit set by 'FEATURE_SECURE_PROCESSING'.\n                at com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl.newTemplates(TransformerFactoryImpl.java:990)\n                at com.aspp.dms.ruleengine.transformation.TemplatesCache.retrieveUncached(TemplatesCache.java:44)\n                at com.aspp.dms.ruleengine.transformation.TemplatesCache.retrieveUncached(TemplatesCache.java:21)\n                at com.gratex.java.util.SoftValueCache.get(SoftValueCache.java:41)\n                at com.aspp.dms.ruleengine.transformation.XSLTTransformator.transform(XSLTTransformator.java:73)\n</code></pre>\n<p>Can you please help me find correct argument for java to solve my problem? Something like -DxpathOperatorsLimit=150</p>\n<p>thank you</p>\n"
+}

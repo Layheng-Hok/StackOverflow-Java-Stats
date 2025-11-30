@@ -1,0 +1,117 @@
+{
+  "tags" : [ "java", "swagger-ui", "playframework-2.5" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1633951,
+      "reputation" : 1239,
+      "user_id" : 1507955,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/NnWmA.jpg?s=256",
+      "display_name" : "Mark Verkiel",
+      "link" : "https://stackoverflow.com/users/1507955/mark-verkiel"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1465304561,
+    "post_id" : 37679534,
+    "comment_id" : 62837232,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What did you try so far? What is the problem ? Take a look at the tour: <a href=\"http://stackoverflow.com/tour\">stackoverflow.com/tour</a> for a better understanding of how SO works."
+  }, {
+    "owner" : {
+      "account_id" : 1017755,
+      "reputation" : 2373,
+      "user_id" : 1180762,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/hL6v3.jpg?s=256",
+      "display_name" : "kenske",
+      "link" : "https://stackoverflow.com/users/1180762/kenske"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1465310961,
+    "post_id" : 37679534,
+    "comment_id" : 62842185,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Not sure I understand the question. I don&#39;t see any &quot;response&quot; attribute in your code nor your screenshot. What are you expecting the content to look like?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1309411,
+      "reputation" : 27871,
+      "user_id" : 1257729,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/gHxSN.jpg?s=256",
+      "display_name" : "techtabu",
+      "link" : "https://stackoverflow.com/users/1257729/techtabu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1465309400,
+    "creation_date" : 1465309400,
+    "answer_id" : 37682005,
+    "question_id" : 37679534,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I am not sure what you are asking. However, if you are trying to hide a particular field from the model in the JSON response, try <code>JsonIgnore</code> annotation from fasterxml's jackson-annotations module. Just add the annotation to the field you are trying avoid in your Response.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 262581,
+      "reputation" : 1251,
+      "user_id" : 547546,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/4bb62fbc38c7277e51e440a3529c2336?s=256&d=identicon&r=PG",
+      "display_name" : "Chad Retz",
+      "link" : "https://stackoverflow.com/users/547546/chad-retz"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1467303152,
+    "last_edit_date" : 1467303152,
+    "creation_date" : 1467301718,
+    "answer_id" : 38127926,
+    "question_id" : 37679534,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Even though you do not say, I trust based on your post at <a href=\"https://github.com/swagger-api/swagger-play/pull/76#issuecomment-224287765\" rel=\"nofollow\">https://github.com/swagger-api/swagger-play/pull/76#issuecomment-224287765</a> that you are using Play Framework. I believe a \"void\" result is broken in swagger-play currently (ref: <a href=\"https://github.com/swagger-api/swagger-play/issues/89\" rel=\"nofollow\">https://github.com/swagger-api/swagger-play/issues/89</a>). One way I did it (in Scala) was to provide <code>responseReference = \"void\"</code> in the <code>@ApiOperation</code> and do the following as my Scala controller to show the Swagger spec to override it with my changes:</p>\n\n<pre class=\"lang-scala prettyprint-override\"><code>package controllers\n\nimport controllers.SwaggerBaseApiController\nimport io.swagger.models.auth.{ApiKeyAuthDefinition, BasicAuthDefinition, In}\nimport io.swagger.models.properties.RefProperty\nimport io.swagger.models.{Info, Response}\nimport play.api.mvc.Action\n\nimport scala.collection.JavaConversions._\n\nobject Swagger extends SwaggerBaseApiController {\n\n  def json = Action { implicit request =&gt;\n    val swagger = getResourceListing(request.host)\n    // We need to modify this if it doesn't contain our security definitions yet, but we have to do it atomically\n    // This should be fast enough that this synchronization is not too bad\n    swagger.synchronized {\n      if (!somethingThreadSafeToShowYouveChangedItAlready) fixSwagger(swagger)\n    }\n    // We trust that the above code only changes a swagger instance once therefore we don't need to\n    // synchronize the json marshalling because it should not change beneath it\n    returnValue(request, toJsonString(swagger))\n  }\n\n  private[this] def fixSwagger(swagger: io.swagger.models.Swagger): Unit = {\n    // Omitted some of my other changes...\n\n    swagger.getPaths.values.foreach { value =&gt;\n\n      value.getOperations.foreach { oper =&gt;\n        // Omitted some of my other chabnges\n\n        // Any responses that are void need to be simple void\n        oper.getResponses.values.foreach { resp =&gt;\n          resp.getSchema() match {\n            case schema: RefProperty if schema.get$ref() == \"#/definitions/void\" =&gt; resp.setSchema(null)\n            case _ =&gt; ()\n          }\n        }\n      }\n    }\n  }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6174988,
+      "reputation" : 11519,
+      "user_id" : 4812170,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://i.sstatic.net/6oHM1.jpg?s=256",
+      "display_name" : "vaquar khan",
+      "link" : "https://stackoverflow.com/users/4812170/vaquar-khan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1563043144,
+    "creation_date" : 1563043144,
+    "answer_id" : 57021873,
+    "question_id" : 37679534,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Hide all controller API </p>\n\n<pre><code>  @ApiIgnore\n</code></pre>\n\n<p>Hide selected attribute </p>\n\n<pre><code>@ApiModelProperty(required = false, hidden = true)\n</code></pre>\n\n<p>Example : Visible </p>\n\n<pre><code>@ApiModelProperty(\n        access = \"public\",\n        name = \"amount\",\n        example = \"123.45\",\n        value = \"the amount - in this example without currency.\")\npublic String getAmount() {\n    return amount;\n}\n</code></pre>\n\n<p>Example : Hide</p>\n\n<pre><code>@ApiModelProperty(\n       required = false,\n       hidden = true\n    )\npublic String getAmount() {\n    return amount;\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5378700,
+    "reputation" : 21,
+    "user_id" : 6381042,
+    "user_type" : "registered",
+    "profile_image" : "https://graph.facebook.com/100002947684936/picture?type=large",
+    "display_name" : "Rodrigo Wippel",
+    "link" : "https://stackoverflow.com/users/6381042/rodrigo-wippel"
+  },
+  "is_answered" : false,
+  "view_count" : 12064,
+  "answer_count" : 3,
+  "score" : 1,
+  "last_activity_date" : 1758949670,
+  "creation_date" : 1465302828,
+  "last_edit_date" : 1465303249,
+  "question_id" : 37679534,
+  "link" : "https://stackoverflow.com/questions/37679534/how-do-i-can-hide-the-schema-model-in-swagger",
+  "title" : "How do I can hide the schema model in Swagger?",
+  "body" : "<p>To a request unanswered, I want to hide this field (Model schema).</p>\n\n<p><a href=\"https://i.sstatic.net/yKuOs.png\" rel=\"nofollow\">my swagger</a></p>\n\n<p>My request</p>\n\n<pre><code>@ApiOperation(value = \"Create node\")\n@ApiImplicitParams({\n        @ApiImplicitParam(paramType = \"body\", required = true)\n})\npublic Result insert()\n</code></pre>\n\n<p>I do not want to show the <strong>response</strong> attribute in @ApiOperation. It's possible?</p>\n\n<p>Thanks!</p>\n"
+}

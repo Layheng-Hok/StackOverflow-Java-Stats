@@ -1,0 +1,886 @@
+{
+  "tags" : [ "java", "arraylist" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2765300,
+      "reputation" : 3537,
+      "user_id" : 2381172,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/GsEGRjTQ.jpg?s=256",
+      "display_name" : "Dmitry Zinkevich",
+      "link" : "https://stackoverflow.com/users/2381172/dmitry-zinkevich"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1536056615,
+    "post_id" : 2895342,
+    "comment_id" : 91277583,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Do you need views or new collections?"
+  }, {
+    "owner" : {
+      "account_id" : 1257650,
+      "reputation" : 24327,
+      "user_id" : 1216775,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://i.sstatic.net/gX53v.jpg?s=256",
+      "display_name" : "akhil_mittal",
+      "link" : "https://stackoverflow.com/users/1216775/akhil-mittal"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1551085422,
+    "post_id" : 2895342,
+    "comment_id" : 96495869,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Java 8 : <a href=\"https://stackoverflow.com/a/51837311/1216775\">stackoverflow.com/a/51837311/1216775</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 137511,
+      "reputation" : 178,
+      "user_id" : 341741,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/959c83d08c8bd07ab8221614f79a6c29?s=256&d=identicon&r=PG",
+      "display_name" : "angstrom91",
+      "link" : "https://stackoverflow.com/users/341741/angstrom91"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1274686597,
+    "last_edit_date" : 1274686597,
+    "creation_date" : 1274685303,
+    "answer_id" : 2895359,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I'm guessing that the issue you're having is with naming 100 ArrayLists and populating them.  You can create an array of ArrayLists and populate each of those using a loop.</p>\n\n<p>The simplest (read stupidest) way to do this is like this:</p>\n\n<pre><code>ArrayList results = new ArrayList(1000);\n    // populate results here\n    for (int i = 0; i &lt; 1000; i++) {\n        results.add(i);\n    }\n    ArrayList[] resultGroups = new ArrayList[100];\n    // initialize all your small ArrayList groups\n    for (int i = 0; i &lt; 100; i++) {\n            resultGroups[i] = new ArrayList();\n    }\n    // put your results into those arrays\n    for (int i = 0; i &lt; 1000; i++) {\n       resultGroups[i/10].add(results.get(i));\n    } \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 102991,
+      "reputation" : 385162,
+      "user_id" : 276101,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/30fe97e726af0ea4ff8b756fbf2e6d15?s=256&d=identicon&r=PG",
+      "display_name" : "polygenelubricants",
+      "link" : "https://stackoverflow.com/users/276101/polygenelubricants"
+    },
+    "is_accepted" : true,
+    "score" : 397,
+    "last_activity_date" : 1544014069,
+    "last_edit_date" : 1544014069,
+    "creation_date" : 1274685369,
+    "answer_id" : 2895365,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use <a href=\"http://java.sun.com/javase/6/docs/api/java/util/List.html#subList%28int,%20int%29\" rel=\"noreferrer\"><code>subList(int fromIndex, int toIndex)</code></a> to get a view of a portion of the original list.</p>\n\n<p>From the API:</p>\n\n<blockquote>\n  <p>Returns a view of the portion of this list between the specified <code>fromIndex</code>, inclusive, and <code>toIndex</code>, exclusive. (If <code>fromIndex</code> and <code>toIndex</code> are equal, the returned list is empty.) The returned list is backed by this list, so non-structural changes in the returned list are reflected in this list, and vice-versa. The returned list supports all of the optional list operations supported by this list.</p>\n</blockquote>\n\n<p>Example:</p>\n\n<pre><code>List&lt;Integer&gt; numbers = new ArrayList&lt;Integer&gt;(\n    Arrays.asList(5,3,1,2,9,5,0,7)\n);\n\nList&lt;Integer&gt; head = numbers.subList(0, 4);\nList&lt;Integer&gt; tail = numbers.subList(4, 8);\nSystem.out.println(head); // prints \"[5, 3, 1, 2]\"\nSystem.out.println(tail); // prints \"[9, 5, 0, 7]\"\n\nCollections.sort(head);\nSystem.out.println(numbers); // prints \"[1, 2, 3, 5, 9, 5, 0, 7]\"\n\ntail.add(-1);\nSystem.out.println(numbers); // prints \"[1, 2, 3, 5, 9, 5, 0, 7, -1]\"\n</code></pre>\n\n<p>If you need these chopped lists to be NOT a view, then simply create a new <code>List</code> from the <code>subList</code>. Here's an example of putting a few of these things together:</p>\n\n<pre><code>// chops a list into non-view sublists of length L\nstatic &lt;T&gt; List&lt;List&lt;T&gt;&gt; chopped(List&lt;T&gt; list, final int L) {\n    List&lt;List&lt;T&gt;&gt; parts = new ArrayList&lt;List&lt;T&gt;&gt;();\n    final int N = list.size();\n    for (int i = 0; i &lt; N; i += L) {\n        parts.add(new ArrayList&lt;T&gt;(\n            list.subList(i, Math.min(N, i + L)))\n        );\n    }\n    return parts;\n}\n\n\nList&lt;Integer&gt; numbers = Collections.unmodifiableList(\n    Arrays.asList(5,3,1,2,9,5,0,7)\n);\nList&lt;List&lt;Integer&gt;&gt; parts = chopped(numbers, 3);\nSystem.out.println(parts); // prints \"[[5, 3, 1], [2, 9, 5], [0, 7]]\"\nparts.get(0).add(-1);\nSystem.out.println(parts); // prints \"[[5, 3, 1, -1], [2, 9, 5], [0, 7]]\"\nSystem.out.println(numbers); // prints \"[5, 3, 1, 2, 9, 5, 0, 7]\" (unmodified!)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 115741,
+      "reputation" : 16617,
+      "user_id" : 303756,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/1ef3b868a0b2991e06390b63520fe8ea?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Incognito",
+      "link" : "https://stackoverflow.com/users/303756/incognito"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1339535943,
+    "last_edit_date" : 1495540499,
+    "creation_date" : 1274685398,
+    "answer_id" : 2895368,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A similar question was discussed here, <a href=\"https://stackoverflow.com/questions/379551/java-split-a-list-into-two-sub-lists\">Java: split a List into two sub-Lists?</a></p>\n\n<p>Mainly you can use sublist. More details here : <a href=\"http://java.sun.com/j2se/1.4.2/docs/api/java/util/AbstractList.html\" rel=\"nofollow noreferrer\">subList</a></p>\n\n<blockquote>\n  <p>Returns a view of the portion of this list between fromIndex, inclusive, and toIndex, exclusive. (If fromIndex and toIndex are equal, the returned list is empty.) The returned list is backed by this list, so changes in the returned list are reflected in this list, and vice-versa. The returned list supports all of the optional list operations supported by this list...</p>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 371004,
+        "reputation" : 5664,
+        "user_id" : 719278,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/I7TCJ.jpg?s=256",
+        "display_name" : "Junchen Liu",
+        "link" : "https://stackoverflow.com/users/719278/junchen-liu"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1425316686,
+      "post_id" : 2895424,
+      "comment_id" : 45903094,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "modify the source list, while loop through the sublists, you will get a concurrent exception, because java doc stats : The outer list is unmodifiable, but reflects the latest state of the source list. The inner lists are sublist views of the original list. This is"
+    } ],
+    "owner" : {
+      "account_id" : 62054,
+      "reputation" : 23309,
+      "user_id" : 184581,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/513b4f7b42231c1c137cea052719c094?s=256&d=identicon&r=PG",
+      "display_name" : "Mike Q",
+      "link" : "https://stackoverflow.com/users/184581/mike-q"
+    },
+    "is_accepted" : false,
+    "score" : 253,
+    "last_activity_date" : 1511384424,
+    "last_edit_date" : 1511384424,
+    "creation_date" : 1274686090,
+    "answer_id" : 2895424,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can add the <a href=\"https://github.com/google/guava\" rel=\"noreferrer\">Guava</a> library to your project and use the <a href=\"http://google.github.io/guava/releases/12.0/api/docs/com/google/common/collect/Lists.html#partition(java.util.List,%20int)\" rel=\"noreferrer\">Lists.partition</a> method, e.g.</p>\n\n<pre><code>List&lt;Integer&gt; bigList = ...\nList&lt;List&lt;Integer&gt;&gt; smallerLists = Lists.partition(bigList, 10);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user1908746"
+    },
+    "is_accepted" : false,
+    "score" : 39,
+    "last_activity_date" : 1386666237,
+    "creation_date" : 1386666237,
+    "answer_id" : 20490084,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The answer provided by polygenelubricants splits an array based on given size. I was looking for code that would split an array into a given number of parts. Here is the modification I did to the code:</p>\n\n<pre><code>public static &lt;T&gt;List&lt;List&lt;T&gt;&gt; chopIntoParts( final List&lt;T&gt; ls, final int iParts )\n{\n    final List&lt;List&lt;T&gt;&gt; lsParts = new ArrayList&lt;List&lt;T&gt;&gt;();\n    final int iChunkSize = ls.size() / iParts;\n    int iLeftOver = ls.size() % iParts;\n    int iTake = iChunkSize;\n\n    for( int i = 0, iT = ls.size(); i &lt; iT; i += iTake )\n    {\n        if( iLeftOver &gt; 0 )\n        {\n            iLeftOver--;\n\n            iTake = iChunkSize + 1;\n        }\n        else\n        {\n            iTake = iChunkSize;\n        }\n\n        lsParts.add( new ArrayList&lt;T&gt;( ls.subList( i, Math.min( iT, i + iTake ) ) ) );\n    }\n\n    return lsParts;\n}\n</code></pre>\n\n<p>Hope it helps someone.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10062835,
+        "reputation" : 1645,
+        "user_id" : 7438853,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://i.sstatic.net/6q8vB.jpg?s=256",
+        "display_name" : "wheeleruniverse",
+        "link" : "https://stackoverflow.com/users/7438853/wheeleruniverse"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1518729711,
+      "post_id" : 29912129,
+      "comment_id" : 84636861,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Is this splitting your list into 2 Lists or 2 values per List. For example, if your initial list was 10 elements would this yield 2 lists of 5 or 5 lists of 2."
+    }, {
+      "owner" : {
+        "account_id" : 2564170,
+        "reputation" : 6733,
+        "user_id" : 2224687,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/Z2P7o.jpg?s=256",
+        "display_name" : "Mikhail Golubtsov",
+        "link" : "https://stackoverflow.com/users/2224687/mikhail-golubtsov"
+      },
+      "reply_to_user" : {
+        "account_id" : 10062835,
+        "reputation" : 1645,
+        "user_id" : 7438853,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://i.sstatic.net/6q8vB.jpg?s=256",
+        "display_name" : "wheeleruniverse",
+        "link" : "https://stackoverflow.com/users/7438853/wheeleruniverse"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1518763951,
+      "post_id" : 29912129,
+      "comment_id" : 84646284,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@jDub9 this works as it is required in the question. For 10 elements it returns 5 lists of 2. <a href=\"https://github.com/functionaljava/functionaljava/blob/6ac5f9547dbb1f0ca3777be6b366f256e9943194/core/src/main/java/fj/data/List.java#L886\" rel=\"nofollow noreferrer\">github.com/functionaljava/functionaljava/blob/&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 2564170,
+      "reputation" : 6733,
+      "user_id" : 2224687,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/Z2P7o.jpg?s=256",
+      "display_name" : "Mikhail Golubtsov",
+      "link" : "https://stackoverflow.com/users/2224687/mikhail-golubtsov"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1430203462,
+    "creation_date" : 1430203462,
+    "answer_id" : 29912129,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can also use <a href=\"http://www.functionaljava.org/\" rel=\"nofollow\">FunctionalJava</a> library - there is <code>partition</code> method for <code>List</code>. This lib has its own collection types, you can convert them to java collections back and forth.</p>\n\n<pre><code>import fj.data.List;\n\njava.util.List&lt;String&gt; javaList = Arrays.asList(\"a\", \"b\", \"c\", \"d\" );\n\nList&lt;String&gt; fList = Java.&lt;String&gt;Collection_List().f(javaList);\n\nList&lt;List&lt;String&gt; partitions = fList.partition(2);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 121648,
+      "reputation" : 4662,
+      "user_id" : 314897,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/02cadfc7e1d373a4defe01bb5dc933b3?s=256&d=identicon&r=PG",
+      "display_name" : "johnnieb",
+      "link" : "https://stackoverflow.com/users/314897/johnnieb"
+    },
+    "is_accepted" : false,
+    "score" : 97,
+    "last_activity_date" : 1503432041,
+    "last_edit_date" : 1503432041,
+    "creation_date" : 1439499137,
+    "answer_id" : 31998213,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><a href=\"https://commons.apache.org/proper/commons-collections/\" rel=\"noreferrer\">Apache Commons Collections 4</a> has a <em>partition</em> method in the <code>ListUtils</code> class. Here’s how it works:</p>\n\n<pre><code>import org.apache.commons.collections4.ListUtils;\n...\n\nint targetSize = 100;\nList&lt;Integer&gt; largeList = ...\nList&lt;List&lt;Integer&gt;&gt; output = ListUtils.partition(largeList, targetSize);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9079456,
+      "reputation" : 31,
+      "user_id" : 6759780,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2851341fc94b318e66a7c80402347b96?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user688",
+      "link" : "https://stackoverflow.com/users/6759780/user688"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1600269432,
+    "last_edit_date" : 1600269432,
+    "creation_date" : 1472184966,
+    "answer_id" : 39158205,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Create a new list and add a sublist view of the source list using the <code>addAll()</code> method to create a new sublist</p>\n<pre><code>List&lt;T&gt; newList = new ArrayList&lt;T&gt;();\nnewList.addAll(sourceList.subList(startIndex, endIndex));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9707508,
+        "reputation" : 11,
+        "user_id" : 7200510,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/11a06f373fb93fca563d5d86450ea7a1?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "vasantha",
+        "link" : "https://stackoverflow.com/users/7200510/vasantha"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1492786993,
+      "post_id" : 40740503,
+      "comment_id" : 74144159,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Jaafar:I want the same like but after 20 elements loaded print then again i need to load next 20 elements  and so on. So please suggest me for this."
+    }, {
+      "owner" : {
+        "account_id" : 2689821,
+        "reputation" : 13,
+        "user_id" : 2323383,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/zx6Xu.jpg?s=256",
+        "display_name" : "B.JAAFAR",
+        "link" : "https://stackoverflow.com/users/2323383/b-jaafar"
+      },
+      "reply_to_user" : {
+        "account_id" : 9707508,
+        "reputation" : 11,
+        "user_id" : 7200510,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/11a06f373fb93fca563d5d86450ea7a1?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "vasantha",
+        "link" : "https://stackoverflow.com/users/7200510/vasantha"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1495805885,
+      "post_id" : 40740503,
+      "comment_id" : 75418702,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hi @vasantha sorry i didn&#39;t see your request early, you did it or not yet ?"
+    } ],
+    "owner" : {
+      "account_id" : 2689821,
+      "reputation" : 13,
+      "user_id" : 2323383,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/zx6Xu.jpg?s=256",
+      "display_name" : "B.JAAFAR",
+      "link" : "https://stackoverflow.com/users/2323383/b-jaafar"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1479813584,
+    "creation_date" : 1479813584,
+    "answer_id" : 40740503,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>if you don't want to import the apache commons library try this simple code:</p>\n\n<pre><code>final static int MAX_ELEMENT = 20;\n\npublic static void main(final String[] args) {\n\n    final List&lt;String&gt; list = new ArrayList&lt;String&gt;();\n\n    for (int i = 1; i &lt;= 161; i++) {\n        list.add(String.valueOf(i));\n        System.out.print(\",\" + String.valueOf(i));\n    }\n    System.out.println(\"\");\n    System.out.println(\"### &gt;&gt;&gt; \");\n    final List&lt;List&lt;String&gt;&gt; result = splitList(list, MAX_ELEMENT);\n\n    for (final List&lt;String&gt; entry : result) {\n        System.out.println(\"------------------------\");\n        for (final String elm : entry) {\n            System.out.println(elm);\n        }\n        System.out.println(\"------------------------\");\n    }\n\n}\n\nprivate static List&lt;List&lt;String&gt;&gt; splitList(final List&lt;String&gt; list, final int maxElement) {\n\n    final List&lt;List&lt;String&gt;&gt; result = new ArrayList&lt;List&lt;String&gt;&gt;();\n\n    final int div = list.size() / maxElement;\n\n    System.out.println(div);\n\n    for (int i = 0; i &lt;= div; i++) {\n\n        final int startIndex = i * maxElement;\n\n        if (startIndex &gt;= list.size()) {\n            return result;\n        }\n\n        final int endIndex = (i + 1) * maxElement;\n\n        if (endIndex &lt; list.size()) {\n            result.add(list.subList(startIndex, endIndex));\n        } else {\n            result.add(list.subList(startIndex, list.size()));\n        }\n\n    }\n\n    return result;\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 296266,
+        "reputation" : 1284,
+        "user_id" : 601129,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/e203fced5dff1d3c09312359e0be216a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "AAP",
+        "link" : "https://stackoverflow.com/users/601129/aap"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1572098776,
+      "post_id" : 40745352,
+      "comment_id" : 103459759,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "pls note this has a bug that it ignores the last set of data. ex 201 broken into chunks of 100s will return 100,100,0 instead of 100,100,1"
+    }, {
+      "owner" : {
+        "account_id" : 2640224,
+        "reputation" : 616,
+        "user_id" : 9189768,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/hfDTC.png?s=256",
+        "display_name" : "BluEOS",
+        "link" : "https://stackoverflow.com/users/9189768/blueos"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1663782315,
+      "post_id" : 40745352,
+      "comment_id" : 130322549,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Correct code is :  chunkList.add(list.subList(i, i + chunkSize &gt;= list.size() ? list.size() : i + chunkSize));"
+    }, {
+      "owner" : {
+        "account_id" : 191592,
+        "reputation" : 3795,
+        "user_id" : 432254,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://www.gravatar.com/avatar/c306949c17672df54a8c7f16aa9b5dc1?s=256&d=identicon&r=PG",
+        "display_name" : "Andrey",
+        "link" : "https://stackoverflow.com/users/432254/andrey"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1693328605,
+      "post_id" : 40745352,
+      "comment_id" : 135745164,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Can be a bit shorter: <code>chunkList.add(list.subList(i, Math.min(i + chunkSize, list.size()));</code>"
+    } ],
+    "owner" : {
+      "account_id" : 3803740,
+      "reputation" : 2163,
+      "user_id" : 3156682,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/1HhGE.jpg?s=256",
+      "display_name" : "J.R",
+      "link" : "https://stackoverflow.com/users/3156682/j-r"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1567424566,
+    "last_edit_date" : 1567424566,
+    "creation_date" : 1479827414,
+    "answer_id" : 40745352,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This works for me</p>\n\n<pre><code>/**\n* Returns List of the List argument passed to this function with size = chunkSize\n* \n* @param largeList input list to be portioned\n* @param chunkSize maximum size of each partition\n* @param &lt;T&gt; Generic type of the List\n* @return A list of Lists which is portioned from the original list \n*/\npublic static  &lt;T&gt; List&lt;List&lt;T&gt;&gt; chunkList(List&lt;T&gt; list, int chunkSize) {\n    if (chunkSize &lt;= 0) {\n        throw new IllegalArgumentException(\"Invalid chunk size: \" + chunkSize);\n    }\n    List&lt;List&lt;T&gt;&gt; chunkList = new ArrayList&lt;&gt;(list.size() / chunkSize);\n    for (int i = 0; i &lt; list.size(); i += chunkSize) {\n        chunkList.add(list.subList(i, i + chunkSize &gt;= list.size() ? list.size()-1 : i + chunkSize));\n    }\n    return chunkList;\n}\n</code></pre>\n\n<p>Eg : </p>\n\n<pre><code>List&lt;Integer&gt; stringList = new ArrayList&lt;&gt;();\nstringList.add(0);\nstringList.add(1);\nstringList.add(2);\nstringList.add(3);\nstringList.add(4);\nstringList.add(5);\nstringList.add(6);\nstringList.add(7);\nstringList.add(8);\nstringList.add(9);\n\nList&lt;List&lt;Integer&gt;&gt; chunkList = getChunkList1(stringList, 2);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6167110,
+      "reputation" : 21,
+      "user_id" : 4806623,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-qbFilgMdcnw/AAAAAAAAAAI/AAAAAAAAAVk/giv4nZaYlgY/s256-rj/photo.jpg",
+      "display_name" : "Rahul Palakurthi",
+      "link" : "https://stackoverflow.com/users/4806623/rahul-palakurthi"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1501146756,
+    "creation_date" : 1501146756,
+    "answer_id" : 45346297,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>import org.apache.commons.collections4.ListUtils;\nArrayList&lt;Integer&gt; mainList = .............;\nList&lt;List&lt;Integer&gt;&gt; multipleLists = ListUtils.partition(mainList,100);\nint i=1;\nfor (List&lt;Integer&gt; indexedList : multipleLists){\n  System.out.println(\"Values in List \"+i);\n  for (Integer value : indexedList)\n    System.out.println(value);\ni++;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12219197,
+      "reputation" : 11,
+      "user_id" : 8918700,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-wwV1PlSMC_U/AAAAAAAAAAI/AAAAAAAAAPY/nlqdlBAfO68/s256-rj/photo.jpg",
+      "display_name" : "yogesh kumar",
+      "link" : "https://stackoverflow.com/users/8918700/yogesh-kumar"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1510309653,
+    "last_edit_date" : 1510309653,
+    "creation_date" : 1510308080,
+    "answer_id" : 47220154,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You need to know the chunk size by which you're dividing your list. Say you have a list of <code>108 entries</code> and you need a chunk size of <code>25</code>. Thus you will end up with <code>5 lists</code>: </p>\n\n<ul>\n<li>4 having <code>25 entries</code> each;</li>\n<li>1 (the fifth) having <code>8 elements</code>. </li>\n</ul>\n\n<p><strong>Code:</strong></p>\n\n<pre><code>public static void main(String[] args) {\n\n        List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();\n        for (int i=0; i&lt;108; i++){\n            list.add(i);\n        }\n        int size= list.size();\n        int j=0;\n                List&lt; List&lt;Integer&gt; &gt; splittedList = new ArrayList&lt;List&lt;Integer&gt;&gt;()  ;\n                List&lt;Integer&gt; tempList = new ArrayList&lt;Integer&gt;();\n        for(j=0;j&lt;size;j++){\n            tempList.add(list.get(j));\n        if((j+1)%25==0){\n            // chunk of 25 created and clearing tempList\n            splittedList.add(tempList);\n            tempList = null;\n            //intializing it again for new chunk \n            tempList = new ArrayList&lt;Integer&gt;();\n        }\n        }\n        if(size%25!=0){\n            //adding the remaining enteries \n            splittedList.add(tempList);\n        }\n        for (int k=0;k&lt;splittedList.size(); k++){\n            //(k+1) because we started from k=0\n            System.out.println(\"Chunk number: \"+(k+1)+\" has elements = \"+splittedList.get(k).size());\n        }\n    }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8410822,
+        "reputation" : 89,
+        "user_id" : 6312811,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/8cf2f379f22252b376606f003ba35bbb?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "gooornik07",
+        "link" : "https://stackoverflow.com/users/6312811/gooornik07"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1574155585,
+      "post_id" : 51837311,
+      "comment_id" : 104120833,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@i_am_zero Is it possible to apply multiple conditions (third static method) so you could create multiple lists e.x. [[1,2,3,4], [5,6,7,8,9], [10,11,12,13,14]] on conditions: i&lt;5, 5&lt;=i&lt;10, i&gt;=10"
+    }, {
+      "owner" : {
+        "account_id" : 1257650,
+        "reputation" : 24327,
+        "user_id" : 1216775,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://i.sstatic.net/gX53v.jpg?s=256",
+        "display_name" : "akhil_mittal",
+        "link" : "https://stackoverflow.com/users/1216775/akhil-mittal"
+      },
+      "reply_to_user" : {
+        "account_id" : 8410822,
+        "reputation" : 89,
+        "user_id" : 6312811,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/8cf2f379f22252b376606f003ba35bbb?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "gooornik07",
+        "link" : "https://stackoverflow.com/users/6312811/gooornik07"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1574158013,
+      "post_id" : 51837311,
+      "comment_id" : 104122199,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@gooornik07 a stream can be used only once."
+    }, {
+      "owner" : {
+        "account_id" : 57402,
+        "reputation" : 30286,
+        "user_id" : 171950,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/ccee38944752d481128936450ddb687e?s=256&d=identicon&r=PG",
+        "display_name" : "Muhammad Hewedy",
+        "link" : "https://stackoverflow.com/users/171950/muhammad-hewedy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1672290841,
+      "post_id" : 51837311,
+      "comment_id" : 132259506,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you replace the list in your example with this list <code>List.of(10, 20, 30, 40, 50, 60)</code> then <code>partitionIntegerListBasedOnSize</code> won&#39;t work!"
+    } ],
+    "owner" : {
+      "account_id" : 1257650,
+      "reputation" : 24327,
+      "user_id" : 1216775,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://i.sstatic.net/gX53v.jpg?s=256",
+      "display_name" : "akhil_mittal",
+      "link" : "https://stackoverflow.com/users/1216775/akhil-mittal"
+    },
+    "is_accepted" : false,
+    "score" : 47,
+    "last_activity_date" : 1534236967,
+    "last_edit_date" : 1534236967,
+    "creation_date" : 1534236327,
+    "answer_id" : 51837311,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Java 8</h2>\n\n<p>We can split a list based on some size or based on a condition. </p>\n\n<pre><code>static Collection&lt;List&lt;Integer&gt;&gt; partitionIntegerListBasedOnSize(List&lt;Integer&gt; inputList, int size) {\n        return inputList.stream()\n                .collect(Collectors.groupingBy(s -&gt; (s-1)/size))\n                .values();\n}\nstatic &lt;T&gt; Collection&lt;List&lt;T&gt;&gt; partitionBasedOnSize(List&lt;T&gt; inputList, int size) {\n        final AtomicInteger counter = new AtomicInteger(0);\n        return inputList.stream()\n                    .collect(Collectors.groupingBy(s -&gt; counter.getAndIncrement()/size))\n                    .values();\n}\nstatic &lt;T&gt; Collection&lt;List&lt;T&gt;&gt; partitionBasedOnCondition(List&lt;T&gt; inputList, Predicate&lt;T&gt; condition) {\n        return inputList.stream().collect(Collectors.partitioningBy(s-&gt; (condition.test(s)))).values();\n}\n</code></pre>\n\n<p>Then we can use them as:</p>\n\n<pre><code>final List&lt;Integer&gt; list = Arrays.asList(1,2,3,4,5,6,7,8,9,10);\nSystem.out.println(partitionIntegerListBasedOnSize(list, 4));  // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]\nSystem.out.println(partitionBasedOnSize(list, 4));  // [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]]\nSystem.out.println(partitionBasedOnSize(list, 3));  // [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]\nSystem.out.println(partitionBasedOnCondition(list, i -&gt; i&lt;6));  // [[6, 7, 8, 9, 10], [1, 2, 3, 4, 5]]\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1544964,
+      "reputation" : 1263,
+      "user_id" : 1438692,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/IdaAw.jpg?s=256",
+      "display_name" : "Vikky",
+      "link" : "https://stackoverflow.com/users/1438692/vikky"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1552928522,
+    "last_edit_date" : 1552928522,
+    "creation_date" : 1552484710,
+    "answer_id" : 55143385,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Just to be clear, This still have to be tested more...</p>\n\n<pre><code>public class Splitter {\n\npublic static &lt;T&gt; List&lt;List&lt;T&gt;&gt; splitList(List&lt;T&gt; listTobeSplit, int size) {\n    List&lt;List&lt;T&gt;&gt; sublists= new LinkedList&lt;&gt;();\n    if(listTobeSplit.size()&gt;size) {\n    int counter=0;\n    boolean lastListadded=false;\n\n    List&lt;T&gt; subList=new LinkedList&lt;&gt;();\n\n    for(T t: listTobeSplit) {           \n         if (counter==0) {               \n             subList =new LinkedList&lt;&gt;();\n             subList.add(t);\n             counter++;\n             lastListadded=false;\n         }\n         else if(counter&gt;0 &amp;&amp; counter&lt;size-1) {\n             subList.add(t);\n             counter++;\n         }\n         else {\n             lastListadded=true;\n             subList.add(t);\n             sublists.add(subList);\n             counter=0;\n         }              \n    }\n    if(lastListadded==false)\n        sublists.add(subList);      \n    }\n    else {\n        sublists.add(listTobeSplit);\n    }\n    log.debug(\"sublists: \"+sublists);\n    return sublists;\n }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4731068,
+      "reputation" : 1135,
+      "user_id" : 3826696,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2f1acecff3450ab0a8be2bfc251f6181?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user3826696",
+      "link" : "https://stackoverflow.com/users/3826696/user3826696"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1681980219,
+    "last_edit_date" : 1681980219,
+    "creation_date" : 1560989079,
+    "answer_id" : 56677379,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>private List&lt;List&lt;String&gt;&gt; chunkArrayList(List&lt;String&gt; arrayToChunk, int chunkSize) {\n    List&lt;List&lt;String&gt;&gt; chunkList = new ArrayList&lt;&gt;();\n    for (int i = 0; i &lt; arrayToChunk.size(); i += chunkSize) {\n        int end = Math.min(i + chunkSize, arrayToChunk.size());\n        chunkList.add(arrayToChunk.subList(i, end));\n    }\n    return chunkList;\n}\n</code></pre>\n<p><strong>Example</strong></p>\n<pre><code>    ArrayList&lt;String&gt; test = new ArrayList&lt;&gt;();\n    for (int i=1; i&lt;=1000; i++){\n        test.add(String.valueOf(i));\n    }\n\n    chunkArrayList(test,10);\n</code></pre>\n<p><strong>Output</strong></p>\n<p>CHUNKED:: <code>[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19, 20], [21, 22, 23, 24, 25, 26, 27, 28, 29, 30], [31, 32, 33, 34, 35, 36, 37, 38, 39, 40], [41, 42, 43, 44, 45, 46, 47, 48, 49, 50], [51, 52, 53, 54, 55, 56, 57, 58, 59, 60], [61, 62, 63, 64, 65, 66, 67, 68, 69, 70], [71, 72, 73, 74, 75, 76, 77, 78, 79, 80], [81, 82, 83, 84, 85, 86, 87, 88, 89, 90], [91, 92, 93, 94, 95, 96, 97, 98, 99, 100], .........</code></p>\n<p>you will see in your log</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1712726,
+      "reputation" : 6836,
+      "user_id" : 1570415,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Scl35.jpg?s=256",
+      "display_name" : "Donald Raab",
+      "link" : "https://stackoverflow.com/users/1570415/donald-raab"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1571606064,
+    "last_edit_date" : 1571606064,
+    "creation_date" : 1571605691,
+    "answer_id" : 58477354,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use the <code>chunk</code> method from <a href=\"https://github.com/eclipse/eclipse-collections\" rel=\"nofollow noreferrer\">Eclipse Collections</a>:</p>\n\n<pre><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;(Interval.oneTo(1000));\nRichIterable&lt;RichIterable&lt;Integer&gt;&gt; chunks = Iterate.chunk(list, 10);\nVerify.assertSize(100, chunks);\n</code></pre>\n\n<p>A few examples of the <code>chunk</code> method were included in this <a href=\"https://dzone.com/articles/jvm-calendar-hidden-treasures-of-eclipse-collectio\" rel=\"nofollow noreferrer\">DZone article</a> as well.</p>\n\n<p>Note: I am a committer for Eclipse Collections.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18416298,
+      "reputation" : 39,
+      "user_id" : 13415089,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8c6qo.jpg?s=256",
+      "display_name" : "Akhil Sabu",
+      "link" : "https://stackoverflow.com/users/13415089/akhil-sabu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1588142437,
+    "creation_date" : 1588142437,
+    "answer_id" : 61495694,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>    **Divide a list to lists of n size**\n\n    import java.util.AbstractList;\n    import java.util.ArrayList;\n    import java.util.List;\n\n    public final class PartitionUtil&lt;T&gt; extends AbstractList&lt;List&lt;T&gt;&gt; {\n\n        private final List&lt;T&gt; list;\n        private final int chunkSize;\n\n        private PartitionUtil(List&lt;T&gt; list, int chunkSize) {\n            this.list = new ArrayList&lt;&gt;(list);\n            this.chunkSize = chunkSize;\n        }\n\n        public static &lt;T&gt; PartitionUtil&lt;T&gt; ofSize(List&lt;T&gt; list, int chunkSize) {\n            return new PartitionUtil&lt;&gt;(list, chunkSize);\n        }\n\n        @Override\n        public List&lt;T&gt; get(int index) {\n            int start = index * chunkSize;\n            int end = Math.min(start + chunkSize, list.size());\n\n            if (start &gt; end) {\n                throw new IndexOutOfBoundsException(\"Index \" + index + \" is out of the list range &lt;0,\" + (size() - 1) + \"&gt;\");\n            }\n\n            return new ArrayList&lt;&gt;(list.subList(start, end));\n        }\n\n        @Override\n        public int size() {\n            return (int) Math.ceil((double) list.size() / (double) chunkSize);\n        }\n    }\n\n\n\n\n\nFunction call : \n              List&lt;List&lt;String&gt;&gt; containerNumChunks = PartitionUtil.ofSize(list, 999)\n</code></pre>\n\n<p>more details: <a href=\"https://e.printstacktrace.blog/divide-a-list-to-lists-of-n-size-in-Java-8/\" rel=\"nofollow noreferrer\">https://e.printstacktrace.blog/divide-a-list-to-lists-of-n-size-in-Java-8/</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10901642,
+      "reputation" : 92,
+      "user_id" : 8013743,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-7J-9RwjFg6c/AAAAAAAAAAI/AAAAAAAABYU/bcc-NaWvRkA/s256-rj/photo.jpg",
+      "display_name" : "Imad ALILAT",
+      "link" : "https://stackoverflow.com/users/8013743/imad-alilat"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1601135288,
+    "creation_date" : 1601135288,
+    "answer_id" : 64079607,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Let's suppose you want the considere the class that split the list into multiple chuncks as a library class.</p>\n<p>So let's say the class is called 'shared' and in should be final to be sure it won't be extended.</p>\n<pre><code>   import java.util.ArrayList;\n   import java.util.Arrays;\n   import java.util.List;\n\npublic final class Shared {\nList&lt;Integer&gt; input;\nint portion;\n\npublic Shared(int portion, Integer... input) {\n    this.setPortion(portion);\n    this.setInput(input);\n}\n\npublic List&lt;List&lt;Integer&gt;&gt; listToChunks() {\n    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;List&lt;Integer&gt;&gt;();\n    int size = this.size();\n    int startAt = 0;\n    int endAt = this.portion;\n\n    while (endAt &lt;= size) {\n\n        result.add(this.input.subList(startAt, endAt));\n        startAt = endAt;\n        endAt = (size - endAt &lt; this.portion &amp;&amp; size - endAt &gt; 0) ? (this.size()) : (endAt + this.portion);\n    }\n\n    return result;\n}\n\npublic int size() {\n    return this.input.size();\n}\n\npublic void setInput(Integer... input) {\n    if (input != null &amp;&amp; input.length &gt; 0)\n        this.input = Arrays.asList(input);\n    else\n        System.out.println(&quot;Error 001 : please enter a valid array of integers.&quot;);\n}\n\npublic void setPortion(int portion) {\n    if (portion &gt; 0)\n        this.portion = portion;\n    else\n        System.out.println(&quot;Error 002 : please enter a valid positive number.&quot;);\n}\n}\n</code></pre>\n<p>Next, let's try to execute it from another class that hold the public static void main(String... args)</p>\n<pre><code>public class exercise {\n\npublic static void main(String[] args) {\n    Integer[] numbers = {1, 2, 3, 4, 5, 6, 7};\n    int portion = 2;\n    Shared share = new Shared(portion, numbers);\n    System.out.println(share.listToChunks());   \n}\n}\n</code></pre>\n<p>Now, if you enter an array of integer [1, 2, 3, 4, 5, 6, 7] with a partition of 2.\nthe result will be [[1, 2], [3, 4], [5, 6], [7]]</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1119690,
+      "reputation" : 23190,
+      "user_id" : 1108305,
+      "user_type" : "registered",
+      "accept_rate" : 47,
+      "profile_image" : "https://www.gravatar.com/avatar/4c16849c5f9444a685f62cdc2a15c3ac?s=256&d=identicon&r=PG",
+      "display_name" : "M. Justin",
+      "link" : "https://stackoverflow.com/users/1108305/m-justin"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1608584617,
+    "creation_date" : 1608584617,
+    "answer_id" : 65399929,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using the <a href=\"https://github.com/amaembo/streamex\" rel=\"nofollow noreferrer\">StreamEx</a> library, you can use the <a href=\"http://amaembo.github.io/streamex/javadoc/one/util/streamex/StreamEx.html#ofSubLists(java.util.List,int)\" rel=\"nofollow noreferrer\"><code>StreamEx.ofSubLists(List&lt;T&gt; source, int length)</code></a> method:</p>\n<blockquote>\n<p>Returns a new StreamEx which consists of non-overlapping sublists of given source list having the specified length (the last sublist may be shorter).</p>\n</blockquote>\n<pre class=\"lang-java prettyprint-override\"><code>// Assuming you don't actually care that the lists are of type ArrayList\nList&lt;List&lt;Integer&gt;&gt; sublists = StreamEx.ofSubLists(result, 10).toList();\n\n// If you actually want them to be of type ArrayList, per your question\nList&lt;List&lt;Integer&gt;&gt; sublists = StreamEx.ofSubLists(result, 10).toCollection(ArrayList::new);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9925559,
+        "reputation" : 470,
+        "user_id" : 7347278,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/xAec4.jpg?s=256",
+        "display_name" : "V&#225;clav",
+        "link" : "https://stackoverflow.com/users/7347278/v%c3%a1clav"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1638374201,
+      "post_id" : 69635781,
+      "comment_id" : 124072037,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This answer is underrated. The most clean way to do it at the end of 2021"
+    }, {
+      "owner" : {
+        "account_id" : 6903404,
+        "reputation" : 1799,
+        "user_id" : 5302251,
+        "user_type" : "registered",
+        "accept_rate" : 44,
+        "profile_image" : "https://i.sstatic.net/ysnef.jpg?s=256",
+        "display_name" : "Mohd Sakib Syed",
+        "link" : "https://stackoverflow.com/users/5302251/mohd-sakib-syed"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1654599596,
+      "post_id" : 69635781,
+      "comment_id" : 128123866,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "How can I use this for android ?"
+    }, {
+      "owner" : {
+        "account_id" : 291162,
+        "reputation" : 3438,
+        "user_id" : 593146,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/2404c3e4304714294c0458b3feb39ff0?s=256&d=identicon&r=PG",
+        "display_name" : "Zyl",
+        "link" : "https://stackoverflow.com/users/593146/zyl"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1672867059,
+      "post_id" : 69635781,
+      "comment_id" : 132372537,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It&#39;s a neat trick, but it&#39;s hard to see what&#39;s going on. I wouldn&#39;t use it."
+    }, {
+      "owner" : {
+        "account_id" : 4238751,
+        "reputation" : 356,
+        "user_id" : 3469246,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/0dfb86143a63a0e1da2a367b60dba386?s=256&d=identicon&r=PG",
+        "display_name" : "Saucistophe",
+        "link" : "https://stackoverflow.com/users/3469246/saucistophe"
+      },
+      "reply_to_user" : {
+        "account_id" : 291162,
+        "reputation" : 3438,
+        "user_id" : 593146,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/2404c3e4304714294c0458b3feb39ff0?s=256&d=identicon&r=PG",
+        "display_name" : "Zyl",
+        "link" : "https://stackoverflow.com/users/593146/zyl"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1682504240,
+      "post_id" : 69635781,
+      "comment_id" : 134225418,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Zyl Hide it in a aptly-named method, sprinkle some unit tests to better document it."
+    }, {
+      "owner" : {
+        "account_id" : 420683,
+        "reputation" : 10968,
+        "user_id" : 798502,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/1d2f0a8bebb4bf51ea2d69bab39ba1d5?s=256&d=identicon&r=PG",
+        "display_name" : "seinecle",
+        "link" : "https://stackoverflow.com/users/798502/seinecle"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1683193771,
+      "post_id" : 69635781,
+      "comment_id" : 134330232,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "it looks like a trick indeed, but on the other hand I see it as a good occasion to learn about the groupingBy Collector."
+    }, {
+      "owner" : {
+        "account_id" : 191592,
+        "reputation" : 3795,
+        "user_id" : 432254,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://www.gravatar.com/avatar/c306949c17672df54a8c7f16aa9b5dc1?s=256&d=identicon&r=PG",
+        "display_name" : "Andrey",
+        "link" : "https://stackoverflow.com/users/432254/andrey"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1693327712,
+      "post_id" : 69635781,
+      "comment_id" : 135744987,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What is memory consumption and computing complexity of this solution?"
+    } ],
+    "owner" : {
+      "account_id" : 451083,
+      "reputation" : 1307,
+      "user_id" : 846769,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/84289000e87e5f7f19bd7b417357b3c2?s=256&d=identicon&r=PG",
+      "display_name" : "i000174",
+      "link" : "https://stackoverflow.com/users/846769/i000174"
+    },
+    "is_accepted" : false,
+    "score" : 38,
+    "last_activity_date" : 1634669087,
+    "last_edit_date" : 1634669087,
+    "creation_date" : 1634666940,
+    "answer_id" : 69635781,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Java8 streams</strong>, one expression, no other libraries:</p>\n<pre><code>List&lt;String&gt; input = ...\nint partitionSize = ...\n\n Collection&lt;List&lt;String&gt;&gt; partitionedList = IntStream.range(0, input.size())\n    .boxed()\n        .collect(Collectors.groupingBy(partition -&gt; (partition / partitionSize), Collectors.mapping(elementIndex -&gt; input.get(elementIndex), Collectors.toList())))\n            .values();\n</code></pre>\n<p><strong>Tests</strong>:</p>\n<pre><code>List&lt;String&gt; input = Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot;, &quot;h&quot; ,&quot;i&quot;);\n</code></pre>\n<blockquote>\n<p>partitionSize = 1 -&gt; [[a], [b], [c], [d], [e], [f], [g], [h], [I]]</p>\n<p>partitionSize = 2 -&gt; [[a, b], [c, d], [e, f], [g, h], [I]]</p>\n<p>partitionSize = 3 -&gt; [[a, b, c], [d, e, f], [g, h, I]]</p>\n<p>partitionSize = 7 -&gt; [[a, b, c, d, e, f, g], [h, I]]</p>\n<p>partitionSize = 100 -&gt; [[a, b, c, d, e, f, g, h, i]]</p>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4784964,
+        "reputation" : 545,
+        "user_id" : 3865734,
+        "user_type" : "registered",
+        "accept_rate" : 20,
+        "profile_image" : "https://www.gravatar.com/avatar/2f0d879e8e637eb9de599871aebedad5?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Allanh",
+        "link" : "https://stackoverflow.com/users/3865734/allanh"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1731360346,
+      "post_id" : 69993489,
+      "comment_id" : 139620830,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Excellent solution. Simple, easy to undestand and all with native Java."
+    } ],
+    "owner" : {
+      "account_id" : 1891014,
+      "reputation" : 3470,
+      "user_id" : 1709089,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ba10a8ded0eef3a3fc4035c3df9bd25c?s=256&d=identicon&r=PG",
+      "display_name" : "dajavax",
+      "link" : "https://stackoverflow.com/users/1709089/dajavax"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1637083503,
+    "last_edit_date" : 1637083503,
+    "creation_date" : 1637083137,
+    "answer_id" : 69993489,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Java8 streams, one expression, no other libraries (two solutions without creating an unnecessary map):</p>\n<pre class=\"lang-java prettyprint-override\"><code>List&lt;List&lt;Integer&gt;&gt; partitionedList = IntStream.range(0, (list.size()-1)/targetSize+1)\n        .mapToObj(i -&gt; list.subList(i*targetSize, Math.min(i*targetSize+targetSize, list.size())))\n        .collect(Collectors.toList());\n\nList&lt;List&lt;Integer&gt;&gt; partitionedList2 = IntStream.iterate(0, i -&gt; i &lt; list.size(), i -&gt; i + targetSize)\n        .mapToObj(i -&gt; list.subList(i, Math.min(i + targetSize, list.size())))\n        .collect(Collectors.toList());\n</code></pre>\n<p>Keep in mind these are sublists, so changes to the original list would also affect these.</p>\n<p>If you prefer them not to be sublists, and rather newly created independent lists, they can be modified as such:</p>\n<pre class=\"lang-java prettyprint-override\"><code>List&lt;List&lt;Integer&gt;&gt; partitionedList = IntStream.range(0, (list.size()-1)/targetSize+1)\n        .mapToObj(i -&gt; IntStream.range(i*targetSize, Math.min(i*targetSize+targetSize, list.size())).mapToObj(j -&gt; list.get(j)).collect(Collectors.toList()))\n        .collect(Collectors.toList());\n\nList&lt;List&lt;Integer&gt;&gt; partitionedList2 = IntStream.iterate(0, i -&gt; i &lt; list.size(), i -&gt; i + targetSize)\n        .mapToObj(i -&gt; IntStream.range(i, Math.min(i + targetSize, list.size())).mapToObj(j -&gt; list.get(j)).collect(Collectors.toList()))\n        .collect(Collectors.toList());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 987434,
+      "reputation" : 12596,
+      "user_id" : 1005607,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/784311347e657bc34c93a6b7cb7d3faf?s=256&d=identicon&r=PG",
+      "display_name" : "gene b.",
+      "link" : "https://stackoverflow.com/users/1005607/gene-b"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1663201004,
+    "last_edit_date" : 1663201004,
+    "creation_date" : 1663200493,
+    "answer_id" : 73724317,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>List&lt;List&lt;Integer&gt;&gt; allChunkLists = new ArrayList&lt;List&lt;Integer&gt;&gt;();\nList&lt;Integer&gt; chunkList = null;\nint fromIndex = 0;\nint toIndex = CHUNK_SIZE;\n\nwhile (fromIndex &lt; origList.size()) {\n   chunkList = origList.subList(fromIndex, (toIndex &gt; origList.size() ? origList.size() : toIndex));\n   allChunkLists.add(chunkList);\n   fromIndex = toIndex;\n   toIndex += CHUNK_SIZE;\n}\n</code></pre>\n<p>No libraries, just Java's <code>subList()</code>. <code>toIndex</code> needs to be bounded properly to avoid out-of-bounds errors in <code>subList()</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 30239291,
+      "reputation" : 61,
+      "user_id" : 23174726,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ab2e521e3451199d184ba3868a6800c4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Keegan Carlo Falcao",
+      "link" : "https://stackoverflow.com/users/23174726/keegan-carlo-falcao"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1703918547,
+    "last_edit_date" : 1703918547,
+    "creation_date" : 1703917956,
+    "answer_id" : 77735058,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Whilst exercising on java oop exam I bumped into a similar issue, and for God sake, I implemented it in such easy way just relying on java streams.</p>\n<p>Below method basically breaks input list into a subsequence of desired size and maps each enumerator representative into a sublist with limited size. The skip method is used to skip previous computations and by stream one-use nature it's mandatory.</p>\n<p>Here what I implemented:</p>\n<pre><code>public &lt;X&gt; List&lt;List&lt;X&gt;&gt; split(final List&lt;X&gt; list, final int dividend) {\n      return IntStream.range(\n              0, \n              list.size() / dividend\n          )\n          .mapToObj(\n              y -&gt; list.stream()\n                  .skip(dividend * y)\n                  .limit(dividend)\n                  .collect(Collectors.toList())\n          )\n          .collect(Collectors.toList());\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1119690,
+      "reputation" : 23190,
+      "user_id" : 1108305,
+      "user_type" : "registered",
+      "accept_rate" : 47,
+      "profile_image" : "https://www.gravatar.com/avatar/4c16849c5f9444a685f62cdc2a15c3ac?s=256&d=identicon&r=PG",
+      "display_name" : "M. Justin",
+      "link" : "https://stackoverflow.com/users/1108305/m-justin"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1742585176,
+    "last_edit_date" : 1742585176,
+    "creation_date" : 1729630615,
+    "answer_id" : 79115716,
+    "question_id" : 2895342,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <a href=\"https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/stream/Gatherers.html#windowFixed(int)\" rel=\"nofollow noreferrer\"><code>Gatherers.windowFixed</code></a> gatherer in Java 24 (available as a preview language feature since Java 22) partitions a stream into groups of a given size.  This can be used to achieve your goal of partitioning a <code>List</code> into a list of fixed-sized sublists.</p>\n<pre class=\"lang-java prettyprint-override\"><code>List&lt;Integer&gt; listOfSize1000 = createList();\n\nList&lt;List&lt;Integer&gt;&gt; listsOfSize10 =\n        listOfSize1000.stream().gather(Gatherers.windowFixed(10)).toList();\n</code></pre>\n<p>This uses the new <a href=\"https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/stream/Stream.html#gather(java.util.stream.Gatherer)\" rel=\"nofollow noreferrer\"><code>Stream.gather</code></a> method with the new <code>windowFixed</code> gatherer to convert the list's stream <code>Stream&lt;Integer&gt;</code> to a <code>Stream&lt;List&lt;Integer&gt;&gt;</code>.  This is then collected into a <code>List</code> using <a href=\"https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/stream/Stream.html#toList()\" rel=\"nofollow noreferrer\"><code>Stream.toList()</code></a>.  This new feature was added to the language with the <a href=\"https://openjdk.org/jeps/485\" rel=\"nofollow noreferrer\">JEP 485: Stream Gatherers</a> feature.</p>\n<p>Your actual question requests <code>ArrayList</code> values.  If for some reason you care that the values are <code>ArrayList</code>s and not the immutable lists created above, you can map and collect the values as needed:</p>\n<pre class=\"lang-java prettyprint-override\"><code>ArrayList&lt;ArrayList&lt;Integer&gt;&gt; arrayListsOfSize10 = listOfSize1000.stream()\n        .gather(Gatherers.windowFixed(10))\n        .map(ArrayList::new)\n        .collect(Collectors.toCollection(ArrayList::new));\n</code></pre>\n<h1>Javadocs</h1>\n<p><a href=\"https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/stream/Gatherer.html\" rel=\"nofollow noreferrer\"><code>Gatherer</code></a>:</p>\n<blockquote>\n<p>An intermediate operation that transforms a stream of input elements into a stream of output elements, optionally applying a final action when the end of the upstream is reached. […]</p>\n<p>[…]</p>\n<p>There are many examples of gathering operations, including but not limited to: grouping elements into batches (windowing functions); de-duplicating consecutively similar elements; incremental accumulation functions (prefix scan); incremental reordering functions, etc. The class <a href=\"https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/stream/Gatherers.html\" rel=\"nofollow noreferrer\"><code>Gatherers</code></a> provides implementations of common gathering operations.</p>\n</blockquote>\n<p><a href=\"https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/stream/Stream.html#gather(java.util.stream.Gatherer)\" rel=\"nofollow noreferrer\"><code>Stream.gather</code></a>:</p>\n<blockquote>\n<p>Returns a stream consisting of the results of applying the given gatherer to the elements of this stream.</p>\n</blockquote>\n<p><a href=\"https://docs.oracle.com/en/java/javase/24/docs/api/java.base/java/util/stream/Gatherers.html#windowFixed(int)\" rel=\"nofollow noreferrer\"><code>Gatherers.windowFixed</code></a></p>\n<blockquote>\n<p>Returns a Gatherer that gathers elements into windows -- encounter-ordered groups of elements -- of a fixed size. If the stream is empty then no window will be produced. The last window may contain fewer elements than the supplied window size.</p>\n<p>Example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>// will contain: [[1, 2, 3], [4, 5, 6], [7, 8]]\nList&lt;List&lt;Integer&gt;&gt; windows =\n    Stream.of(1,2,3,4,5,6,7,8).gather(Gatherers.windowFixed(3)).toList();\n</code></pre>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 94058,
+    "reputation" : 65022,
+    "user_id" : 257022,
+    "user_type" : "registered",
+    "accept_rate" : 98,
+    "profile_image" : "https://www.gravatar.com/avatar/e6260b6943182933dffdca8d3a4697b6?s=256&d=identicon&r=PG",
+    "display_name" : "aneuryzm",
+    "link" : "https://stackoverflow.com/users/257022/aneuryzm"
+  },
+  "is_answered" : true,
+  "view_count" : 572552,
+  "accepted_answer_id" : 2895365,
+  "answer_count" : 24,
+  "score" : 264,
+  "last_activity_date" : 1742585176,
+  "creation_date" : 1274685111,
+  "last_edit_date" : 1332667268,
+  "question_id" : 2895342,
+  "link" : "https://stackoverflow.com/questions/2895342/java-how-can-i-split-an-arraylist-in-multiple-small-arraylists",
+  "title" : "Java: how can I split an ArrayList in multiple small ArrayLists?",
+  "body" : "<p>How can I split an ArrayList (size=1000) in multiple ArrayLists of the same size (=10) ?</p>\n\n<pre><code>ArrayList&lt;Integer&gt; results;\n</code></pre>\n"
+}

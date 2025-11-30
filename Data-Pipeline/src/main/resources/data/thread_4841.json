@@ -1,0 +1,100 @@
+{
+  "tags" : [ "java", "eclipse", "non-nullable" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 456045,
+        "reputation" : 2752,
+        "user_id" : 854600,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/dc74667b23c2272b40b3db8b564e921d?s=256&d=identicon&r=PG",
+        "display_name" : "Vertex",
+        "link" : "https://stackoverflow.com/users/854600/vertex"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1426594777,
+      "post_id" : 29097862,
+      "comment_id" : 46428093,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks for this very good explination! I think this is not well designed. <code>java.lang.@NonNull String</code> looks very ugly, but ok, it works :)"
+    }, {
+      "owner" : {
+        "account_id" : 956645,
+        "reputation" : 1234,
+        "user_id" : 981820,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://i.sstatic.net/6XpBy.jpg?s=256",
+        "display_name" : "Next Developer",
+        "link" : "https://stackoverflow.com/users/981820/next-developer"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1568296588,
+      "post_id" : 29097862,
+      "comment_id" : 102236503,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I would never guess that you can annotate like this: <code>java.lang.@NonNull String</code>"
+    } ],
+    "owner" : {
+      "account_id" : 4016005,
+      "reputation" : 787,
+      "user_id" : 3308100,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0c0924dd5513900b6d1896dd9d42d90c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Chronio",
+      "link" : "https://stackoverflow.com/users/3308100/chronio"
+    },
+    "is_accepted" : true,
+    "score" : 12,
+    "last_activity_date" : 1426591581,
+    "creation_date" : 1426591581,
+    "answer_id" : 29097862,
+    "question_id" : 29097160,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This is not a bug in Eclipse. Instead, it has to do with the way annotation types are processed by the Java compiler. The explanation given below illustrates the issue.</p>\n\n<p>First of all, the <code>@NonNull</code> annotation can apply to any use of a type (it is annotated with <code>@Target(ElementType.TYPE_USE)</code>). However, the type it applies to according to the Java Language Specification, is the type the annotation is <em>closest</em> to. This is not always what would be expected:</p>\n\n<p>In the first case, the <code>@NonNull</code> annotation applies to the use of the type <code>String</code>, which is a valid type. As such, the annotation is valid.</p>\n\n<p>In the second case, however, the annotation applies to <code>java</code>, which is a package name. As such, it is not a valid type, so the annotation cannot apply here. This will result in a compile-time error. </p>\n\n<p>The Java Language Specification (paragraph 9.7.4) states: </p>\n\n<blockquote>\n  <p>For example, assume an annotation type TA which is meta-annotated with just <code>@Target(ElementType.TYPE_USE)</code>. The terms <code>@TA java.lang.Object</code> and <code>java.@TA lang.Object</code> are illegal because the simple name to which <code>@TA</code> is closest is classified as a package name. On the other hand, <code>java.lang.@TA</code> Object is legal.</p>\n</blockquote>\n\n<p>From this we can conclude that <code>@NonNull java.lang.String x</code> will not work, but \n<code>java.lang.@NonNull String x</code> will.</p>\n\n<p>Also see <a href=\"http://docs.oracle.com/javase/specs/jls/se8/html/jls-9.html#jls-9.7.4\" rel=\"noreferrer\">The Java Language Specification, Chapter 9.7.4</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759289606,
+    "creation_date" : 1759289606,
+    "answer_id" : 79779643,
+    "question_id" : 29097160,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2><code>@org.jspecify.annotations.NonNull</code></h2>\n<p>The <a href=\"https://stackoverflow.com/a/29097862/642706\">Answer by Chronio</a> using <code>.@</code> syntax does not work for me in Java 25.</p>\n<p>Instead I find all that's needed is prefixing the annotation name with its package as we would any other type. So this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>import org.jspecify.annotations.NonNull;\n…\n@NonNull\n</code></pre>\n<p>… becomes this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@org.jspecify.annotations.NonNull\n</code></pre>\n<p>Here is an example using <a href=\"https://jspecify.dev/\" rel=\"nofollow noreferrer\"><em>JSpecify</em></a> nullity framework.</p>\n<pre class=\"lang-java prettyprint-override\"><code>package work.basil.example.annotate;\n\npublic class ExFullyQualifiedNameOnAnnotation\n{\n    public void bar ( @org.jspecify.annotations.NonNull String x ) { IO.println( x ); }\n\n    static void main ( ) { new ExFullyQualifiedNameOnAnnotation().bar( &quot;Bonjour.&quot; ); }\n}\n</code></pre>\n<blockquote>\n<p>Bonjour.</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 456045,
+    "reputation" : 2752,
+    "user_id" : 854600,
+    "user_type" : "registered",
+    "accept_rate" : 79,
+    "profile_image" : "https://www.gravatar.com/avatar/dc74667b23c2272b40b3db8b564e921d?s=256&d=identicon&r=PG",
+    "display_name" : "Vertex",
+    "link" : "https://stackoverflow.com/users/854600/vertex"
+  },
+  "is_answered" : true,
+  "view_count" : 1383,
+  "accepted_answer_id" : 29097862,
+  "answer_count" : 2,
+  "score" : 7,
+  "last_activity_date" : 1759289606,
+  "creation_date" : 1426589370,
+  "last_edit_date" : 1759288824,
+  "question_id" : 29097160,
+  "link" : "https://stackoverflow.com/questions/29097160/why-are-nonnull-annotation-on-fqn-not-allowed",
+  "title" : "Why Are @NonNull Annotation on FQN Not Allowed?",
+  "body" : "<p>Is it a bug in Eclipse or why I can't annotate parameters with <a href=\"https://en.wikipedia.org/wiki/Fully_qualified_name\" rel=\"nofollow noreferrer\">fully qualified type names</a> (FQN) with <code>@NonNull</code>?</p>\n<pre class=\"lang-java prettyprint-override\"><code>import org.eclipse.jdt.annotation.NonNull;\n\npublic class Foo {\n    // No problem\n    public void bar(@NonNull String x) {\n    }\n\n    // Error: Type annotations are not allowed on type names used to access\n    // static members\n    public void baz(@NonNull java.lang.String x) {\n    }\n}\n</code></pre>\n"
+}

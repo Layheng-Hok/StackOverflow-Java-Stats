@@ -1,0 +1,91 @@
+{
+  "tags" : [ "java", "maven", "vert.x", "netbeans-8.1" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8579039,
+        "reputation" : 31,
+        "user_id" : 6427376,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2926a7736c106b1ee55de24c4fe5d804?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Rsh At The Fort",
+        "link" : "https://stackoverflow.com/users/6427376/rsh-at-the-fort"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1465646977,
+      "post_id" : 37728379,
+      "comment_id" : 62995753,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Replacing the &#39;&lt;goal&gt;exec&lt;\\goal&gt;&#39; with &#39;&lt;goal&gt;java&lt;\\goal&gt;&#39; results in successful and creation of a distributable jar file, which is fine. However, when I leave &#39;&lt;goal&gt;exec&lt;\\goal&gt;&#39; in the .pom file this error is created when the project is built (I am using the Netbeans IDE for code development and compilation). I have been unsuccessful in inserting the executable designation into this .pom file. I haven&#39;t been able to determine where the specification should be put and whether it needs a path alone or a path + filename."
+    }, {
+      "owner" : {
+        "account_id" : 8579039,
+        "reputation" : 31,
+        "user_id" : 6427376,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2926a7736c106b1ee55de24c4fe5d804?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Rsh At The Fort",
+        "link" : "https://stackoverflow.com/users/6427376/rsh-at-the-fort"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1465647263,
+      "post_id" : 37728379,
+      "comment_id" : 62995826,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "One further comment. Thanks for the hint/advice on the syntax regarding the executable behavior of the code and the vertx deployment within main method. The behavior you mention matches the behavior when executing the code; running within the IDE causes the main() to get called and no periodic task. When executing from the command line, the vert.x starter is executed and there is no server, just the periodic timer."
+    } ],
+    "owner" : {
+      "account_id" : 21271,
+      "reputation" : 5811,
+      "user_id" : 51560,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/e948f0816514cc90a10bbe9ca1060d60?s=256&d=identicon&r=PG",
+      "display_name" : "Paulo Lopes",
+      "link" : "https://stackoverflow.com/users/51560/paulo-lopes"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1465481427,
+    "creation_date" : 1465481427,
+    "answer_id" : 37728379,
+    "question_id" : 37644915,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It looks you're trying to run <code>mvn exec:exec</code> but for that you need to specify the executable (the error you're getting). In that case the executable should be your java binary, e.g.: <code>/usr/java/latest/bin/java</code> if you're using linux and the Oracle RPM.</p>\n\n<p>Alternatively you should do: <code>mvn exec:java</code> which knows that the executable is <code>java</code> and knows how to pick the classpath dependencies from the pom file.</p>\n\n<p>Now if you pay attention to your code you'll see that the <code>public static void main</code> method is never called, your exec plugin use the vert.x starter not your class, so when your app starts there won't be any server, just the periodic code executed inside the <code>start</code> method.</p>\n\n<p>If you execute your main, then you're still missing to deploy your verticle so you have the server but no periodic task, in order to achieve that you need to add:</p>\n\n<pre><code>vertx.deployVerticle(Main.class.getName());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user3103059"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1522865098,
+    "creation_date" : 1522865098,
+    "answer_id" : 49657621,
+    "question_id" : 37644915,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>Allow Netbeans to index the maven repository at</strong></p>\n\n<pre><code>~\\.m2\\repository\\org\\codehaus\\mojo\n</code></pre>\n\n<p><strong>after the repository gets indexed everything should work fine.</strong></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8579039,
+    "reputation" : 31,
+    "user_id" : 6427376,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/2926a7736c106b1ee55de24c4fe5d804?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Rsh At The Fort",
+    "link" : "https://stackoverflow.com/users/6427376/rsh-at-the-fort"
+  },
+  "is_answered" : false,
+  "view_count" : 10848,
+  "answer_count" : 2,
+  "score" : 3,
+  "last_activity_date" : 1763690600,
+  "creation_date" : 1465148571,
+  "last_edit_date" : 1465208458,
+  "question_id" : 37644915,
+  "link" : "https://stackoverflow.com/questions/37644915/failed-to-execute-goal-org-codehaus-mojoexec-maven-plugin1-3-2exec-default",
+  "title" : "Failed to execute goal org.codehaus.mojo:exec-maven-plugin:1.3.2:exec (default) on project mavenproject2:",
+  "body" : "<p>I am beginning the initial attempt to use Vert.x in Java. IDE is Netbeans version 8.1. Vert.x is version 3.0.0. The code for this project is shown below. The pom.xml file is also listed below. This code will run in Netbeans IDE but the Build (for jar file) will not complete without the error shown in the BUILD REPORT below. Thus, the generated jar file will not execute. I have researched every resource I could locate on the internet and cannot find an adequate solution/answer. I would appreciate any help anybody can offer to resolve this problem.</p>\n\n<p>The POM file is generated by Netbeans IDE when creating a new project:\nFile - New Project - Maven - Project from Archetype - vertx-java-archetype\nI then added the main() method.</p>\n\n<p>DETAILED BUILD ERROR REPORT:</p>\n\n<pre><code>    --- maven-jar-plugin:2.3.2:jar (default-jar) @ mavenproject2 ---\n    Building jar: C:\\Projects\\GenMatchJ\\mavenproject2\\target\\mavenproject2-1.0-SNAPSHOT.jar\n\n    --- maven-shade-plugin:2.3:shade (default) @ mavenproject2 ---\n    Including io.vertx:vertx-core:jar:3.0.0 in the shaded jar.\n    Including io.netty:netty-common:jar:4.0.28.Final in the shaded jar.\n    Including io.netty:netty-buffer:jar:4.0.28.Final in the shaded jar.\n    Including io.netty:netty-transport:jar:4.0.28.Final in the shaded jar.\n    Including io.netty:netty-handler:jar:4.0.28.Final in the shaded jar.\n    Including io.netty:netty-codec:jar:4.0.28.Final in the shaded jar.\n    Including io.netty:netty-codec-http:jar:4.0.28.Final in the shaded jar.\n    Including com.fasterxml.jackson.core:jackson-core:jar:2.5.3 in the shaded jar.\n    Including com.fasterxml.jackson.core:jackson-databind:jar:2.5.3 in the shaded jar.\n    Including com.fasterxml.jackson.core:jackson-annotations:jar:2.5.0 in the shaded jar.\n    Including io.vertx:vertx-web:jar:3.0.0 in the shaded jar.\n    Including io.vertx:vertx-auth-common:jar:3.0.0 in the shaded jar.\n\n    --- exec-maven-plugin:1.3.2:exec (default) @ mavenproject2 ---\n    ------------------------------------------------------------------------\n    BUILD FAILURE\n    ------------------------------------------------------------------------\n    Total time: 3.290s\n    Finished at: Sun Jun 05 13:01:40 EDT 2016\n    Final Memory: 30M/313M\n    ------------------------------------------------------------------------\n    Failed to execute goal org.codehaus.mojo:exec-maven-plugin:1.3.2:exec (default) on project mavenproject2: The parameters 'executable' for goal org.codehaus.mojo:exec-maven-plugin:1.3.2:exec are missing or invalid -&gt; [Help 1]\n\nTo see the full stack trace of the errors, re-run Maven with the -e switch.\nRe-run Maven using the -X switch to enable full debug logging.\n\nFor more information about the errors and possible solutions, please read the following articles:\n[Help 1] http://cwiki.apache.org/confluence/display/MAVEN/PluginParameterException\n</code></pre>\n\n<p>POM.XML FILE:</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\"&gt;\n  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n\n  &lt;groupId&gt;com.ssp&lt;/groupId&gt;\n  &lt;artifactId&gt;mavenproject2&lt;/artifactId&gt;\n  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;\n  &lt;packaging&gt;jar&lt;/packaging&gt;\n\n  &lt;dependencyManagement&gt;\n    &lt;dependencies&gt;\n      &lt;dependency&gt;\n        &lt;groupId&gt;io.vertx&lt;/groupId&gt;\n        &lt;artifactId&gt;vertx-dependencies&lt;/artifactId&gt;\n        &lt;version&gt;3.0.0&lt;/version&gt;\n        &lt;type&gt;pom&lt;/type&gt;\n        &lt;scope&gt;import&lt;/scope&gt;\n      &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n  &lt;/dependencyManagement&gt;\n\n\n  &lt;dependencies&gt;\n    &lt;dependency&gt;\n      &lt;groupId&gt;io.vertx&lt;/groupId&gt;\n      &lt;artifactId&gt;vertx-core&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n      &lt;groupId&gt;io.vertx&lt;/groupId&gt;\n      &lt;artifactId&gt;vertx-web&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n  &lt;/dependencies&gt;\n\n  &lt;build&gt;\n    &lt;plugins&gt;\n      &lt;plugin&gt;\n        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;\n        &lt;version&gt;3.3&lt;/version&gt;\n        &lt;configuration&gt;\n          &lt;source&gt;1.8&lt;/source&gt;\n          &lt;target&gt;1.8&lt;/target&gt;\n        &lt;/configuration&gt;\n      &lt;/plugin&gt;\n      &lt;plugin&gt;\n        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;\n        &lt;version&gt;2.3&lt;/version&gt;\n        &lt;executions&gt;\n          &lt;execution&gt;\n            &lt;phase&gt;package&lt;/phase&gt;\n            &lt;goals&gt;\n              &lt;goal&gt;shade&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n              &lt;transformers&gt;\n                &lt;transformer implementation=\"org.apache.maven.plugins.shade.resource.ManifestResourceTransformer\"&gt;\n                  &lt;manifestEntries&gt;\n                    &lt;Main-Class&gt;io.vertx.core.Starter&lt;/Main-Class&gt;\n                    &lt;Main-Verticle&gt;com.ssp.mavenproject2.Main&lt;/Main-Verticle&gt;\n                  &lt;/manifestEntries&gt;\n                &lt;/transformer&gt;\n                &lt;transformer implementation=\"org.apache.maven.plugins.shade.resource.AppendingTransformer\"&gt;\n                  &lt;resource&gt;META-INF/services/io.vertx.core.spi.VerticleFactory&lt;/resource&gt;\n                &lt;/transformer&gt;\n              &lt;/transformers&gt;\n              &lt;artifactSet&gt;&lt;/artifactSet&gt;\n              &lt;outputFile&gt;${project.build.directory}/mavenproject2-${project.version}-fat.jar&lt;/outputFile&gt;\n            &lt;/configuration&gt;\n          &lt;/execution&gt;\n        &lt;/executions&gt;\n      &lt;/plugin&gt;\n      &lt;plugin&gt;\n        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n        &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;\n        &lt;version&gt;1.3.2&lt;/version&gt;\n        &lt;executions&gt;\n          &lt;execution&gt;\n            &lt;phase&gt;verify&lt;/phase&gt;\n            &lt;goals&gt;\n              &lt;goal&gt;exec&lt;/goal&gt;\n            &lt;/goals&gt;\n          &lt;/execution&gt;\n        &lt;/executions&gt;\n        &lt;configuration&gt;\n          &lt;mainClass&gt;io.vertx.core.Starter&lt;/mainClass&gt;\n          &lt;additionalClasspathElements&gt;\n            &lt;additionalClasspathElement&gt;${basedir}/src/main/java/&lt;/additionalClasspathElement&gt;\n          &lt;/additionalClasspathElements&gt;\n          &lt;systemProperties&gt;\n            &lt;systemProperty&gt;\n              &lt;key&gt;vertx.deployment.options.redeploy&lt;/key&gt;\n              &lt;value&gt;true&lt;/value&gt;\n            &lt;/systemProperty&gt;\n            &lt;systemProperty&gt;\n              &lt;key&gt;vertx.deployment.options.redeployScanPeriod&lt;/key&gt;\n              &lt;value&gt;100&lt;/value&gt;\n            &lt;/systemProperty&gt;\n          &lt;/systemProperties&gt;\n          &lt;arguments&gt;\n            &lt;argument&gt;run&lt;/argument&gt;\n            &lt;argument&gt;com/ssp/mavenproject2/Main.java&lt;/argument&gt;\n            &lt;!--                  &lt;argument&gt;-cluster&lt;/argument&gt;\n            &lt;argument&gt;-cluster-host&lt;/argument&gt;\n            &lt;argument&gt;127.0.0.1&lt;/argument&gt;--&gt;\n          &lt;/arguments&gt;\n        &lt;/configuration&gt;\n      &lt;/plugin&gt;\n    &lt;/plugins&gt;\n  &lt;/build&gt;\n    &lt;name&gt;MainSsp&lt;/name&gt;\n    &lt;description&gt;Main entry point for SSP Example with embedded Vert.x&lt;/description&gt;\n&lt;/project&gt;\n</code></pre>\n\n<p>SOURCE CODE:</p>\n\n<pre><code>package com.ssp.mavenproject2;\n\nimport io.vertx.core.AbstractVerticle;\nimport io.vertx.core.Vertx;\n\nimport javax.swing.JOptionPane;\n\n\n/**\n *\n */\npublic class Main extends AbstractVerticle {\n\n  public static void main(String[] args) {\n\n\n      JOptionPane.showMessageDialog(null, \"This Vert.x/Java integration is UUUGGGGHH tough without documentation...\");\n\n\n      // Create an HTTP server which simply returns \"Hello World!\" to each request.\n      Vertx.vertx().createHttpServer().requestHandler(req -&gt; req.response().end(\"Hello World!\")).listen(8080);\n\n      Vertx.vertx().setPeriodic(3000, res -&gt; {\n        System.out.println(\"Periodic event triggered.\");\n      });\n\n      try{\n\n          Thread.sleep(30000);\n      }catch(Exception e)\n      {\n         System.out.println(\"Exception caught\");\n      }\n  }  \n\n  @Override\n  public void start() throws Exception {\n    vertx.setPeriodic(3000, res -&gt; {\n      System.out.println(\"Periodic event triggered.\");\n    });\n  }\n\n}\n</code></pre>\n"
+}

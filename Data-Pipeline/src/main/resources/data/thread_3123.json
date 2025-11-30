@@ -1,0 +1,100 @@
+{
+  "tags" : [ "java", "spring", "jpa", "spring-data", "spring-data-jpa" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3747452,
+        "reputation" : 421,
+        "user_id" : 3115798,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/W2YYX.jpg?s=256",
+        "display_name" : "Dr4gon",
+        "link" : "https://stackoverflow.com/users/3115798/dr4gon"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1476632081,
+      "post_id" : 13901416,
+      "comment_id" : 67417434,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "With spring-data-commons--1.12.3.RELEASE the class name is <code>Jackson2RepositoryPopulatorFactoryBean</code>."
+    }, {
+      "owner" : {
+        "account_id" : 6009045,
+        "reputation" : 14809,
+        "user_id" : 4720018,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/GC3h8.png?s=256",
+        "display_name" : "djvg",
+        "link" : "https://stackoverflow.com/users/4720018/djvg"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1758707400,
+      "post_id" : 13901416,
+      "comment_id" : 140756509,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<i>&quot;It&#39;s straight-forward actually: [...]&quot;</i> Only if you know how to do it. ;-)"
+    }, {
+      "owner" : {
+        "account_id" : 6009045,
+        "reputation" : 14809,
+        "user_id" : 4720018,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/GC3h8.png?s=256",
+        "display_name" : "djvg",
+        "link" : "https://stackoverflow.com/users/4720018/djvg"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1758889310,
+      "post_id" : 13901416,
+      "comment_id" : 140761765,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Do you know of any <i>official</i> documentation (or examples) explaining this, other than <a href=\"https://docs.spring.io/spring-data/jpa/reference/repositories/core-extensions.html#core.repository-populators\" rel=\"nofollow noreferrer\">jpa/reference/repositories/core-extensions</a>?"
+    } ],
+    "owner" : {
+      "account_id" : 9744,
+      "reputation" : 83561,
+      "user_id" : 18122,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/q5nPT.jpg?s=256",
+      "display_name" : "Oliver Drotbohm",
+      "link" : "https://stackoverflow.com/users/18122/oliver-drotbohm"
+    },
+    "is_accepted" : true,
+    "score" : 26,
+    "last_activity_date" : 1398013378,
+    "last_edit_date" : 1398013378,
+    "creation_date" : 1355662031,
+    "answer_id" : 13901416,
+    "question_id" : 13897926,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It's straight-forward actually:</p>\n\n<pre><code>@Configuration\nclass ApplicationConfig {\n\n  @Bean\n  public JacksonRepositoryPopulatorFactoryBean repositoryPopulator() {\n\n    Resource sourceData = new ClassPathResource(\"test-data.json\");\n\n    JacksonRepositoryPopulatorFactoryBean factory = new JacksonRepositoryPopulatorFactoryBean();\n    // Set a custom ObjectMapper if Jackson customization is needed\n    factory.setObjectMapper(…);\n    factory.setResources(new Resource[] { sourceData });\n    return factory;\n  }\n}\n</code></pre>\n\n<p>By returning the <code>FactoryBean</code> itself, Spring will take care of invoking all the necessarry callback interfaces (i.e. <code>setApplicationContext(…)</code>, <code>setBeanClassLoader(…)</code> etc.). The factory bean is an <code>ApplicationListener</code> and thus will listen to the <code>ContextRefreshedEvent</code> and trigger population when the <code>ApplicationContext</code> is fully initialized.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1933150,
+    "reputation" : 323,
+    "user_id" : 1746274,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/0632d9574c95ef814e09fc2539f54559?s=256&d=identicon&r=PG",
+    "display_name" : "MrJohnBBQ",
+    "link" : "https://stackoverflow.com/users/1746274/mrjohnbbq"
+  },
+  "is_answered" : true,
+  "view_count" : 5968,
+  "accepted_answer_id" : 13901416,
+  "answer_count" : 1,
+  "score" : 18,
+  "last_activity_date" : 1763140366,
+  "creation_date" : 1355622945,
+  "last_edit_date" : 1763140366,
+  "question_id" : 13897926,
+  "link" : "https://stackoverflow.com/questions/13897926/how-to-declare-a-repository-populator-bean-using-java-config-instead-of-xml",
+  "title" : "How to declare a repository populator bean using java config instead of XML?",
+  "body" : "<p>I am working on a Spring based project that is (so-far) completely XML-free, except now I've hit a wall with the Spring JPA repository populator:</p>\n\n<pre><code>&lt;repository:jackson-populator location=\"classpath:data.json\" /&gt;\n</code></pre>\n\n<p>How would the above be expressed in a java @Configuration class?</p>\n\n<p>This post suggests using the FactoryBean directly:\n<a href=\"https://stackoverflow.com/a/13566712/1746274\">https://stackoverflow.com/a/13566712/1746274</a></p>\n\n<p>I tried that and the closest I got was the following but it's not quite right. </p>\n\n<pre><code>@Bean(name=\"repositoryPopulator\")\npublic RepositoryPopulator getRespositoryPopulator() throws Exception {\n    final JacksonRepositoryPopulatorFactoryBean factory =  new JacksonRepositoryPopulatorFactoryBean();\n    factory.getObject().setResourceLocation(\"classpath:test-data.json\");\n    factory.afterPropertiesSet();\n    return factory.getObject();\n}\n</code></pre>\n\n<p>The above results in a <code>FactoryBeanNotInitializedException</code> with the message <code>JacksonRepositoryPopulatorFactoryBean does not support circular references</code>.</p>\n\n<p>Any ideas?</p>\n"
+}

@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "inheritance", "jaxb", "jax-ws", "cxf" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 263393,
+      "reputation" : 7602,
+      "user_id" : 548915,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/ea46965fa63cdef4fc92d5b095e8b7cf?s=256&d=identicon&r=PG",
+      "display_name" : "Kristof Jozsa",
+      "link" : "https://stackoverflow.com/users/548915/kristof-jozsa"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1426762063,
+    "post_id" : 23961421,
+    "comment_id" : 46508290,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I&#39;d like to achieve the exact same as you.. did you find any answers?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 91722,
+      "reputation" : 3569,
+      "user_id" : 251708,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8gRds.png?s=256",
+      "display_name" : "Gladwin Burboz",
+      "link" : "https://stackoverflow.com/users/251708/gladwin-burboz"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1405391776,
+    "creation_date" : 1405391776,
+    "answer_id" : 24749041,
+    "question_id" : 23961421,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Try this</p>\n\n<pre><code>&lt;jaxb:bindings node=\"xsd:complexType\"&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 263393,
+      "reputation" : 7602,
+      "user_id" : 548915,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/ea46965fa63cdef4fc92d5b095e8b7cf?s=256&d=identicon&r=PG",
+      "display_name" : "Kristof Jozsa",
+      "link" : "https://stackoverflow.com/users/548915/kristof-jozsa"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1426762677,
+    "creation_date" : 1426762677,
+    "answer_id" : 29142747,
+    "question_id" : 23961421,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Ahh, found it at last: add <code>multiple=\"true\"</code> to the <code>bindings</code> tag:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;jaxb:bindings schemaLocation=\"../../../../contracts/src/main/resources/wsdl/ifx24.xsd\"&gt;\n    &lt;jaxb:bindings node=\"xsd:complexType[contains(@name, 'Rq_Type')]\" multiple=\"true\"&gt;\n        &lt;inheritance:implements&gt;hu.eir.ifx.IfxExchange&lt;/inheritance:implements&gt;\n    &lt;/jaxb:bindings&gt;\n&lt;/jaxb:bindings&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2581430,
+    "reputation" : 412,
+    "user_id" : 2238044,
+    "user_type" : "registered",
+    "accept_rate" : 85,
+    "profile_image" : "https://www.gravatar.com/avatar/a724c5204d8e9e6c5767f1b256d103bc?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Andy N",
+    "link" : "https://stackoverflow.com/users/2238044/andy-n"
+  },
+  "is_answered" : false,
+  "view_count" : 15335,
+  "answer_count" : 2,
+  "score" : 5,
+  "last_activity_date" : 1759057435,
+  "creation_date" : 1401475477,
+  "question_id" : 23961421,
+  "link" : "https://stackoverflow.com/questions/23961421/maven-cxf-codegen-plugin-using-jaxb-binding-to-add-inheritance-for-all-generated",
+  "title" : "maven-cxf-codegen-plugin using Jaxb binding to add inheritance for all generated classes",
+  "body" : "<p>I am using Apache CXF's cxf-codegen-plugin to turn a wsdl into java objects. I specified a binding file to add additional jaxb processing. I want all of these files to inherit from an interface (or extend an abstract class).</p>\n\n<p>My problem is that while I can get this to work with one generated file using</p>\n\n<pre><code>&lt;jaxb:bindings node=\"xsd:complexType[@name='sampleObj'] \"&gt;\n        &lt;inheritance:implements&gt;example.Dao&lt;/inheritance:implements&gt;\n    &lt;/jaxb:bindings&gt;\n</code></pre>\n\n<p>which will make sampleObj implement example.Dao. \nI do not know how to get this to process for all of my complex types (generated classes). Without repeating the above binding for <em>every</em> class (>100)</p>\n\n<p>I tried, </p>\n\n<pre><code> &lt;jaxb:bindings  multiple=\"true\" node=\"//xsd:compexType[@name='*'] \"&gt;\n</code></pre>\n\n<p>but it does not work.</p>\n\n<p>Here is my maven plugin, if it helps:</p>\n\n<pre><code> &lt;plugin&gt;\n            &lt;groupId&gt;org.apache.cxf&lt;/groupId&gt;\n            &lt;artifactId&gt;cxf-codegen-plugin&lt;/artifactId&gt;\n            &lt;version&gt;${cxf.version}&lt;/version&gt;\n            &lt;executions&gt;\n                &lt;execution&gt;\n                    &lt;id&gt;generate-resources&lt;/id&gt;\n                    &lt;phase&gt;process-resources&lt;/phase&gt;\n                    &lt;configuration&gt;\n                        &lt;sourceRoot&gt;${project.build.directory}/generated/&lt;/sourceRoot&gt;\n                                               &lt;wsdlOptions&gt;\n                            &lt;wsdlOption&gt;\n\n                                &lt;wsdl&gt;${wsdl_location}&lt;/wsdl&gt;\n                                &lt;wsdlLocation&gt;classpath:wsdl.wsdl&lt;/wsdlLocation&gt;\n\n                                &lt;!--&lt;wsdlLocation&gt;classpath:wsdl.wsdl&lt;/wsdlLocation&gt;--&gt;\n                                &lt;extraargs&gt;\n                                    &lt;extraarg&gt;-autoNameResolution&lt;/extraarg&gt;\n                                    &lt;extraarg&gt;-xjc-Xfluent-api&lt;/extraarg&gt;\n                                    &lt;extraarg&gt;-xjc-Xbg&lt;/extraarg&gt;\n                                    &lt;extraarg&gt;-verbose&lt;/extraarg&gt;\n                                    &lt;extraargs&gt;-validate&lt;/extraargs&gt;\n                                    &lt;extraargs&gt;-mark-generated&lt;/extraargs&gt;\n                                          &lt;extraargs&gt;-xjc-Xinheritance&lt;/extraargs&gt;\n                                    &lt;extraarg&gt;-p&lt;/extraarg&gt;\n                                    &lt;extraarg&gt;com.example&lt;/extraarg&gt;\n                                &lt;/extraargs&gt;\n\n                                &lt;bindingFiles&gt;\n                                      &lt;bindingFile&gt;${project.build.directory}\\classes\\jax-ws_binding.xjb&lt;/bindingFile&gt;\n\n                                &lt;/bindingFiles&gt;\n                            &lt;/wsdlOption&gt;\n                        &lt;/wsdlOptions&gt;\n\n                    &lt;/configuration&gt;\n                    &lt;goals&gt;\n                        &lt;goal&gt;wsdl2java&lt;/goal&gt;\n                    &lt;/goals&gt;\n                &lt;/execution&gt;\n            &lt;/executions&gt;\n            &lt;dependencies&gt;\n                &lt;dependency&gt;\n                    &lt;groupId&gt;org.jvnet.jaxb2_commons&lt;/groupId&gt;\n                    &lt;artifactId&gt;jaxb2-fluent-api&lt;/artifactId&gt;\n                    &lt;version&gt;3.0&lt;/version&gt;\n                &lt;/dependency&gt;\n                &lt;dependency&gt;\n                    &lt;groupId&gt;org.jvnet.jaxb2_commons&lt;/groupId&gt;\n                    &lt;artifactId&gt;jaxb2-basics&lt;/artifactId&gt;\n                    &lt;version&gt;0.6.5&lt;/version&gt;\n                &lt;/dependency&gt;\n                &lt;dependency&gt;\n                    &lt;groupId&gt;org.jvnet.jaxb2_commons&lt;/groupId&gt;\n                    &lt;artifactId&gt;jaxb2-basics-annotate&lt;/artifactId&gt;\n                    &lt;version&gt;0.6.5&lt;/version&gt;\n                &lt;/dependency&gt;\n                 &lt;dependency&gt;\n                    &lt;groupId&gt;org.jvnet.jaxb2_commons&lt;/groupId&gt;\n                    &lt;artifactId&gt;jaxb2-basics-runtime&lt;/artifactId&gt;\n                    &lt;version&gt;0.6.5&lt;/version&gt;\n                &lt;/dependency&gt;\n\n                &lt;dependency&gt;\n                    &lt;groupId&gt;org.apache.cxf.xjcplugins&lt;/groupId&gt;\n                    &lt;artifactId&gt;cxf-xjc-boolean&lt;/artifactId&gt;\n                    &lt;version&gt;2.7.0&lt;/version&gt;\n                &lt;/dependency&gt;\n                &lt;dependency&gt;\n                    &lt;groupId&gt;org.apache.cxf&lt;/groupId&gt;\n                    &lt;artifactId&gt;cxf-api&lt;/artifactId&gt;\n                    &lt;version&gt;${cxf.version}&lt;/version&gt;\n                &lt;/dependency&gt;\n            &lt;/dependencies&gt;\n        &lt;/plugin&gt;\n\n    &lt;/plugins&gt;\n</code></pre>\n"
+}

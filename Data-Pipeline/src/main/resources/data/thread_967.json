@@ -1,0 +1,858 @@
+{
+  "tags" : [ "java", "class", "jar", "project-structure", "text-search" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1750515,
+      "reputation" : 6786,
+      "user_id" : 1599699,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/2cf9dae9c1b91452223a39ac08a915b8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Andrew",
+      "link" : "https://stackoverflow.com/users/1599699/andrew"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1486560436,
+    "post_id" : 1342894,
+    "comment_id" : 71397318,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I don&#39;t know about any of these answers, but what works for me if you see the class used in a working project with numerous JAR files is to put your cursor on the class name, right click on it, and click Open Declaration (F3); then it should list the JAR file at the top of the new tab."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 90378,
+        "reputation" : 2852,
+        "user_id" : 248847,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/7ALzV.jpg?s=256",
+        "display_name" : "KrishPrabakar",
+        "link" : "https://stackoverflow.com/users/248847/krishprabakar"
+      },
+      "edited" : false,
+      "score" : 24,
+      "creation_date" : 1441772119,
+      "post_id" : 1342959,
+      "comment_id" : 52803242,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "and with the help of Ctrl + Shift + T"
+    } ],
+    "owner" : {
+      "account_id" : 36858,
+      "reputation" : 114943,
+      "user_id" : 105224,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/1dc604233d8a0c48f0884769acb1fb93?s=256&d=identicon&r=PG",
+      "display_name" : "Andreas Dolk",
+      "link" : "https://stackoverflow.com/users/105224/andreas-dolk"
+    },
+    "is_accepted" : true,
+    "score" : 69,
+    "last_activity_date" : 1251397920,
+    "creation_date" : 1251397920,
+    "answer_id" : 1342959,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Eclipse can do it, just create a (temporary) project and put your libraries on the projects classpath. Then you can easily find the classes.</p>\n\n<p>Another tool, that comes to my mind, is Java Decompiler. It can open a lot of jars at once and helps to find classes as well. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 48192,
+      "reputation" : 11037,
+      "user_id" : 143069,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/JKcVg.jpg?s=256",
+      "display_name" : "ILMTitan",
+      "link" : "https://stackoverflow.com/users/143069/ilmtitan"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1251398075,
+    "creation_date" : 1251398075,
+    "answer_id" : 1342987,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I didn't know of a utility to do it when I came across this problem, so I wrote the following:</p>\n\n<pre><code>public class Main {\n\n    /**\n     * \n     */\n    private static String CLASS_FILE_TO_FIND =\n            \"class.to.find.Here\";\n    private static List&lt;String&gt; foundIn = new LinkedList&lt;String&gt;();\n\n    /**\n     * @param args the first argument is the path of the file to search in. The second may be the\n     *        class file to find.\n     */\n    public static void main(String[] args) {\n        if (!CLASS_FILE_TO_FIND.endsWith(\".class\")) {\n            CLASS_FILE_TO_FIND = CLASS_FILE_TO_FIND.replace('.', '/') + \".class\";\n        }\n        File start = new File(args[0]);\n        if (args.length &gt; 1) {\n            CLASS_FILE_TO_FIND = args[1];\n        }\n        search(start);\n        System.out.println(\"------RESULTS------\");\n        for (String s : foundIn) {\n            System.out.println(s);\n        }\n    }\n\n    private static void search(File start) {\n        try {\n            final FileFilter filter = new FileFilter() {\n\n                public boolean accept(File pathname) {\n                    return pathname.getName().endsWith(\".jar\") || pathname.isDirectory();\n                }\n            };\n            for (File f : start.listFiles(filter)) {\n                if (f.isDirectory()) {\n                    search(f);\n                } else {\n                    searchJar(f);\n                }\n            }\n        } catch (Exception e) {\n            System.err.println(\"Error at: \" + start.getPath() + \" \" + e.getMessage());\n        }\n    }\n\n    private static void searchJar(File f) {\n        try {\n            System.out.println(\"Searching: \" + f.getPath());\n            JarFile jar = new JarFile(f);\n            ZipEntry e = jar.getEntry(CLASS_FILE_TO_FIND);\n            if (e == null) {\n                e = jar.getJarEntry(CLASS_FILE_TO_FIND);\n                if (e != null) {\n                    foundIn.add(f.getPath());\n                }\n            } else {\n                foundIn.add(f.getPath());\n            }\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n    }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 23551,
+      "reputation" : 31263,
+      "user_id" : 59087,
+      "user_type" : "registered",
+      "accept_rate" : 99,
+      "profile_image" : "https://i.sstatic.net/6px8g.jpg?s=256",
+      "display_name" : "Dave Jarvis",
+      "link" : "https://stackoverflow.com/users/59087/dave-jarvis"
+    },
+    "is_accepted" : false,
+    "score" : 516,
+    "last_activity_date" : 1657735379,
+    "last_edit_date" : 1657735379,
+    "creation_date" : 1251398397,
+    "answer_id" : 1343026,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>Unix</h1>\n<p>On Linux, other Unix variants, Git Bash on Windows, or Cygwin, use the <code>jar</code> (or <code>unzip -v</code>), <code>grep</code>, and <code>find</code> commands.</p>\n<p>The following lists all class files that match a given name:</p>\n<pre class=\"lang-bash prettyprint-override\"><code>for i in *.jar; do jar -tvf &quot;$i&quot; | grep -Hsi ClassName &amp;&amp; echo &quot;$i&quot;; done\n</code></pre>\n<p>If you know the entire list of Java archives you want to search, you could place them all in the same directory using (symbolic) links.</p>\n<p>Or use <code>find</code> (case sensitively) to find the JAR file that contains a given class name:</p>\n<pre class=\"lang-bash prettyprint-override\"><code>find path/to/libs -name '*.jar' -exec grep -Hls ClassName {} \\;\n</code></pre>\n<p>For example, to find the name of the archive containing <code>IdentityHashingStrategy</code>:</p>\n<pre class=\"lang-bash prettyprint-override\"><code>$ find . -name '*.jar' -exec grep -Hsli IdentityHashingStrategy {} \\;\n./trove-3.0.3.jar\n</code></pre>\n<p>If the JAR could be <em>anywhere</em> in the system and the <a href=\"http://www.linfo.org/locate.html\" rel=\"noreferrer\"><code>locate</code></a> command is available:</p>\n<pre class=\"lang-bash prettyprint-override\"><code>for i in $(locate &quot;*.jar&quot;);\n  do echo &quot;$i&quot;; jar -tvf &quot;$i&quot; | grep -Hsi ClassName;\ndone\n</code></pre>\n<p>A syntax variation:</p>\n<pre class=\"lang-bash prettyprint-override\"><code>find path/to/libs -name '*.jar' -print | \\\n  while read i; do jar -tvf &quot;$i&quot; | grep -Hsi ClassName &amp;&amp; echo &quot;$i&quot;; done \n</code></pre>\n<h1>Windows</h1>\n<p>Open a <a href=\"https://conemu.github.io/\" rel=\"noreferrer\">command prompt</a>, change to the directory (or ancestor directory) containing the JAR files, then:</p>\n<pre><code>for /R %G in (*.jar) do @jar -tvf &quot;%G&quot; | find &quot;ClassName&quot; &gt; NUL &amp;&amp; echo %G\n</code></pre>\n<p>Here's how it works:</p>\n<ol>\n<li><code>for /R %G in (*.jar) do</code> - loop over all JAR files, recursively traversing directories; store the file name in <code>%G</code>.</li>\n<li><code>@jar -tvf &quot;%G&quot; |</code> - run the Java Archive command to list all file names within the given archive, and write the results to standard output; the <code>@</code> symbol suppresses printing the command's invocation.</li>\n<li><code>find &quot;ClassName&quot; &gt; NUL</code> - search standard input, piped from the output of the jar command, for the given class name; this will set <code>ERRORLEVEL</code> to 1 iff there's a match (otherwise 0).</li>\n<li><code>&amp;&amp; echo %G</code> - iff <code>ERRORLEVEL</code> is non-zero, write the Java archive file name to standard output (the console).</li>\n</ol>\n<h1>Web</h1>\n<p>Use a <a href=\"https://www.google.ca/search?q=JAR+search+engine\" rel=\"noreferrer\">search engine</a> that scans JAR files.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10340,
+      "reputation" : 57581,
+      "user_id" : 19479,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/8c3227175520ab65a0a24d75e3317150?s=256&d=identicon&r=PG",
+      "display_name" : "Steve B.",
+      "link" : "https://stackoverflow.com/users/19479/steve-b"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1251398481,
+    "creation_date" : 1251398481,
+    "answer_id" : 1343039,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You can find a class in a directory full of jars with a bit of shell:</p>\n\n<p>Looking for class \"FooBar\":</p>\n\n<pre><code>LIB_DIR=/some/dir/full/of/jarfiles\nfor jarfile in $(find $LIBDIR -name \"*.jar\"); do\n   echo \"--------$jarfile---------------\"\n   jar -tvf $jarfile | grep FooBar\ndone\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 46225,
+      "reputation" : 10937,
+      "user_id" : 136476,
+      "user_type" : "registered",
+      "accept_rate" : 66,
+      "profile_image" : "https://i.sstatic.net/K9ePM.jpg?s=256",
+      "display_name" : "Wilfred Springer",
+      "link" : "https://stackoverflow.com/users/136476/wilfred-springer"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1251398572,
+    "creation_date" : 1251398572,
+    "answer_id" : 1343049,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Check JBoss <a href=\"http://www.jboss.org/tattletale\" rel=\"nofollow noreferrer\">Tattletale</a>; although I've never used it personally, this seems to be the tool you need.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7108,
+      "reputation" : 2861,
+      "user_id" : 12204,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c57b024944d99a11f132f12d237ce5e6?s=256&d=identicon&r=PG",
+      "display_name" : "Alex",
+      "link" : "https://stackoverflow.com/users/12204/alex"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1252947190,
+    "creation_date" : 1252947190,
+    "answer_id" : 1422721,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>One thing to add to all of the above: if you don't have the jar executable available (it comes with the JDK but not with the JRE), you can use unzip (or WinZip, or whatever) to accomplish the same thing.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 289850,
+        "reputation" : 10239,
+        "user_id" : 591064,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/69f9343827a27ccb762883ab0adf5cff?s=256&d=identicon&r=PG",
+        "display_name" : "ixe013",
+        "link" : "https://stackoverflow.com/users/591064/ixe013"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1380554630,
+      "post_id" : 4623213,
+      "comment_id" : 28235144,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Great ! I had to use it on a system that didn&#39;t have jar (not in the path, that is), so I replaced <code>jar -tvf</code> with <code>unzip -l</code>."
+    } ],
+    "owner" : {
+      "account_id" : 274352,
+      "reputation" : 143,
+      "user_id" : 566532,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3c0b81e554c661db8af09974d5a8f8bb?s=256&d=identicon&r=PG",
+      "display_name" : "Pascal Lambert",
+      "link" : "https://stackoverflow.com/users/566532/pascal-lambert"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1297441894,
+    "last_edit_date" : 1297441894,
+    "creation_date" : 1294383526,
+    "answer_id" : 4623213,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<pre><code>#!/bin/bash\n\npattern=$1\nshift\n\nfor jar in $(find $* -type f -name \"*.jar\")\ndo\n  match=`jar -tvf $jar | grep $pattern`\n  if [ ! -z \"$match\" ]\n  then\n    echo \"Found in: $jar\"\n    echo \"$match\"\n  fi\ndone\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 427332,
+        "reputation" : 659,
+        "user_id" : 809043,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://i.sstatic.net/FjZlJ.jpg?s=256",
+        "display_name" : "Leonard Saers",
+        "link" : "https://stackoverflow.com/users/809043/leonard-saers"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1385666029,
+      "post_id" : 5393004,
+      "comment_id" : 30243172,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It should be grep -lir &quot;classname&quot; *.jar"
+    } ],
+    "owner" : {
+      "account_id" : 119467,
+      "reputation" : 1806,
+      "user_id" : 311174,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/68fe4499c7bfd734383e89ee512b74ec?s=256&d=identicon&r=PG",
+      "display_name" : "user311174",
+      "link" : "https://stackoverflow.com/users/311174/user311174"
+    },
+    "is_accepted" : false,
+    "score" : 35,
+    "last_activity_date" : 1300805004,
+    "creation_date" : 1300805004,
+    "answer_id" : 5393004,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<pre><code>grep -l \"classname\" *.jar\n</code></pre>\n\n<p>gives you the name of the jar</p>\n\n<pre><code>find . -name \"*.jar\" -exec jar -t -f {} \\; | grep  \"classname\"\n</code></pre>\n\n<p>gives you the package of the class</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 350125,
+      "reputation" : 51,
+      "user_id" : 685820,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/718b9780f891c7f40b16a58243485b33?s=256&d=identicon&r=PG",
+      "display_name" : "Liubing",
+      "link" : "https://stackoverflow.com/users/685820/liubing"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1301578570,
+    "creation_date" : 1301578570,
+    "answer_id" : 5500737,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Just use FindClassInJars util, it's a simple swing program, but useful. You can check source code or download jar file at <a href=\"http://code.google.com/p/find-class-in-jars/\" rel=\"nofollow\">http://code.google.com/p/find-class-in-jars/</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8244,
+        "reputation" : 37361,
+        "user_id" : 14749,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/454734ff570997776f63cfdf0f5418f7?s=256&d=identicon&r=PG",
+        "display_name" : "Chris Noe",
+        "link" : "https://stackoverflow.com/users/14749/chris-noe"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1352384951,
+      "post_id" : 6543245,
+      "comment_id" : 18121575,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Finds any type of file, not just classes. Double-click to see file contents. Yay, now I can spot all my spring-schemas."
+    } ],
+    "owner" : {
+      "account_id" : 152350,
+      "reputation" : 5530,
+      "user_id" : 366816,
+      "user_type" : "registered",
+      "accept_rate" : 18,
+      "profile_image" : "https://www.gravatar.com/avatar/68b8156c911b662dd00f9d4ad8b60714?s=256&d=identicon&r=PG",
+      "display_name" : "ipolevoy",
+      "link" : "https://stackoverflow.com/users/366816/ipolevoy"
+    },
+    "is_accepted" : false,
+    "score" : 67,
+    "last_activity_date" : 1426742868,
+    "last_edit_date" : 1426742868,
+    "creation_date" : 1309490392,
+    "answer_id" : 6543245,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>some time ago, I wrote a program just for that: <a href=\"https://github.com/javalite/jar-explorer\" rel=\"noreferrer\">https://github.com/javalite/jar-explorer</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 42347,
+        "reputation" : 16732,
+        "user_id" : 123336,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/2994aea12d46ccf4ff31ca951ba7ca4e?s=256&d=identicon&r=PG",
+        "display_name" : "Trevor Robinson",
+        "link" : "https://stackoverflow.com/users/123336/trevor-robinson"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1341515140,
+      "post_id" : 9986110,
+      "comment_id" : 14949021,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This finds references to the class as well, not just the class itself."
+    } ],
+    "owner" : {
+      "account_id" : 33553,
+      "reputation" : 31174,
+      "user_id" : 93995,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/35752f1794d9a5f8ab8fe8edf272f0cc?s=256&d=identicon&r=PG",
+      "display_name" : "George Armhold",
+      "link" : "https://stackoverflow.com/users/93995/george-armhold"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1333417614,
+    "creation_date" : 1333417614,
+    "answer_id" : 9986110,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To locate jars that match a given string:</p>\n\n<p><code>find . -name \\*.jar -exec grep -l YOUR_CLASSNAME {} \\;</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1510076,
+      "reputation" : 81,
+      "user_id" : 1412428,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/51ee0f29d5bf3acf0740e784080d20d9?s=256&d=identicon&r=PG",
+      "display_name" : "Dipankar Datta",
+      "link" : "https://stackoverflow.com/users/1412428/dipankar-datta"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1337771374,
+    "creation_date" : 1337771374,
+    "answer_id" : 10718725,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>shameless self promotion, but you can try a utility I wrote : <a href=\"http://sourceforge.net/projects/zfind\" rel=\"nofollow\">http://sourceforge.net/projects/zfind</a></p>\n\n<p>It supports most common archive/compressed files (jar, zip, tar, tar.gz etc) and unlike many other jar/zip finders, supports nested zip files (zip within zip, jar within jar etc) till unlimited depth.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1089157,
+      "reputation" : 135,
+      "user_id" : 1084192,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/b8IPf.jpg?s=256",
+      "display_name" : "salzo",
+      "link" : "https://stackoverflow.com/users/1084192/salzo"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1344394673,
+    "creation_date" : 1344394673,
+    "answer_id" : 11857046,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There are also two different utilities called both \"JarScan\" that do exactly what you are asking for:\n<a href=\"http://www.inetfeedback.com/jarscan/\">JarScan (inetfeedback.com)</a> and <a href=\"http://java.net/projects/jarscan\">JarScan (java.net)</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 467079,
+      "reputation" : 847,
+      "user_id" : 872206,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/B3SOP.jpg?s=256",
+      "display_name" : "maccaroo",
+      "link" : "https://stackoverflow.com/users/872206/maccaroo"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1360888880,
+    "creation_date" : 1360888880,
+    "answer_id" : 14886651,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A bit late to the party, but nevertheless...</p>\n\n<p>I've been using <a href=\"http://jarbrowser.sourceforge.net/\" rel=\"nofollow\">JarBrowser</a> to find in which jar a particular class is present.  It's got an easy to use GUI which allows you to browse through the contents of all the jars in the selected path.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 501376,
+      "reputation" : 2172,
+      "user_id" : 1207523,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/sIvDd.jpg?s=256",
+      "display_name" : "Lindlof",
+      "link" : "https://stackoverflow.com/users/1207523/lindlof"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1362400710,
+    "creation_date" : 1362400710,
+    "answer_id" : 15201803,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Not sure why scripts here have never really worked for me. This works:</p>\n\n<pre><code>#!/bin/bash\nfor i in *.jar; do jar -tf \"$i\" | grep $1 | xargs -I{} echo -e \"$i : {}\" ; done\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2740026,
+      "reputation" : 762,
+      "user_id" : 2361780,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://www.gravatar.com/avatar/bceb112a9db062ab50fdd951f5d027e6?s=256&d=identicon&r=PG",
+      "display_name" : "Kartik Jajal",
+      "link" : "https://stackoverflow.com/users/2361780/kartik-jajal"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1368007553,
+    "last_edit_date" : 1368007553,
+    "creation_date" : 1368006674,
+    "answer_id" : 16437555,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Following script will help you out</p>\n\n<pre class=\"lang-sh prettyprint-override\"><code>for file in *.jar\ndo\n  # do something on \"$file\"\n  echo \"$file\"\n  /usr/local/jdk/bin/jar -tvf \"$file\" | grep '$CLASSNAME'\ndone\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 222159,
+      "reputation" : 396,
+      "user_id" : 480579,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/67b8d558feb2f4a0e6574343a3378b8e?s=256&d=identicon&r=PG",
+      "display_name" : "Jeff",
+      "link" : "https://stackoverflow.com/users/480579/jeff"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1374256859,
+    "last_edit_date" : 1374256859,
+    "creation_date" : 1370622171,
+    "answer_id" : 16988771,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To search all jar files in a given directory for a particular class, you can do this:</p>\n\n<pre><code>ls *.jar | xargs grep -F MyClass\n</code></pre>\n\n<p>or, even simpler,</p>\n\n<pre><code>grep -F MyClass *.jar\n</code></pre>\n\n<p>Output looks like this:</p>\n\n<pre><code>Binary file foo.jar matches\n</code></pre>\n\n<p>It's very fast because the -F option means search for Fixed string, so it doesn't load the the regex engine for each grep invocation.  If you need to, you can always omit the -F option and use regexes.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 183774,
+        "reputation" : 6572,
+        "user_id" : 419371,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2b730ab6923e7f7c669f9798445bde9f?s=256&d=identicon&r=PG",
+        "display_name" : "kisp",
+        "link" : "https://stackoverflow.com/users/419371/kisp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1375954603,
+      "post_id" : 17345301,
+      "comment_id" : 26535341,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "this script is not mingw compatible"
+    } ],
+    "owner" : {
+      "account_id" : 2659374,
+      "reputation" : 2097,
+      "user_id" : 2299414,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/Mvw2C.jpg?s=256",
+      "display_name" : "Filippo Lauria",
+      "link" : "https://stackoverflow.com/users/2299414/filippo-lauria"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1374400452,
+    "last_edit_date" : 1374400452,
+    "creation_date" : 1372341693,
+    "answer_id" : 17345301,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A <code>bash script</code> solution using <code>unzip (zipinfo)</code>. Tested on <code>Ubuntu 12</code>.</p>\n\n<pre><code>#!/bin/bash\n\n# ./jarwalker.sh \"/a/Starting/Path\" \"aClassName\"\n\nIFS=$'\\n'\njars=( $( find -P \"$1\" -type f -name \"*.jar\" ) )\n\nfor jar in ${jars[*]}\n    do\n        classes=( $( zipinfo -1 ${jar} | awk -F '/' '{print $NF}' | grep .class | awk -F '.' '{print $1}' ) )\n        if [ ${#classes[*]} -ge 0 ]; then\n            for class in ${classes[*]}\n                do\n                    if [ ${class} == \"$2\" ]; then\n                        echo \"Found in ${jar}\"\n                    fi\n                done\n        fi\n    done\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1464960,
+      "reputation" : 1964,
+      "user_id" : 1378106,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4f683f467b7a2bec42d11b05df6ff8a0?s=256&d=identicon&r=PG",
+      "display_name" : "Kurtcebe Eroglu",
+      "link" : "https://stackoverflow.com/users/1378106/kurtcebe-eroglu"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1374232942,
+    "creation_date" : 1374232942,
+    "answer_id" : 17744879,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>user1207523's script works fine for me. Here is a variant that searches for jar files recusively using find instead of simple expansion;</p>\n\n<pre><code>#!/bin/bash\nfor i in `find . -name '*.jar'`; do jar -tf \"$i\" | grep $1 | xargs -I{} echo -e \"$i : {}\" ; done\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8986,
+      "reputation" : 2821,
+      "user_id" : 16424,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://i.sstatic.net/DxHXv.jpg?s=256",
+      "display_name" : "Ben",
+      "link" : "https://stackoverflow.com/users/16424/ben"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1523203558,
+    "last_edit_date" : 1523203558,
+    "creation_date" : 1374235026,
+    "answer_id" : 17745531,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To add yet another tool... this is a very simple and useful tool for windows. A simple exe file you click on, give it a directory to search in, a class name and it will find the jar file that contains that class. Yes, it's recursive.</p>\n\n<p><a href=\"http://sourceforge.net/projects/jarfinder/\" rel=\"nofollow noreferrer\">http://sourceforge.net/projects/jarfinder/</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 183774,
+      "reputation" : 6572,
+      "user_id" : 419371,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2b730ab6923e7f7c669f9798445bde9f?s=256&d=identicon&r=PG",
+      "display_name" : "kisp",
+      "link" : "https://stackoverflow.com/users/419371/kisp"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1375955319,
+    "creation_date" : 1375955319,
+    "answer_id" : 18122859,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This one works well in MinGW ( windows bash environment ) ~ gitbash</p>\n\n<p>Put this function into your .bashrc file in your HOME directory:</p>\n\n<pre><code># this function helps you to find a jar file for the class\nfunction find_jar_of_class() {\n  OLD_IFS=$IFS\n  IFS=$'\\n'\n  jars=( $( find -type f -name \"*.jar\" ) )\n  for i in ${jars[*]} ; do \n    if [ ! -z \"$(jar -tvf \"$i\" | grep -Hsi $1)\" ] ; then\n      echo \"$i\"\n    fi\n   done \n  IFS=$OLD_IFS\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 556752,
+      "reputation" : 1797,
+      "user_id" : 918944,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/10a31b48015d7b70be9b6a10dc360f2d?s=256&d=identicon&r=PG",
+      "display_name" : "rrevo",
+      "link" : "https://stackoverflow.com/users/918944/rrevo"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1376885569,
+    "last_edit_date" : 1376885569,
+    "creation_date" : 1376885190,
+    "answer_id" : 18306244,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><a href=\"https://github.com/rrevo/grepj\" rel=\"nofollow\">Grepj</a> is a command line utility to search for classes within jar files. I am the author of the utility.</p>\n\n<p>You can run the utility like <code>grepj package.Class my1.jar my2.war my3.ear</code></p>\n\n<p>Multiple jar, ear, war files can be provided. For advanced usage use find to provide a list of jars to be searched.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1214835,
+      "reputation" : 439,
+      "user_id" : 1182645,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/88712b64079da88418709b84311d0f13?s=256&d=identicon&r=PG",
+      "display_name" : "Joydip Datta",
+      "link" : "https://stackoverflow.com/users/1182645/joydip-datta"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1422689674,
+    "last_edit_date" : 1422689674,
+    "creation_date" : 1379413915,
+    "answer_id" : 18847454,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Script to find jar file: find_jar.sh</p>\n\n<pre><code>IFS=$(echo -en \"\\n\\b\") # Set the field separator newline\n\nfor f in `find ${1} -iname *.jar`; do\n  jar -tf ${f}| grep --color $2\n  if [ $? == 0 ]; then\n    echo -n \"Match found: \"\n    echo -e \"${f}\\n\"\n  fi\ndone\nunset IFS\n</code></pre>\n\n<p>Usage: ./find_jar.sh &lt; top-level directory containing jar files > &lt; Class name to find></p>\n\n<p>This is similar to most answers given here. But it only outputs the file name, if grep finds something. If you want to suppress grep output you may redirect that to /dev/null but I prefer seeing the output of grep as well so that I can use partial class names and figure out the correct one from a list of output shown.</p>\n\n<p>The class name can be both simple class name Like \"String\" or fully qualified name like \"java.lang.String\"</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4576562,
+      "reputation" : 1,
+      "user_id" : 3714855,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/7729c69ff53462e1ffc267ebbae310d8?s=256&d=identicon&r=PG",
+      "display_name" : "kutty",
+      "link" : "https://stackoverflow.com/users/3714855/kutty"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1402053974,
+    "creation_date" : 1402053974,
+    "answer_id" : 24080716,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Check this Plugin for eclipse which can do the job you are looking for.</p>\n\n<p><a href=\"https://marketplace.eclipse.org/content/jarchiveexplorer\" rel=\"nofollow\">https://marketplace.eclipse.org/content/jarchiveexplorer</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 533594,
+      "reputation" : 3998,
+      "user_id" : 903998,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/pZCd4.jpg?s=256",
+      "display_name" : "Victor",
+      "link" : "https://stackoverflow.com/users/903998/victor"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1429287523,
+    "creation_date" : 1429287523,
+    "answer_id" : 29704527,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Under a Linux environment you could do the following :</p>\n\n<pre><code>$ find &lt;base_dir&gt; -name *.jar -print0 | xargs -0 -l jar tf | grep &lt;name&gt;\n</code></pre>\n\n<p>Where <strong><em>name</em></strong> is the name of the class file that you are looking inside the jars distributed across the hierarchy of directories rooted at the <strong><em>base_dir</em></strong>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8138341,
+      "reputation" : 1,
+      "user_id" : 6129325,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-3CDOjN-SMHc/AAAAAAAAAAI/AAAAAAAACro/-K3REaAtsSI/s256-rj/photo.jpg",
+      "display_name" : "mulugu mahesh",
+      "link" : "https://stackoverflow.com/users/6129325/mulugu-mahesh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1460380976,
+    "last_edit_date" : 1460380976,
+    "creation_date" : 1460379206,
+    "answer_id" : 36549268,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use <code>locate</code> and <code>grep</code>:</p>\n\n<pre><code>locate jar | xargs grep 'my.class'\n</code></pre>\n\n<p>Make sure you run <code>updatedb</code> before using <code>locate</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4262789,
+      "reputation" : 5080,
+      "user_id" : 3486720,
+      "user_type" : "registered",
+      "accept_rate" : 36,
+      "profile_image" : "https://i.sstatic.net/ziMCzD5n.jpg?s=256",
+      "display_name" : "Apurva Singh",
+      "link" : "https://stackoverflow.com/users/3486720/apurva-singh"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1461863590,
+    "creation_date" : 1461863590,
+    "answer_id" : 36921295,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Use this.. you can find any file in classpath.. guaranteed.. </p>\n\n<pre><code>import java.net.URL;\nimport java.net.URLClassLoader;\nimport java.util.zip.ZipEntry;\nimport java.util.zip.ZipInputStream;\n\npublic class FileFinder {\n\n    public static void main(String[] args) throws Exception {\n\n        String file = &lt;your file name&gt;;\n\n        ClassLoader cl = ClassLoader.getSystemClassLoader();\n\n        URL[] urls = ((URLClassLoader)cl).getURLs();\n\n        for(URL url: urls){\n            listFiles(file, url);\n        }\n    }\n\n    private static void listFiles(String file, URL url) throws Exception{\n        ZipInputStream zip = new ZipInputStream(url.openStream());\n          while(true) {\n            ZipEntry e = zip.getNextEntry();\n            if (e == null)\n              break;\n            String name = e.getName();\n            if (name.endsWith(file)) {\n                System.out.println(url.toString() + \" -&gt; \" + name);\n            }\n          }\n    }\n\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1274955,
+        "reputation" : 425,
+        "user_id" : 1230410,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/186dada18b8cbe98d8d8d1a9ff299169?s=256&d=identicon&r=PG",
+        "display_name" : "J&#233;r&#244;me B",
+        "link" : "https://stackoverflow.com/users/1230410/j%c3%a9r%c3%b4me-b"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1474967916,
+      "post_id" : 38184711,
+      "comment_id" : 66739026,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks, I improve it this way : ls -1 *.jar  | xargs -i -t jar -tvf &#39;{}&#39;| grep Abstract"
+    } ],
+    "owner" : {
+      "account_id" : 465099,
+      "reputation" : 504,
+      "user_id" : 868981,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/4fc87086bcf605a879803d838929281e?s=256&d=identicon&r=PG",
+      "display_name" : "Cleonjoys",
+      "link" : "https://stackoverflow.com/users/868981/cleonjoys"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1467635071,
+    "creation_date" : 1467635071,
+    "answer_id" : 38184711,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I found this new way</p>\n\n<pre><code>bash $ ls -1  | xargs -i -t jar -tvf '{}'| grep Abstract\njar -tvf activation-1.1.jar\njar -tvf antisamy-1.4.3.jar\n  2263 Thu Jan 13 21:38:10 IST 2011 org/owasp/validator/html/scan/AbstractAntiSamyScanner.class\n...\n</code></pre>\n\n<p>So this lists the jar and the class if found, if you want you can give ls -1 *.jar or input to xargs with find command HTH Someone.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 328571,
+      "reputation" : 3489,
+      "user_id" : 651601,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://www.gravatar.com/avatar/de7f097c46a2eb0ef2027b2fedd0edf2?s=256&d=identicon&r=PG",
+      "display_name" : "keiki",
+      "link" : "https://stackoverflow.com/users/651601/keiki"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1471872450,
+    "creation_date" : 1471872450,
+    "answer_id" : 39080877,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In eclipse you can use the old but still usable plugin <a href=\"https://sourceforge.net/projects/jarsearch/\" rel=\"nofollow\">jarsearch</a> </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7606837,
+      "reputation" : 41,
+      "user_id" : 5769221,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/93814a27e8226f7fcd1d9bcc75f1a40d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ramesh Rooplahl",
+      "link" : "https://stackoverflow.com/users/5769221/ramesh-rooplahl"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1477060948,
+    "creation_date" : 1477060948,
+    "answer_id" : 40179556,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I've always used this on Windows and its worked exceptionally well.</p>\n\n<pre><code>findstr /s /m /c:\"package/classname\" *.jar, where\n</code></pre>\n\n<p>findstr.exe comes standard with Windows and the params:</p>\n\n<ul>\n<li>/s = recursively</li>\n<li>/m = print only the filename if there is a match</li>\n<li>/c = literal string (in this case your package name + class names\nseparated by '/')</li>\n</ul>\n\n<p>Hope this helps someone.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2191185,
+      "reputation" : 6336,
+      "user_id" : 1938185,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/a903bd63a59121f73b74e75abd21fe3c?s=256&d=identicon&r=PG",
+      "display_name" : "AlainD",
+      "link" : "https://stackoverflow.com/users/1938185/alaind"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1480537020,
+    "creation_date" : 1480537020,
+    "answer_id" : 40897384,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you have an instance of the class, or can get one, you have a pure java solution:</p>\n\n<pre><code>try{\n    Class clazz = Class.forName(\"        try{\n        Class clazz = Class.forName(\"class-name\");\n        String name = \"/\"+clazz.getName().replace('.', '/')+\".class\";\n        URL url = clazz.getResource(name);\n        String jar = url.toString().substring(10).replaceAll(\"!.*\", \"\");\n        System.out.println( jar );\n    }catch(Exception err){\n        err.printStackTrace();\n    }\n</code></pre>\n\n<p>Of course, the first two line have to adapted according to where you have an instance of the class or the class name.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 90378,
+      "reputation" : 2852,
+      "user_id" : 248847,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://i.sstatic.net/7ALzV.jpg?s=256",
+      "display_name" : "KrishPrabakar",
+      "link" : "https://stackoverflow.com/users/248847/krishprabakar"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1556622484,
+    "creation_date" : 1556622484,
+    "answer_id" : 55919627,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To find a class in a folder (and subfolders) bunch of JARs:\n<a href=\"https://jarscan.com/\" rel=\"nofollow noreferrer\">https://jarscan.com/</a></p>\n\n<pre><code>Usage: java -jar jarscan.jar [-help | /?]\n                    [-dir directory name]\n                    [-zip]\n                    [-showProgress]\n                    &lt;-files | -class | -package&gt;\n                    &lt;search string 1&gt; [search string 2]\n                    [search string n]\n\nHelp:\n  -help or /?           Displays this message.\n\n  -dir                  The directory to start searching\n                        from default is \".\"\n\n  -zip                  Also search Zip files\n\n  -showProgress         Show a running count of files read in\n\n  -files or -class      Search for a file or Java class\n                        contained in some library.\n                        i.e. HttpServlet\n\n  -package              Search for a Java package\n                        contained in some library.\n                        i.e. javax.servlet.http\n\n  search string         The file or package to\n                        search for.\n                        i.e. see examples above\n</code></pre>\n\n<p><strong>Example:</strong></p>\n\n<pre><code>java -jar jarscan.jar -dir C:\\Folder\\To\\Search -showProgress -class GenericServlet\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13210522,
+      "reputation" : 454,
+      "user_id" : 9540910,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-IB8vj9ley1s/AAAAAAAAAAI/AAAAAAAAATo/f1hO8l8aP10/s256-rj/photo.jpg",
+      "display_name" : "Collin",
+      "link" : "https://stackoverflow.com/users/9540910/collin"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1559154853,
+    "last_edit_date" : 1559154853,
+    "creation_date" : 1559154081,
+    "answer_id" : 56366476,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Filename: searchForFiles.py</p>\n\n<pre><code>import os, zipfile, glob, sys\n\ndef main():\n    searchFile = sys.argv[1] #class file to search for, sent from batch file below (optional, see second block of code below)\n    listOfFilesInJar = []\n    for file in glob.glob(\"*.jar\"):\n        archive = zipfile.ZipFile(file, 'r')\n        for x in archive.namelist():\n            if str(searchFile) in str(x):\n                listOfFilesInJar.append(file)\n\n    for something in listOfFilesInJar:\n        print(\"location of \"+str(searchFile)+\": \",something)\n\nif __name__ == \"__main__\":\n    sys.exit(main())\n</code></pre>\n\n<p>You can easily run this by making a .bat file with the following text (replace \"AddWorkflows.class\" with the file you are searching for):</p>\n\n<p>(File: CallSearchForFiles.bat)</p>\n\n<pre><code>@echo off\npython -B -c \"import searchForFiles;x=searchForFiles.main();\" AddWorkflows.class\npause\n</code></pre>\n\n<p>You can double-click CallSearchForFiles.bat to run it, or call it from the command line \"CallSearchForFiles.bat SearchFile.class\"</p>\n\n<p><a href=\"https://i.sstatic.net/p0KUd.png\" rel=\"nofollow noreferrer\">Click to See Example Output</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 393848,
+      "reputation" : 182,
+      "user_id" : 755920,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ea70fd237cd73bc9c2c94258614411dc?s=256&d=identicon&r=PG",
+      "display_name" : "Gungwald",
+      "link" : "https://stackoverflow.com/users/755920/gungwald"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1570729812,
+    "last_edit_date" : 1570729812,
+    "creation_date" : 1570729481,
+    "answer_id" : 58328450,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>ClassFinder is a program that's designed to solve this problem. It allows you to search recursively through directories and jar files to find all instances of a class matching a pattern. It is written in Java, not python. It has a nice GUI which makes it easy to use. And it runs fast. This release is precompiled in a runnable jar so you don't have to build it from source.</p>\n\n<p>Download it here: <a href=\"https://github.com/gungwald/classfinder/releases\" rel=\"noreferrer\">ClassFinder 1.0</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 326318,
+      "reputation" : 7741,
+      "user_id" : 648026,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/0fc33d0c0d57d681cb9f623cf98d5328?s=256&d=identicon&r=PG",
+      "display_name" : "JavaSheriff",
+      "link" : "https://stackoverflow.com/users/648026/javasheriff"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1602782929,
+    "creation_date" : 1602782929,
+    "answer_id" : 64376842,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I know this is an old question but...<br />\nI had the same issue, so If someone is looking for a very simple solution for windows - there is a software named Locate32\nJust put jar as file extension<br />\nAnd containing the class name<br />\nIt finds the file within seconds.</p>\n<p><a href=\"https://i.sstatic.net/wkbG9.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/wkbG9.png\" alt=\"Locate32 in action\" /></a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 19597860,
+      "reputation" : 82,
+      "user_id" : 14343415,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GjneCWG-XbPs3qrLw9uPGHGUtF2CZl9bqznvEAHAw=k-s256",
+      "display_name" : "Milan Paliwal",
+      "link" : "https://stackoverflow.com/users/14343415/milan-paliwal"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1739822122,
+    "creation_date" : 1739822122,
+    "answer_id" : 79446468,
+    "question_id" : 1342894,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you know your jar file name also class name than you can find the class file along with its path using below command</p>\n<p>jar tf jarname.jar | findstr classname.class</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 19488,
+    "reputation" : 22381,
+    "user_id" : 45730,
+    "user_type" : "registered",
+    "accept_rate" : 53,
+    "profile_image" : "https://www.gravatar.com/avatar/96869aed4de4cb65c3690b66c783dad0?s=256&d=identicon&r=PG",
+    "display_name" : "Kapsh",
+    "link" : "https://stackoverflow.com/users/45730/kapsh"
+  },
+  "is_answered" : true,
+  "view_count" : 293715,
+  "protected_date" : 1584468641,
+  "accepted_answer_id" : 1342959,
+  "answer_count" : 36,
+  "score" : 312,
+  "last_activity_date" : 1739822122,
+  "creation_date" : 1251397426,
+  "last_edit_date" : 1502444955,
+  "question_id" : 1342894,
+  "link" : "https://stackoverflow.com/questions/1342894/find-a-class-somewhere-inside-dozens-of-jar-files",
+  "title" : "Find a class somewhere inside dozens of JAR files?",
+  "body" : "<p>How would you find a particular class name inside lots of jar files?</p>\n\n<p>(Looking for the actual class name, not the classes that reference it.)</p>\n"
+}

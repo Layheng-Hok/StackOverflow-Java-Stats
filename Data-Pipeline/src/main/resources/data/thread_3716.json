@@ -1,0 +1,63 @@
+{
+  "tags" : [ "java", "mysql", "jdbc" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1646105072,
+    "post_id" : 64694663,
+    "comment_id" : 126036435,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "There is no such thing as JDBC 8.0.21. What you have is version 8.0.21 of the MySQL Connector/J. NB The line <code>Class.forName( &quot;com.mysql.cj.jdbc.Driver&quot; )</code> hasn&#39;t been needed since 2006."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1761817834,
+    "last_edit_date" : 1761817834,
+    "creation_date" : 1604570573,
+    "answer_id" : 64694919,
+    "question_id" : 64694663,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <code>query_cache_size</code> parameter was present in MySQL 5.x, but according to <a href=\"https://dev.mysql.com/doc/refman/8.0/en/added-deprecated-removed.html#optvars-removed\" rel=\"nofollow noreferrer\">the manual</a> it was removed in MySQL 8.0.3.</p>\n<blockquote>\n<p>I have JDBC 8.0.21 installed and the MySQL database is in 8.0.13-4</p>\n</blockquote>\n<p>(I presume you mean MySQL Connector/J 8.0.21).</p>\n<blockquote>\n<p>I honestly don't know where the problem is coming from.</p>\n</blockquote>\n<p>The error will be coming from the database, but it is simply saying that the parameter is no longer recognized.</p>\n<p>It won't be caused by the MySQL Connector/J driver.</p>\n<p>It is most likely caused your application (e.g. executing a <code>SET GLOBAL query_cache_size=...</code> or similar) or a stray / outdated option in the JDBC url that your application is using when connecting to the database.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 19903011,
+    "reputation" : 35,
+    "user_id" : 14582639,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/ed2d4403ea07afa8983e63270630440b?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "paulchartres",
+    "link" : "https://stackoverflow.com/users/14582639/paulchartres"
+  },
+  "is_answered" : true,
+  "view_count" : 1417,
+  "accepted_answer_id" : 64694919,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761817834,
+  "creation_date" : 1604569480,
+  "question_id" : 64694663,
+  "link" : "https://stackoverflow.com/questions/64694663/java-sql-sqlexception-unknown-system-variable-query-cache-size-despite-having",
+  "title" : "java.sql.SQLException: Unknown system variable &#39;query_cache_size&#39; despite having latest JDBC",
+  "body" : "<p>I've been searching for a solution to this problem for two days now, and I finally decided to ask here as I've completely lost hope.\nI've been trying to connect to a MySQL database with my Jakarta server. I've followed a few tutorials to get MySQL working with the JDBC driver. Here's the code:</p>\n<pre><code>public static void fetchFromDB(String query) {\n    try {\n        Class.forName( &quot;com.mysql.cj.jdbc.Driver&quot; );\n    } catch ( ClassNotFoundException e ) {\n        e.printStackTrace();\n    }\n    try {\n        con = DriverManager.getConnection( url, user, password );\n        Statement statement = con.createStatement();\n        ResultSet result = statement.executeQuery( query );\n        System.out.println(result);\n    } catch ( SQLException e ) {\n        e.printStackTrace();\n    } finally {\n        if ( con != null )\n            try {\n                con.close();\n            } catch ( SQLException ignore ) {\n                ignore.printStackTrace();\n            }\n    }\n}\n</code></pre>\n<p>Now, I have JDBC 8.0.21 installed and the MySQL database is in 8.0.13-4. Despite these versions, I keep getting this error:\n<strong>java.sql.SQLException: Unknown system variable 'query_cache_size'</strong></p>\n<p>I honestly don't know where the problem is coming from. Apparently this happens when the JDBC and MySQL base versions don't go together, but... I have the latest version!</p>\n<p>Thanks in advance for your help.</p>\n"
+}

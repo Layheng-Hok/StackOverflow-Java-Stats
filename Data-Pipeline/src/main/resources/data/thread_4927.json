@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "android-studio", "asp.net-core", "retrofit" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 8838873,
+      "reputation" : 11,
+      "user_id" : 8855999,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-hbBa-XgN8Yk/AAAAAAAAAAI/AAAAAAAABqA/aOTWmV3ljn0/s256-rj/photo.jpg",
+      "display_name" : "Ashwath NM",
+      "link" : "https://stackoverflow.com/users/8855999/ashwath-nm"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1668225839,
+    "last_edit_date" : 1668225839,
+    "creation_date" : 1667970114,
+    "answer_id" : 74370108,
+    "question_id" : 74365633,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I don't think you need to convert object to json before posting. Since you already have Kids model. and added GsonConverterFactory it will automatically take care of serialization and deserialization of objects. You can use this model in @Body.</p>\n<pre><code>public interface KidInterface {\n  @Headers({&quot;Content-Type:application/json; charset=utf-8&quot;})\n  @POST(&quot;kids&quot;)\n  Call&lt;Kid&gt; createPost(@Body Kid kid); \n}\n</code></pre>\n<p>to post</p>\n<pre><code>Kid kid=new Kid();\nkid.id=UUID.randomUUID().toString();\nkid.name=nombre;\nkid.edad=edad;\n\nCall&lt;Kid&gt; call=inter.createPost(kid);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9606741,
+      "reputation" : 41242,
+      "user_id" : 7132550,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://graph.facebook.com/1063981417044495/picture?type=large",
+      "display_name" : "Michał Turczyn",
+      "link" : "https://stackoverflow.com/users/7132550/micha%c5%82-turczyn"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759130155,
+    "creation_date" : 1759130155,
+    "answer_id" : 79777837,
+    "question_id" : 74365633,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The issue comes down to how Retrofit serializes your request body and how ASP.NET tries to deserialize it. Let's go through each case one by one.</p>\n<p>For reference, I'll use this such <code>User</code> class:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class User {\n    private  String id;\n    private String name;\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    public String getId() {\n        return id;\n    }\n\n    public void setId(String id) {\n        this.id = id;\n    }\n}\n</code></pre>\n<p>Let's define example service:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public interface MyApiService {\n    @POST(&quot;accept-any&quot;)\n    Call&lt;Void&gt; postUserAsString(@Body String user);\n\n    @POST(&quot;accept-user&quot;)\n    Call&lt;Void&gt; postUser(@Body User user);\n\n    @POST(&quot;accept-user&quot;)\n    Call&lt;Void&gt; postInvalidUser(@Body String user);\n}\n</code></pre>\n<p>On the backend side, I defined simple ASP.NET Core Minimal API:</p>\n<pre class=\"lang-cs prettyprint-override\"><code>app.MapPost(&quot;/accept-any&quot;, ([FromBody] string body) =&gt;\n{\n    return body;\n});\n\napp.MapPost(&quot;/accept-user&quot;, ([FromBody] User user) =&gt; \n{\n    return user;\n});\n\n// The user class is defined as\npublic class User\n{\n    public string Id { get; set; }\n    public string Name { get; set; }\n}\n</code></pre>\n<p>Now, let's go through each case to clarify your problems:</p>\n<ul>\n<li><p><code>@POST(&quot;accept-any&quot;) Call&lt;Void&gt; postUserAsString(@Body String user);</code> - it will try to serialize the string as JSON, but it won't be the same as object serialized into a raw body of the request, on the other side, however, endpoint expects a raw string, so it will be &quot;unpacked&quot; correctly on the receiver side and seen correctly as raw string.</p>\n</li>\n<li><p><code>@POST(&quot;accept-user&quot;) Call&lt;Void&gt; postUser(@Body User user);</code> - Retrofit will automatically serialize your User object into proper JSON, ASP.NET sees the matching structure and successfully deserializes it into a <code>User</code> instance. Everything works as expected.</p>\n</li>\n<li><p><code>@POST(&quot;accept-user&quot;) Call&lt;Void&gt; postInvalidUser(@Body String user);</code> - Here, you’re telling Retrofit to send a String body to an endpoint that expects a <code>User</code> object. So ASP.NET Web API won't recognize the body, as it won't be JSON, but raw string instead. When I inspect ASP.NET Core Web API upon this request from Java, it throws 500 Internal Server Error, meaning that it throws exception and is unable to process the request.</p>\n</li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 25135401,
+    "reputation" : 1,
+    "user_id" : 18982230,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GiIhDoz5Jh9d46h-DHPi4w8-32CAfnLcQ98571tYA=k-s256",
+    "display_name" : "Luis Cruz Jim&#233;nez",
+    "link" : "https://stackoverflow.com/users/18982230/luis-cruz-jim%c3%a9nez"
+  },
+  "is_answered" : false,
+  "view_count" : 94,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1759130155,
+  "creation_date" : 1667932577,
+  "last_edit_date" : 1667932951,
+  "question_id" : 74365633,
+  "link" : "https://stackoverflow.com/questions/74365633/error-400-by-using-retrofit-android-studio-using-api-net-core",
+  "title" : "Error 400 by using Retrofit Android Studio using API Net Core",
+  "body" : "<p>I'm trying to do a POST request using Retrofit in Android Studio Java but the response says &quot;Error 400&quot;, I create the API too so, I don't know what's wrong, the API was created in NET core this is my application code:</p>\n<pre><code>  private void senddata(String nombre,String edad){\n    OkHttpClient.Builder clientBuilder=new OkHttpClient.Builder();\n    HttpLoggingInterceptor loggingInterceptor=new HttpLoggingInterceptor();\n    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);\n    clientBuilder.addInterceptor(loggingInterceptor);\n\n    Retrofit retrofit=new Retrofit.Builder()\n            .baseUrl(&quot;http://10.24.1.29/sicegipruebas4/api/&quot;)\n            .client(clientBuilder.build())\n            .addConverterFactory(GsonConverterFactory.create())\n            .addConverterFactory(ScalarsConverterFactory.create())\n            .build();\n\n    KidInterface inter=retrofit.create(KidInterface.class);\n    try{\n        JSONObject obj=new JSONObject();\n        obj.put(&quot;id&quot;,UUID.randomUUID().toString());\n        obj.put(&quot;name&quot;, nombre);\n        obj.put(&quot;edad&quot;,edad);\n        Call&lt;Kid&gt; call=inter.createPost(obj.toString());\n        call.enqueue(this);\n    }catch (JSONException e){\n        e.printStackTrace();\n    }\n}\n</code></pre>\n<p>My interface:</p>\n<pre><code>public interface KidInterface {\n  @Headers({&quot;Content-Type:application/json; charset=utf-8&quot;})\n  @POST(&quot;kids&quot;)\n  Call&lt;Kid&gt; createPost(@Body String kid); \n }\n</code></pre>\n<p>And my model:</p>\n<pre><code>public class Kid {\n\n@SerializedName(&quot;id&quot;)\nprivate String id;\n@SerializedName(&quot;name&quot;)\nprivate String name;\n@SerializedName(&quot;edad&quot;)\nprivate String edad;\n\npublic Kid(String id,String name,String edad){\n  this.id=id;\n  this.name=name;\n  this.edad=edad;\n}\n</code></pre>\n<p>And the API code:</p>\n<pre><code> public class Kids\n{\n    public String id { get; set; }\n    public String name { get; set; }\n    public String edad { get; set; }\n\n}\n</code></pre>\n<p>Context API:</p>\n<pre><code>public class AppNNADBContext:DbContext\n{\n    public AppNNADBContext(DbContextOptions options) : base(options) { }\n\n    public DbSet&lt;Kids&gt; Kids { get; set; }\n\n    protected override void OnModelCreating(ModelBuilder modelBuilder)\n    {\n        modelBuilder.Entity&lt;Kids&gt;(entity =&gt;\n        {\n            entity.HasKey(e =&gt; e.id);\n        });\n    }\n  }\n}\n</code></pre>\n<p>This is the result in log cat:</p>\n<p><a href=\"https://i.sstatic.net/LCnrq.png\" rel=\"nofollow noreferrer\">result post</a></p>\n<p><a href=\"https://i.sstatic.net/fHzUt.png\" rel=\"nofollow noreferrer\">Json warning</a></p>\n"
+}

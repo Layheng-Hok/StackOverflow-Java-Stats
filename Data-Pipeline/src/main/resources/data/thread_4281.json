@@ -1,0 +1,167 @@
+{
+  "tags" : [ "java", "swing", "events" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 247613,
+      "reputation" : 285766,
+      "user_id" : 522444,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/16b6783e9b99b1199c75761eaf5c0685?s=256&d=identicon&r=PG",
+      "display_name" : "Hovercraft Full Of Eels",
+      "link" : "https://stackoverflow.com/users/522444/hovercraft-full-of-eels"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1426770718,
+    "post_id" : 29145472,
+    "comment_id" : 46513587,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "One possibility: use a JLayeredPane and thereby create your own glasspane. Another -- recursively disable all components held by the JPanel."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 44852,
+        "reputation" : 324691,
+        "user_id" : 131872,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+        "display_name" : "camickr",
+        "link" : "https://stackoverflow.com/users/131872/camickr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1426779872,
+      "post_id" : 29147642,
+      "comment_id" : 46520223,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "1+, the user can get focus back by using the <code>Tab</code> key. You can prevent this by adding: <code>glassPanel.setFocusTraversalKeysEnabled(false);</code>"
+    }, {
+      "owner" : {
+        "account_id" : 247613,
+        "reputation" : 285766,
+        "user_id" : 522444,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/16b6783e9b99b1199c75761eaf5c0685?s=256&d=identicon&r=PG",
+        "display_name" : "Hovercraft Full Of Eels",
+        "link" : "https://stackoverflow.com/users/522444/hovercraft-full-of-eels"
+      },
+      "reply_to_user" : {
+        "account_id" : 44852,
+        "reputation" : 324691,
+        "user_id" : 131872,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+        "display_name" : "camickr",
+        "link" : "https://stackoverflow.com/users/131872/camickr"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1426781659,
+      "post_id" : 29147642,
+      "comment_id" : 46521445,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@camickr: Thanks -- changes made! I have alreadly 1-upped your great answer, but it seems the OP hasn&#39;t yet."
+    } ],
+    "owner" : {
+      "account_id" : 247613,
+      "reputation" : 285766,
+      "user_id" : 522444,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/16b6783e9b99b1199c75761eaf5c0685?s=256&d=identicon&r=PG",
+      "display_name" : "Hovercraft Full Of Eels",
+      "link" : "https://stackoverflow.com/users/522444/hovercraft-full-of-eels"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1426781623,
+    "last_edit_date" : 1426781623,
+    "creation_date" : 1426776345,
+    "answer_id" : 29147642,
+    "question_id" : 29145472,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>One possibility -- use a JLayeredPane to wrap around your JPanel, and then activate a JPanel layer that is held above it, having it steal the focus and the MouseListener. For example:</p>\n\n<pre><code>import java.awt.BorderLayout;\nimport java.awt.event.ActionEvent;\nimport java.awt.event.ItemEvent;\nimport java.awt.event.ItemListener;\nimport java.awt.event.MouseAdapter;\n\nimport javax.swing.*;\n\npublic class MyGlassPaneWrapper extends JLayeredPane {\n   private JPanel glassPanel = new JPanel();\n\n   public MyGlassPaneWrapper(JComponent myPanel) {\n      glassPanel.setOpaque(false);\n      glassPanel.setVisible(false);\n      glassPanel.addMouseListener(new MouseAdapter() {});\n      glassPanel.setFocusable(true);\n\n      myPanel.setSize(myPanel.getPreferredSize());\n      add(myPanel, JLayeredPane.DEFAULT_LAYER);\n      add(glassPanel, JLayeredPane.PALETTE_LAYER);\n\n      glassPanel.setPreferredSize(myPanel.getPreferredSize());\n      glassPanel.setSize(myPanel.getPreferredSize());\n      setPreferredSize(myPanel.getPreferredSize());\n   }\n\n   public void activateGlassPane(boolean activate) {\n      glassPanel.setVisible(activate);\n      if (activate) {\n         glassPanel.requestFocusInWindow();\n         glassPanel.setFocusTraversalKeysEnabled(false);\n      } \n   }\n\n   private static void createAndShowGui() {\n      final MyPanel myPanel = new MyPanel();\n      final MyGlassPaneWrapper myGlassPaneWrapper = new MyGlassPaneWrapper(myPanel);\n      final String activateGlassPane = \"Activate GlassPane\";\n      final String deactivateGlassPane = \"Deactivate GlassPane\";\n\n      JToggleButton toggleButton = new JToggleButton(activateGlassPane);\n      toggleButton.addItemListener(new ItemListener() {\n\n         @Override\n         public void itemStateChanged(ItemEvent e) {\n            AbstractButton source = (AbstractButton) e.getSource();\n            if (e.getStateChange() == ItemEvent.SELECTED) {\n               source.setText(deactivateGlassPane);\n               myGlassPaneWrapper.activateGlassPane(true);\n            } else {\n               source.setText(activateGlassPane);\n               myGlassPaneWrapper.activateGlassPane(false);\n            }\n         }\n      });\n      JPanel buttonPanel = new JPanel();\n      buttonPanel.add(toggleButton);\n\n      JFrame frame = new JFrame(\"MyGlassPane\");\n      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n      frame.getContentPane().add(myGlassPaneWrapper);\n      frame.getContentPane().add(buttonPanel, BorderLayout.PAGE_END);\n      frame.pack();\n      frame.setLocationRelativeTo(null);\n      frame.setVisible(true);\n   }\n\n   public static void main(String[] args) {\n      SwingUtilities.invokeLater(new Runnable() {\n         public void run() {\n            createAndShowGui();\n         }\n      });\n   }\n}\n\nclass MyPanel extends JPanel {\n\n   public MyPanel() {\n      add(new JTextField(5));\n      add(new JComboBox&lt;String&gt;(new String[]{\"Monday\", \"Tuesday\", \"Wednesday\"}));\n      add(new JButton(new AbstractAction(\"Push Me\") {\n\n         @Override\n         public void actionPerformed(ActionEvent e) {\n            JOptionPane.showMessageDialog(MyPanel.this, \"Button Pushed\");\n         }\n      }));\n   }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 44852,
+      "reputation" : 324691,
+      "user_id" : 131872,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+      "display_name" : "camickr",
+      "link" : "https://stackoverflow.com/users/131872/camickr"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1426776361,
+    "creation_date" : 1426776361,
+    "answer_id" : 29147651,
+    "question_id" : 29145472,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p>In my application i have no access to the frame. I just want to deactivate a single panel in the frame.</p>\n</blockquote>\n\n<p>You can always use:</p>\n\n<pre><code>Window frame = SwingUtilities.windowForComponent(...);\n</code></pre>\n\n<blockquote>\n  <p>I just want to deactivate a single panel in the frame.</p>\n</blockquote>\n\n<p>Or you could try using the <a href=\"https://tips4java.wordpress.com/2009/08/02/disabled-panel/\" rel=\"nofollow\">Disabled Panel</a>. It allows you to simply disable the components on a specific panel. </p>\n\n<p>The second approach which paints a disabled look may be a problem since you need to use the disable panel when you create the GUI.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 249565,
+      "reputation" : 11314,
+      "user_id" : 525725,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/8304c64641badd4218a89a5f97d2ae86?s=256&d=identicon&r=PG",
+      "display_name" : "Emmanuel Bourg",
+      "link" : "https://stackoverflow.com/users/525725/emmanuel-bourg"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1546990838,
+    "creation_date" : 1546990838,
+    "answer_id" : 54101304,
+    "question_id" : 29145472,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It's possible to add a glasspane to a <code>JPanel</code> by wrapping it in the content pane of a <code>JRootPane</code>. You can then use a semi transparent glasspane catching the mouse and keyboard events to deactivate it during data loading, see <a href=\"https://tips4java.wordpress.com/2008/11/07/disabled-glass-pane/\" rel=\"nofollow noreferrer\">https://tips4java.wordpress.com/2008/11/07/disabled-glass-pane/</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1312133,
+      "reputation" : 3322,
+      "user_id" : 1259924,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/0cc57bb88e4314676b158471aa4d94bd?s=256&d=identicon&r=PG",
+      "display_name" : "Greg Brown",
+      "link" : "https://stackoverflow.com/users/1259924/greg-brown"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760540905,
+    "creation_date" : 1760540905,
+    "answer_id" : 79791322,
+    "question_id" : 29145472,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Another option is to subclass <code>JRootPane</code> directly. This allows you to take advantage of the existing glass pane provided by that class instead of creating your own.</p>\n<p>In your constructor, you can attach a mouse listener to prevent user interaction, and you can install a custom focus traversal policy to prevent navigation when the glass pane is visible:</p>\n<pre class=\"lang-java prettyprint-override\"><code>getGlassPane().addMouseListener(new MouseAdapter() {});\n\nsetFocusTraversalPolicyProvider(true);\n\nsetFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {\n    @Override\n    public Component getFirstComponent(Container container) {\n        return getGlassPane().isVisible() ? null : super.getFirstComponent(container);\n    }\n\n    @Override\n    public Component getLastComponent(Container container) {\n        return getGlassPane().isVisible() ? null : super.getLastComponent(container);\n    }\n});\n</code></pre>\n<p>A complete example can be found <a href=\"https://github.com/HTTP-RPC/Sierra/blob/master/sierra-test/src/main/java/org/httprpc/sierra/test/TabPane.java\" rel=\"nofollow noreferrer\">here</a>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5966091,
+    "reputation" : 59,
+    "user_id" : 4689837,
+    "user_type" : "registered",
+    "accept_rate" : 20,
+    "profile_image" : "https://lh5.googleusercontent.com/-tr5BynzPjgs/AAAAAAAAAAI/AAAAAAAAAIU/SKzYWTGuWeQ/s256-rj/photo.jpg",
+    "display_name" : "dbausnnd",
+    "link" : "https://stackoverflow.com/users/4689837/dbausnnd"
+  },
+  "is_answered" : true,
+  "view_count" : 12305,
+  "answer_count" : 4,
+  "score" : 2,
+  "last_activity_date" : 1760540905,
+  "creation_date" : 1426770618,
+  "question_id" : 29145472,
+  "link" : "https://stackoverflow.com/questions/29145472/using-a-glasspane-in-a-jpanel",
+  "title" : "Using a GlassPane in a JPanel",
+  "body" : "<p>i want to use a glassPane function to deactivate Components in a Panel during the loading of data. I know the the glasspane is only available in frames. In my application i have no access to the frame. I just want to deactivate a single panel in the frame. </p>\n\n<p>I tried to draw a ractangle over the panel by overriding the paint or paintComponent method of the panel. The problem is that the underlaying components are still available.</p>\n\n<p>could anyone give me an advice how i can solve this problem?</p>\n\n<p>regards</p>\n\n<p>dbausnnd</p>\n"
+}

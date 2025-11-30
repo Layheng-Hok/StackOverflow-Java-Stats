@@ -1,0 +1,82 @@
+{
+  "tags" : [ "java", "android", "sockets", "serversocket" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4432934,
+        "reputation" : 443,
+        "user_id" : 3609639,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/69fd0a34116198e0a38e96aadecd8bce?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Marcello Davi",
+        "link" : "https://stackoverflow.com/users/3609639/marcello-davi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1445330616,
+      "post_id" : 33224988,
+      "comment_id" : 54267347,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "But many times i connected two java applications (on different computers) by using my pc hostname and it worked fine... I don&#39;t want to use the IP address because it changes everytime."
+    } ],
+    "owner" : {
+      "account_id" : 7142362,
+      "reputation" : 5488,
+      "user_id" : 5459467,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7aa4b70213ddae89a2f669f245807927?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Cukic0d",
+      "link" : "https://stackoverflow.com/users/5459467/cukic0d"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1445293581,
+    "creation_date" : 1445293581,
+    "answer_id" : 33224988,
+    "question_id" : 33223707,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can't do:</p>\n\n<pre><code>new Socket(\"muffin\", port);\n</code></pre>\n\n<p>There is a difference between Hostname, and Host, so:</p>\n\n<pre><code>java.net.UnknownHostException: muffin\n</code></pre>\n\n<p>means that the <strong>host</strong> \"muffin\" doesn't exist, and that's true: the only existing host is 192.168.1.105, who has a <strong>hostname</strong> who is \"muffin\".</p>\n\n<p>So you should have done:</p>\n\n<pre><code>new Socket(\"192.168.1.105\", port);\n</code></pre>\n\n<p>It is not possible to get a <strong>host</strong> from it's <strong>hostname</strong> : so if it is the only way for you to do it, you will have to do a huge scan of all the local network, and then see which <strong>host</strong> that is connected has the good <strong>hostname</strong>. As this method is much much harder, i realy recommand you to find another way to do it :)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4432934,
+      "reputation" : 443,
+      "user_id" : 3609639,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/69fd0a34116198e0a38e96aadecd8bce?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Marcello Davi",
+      "link" : "https://stackoverflow.com/users/3609639/marcello-davi"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1445619449,
+    "creation_date" : 1445619449,
+    "answer_id" : 33307744,
+    "question_id" : 33223707,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I solved the problem, i've had to allow the traffic on the specific port through the windows firewall.</p>\n\n<p>Now i can connect to the android application using its hostname.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4432934,
+    "reputation" : 443,
+    "user_id" : 3609639,
+    "user_type" : "registered",
+    "accept_rate" : 100,
+    "profile_image" : "https://www.gravatar.com/avatar/69fd0a34116198e0a38e96aadecd8bce?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Marcello Davi",
+    "link" : "https://stackoverflow.com/users/3609639/marcello-davi"
+  },
+  "is_answered" : true,
+  "view_count" : 1001,
+  "accepted_answer_id" : 33307744,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1761835674,
+  "creation_date" : 1445287994,
+  "last_edit_date" : 1761835674,
+  "question_id" : 33223707,
+  "link" : "https://stackoverflow.com/questions/33223707/cant-connect-to-android-server-using-hostname",
+  "title" : "Can&#39;t connect to Android server using hostname",
+  "body" : "<p>I'm trying to make a Java application that connects to an Android application.</p>\n<p>Both my pc and my phone are connected to the same network.</p>\n<p>This is the Java client which runs on my pc:</p>\n<pre><code>client = new Socket(&quot;muffin&quot;, port);\n\nSystem.out.println(&quot;Connected&quot;);\n    \noutput = new ObjectOutputStream(client.getOutputStream());\noutput.flush();\ninput = new ObjectInputStream(client.getInputStream());\n\nSystem.out.println(&quot;Streams ready&quot;);\n</code></pre>\n<p>And this is the Android application which works as the server:</p>\n<pre><code>server = new ServerSocket(port);\nsocket = server.accept();\n\nLog.i(&quot;Server&quot;, &quot;Connected&quot;);\n\noutput = new ObjectOutputStream(socket.getOutputStream());\noutput.flush();\ninput = new ObjectInputStream(socket.getInputStream());\n</code></pre>\n<p>In the manifest I added the permissions:</p>\n<pre><code>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;&gt;&lt;/uses-permission&gt;\n&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot;&gt;&lt;/uses-permission&gt;\n</code></pre>\n<p>As you can see I'm trying to connect from my pc to the android server by using its hostname (I changed my Android hostname to &quot;muffin&quot;), but it doesn't connect and it throws an exception:</p>\n<blockquote>\n<p>java.net.UnknownHostException: muffin</p>\n</blockquote>\n<p>If instead of the hostname I use the ip address, it works without problems.\nIt looks like it cannot find a device on LAN called &quot;muffin&quot;, but you can see from this screenshot of my modem page that the name is right:</p>\n<p><a href=\"https://i.sstatic.net/Mc5Yy.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/Mc5Yy.png\" alt=\"My modem page that shows connected client\" /></a></p>\n<p>That said, I tried to use the Android application as the client and the java program as the server, but it looks like Android has some problems because it didn't connect to my pc even by using the ip address instead of the hostname.</p>\n<p>Do you have any idea on how to fix this problem?</p>\n<p>Thanks in advance and sorry for my English, it's not my mother tongue.</p>\n"
+}

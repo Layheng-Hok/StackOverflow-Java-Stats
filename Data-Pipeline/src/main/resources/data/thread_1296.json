@@ -1,0 +1,398 @@
+{
+  "tags" : [ "java", "android", "callback", "android-handler" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 329756,
+        "reputation" : 21604,
+        "user_id" : 653457,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/347eb25b0d8f7ee0275791d215f9c541?s=256&d=identicon&r=PG",
+        "display_name" : "Luke Vo",
+        "link" : "https://stackoverflow.com/users/653457/luke-vo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1304514905,
+      "post_id" : 5883776,
+      "comment_id" : 6767733,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks, I know that. But I have a lot of Runnable in many sub-classes, and manage them all is a epic work! Is there anyway to remove them all, in the onStop() event?"
+    }, {
+      "owner" : {
+        "account_id" : 89296,
+        "reputation" : 63393,
+        "user_id" : 246461,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://i.sstatic.net/NtTHn.jpg?s=256",
+        "display_name" : "devunwired",
+        "link" : "https://stackoverflow.com/users/246461/devunwired"
+      },
+      "reply_to_user" : {
+        "account_id" : 329756,
+        "reputation" : 21604,
+        "user_id" : 653457,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/347eb25b0d8f7ee0275791d215f9c541?s=256&d=identicon&r=PG",
+        "display_name" : "Luke Vo",
+        "link" : "https://stackoverflow.com/users/653457/luke-vo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1304520314,
+      "post_id" : 5883776,
+      "comment_id" : 6769494,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Understood, I updated the answer with a bit more information.  Short version is you can&#39;t call a method to broadly clear a Handler&#39;s message queue..."
+    } ],
+    "owner" : {
+      "account_id" : 89296,
+      "reputation" : 63393,
+      "user_id" : 246461,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://i.sstatic.net/NtTHn.jpg?s=256",
+      "display_name" : "devunwired",
+      "link" : "https://stackoverflow.com/users/246461/devunwired"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1304520278,
+    "last_edit_date" : 1304520278,
+    "creation_date" : 1304513887,
+    "answer_id" : 5883776,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For any specific <code>Runnable</code> instance, call <code>Handler.removeCallbacks()</code>.  Note that it uses the <code>Runnable</code> instance itself to determine which callbacks to unregister, so if you are creating a new instance each time a post is made, you need to make sure you have references to the exact <code>Runnable</code> to cancel.  Example:</p>\n\n<pre><code>Handler myHandler = new Handler();\nRunnable myRunnable = new Runnable() {\n    public void run() {\n        //Some interesting task\n    }\n};\n</code></pre>\n\n<p>You can call <code>myHandler.postDelayed(myRunnable, x)</code> to post another callback to the message queue at other places in your code, and remove all pending callbacks with <code>myHandler.removeCallbacks(myRunnable)</code></p>\n\n<p>Unfortunately, you cannot simply \"clear\" the entire <code>MessageQueue</code> for a <code>Handler</code>, even if you make a request for the <code>MessageQueue</code> object associated with it because the methods for adding and removing items are package protected (only classes within the android.os package can call them).  You may have to create a thin <code>Handler</code> subclass to manage a list of <code>Runnable</code>s as they are posted/executed...or look at another paradigm for passing your messages between each <code>Activity</code></p>\n\n<p>Hope that Helps!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 30304,
+      "reputation" : 27284,
+      "user_id" : 82559,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4dd4af25ea06b40a17397b13f4928a2a?s=256&d=identicon&r=PG",
+      "display_name" : "alphazero",
+      "link" : "https://stackoverflow.com/users/82559/alphazero"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1304515025,
+    "creation_date" : 1304515025,
+    "answer_id" : 5884027,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you don't have the Runnable references, on the first callback, get the obj of the message, and use <a href=\"http://developer.android.com/reference/android/os/Handler.html#removeCallbacksAndMessages%28java.lang.Object%29\" rel=\"noreferrer\">removeCallbacksAndMessages()</a> to remove all related callbacks.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 940928,
+        "reputation" : 7587,
+        "user_id" : 969016,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/z0eok.png?s=256",
+        "display_name" : "Boy",
+        "link" : "https://stackoverflow.com/users/969016/boy"
+      },
+      "reply_to_user" : {
+        "account_id" : 2371306,
+        "reputation" : 7246,
+        "user_id" : 2075875,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/e0b3e3d0b29b541cd13a60a9236f02ac?s=256&d=identicon&r=PG",
+        "display_name" : "Malachiasz",
+        "link" : "https://stackoverflow.com/users/2075875/malachiasz"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1408885700,
+      "post_id" : 10145615,
+      "comment_id" : 39751230,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Malachiasz I think I would use it in onStop or onPause, to make sure no messages are handled after the activity has lost focus. But depends on what needs to be done when the callback/message is fired"
+    }, {
+      "owner" : {
+        "account_id" : 33704,
+        "reputation" : 9344,
+        "user_id" : 94557,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/cBUBK.jpg?s=256",
+        "display_name" : "Matt Wolfe",
+        "link" : "https://stackoverflow.com/users/94557/matt-wolfe"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1437607850,
+      "post_id" : 10145615,
+      "comment_id" : 51106211,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I believe I&#39;ve seen NPE before on some phones when doing this but it&#39;s been awhile."
+    }, {
+      "owner" : {
+        "account_id" : 1789766,
+        "reputation" : 745,
+        "user_id" : 1630447,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/fdb28b75ada6675fb9e811c7d109f840?s=256&d=identicon&r=PG",
+        "display_name" : "Snaker",
+        "link" : "https://stackoverflow.com/users/1630447/snaker"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1464027583,
+      "post_id" : 10145615,
+      "comment_id" : 62304343,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;ve had some issues with <code>removeCallbacksAndMessages(null)</code> wouldn&#39;t remove some of my callbacks. When I would want to stop receiving Callbacks, I&#39;d call <code>handler.removeCallbacksAndMessages(null)</code> and set my handler to null, but since I would still get the callback, I&#39;d encounter a NPE when I&#39;d want to loop with <code>handler.postDelayed()</code>."
+    }, {
+      "owner" : {
+        "account_id" : 145307,
+        "reputation" : 4572,
+        "user_id" : 355023,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://www.gravatar.com/avatar/ce34792ca63ee6b7830423c29875fe53?s=256&d=identicon&r=PG",
+        "display_name" : "ShrimpCrackers",
+        "link" : "https://stackoverflow.com/users/355023/shrimpcrackers"
+      },
+      "reply_to_user" : {
+        "account_id" : 1789766,
+        "reputation" : 745,
+        "user_id" : 1630447,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/fdb28b75ada6675fb9e811c7d109f840?s=256&d=identicon&r=PG",
+        "display_name" : "Snaker",
+        "link" : "https://stackoverflow.com/users/1630447/snaker"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1487822377,
+      "post_id" : 10145615,
+      "comment_id" : 71960166,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Snaker Have you solved your issue yet? I&#39;m having same issue where Handler.Callback is being called even after removing callbacks and messages by setting null."
+    }, {
+      "owner" : {
+        "account_id" : 1789766,
+        "reputation" : 745,
+        "user_id" : 1630447,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/fdb28b75ada6675fb9e811c7d109f840?s=256&d=identicon&r=PG",
+        "display_name" : "Snaker",
+        "link" : "https://stackoverflow.com/users/1630447/snaker"
+      },
+      "reply_to_user" : {
+        "account_id" : 145307,
+        "reputation" : 4572,
+        "user_id" : 355023,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://www.gravatar.com/avatar/ce34792ca63ee6b7830423c29875fe53?s=256&d=identicon&r=PG",
+        "display_name" : "ShrimpCrackers",
+        "link" : "https://stackoverflow.com/users/355023/shrimpcrackers"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1487965029,
+      "post_id" : 10145615,
+      "comment_id" : 72037389,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@ShrimpCrackers I found out keeping an instance of your runnable and using <code>yourHandler.removeCallbacks(yourRunnable)</code> was the most reliable. Still using that today."
+    }, {
+      "owner" : {
+        "account_id" : 1761357,
+        "reputation" : 659,
+        "user_id" : 1608385,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/03a998a71d44b0e9a99b9ca0231cc0d1?s=256&d=identicon&r=PG",
+        "display_name" : "user1608385",
+        "link" : "https://stackoverflow.com/users/1608385/user1608385"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1495424117,
+      "post_id" : 10145615,
+      "comment_id" : 75228451,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The two parameter version of removeCallbacks must be used and you must have a reference to the Runnable.   So, use handler.removeCallbacks(yourRunnable, null)."
+    }, {
+      "owner" : {
+        "account_id" : 8085501,
+        "reputation" : 1012,
+        "user_id" : 6093189,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://lh3.googleusercontent.com/-3h5UNmEYWgM/AAAAAAAAAAI/AAAAAAAAACk/n-_td21irr0/s256-rj/photo.jpg",
+        "display_name" : "Harish Reddy",
+        "link" : "https://stackoverflow.com/users/6093189/harish-reddy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1537339345,
+      "post_id" : 10145615,
+      "comment_id" : 91743291,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "we need to handle any exceptions while using this? Ex. if(handler!=null &amp;&amp; handle.isCallingsomething){--};"
+    } ],
+    "owner" : {
+      "account_id" : 1179597,
+      "reputation" : 6999,
+      "user_id" : 1154836,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/39bd8417d3182c37d7118dcd223b739c?s=256&d=identicon&r=PG",
+      "display_name" : "josh527",
+      "link" : "https://stackoverflow.com/users/1154836/josh527"
+    },
+    "is_accepted" : true,
+    "score" : 588,
+    "last_activity_date" : 1477171291,
+    "last_edit_date" : 1477171291,
+    "creation_date" : 1334338694,
+    "answer_id" : 10145615,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In my experience calling this worked great!</p>\n\n<pre><code>handler.removeCallbacksAndMessages(null);\n</code></pre>\n\n<p>In the docs for removeCallbacksAndMessages it says...</p>\n\n<blockquote>\n  <p>Remove any pending posts of callbacks and sent messages whose obj is token. <strong>If token is <code>null</code>, all callbacks and messages will be removed.</strong></p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1699302,
+      "reputation" : 11966,
+      "user_id" : 1559852,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/FmZgv.jpg?s=256",
+      "display_name" : "savepopulation",
+      "link" : "https://stackoverflow.com/users/1559852/savepopulation"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1421764947,
+    "creation_date" : 1421764947,
+    "answer_id" : 28048111,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Define a new handler and runnable:</p>\n\n<pre><code>private Handler handler = new Handler(Looper.getMainLooper());\nprivate Runnable runnable = new Runnable() {\n        @Override\n        public void run() {\n            // Do what ever you want\n        }\n    };\n</code></pre>\n\n<p>Call post delayed:</p>\n\n<pre><code>handler.postDelayed(runnable, sleep_time);\n</code></pre>\n\n<p>Remove your callback from your handler:</p>\n\n<pre><code>handler.removeCallbacks(runnable);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4066266,
+      "reputation" : 2189,
+      "user_id" : 3341089,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/7qfMnyeK.jpg?s=256",
+      "display_name" : "Oğuzhan Gedik",
+      "link" : "https://stackoverflow.com/users/3341089/o%c4%9fuzhan-gedik"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1569420395,
+    "last_edit_date" : 1569420395,
+    "creation_date" : 1481744883,
+    "answer_id" : 41150974,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Please note that one should define a <code>Handler</code> and a <code>Runnable</code> in class scope, so that it is created once.<code>removeCallbacks(Runnable)</code> works correctly unless one defines them multiple times. Please look at following examples for better understanding: </p>\n\n<p>Incorrect way :</p>\n\n<pre><code>    public class FooActivity extends Activity {\n           private void handleSomething(){\n                Handler handler = new Handler();\n                Runnable runnable = new Runnable() {\n                   @Override\n                   public void run() {\n                      doIt();\n                  }\n               };\n              if(shouldIDoIt){\n                  //doIt() works after 3 seconds.\n                  handler.postDelayed(runnable, 3000);\n              } else {\n                  handler.removeCallbacks(runnable);\n              }\n           }\n\n          public void onClick(View v){\n              handleSomething();\n          }\n    } \n</code></pre>\n\n<p>If you call <code>onClick(..)</code> method, you never stop <code>doIt()</code> method calling before it call. Because each time creates <code>new Handler</code> and <code>new Runnable</code> instances. In this way, you lost necessary references which belong to <em>handler</em> and <em>runnable</em> instances.    </p>\n\n<p>Correct way :</p>\n\n<pre><code> public class FooActivity extends Activity {\n        Handler handler = new Handler();\n        Runnable runnable = new Runnable() {\n            @Override\n            public void run() {\n                doIt();\n            }\n        };\n        private void handleSomething(){\n            if(shouldIDoIt){\n                //doIt() works after 3 seconds.\n                handler.postDelayed(runnable, 3000);\n            } else {\n                handler.removeCallbacks(runnable);\n            }\n       }\n\n       public void onClick(View v){\n           handleSomething();\n       }\n } \n</code></pre>\n\n<p>In this way, you don't lost actual references and <code>removeCallbacks(runnable)</code> works successfully.</p>\n\n<p>Key sentence is that <strong>'define them as global in your <code>Activity</code> or <code>Fragment</code> what you use'</strong>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8456588,
+      "reputation" : 61,
+      "user_id" : 6343641,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/PGUWQ.jpg?s=256",
+      "display_name" : "JamesRobert",
+      "link" : "https://stackoverflow.com/users/6343641/jamesrobert"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1543459606,
+    "creation_date" : 1543459606,
+    "answer_id" : 53531111,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As <code>josh527</code> said, <code>handler.removeCallbacksAndMessages(null);</code> can work.<br>\nBut why?<br>\nIf you have a look at the source code, you can understand it more clearly.\nThere are 3 type of method to remove callbacks/messages from handler(the MessageQueue):</p>\n\n<ol>\n<li>remove by callback (and token)</li>\n<li>remove by message.what (and token)</li>\n<li>remove by token</li>\n</ol>\n\n<p>Handler.java (leave some overload method）</p>\n\n<pre><code>/**\n * Remove any pending posts of Runnable &lt;var&gt;r&lt;/var&gt; with Object\n * &lt;var&gt;token&lt;/var&gt; that are in the message queue.  If &lt;var&gt;token&lt;/var&gt; is null,\n * all callbacks will be removed.\n */\npublic final void removeCallbacks(Runnable r, Object token)\n{\n    mQueue.removeMessages(this, r, token);\n}\n\n/**\n * Remove any pending posts of messages with code 'what' and whose obj is\n * 'object' that are in the message queue.  If &lt;var&gt;object&lt;/var&gt; is null,\n * all messages will be removed.\n */\npublic final void removeMessages(int what, Object object) {\n    mQueue.removeMessages(this, what, object);\n}\n\n/**\n * Remove any pending posts of callbacks and sent messages whose\n * &lt;var&gt;obj&lt;/var&gt; is &lt;var&gt;token&lt;/var&gt;.  If &lt;var&gt;token&lt;/var&gt; is null,\n * all callbacks and messages will be removed.\n */\npublic final void removeCallbacksAndMessages(Object token) {\n    mQueue.removeCallbacksAndMessages(this, token);\n}\n</code></pre>\n\n<p>MessageQueue.java do the real work:</p>\n\n<pre><code>void removeMessages(Handler h, int what, Object object) {\n    if (h == null) {\n        return;\n    }\n\n    synchronized (this) {\n        Message p = mMessages;\n\n        // Remove all messages at front.\n        while (p != null &amp;&amp; p.target == h &amp;&amp; p.what == what\n               &amp;&amp; (object == null || p.obj == object)) {\n            Message n = p.next;\n            mMessages = n;\n            p.recycleUnchecked();\n            p = n;\n        }\n\n        // Remove all messages after front.\n        while (p != null) {\n            Message n = p.next;\n            if (n != null) {\n                if (n.target == h &amp;&amp; n.what == what\n                    &amp;&amp; (object == null || n.obj == object)) {\n                    Message nn = n.next;\n                    n.recycleUnchecked();\n                    p.next = nn;\n                    continue;\n                }\n            }\n            p = n;\n        }\n    }\n}\n\nvoid removeMessages(Handler h, Runnable r, Object object) {\n    if (h == null || r == null) {\n        return;\n    }\n\n    synchronized (this) {\n        Message p = mMessages;\n\n        // Remove all messages at front.\n        while (p != null &amp;&amp; p.target == h &amp;&amp; p.callback == r\n               &amp;&amp; (object == null || p.obj == object)) {\n            Message n = p.next;\n            mMessages = n;\n            p.recycleUnchecked();\n            p = n;\n        }\n\n        // Remove all messages after front.\n        while (p != null) {\n            Message n = p.next;\n            if (n != null) {\n                if (n.target == h &amp;&amp; n.callback == r\n                    &amp;&amp; (object == null || n.obj == object)) {\n                    Message nn = n.next;\n                    n.recycleUnchecked();\n                    p.next = nn;\n                    continue;\n                }\n            }\n            p = n;\n        }\n    }\n}\n\nvoid removeCallbacksAndMessages(Handler h, Object object) {\n    if (h == null) {\n        return;\n    }\n\n    synchronized (this) {\n        Message p = mMessages;\n\n        // Remove all messages at front.\n        while (p != null &amp;&amp; p.target == h\n                &amp;&amp; (object == null || p.obj == object)) {\n            Message n = p.next;\n            mMessages = n;\n            p.recycleUnchecked();\n            p = n;\n        }\n\n        // Remove all messages after front.\n        while (p != null) {\n            Message n = p.next;\n            if (n != null) {\n                if (n.target == h &amp;&amp; (object == null || n.obj == object)) {\n                    Message nn = n.next;\n                    n.recycleUnchecked();\n                    p.next = nn;\n                    continue;\n                }\n            }\n            p = n;\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18228916,
+      "reputation" : 2822,
+      "user_id" : 13268194,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7cfbf7f4b976edfa08ad0e0cd73417a6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tarun Anchala",
+      "link" : "https://stackoverflow.com/users/13268194/tarun-anchala"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1665038485,
+    "last_edit_date" : 1665038485,
+    "creation_date" : 1650450177,
+    "answer_id" : 71937992,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To <strong>remove specific runnable</strong></p>\n<pre><code>handler.removeCallbacks(yourRunnable)\n</code></pre>\n<p>To <strong>remove all runnables</strong></p>\n<pre><code>handler.removeCallbacksAndMessages(null)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18888620,
+      "reputation" : 21,
+      "user_id" : 13779414,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/266761241215096/picture?type=large",
+      "display_name" : "A P Harivignesh",
+      "link" : "https://stackoverflow.com/users/13779414/a-p-harivignesh"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1655847111,
+    "last_edit_date" : 1655847111,
+    "creation_date" : 1655663762,
+    "answer_id" : 72679429,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>None of the solutions worked for me. But I found a solution that worked.</p>\n<p>The runnables already added in the handler queue got executed even after calling <code>handler.removeCallbacksAndMessages(null)</code>. When I tried to stop the thread, it resulted in the error:</p>\n<p><em>W/MessageQueue(6436): java.lang.RuntimeException: Handler (android.os.Handler) {416659f0} <strong>sending message to a Handler on a dead thread</strong></em></p>\n<p><strong>My solution:</strong></p>\n<ul>\n<li><p>To remove all the callbacks. you need the reference for all the\nrunnables which can be stored in an ArrayList.</p>\n<pre><code> private ArrayList&lt;Runnable&gt; runnableQueue=new ArrayList&lt;Runnable&gt;();\n</code></pre>\n</li>\n<li><p>Then every time u want to post a runnable, store it in the array, then post the array item using handler.post().</p>\n<pre><code>private void postInHandler(){\n  @override\n  runnableQueue.add(new Runnable() {\n      public void run() {   \n          //your code \n      }\n  });\n  //Post the last item in the array \n  handler.post(runnableQueue.get(runnableQueue.size()-1));\n  }\n</code></pre>\n</li>\n<li><p>Then to remove all the callbacks use this method which will remove each callback by iterating through the array.</p>\n<pre><code>  private void removeHandlerCallbacks(){\n     for(Runnable runnable:runnableQueue){\n         networkHandler.removeCallbacks(runnable,null);\n     }\n     runnableQueue.clear();\n }\n</code></pre>\n</li>\n<li><p>Hurray! the queue is cleared.  <strong>But wait</strong>. After clearing the array we have to make sure that <strong>no more runnable is posted</strong> in the handler before you stop the thread. So you have to declare:</p>\n<p><code>boolean allowPosting=true;</code></p>\n</li>\n</ul>\n<p>so include this:</p>\n<pre><code>private void removeHandlerCallbacks(){           \n    allowPosting=false;//add this line to stop posting after clearing the array\n    for(Runnable runnable:runnableQueue){\n        handler.removeCallbacks(runnable,null);\n    }\n     //Dont forget to clear the array\n     runnableQueue.clear();\n}\n</code></pre>\n<p>Then check the condition before posting in the handler:</p>\n<pre><code>if(allowPosting){\n    postInHandler();\n}\n</code></pre>\n<p>That's all, now the queue is cleared and we are sure that no more runnable is posted after clearing the queue. So it is safe to stop the thread.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9888762,
+      "reputation" : 918,
+      "user_id" : 7918717,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/525b5b4feb610663887201e564e9c7be?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "antaki93",
+      "link" : "https://stackoverflow.com/users/7918717/antaki93"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1676488247,
+    "creation_date" : 1676488247,
+    "answer_id" : 75464451,
+    "question_id" : 5883635,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <a href=\"https://developer.android.com/reference/android/os/Handler#removeCallbacksAndMessages(java.lang.Object)\" rel=\"nofollow noreferrer\">documentation</a> says that <code>removeCallbacksAndMessages(null)</code> removes all callbacks, but it is not always true. Try this:</p>\n<pre><code>if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.P) {\n    handler.removeCallbacksAndMessages(&quot;ACTION_NAME&quot;)\n    handler.postDelayed(runnable, &quot;ACTION_NAME&quot;, 10_000) //if you want restart runnable\n} else {\n    handler.removeCallbacksAndMessages(null)\n    handler.postDelayed(runnable, 10_000) //if you want restart runnable\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 329756,
+    "reputation" : 21604,
+    "user_id" : 653457,
+    "user_type" : "registered",
+    "accept_rate" : 89,
+    "profile_image" : "https://www.gravatar.com/avatar/347eb25b0d8f7ee0275791d215f9c541?s=256&d=identicon&r=PG",
+    "display_name" : "Luke Vo",
+    "link" : "https://stackoverflow.com/users/653457/luke-vo"
+  },
+  "is_answered" : true,
+  "view_count" : 143584,
+  "accepted_answer_id" : 10145615,
+  "answer_count" : 9,
+  "score" : 257,
+  "last_activity_date" : 1676488247,
+  "creation_date" : 1304513308,
+  "last_edit_date" : 1513262107,
+  "question_id" : 5883635,
+  "link" : "https://stackoverflow.com/questions/5883635/how-to-remove-all-callbacks-from-a-handler",
+  "title" : "How to remove all callbacks from a Handler?",
+  "body" : "<p>I have a <a href=\"http://developer.android.com/reference/android/os/Handler.html\" rel=\"noreferrer\">Handler</a> from my sub-Activity that was called by the main <a href=\"http://developer.android.com/reference/android/app/Activity.html\" rel=\"noreferrer\">Activity</a>. This Handler is used by sub-classes to <a href=\"http://developer.android.com/reference/android/os/Handler.html#postDelayed%28java.lang.Runnable,%20long%29\" rel=\"noreferrer\"><code>postDelay</code></a> some Runnables, and I can't manage them. Now, in the <code>onStop</code> event, I need to remove them before finishing the Activity (somehow I called <code>finish()</code>, but it still call again and again). Is there anyway to remove all callbacks from a Handler?</p>\n"
+}

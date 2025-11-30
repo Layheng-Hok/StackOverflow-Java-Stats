@@ -1,0 +1,50 @@
+{
+  "tags" : [ "java", "spring-boot", "entity", "h2", "entitymanager" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user14041114"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1616781424,
+      "post_id" : 66821959,
+      "comment_id" : 118119909,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This inserts the values of address and employee but, the value of employeeId in the address table is as null is inserted as null. That is the foreign key column of address table."
+    } ],
+    "owner" : {
+      "account_id" : 5609143,
+      "reputation" : 395,
+      "user_id" : 4442612,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/82fc17a102f63bec03ae4e429c9e7978?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "vijaydeep",
+      "link" : "https://stackoverflow.com/users/4442612/vijaydeep"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1616780972,
+    "creation_date" : 1616780972,
+    "answer_id" : 66821959,
+    "question_id" : 66821074,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to remove the nullable part from the Address entity and then it will work.</p>\n<p>Use this.</p>\n<pre><code>Address.java\n\n@ManyToOne(fetch = FetchType.LAZY)\n@JoinColumn(name=&quot;EMPLOYEE_ID&quot;)\nprivate Employee employee; \n\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "user_type" : "does_not_exist",
+    "display_name" : "user14041114"
+  },
+  "is_answered" : false,
+  "view_count" : 626,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762526365,
+  "creation_date" : 1616777290,
+  "last_edit_date" : 1762344901,
+  "question_id" : 66821074,
+  "link" : "https://stackoverflow.com/questions/66821074/spring-entity-manager-with-h2-error-null-not-allowed-for-column-employee-id-e",
+  "title" : "Spring Entity Manager with H2 error: NULL not allowed for column &quot;EMPLOYEE_ID&quot; error",
+  "body" : "<p>I got this error when I tried to insert a value using the POST method in soapUI. Values are inserted in Database when I write insert queries but the POST method does not work in soapUI.</p>\n<p>NULL not allowed for column &quot;EMPLOYEE_ID&quot;; SQL statement:</p>\n<p>I have both my entity classes here</p>\n<p>Employee.java:</p>\n<pre><code>@Entity\n@Table(name=&quot;EMPLOYEE&quot;)\npublic class Employee{\n\n@Id\n@GeneratedValue(strategy=Generation.IDENTITY)\n@Column(name=&quot;EMPLOYEE_ID&quot;, updatable= false, nullable= false)\nprivate long employeeId;\n\n@Column(name=&quot;NAME&quot;)\nprivate String name;\n\n@Column(name=&quot;EMAIL_ID&quot;)\nprivate String email;\n\n@OneToMany(cascade=cascadeType.ALL , fetch = FetchType.LAZY, mappedBy = &quot;employee&quot;)\nprivate List&lt;Address&gt; address = new ArrayList&lt;Address&gt;();\n\n//Getters and Setters\n</code></pre>\n<p>Address.java:</p>\n<pre><code>@Entity\n@Table(name=&quot;ADDRESS&quot;)\npublic class Address{\n\n@Id\n@GeneratedValue(strategy=Generation.IDENTITY)\n@Column(name=&quot;ADDRESS_ID&quot;)\nprivate long addressId;\n\n@Column(name=&quot;ADDRESS_LINE_1&quot;)\nprivate String addressLine1;\n\n@Column(name=&quot;CITY&quot;)\nprivate String city;\n\n@Column(name=&quot;STATE&quot;)\nprivate String state;\n\n@Column(name=&quot;COUNTRY&quot;)\nprivate String country;\n\n@Column(name=&quot;PINCODE&quot;)\nprivate int pincode;\n\n@ManyToOne(fetch = FetchType.LAZY)\n@JoinColumn(name=&quot;EMPLOYEE_ID&quot;, nullable = false)\nprivate Employee employee;    \n\n//Getters and Setters\n</code></pre>\n<p>I tried to post the below value through soapUI POST method.</p>\n<p>{</p>\n<pre><code> &quot;name&quot;: &quot;Ron&quot;,\n &quot;email&quot;: &quot;ron@gmail.com&quot;,\n &quot;address&quot;: [\n         {\n           &quot;addressLine1&quot;: &quot;No 21&quot;,\n           &quot;city&quot;: &quot;Chennai&quot;,\n           &quot;state&quot;: &quot;Tamil Nadu&quot;,\n           &quot;country&quot;: &quot;India&quot;,\n           &quot;pincode&quot;: 187\n          },\n              {\n           &quot;addressLine1&quot;: &quot;No 90&quot;,\n           &quot;city&quot;: &quot;Banglore&quot;,\n           &quot;state&quot;: &quot;Karnataka&quot;,\n           &quot;country&quot;: &quot;India&quot;,\n           &quot;pincode&quot;: 187\n          }\n        ]\n}\n</code></pre>\n<p>When I try to insert the above, I get the error that NULL not allowed for column &quot;EMPLOYEE_ID&quot;; SQL statement.</p>\n"
+}

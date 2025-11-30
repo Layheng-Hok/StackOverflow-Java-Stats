@@ -1,0 +1,89 @@
+{
+  "tags" : [ "java", "jdbc", "mssql-jdbc" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 213468,
+      "reputation" : 110270,
+      "user_id" : 466862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Rotteveel",
+      "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1454612646,
+    "post_id" : 35208154,
+    "comment_id" : 58134126,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "You need to provide more code: at minimum the query and parameter values used, as it stands we can&#39;t possibly answer your question with the code provided. For all we know, you are trying to assign the function as the parameter <b>value</b>."
+  }, {
+    "owner" : {
+      "account_id" : 6776330,
+      "reputation" : 1575,
+      "user_id" : 5217986,
+      "user_type" : "registered",
+      "accept_rate" : 29,
+      "profile_image" : "https://www.gravatar.com/avatar/0674f4cebd535566cceff62c6e03e059?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Anoop LL",
+      "link" : "https://stackoverflow.com/users/5217986/anoop-ll"
+    },
+    "reply_to_user" : {
+      "account_id" : 213468,
+      "reputation" : 110270,
+      "user_id" : 466862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Rotteveel",
+      "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1454613189,
+    "post_id" : 35208154,
+    "comment_id" : 58134452,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@MarkRotteveel no am not passing function as parameter value, i clearly specified my query contains DATEDIFF function which takes various key words , that keywords am passing as parameter and setting in my query"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 213468,
+      "reputation" : 110270,
+      "user_id" : 466862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Rotteveel",
+      "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761307274,
+    "last_edit_date" : 1761307274,
+    "creation_date" : 1454614649,
+    "answer_id" : 35210055,
+    "question_id" : 35208154,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The problem is that you can only pass values using parametrized queries. You can't pass keywords (nor object names). In the case of your query. they would be passed as the equivalent of <code>DATEDIFF('&lt;your-keyword&gt;', ..</code>, which wouldn't work either.</p>\n<p>There is no solution except manually concatenating the required keyword into the query, or creating a convoluted query using a <code>CASE</code>-construct to get the right value depending on the value passed:</p>\n<pre><code>case ? when 'MONTH' then datediff(MONTH, ..) when .. end\n</code></pre>\n<p>You may need to explicitly cast the parameter to a <code>VARCHAR</code> to get it to work.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6776330,
+    "reputation" : 1575,
+    "user_id" : 5217986,
+    "user_type" : "registered",
+    "accept_rate" : 29,
+    "profile_image" : "https://www.gravatar.com/avatar/0674f4cebd535566cceff62c6e03e059?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Anoop LL",
+    "link" : "https://stackoverflow.com/users/5217986/anoop-ll"
+  },
+  "is_answered" : false,
+  "view_count" : 255,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761307274,
+  "creation_date" : 1454608457,
+  "last_edit_date" : 1454613474,
+  "question_id" : 35208154,
+  "link" : "https://stackoverflow.com/questions/35208154/datediff-not-working-in-java",
+  "title" : "DATEDIFF not working in JAVA",
+  "body" : "<p>Am running a query from JAVA , the query contains DATEDIFF function in which the parameter is a keyword,we can give yy,mm,day,etc.. so am getting these keyword from user as parameter and setting it in query, but the issue is it wont execute, it gives an exception as Invalid parameter for argument 1. If i run the same query in CLIENT it gives result, but if i give quotes to keyword like 'day' it gives the same error in CLIENT also. So my question how will I set it in the query from JAVA. Currently am doing like</p>\n\n<pre><code>for (String param : params) {\n try {\n        namedParameterStatement.setObject(param,requiredFilterValues.get(param));\n     } catch (RuntimeException e) {\n       }\n}\n</code></pre>\n\n<p>This is the query am using </p>\n\n<pre><code>SELECT CUST_KEY,Eff_Date_From,Eff_Date_To,  DATEDIFF(:intervals,Eff_Date_From,Eff_Date_To) as datediffs,Active  FROM CUSTOMER_DIM   WHERE Active = :active\n</code></pre>\n\n<p>Am passing  values for params <code>intervals</code>and <code>active</code>, The issue  is with <code>:intervals</code> as it takes keywords.</p>\n\n<p>I think the java program setting the parameter as string that is why its generating error.. How can i implement this?</p>\n"
+}

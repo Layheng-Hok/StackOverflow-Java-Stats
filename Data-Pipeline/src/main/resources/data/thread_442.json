@@ -1,0 +1,1218 @@
+{
+  "tags" : [ "java", "concurrency", "parallel-processing", "java-8", "java-stream" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 381513,
+      "reputation" : 1904,
+      "user_id" : 978567,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/SD6L1.jpg?s=256",
+      "display_name" : "edharned",
+      "link" : "https://stackoverflow.com/users/978567/edharned"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1389897846,
+    "post_id" : 21163108,
+    "comment_id" : 31869635,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What do you mean by custom thread pool? There is a single common ForkJoinPool but you can always create your own ForkJoinPool and submit requests to it."
+  }, {
+    "owner" : {
+      "account_id" : 1831014,
+      "reputation" : 1728,
+      "user_id" : 1662412,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/a037b4a3538b419a8382a880a184df6d?s=256&d=identicon&r=PG",
+      "display_name" : "Peti",
+      "link" : "https://stackoverflow.com/users/1662412/peti"
+    },
+    "edited" : false,
+    "score" : 9,
+    "creation_date" : 1426064408,
+    "post_id" : 21163108,
+    "comment_id" : 46213700,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Hint: Java Champion Heinz Kabutz inspects the same problem but with even worse impact: Deadlocking threads of the common fork join pool. See <a href=\"http://www.javaspecialists.eu/archive/Issue223.html\" rel=\"nofollow noreferrer\">javaspecialists.eu/archive/Issue223.html</a>"
+  }, {
+    "owner" : {
+      "account_id" : 1639936,
+      "reputation" : 723,
+      "user_id" : 1512592,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://i.sstatic.net/4bPcx.jpg?s=256",
+      "display_name" : "Dirk Hillbrecht",
+      "link" : "https://stackoverflow.com/users/1512592/dirk-hillbrecht"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1668950259,
+    "post_id" : 21163108,
+    "comment_id" : 131525576,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "The accepted answer is wrong. At least with Java 8u352 and Java 17, the stream uses both the dedicated and the common fork-join-pool. You can reach the wanted behaviour using CompletableFuture as I have outlined in my answer (far, far) below. You should think about removing the green tick."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1114067,
+        "reputation" : 201056,
+        "user_id" : 1103872,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/LR4iW.jpg?s=256",
+        "display_name" : "Marko Topolnik",
+        "link" : "https://stackoverflow.com/users/1103872/marko-topolnik"
+      },
+      "edited" : false,
+      "score" : 47,
+      "creation_date" : 1396601898,
+      "post_id" : 21172732,
+      "comment_id" : 34871925,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The <code>commonPool</code> has actually one less than <code>availableProcessors</code>, resulting in total parallelism equal to <code>availableProcessors</code> because the calling thread counts as one."
+    }, {
+      "owner" : {
+        "account_id" : 263115,
+        "reputation" : 18300,
+        "user_id" : 548473,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/5oC31.jpg?s=256",
+        "display_name" : "Grigory Kislin",
+        "link" : "https://stackoverflow.com/users/548473/grigory-kislin"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1508775527,
+      "post_id" : 21172732,
+      "comment_id" : 80735115,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "submit return <code>ForkJoinTask</code>. To imitate <code>parallel()</code> <code>get()</code> is needed: <code>stream.parallel().forEach(soSomething)).get();</code>"
+    }, {
+      "owner" : {
+        "account_id" : 1649573,
+        "reputation" : 2029,
+        "user_id" : 1520422,
+        "user_type" : "registered",
+        "accept_rate" : 36,
+        "profile_image" : "https://i.sstatic.net/FntW4.jpg?s=256",
+        "display_name" : "Frederic Leitenberger",
+        "link" : "https://stackoverflow.com/users/1520422/frederic-leitenberger"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1516728563,
+      "post_id" : 21172732,
+      "comment_id" : 83804164,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I am not convinced that <code>ForkJoinPool.submit(() -&gt; stream.forEach(...))</code> will run my Stream actions with the given <code>ForkJoinPool</code>. I would expect that the whole Stream-Action is executed in the ForJoinPool as ONE action, but internally still using the default/common ForkJoinPool. Where did you see, that the ForkJoinPool.submit() would do what you say it does?"
+    }, {
+      "owner" : {
+        "account_id" : 440158,
+        "reputation" : 330010,
+        "user_id" : 829571,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/zflGZ.png?s=256",
+        "display_name" : "assylias",
+        "link" : "https://stackoverflow.com/users/829571/assylias"
+      },
+      "reply_to_user" : {
+        "account_id" : 1649573,
+        "reputation" : 2029,
+        "user_id" : 1520422,
+        "user_type" : "registered",
+        "accept_rate" : 36,
+        "profile_image" : "https://i.sstatic.net/FntW4.jpg?s=256",
+        "display_name" : "Frederic Leitenberger",
+        "link" : "https://stackoverflow.com/users/1520422/frederic-leitenberger"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1516729896,
+      "post_id" : 21172732,
+      "comment_id" : 83804893,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@FredericLeitenberger You probably meant to place your comment below Lukas&#39; answer."
+    }, {
+      "owner" : {
+        "account_id" : 1649573,
+        "reputation" : 2029,
+        "user_id" : 1520422,
+        "user_type" : "registered",
+        "accept_rate" : 36,
+        "profile_image" : "https://i.sstatic.net/FntW4.jpg?s=256",
+        "display_name" : "Frederic Leitenberger",
+        "link" : "https://stackoverflow.com/users/1520422/frederic-leitenberger"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1516730313,
+      "post_id" : 21172732,
+      "comment_id" : 83805119,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I see now <a href=\"https://stackoverflow.com/a/34930831/1520422\">stackoverflow.com/a/34930831/1520422</a> shows nicely that it actually works as announced. Yet i still don&#39;t understand HOW it works. But i&#39;m fine with &quot;it works&quot;. Thanks!"
+    }, {
+      "owner" : {
+        "account_id" : 7567,
+        "reputation" : 10522,
+        "user_id" : 13189,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/tKLRf.jpg?s=256",
+        "display_name" : "eckes",
+        "link" : "https://stackoverflow.com/users/13189/eckes"
+      },
+      "reply_to_user" : {
+        "account_id" : 1649573,
+        "reputation" : 2029,
+        "user_id" : 1520422,
+        "user_type" : "registered",
+        "accept_rate" : 36,
+        "profile_image" : "https://i.sstatic.net/FntW4.jpg?s=256",
+        "display_name" : "Frederic Leitenberger",
+        "link" : "https://stackoverflow.com/users/1520422/frederic-leitenberger"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1600085198,
+      "post_id" : 21172732,
+      "comment_id" : 112967451,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@FredericLeitenberger one property of the fork/join framework is that tasks can split off subtasks. For this to work (without handling the thread pool down) it has a built-in context/concept of &quot;current pool&quot;. See ForkJoinTask#fork(): <a href=\"http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/java/util/concurrent/ForkJoinTask.java#l693\" rel=\"nofollow noreferrer\">hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/shar&zwnj;&#8203;e/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1649573,
+        "reputation" : 2029,
+        "user_id" : 1520422,
+        "user_type" : "registered",
+        "accept_rate" : 36,
+        "profile_image" : "https://i.sstatic.net/FntW4.jpg?s=256",
+        "display_name" : "Frederic Leitenberger",
+        "link" : "https://stackoverflow.com/users/1520422/frederic-leitenberger"
+      },
+      "reply_to_user" : {
+        "account_id" : 7567,
+        "reputation" : 10522,
+        "user_id" : 13189,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/tKLRf.jpg?s=256",
+        "display_name" : "eckes",
+        "link" : "https://stackoverflow.com/users/13189/eckes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1600195762,
+      "post_id" : 21172732,
+      "comment_id" : 113010012,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@eckes thanks. And funny! I just stumbled across this code in my project again and then i saw your comment here! My question is 2,5 years old! :-) What a coincidence."
+    }, {
+      "owner" : {
+        "account_id" : 7567,
+        "reputation" : 10522,
+        "user_id" : 13189,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/tKLRf.jpg?s=256",
+        "display_name" : "eckes",
+        "link" : "https://stackoverflow.com/users/13189/eckes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1600210077,
+      "post_id" : 21172732,
+      "comment_id" : 113014601,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I was researching the issue because of heavy parallelStream() usage in some code reviews. I also noticed it&#39;s covered in some later answers, so sorry for the duplicate."
+    }, {
+      "owner" : {
+        "account_id" : 1107482,
+        "reputation" : 3145,
+        "user_id" : 1098603,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/sb0id.png?s=256",
+        "display_name" : "Matthieu",
+        "link" : "https://stackoverflow.com/users/1098603/matthieu"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1611594457,
+      "post_id" : 21172732,
+      "comment_id" : 116496672,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Don&#39;t you mean &quot;calling&quot; thread instead of &quot;main&quot; thread?"
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1643898410,
+      "post_id" : 21172732,
+      "comment_id" : 125465471,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I suggest reverting the Tod Casasent’s edit, as nothing in JDK-8190974 suggests that <code>System.setProperty(&quot;java.util.concurrent.ForkJoinPool.common&zwnj;&#8203;.parallelism&quot;, …)</code> shall not work anymore and as of JDK 18, it still works as intended."
+    } ],
+    "owner" : {
+      "account_id" : 440158,
+      "reputation" : 330010,
+      "user_id" : 829571,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://i.sstatic.net/zflGZ.png?s=256",
+      "display_name" : "assylias",
+      "link" : "https://stackoverflow.com/users/829571/assylias"
+    },
+    "is_accepted" : false,
+    "score" : 252,
+    "last_activity_date" : 1643998052,
+    "last_edit_date" : 1643998052,
+    "creation_date" : 1389905882,
+    "answer_id" : 21172732,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The parallel streams use the default <code>ForkJoinPool.commonPool</code> which <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html\" rel=\"noreferrer\">by default has one less threads as you have processors</a>, as returned by <code>Runtime.getRuntime().availableProcessors()</code> (This means that parallel streams leave one processor for the calling thread).</p>\n<blockquote>\n<p>For applications that require separate or custom pools, a ForkJoinPool may be constructed with a given target parallelism level; by default, equal to the number of available processors.</p>\n</blockquote>\n<p>This also means if you have nested parallel streams or multiple parallel streams started concurrently, they will all <em>share</em> the same pool.  Advantage: you will never use more than the default (number of available processors).  Disadvantage: you may not get &quot;all the processors&quot; assigned to each parallel stream you initiate (if you happen to have more than one).  (Apparently you can use a <a href=\"https://zeroturnaround.com/rebellabs/java-parallel-streams-are-bad-for-your-health/\" rel=\"noreferrer\">ManagedBlocker</a> to circumvent that.)</p>\n<p>To change the way parallel streams are executed, you can either</p>\n<ul>\n<li>submit the parallel stream execution to your own ForkJoinPool: <code>yourFJP.submit(() -&gt; stream.parallel().forEach(soSomething)).get();</code> or</li>\n<li>you can change the size of the common pool using system properties: <code>System.setProperty(&quot;java.util.concurrent.ForkJoinPool.common.parallelism&quot;, &quot;20&quot;)</code> for a target parallelism of 20 threads.</li>\n</ul>\n<hr />\n<p>Example of the latter on my machine which has 8 processors. If I run the following program:</p>\n<pre><code>long start = System.currentTimeMillis();\nIntStream s = IntStream.range(0, 20);\n//System.setProperty(&quot;java.util.concurrent.ForkJoinPool.common.parallelism&quot;, &quot;20&quot;);\ns.parallel().forEach(i -&gt; {\n    try { Thread.sleep(100); } catch (Exception ignore) {}\n    System.out.print((System.currentTimeMillis() - start) + &quot; &quot;);\n});\n</code></pre>\n<p>The output is:</p>\n<blockquote>\n<p>215 216 216 216 216 216 216 216 315 316 316 316 316 316 316 316 415 416 416 416</p>\n</blockquote>\n<p>So you can see that the parallel stream processes 8 items at a time, i.e. it uses 8 threads. However, if I uncomment the commented line, the output is:</p>\n<blockquote>\n<p>215 215 215 215 215 216 216 216 216 216 216 216 216 216 216 216 216 216 216 216</p>\n</blockquote>\n<p>This time, the parallel stream has used 20 threads and all 20 elements in the stream have been processed concurrently.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 103435,
+        "reputation" : 14373,
+        "user_id" : 277042,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/11f0ceb173142739c65eb36a550522a2?s=256&d=identicon&r=PG",
+        "display_name" : "Luk&#225;š Křečan",
+        "link" : "https://stackoverflow.com/users/277042/luk%c3%a1%c5%a1-k%c5%99e%c4%8dan"
+      },
+      "edited" : false,
+      "score" : 24,
+      "creation_date" : 1396100931,
+      "post_id" : 22269778,
+      "comment_id" : 34645210,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Details on the solution are described here <a href=\"http://blog.krecan.net/2014/03/18/how-to-specify-thread-pool-for-java-8-parallel-streams/\" rel=\"nofollow noreferrer\">blog.krecan.net/2014/03/18/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 2973802,
+        "reputation" : 51678,
+        "user_id" : 2525313,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/CId7Y.jpg?s=256",
+        "display_name" : "Nicolai Parlog",
+        "link" : "https://stackoverflow.com/users/2525313/nicolai-parlog"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1416250404,
+      "post_id" : 22269778,
+      "comment_id" : 42493863,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "But is it also specified that streams use the <code>ForkJoinPool</code> or is that an implementation detail? A link to the documentation would be nice."
+    }, {
+      "owner" : {
+        "account_id" : 103435,
+        "reputation" : 14373,
+        "user_id" : 277042,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/11f0ceb173142739c65eb36a550522a2?s=256&d=identicon&r=PG",
+        "display_name" : "Luk&#225;š Křečan",
+        "link" : "https://stackoverflow.com/users/277042/luk%c3%a1%c5%a1-k%c5%99e%c4%8dan"
+      },
+      "reply_to_user" : {
+        "account_id" : 2973802,
+        "reputation" : 51678,
+        "user_id" : 2525313,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/CId7Y.jpg?s=256",
+        "display_name" : "Nicolai Parlog",
+        "link" : "https://stackoverflow.com/users/2525313/nicolai-parlog"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1416340342,
+      "post_id" : 22269778,
+      "comment_id" : 42535244,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@NicolaiParlog You are right, I can&#39;t find it written anywhere. There is a related question <a href=\"http://stackoverflow.com/questions/24629247/where-does-say-that-javas-parallel-stream-operations-use-fork-join\">here</a>"
+    }, {
+      "owner" : {
+        "account_id" : 5089322,
+        "reputation" : 669,
+        "user_id" : 4082869,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/594b78cfdf4bc324ef13a34af1757fa1?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "jck",
+        "link" : "https://stackoverflow.com/users/4082869/jck"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1424287890,
+      "post_id" : 22269778,
+      "comment_id" : 45490989,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Lukas Thanks for the snippet. I will add that the <code>ForkJoinPool</code> instance should be <code>shutdown()</code> when it&#39;s not needed any longer to avoid a thread leak. <a href=\"https://github.com/jacek-rzrz/ForkJoinPool-thread-leak\" rel=\"nofollow noreferrer\">(example)</a>"
+    }, {
+      "owner" : {
+        "account_id" : 4482164,
+        "reputation" : 6833,
+        "user_id" : 3645944,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/9b7f71465e5268cbb6cce5eb42a1b1fc?s=256&d=identicon&r=PG",
+        "display_name" : "Pablo Matias Gomez",
+        "link" : "https://stackoverflow.com/users/3645944/pablo-matias-gomez"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1461973041,
+      "post_id" : 22269778,
+      "comment_id" : 61456573,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Lukas what about using more than 2? Why doesn&#39;t it work if I use 100 for example?"
+    }, {
+      "owner" : {
+        "account_id" : 103435,
+        "reputation" : 14373,
+        "user_id" : 277042,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/11f0ceb173142739c65eb36a550522a2?s=256&d=identicon&r=PG",
+        "display_name" : "Luk&#225;š Křečan",
+        "link" : "https://stackoverflow.com/users/277042/luk%c3%a1%c5%a1-k%c5%99e%c4%8dan"
+      },
+      "reply_to_user" : {
+        "account_id" : 4482164,
+        "reputation" : 6833,
+        "user_id" : 3645944,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/9b7f71465e5268cbb6cce5eb42a1b1fc?s=256&d=identicon&r=PG",
+        "display_name" : "Pablo Matias Gomez",
+        "link" : "https://stackoverflow.com/users/3645944/pablo-matias-gomez"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1462094674,
+      "post_id" : 22269778,
+      "comment_id" : 61485962,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@PabloMatiasGomez You mean the &quot;2&quot; used as the ForkJoinPool constructor argument? It works (if I remember it correctly) and actually makes sense for blocking tasks."
+    }, {
+      "owner" : {
+        "account_id" : 90167,
+        "reputation" : 164,
+        "user_id" : 2711105,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/7207debf9f46350a4ce327f5b51c305e?s=256&d=identicon&r=PG",
+        "display_name" : "roborative",
+        "link" : "https://stackoverflow.com/users/2711105/roborative"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1480697917,
+      "post_id" : 22269778,
+      "comment_id" : 69086121,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "There&#39;s a nice test case <a href=\"https://gist.github.com/thobson/a49c896f1c6c1c4cbb58\" rel=\"nofollow noreferrer\">here</a> as well."
+    }, {
+      "owner" : {
+        "account_id" : 48256,
+        "reputation" : 33305,
+        "user_id" : 143295,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/wWgD6.jpg?s=256",
+        "display_name" : "Nicole",
+        "link" : "https://stackoverflow.com/users/143295/nicole"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1516229536,
+      "post_id" : 22269778,
+      "comment_id" : 83608446,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Using <code>join()</code> instead of <code>get()</code> will more closely match the default behavior without the custom pool. (It will not throw checked exceptions that <code>get()</code> does.)"
+    }, {
+      "owner" : {
+        "account_id" : 4158942,
+        "reputation" : 1152,
+        "user_id" : 3409441,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/k9b4h.jpg?s=256",
+        "display_name" : "Terran",
+        "link" : "https://stackoverflow.com/users/3409441/terran"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1554155788,
+      "post_id" : 22269778,
+      "comment_id" : 97640318,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note that there&#39;s a bug in Java 8 that even though tasks are running on a custom pool instance, they are still coupled to the shared pool: the size of the computation remains in proportion to the common pool and not the custom pool. Was fixed in Java 10: <a href=\"https://bugs.openjdk.java.net/browse/JDK-8190974\" rel=\"nofollow noreferrer\">JDK-8190974</a>"
+    }, {
+      "owner" : {
+        "account_id" : 7354939,
+        "reputation" : 383,
+        "user_id" : 5700299,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/c60139fda4ef72adc9cde9c2fcbcbc23?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "omjego",
+        "link" : "https://stackoverflow.com/users/5700299/omjego"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1559903993,
+      "post_id" : 22269778,
+      "comment_id" : 99574235,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Is there any way to achieve this using ThreadPoolExecutor? I found out that the first task is executed by ThreadPool but others will be executed by  common fork join pool."
+    }, {
+      "owner" : {
+        "account_id" : 1031937,
+        "reputation" : 86,
+        "user_id" : 1040107,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5e4dce7b7bf3ff5e84ad08e190c57128?s=256&d=identicon&r=PG",
+        "display_name" : "Cutberto Ocampo",
+        "link" : "https://stackoverflow.com/users/1040107/cutberto-ocampo"
+      },
+      "reply_to_user" : {
+        "account_id" : 4158942,
+        "reputation" : 1152,
+        "user_id" : 3409441,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/k9b4h.jpg?s=256",
+        "display_name" : "Terran",
+        "link" : "https://stackoverflow.com/users/3409441/terran"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1560369806,
+      "post_id" : 22269778,
+      "comment_id" : 99718309,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@terran This issue has also been fixed for Java 8 <a href=\"https://bugs.openjdk.java.net/browse/JDK-8224620\" rel=\"nofollow noreferrer\">bugs.openjdk.java.net/browse/JDK-8224620</a>"
+    }, {
+      "owner" : {
+        "account_id" : 4158942,
+        "reputation" : 1152,
+        "user_id" : 3409441,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/k9b4h.jpg?s=256",
+        "display_name" : "Terran",
+        "link" : "https://stackoverflow.com/users/3409441/terran"
+      },
+      "reply_to_user" : {
+        "account_id" : 1031937,
+        "reputation" : 86,
+        "user_id" : 1040107,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5e4dce7b7bf3ff5e84ad08e190c57128?s=256&d=identicon&r=PG",
+        "display_name" : "Cutberto Ocampo",
+        "link" : "https://stackoverflow.com/users/1040107/cutberto-ocampo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1560501153,
+      "post_id" : 22269778,
+      "comment_id" : 99765326,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@CutbertoOcampo Nice. Thought that Oracle doesn&#39;t downstream any longer. Maybe RedHat took over."
+    }, {
+      "owner" : {
+        "account_id" : 221017,
+        "reputation" : 1245,
+        "user_id" : 478765,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/7d44423fad79530b59a084b2d15ee19a?s=256&d=identicon&r=PG",
+        "display_name" : "ed22",
+        "link" : "https://stackoverflow.com/users/478765/ed22"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1570794273,
+      "post_id" : 22269778,
+      "comment_id" : 103036343,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why cant it be in the official streams API? What if streams stop using ForkJoinPool?"
+    }, {
+      "owner" : {
+        "account_id" : 3683805,
+        "reputation" : 9340,
+        "user_id" : 3950982,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7491f45ae073ed6bfe01b1e63fb06bf0?s=256&d=identicon&r=PG",
+        "display_name" : "Luke Hutchison",
+        "link" : "https://stackoverflow.com/users/3950982/luke-hutchison"
+      },
+      "reply_to_user" : {
+        "account_id" : 5089322,
+        "reputation" : 669,
+        "user_id" : 4082869,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/594b78cfdf4bc324ef13a34af1757fa1?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "jck",
+        "link" : "https://stackoverflow.com/users/4082869/jck"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1572050374,
+      "post_id" : 22269778,
+      "comment_id" : 103452426,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@jck I agree, I edited the code snippet to include <code>.shutdown()</code>. There was also a missing <code>.boxed()</code> before <code>.collect(...)</code>."
+    }, {
+      "owner" : {
+        "account_id" : 3683805,
+        "reputation" : 9340,
+        "user_id" : 3950982,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7491f45ae073ed6bfe01b1e63fb06bf0?s=256&d=identicon&r=PG",
+        "display_name" : "Luke Hutchison",
+        "link" : "https://stackoverflow.com/users/3950982/luke-hutchison"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1572051338,
+      "post_id" : 22269778,
+      "comment_id" : 103452568,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "FYI -- the JDK team does not like this solution at all -- see: <a href=\"https://mail.openjdk.java.net/pipermail/jdk-dev/2019-October/003438.html\" rel=\"nofollow noreferrer\">mail.openjdk.java.net/pipermail/jdk-dev/2019-October/&hellip;</a> <a href=\"https://mail.openjdk.java.net/pipermail/jdk-dev/2019-October/003440.html\" rel=\"nofollow noreferrer\">mail.openjdk.java.net/pipermail/jdk-dev/2019-October/&hellip;</a> <a href=\"https://mail.openjdk.java.net/pipermail/jdk-dev/2019-October/003443.html\" rel=\"nofollow noreferrer\">mail.openjdk.java.net/pipermail/jdk-dev/2019-October/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1229539,
+        "reputation" : 87867,
+        "user_id" : 1194415,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/d3dZP.png?s=256",
+        "display_name" : "membersound",
+        "link" : "https://stackoverflow.com/users/1194415/membersound"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1640087518,
+      "post_id" : 22269778,
+      "comment_id" : 124507334,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I doubt this is correct. Any <code>IntStream.range(..).parallel().collect(Collectors.toList());</code> will run in sync by default, at least on my machine jdk11. So the above is no proof. Change <code>.collect()</code> to  <code>.forEach(i -&gt; System.out.println(i))</code> and you will see the numbers are printed in order <i>even</i> without the <code>ForkJoinPool</code> wrapper."
+    }, {
+      "owner" : {
+        "account_id" : 1639936,
+        "reputation" : 723,
+        "user_id" : 1512592,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/4bPcx.jpg?s=256",
+        "display_name" : "Dirk Hillbrecht",
+        "link" : "https://stackoverflow.com/users/1512592/dirk-hillbrecht"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1668947052,
+      "post_id" : 22269778,
+      "comment_id" : 131524933,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This did not work, neither with 8u352 nor with 17.0.1. I had to encapsulate the complete stream handling into <code>CompletableFuture.(supply|run)Async()</code> with explicitly passing the dedicated ForkJoinPool as executor (2nd parameter). Only then the parellel stream stopped using the main thread or the common fork-join-pool."
+    } ],
+    "owner" : {
+      "account_id" : 103435,
+      "reputation" : 14373,
+      "user_id" : 277042,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/11f0ceb173142739c65eb36a550522a2?s=256&d=identicon&r=PG",
+      "display_name" : "Luk&#225;š Křečan",
+      "link" : "https://stackoverflow.com/users/277042/luk%c3%a1%c5%a1-k%c5%99e%c4%8dan"
+    },
+    "is_accepted" : true,
+    "score" : 519,
+    "last_activity_date" : 1606299527,
+    "last_edit_date" : 1606299527,
+    "creation_date" : 1394284343,
+    "answer_id" : 22269778,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There actually is a trick how to execute a parallel operation in a specific fork-join pool. If you execute it as a task in a fork-join pool, it stays there and does not use the common one.</p>\n<pre><code>final int parallelism = 4;\nForkJoinPool forkJoinPool = null;\ntry {\n    forkJoinPool = new ForkJoinPool(parallelism);\n    final List&lt;Integer&gt; primes = forkJoinPool.submit(() -&gt;\n        // Parallel task here, for example\n        IntStream.range(1, 1_000_000).parallel()\n                .filter(PrimesPrint::isPrime)\n                .boxed().collect(Collectors.toList())\n    ).get();\n    System.out.println(primes);\n} catch (InterruptedException | ExecutionException e) {\n    throw new RuntimeException(e);\n} finally {\n    if (forkJoinPool != null) {\n        forkJoinPool.shutdown();\n    }\n}\n</code></pre>\n<p>The trick is based on <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinTask.html#fork--\" rel=\"noreferrer\"><code>ForkJoinTask.fork</code></a> which specifies: &quot;Arranges to asynchronously execute this task in the pool the current task is running in, if applicable, or using the <code>ForkJoinPool.commonPool()</code> if not <code>inForkJoinPool()</code>&quot;</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 39135,
+      "reputation" : 13803,
+      "user_id" : 112779,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/9eafc29df96e6aaf4a3eb4c0209086ae?s=256&d=identicon&r=PG",
+      "display_name" : "Mario Fusco",
+      "link" : "https://stackoverflow.com/users/112779/mario-fusco"
+    },
+    "is_accepted" : false,
+    "score" : 58,
+    "last_activity_date" : 1420272357,
+    "creation_date" : 1420272357,
+    "answer_id" : 27752931,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Alternatively to the trick of triggering the parallel computation inside your own forkJoinPool you can also pass that pool to the CompletableFuture.supplyAsync method like in:</p>\n\n<pre><code>ForkJoinPool forkJoinPool = new ForkJoinPool(2);\nCompletableFuture&lt;List&lt;Integer&gt;&gt; primes = CompletableFuture.supplyAsync(() -&gt;\n    //parallel task here, for example\n    range(1, 1_000_000).parallel().filter(PrimesPrint::isPrime).collect(toList()), \n    forkJoinPool\n);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 926602,
+        "reputation" : 4611,
+        "user_id" : 957280,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/444657969cf67f88fd6a584d66bf81b9?s=256&d=identicon&r=PG",
+        "display_name" : "keyoxy",
+        "link" : "https://stackoverflow.com/users/957280/keyoxy"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1474445133,
+      "post_id" : 34930831,
+      "comment_id" : 66529111,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The Thread.activeCount() doesn&#39;t tell you what threads are processing your stream. Map to Thread.currentThread().getName() instead, followed by a distinct(). Then you will realize that not every thread in the pool will be used... Add a delay to your processing and all threads in the pool will be utilized."
+    } ],
+    "owner" : {
+      "account_id" : 1135767,
+      "reputation" : 1557,
+      "user_id" : 1120854,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/rp1qQ.png?s=256",
+      "display_name" : "charlie",
+      "link" : "https://stackoverflow.com/users/1120854/charlie"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1453398598,
+    "creation_date" : 1453398598,
+    "answer_id" : 34930831,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To measure the actual number of used threads, you can check <code>Thread.activeCount()</code>:</p>\n\n<pre><code>    Runnable r = () -&gt; IntStream\n            .range(-42, +42)\n            .parallel()\n            .map(i -&gt; Thread.activeCount())\n            .max()\n            .ifPresent(System.out::println);\n\n    ForkJoinPool.commonPool().submit(r).join();\n    new ForkJoinPool(42).submit(r).join();\n</code></pre>\n\n<p>This can produce on a 4-core CPU an output like:</p>\n\n<pre><code>5 // common pool\n23 // custom pool\n</code></pre>\n\n<p>Without <code>.parallel()</code> it gives:</p>\n\n<pre><code>3 // common pool\n4 // custom pool\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1620331,
+      "reputation" : 5295,
+      "user_id" : 1497059,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/76a941a6c810ada88a7d9f298d7e3a3a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Stefan Ferstl",
+      "link" : "https://stackoverflow.com/users/1497059/stefan-ferstl"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1470773217,
+    "last_edit_date" : 1495535496,
+    "creation_date" : 1470773217,
+    "answer_id" : 38859532,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Until now, I used the solutions described in the answers of this question. Now, I came up with a little library called <a href=\"https://github.com/ferstl/parallel-stream-support\" rel=\"noreferrer\">Parallel Stream Support</a> for that:</p>\n\n<pre><code>ForkJoinPool pool = new ForkJoinPool(NR_OF_THREADS);\nParallelIntStreamSupport.range(1, 1_000_000, pool)\n    .filter(PrimesPrint::isPrime)\n    .collect(toList())\n</code></pre>\n\n<p>But as @PabloMatiasGomez pointed out in the comments, there are drawbacks regarding the splitting mechanism of parallel streams which depends heavily on the size of the common pool. See <a href=\"https://stackoverflow.com/questions/28985704/parallel-stream-from-a-hashset-doesnt-run-in-parallel\">Parallel stream from a HashSet doesn&#39;t run in parallel</a> .</p>\n\n<p>I am using this solution only to have separate pools for different types of work but I can not set the size of the common pool to 1 even if I don't use it.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4711108,
+        "reputation" : 14171,
+        "user_id" : 3811592,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/76q7x.jpg?s=256",
+        "display_name" : "d-coder",
+        "link" : "https://stackoverflow.com/users/3811592/d-coder"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1560343941,
+      "post_id" : 39172410,
+      "comment_id" : 99704777,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I don&#39;t see the change in parallelism when I do <code>ForkJoinPool.commonPool().getParallelism()</code> in debug mode."
+    }, {
+      "owner" : {
+        "account_id" : 6345157,
+        "reputation" : 583,
+        "user_id" : 4925968,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b1a1b8ee6787485990ad7ecaa90eb83c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tod Casasent",
+        "link" : "https://stackoverflow.com/users/4925968/tod-casasent"
+      },
+      "reply_to_user" : {
+        "account_id" : 4711108,
+        "reputation" : 14171,
+        "user_id" : 3811592,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/76q7x.jpg?s=256",
+        "display_name" : "d-coder",
+        "link" : "https://stackoverflow.com/users/3811592/d-coder"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1560434998,
+      "post_id" : 39172410,
+      "comment_id" : 99742745,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks. I did some testing/research and updated the answer. Looks like an update changed it, as it works in older versions."
+    }, {
+      "owner" : {
+        "account_id" : 10949420,
+        "reputation" : 5986,
+        "user_id" : 8046232,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/793f80385d297780c9ae68f208033d5f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Rocky Li",
+        "link" : "https://stackoverflow.com/users/8046232/rocky-li"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1565104614,
+      "post_id" : 39172410,
+      "comment_id" : 101242923,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why do I keep getting this: <code>unreported exception InterruptedException; must be caught or declared to be thrown</code> even with all the <code>catch</code> exceptions in the loop."
+    }, {
+      "owner" : {
+        "account_id" : 6345157,
+        "reputation" : 583,
+        "user_id" : 4925968,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b1a1b8ee6787485990ad7ecaa90eb83c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tod Casasent",
+        "link" : "https://stackoverflow.com/users/4925968/tod-casasent"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1565194312,
+      "post_id" : 39172410,
+      "comment_id" : 101278477,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Rocky, I&#39;m not seeing any errors. Knowing the Java version and the exact line will help. The &quot;InterruptedException&quot; suggests the try/catch around the sleep is not closed properly in your version."
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1643901540,
+      "post_id" : 39172410,
+      "comment_id" : 125467050,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "When I do <code>System.setProperty(&quot;java.util.concurrent.ForkJoinPool.common&zwnj;&#8203;.parallelism&quot;, &quot;10&quot;); System.out.println(ForkJoinPool.commonPool().getParallelism(&zwnj;&#8203;));</code>, it consistently prints <code>10</code> on all versions from JDK 8 to JDK 18. I don’t know why you claim that this  common parallelism property does not work; the link you’ve added to the other answer does not even remotely say anything about this property and its patch does not touch this functionality at all."
+    } ],
+    "owner" : {
+      "account_id" : 6345157,
+      "reputation" : 583,
+      "user_id" : 4925968,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b1a1b8ee6787485990ad7ecaa90eb83c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tod Casasent",
+      "link" : "https://stackoverflow.com/users/4925968/tod-casasent"
+    },
+    "is_accepted" : false,
+    "score" : 24,
+    "last_activity_date" : 1560434951,
+    "last_edit_date" : 1560434951,
+    "creation_date" : 1472235308,
+    "answer_id" : 39172410,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The original solution (setting the ForkJoinPool common parallelism property) no longer works. Looking at the links in the original answer, an update which breaks this has been back ported to Java 8. As mentioned in the linked threads, this solution was not guaranteed to work forever. Based on that, the solution is the forkjoinpool.submit with .get solution discussed in the accepted answer. I think the backport fixes the unreliability of this solution also.</p>\n\n<pre><code>ForkJoinPool fjpool = new ForkJoinPool(10);\nSystem.out.println(\"stream.parallel\");\nIntStream range = IntStream.range(0, 20);\nfjpool.submit(() -&gt; range.parallel()\n        .forEach((int theInt) -&gt;\n        {\n            try { Thread.sleep(100); } catch (Exception ignore) {}\n            System.out.println(Thread.currentThread().getName() + \" -- \" + theInt);\n        })).get();\nSystem.out.println(\"list.parallelStream\");\nint [] array = IntStream.range(0, 20).toArray();\nList&lt;Integer&gt; list = new ArrayList&lt;&gt;();\nfor (int theInt: array)\n{\n    list.add(theInt);\n}\nfjpool.submit(() -&gt; list.parallelStream()\n        .forEach((theInt) -&gt;\n        {\n            try { Thread.sleep(100); } catch (Exception ignore) {}\n            System.out.println(Thread.currentThread().getName() + \" -- \" + theInt);\n        })).get();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4120139,
+      "reputation" : 1324,
+      "user_id" : 3380739,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/711282833/picture?type=large",
+      "display_name" : "user_3380739",
+      "link" : "https://stackoverflow.com/users/3380739/user-3380739"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1660712603,
+    "last_edit_date" : 1660712603,
+    "creation_date" : 1480649168,
+    "answer_id" : 40924281,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Go to get <a href=\"https://github.com/landawn/abacus-common\" rel=\"nofollow noreferrer\">abacus-common</a>. Thread number can by specified for parallel stream. Here is the sample code:</p>\n<pre><code>LongStream.range(4, 1_000_000).parallel(threadNum)...\n</code></pre>\n<p>Disclosure： I'm the developer of abacus-common.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5914036,
+      "reputation" : 5303,
+      "user_id" : 4653367,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/0sRMy.png?s=256",
+      "display_name" : "John McClean",
+      "link" : "https://stackoverflow.com/users/4653367/john-mcclean"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1489147459,
+    "creation_date" : 1489147459,
+    "answer_id" : 42718019,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you don't mind using a third-party library, with <a href=\"https://github.com/aol/cyclops-react\" rel=\"nofollow noreferrer\">cyclops-react</a> you can mix sequential and parallel Streams within the same pipeline and provide custom ForkJoinPools. For example</p>\n\n<pre><code> ReactiveSeq.range(1, 1_000_000)\n            .foldParallel(new ForkJoinPool(10),\n                          s-&gt;s.filter(i-&gt;true)\n                              .peek(i-&gt;System.out.println(\"Thread \" + Thread.currentThread().getId()))\n                              .max(Comparator.naturalOrder()));\n</code></pre>\n\n<p>Or if we wished to continue processing within a sequential Stream</p>\n\n<pre><code> ReactiveSeq.range(1, 1_000_000)\n            .parallel(new ForkJoinPool(10),\n                      s-&gt;s.filter(i-&gt;true)\n                          .peek(i-&gt;System.out.println(\"Thread \" + Thread.currentThread().getId())))\n            .map(this::processSequentially)\n            .forEach(System.out::println);\n</code></pre>\n\n<p>[Disclosure I am the lead developer of cyclops-react]</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7354939,
+        "reputation" : 383,
+        "user_id" : 5700299,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/c60139fda4ef72adc9cde9c2fcbcbc23?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "omjego",
+        "link" : "https://stackoverflow.com/users/5700299/omjego"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1559904326,
+      "post_id" : 50575042,
+      "comment_id" : 99574384,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What could be the possible reason behind not allowing other executors?"
+    }, {
+      "owner" : {
+        "account_id" : 2739457,
+        "reputation" : 7886,
+        "user_id" : 2361308,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/99484dc9d142352778e01ac0c4948c1d?s=256&d=identicon&r=PG",
+        "display_name" : "Hearen",
+        "link" : "https://stackoverflow.com/users/2361308/hearen"
+      },
+      "reply_to_user" : {
+        "account_id" : 7354939,
+        "reputation" : 383,
+        "user_id" : 5700299,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/c60139fda4ef72adc9cde9c2fcbcbc23?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "omjego",
+        "link" : "https://stackoverflow.com/users/5700299/omjego"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1561010268,
+      "post_id" : 50575042,
+      "comment_id" : 99925601,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@omjego That’s a good question perhaps you could start a a new question and provide more details to elaborate your ideas ;)"
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "reply_to_user" : {
+        "account_id" : 7354939,
+        "reputation" : 383,
+        "user_id" : 5700299,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/c60139fda4ef72adc9cde9c2fcbcbc23?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "omjego",
+        "link" : "https://stackoverflow.com/users/5700299/omjego"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1643902410,
+      "post_id" : 50575042,
+      "comment_id" : 125467452,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@omjego because it never was an intended feature. The Stream implementation happened to use Fork/Join tasks and it wasn’t considered that these tasks have the feature of picking up the caller’s pool if being called from a Fork/Join pool’s worker thread. Even today, this trick is not documented nor officially supported. That’s also the reason why the first versions didn’t respect the custom pool’s parallelism but inconsistently used the common pool’s. Using a different pool wasn’t foreseen."
+    } ],
+    "owner" : {
+      "account_id" : 2739457,
+      "reputation" : 7886,
+      "user_id" : 2361308,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://www.gravatar.com/avatar/99484dc9d142352778e01ac0c4948c1d?s=256&d=identicon&r=PG",
+      "display_name" : "Hearen",
+      "link" : "https://stackoverflow.com/users/2361308/hearen"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1527556292,
+    "creation_date" : 1527556292,
+    "answer_id" : 50575042,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I tried the <strong>custom</strong> ForkJoinPool as follows to adjust the pool size:</p>\n\n<pre><code>private static Set&lt;String&gt; ThreadNameSet = new HashSet&lt;&gt;();\nprivate static Callable&lt;Long&gt; getSum() {\n    List&lt;Long&gt; aList = LongStream.rangeClosed(0, 10_000_000).boxed().collect(Collectors.toList());\n    return () -&gt; aList.parallelStream()\n            .peek((i) -&gt; {\n                String threadName = Thread.currentThread().getName();\n                ThreadNameSet.add(threadName);\n            })\n            .reduce(0L, Long::sum);\n}\n\nprivate static void testForkJoinPool() {\n    final int parallelism = 10;\n\n    ForkJoinPool forkJoinPool = null;\n    Long result = 0L;\n    try {\n        forkJoinPool = new ForkJoinPool(parallelism);\n        result = forkJoinPool.submit(getSum()).get(); //this makes it an overall blocking call\n\n    } catch (InterruptedException | ExecutionException e) {\n        e.printStackTrace();\n    } finally {\n        if (forkJoinPool != null) {\n            forkJoinPool.shutdown(); //always remember to shutdown the pool\n        }\n    }\n    out.println(result);\n    out.println(ThreadNameSet);\n}\n</code></pre>\n\n<p>Here is the output saying the pool is using more threads than the default <strong>4</strong>. </p>\n\n<pre><code>50000005000000\n[ForkJoinPool-1-worker-8, ForkJoinPool-1-worker-9, ForkJoinPool-1-worker-6, ForkJoinPool-1-worker-11, ForkJoinPool-1-worker-10, ForkJoinPool-1-worker-1, ForkJoinPool-1-worker-15, ForkJoinPool-1-worker-13, ForkJoinPool-1-worker-4, ForkJoinPool-1-worker-2]\n</code></pre>\n\n<p>But actually there is a <strong>weirdo</strong>, when I tried to achieve the same result using <code>ThreadPoolExecutor</code> as follows:</p>\n\n<pre><code>BlockingDeque blockingDeque = new LinkedBlockingDeque(1000);\nThreadPoolExecutor fixedSizePool = new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS, blockingDeque, new MyThreadFactory(\"my-thread\"));\n</code></pre>\n\n<p>but I failed. </p>\n\n<p>It will only start the <strong>parallelStream</strong> in a new thread and then everything else is just the same, which <strong>again</strong> proves that the <code>parallelStream</code> will use <strong>the ForkJoinPool</strong> to start its child threads. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8897801,
+      "reputation" : 71,
+      "user_id" : 6642185,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/42609c33e0a852be53ef5e66132a247a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Scott Langley",
+      "link" : "https://stackoverflow.com/users/6642185/scott-langley"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1528920572,
+    "creation_date" : 1528920572,
+    "answer_id" : 50845456,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Note:</strong> \nThere appears to be a fix implemented in JDK 10 that ensures the Custom Thread Pool uses the expected number of threads.</p>\n\n<p>Parallel stream execution within a custom ForkJoinPool should obey the parallelism\n<a href=\"https://bugs.openjdk.java.net/browse/JDK-8190974\" rel=\"noreferrer\">https://bugs.openjdk.java.net/browse/JDK-8190974</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 35077,
+      "reputation" : 28788,
+      "user_id" : 99256,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/978f4ada69acd8041970db40838d8786?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "MartyIX",
+      "link" : "https://stackoverflow.com/users/99256/martyix"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1541067050,
+    "creation_date" : 1541067050,
+    "answer_id" : 53099109,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you don't need a custom ThreadPool but you rather want to limit the number of concurrent tasks, you can use:</p>\n\n<pre><code>List&lt;Path&gt; paths = List.of(\"/path/file1.csv\", \"/path/file2.csv\", \"/path/file3.csv\").stream().map(e -&gt; Paths.get(e)).collect(toList());\nList&lt;List&lt;Path&gt;&gt; partitions = Lists.partition(paths, 4); // Guava method\n\npartitions.forEach(group -&gt; group.parallelStream().forEach(csvFilePath -&gt; {\n       // do your processing   \n}));\n</code></pre>\n\n<p>(Duplicate question asking for this is locked, so please bear me here)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2570598,
+      "reputation" : 14191,
+      "user_id" : 2229438,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://i.sstatic.net/o7UOwYA4.jpg?s=256",
+      "display_name" : "Grzegorz Piwowarek",
+      "link" : "https://stackoverflow.com/users/2229438/grzegorz-piwowarek"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1611263379,
+    "last_edit_date" : 1611263379,
+    "creation_date" : 1549029084,
+    "answer_id" : 54480899,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you don't want to rely on implementation hacks, there's always a way to achieve the same by implementing custom collectors that will combine <code>map</code> and <code>collect</code> semantics... and you wouldn't be limited to ForkJoinPool:</p>\n<pre><code>list.stream()\n  .collect(parallel(i -&gt; process(i), executor, 4))\n  .join()\n</code></pre>\n<p>Luckily, it's done already here and available on Maven Central:\n<a href=\"http://github.com/pivovarit/parallel-collectors\" rel=\"nofollow noreferrer\">http://github.com/pivovarit/parallel-collectors</a></p>\n<p>Disclaimer: I wrote it and take responsibility for it.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 204434,
+        "reputation" : 935,
+        "user_id" : 452647,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/f93c853f56d4c2ac29a98be6a4dbcf58?s=256&d=identicon&r=PG",
+        "display_name" : "meadlai",
+        "link" : "https://stackoverflow.com/users/452647/meadlai"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571291316,
+      "post_id" : 54821697,
+      "comment_id" : 103192909,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Although it&#39;s a global setting, it works to increase the parallelStream"
+    }, {
+      "owner" : {
+        "account_id" : 2109967,
+        "reputation" : 7219,
+        "user_id" : 1875434,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/dc064a0af5b489a8a5aec8dcf53cc21e?s=256&d=identicon&r=PG",
+        "display_name" : "abbas",
+        "link" : "https://stackoverflow.com/users/1875434/abbas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582696760,
+      "post_id" : 54821697,
+      "comment_id" : 106861989,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Same person as above, this is not working for me on openjdk &quot;11.0.6&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "reply_to_user" : {
+        "account_id" : 2109967,
+        "reputation" : 7219,
+        "user_id" : 1875434,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/dc064a0af5b489a8a5aec8dcf53cc21e?s=256&d=identicon&r=PG",
+        "display_name" : "abbas",
+        "link" : "https://stackoverflow.com/users/1875434/abbas"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1643901882,
+      "post_id" : 54821697,
+      "comment_id" : 125467215,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@abbas worked on all versions I tried, from Java 8 to Java 18."
+    } ],
+    "owner" : {
+      "account_id" : 4911554,
+      "reputation" : 14005,
+      "user_id" : 3956731,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/nppV1.jpg?s=256",
+      "display_name" : "KayV",
+      "link" : "https://stackoverflow.com/users/3956731/kayv"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1550818742,
+    "creation_date" : 1550818742,
+    "answer_id" : 54821697,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>We can change the default parallelism using the following property:</p>\n\n<pre><code>-Djava.util.concurrent.ForkJoinPool.common.parallelism=16\n</code></pre>\n\n<p>which can set up to use more parallelism.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7392763,
+      "reputation" : 3767,
+      "user_id" : 5625696,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://graph.facebook.com/1157900344239720/picture?type=large",
+      "display_name" : "Borislav Stoilov",
+      "link" : "https://stackoverflow.com/users/5625696/borislav-stoilov"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1597737834,
+    "creation_date" : 1597737834,
+    "answer_id" : 63464317,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is how I set the max thread count flag mentioned above programatically and a code sniped to verify that the parameter is honored</p>\n<pre><code>System.setProperty(&quot;java.util.concurrent.ForkJoinPool.common.parallelism&quot;, &quot;2&quot;);\nSet&lt;String&gt; threadNames = Stream.iterate(0, n -&gt; n + 1)\n  .parallel()\n  .limit(100000)\n  .map(i -&gt; Thread.currentThread().getName())\n  .collect(Collectors.toSet());\nSystem.out.println(threadNames);\n\n// Output -&gt; [ForkJoinPool.commonPool-worker-1, Test worker, ForkJoinPool.commonPool-worker-3]\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2879573,
+      "reputation" : 9777,
+      "user_id" : 2470765,
+      "user_type" : "registered",
+      "accept_rate" : 59,
+      "profile_image" : "https://i.sstatic.net/DOj3z.jpg?s=256",
+      "display_name" : "michal.jakubeczy",
+      "link" : "https://stackoverflow.com/users/2470765/michal-jakubeczy"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1658417928,
+    "creation_date" : 1658417928,
+    "answer_id" : 73069076,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I made utility method to run task in parallel with argument which defines max number of threads.</p>\n<pre><code>public static void runParallel(final int maxThreads, Runnable task) throws RuntimeException {\n    ForkJoinPool forkJoinPool = null;\n    try {\n        forkJoinPool = new ForkJoinPool(maxThreads);\n        forkJoinPool.submit(task).get();\n    } catch (InterruptedException | ExecutionException e) {\n        throw new RuntimeException(e);\n    } finally {\n        if (forkJoinPool != null) {\n            forkJoinPool.shutdown();\n        }\n    }\n}\n</code></pre>\n<p>It creates <code>ForkJoinPool</code> with max number of allowed threads and it shuts it down after the task completes (or fails).</p>\n<p>Usage is following:</p>\n<pre><code>final int maxThreads = 4;\nrunParallel(maxThreads, () -&gt; \n    IntStream.range(1, 1_000_000).parallel()\n            .filter(PrimesPrint::isPrime)\n            .boxed().collect(Collectors.toList()));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3833616,
+        "reputation" : 655,
+        "user_id" : 3178543,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7a8d84df0025e58fa461bdb44a9937b2?s=256&d=identicon&r=PG",
+        "display_name" : "Adam",
+        "link" : "https://stackoverflow.com/users/3178543/adam"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1759771127,
+      "post_id" : 74508381,
+      "comment_id" : 140780103,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Where do you that from?"
+    } ],
+    "owner" : {
+      "account_id" : 1639936,
+      "reputation" : 723,
+      "user_id" : 1512592,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://i.sstatic.net/4bPcx.jpg?s=256",
+      "display_name" : "Dirk Hillbrecht",
+      "link" : "https://stackoverflow.com/users/1512592/dirk-hillbrecht"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1668950505,
+    "last_edit_date" : 1668950505,
+    "creation_date" : 1668949940,
+    "answer_id" : 74508381,
+    "question_id" : 21163108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The (currently) accepted answer is partly wrong. It is <em>not</em> sufficient to just <code>submit()</code> the parallel stream to the dedicated fork-join-pool. In this case, the stream will use that pool's threads and <em>additionally</em> the common fork-join-pool and even the calling thread to handle the workload of the stream, it seems up to the size of the common fork-join pool. The behaviour is a bit weird but definitely not what is required.</p>\n<p>To actually restrict the work <em>completely</em> to the dedicated pool, you must encapsulate it into a <code>CompletableFuture</code>:</p>\n<pre class=\"lang-java prettyprint-override\"><code>final int parallelism = 4;\nForkJoinPool forkJoinPool = null;\ntry {\n  forkJoinPool = new ForkJoinPool(parallelism);\n  final List&lt;Integer&gt; primes = CompletableFuture.supplyAsync(() -&gt; \n        // Parallel task here, for example\n        IntStream.range(1, 1_000_000).parallel()\n                .filter(PrimesPrint::isPrime)\n                .boxed().collect(Collectors.toList()),\n    forkJoinPool)  // &lt;- passes dedicated fork-join pool as executor\n    .join();  // &lt;- Wait for result from forkJoinPool\n    System.out.println(primes);\n} finally {\n    if (forkJoinPool != null) {\n        forkJoinPool.shutdown();\n    }\n}\n</code></pre>\n<p>This code stays with all operations in <code>forkJoinPool</code> on both Java 8u352 and Java 17.0.1.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 103435,
+    "reputation" : 14373,
+    "user_id" : 277042,
+    "user_type" : "registered",
+    "accept_rate" : 57,
+    "profile_image" : "https://www.gravatar.com/avatar/11f0ceb173142739c65eb36a550522a2?s=256&d=identicon&r=PG",
+    "display_name" : "Luk&#225;š Křečan",
+    "link" : "https://stackoverflow.com/users/277042/luk%c3%a1%c5%a1-k%c5%99e%c4%8dan"
+  },
+  "is_answered" : true,
+  "view_count" : 312461,
+  "protected_date" : 1541496049,
+  "accepted_answer_id" : 22269778,
+  "answer_count" : 16,
+  "score" : 501,
+  "last_activity_date" : 1668950505,
+  "creation_date" : 1389878797,
+  "last_edit_date" : 1406756098,
+  "question_id" : 21163108,
+  "link" : "https://stackoverflow.com/questions/21163108/custom-thread-pool-in-java-8-parallel-stream",
+  "title" : "Custom thread pool in Java 8 parallel stream",
+  "body" : "<p>Is it possible to specify a custom thread pool for Java 8 <a href=\"http://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html\">parallel stream</a>? I can not find it anywhere. </p>\n\n<p>Imagine that I have a server application and I would like to use parallel streams. But the application is large and multi-threaded so I want to compartmentalize it. I do not want a slow running task in one module of the applicationblock tasks from another module.</p>\n\n<p>If I can not use different thread pools for different modules, it means I can not safely use parallel streams in most of real world situations.</p>\n\n<p>Try the following example. There are some CPU intensive tasks executed in separate threads.\nThe tasks leverage parallel streams. The first task is broken, so each step takes 1 second (simulated by thread sleep). The issue is that other threads get stuck and wait for the broken task to finish. This is contrived example, but imagine a servlet app and someone submitting a long running task to the shared fork join pool. </p>\n\n<pre><code>public class ParallelTest {\n    public static void main(String[] args) throws InterruptedException {\n        ExecutorService es = Executors.newCachedThreadPool();\n\n        es.execute(() -&gt; runTask(1000)); //incorrect task\n        es.execute(() -&gt; runTask(0));\n        es.execute(() -&gt; runTask(0));\n        es.execute(() -&gt; runTask(0));\n        es.execute(() -&gt; runTask(0));\n        es.execute(() -&gt; runTask(0));\n\n\n        es.shutdown();\n        es.awaitTermination(60, TimeUnit.SECONDS);\n    }\n\n    private static void runTask(int delay) {\n        range(1, 1_000_000).parallel().filter(ParallelTest::isPrime).peek(i -&gt; Utils.sleep(delay)).max()\n                .ifPresent(max -&gt; System.out.println(Thread.currentThread() + \" \" + max));\n    }\n\n    public static boolean isPrime(long n) {\n        return n &gt; 1 &amp;&amp; rangeClosed(2, (long) sqrt(n)).noneMatch(divisor -&gt; n % divisor == 0);\n    }\n}\n</code></pre>\n"
+}

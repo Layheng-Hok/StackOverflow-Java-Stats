@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "ant", "sonarqube", "jacoco" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5702461,
+      "reputation" : 1271,
+      "user_id" : 4507034,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://lh3.googleusercontent.com/-yqkQmRh9gLU/AAAAAAAAAAI/AAAAAAAAAJ8/NBvmuKc05qQ/s256-rj/photo.jpg",
+      "display_name" : "Radu Linu",
+      "link" : "https://stackoverflow.com/users/4507034/radu-linu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1621855312,
+    "creation_date" : 1621855312,
+    "answer_id" : 67671213,
+    "question_id" : 20915785,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is a working solution, generating the report for both unit tests and integration tests. This solution is using the <code>append</code> strategy.</p>\n<p>Please note that in order to work properly on the <code>apply</code> strategy, the phases should be executed sequentially (if the <code>mvn test</code> and <code>mvn verify -DskipUnitTests</code> will be executed in parallel there is possible to not work fine).</p>\n<pre><code>&lt;plugin&gt;\n    &lt;groupId&gt;org.jacoco&lt;/groupId&gt;\n    &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;\n    &lt;version&gt;${jacoco.version}&lt;/version&gt;\n\n    &lt;configuration&gt;\n        &lt;skip&gt;${skipTests}&lt;/skip&gt;\n\n        &lt;!-- This line is very important, because allows to append the results to the `jacoco_aggregation.exec` report. --&gt;\n        &lt;append&gt;true&lt;/append&gt;\n\n        &lt;!-- DestFile is the file defined, where the `prepare-agent` will pe publishing the result of analysis,\n             for the defined `phase`. In our case is executed initially and to the `pre-integration-test` phase. --&gt;\n        &lt;destFile&gt;${project.build.directory}/coverage-reports/jacoco_aggregation.exec&lt;/destFile&gt;\n\n        &lt;!-- DataFile is the path from where the `report` goal will be reading the report\n             in order to create the `outputDirectory` .xml file. --&gt;\n        &lt;dataFile&gt;${project.build.directory}/coverage-reports/jacoco_aggregation.exec&lt;/dataFile&gt;\n\n        &lt;!-- To the goal `report`, will be reading the report from `dataFile` path and will be publishing the result,\n             to the `outputDirectory` path as an .xml file.\n             In our case, the report is generated for two times:\n                 - first time after the `test` phase\n                 - second time after the `post-integration-test` phase --&gt;\n        &lt;outputDirectory&gt;${project.reporting.outputDirectory}/jacoco&lt;/outputDirectory&gt;\n    &lt;/configuration&gt;\n\n    &lt;executions&gt;\n        &lt;!-- Prepares the property pointing to the JaCoCo runtime agent which\n             is passed as VM argument when Maven the Surefire plugin is executed. --&gt;\n        &lt;execution&gt;\n            &lt;id&gt;pre-unit-test&lt;/id&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;prepare-agent&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n                &lt;!-- Sets the name of the property containing the settings for JaCoCo runtime agent. --&gt;\n                &lt;propertyName&gt;surefireArgLine&lt;/propertyName&gt;\n            &lt;/configuration&gt;\n        &lt;/execution&gt;\n        \n        &lt;!-- Ensures that the code coverage report `jacoco.xml` is generated once the unit tests were executed.\n             Executes the `report` goal after the `post-integration-test` phase. --&gt;\n        &lt;execution&gt;\n            &lt;id&gt;post-unit-test&lt;/id&gt;\n            &lt;phase&gt;test&lt;/phase&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;report&lt;/goal&gt;\n            &lt;/goals&gt;\n        &lt;/execution&gt;\n\n        &lt;!-- Prepares the property pointing to the JaCoCo runtime agent which\n             is passed as VM argument when Maven the Failsafe plugin is executed. --&gt;\n        &lt;execution&gt;\n            &lt;id&gt;pre-integration-test&lt;/id&gt;\n            &lt;phase&gt;pre-integration-test&lt;/phase&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;prepare-agent&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n                &lt;!-- Sets the name of the property containing the settings for JaCoCo runtime agent. --&gt;\n                &lt;propertyName&gt;failsafeArgLine&lt;/propertyName&gt;\n            &lt;/configuration&gt;\n        &lt;/execution&gt;\n        \n        &lt;!-- Ensures that the code coverage report `jacoco.xml` is generated once the integration tests were executed.\n             Executes the `report` goal after the `post-integration-test` phase. --&gt;\n        &lt;execution&gt;\n            &lt;id&gt;post-integration-test&lt;/id&gt;\n            &lt;phase&gt;post-integration-test&lt;/phase&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;report&lt;/goal&gt;\n            &lt;/goals&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n\n&lt;plugin&gt;\n    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n    &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n    &lt;configuration&gt;\n        &lt;!-- Sets the VM argument line used when unit tests are run. --&gt;\n        &lt;argLine&gt;${surefireArgLine}&lt;/argLine&gt;\n    &lt;/configuration&gt;\n&lt;/plugin&gt;\n\n&lt;plugin&gt;\n    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n    &lt;artifactId&gt;maven-failsafe-plugin&lt;/artifactId&gt;\n    &lt;configuration&gt;\n        &lt;!-- Sets the VM argument line used when integration tests are run. --&gt;\n        &lt;argLine&gt;${failsafeArgLine}&lt;/argLine&gt;\n    &lt;/configuration&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>Once the reports are generated, you can execute the sonar commant to apply the reports.</p>\n<pre><code>mvn sonar:sonar -Dsonar.coverage.jacoco.xmlReportPaths=&quot;target/site/jacoco/jacoco.xml&quot;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1636674,
+    "reputation" : 307,
+    "user_id" : 1509980,
+    "user_type" : "registered",
+    "accept_rate" : 40,
+    "profile_image" : "https://www.gravatar.com/avatar/f5b92c67d546c72fc4bba21214c27480?s=256&d=identicon&r=PG",
+    "display_name" : "u07103",
+    "link" : "https://stackoverflow.com/users/1509980/u07103"
+  },
+  "is_answered" : false,
+  "view_count" : 20177,
+  "answer_count" : 1,
+  "score" : 5,
+  "last_activity_date" : 1760641490,
+  "creation_date" : 1388799851,
+  "question_id" : 20915785,
+  "link" : "https://stackoverflow.com/questions/20915785/integrating-jacoco-with-sonar-for-unit-and-integration-test-coverage",
+  "title" : "Integrating JaCoCo with SONAR for unit and integration test coverage",
+  "body" : "<p>Has any one tried configuring JaCoCo to dump the coverage of unit and integration tests in 2 different files, for SONAR to use them, using ANT build?</p>\n"
+}

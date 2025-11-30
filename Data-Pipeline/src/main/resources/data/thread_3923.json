@@ -1,0 +1,219 @@
+{
+  "tags" : [ "java", "completable-future" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 249169,
+      "reputation" : 20804,
+      "user_id" : 525036,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/2cb78e30e3a47ab2311e1ccb83f5ee88?s=256&d=identicon&r=PG",
+      "display_name" : "Didier L",
+      "link" : "https://stackoverflow.com/users/525036/didier-l"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1642437176,
+    "post_id" : 70741100,
+    "comment_id" : 125064993,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "“<i>the […] second approach limits my timing to when everything else is done, rather than async as soon as the previous necessary stage is complete</i>” – I don’t really understand what you mean here, what is “<i>everything else</i>”? Both would be called at the same moment (well, except <code>thenApply()</code> won’t be called in case of exception). <code>whenComplete()</code> seems to be exactly what you are looking for."
+  }, {
+    "owner" : {
+      "account_id" : 197528,
+      "reputation" : 11591,
+      "user_id" : 441662,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/22257d22ebb7beace9749845a034325c?s=256&d=identicon&r=PG",
+      "display_name" : "Benny Bottema",
+      "link" : "https://stackoverflow.com/users/441662/benny-bottema"
+    },
+    "reply_to_user" : {
+      "account_id" : 249169,
+      "reputation" : 20804,
+      "user_id" : 525036,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/2cb78e30e3a47ab2311e1ccb83f5ee88?s=256&d=identicon&r=PG",
+      "display_name" : "Didier L",
+      "link" : "https://stackoverflow.com/users/525036/didier-l"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1642443325,
+    "post_id" : 70741100,
+    "comment_id" : 125067071,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Hmm, I assumed after whenComplete wouldn&#39;t allow then&#39;s after it. However, whenComplete forces me to explicitly deal with exception cases, which is not what I want at this stage."
+  }, {
+    "owner" : {
+      "account_id" : 249169,
+      "reputation" : 20804,
+      "user_id" : 525036,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/2cb78e30e3a47ab2311e1ccb83f5ee88?s=256&d=identicon&r=PG",
+      "display_name" : "Didier L",
+      "link" : "https://stackoverflow.com/users/525036/didier-l"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1642444231,
+    "post_id" : 70741100,
+    "comment_id" : 125067365,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Well, if you want an equivalent to <code>peek()</code>, you should deal with exceptions as well since they don’t stop the execution of descendant stages – as opposed to the <code>Stream</code> API, in which any exception stops the whole pipeline. Anyway, the solutions mentioned here are all we have for now \uD83D\uDE09"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 197528,
+        "reputation" : 11591,
+        "user_id" : 441662,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/22257d22ebb7beace9749845a034325c?s=256&d=identicon&r=PG",
+        "display_name" : "Benny Bottema",
+        "link" : "https://stackoverflow.com/users/441662/benny-bottema"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1642435364,
+      "post_id" : 70743202,
+      "comment_id" : 125064337,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That&#39;s a good point and I hadn&#39;t thought of it. However, breaking up the chain like this kind of defeats the purpose of the fluent api. It&#39;s probably the canonical JDK solution, but not exactly &#39;elegant&#39;."
+    }, {
+      "owner" : {
+        "account_id" : 4054771,
+        "reputation" : 2342,
+        "user_id" : 3333174,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/X5hem.jpg?s=256",
+        "display_name" : "r&#252;-",
+        "link" : "https://stackoverflow.com/users/3333174/r%c3%bc"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1684858524,
+      "post_id" : 70743202,
+      "comment_id" : 134577540,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "But you don&#39;t have access to the result, which is the purpose of peeking. Even worse: <b>this doesn&#39;t work reliably!</b> If <code>doSomething()</code> takes longer/sleeps, then it may not finish before <code>f2</code> finishes, i.e. it may not finish at all or it may succeed even though <code>f2</code> fails. Don&#39;t do that. @Nicole has a much better solution."
+    }, {
+      "owner" : {
+        "account_id" : 446208,
+        "reputation" : 9170,
+        "user_id" : 839128,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/fc4451a6d03317ab3465907e8402f6ba?s=256&d=identicon&r=PG",
+        "display_name" : "MikeFHay",
+        "link" : "https://stackoverflow.com/users/839128/mikefhay"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1684922743,
+      "post_id" : 70743202,
+      "comment_id" : 134587267,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The peek can succeed while the next function fails in Nicole&#39;s solution and in <code>Stream.peek</code> also. It&#39;s not clear that the order of operations matters for OP, but you&#39;re right that if it does then they should model that explicitly."
+    }, {
+      "owner" : {
+        "account_id" : 4054771,
+        "reputation" : 2342,
+        "user_id" : 3333174,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://i.sstatic.net/X5hem.jpg?s=256",
+        "display_name" : "r&#252;-",
+        "link" : "https://stackoverflow.com/users/3333174/r%c3%bc"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1684926322,
+      "post_id" : 70743202,
+      "comment_id" : 134588021,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I didn&#39;t say it correctly: what I should have said is that the second <code>thenApply</code> will run, even when the <code>thenRun</code> fails. And I think the order of operations is almost always relevant. E.g. the <code>peek</code> could be a verification... a very common use case."
+    } ],
+    "owner" : {
+      "account_id" : 446208,
+      "reputation" : 9170,
+      "user_id" : 839128,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/fc4451a6d03317ab3465907e8402f6ba?s=256&d=identicon&r=PG",
+      "display_name" : "MikeFHay",
+      "link" : "https://stackoverflow.com/users/839128/mikefhay"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1642430842,
+    "creation_date" : 1642430842,
+    "answer_id" : 70743202,
+    "question_id" : 70741100,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Unlike with <code>Stream</code>, you can make multiple function chains from a single future, so it is not necessary to do everything in a single chain of calls. I would approach your problem like so:</p>\n<pre><code>var f1 = CompletableFuture.supplyAsync(...);\nf1.thenRun(() -&gt; doSomething()); // this is your &quot;peek&quot;\nvar f2 = f1.thenApply(...); // continue your chain of operations here\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 48256,
+      "reputation" : 33305,
+      "user_id" : 143295,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/wWgD6.jpg?s=256",
+      "display_name" : "Nicole",
+      "link" : "https://stackoverflow.com/users/143295/nicole"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1665016455,
+    "creation_date" : 1665016455,
+    "answer_id" : 73967572,
+    "question_id" : 70741100,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I wanted to do this too, so I just made my own wrapper:</p>\n<pre class=\"lang-java prettyprint-override\"><code>/** Converts a Consumer into an identity Function that passes through the input */\npublic static &lt;T&gt; Function&lt;T, T&gt; peek(Consumer&lt;T&gt; fn) {\n    return (t) -&gt; {\n        fn.accept(t);\n        return t;\n    };\n}\n</code></pre>\n<p>used like:</p>\n<pre class=\"lang-java prettyprint-override\"><code>.thenApply(Functions.peek(SomeUtil::yourConsumerMethod));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 21719315,
+      "reputation" : 110,
+      "user_id" : 16029826,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJyJPH-j2gMcX1mN8y5gWwYfFe_lCIE16qz95cL3=k-s256",
+      "display_name" : "Yuriy Kirel",
+      "link" : "https://stackoverflow.com/users/16029826/yuriy-kirel"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761340491,
+    "creation_date" : 1761340491,
+    "answer_id" : 79799173,
+    "question_id" : 70741100,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What I could come up with is the same idea as the other commenter.</p>\n<p>As per documentation,</p>\n<blockquote>\n<p>Returns a new CompletionStage with the <strong>same result or exception as this stage</strong>, that executes the given action when this stage completes</p>\n</blockquote>\n<p>In other words, you can ignore exception and achieve <code>peek</code>-like semantics:</p>\n<pre class=\"lang-java prettyprint-override\"><code>(..)\n.whenComplete((result, exception) -&gt; doSomething(result))\n(..)\n</code></pre>\n<p>And the exception will actually be <strong>propagated</strong> to next handlers:</p>\n<pre class=\"lang-java prettyprint-override\"><code>CompletableFuture.supplyAsync(() -&gt; {\n        throw new Exception(&quot;See you in the `handle` block&quot;);\n    })\n   .whenComplete((result, ex) -&gt; doSomething(result))\n   .handle((result, ex) -&gt; {\n        if (ex != null) {\n            // Exception most likely will be wrapped with CompletionException\n            ex = ex instanceof CompletionException ? ex.cause() : ex; \n            System.out.println(&quot;Whoops... &quot; + ex.getMessage());\n        }\n   });\n</code></pre>\n<p><strong>NOTE:</strong> the effect of such a trick is that original exception gets wrapped into <code>CompletionException</code>, which honestly shouldn't be much of a problem, as I've shown in the code</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 197528,
+    "reputation" : 11591,
+    "user_id" : 441662,
+    "user_type" : "registered",
+    "accept_rate" : 80,
+    "profile_image" : "https://www.gravatar.com/avatar/22257d22ebb7beace9749845a034325c?s=256&d=identicon&r=PG",
+    "display_name" : "Benny Bottema",
+    "link" : "https://stackoverflow.com/users/441662/benny-bottema"
+  },
+  "is_answered" : true,
+  "view_count" : 1153,
+  "answer_count" : 3,
+  "score" : 7,
+  "last_activity_date" : 1761340491,
+  "creation_date" : 1642421303,
+  "last_edit_date" : 1642423341,
+  "question_id" : 70741100,
+  "link" : "https://stackoverflow.com/questions/70741100/what-is-the-completablefuture-equivalent-of-streams-peek",
+  "title" : "What is the CompletableFuture equivalent of Streams peek()?",
+  "body" : "<p>An answer <a href=\"https://stackoverflow.com/a/49534709/441662\">here</a> quotes a table of all CompletableFuture methods, but it's not quite what I'm looking for, or perhaps I'm going about it wrong.</p>\n<p>I'm looking for the CompletableFuture equivalent of Streams' <em>peek()</em>, so basically a <code>thenApply</code> that returns the input argument or a <code>thenRun</code> that doesn't return <code>Void</code>. There are two ways I can think of that both don't semantically accurately express my intention, but do the job:</p>\n<pre class=\"lang-java prettyprint-override\"><code>(..)\n.thenApply((a) -&gt; {\n   doSomething();\n   return a;\n}\n(..)\n</code></pre>\n<p>and</p>\n<pre class=\"lang-java prettyprint-override\"><code>(..)\n.whenComplete((result, exception) -&gt; {\n   if (exception == null) {\n      doSomething();\n   }\n}\n(..)\n</code></pre>\n<p>Both take the input from the previous stage, allow me to perform an action and return with the same type to the next stage. Of these two the latter second approach limits my timing to when everything else is done, rather than async as soon as the previous necessary stage is complete.</p>\n<p>I've also been searching for an identity function that takes a consumer function as argument, but it seems I would have to write that myself:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public static &lt;T&gt; Function&lt;T, T&gt; identityConsumer(Consumer&lt;T&gt; c) {\n    return a -&gt; { c.accept(a); return a; };\n}\n</code></pre>\n<pre class=\"lang-java prettyprint-override\"><code>(..)\n.thenApply(identityConsumer(a -&gt; doSomething()));\n(..)\n</code></pre>\n<p>So short of writing my own util functions, is there an elegant way of performing an action in an intermediate stage, where I don't have to return something, while keeping the stage's current type?</p>\n"
+}

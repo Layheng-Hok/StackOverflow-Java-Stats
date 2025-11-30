@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "android", "encryption", "keystore" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4979548,
+        "reputation" : 21,
+        "user_id" : 4004956,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/17f0772269d867e98e8d0cf743911733?s=256&d=identicon&r=PG",
+        "display_name" : "Warwick",
+        "link" : "https://stackoverflow.com/users/4004956/warwick"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1759378574,
+      "post_id" : 79779677,
+      "comment_id" : 140772471,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I just found another way to reproduce the exact error. Encrypt with one key and then decrypt with another (wrong) key."
+    } ],
+    "owner" : {
+      "account_id" : 4979548,
+      "reputation" : 21,
+      "user_id" : 4004956,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/17f0772269d867e98e8d0cf743911733?s=256&d=identicon&r=PG",
+      "display_name" : "Warwick",
+      "link" : "https://stackoverflow.com/users/4004956/warwick"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759293831,
+    "creation_date" : 1759293831,
+    "answer_id" : 79779677,
+    "question_id" : 77195350,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I found your post while chasing what appears to be a related bug in my code. I can reproduce the error <a href=\"https://stackoverflow.com/questions/77195350/invalid-argument-internal-keystore-code-38-message-in-keystoreoperationfin\"><code>Invalid argument (internal Keystore code: -38 message: In KeystoreOperation::finish</code></a> by trying to decrypt data that is the wrong length, i.e. not the original length of the encrypted data. The wrong length must be a multiple of the AES block size of 16 bytes.</p>\n<p>This means if I encrypt 1024 bytes of data I get 1040 bytes of encrypted data. If I then copy that into a buffer that is 1040+16 bytes long and pass that in for decryption I see the error above.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 18963634,
+    "reputation" : 56,
+    "user_id" : 13838557,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/7b96a65249c935261ca923bb5aa6125f?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Khaos",
+    "link" : "https://stackoverflow.com/users/13838557/khaos"
+  },
+  "is_answered" : false,
+  "view_count" : 461,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1759293831,
+  "creation_date" : 1695907284,
+  "last_edit_date" : 1695980009,
+  "question_id" : 77195350,
+  "link" : "https://stackoverflow.com/questions/77195350/invalid-argument-internal-keystore-code-38-message-in-keystoreoperationfin",
+  "title" : "Invalid argument (internal Keystore code: -38 message: In KeystoreOperation::finish",
+  "body" : "<p>I am writing an android application, where i want to save some files crypted.\nMost files work properly while writing and reading. When i try to read larger strings, that have been written crypted into files, i get the following exception while decrypting them:\n<code>Invalid argument (internal Keystore code: -38 message: In KeystoreOperation::finish</code></p>\n<p>Does anybody have an idea, why that does not work or what i am doing wrong?</p>\n<p>Heres my code:</p>\n<pre><code>public byte[] read() throws MyReadException {\n    byte[] data;\n\n    try {\n        FileInputStream input = new FileInputStream(this.file_path);\n        int iv_size = input.read();\n        byte[] iv = new byte[iv_size];\n        input.read(iv);\n        int encrypted_byte_size = input.read();\n        byte[] data_encrypted = new byte[encrypted_byte_size];\n        input.read(data_encrypted);\n        Cipher cipher = Cipher.getInstance(transformation);\n        cipher.init(Cipher.DECRYPT_MODE, this.getKey(), new IvParameterSpec(iv));\n        data = cipher.doFinal(data_encrypted);\n        input.close();\n    } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException |\n             IllegalBlockSizeException | BadPaddingException | KeyStoreException |\n             InvalidAlgorithmParameterException | UnrecoverableEntryException |\n             CertificateException e) {\n        throw new MyReadException(e);\n    }\n\n    return data;\n}\n\npublic void write(byte[] data) throws MyWriteException {\n    try {\n        Cipher cipher = Cipher.getInstance(transformation);\n        cipher.init(Cipher.ENCRYPT_MODE, this.getKey());\n\n        byte[] config_encrypted = cipher.doFinal(data);\n        FileOutputStream stream = new FileOutputStream(this.file_path);\n        stream.write(cipher.getIV().length);\n        stream.write(cipher.getIV());\n        stream.write(config_encrypted.length);\n        stream.write(config_encrypted);\n        stream.close();\n    } catch (BadPaddingException | NoSuchAlgorithmException | InvalidKeyException |\n             NoSuchPaddingException | KeyStoreException | InvalidAlgorithmParameterException |\n             UnrecoverableEntryException | IllegalBlockSizeException | CertificateException e) {\n        throw new MyWriteException(e);\n    }\n}\n\nprivate Key getKey() throws UnrecoverableEntryException, KeyStoreException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, CertificateException, IOException {\n    KeyStore store = KeyStore.getInstance(&quot;AndroidKeyStore&quot;);\n    store.load(null);\n    Key key = store.getKey(key_alias, null);\n    if(key == null) {\n        KeyGenerator generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES);\n        generator.init(new KeyGenParameterSpec.Builder(\n                key_alias,\n                KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)\n                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)\n                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)\n                .setUserAuthenticationRequired(false)\n                .setRandomizedEncryptionRequired(true).build());\n        return generator.generateKey();\n    }\n    return key;\n}\n</code></pre>\n"
+}

@@ -1,0 +1,1270 @@
+{
+  "tags" : [ "java", "generics", "super", "bounded-wildcard", "pecs" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 86060,
+      "reputation" : 8116,
+      "user_id" : 239582,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/2e4045405fe6921ff4bb5bda599cc6b5?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "lupchiazoem",
+      "link" : "https://stackoverflow.com/users/239582/lupchiazoem"
+    },
+    "edited" : false,
+    "score" : 6,
+    "creation_date" : 1547965356,
+    "post_id" : 2723397,
+    "comment_id" : 95370616,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "A very good explanation with an example @ youtube.com/watch?v=34oiEq9nD0M&amp;feature=youtu.be&amp;t=1630 which explains <code>super</code> part but, gives an idea of another."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 317363,
+        "reputation" : 1124,
+        "user_id" : 634012,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/15b749ee7badb42556e2558ade789daa?s=256&d=identicon&r=PG",
+        "display_name" : "Fatih Arslan",
+        "link" : "https://stackoverflow.com/users/634012/fatih-arslan"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1549549564,
+      "post_id" : 2723503,
+      "comment_id" : 95948629,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Does this principle only hold for Collections? It makes sense when one tries to correlate it with a list. If you think about the signature of  sort(List&lt;T&gt;,Comparator&lt;? super T&gt;) ---&gt; here the Comparator uses super so it means it is a consumer in PECS context.  When you look at the implementation for instance like :     public int compare(Person a, Person b) {         return a.age &lt; b.age ? -1 : a.age == b.age ? 0 : 1;     } I feel like Person does not consume anything but produces age. That makes me confused. Is there a flaw in my reasoning or PECS only holds for Collections?"
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "reply_to_user" : {
+        "account_id" : 317363,
+        "reputation" : 1124,
+        "user_id" : 634012,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/15b749ee7badb42556e2558ade789daa?s=256&d=identicon&r=PG",
+        "display_name" : "Fatih Arslan",
+        "link" : "https://stackoverflow.com/users/634012/fatih-arslan"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1623170293,
+      "post_id" : 2723503,
+      "comment_id" : 119999808,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@FatihArslan don’t look into the comparator implementation. It’s irrelevant. The method <code>sort(List&lt;T&gt;,Comparator&lt;? super T&gt;)</code> declares the type bounds and in that <code>sort</code> method, the comparator <i>consumes</i> <code>T</code> instances."
+    } ],
+    "owner" : {
+      "account_id" : 7848,
+      "reputation" : 110300,
+      "user_id" : 13792,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/10db0f801d3ba12114f8d3fc4737eb1e?s=256&d=identicon&r=PG",
+      "display_name" : "ColinD",
+      "link" : "https://stackoverflow.com/users/13792/colind"
+    },
+    "is_accepted" : false,
+    "score" : 29,
+    "last_activity_date" : 1503664485,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1272389572,
+    "answer_id" : 2723503,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As I explain in <a href=\"https://stackoverflow.com/questions/2248390/java-generics-collections-max-signature-and-comparator/2248503#2248503\">my answer</a> to another question, PECS is a mnemonic device  created by Josh Bloch to help remember <strong>P</strong>roducer <code><strong>e</strong>xtends</code>, <strong>C</strong>onsumer <code><strong>s</strong>uper</code>.</p>\n<blockquote>\n<p>This means that when a parameterized type being passed to a method will <em>produce</em> instances of <code>T</code> (they will be retrieved from it in some way), <code>? extends T</code> should be used, since any instance of a subclass of <code>T</code> is also a <code>T</code>.</p>\n<p>When a parameterized type being passed to a method will <em>consume</em> instances of <code>T</code> (they will be passed to it to do something), <code>? super T</code> should be used because an instance of <code>T</code> can legally be passed to any method that accepts some supertype of <code>T</code>. A <code>Comparator&lt;Number&gt;</code> could be used on a <code>Collection&lt;Integer&gt;</code>, for example. <code>? extends T</code> would not work, because a <code>Comparator&lt;Integer&gt;</code> could not operate on a <code>Collection&lt;Number&gt;</code>.</p>\n</blockquote>\n<p>Note that generally you should only be using <code>? extends T</code> and <code>? super T</code> for the parameters of some method. Methods should just use <code>T</code> as the type parameter on a generic return type.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 173533,
+        "reputation" : 10094,
+        "user_id" : 402281,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/b29c3456030895fab11af75a7cac9f4a?s=256&d=identicon&r=PG",
+        "display_name" : "Feuermurmel",
+        "link" : "https://stackoverflow.com/users/402281/feuermurmel"
+      },
+      "edited" : false,
+      "score" : 214,
+      "creation_date" : 1367932316,
+      "post_id" : 2723538,
+      "comment_id" : 23544205,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;m always trying to think about it this way: A <i>producer</i> is allowed to produce something more specific, hence <i>extends</i>, a <i>consumer</i> is allowed to accept something more general, hence <i>super</i>."
+    }, {
+      "owner" : {
+        "account_id" : 190269,
+        "reputation" : 19943,
+        "user_id" : 430128,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/c2aa2c9f527afea12a7fef458588b2a1?s=256&d=identicon&r=PG",
+        "display_name" : "Raman",
+        "link" : "https://stackoverflow.com/users/430128/raman"
+      },
+      "edited" : false,
+      "score" : 12,
+      "creation_date" : 1390591258,
+      "post_id" : 2723538,
+      "comment_id" : 32173405,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Another way to remember the producer/consumer distinction is to think of a method signature. If you have a method <code>doSomethingWithList(List list)</code>, you are <i>consuming</i> the list and so will need covariance / extends (or an invariant List). On the other hand if your method is <code>List doSomethingProvidingList</code>, then you are <i>producing</i> the List and will need contravariance / super (or an invariant List)."
+    }, {
+      "owner" : {
+        "account_id" : 1520052,
+        "reputation" : 309,
+        "user_id" : 1751705,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/490180d736c23fe6027c53e16be1b929?s=256&d=identicon&r=PG",
+        "display_name" : "Chatterjee",
+        "link" : "https://stackoverflow.com/users/1751705/chatterjee"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1400912846,
+      "post_id" : 2723538,
+      "comment_id" : 36688334,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@MichaelMyers: Why can&#39;t we simply use a parameterized type for both these cases? Is there any specific advantage of using wildcards here, or is it just a means of improving readability similar to, say, using references to <code>const</code> as method parameters in C++ to signify that the method does not modify the arguments?"
+    }, {
+      "owner" : {
+        "account_id" : 248860,
+        "reputation" : 2816,
+        "user_id" : 524504,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/6d715d98c43cfab37541a28d1c60360e?s=256&d=identicon&r=PG",
+        "display_name" : "masterxilo",
+        "link" : "https://stackoverflow.com/users/524504/masterxilo"
+      },
+      "reply_to_user" : {
+        "account_id" : 190269,
+        "reputation" : 19943,
+        "user_id" : 430128,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/c2aa2c9f527afea12a7fef458588b2a1?s=256&d=identicon&r=PG",
+        "display_name" : "Raman",
+        "link" : "https://stackoverflow.com/users/430128/raman"
+      },
+      "edited" : false,
+      "score" : 16,
+      "creation_date" : 1401217687,
+      "post_id" : 2723538,
+      "comment_id" : 36793775,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Raman, I think you just confused it. In doSthWithList( you can have List&lt;? super Thing&gt; ), since you are a consumer, you can use super (remember, CS). However, it&#39;s List&lt;? extends Thing&gt; getList() since you are allowed to return something more specific when producing (PE)."
+    }, {
+      "owner" : {
+        "account_id" : 1150494,
+        "reputation" : 4867,
+        "user_id" : 1132333,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://i.sstatic.net/OwJr2.jpg?s=256",
+        "display_name" : "H.Rabiee",
+        "link" : "https://stackoverflow.com/users/1132333/h-rabiee"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1414074818,
+      "post_id" : 2723538,
+      "comment_id" : 41687401,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "what if we want to go through and add to the collection?"
+    }, {
+      "owner" : {
+        "account_id" : 279365,
+        "reputation" : 49954,
+        "user_id" : 574479,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/79f682361ccbe900f8846a1098d13921?s=256&d=identicon&r=PG",
+        "display_name" : "biziclop",
+        "link" : "https://stackoverflow.com/users/574479/biziclop"
+      },
+      "reply_to_user" : {
+        "account_id" : 1150494,
+        "reputation" : 4867,
+        "user_id" : 1132333,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://i.sstatic.net/OwJr2.jpg?s=256",
+        "display_name" : "H.Rabiee",
+        "link" : "https://stackoverflow.com/users/1132333/h-rabiee"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1431956269,
+      "post_id" : 2723538,
+      "comment_id" : 48704855,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@hajder Then your only option is to use the exact type: <code>Collection&lt;Thing&gt;</code>. The reason for this is that you must be sure that the get method will return something that you can cast to <code>Thing</code>, and the add method accepts a <code>Thing</code>, which it can cast to the actual element type. The only type that satisfies both criteria is <code>Thing</code> itself."
+    }, {
+      "owner" : {
+        "account_id" : 279365,
+        "reputation" : 49954,
+        "user_id" : 574479,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/79f682361ccbe900f8846a1098d13921?s=256&d=identicon&r=PG",
+        "display_name" : "biziclop",
+        "link" : "https://stackoverflow.com/users/574479/biziclop"
+      },
+      "reply_to_user" : {
+        "account_id" : 1150494,
+        "reputation" : 4867,
+        "user_id" : 1132333,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://i.sstatic.net/OwJr2.jpg?s=256",
+        "display_name" : "H.Rabiee",
+        "link" : "https://stackoverflow.com/users/1132333/h-rabiee"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1431956462,
+      "post_id" : 2723538,
+      "comment_id" : 48705008,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@hajder Though note that here &quot;going through&quot; assumes that you really need to cast the elements to <code>Thing</code>."
+    }, {
+      "owner" : {
+        "account_id" : 1255397,
+        "reputation" : 2346,
+        "user_id" : 1214974,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/Fwr4q.jpg?s=256",
+        "display_name" : "Janus Varmarken",
+        "link" : "https://stackoverflow.com/users/1214974/janus-varmarken"
+      },
+      "reply_to_user" : {
+        "account_id" : 1520052,
+        "reputation" : 309,
+        "user_id" : 1751705,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/490180d736c23fe6027c53e16be1b929?s=256&d=identicon&r=PG",
+        "display_name" : "Chatterjee",
+        "link" : "https://stackoverflow.com/users/1751705/chatterjee"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1455198046,
+      "post_id" : 2723538,
+      "comment_id" : 58388918,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Chatterjee: the reason for using wildcards is flexibility. By declaring that a parameter is of type Collection&lt;? super Thing&gt; you give the caller more flexibility as she can invoke your method not only with a Collection&lt;Thing&gt; as an argument but also with a Collection&lt;SomeSupertypeOfThing&gt; as an argument."
+    }, {
+      "owner" : {
+        "account_id" : 9921653,
+        "reputation" : 164,
+        "user_id" : 7344554,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b2f3855c8f6e7047d4482f82fbd1fe5d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Eric Zhang",
+        "link" : "https://stackoverflow.com/users/7344554/eric-zhang"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1496109570,
+      "post_id" : 2723538,
+      "comment_id" : 75513056,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@MichaelMyers: For the case2, <code>Collection &lt;? super Thing&gt; </code> also is iterable,   right?"
+    }, {
+      "owner" : {
+        "account_id" : 7745,
+        "reputation" : 192629,
+        "user_id" : 13531,
+        "user_type" : "moderator",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Myers",
+        "link" : "https://stackoverflow.com/users/13531/michael-myers"
+      },
+      "reply_to_user" : {
+        "account_id" : 9921653,
+        "reputation" : 164,
+        "user_id" : 7344554,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b2f3855c8f6e7047d4482f82fbd1fe5d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Eric Zhang",
+        "link" : "https://stackoverflow.com/users/7344554/eric-zhang"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1496276411,
+      "post_id" : 2723538,
+      "comment_id" : 75599256,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@EricZhang: When you are adding to a collection, it does not matter whether or not the collection is iterable."
+    }, {
+      "owner" : {
+        "account_id" : 62229,
+        "reputation" : 21979,
+        "user_id" : 185022,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/045d1e450716084b2a072b57f37a58c4?s=256&d=identicon&r=PG",
+        "display_name" : "AZ_",
+        "link" : "https://stackoverflow.com/users/185022/az"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1527688441,
+      "post_id" : 2723538,
+      "comment_id" : 88222556,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "PECS is counter intuitive, If I am taking something from the list so I am consuming items or producing?"
+    }, {
+      "owner" : {
+        "account_id" : 6381480,
+        "reputation" : 1171,
+        "user_id" : 4950769,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://lh3.googleusercontent.com/-6TQdhCmbiD4/AAAAAAAAAAI/AAAAAAAAAEA/kul1PVkCMR4/s256-rj/photo.jpg",
+        "display_name" : "Treefish Zhang",
+        "link" : "https://stackoverflow.com/users/4950769/treefish-zhang"
+      },
+      "reply_to_user" : {
+        "account_id" : 62229,
+        "reputation" : 21979,
+        "user_id" : 185022,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/045d1e450716084b2a072b57f37a58c4?s=256&d=identicon&r=PG",
+        "display_name" : "AZ_",
+        "link" : "https://stackoverflow.com/users/185022/az"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1556975667,
+      "post_id" : 2723538,
+      "comment_id" : 98615013,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@AZ_ I share your sentiment. If a method do get() from the list, the method would be considered a Consumer&lt;T&gt;, and the list is considered a provider; but the rule of PECS is “from the list’s point of view”, thus ‘extends’ is called for. It should be GEPS: get extends; put super."
+    }, {
+      "owner" : {
+        "account_id" : 14105282,
+        "reputation" : 759,
+        "user_id" : 10189517,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Qu2fm.png?s=256",
+        "display_name" : "HKIT",
+        "link" : "https://stackoverflow.com/users/10189517/hkit"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1665290592,
+      "post_id" : 2723538,
+      "comment_id" : 130663300,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In case I, all subtype of Thing is Thing, why adding Thing instance is not allowed? As all operation only happen in Thing type. Can you give a concrete example why adding Thing instance to the list in case I will cause issue?"
+    }, {
+      "owner" : {
+        "account_id" : 7745,
+        "reputation" : 192629,
+        "user_id" : 13531,
+        "user_type" : "moderator",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Myers",
+        "link" : "https://stackoverflow.com/users/13531/michael-myers"
+      },
+      "reply_to_user" : {
+        "account_id" : 14105282,
+        "reputation" : 759,
+        "user_id" : 10189517,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Qu2fm.png?s=256",
+        "display_name" : "HKIT",
+        "link" : "https://stackoverflow.com/users/10189517/hkit"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1665411250,
+      "post_id" : 2723538,
+      "comment_id" : 130687722,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@HKIT: It isn&#39;t that adding a Thing to the <code>Collection&lt;? extends Thing&gt;</code> will cause an issue. The language simply won&#39;t permit it and your program won&#39;t compile. The contrast is rather between <code>Collection&lt;? extends Thing&gt;</code> and simply <code>Collection&lt;Thing&gt;</code>. And the difference is that a <code>Collection&lt;MyThingSubType&gt;</code> is not a <code>Collection&lt;Thing&gt;</code> and couldn&#39;t be passed to a method expecting such, but it is a <code>Collection&lt;? extends Thing&gt;</code> and could be passed to such a method."
+    }, {
+      "owner" : {
+        "account_id" : 1161864,
+        "reputation" : 2211,
+        "user_id" : 1141215,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4496f8f62ec95cacebe522acd5c55bf7?s=256&d=identicon&r=PG",
+        "display_name" : "PJ_Finnegan",
+        "link" : "https://stackoverflow.com/users/1141215/pj-finnegan"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1669814413,
+      "post_id" : 2723538,
+      "comment_id" : 131728055,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<code>Here you don&#39;t care what is already in the list as long as it will allow a Thing to be added; this is what ? super Thing guarantees.</code> does this mean that the Thing will be downcast to the class <code>?</code> when added to the collection?"
+    }, {
+      "owner" : {
+        "account_id" : 7745,
+        "reputation" : 192629,
+        "user_id" : 13531,
+        "user_type" : "moderator",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Myers",
+        "link" : "https://stackoverflow.com/users/13531/michael-myers"
+      },
+      "reply_to_user" : {
+        "account_id" : 1161864,
+        "reputation" : 2211,
+        "user_id" : 1141215,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4496f8f62ec95cacebe522acd5c55bf7?s=256&d=identicon&r=PG",
+        "display_name" : "PJ_Finnegan",
+        "link" : "https://stackoverflow.com/users/1141215/pj-finnegan"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1670013792,
+      "post_id" : 2723538,
+      "comment_id" : 131782189,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PJ_Finnegan: Casting only matters when you&#39;re immediately acting on an object. It doesn&#39;t lose its runtime type when it&#39;s added to the collection, if that&#39;s what you&#39;re asking."
+    } ],
+    "owner" : {
+      "account_id" : 7745,
+      "reputation" : 192629,
+      "user_id" : 13531,
+      "user_type" : "moderator",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+      "display_name" : "Michael Myers",
+      "link" : "https://stackoverflow.com/users/13531/michael-myers"
+    },
+    "is_accepted" : true,
+    "score" : 1071,
+    "last_activity_date" : 1609610845,
+    "last_edit_date" : 1609610845,
+    "creation_date" : 1272389846,
+    "answer_id" : 2723538,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>tl;dr:</strong> &quot;PECS&quot; is from the collection's point of view. If you are <em>only</em> pulling items from a generic collection, it is a producer and you should use <code>extends</code>; if you are <em>only</em> stuffing items in, it is a consumer and you should use <code>super</code>. If you do both with the same collection, you shouldn't use either <code>extends</code> or <code>super</code>.</p>\n<hr />\n<p>Suppose you have a method that takes as its parameter a collection of things, but you want it to be more flexible than just accepting a <code>Collection&lt;Thing&gt;</code>.</p>\n<p><strong>Case 1: You want to go through the collection and do things with each item.</strong><br />\nThen the list is a <strong>producer</strong>, so you should use a <code>Collection&lt;? extends Thing&gt;</code>.</p>\n<p>The reasoning is that a <code>Collection&lt;? extends Thing&gt;</code> could hold any subtype of <code>Thing</code>, and thus each element will behave as a <code>Thing</code> when you perform your operation. (You actually cannot add anything (except null) to a <code>Collection&lt;? extends Thing&gt;</code>, because you cannot know at runtime which <em>specific</em> subtype of <code>Thing</code> the collection holds.)</p>\n<p><strong>Case 2: You want to add things to the collection.</strong><br />\nThen the list is a <strong>consumer</strong>, so you should use a <code>Collection&lt;? super Thing&gt;</code>.</p>\n<p>The reasoning here is that unlike <code>Collection&lt;? extends Thing&gt;</code>, <code>Collection&lt;? super Thing&gt;</code> can always hold a <code>Thing</code> no matter what the actual parameterized type is. Here you don't care what is already in the list as long as it will allow a <code>Thing</code> to be added; this is what <code>? super Thing</code> guarantees.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 281630,
+        "reputation" : 4488,
+        "user_id" : 578046,
+        "user_type" : "registered",
+        "accept_rate" : 45,
+        "profile_image" : "https://i.sstatic.net/n93hU.png?s=256",
+        "display_name" : "Saurabh Patil",
+        "link" : "https://stackoverflow.com/users/578046/saurabh-patil"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1464580068,
+      "post_id" : 19231762,
+      "comment_id" : 62527918,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "So &quot;? extends B&quot; should be interpreted as &quot;? B extends&quot;. It&#39;s something that B extends so that would include all the super classes of B up to Object, excluding B itself. Thanks for the code!"
+    }, {
+      "owner" : {
+        "account_id" : 105902,
+        "reputation" : 4002,
+        "user_id" : 282345,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/RGIlu.jpg?s=256",
+        "display_name" : "asgs",
+        "link" : "https://stackoverflow.com/users/282345/asgs"
+      },
+      "reply_to_user" : {
+        "account_id" : 281630,
+        "reputation" : 4488,
+        "user_id" : 578046,
+        "user_type" : "registered",
+        "accept_rate" : 45,
+        "profile_image" : "https://i.sstatic.net/n93hU.png?s=256",
+        "display_name" : "Saurabh Patil",
+        "link" : "https://stackoverflow.com/users/578046/saurabh-patil"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1475043373,
+      "post_id" : 19231762,
+      "comment_id" : 66776273,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@SaurabhPatil No, <code>? extends B</code> means B and anything extending B."
+    }, {
+      "owner" : {
+        "account_id" : 30285,
+        "reputation" : 56167,
+        "user_id" : 82511,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/68191be8e55efa97fdda3a4a65af2b22?s=256&d=identicon&r=PG",
+        "display_name" : "djna",
+        "link" : "https://stackoverflow.com/users/82511/djna"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1647845020,
+      "post_id" : 19231762,
+      "comment_id" : 126464087,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "What is the significance of the lines marked &quot;does not compile&quot;? My understanding is that we cannot add anything other than null to an &quot;extends&quot; list.; we cannot add As or Bs or Cs. CoVarience might be demonstrated by the failure to compile C c = myBlist.get(0); Similarly in the Contrvarience methos all gets fail except assignment to Object. Failure to a add an A demonstrates Contravarience."
+    }, {
+      "owner" : {
+        "account_id" : 30285,
+        "reputation" : 56167,
+        "user_id" : 82511,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/68191be8e55efa97fdda3a4a65af2b22?s=256&d=identicon&r=PG",
+        "display_name" : "djna",
+        "link" : "https://stackoverflow.com/users/82511/djna"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1647845244,
+      "post_id" : 19231762,
+      "comment_id" : 126464136,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Downvoted because there is no explanation and as the example stands I think it does not demonstrate what it tries to demonstrate. Happy to upvote if an explanation is added."
+    } ],
+    "owner" : {
+      "account_id" : 2386830,
+      "reputation" : 8350,
+      "user_id" : 2087640,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/1buts.jpg?s=256",
+      "display_name" : "Gab",
+      "link" : "https://stackoverflow.com/users/2087640/gab"
+    },
+    "is_accepted" : false,
+    "score" : 34,
+    "last_activity_date" : 1381169713,
+    "creation_date" : 1381169713,
+    "answer_id" : 19231762,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>public class Test {\n\n    public class A {}\n\n    public class B extends A {}\n\n    public class C extends B {}\n\n    public void testCoVariance(List&lt;? extends B&gt; myBlist) {\n        B b = new B();\n        C c = new C();\n        myBlist.add(b); // does not compile\n        myBlist.add(c); // does not compile\n        A a = myBlist.get(0); \n    }\n\n    public void testContraVariance(List&lt;? super B&gt; myBlist) {\n        B b = new B();\n        C c = new C();\n        myBlist.add(b);\n        myBlist.add(c);\n        A a = myBlist.get(0); // does not compile\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3206885,
+        "reputation" : 45120,
+        "user_id" : 2707792,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/hjDjB.png?s=256",
+        "display_name" : "Andrey Tyukin",
+        "link" : "https://stackoverflow.com/users/2707792/andrey-tyukin"
+      },
+      "reply_to_user" : {
+        "account_id" : 7450,
+        "reputation" : 273343,
+        "user_id" : 12960,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c53d539b59c19087182f0b1c53bb52de?s=256&d=identicon&r=PG",
+        "display_name" : "Brian Agnew",
+        "link" : "https://stackoverflow.com/users/12960/brian-agnew"
+      },
+      "edited" : false,
+      "score" : 210,
+      "creation_date" : 1402873898,
+      "post_id" : 19739576,
+      "comment_id" : 37428574,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hey everyone. I&#39;m Andrey Tyukin, I just wanted to confirm that anoopelias &amp; DaoWen contacted me and obtained my permission to use the sketch, it&#39;s licensed under (CC)-BY-SA. Thx @ Anoop for giving it a second life^^  @Brian Agnew: (on &quot;few votes&quot;): That&#39;s because it&#39;s a sketch for Scala, it uses Scala syntax and assumes declaration-site variance, which is quite different to Java&#39;s weird call-site variance... Maybe I should write a more detailed answer that clearly shows how this sketch applies to Java..."
+    }, {
+      "owner" : {
+        "account_id" : 1343420,
+        "reputation" : 634,
+        "user_id" : 1284618,
+        "user_type" : "registered",
+        "accept_rate" : 38,
+        "profile_image" : "https://www.gravatar.com/avatar/4f451d5f6c7d171a6ca3271355c9f3a3?s=256&d=identicon&r=PG",
+        "display_name" : "cs4r",
+        "link" : "https://stackoverflow.com/users/1284618/cs4r"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1493642152,
+      "post_id" : 19739576,
+      "comment_id" : 74481670,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is one of the simplest and clearest explanations for Covariance and Contravariance that I have ever found!"
+    }, {
+      "owner" : {
+        "account_id" : 7354018,
+        "reputation" : 9708,
+        "user_id" : 5599298,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/ccba44ccadd09ab9427caca6fd544fef?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "slouc",
+        "link" : "https://stackoverflow.com/users/5599298/slouc"
+      },
+      "reply_to_user" : {
+        "account_id" : 3206885,
+        "reputation" : 45120,
+        "user_id" : 2707792,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/hjDjB.png?s=256",
+        "display_name" : "Andrey Tyukin",
+        "link" : "https://stackoverflow.com/users/2707792/andrey-tyukin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1496390813,
+      "post_id" : 19739576,
+      "comment_id" : 75652436,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Andrey Tyukin Hi, I also want to use this image. How can I contact you?"
+    }, {
+      "owner" : {
+        "account_id" : 3206885,
+        "reputation" : 45120,
+        "user_id" : 2707792,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/hjDjB.png?s=256",
+        "display_name" : "Andrey Tyukin",
+        "link" : "https://stackoverflow.com/users/2707792/andrey-tyukin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1496423777,
+      "post_id" : 19739576,
+      "comment_id" : 75672256,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If you have any questions about this illustration, we can discuss them in the chatroom: <a href=\"https://chat.stackoverflow.com/rooms/145734/covariance-contravariance-illustration\">chat.stackoverflow.com/rooms/145734/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 3206885,
+        "reputation" : 45120,
+        "user_id" : 2707792,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/hjDjB.png?s=256",
+        "display_name" : "Andrey Tyukin",
+        "link" : "https://stackoverflow.com/users/2707792/andrey-tyukin"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1519002735,
+      "post_id" : 19739576,
+      "comment_id" : 84720120,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I finally added an <a href=\"https://stackoverflow.com/questions/48812254/how-to-check-covariant-and-contravariant-position-of-an-element-in-the-function/48858344#48858344\">explanation for Scala&#39;s notions of covariance and contravariance, with a detailed explanation and compilable code</a>."
+    }, {
+      "owner" : {
+        "account_id" : 3311832,
+        "reputation" : 410,
+        "user_id" : 2785156,
+        "user_type" : "registered",
+        "accept_rate" : 17,
+        "profile_image" : "https://graph.facebook.com/100000161364149/picture?type=large",
+        "display_name" : "Chetan Gowda",
+        "link" : "https://stackoverflow.com/users/2785156/chetan-gowda"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1526895522,
+      "post_id" : 19739576,
+      "comment_id" : 87905379,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Can someone explain the use/application of &lt;? super MyClass&gt;. Because you can put MyClass and its subclass objects into it, but if you want to take out stuff from that collection. They can be taken out only as Objects."
+    }, {
+      "owner" : {
+        "account_id" : 3206885,
+        "reputation" : 45120,
+        "user_id" : 2707792,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/hjDjB.png?s=256",
+        "display_name" : "Andrey Tyukin",
+        "link" : "https://stackoverflow.com/users/2707792/andrey-tyukin"
+      },
+      "reply_to_user" : {
+        "account_id" : 3311832,
+        "reputation" : 410,
+        "user_id" : 2785156,
+        "user_type" : "registered",
+        "accept_rate" : 17,
+        "profile_image" : "https://graph.facebook.com/100000161364149/picture?type=large",
+        "display_name" : "Chetan Gowda",
+        "link" : "https://stackoverflow.com/users/2785156/chetan-gowda"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1533988718,
+      "post_id" : 19739576,
+      "comment_id" : 90555259,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ChetanGowda Here is a rather detailed example that explains why <code>&lt;? super X&gt;</code> is useful, and what happens if you omit it: <a href=\"https://stackoverflow.com/a/49124661/2707792\">Java 8 Comparator <code>comparing()</code> static function</a>."
+    }, {
+      "owner" : {
+        "account_id" : 46020,
+        "reputation" : 2549,
+        "user_id" : 135845,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/agZcF.jpg?s=256",
+        "display_name" : "Eric",
+        "link" : "https://stackoverflow.com/users/135845/eric"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1589993981,
+      "post_id" : 19739576,
+      "comment_id" : 109515512,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Are the angle brackets directional or comparative?"
+    } ],
+    "owner" : {
+      "account_id" : 1399922,
+      "reputation" : 9618,
+      "user_id" : 1328888,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/tOkv0.jpg?s=256",
+      "display_name" : "anoopelias",
+      "link" : "https://stackoverflow.com/users/1328888/anoopelias"
+    },
+    "is_accepted" : false,
+    "score" : 695,
+    "last_activity_date" : 1622275448,
+    "last_edit_date" : 1622275448,
+    "creation_date" : 1383374078,
+    "answer_id" : 19739576,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The principles behind this in computer science is called</p>\n<ul>\n<li>Covariance: <code>? extends MyClass</code>,</li>\n<li>Contravariance: <code>? super MyClass</code> and</li>\n<li>Invariance/non-variance: <code>MyClass</code></li>\n</ul>\n<p>The picture below should explain the concept.\nPicture courtesy: <a href=\"https://stackoverflow.com/users/2707792/andrey-tyukin\">Andrey Tyukin</a></p>\n<p><img src=\"https://i.sstatic.net/KjDLw.png\" alt=\"Covariance vs Contravariance\" /></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2596160,
+      "reputation" : 1546,
+      "user_id" : 2249812,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/ZmFXd.jpg?s=256",
+      "display_name" : "Pradeep Kr Kaushal",
+      "link" : "https://stackoverflow.com/users/2249812/pradeep-kr-kaushal"
+    },
+    "is_accepted" : false,
+    "score" : 32,
+    "last_activity_date" : 1547893796,
+    "last_edit_date" : 1547893796,
+    "creation_date" : 1415861484,
+    "answer_id" : 26902970,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In a nutshell, three easy rules to remember PECS: </p>\n\n<ol>\n<li>Use the <code>&lt;? extends T&gt;</code> wildcard if you need to retrieve object of\ntype <code>T</code> from a collection.</li>\n<li>Use the <code>&lt;? super T&gt;</code> wildcard if you need to put objects of type <code>T</code> in\na collection.</li>\n<li>If you need to satisfy both things, well, don’t use any wildcard. As\nsimple as that.</li>\n</ol>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5397431,
+        "reputation" : 6028,
+        "user_id" : 4298200,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://lh5.googleusercontent.com/-HcKtiretO2g/AAAAAAAAAAI/AAAAAAAAAH0/IXGAL7MX8sQ/s256-rj/photo.jpg",
+        "display_name" : "Georg Plaz",
+        "link" : "https://stackoverflow.com/users/4298200/georg-plaz"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1524982373,
+      "post_id" : 31634364,
+      "comment_id" : 87183484,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hey, I just wanted to know what you meant with the last sentense: &quot;If you think my analogy is wrong please update&quot;. Do you mean if it is ethically wrong (which is subjective) or if it is wrong in the context of programming (which is objective: no, it&#39;s not wrong)? I would like to replace it with a more neutral example which is universally acceptable independent of cultural norms and ethical believes; If that is OK with you."
+    }, {
+      "owner" : {
+        "account_id" : 5730547,
+        "reputation" : 839,
+        "user_id" : 4526235,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://i.sstatic.net/k4xaC.jpg?s=256",
+        "display_name" : "Oleg Kuts",
+        "link" : "https://stackoverflow.com/users/4526235/oleg-kuts"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1555072579,
+      "post_id" : 31634364,
+      "comment_id" : 97992043,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "at last I could get it. Nice explanation."
+    }, {
+      "owner" : {
+        "account_id" : 455161,
+        "reputation" : 1340,
+        "user_id" : 853191,
+        "user_type" : "registered",
+        "accept_rate" : 25,
+        "profile_image" : "https://www.gravatar.com/avatar/fdabb50a1f74d4f4b95e852812ec6583?s=256&d=identicon&r=PG",
+        "display_name" : "LiuWenbin_NO.",
+        "link" : "https://stackoverflow.com/users/853191/liuwenbin-no"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1558065908,
+      "post_id" : 31634364,
+      "comment_id" : 98984776,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Premraj, <code>In-variance&#47;Non-variance: ? or ? extends Object - Unbounded Wildcard. It stands for the family of all types. Use when you both get and put.</code>, I cannot add element to List&lt;?&gt; or List&lt;? extends Object&gt;, so I don&#39;t understand why it can be <code>Use when you both get and put</code>."
+    }, {
+      "owner" : {
+        "account_id" : 15396867,
+        "reputation" : 304,
+        "user_id" : 11107679,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-gPCk3FK2efU/AAAAAAAAAAI/AAAAAAAAAAw/M_fT1KJFgOY/s256-rj/photo.jpg",
+        "display_name" : "mouselabs",
+        "link" : "https://stackoverflow.com/users/11107679/mouselabs"
+      },
+      "reply_to_user" : {
+        "account_id" : 455161,
+        "reputation" : 1340,
+        "user_id" : 853191,
+        "user_type" : "registered",
+        "accept_rate" : 25,
+        "profile_image" : "https://www.gravatar.com/avatar/fdabb50a1f74d4f4b95e852812ec6583?s=256&d=identicon&r=PG",
+        "display_name" : "LiuWenbin_NO.",
+        "link" : "https://stackoverflow.com/users/853191/liuwenbin-no"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1587062381,
+      "post_id" : 31634364,
+      "comment_id" : 108369078,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@LiuWenbin_NO. - That part of the answer is misleading. <code>?</code> - the &quot;unbounded wildcard&quot; - corresponds with the exact opposite of invariance. Please refer to the following documentation: <a href=\"https://docs.oracle.com/javase/tutorial/java/generics/wildcardGuidelines.html\" rel=\"nofollow noreferrer\">docs.oracle.com/javase/tutorial/java/generics/&hellip;</a> which states: <i>In the case where the code needs to access the variable as both an &quot;in&quot; and an &quot;out&quot; variable, do not use a wildcard.</i> (They are using &quot;in&quot; and &quot;out&quot; as synonymous with &quot;get&quot; and &quot;put&quot;). With the exception of <code>null</code> you can&#39;t add  to a Collection parameterized with <code>?</code>."
+    }, {
+      "owner" : {
+        "account_id" : 1875874,
+        "reputation" : 75425,
+        "user_id" : 1697099,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/gerXo.png?s=256",
+        "display_name" : "Premraj",
+        "link" : "https://stackoverflow.com/users/1697099/premraj"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1623950229,
+      "post_id" : 31634364,
+      "comment_id" : 120230064,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<a href=\"https://stackoverflow.com/a/1368212/1697099\">stackoverflow.com/a/1368212/1697099</a> for more"
+    } ],
+    "owner" : {
+      "account_id" : 1875874,
+      "reputation" : 75425,
+      "user_id" : 1697099,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/gerXo.png?s=256",
+      "display_name" : "Premraj",
+      "link" : "https://stackoverflow.com/users/1697099/premraj"
+    },
+    "is_accepted" : false,
+    "score" : 100,
+    "last_activity_date" : 1716575799,
+    "last_edit_date" : 1716575799,
+    "creation_date" : 1437892429,
+    "answer_id" : 31634364,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>PECS is a mnemonic device in Java generics that helps us remember which keyword to use when specifying bounds on generic type parameters.</p>\n<p><strong>1 Producer Extends:</strong> (Bounded Type Param <code>? extends T</code>)</p>\n<ul>\n<li>Applies to <strong>return types and variables</strong> with upper bounds.</li>\n<li>Represents a <strong>producer</strong> of values.</li>\n<li>Allows you to return a <strong>more specific subtype</strong> of\nthe declared type (covariant).</li>\n<li><strong>Covariance</strong> is a hierarchical relationship i.e. &quot;is-a&quot; relationship: Cat as &quot;is-a&quot; Animal.</li>\n</ul>\n<p><strong>2 Consumer Super:</strong>  (Bounded Type Param <code>? super T</code>)</p>\n<ul>\n<li>Applies to <strong>input parameters and variables</strong> with lower bounds.</li>\n<li>Represents a <strong>consumer</strong> of values.</li>\n<li>Allows you to accept a <strong>more general supertype</strong> of the declared type (contravariant).</li>\n<li><strong>Contravariance</strong> Reversal of Subtype Relationship: Animal as &quot;can hold&quot; Cat.</li>\n</ul>\n<p><strong>3. Invariant/Nonvariant types</strong></p>\n<ul>\n<li>(without bounds) have fixed relationships and don't benefit from PECS.</li>\n<li>Fixed relationship i.e. the type must remain exactly as specified, without any flexibility to accept subtypes or supertypes: i.e.  where both input and output types are fixed.</li>\n</ul>\n<p>The Liskov Substitution Principle (LSP) states that “<strong>objects in a program should be replaceable with instances of their subtypes without altering the correctness of that program</strong>”.</p>\n<p><a href=\"https://i.sstatic.net/KoW5X.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/KoW5X.png\" alt=\"enter image description here\" /></a> <a href=\"https://www.mathsisfun.com/definitions/bounds.html\" rel=\"noreferrer\">Image src</a></p>\n<p><strong>bounded</strong>(i.e. heading toward somewhere) <strong>wildcard</strong> : There are 3 different flavours of wildcards:</p>\n<ul>\n<li>Co-variance: <code>? extends T</code> ( Reign of <code>T</code> descendants)  - a wildcard with an <strong>upper bound</strong>. <code>T</code> is the <strong>upper</strong>-most class in the inheritance hierarchy. Use an <code>extends</code> wildcard when you only <strong>Get</strong> values out of a structure. Upper bounds promote safe substitution of subtypes.<br />\nFor example, if T extends Animal, T can be Animal itself or any of its subtypes like Cat, Dog, etc., but it cannot be a type &quot;higher&quot; than Animal, like Object.</li>\n<li>Contra-variance: <code>? super T</code> ( Reign of <code>T</code> ancestor)  - a wildcard with a <strong>lower bound</strong>. <code>T</code> is the <strong>lower</strong>-most class in the inheritance hierarchy. Use a <code>super</code> wildcard when you only <strong>Put</strong> values into a structure. Lower bounds promote safe substitution of supertypes.</li>\n<li>In-variance/Non-variance: <code>?</code> or <code>? extends Object</code> - <strong>Unbounded</strong> Wildcard. It stands for the family of  all types. Use when you both get and put.</li>\n</ul>\n<p>Note: wildcard <code>?</code> means <strong>zero or one time</strong>, represents an <strong>unknown type</strong>. The wildcard can be used as the type of a parameter, never used as a type argument for a generic method invocation, a generic class instance creation.(i.e. when used wildcard that reference not used in elsewhere in program like we use <code>T</code>)</p>\n<p><a href=\"https://i.sstatic.net/ki1Kf.jpg\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/ki1Kf.jpg\" alt=\"enter image description here\" /></a></p>\n<pre><code> import java.util.ArrayList;\nimport java.util.List;\n\nclass Shape { void draw() {}}\n\nclass Circle extends Shape {void draw() {}}\n\nclass Square extends Shape {void draw() {}}\n\nclass Rectangle extends Shape {void draw() {}}\n\npublic class Test {\n\n    public static void main(String[] args) {\n        //? extends Shape i.e. can use any sub type of Shape, here Shape is Upper Bound in inheritance hierarchy\n        List&lt;? extends Shape&gt; intList5 = new ArrayList&lt;Shape&gt;();\n        List&lt;? extends Shape&gt; intList6 = new ArrayList&lt;Cricle&gt;();\n        List&lt;? extends Shape&gt; intList7 = new ArrayList&lt;Rectangle&gt;();\n        List&lt;? extends Shape&gt; intList9 = new ArrayList&lt;Object&gt;();//ERROR.\n\n\n        //? super Shape i.e. can use any super type of Shape, here Shape is Lower Bound in inheritance hierarchy\n        List&lt;? super Shape&gt; inList5 = new ArrayList&lt;Shape&gt;();\n        List&lt;? super Shape&gt; inList6 = new ArrayList&lt;Object&gt;();\n        List&lt;? super Shape&gt; inList7 = new ArrayList&lt;Circle&gt;(); //ERROR.\n\n        //-----------------------------------------------------------\n        Circle circle = new Circle();\n        Shape shape = circle; // OK. Circle IS-A Shape\n\n        List&lt;Circle&gt; circles = new ArrayList&lt;&gt;();\n        List&lt;Shape&gt; shapes = circles; // ERROR. List&lt;Circle&gt; is not subtype of List&lt;Shape&gt; even when Circle IS-A Shape\n\n        List&lt;? extends Circle&gt; circles2 = new ArrayList&lt;&gt;();\n        List&lt;? extends Shape&gt; shapes2 = circles2; // OK. List&lt;? extends Circle&gt; is subtype of List&lt;? extends Shape&gt;\n\n\n        //-----------------------------------------------------------\n        Shape shape2 = new Shape();\n        Circle circle2= (Circle) shape2; // OK. with type casting\n\n        List&lt;Shape&gt; shapes3 = new ArrayList&lt;&gt;();\n        List&lt;Circle&gt; circles3 = shapes3; //ERROR. List&lt;Circle&gt; is not subtype of  List&lt;Shape&gt; even Circle is subetype of Shape\n\n        List&lt;? super Shape&gt; shapes4 = new ArrayList&lt;&gt;();\n        List&lt;? super Circle&gt; circles4 = shapes4; //OK.\n    }\n\n    \n    \n    /*\n     * Example for an upper bound wildcard (Get values i.e Producer `extends`)\n     *\n     * */\n    public void testCoVariance(List&lt;? extends Shape&gt; list) {\n        list.add(new Object());//ERROR\n        list.add(new Shape()); //ERROR\n        list.add(new Circle()); // ERROR\n        list.add(new Square()); // ERROR\n        list.add(new Rectangle()); // ERROR\n        Shape shape= list.get(0);//OK so list act as produces only\n    /*\n     * You can't add a Shape,Circle,Square,Rectangle to a List&lt;? extends Shape&gt;\n     * You can get an object and know that it will be an Shape\n     */\n    }\n    \n    \n    /*\n     * Example for  a lower bound wildcard (Put values i.e Consumer`super`)\n     * */\n    public void testContraVariance(List&lt;? super Shape&gt; list) {\n        list.add(new Object());//ERROR\n        list.add(new Shape());//OK\n        list.add(new Circle());//OK\n        list.add(new Square());//OK\n        list.add(new Rectangle());//OK\n        Shape shape= list.get(0); // ERROR. Type mismatch, so list acts only as consumer\n        Object object= list.get(0); //OK gets an object, but we don't know what kind of Object it is.\n        /*\n         * You can add a Shape,Circle,Square,Rectangle to a List&lt;? super Shape&gt;\n         * You can't get an Shape(but can get Object) and don't know what kind of Shape it is.\n         */\n    }\n}\n</code></pre>\n<p><a href=\"http://www.codejava.net/java-core/collections/generics-with-subtyping-and-the-substitution-principle\" rel=\"noreferrer\">More coding examples</a><br />\n<a href=\"https://stackoverflow.com/a/64888058/1697099\">Visualising the concept</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3313963,
+      "reputation" : 12119,
+      "user_id" : 2786733,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/ATW0r.jpg?s=256",
+      "display_name" : "Andrejs",
+      "link" : "https://stackoverflow.com/users/2786733/andrejs"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1495044742,
+    "creation_date" : 1495044742,
+    "answer_id" : 44032098,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>(adding an answer because never enough examples with Generics wildcards)</p>\n\n<pre><code>       // Source \n       List&lt;Integer&gt; intList = Arrays.asList(1,2,3);\n       List&lt;Double&gt; doubleList = Arrays.asList(2.78,3.14);\n       List&lt;Number&gt; numList = Arrays.asList(1,2,2.78,3.14,5);\n\n       // Destination\n       List&lt;Integer&gt; intList2 = new ArrayList&lt;&gt;();\n       List&lt;Double&gt; doublesList2 = new ArrayList&lt;&gt;();\n       List&lt;Number&gt; numList2 = new ArrayList&lt;&gt;();\n\n        // Works\n        copyElements1(intList,intList2);         // from int to int\n        copyElements1(doubleList,doublesList2);  // from double to double\n\n\n     static &lt;T&gt; void copyElements1(Collection&lt;T&gt; src, Collection&lt;T&gt; dest) {\n        for(T n : src){\n            dest.add(n);\n         }\n      }\n\n\n     // Let's try to copy intList to its supertype\n     copyElements1(intList,numList2); // error, method signature just says \"T\"\n                                      // and here the compiler is given \n                                      // two types: Integer and Number, \n                                      // so which one shall it be?\n\n     // PECS to the rescue!\n     copyElements2(intList,numList2);  // possible\n\n\n\n    // copy Integer (? extends T) to its supertype (Number is super of Integer)\n    private static &lt;T&gt; void copyElements2(Collection&lt;? extends T&gt; src, \n                                          Collection&lt;? super T&gt; dest) {\n        for(T n : src){\n            dest.add(n);\n        }\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4533206,
+      "reputation" : 549,
+      "user_id" : 3683093,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/d2fbda25da87a1f3e04a21976557b1ae?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jason",
+      "link" : "https://stackoverflow.com/users/3683093/jason"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1524982396,
+    "last_edit_date" : 1524982396,
+    "creation_date" : 1519033808,
+    "answer_id" : 48863403,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Remember this: </p>\n\n<blockquote>\n  <p>Consumer eat <strong>supper</strong>(super); Producer <strong>extends</strong> his parent's factory</p>\n</blockquote>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 19387534,
+        "reputation" : 527,
+        "user_id" : 14176948,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/02c9ffa2545addab9a0bd33fd22279fc?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alex Mandelias",
+        "link" : "https://stackoverflow.com/users/14176948/alex-mandelias"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1658489835,
+      "post_id" : 52468697,
+      "comment_id" : 129070137,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you so very much for your answer. Your very concrete examples with the generic Lists and why we can and can&#39;t do certain operations finally made it click for me."
+    } ],
+    "owner" : {
+      "account_id" : 10179440,
+      "reputation" : 370,
+      "user_id" : 7516845,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-lY-1faUTxoM/AAAAAAAAAAI/AAAAAAAAAAA/tdZrqKW8z84/s256-rj/photo.jpg",
+      "display_name" : "Daniel",
+      "link" : "https://stackoverflow.com/users/7516845/daniel"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1587122847,
+    "last_edit_date" : 1587122847,
+    "creation_date" : 1537724554,
+    "answer_id" : 52468697,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>let's assume this hierarchy:</p>\n\n<pre><code>class Creature{}// X\nclass Animal extends Creature{}// Y\nclass Fish extends Animal{}// Z\nclass Shark extends Fish{}// A\nclass HammerSkark extends Shark{}// B\nclass DeadHammerShark extends HammerSkark{}// C\n</code></pre>\n\n<p><strong>Let's clarify PE - Producer Extends:</strong></p>\n\n<pre><code>List&lt;? extends Shark&gt; sharks = new ArrayList&lt;&gt;();\n</code></pre>\n\n<p>Why you cannot add objects that extend \"Shark\" in this list? like:</p>\n\n<pre><code>sharks.add(new HammerShark());//will result in compilation error\n</code></pre>\n\n<p>Since you have a list that can be of type A, B or C <strong>at runtime</strong>, you cannot add any object of type A, B or C in it because you can end up with a combination that is not allowed in java. <br>In practice, the compiler can indeed see at compiletime that you add a B:</p>\n\n<pre><code>sharks.add(new HammerShark());\n</code></pre>\n\n<p>...but it has no way to tell if at runtime, your B will be a subtype or supertype of the list type. At runtime the list type can be any of the types A, B, C. So you cannot end up adding HammerSkark (super type) in a list of DeadHammerShark for example.</p>\n\n<p>*You will say: \"OK, but why can't I add HammerSkark in it since it is the smallest type?\". \nAnswer: It is the smallest <strong>you</strong> know. But HammerSkark can be extended too by somebody else and you end up in the same scenario.</p>\n\n<p><strong>Let's clarify CS - Consumer Super:</strong></p>\n\n<p>In the same hierarchy we can try this:</p>\n\n<pre><code>List&lt;? super Shark&gt; sharks = new ArrayList&lt;&gt;();\n</code></pre>\n\n<p>What and why you <strong>can</strong> add to this list?</p>\n\n<pre><code>sharks.add(new Shark());\nsharks.add(new DeadHammerShark());\nsharks.add(new HammerSkark());\n</code></pre>\n\n<p>You can add the above types of objects because anything below shark(A,B,C) will always be subtypes of anything above shark (X,Y,Z). Easy to understand. </p>\n\n<p>You <strong>cannot</strong> add types above Shark, because <strong>at runtime</strong> the type of added object can be higher in hierarchy than the declared type of the list(X,Y,Z). This is not allowed.</p>\n\n<p>But why you cannot read from this list?\n(I mean you can get an element out of it, but you cannot assign it to anything other than Object o):</p>\n\n<pre><code>Object o;\no = sharks.get(2);// only assignment that works\n\nAnimal s;\ns = sharks.get(2);//doen't work\n</code></pre>\n\n<p>At runtime, the type of list can be any type above A: X, Y, Z, ...\nThe compiler can compile your assignment statement (which seems correct) but, <strong>at runtime</strong> the type of s (Animal) can be lower in hierarchy than the declared type of the list(which could be Creature, or higher). This is not allowed.</p>\n\n<p><strong>To sum up</strong></p>\n\n<p><strong>We use <code>&lt;? super T&gt;</code> to add objects of types equal or below <code>T</code> to the <code>List</code>.</strong> We cannot read from \nit.<br>\n<strong>We use <code>&lt;? extends T&gt;</code> to read objects of types equal or below <code>T</code> from list.</strong> We cannot add element to it.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7284149,
+      "reputation" : 703,
+      "user_id" : 5552809,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-zXEeZdep3gI/AAAAAAAAAAI/AAAAAAAABx4/KIGduwAzIuI/s256-rj/photo.jpg",
+      "display_name" : "contrapost",
+      "link" : "https://stackoverflow.com/users/5552809/contrapost"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1542721661,
+    "creation_date" : 1542721661,
+    "answer_id" : 53394456,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using real life example (with some simplifications):</p>\n\n<ol>\n<li>Imagine a freight train with freight cars as analogy to a list.</li>\n<li>You can <strong>put</strong> a cargo in a freight car if the cargo has <strong>the same or smaller size</strong> than the freight car = <code>&lt;? super FreightCarSize&gt;</code></li>\n<li>You can <strong>unload</strong> a cargo from a freight car if you have <strong>enough place</strong> (more than the size of the cargo) in your depot = <code>&lt;? extends DepotSize&gt;</code></li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2138268,
+      "reputation" : 8557,
+      "user_id" : 1897528,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://i.sstatic.net/JI8f2.png?s=256",
+      "display_name" : "Farrukh Chishti",
+      "link" : "https://stackoverflow.com/users/1897528/farrukh-chishti"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1549553617,
+    "creation_date" : 1549553617,
+    "answer_id" : 54576828,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Covariance</strong>: accept subtypes<br>\n<strong>Contravariance</strong>: accept supertypes</p>\n\n<p>Covariant types are read-only, while contravariant types are write-only.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15396867,
+        "reputation" : 304,
+        "user_id" : 11107679,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-gPCk3FK2efU/AAAAAAAAAAI/AAAAAAAAAAw/M_fT1KJFgOY/s256-rj/photo.jpg",
+        "display_name" : "mouselabs",
+        "link" : "https://stackoverflow.com/users/11107679/mouselabs"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1587106949,
+      "post_id" : 59868129,
+      "comment_id" : 108382807,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;ve run into that same mental collision and would tend to agree except that PECS doesn&#39;t specify the naming of code and the type boundaries themselves <i>are</i> set on the Collection declarations. Moreover as far as naming is concerned you often have names for producing/consuming Collections like <code>src</code> and <code>dst</code>. So you&#39;re dealing with both code and containers at the same time and I&#39;ve ended up thinking about it along those lines - &quot;consuming code&quot; consumes from a producing container, and &quot;producing code&quot; produces for a consuming container."
+    }, {
+      "owner" : {
+        "account_id" : 193260,
+        "reputation" : 1830,
+        "user_id" : 434888,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b527f16640a1f3d18204c23d635b90d7?s=256&d=identicon&r=PG",
+        "display_name" : "Gino",
+        "link" : "https://stackoverflow.com/users/434888/gino"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1675212819,
+      "post_id" : 59868129,
+      "comment_id" : 132879288,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I think PECS is a terrible nomenclature. I couldn&#39;t wrap my head around it until you explained that it was from the perspective of the data collection itself. Someone mentioned using GEPS instead (Get Extends, Put Super), and I think this is a much more useful mnemonic.. I was able to accurately reconstruct the Collections.copy(List dest, List src) signature based on the GEPS mnemonic.."
+    } ],
+    "owner" : {
+      "account_id" : 7413926,
+      "reputation" : 5899,
+      "user_id" : 11374957,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3383e4fd807a451772e79e0f5ccca51c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Kaan",
+      "link" : "https://stackoverflow.com/users/11374957/kaan"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1579726622,
+    "creation_date" : 1579726622,
+    "answer_id" : 59868129,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is the clearest, simplest way for me think of extends vs. super:</p>\n\n<ul>\n<li><p><code>extends</code> is for <strong>reading</strong></p></li>\n<li><p><code>super</code> is for <strong>writing</strong></p></li>\n</ul>\n\n<p>I find \"PECS\" to be a non-obvious way to think of things regarding who is the \"producer\" and who is the \"consumer\". \"PECS\" is defined from the perspective of the <em>data collection itself</em> – the collection \"consumes\" if objects are being written <em>to</em> it (it is consuming objects from calling code), and it \"produces\" if objects are being read <em>from</em> it (it is producing objects to some calling code). This is counter to how everything else is named though. Standard Java APIs are named from the perspective of the calling code, not the collection itself. For example, a collection-centric view of <a href=\"https://docs.oracle.com/javase/9/docs/api/java/util/List.html\" rel=\"noreferrer\">java.util.List</a> should have a method named \"receive()\" instead of \"add()\" – after all, the calling code <em>adds</em> the element, but the list itself <em>receives</em> the element.</p>\n\n<p>I think it's more intuitive, natural and consistent to think of things from the perspective of the code that interacts with the collection – does the code \"read from\" or \"write to\" the collection? Following that, any code <em>writing to</em> the collection would be the \"producer\", and any code <em>reading from</em> the collection would be the \"consumer\".</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 513210,
+        "reputation" : 2546,
+        "user_id" : 915756,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://i.sstatic.net/r0k4f.jpg?s=256",
+        "display_name" : "Michal Vician",
+        "link" : "https://stackoverflow.com/users/915756/michal-vician"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1591968121,
+      "post_id" : 61294213,
+      "comment_id" : 110263021,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "For those like me, who didn&#39;t understand the &quot;IS-A&quot; terminology: <a href=\"https://en.wikipedia.org/wiki/Is-a\" rel=\"nofollow noreferrer\">en.wikipedia.org/wiki/Is-a</a>"
+    }, {
+      "owner" : {
+        "account_id" : 15396867,
+        "reputation" : 304,
+        "user_id" : 11107679,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-gPCk3FK2efU/AAAAAAAAAAI/AAAAAAAAAAw/M_fT1KJFgOY/s256-rj/photo.jpg",
+        "display_name" : "mouselabs",
+        "link" : "https://stackoverflow.com/users/11107679/mouselabs"
+      },
+      "reply_to_user" : {
+        "account_id" : 513210,
+        "reputation" : 2546,
+        "user_id" : 915756,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://i.sstatic.net/r0k4f.jpg?s=256",
+        "display_name" : "Michal Vician",
+        "link" : "https://stackoverflow.com/users/915756/michal-vician"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1592538511,
+      "post_id" : 61294213,
+      "comment_id" : 110467413,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@MichalVician Imagine a <code>class A</code> and a <code>class B</code>, with each having a single public method defined - <code>a()</code> and <code>b()</code> - respectively. If <code>B extends A</code>, then the result is that <code>B</code> contains both <code>a()</code> and <code>b()</code>.  <code>B</code> then &quot;IS-A&quot; <code>A</code> because it fully represents <code>A</code>&#39;s &quot;interface.&quot; But the same can&#39;t be said of <code>A</code> - <code>A</code> is not a <code>B</code>, we only know that <code>B</code> is (at least) an <code>A</code>, since it <code>extends A</code>"
+    } ],
+    "owner" : {
+      "account_id" : 15396867,
+      "reputation" : 304,
+      "user_id" : 11107679,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-gPCk3FK2efU/AAAAAAAAAAI/AAAAAAAAAAw/M_fT1KJFgOY/s256-rj/photo.jpg",
+      "display_name" : "mouselabs",
+      "link" : "https://stackoverflow.com/users/11107679/mouselabs"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1678328017,
+    "last_edit_date" : 1678328017,
+    "creation_date" : 1587234658,
+    "answer_id" : 61294213,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What helped me was looking at it using ordinary assignment as an analogy.</p>\n<p>The PECS &quot;rule&quot; just ensures that the following is legal:</p>\n<ul>\n<li>Consumer: whatever <code>?</code> is, it can legally <em>refer to</em> <code>T</code></li>\n<li>Producer: whatever <code>?</code> is, it can legally be <em>referred to by</em> <code>T</code></li>\n</ul>\n<p>The typical pairing along the lines of <code>List&lt;? super T&gt; consumer</code>, <code>List&lt;? extends T&gt; producer</code> is simply ensuring that the compiler can enforce the standard &quot;IS-A&quot; inheritance and assignment rules.</p>\n<p>Consider the following toy code:</p>\n<pre class=\"lang-java prettyprint-override\"><code>// copies the elements of 'producer' into 'consumer'\nstatic &lt;T&gt; void copy(List&lt;? super T&gt; consumer, List&lt;? extends T&gt; producer) {\n   for(T t : producer)\n       consumer.add(t);\n}\n</code></pre>\n<p>The <code>consumer</code> type is the reference - the &quot;left hand side&quot; of the assignment - and it must be <code>T</code> or a super-type of <code>T</code> - <code>&lt;? super T&gt;</code> ensures that.</p>\n<p>For <code>producer</code> the concern is the same it's just inverted: the <code>producer</code> type is the &quot;referent&quot; - the &quot;right hand side&quot; of the assignment - and it must be <code>T</code> or a sub-type of <code>T</code> - <code>&lt;? extends T&gt;</code> ensures that.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 14105282,
+        "reputation" : 759,
+        "user_id" : 10189517,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Qu2fm.png?s=256",
+        "display_name" : "HKIT",
+        "link" : "https://stackoverflow.com/users/10189517/hkit"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1665300054,
+      "post_id" : 62171149,
+      "comment_id" : 130664260,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "to me it is the best answer talking about why we cannot add item to a wildcard upper bound"
+    } ],
+    "owner" : {
+      "account_id" : 6115775,
+      "reputation" : 35173,
+      "user_id" : 4770877,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/p5TXj.png?s=256",
+      "display_name" : "yoAlex5",
+      "link" : "https://stackoverflow.com/users/4770877/yoalex5"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1664435195,
+    "last_edit_date" : 1664435195,
+    "creation_date" : 1591181737,
+    "answer_id" : 62171149,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>PECS (Producer extends and Consumer super)</strong></p>\n<p><a href=\"https://stackoverflow.com/a/62752867/4770877\">[Covariance and contravariance]</a></p>\n<p>Lets take a look at example</p>\n<pre><code>public class A { }\n//B is A\npublic class B extends A { }\n//C is A\npublic class C extends A { }\n</code></pre>\n<p>Generics allows you to work with Types dynamically in a safe way</p>\n<pre><code>//ListA\nList&lt;A&gt; listA = new ArrayList&lt;A&gt;();\n\n//add\nlistA.add(new A());\nlistA.add(new B());\nlistA.add(new C());\n\n//get\nA a0 = listA.get(0);\nA a1 = listA.get(1);\nA a2 = listA.get(2);\n</code></pre>\n<pre><code>//ListB\nList&lt;B&gt; listB = new ArrayList&lt;B&gt;();\n\n//add\nlistB.add(new B());\n\n//get\nB b0 = listB.get(0);\n</code></pre>\n<img src=\"https://i.sstatic.net/D4RwI.png\" height=\"150\">\n<h2>Problem</h2>\n<p>Since Java's Collection is a reference type as a result we have next issues:</p>\n<p><strong>Problem #1</strong></p>\n<pre><code>//not compiled\n//danger of **adding** non-B objects using listA reference\nlistA = listB;\n</code></pre>\n<img src=\"https://i.sstatic.net/WyHs7.png\" height=\"150\">\n<p>*Swift's generic does not have such problem because Collection is <code>Value type</code><a href=\"https://stackoverflow.com/a/59219141/4770877\"><sup>[About]</sup></a> therefore a new collection is created</p>\n<p><strong>Problem #2</strong></p>\n<pre><code>//not compiled\n//danger of **getting** non-B objects using listB reference\nlistB = listA;\n</code></pre>\n<img src=\"https://i.sstatic.net/nTEXJ.png\" height=\"150\">\n<h2>The solution - Generic Wildcards</h2>\n<p>Wildcard is a reference type feature and it can not be instantiated directly</p>\n<p><strong>Solution #1</strong>\n<code>&lt;? super A&gt;</code> aka lower bound aka contravariance aka consumers guarantees that it is operates by A and all superclasses, that is why it is safe to <strong>add</strong></p>\n<pre><code>List&lt;? super A&gt; listSuperA;\nlistSuperA = listA;\nlistSuperA = new ArrayList&lt;Object&gt;();\n\n//add\nlistSuperA.add(new A());\nlistSuperA.add(new B());\n\n//get\nObject o0 = listSuperA.get(0);\n</code></pre>\n<img src=\"https://i.sstatic.net/jtcBs.png\" height=\"150\">\n<p><strong>Solution #2</strong></p>\n<p><code>&lt;? extends A&gt;</code> aka upper bound aka covariance aka producers guarantees that it is operates by A and all subclasses, that is why it is safe to <strong>get</strong> and cast</p>\n<pre><code>List&lt;? extends A&gt; listExtendsA;\nlistExtendsA = listA;\nlistExtendsA = listB;\n\n//get\nA a0 = listExtendsA.get(0);\n</code></pre>\n<img src=\"https://i.sstatic.net/Y33aY.png\" height=\"150\">\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7307087,
+        "reputation" : 480,
+        "user_id" : 10661805,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/TpNCg.jpg?s=256",
+        "display_name" : "Ray Jasson",
+        "link" : "https://stackoverflow.com/users/10661805/ray-jasson"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1675535412,
+      "post_id" : 64888058,
+      "comment_id" : 132951729,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The code example you gave is the <b>gist</b>!"
+    } ],
+    "owner" : {
+      "account_id" : 13889174,
+      "reputation" : 4236,
+      "user_id" : 10027592,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WpcbD.jpg?s=256",
+      "display_name" : "starriet 차주녕",
+      "link" : "https://stackoverflow.com/users/10027592/starriet-%ec%b0%a8%ec%a3%bc%eb%85%95"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1605680490,
+    "creation_date" : 1605680490,
+    "answer_id" : 64888058,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>let’s try visualizing this concept.</p>\n<p><code>&lt;? super SomeType&gt;</code> is an “undefined(yet)” type, but that undefined type <strong>should be a super</strong>class of the ‘SomeType’ class.</p>\n<p>The same goes for <code>&lt;? extends SomeType&gt;</code>. It’s a type that <strong>should extend</strong> the ‘SomeType’ class (it should be a child class of the ‘SomeType’ class).</p>\n<p>If we consider the concept of 'class inheritance' in a Venn diagram, an example would be like this:</p>\n<p><a href=\"https://i.sstatic.net/rneiP.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/rneiP.png\" alt=\"enter image description here\" /></a></p>\n<p>Mammal class <strong>extends</strong> Animal class (Animal class is a <strong>super</strong>class of Mammal class).</p>\n<p>Cat/Dog class <strong>extends</strong> Mammal class (Mammal class is a <strong>super</strong>class of Cat/Dog class).</p>\n<p>Then, let’s think about the ‘circles’ in the above diagram as a ‘box’ that has a physical volume.</p>\n<p><a href=\"https://i.sstatic.net/mpxnl.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/mpxnl.png\" alt=\"enter image description here\" /></a></p>\n<p>You CAN’T put a bigger box into a smaller one.</p>\n<p>You can ONLY put a smaller box into a bigger one.</p>\n<p>When you say <code>&lt;? super SomeType&gt;</code>, you wanna describe a ‘box’ that is the same size or <strong>bigger</strong> than the ‘SomeType’ box.</p>\n<p>If you say <code>&lt;? extends SomeType&gt;</code>, then you wanna describe a ‘box’ that is the same size or <strong>smaller</strong> than the ‘SomeType’ box.</p>\n<p><em>so what is PECS anyway?</em></p>\n<p>An example of a ‘Producer’ is a List which we only read from.</p>\n<p>An example of a ‘Consumer’ is a List which we only write into.</p>\n<p><em>Just keep in mind this:</em></p>\n<ul>\n<li><p>We ‘read’ from a ‘producer’, and take that stuff into our own box.</p>\n</li>\n<li><p>And we ‘write’ our own box into a ‘consumer’.</p>\n</li>\n</ul>\n<p>So, we need to read(take) something from a ‘producer’ <strong>and put that into our ‘box’.</strong> This means that any boxes taken from the producer should <strong>NOT</strong> be bigger than our ‘box’. That’s why “<strong>P</strong>roducer <strong>E</strong>xtends.”</p>\n<p><strong>“Extends” means a smaller box</strong>(smaller circle in the Venn diagram above). The boxes of a producer should be smaller than our own box, because we are gonna take those boxes from the producer and put them into our own box. We can’t put anything bigger than our box!</p>\n<p>Also, we need to write(put) <strong>our own ‘box’ into</strong> a ‘consumer’. This means that the boxes of the consumer should <strong>NOT</strong> be smaller than our own box. That’s why “<strong>C</strong>onsumer <strong>S</strong>uper.”</p>\n<p><strong>“Super” means a bigger box</strong>(bigger circle in the Venn diagram above). If we want to put our own boxes into a consumer, the boxes of the consumer should be bigger than our box!</p>\n<p>Now we can easily understand this example:</p>\n<pre><code>public class Collections { \n  public static &lt;T&gt; void copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src) {\n      for (int i = 0; i &lt; src.size(); i++) \n        dest.set(i, src.get(i)); \n  } \n}\n</code></pre>\n<p>In the above example, we want to read(take) something from <code>src</code> and write(put) them into <code>dest</code>. So the <code>src</code> is a “Producer” and its “boxes” should be smaller(more specific) than some type <code>T</code>.</p>\n<p>Vice versa, the <code>dest</code> is a “Consumer” and its “boxes” should be bigger(more general) than some type <code>T</code>.</p>\n<p>If the “boxes” of the <code>src</code> were bigger than that of the <code>dest</code>, we couldn’t put those big boxes into the smaller boxes the <code>dest</code> has.</p>\n<p>If anyone reads this, I hope it helps you better understand\n“<strong>P</strong>roducer <strong>E</strong>xtends, <strong>C</strong>onsumer <strong>S</strong>uper.”</p>\n<p>Happy coding! :)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10968388,
+      "reputation" : 37068,
+      "user_id" : 8059459,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/7a02411ebd47ea5e79243941d722057f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Willem van der Veen",
+      "link" : "https://stackoverflow.com/users/8059459/willem-van-der-veen"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1648884872,
+    "last_edit_date" : 1648884872,
+    "creation_date" : 1648822715,
+    "answer_id" : 71708416,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>PECS: Producer extends and Consumer super</h2>\n<p>Prerequisites for understanding:</p>\n<ul>\n<li>Generics and generic wildcards</li>\n<li>Polymorphism, Subtyping and Supertyping</li>\n</ul>\n<hr />\n<p>Lets say we have a type which takes a generic type parameter T, for example <code>List&lt;T&gt;</code>. When we write code it can be potentially beneficial to also allow subtypes or supertypes of our generic type parameter T. This relaxes the restraints for the user of the API and can make the code more flexible.</p>\n<p>Let first see what we gain relaxing these restrictions. Lets say we have the following 3 classes:</p>\n<pre><code>class BaseAnimal{};\n\nclass Animal extends BaseAnimal{};\n\nclass Duck extends Animal{};\n</code></pre>\n<p>and we are building a public method which takes a <code>list&lt;Animal&gt;</code></p>\n<ol>\n<li>If we use a super <code>List&lt;? super Animal&gt;</code> instead of <code>List&lt;Animal&gt;</code> we now can pass in more lists to satisfy the requirement of our method. We now can pass in either <code>List&lt;Animal&gt;</code> or <code>List&lt;BaseAnimal&gt;</code> even <code>List&lt;Object&gt;</code></li>\n<li>If we use an extends <code>List&lt;? extends Animal&gt;</code> instead of <code>List&lt;Animal&gt;</code> we now can pass in more lists to satisfy the requirement of our method. We now can pass in either <code>List&lt;Animal&gt;</code> or <code>List&lt;Duck&gt;</code></li>\n</ol>\n<p>However this poses the following 2 restrictions:</p>\n<ol>\n<li>If we use a super type like <code>List&lt;? super Animal&gt;</code> we don't know the exact type of <code>List&lt;T&gt;</code> it will be. It could be either a list of <code>List&lt;Animal&gt;</code> or <code>List&lt;BaseAnimal&gt;</code> or <code>List&lt;Object&gt;</code>. We have no way of knowing. This means we can never get a value out of this List because we do not know what the type will be. However we can put any data type which is <code>Animal</code> or extends it into the <code>List</code>. Because we can only put data into the  <code>List</code> it is called a <strong>consumer</strong> of data.</li>\n<li>If we use an extends <code>List&lt;? extends Animal&gt;</code> instead of <code>List&lt;Animal&gt;</code>. We also don't know what the exact type is. It can either be <code>List&lt;Animal&gt;</code> or <code>List&lt;Duck&gt;</code>. We can't add something to the <code>List</code> now because we can never certainly know what the type is. However we can pull something out because we always know that anything which comes out of the list is a subtype of <code>Animal</code>. Because we can only pull data out of the <code>List</code> is it called a <strong>producer</strong> of data.</li>\n</ol>\n<p>Here is a simple program to illustrate the relaxation of the type restrictions:</p>\n<pre><code>import java.util.ArrayList;\nimport java.util.List;\n\npublic class Generics {\n    public static void main(String[] args) {\n\n        Generics generics = new Generics();\n\n        generics.producerExtends(new ArrayList&lt;Duck&gt;());\n        generics.producerExtends(new ArrayList&lt;Animal&gt;());\n\n        generics.consumerSuper(new ArrayList&lt;Object&gt;());\n        generics.consumerSuper(new ArrayList&lt;Animal&gt;());\n\n    }\n\n    //  ? extends T   is an upper bound\n    public void producerExtends (List&lt;? extends Animal&gt; list) {\n\n        // Following are illegal since we never know exactly what type the list will be\n        // list.add(new Duck());\n        // list.add(new Animal());\n        \n        // We can read from it since we are always getting an Animal or subclass from it\n        // However we can read them as an animal type, so this compiles fine\n        if (list.size() &gt; 0) {\n            Animal animal = list.get(0);\n        }\n    }\n\n    // ? extends T   is a lower bound\n    public void consumerSuper (List&lt;? super Animal&gt; list) {\n        // It will be either a list of Animal or a superclass of it\n        // Therefore we can add any type which extends animals\n        list.add(new Duck());\n        list.add(new Animal());\n\n        // Compiler won't allow this it could potentially be a super type of Animal\n        // Animal animal = list.get(0);\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16677947,
+      "reputation" : 71,
+      "user_id" : 12053873,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/af118c3f58e38d3cdfc1534014bcc643?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "cksylr",
+      "link" : "https://stackoverflow.com/users/12053873/cksylr"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1711799698,
+    "creation_date" : 1711799698,
+    "answer_id" : 78247810,
+    "question_id" : 2723397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is an example for both cases:</p>\n<pre><code>public class PECSExample {\n\n    public static void main(String[] args) {\n        List&lt;C&gt; producerCList = new ArrayList&lt;&gt;();\n        List&lt;D&gt; producerDList = new ArrayList&lt;&gt;();\n        List&lt;E&gt; producerEList = new ArrayList&lt;&gt;();\n        producerCList.add(new E());\n        producerDList.add(new E());\n        producerEList.add(new E());\n        producerExtends(producerCList);\n        producerExtends(producerDList);\n        producerExtends(producerEList);\n\n        List&lt;Object&gt; consumerObjectList = new ArrayList&lt;&gt;();\n        List&lt;A&gt; consumerAList = new ArrayList&lt;&gt;();\n        List&lt;B&gt; consumerBList = new ArrayList&lt;&gt;();\n        consumerSuper(consumerObjectList);\n        consumerSuper(consumerAList);\n        consumerSuper(consumerBList);\n    }\n    public static void producerExtends(List&lt;? extends C&gt; producerList) {\n        System.out.println(&quot;Producer printing&quot;);\n        producerList.forEach(System.out::println);\n    }\n    public static void consumerSuper(List&lt;? super C&gt; consumerList) {\n        consumerList.add(new C());\n        consumerList.add(new D());\n        consumerList.add(new E());\n        System.out.println(&quot;Consumer printing&quot;);\n        consumerList.forEach(System.out::println);\n    }\n}\nclass A {}\nclass B extends A {}\nclass C extends B {}\nclass D extends C {}\nclass E extends D {}\n</code></pre>\n<p>Output:</p>\n<pre><code>Producer printing\ncollections.E@6d311334\nProducer printing\ncollections.E@682a0b20\nProducer printing\ncollections.E@3d075dc0\nConsumer printing\ncollections.C@448139f0\ncollections.D@7cca494b\ncollections.E@7ba4f24f\nConsumer printing\ncollections.C@3b9a45b3\ncollections.D@7699a589\ncollections.E@58372a00\nConsumer printing\ncollections.C@4dd8dc3\ncollections.D@6d03e736\ncollections.E@568db2f2\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 45413,
+    "reputation" : 29579,
+    "user_id" : 133830,
+    "user_type" : "registered",
+    "accept_rate" : 87,
+    "profile_image" : "https://www.gravatar.com/avatar/08f7df98a990128894baa9d090dfc1ca?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "peakit",
+    "link" : "https://stackoverflow.com/users/133830/peakit"
+  },
+  "is_answered" : true,
+  "view_count" : 183201,
+  "protected_date" : 1434472484,
+  "accepted_answer_id" : 2723538,
+  "answer_count" : 17,
+  "score" : 929,
+  "last_activity_date" : 1716575799,
+  "creation_date" : 1272388600,
+  "last_edit_date" : 1459868341,
+  "question_id" : 2723397,
+  "link" : "https://stackoverflow.com/questions/2723397/what-is-pecs-producer-extends-consumer-super",
+  "title" : "What is PECS (Producer Extends Consumer Super)?",
+  "body" : "<p>I came across PECS (short for <em>Producer <code>extends</code> and Consumer <code>super</code></em>) while reading up on generics. </p>\n\n<p>Can someone explain to me how to use PECS to resolve confusion between <code>extends</code> and <code>super</code>?</p>\n"
+}

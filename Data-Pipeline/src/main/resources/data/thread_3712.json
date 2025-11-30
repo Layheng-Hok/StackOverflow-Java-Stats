@@ -1,0 +1,106 @@
+{
+  "tags" : [ "java", "csv", "opencsv" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4836940,
+      "reputation" : 1083,
+      "user_id" : 3903279,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0534dacbba1fad177a30171caafe470e?s=256&d=identicon&r=PG",
+      "display_name" : "Scott Conway",
+      "link" : "https://stackoverflow.com/users/3903279/scott-conway"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1445462029,
+    "last_edit_date" : 1445462029,
+    "creation_date" : 1445456019,
+    "answer_id" : 33267723,
+    "question_id" : 33264011,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you can build it yourself grab the trunk build of opencsv.  I have modified the CsvToBean to print out the line number it was on when the error occurred. </p>\n\n<pre><code>throw new RuntimeException(\"Error parsing CSV line: \" + lineProcessed + \" values: \" + Arrays.toString(line), e);\n</code></pre>\n\n<p>This is set to go out in the 3.6 release which, barring any issues, should be out before Thanksgiving.  </p>\n\n<p>I am curious what the error that is causing this.  If you look a little further down on your exception stack trace you should see a \"Caused by:\" and that is the exception that was caught by the CsvToBean.  Given that you have over 200k lines I suspect you are getting an out of memory exception - which means you either need to split the file into smaller files, increase the memory of your JVM, or use the IterableCsvToBean which was introduced in the 3.5 release that allows line by line parsing. </p>\n\n<p>Hope that helps. </p>\n\n<p>:)</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4836940,
+        "reputation" : 1083,
+        "user_id" : 3903279,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/0534dacbba1fad177a30171caafe470e?s=256&d=identicon&r=PG",
+        "display_name" : "Scott Conway",
+        "link" : "https://stackoverflow.com/users/3903279/scott-conway"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1445524116,
+      "post_id" : 33274840,
+      "comment_id" : 54367143,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In Univocity-parsers how do you get an individual record at a time (instead of a list)?  Because given that he stated that the full file had 219,590 records I think the problem is he ran out of memory.  Please add an example that shows reading the records individually from the file."
+    }, {
+      "owner" : {
+        "account_id" : 4865932,
+        "reputation" : 6299,
+        "user_id" : 3924178,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/HEkLo.png?s=256",
+        "display_name" : "Jeronimo Backes",
+        "link" : "https://stackoverflow.com/users/3924178/jeronimo-backes"
+      },
+      "reply_to_user" : {
+        "account_id" : 4836940,
+        "reputation" : 1083,
+        "user_id" : 3903279,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/0534dacbba1fad177a30171caafe470e?s=256&d=identicon&r=PG",
+        "display_name" : "Scott Conway",
+        "link" : "https://stackoverflow.com/users/3903279/scott-conway"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1445524782,
+      "post_id" : 33274840,
+      "comment_id" : 54367577,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Just use the <code>BeanProcessor</code> (without List in the name). All beans will be passed on to a callback method named <code>beanParsed</code>.  This number of beans is not enough to flood the memory. It&#39;s hardly enough to consume 100MB of memory."
+    } ],
+    "owner" : {
+      "account_id" : 4865932,
+      "reputation" : 6299,
+      "user_id" : 3924178,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/HEkLo.png?s=256",
+      "display_name" : "Jeronimo Backes",
+      "link" : "https://stackoverflow.com/users/3924178/jeronimo-backes"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1449722966,
+    "last_edit_date" : 1449722966,
+    "creation_date" : 1445496198,
+    "answer_id" : 33274840,
+    "question_id" : 33264011,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I just tried with <a href=\"http://www.univocity.com/pages/parsers-tutorial\" rel=\"nofollow\">univocity-parsers</a> and I could parse your sample input without any issues. Give it a go as it is twice way faster than OpenCSV (2x faster on average). Here is my code:</p>\n\n<p>First add <code>@Parsed</code> annotations to the fields you want load from the CSV (there are many options available, check the documentation).</p>\n\n<pre><code>public static class UserAttributeRecord{\n\n    @Parsed\n    int userId;\n\n    @Parsed\n    int attributeId;\n\n    @Parsed\n    int rating;\n\n    @Parsed\n    long timestamp;\n\n    @Parsed\n    String email;\n\n    @Parsed\n    String attributeDesc;\n}\n</code></pre>\n\n<p>This is the code you need to parse your file:</p>\n\n<pre><code>public static void main(String[] args) throws IOException{\n\n    //creates a processor of java beans.\n    BeanListProcessor&lt;UserAttributeRecord&gt; beanProcessor = new BeanListProcessor&lt;UserAttributeRecord&gt;(UserAttributeRecord.class);\n\n    //then a settings object to configure the parser\n    CsvParserSettings settings = new CsvParserSettings(); //many options here, check the tutorial\n\n    //configures the parser to use the bean processor.\n    settings.setRowProcessor(beanProcessor);\n\n    //configures the input format.\n    settings.setHeaders(\"userId\", \"attributeId\", \"rating\", \"timestamp\", \"email\", \"attributeDesc\");\n    settings.getFormat().setLineSeparator(\"\\n\");\n\n    //creates a parser with your settings\n    CsvParser parser = new CsvParser(settings);\n\n    //parses everything. All rows are submitted to the row processor defined above\n    parser.parseAll(new FileReader(new File(\"/path/to/file.csv\")));\n\n    //here's your list of beans\n    List&lt;UserAttributeRecord&gt; beans = beanProcessor.getBeans();\n}\n</code></pre>\n\n<p>Disclosure: I am the author of this library. It's open-source and free (Apache V2.0 license).</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 107828,
+    "reputation" : 344,
+    "user_id" : 2267790,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/ec11f9459327dcdbd6febb5e67f25c21?s=256&d=identicon&r=PG",
+    "display_name" : "andyabel",
+    "link" : "https://stackoverflow.com/users/2267790/andyabel"
+  },
+  "is_answered" : false,
+  "view_count" : 9443,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1761822570,
+  "creation_date" : 1445443216,
+  "question_id" : 33264011,
+  "link" : "https://stackoverflow.com/questions/33264011/java-csvtobean-parse-fails-with-error-parsing-csv",
+  "title" : "Java CsvToBean.parse fails with Error parsing CSV",
+  "body" : "<p>I'm attempting to parse a large CSV file with OpenCSV in Eclipse.\nHere's the first 4 records of the CSV file. The full file has 219,590 records:-</p>\n\n<pre><code>0,23,1,0,someone@email.com,\"Construction/Contractors/Contractors\"\n0,43,1,0,someone@email.com,\"Engineering/Electrical Engineering/Electrical Engineering\"\n0,395,1,0,someone@email.com,\"Sales/Sales Force Management/Sales Management\"\n0,398,1,0,someone@email.com,\"Sales/Sales Strategy/Sales\"\n</code></pre>\n\n<p>And here's the Java code:-</p>\n\n<pre><code>    File csvFile = new File(\"data/userattrib2_30day.csv\");\n    ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();\n    strategy.setType(UserAttribRecord.class);\n    String[] columns = new String[] {\"userId\", \"attributeId\", \"rating\", \"timestamp\", \"email\", \"attributeDesc\"};\n    strategy.setColumnMapping(columns);\n\n    CSVReader reader = new CSVReader(new FileReader(csvFile));\n    CsvToBean&lt;UserAttribRecord&gt; csv = new CsvToBean&lt;UserAttribRecord&gt;();\n    List&lt;UserAttribRecord&gt; userAttribList = csv.parse(strategy,reader);\n</code></pre>\n\n<p>And it fails with:-</p>\n\n<pre><code>Exception in thread \"main\" java.lang.RuntimeException: Error parsing CSV!\nat com.opencsv.bean.CsvToBean.parse(CsvToBean.java:95)\nat com.opencsv.bean.CsvToBean.parse(CsvToBean.java:75)\n</code></pre>\n\n<p>How do I find out what the error is? There doesn't appear to be any debugging information, so I don't know what field in which record there was an error. How do I debug this?\nThanks</p>\n"
+}

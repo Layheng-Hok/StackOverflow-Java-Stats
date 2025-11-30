@@ -1,0 +1,138 @@
+{
+  "tags" : [ "java", "jdbc", "datasource" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1760117490,
+    "post_id" : 23957390,
+    "comment_id" : 140789005,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Tip: Use <b>try-with-resources</b> syntax to automatically close any and all database Connection objects."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 213468,
+        "reputation" : 110270,
+        "user_id" : 466862,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+        "display_name" : "Mark Rotteveel",
+        "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1401464209,
+      "post_id" : 23958151,
+      "comment_id" : 36908804,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "To add to this: the JDBC specification explicitly says: <i>&quot;Connection pooling is completely transparent to the client: A client obtains a pooled connection and uses it just the same way it obtains and uses a non pooled connection.&quot;</i> (JDBC 4.2 specification, section 11.1)"
+    } ],
+    "owner" : {
+      "account_id" : 4538915,
+      "reputation" : 161,
+      "user_id" : 3687344,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/94543ecfe2b6b721a8eeb7b3aff90d54?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Al1en313",
+      "link" : "https://stackoverflow.com/users/3687344/al1en313"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1401463698,
+    "creation_date" : 1401463698,
+    "answer_id" : 23958151,
+    "question_id" : 23957390,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You should close <code>Connection</code> in order to return it to the pool, next time you'll ask for <code>Datasource.getConnection()</code> connection from the pool will be obtained. There is no problem here.\nSometimes you don't want to close connection after each operation and use the same connection for several operations. In this case you shouldn't close it until last operation finished.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 213468,
+      "reputation" : 110270,
+      "user_id" : 466862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Rotteveel",
+      "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+    },
+    "is_accepted" : true,
+    "score" : 23,
+    "last_activity_date" : 1760099367,
+    "last_edit_date" : 1760099367,
+    "creation_date" : 1401464459,
+    "answer_id" : 23958381,
+    "question_id" : 23957390,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A connection obtained from a connection pool should be used exactly the same as a normal connection. The <a href=\"https://jcp.org/aboutJava/communityprocess/mrel/jsr221/index2.html\" rel=\"nofollow noreferrer\">JDBC 4.2 specification</a> (section 11.1) says about pooling:</p>\n<blockquote>\n<p><strong>When an application is finished using a connection, it closes the logical connection\nusing the method <code>Connection.close</code></strong>. This closes the logical connection but does\nnot close the physical connection. Instead, the physical connection is returned to the\npool so that it can be reused.</p>\n</blockquote>\n<blockquote>\n<p>Connection pooling is completely transparent to the client: A client obtains a pooled\nconnection and <strong>uses it just the same way it</strong> obtains and <strong>uses a non pooled\nconnection</strong>.</p>\n</blockquote>\n<p>(emphasis mine)</p>\n<p>This means that when you are done with a connection, you always call <code>Connection.close()</code>! It doesn't matter if it is a physical connection, or a logical connection from the pool.</p>\n<p>The reason is that whether a connection is a physical (direct) connection or a logical connection should be purely a matter of configuration, not a concern of the application code that merely uses the connection.</p>\n<p>In the case of a connection pool, the <code>close()</code> will - details may vary, and some implementations are buggy in this respect - invalidate the logical connection and signal to the connection pool that the underlying physical connection is available for re-use. The connection pool may do some validity checks and then return the (physical) connection into the pool or close it (e.g. if the pool has too many idle connections, or the connection is too old, etc).</p>\n<p>Calling <code>close()</code> is not only allowed, it is even vital for the correct working of a connection pool. Not calling <code>close()</code> usually requires some helper thread to close (reclaim) logical connections that have been in use for too long. As this timeout is usually longer than normal application needs, it might lead to exhaustion of the pool, or to a configuration where the pool needs a higher maximum number of connections than is really necessary.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1708421185,
+      "post_id" : 66327964,
+      "comment_id" : 137555041,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Doesn&#39;t answer the question that was asked."
+    } ],
+    "owner" : {
+      "account_id" : 9491636,
+      "reputation" : 174,
+      "user_id" : 7056207,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0e3d38520b7912c53adc3a7d8c3df303?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Amulya Koppula",
+      "link" : "https://stackoverflow.com/users/7056207/amulya-koppula"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1708935585,
+    "last_edit_date" : 1708935585,
+    "creation_date" : 1614060698,
+    "answer_id" : 66327964,
+    "question_id" : 23957390,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>yes, you can close the connection manually with the help of <strong>try with resource statement</strong> like below.it will automatically close the connection and return the connection to the connection poll. There is no problem here.</p>\n<pre><code>      try (Connection con = db.getConnection())\n     {\n     //your logic here\n            Statement stmt = con.createStatement();\n            ResultSet rs = stmt.executeQuery(...);\n    }catch(Exception e){\n    //throwing the exception or logging the exception as per your need.\n    }\n</code></pre>\n<p>Another way is to close the connection using the close method.\ni.e) <code>con.close();</code></p>\n<p>Note: Try to use <strong>try with resource statement</strong>. because you don't want to close connection after each logic</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2502767,
+    "reputation" : 2231,
+    "user_id" : 2177410,
+    "user_type" : "registered",
+    "accept_rate" : 72,
+    "profile_image" : "https://www.gravatar.com/avatar/2dfe5daa4030cdda49de92543894fd65?s=256&d=identicon&r=PG",
+    "display_name" : "Oleksandr Papchenko",
+    "link" : "https://stackoverflow.com/users/2177410/oleksandr-papchenko"
+  },
+  "is_answered" : true,
+  "view_count" : 5939,
+  "accepted_answer_id" : 23958381,
+  "answer_count" : 3,
+  "score" : 17,
+  "last_activity_date" : 1760099367,
+  "creation_date" : 1401461295,
+  "last_edit_date" : 1539183164,
+  "question_id" : 23957390,
+  "link" : "https://stackoverflow.com/questions/23957390/should-i-close-a-connection-obtained-from-a-datasource-manually",
+  "title" : "Should I close a Connection obtained from a DataSource manually?",
+  "body" : "<p>When I get a <code>Connection</code> from the <code>DataSource</code>, should I close it manually? I mean in case I must close it, how it will be used in future requests?  </p>\n"
+}

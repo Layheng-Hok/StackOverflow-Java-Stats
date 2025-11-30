@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "command", "code-injection", "processbuilder", "fortify" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 115767,
+      "reputation" : 43907,
+      "user_id" : 303810,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://www.gravatar.com/avatar/a42f8ff287eb5abf432ce696bf7c653b?s=256&d=identicon&r=PG",
+      "display_name" : "lexicore",
+      "link" : "https://stackoverflow.com/users/303810/lexicore"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1525300760,
+    "post_id" : 50144532,
+    "comment_id" : 87307295,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Where does <code>execCommand</code> or <code>cmd1</code> come from?"
+  }, {
+    "owner" : {
+      "account_id" : 4362282,
+      "reputation" : 98616,
+      "user_id" : 3558960,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/a98b52149d419c2aad558befe51c8cc5?s=256&d=identicon&r=PG",
+      "display_name" : "Robby Cornelissen",
+      "link" : "https://stackoverflow.com/users/3558960/robby-cornelissen"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1525301041,
+    "post_id" : 50144532,
+    "comment_id" : 87307381,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You&#39;re writing code that allows the execution of arbitrary commands, so you get a warning about that. What do you want to fix exactly?"
+  }, {
+    "owner" : {
+      "account_id" : 11663426,
+      "reputation" : 41,
+      "user_id" : 8540891,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/040abaa99275665a1b6fda5e0695a7cd?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vamshi",
+      "link" : "https://stackoverflow.com/users/8540891/vamshi"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1525447465,
+    "post_id" : 50144532,
+    "comment_id" : 87373890,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I want to fix it. I just want to know hostname and that too this application runs only on linux. any kind of ideas is really appreciated."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1382751,
+      "reputation" : 4956,
+      "user_id" : 1315419,
+      "user_type" : "registered",
+      "accept_rate" : 44,
+      "profile_image" : "https://www.gravatar.com/avatar/c129056df36a71ea805c143f495a6a91?s=256&d=identicon&r=PG",
+      "display_name" : "Vasan",
+      "link" : "https://stackoverflow.com/users/1315419/vasan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1525302603,
+    "last_edit_date" : 1525302603,
+    "creation_date" : 1525302292,
+    "answer_id" : 50144739,
+    "question_id" : 50144532,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Usually this is because you're using user input to frame the command string, wherein user can inject malicious code to manipulate what command is being run ultimately (even if you add validation there will be ways to circumvent that). </p>\n\n<p>In your case you seem to be hardcoding the command so this shouldn't be a problem, however, see the OWASP page on <a href=\"https://www.owasp.org/index.php/Command_Injection#Example_4\" rel=\"nofollow noreferrer\">hardcoded command invocation</a> (emphasis mine):</p>\n\n<blockquote>\n  <p>Unlike the previous examples, the command in this example is\n  hardcoded, so an attacker cannot control the argument passed to\n  system(). However, since the program does not specify an absolute path\n  for make, and does not scrub any environment variables prior to\n  invoking the command, the attacker can modify their $PATH variable to\n  point to a malicious binary named make and execute the CGI script from\n  a shell prompt. And since the program has been installed setuid root,\n  the attacker's version of make now runs with root privileges.</p>\n  \n  <p>The environment plays a powerful role in the execution of system\n  commands within programs. <strong>Functions like system() and exec() use the\n  environment of the program that calls them, and therefore attackers\n  have a potential opportunity to influence the behavior of these calls</strong>.</p>\n</blockquote>\n\n<p>Resolution:</p>\n\n<ol>\n<li>Use native Java APIs / libraries to achieve what you want, instead of running a command - this is probably the best option. Use commands only when unavoidable, eg: 3rd party tools which do not have a Java client library. This approach has the added advantage of being more portable and in most cases, more efficient too. <a href=\"https://stackoverflow.com/a/41536695\">This</a> library might help your scenario.</li>\n<li>If you <em>have</em> to run a command, ensure you do not use user-supplied or external data even indirectly to construct it.</li>\n<li>Or if you're hardcoding the command to run from the code, use absolute path to the command and do not use environment variables as part of it. For <code>hostname</code> (assuming you use the built-in command) this is usually <code>/usr/bin/hostname</code> but you can find the command path for your environment using <code>which hostname</code>.</li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 11663426,
+    "reputation" : 41,
+    "user_id" : 8540891,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/040abaa99275665a1b6fda5e0695a7cd?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Vamshi",
+    "link" : "https://stackoverflow.com/users/8540891/vamshi"
+  },
+  "is_answered" : false,
+  "view_count" : 9833,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760123050,
+  "creation_date" : 1525300577,
+  "question_id" : 50144532,
+  "link" : "https://stackoverflow.com/questions/50144532/fortify-issue-command-injection",
+  "title" : "Fortify issue - Command Injection",
+  "body" : "<p>I am trying to do hp fortify security scan for my java application. I have few issues and i have fixed it. But i am unable to find the fix for the below issue.</p>\n\n<ol>\n<li><p><strong>Command Injection</strong></p>\n\n<pre><code>String hostname = execReadToString(\"hostname\").split(\"\\\\.\")[0];\npublic static String execReadToString(String execCommand) throws IOException {\n try (Scanner s = new Scanner(Runtime.getRuntime().exec(execCommand).getInputStream()).useDelimiter(\"\\\\A\")) {\n    return s.hasNext() ? s.next() : \"\";\n}\n</code></pre>\n\n<p>The method execReadToString() calls exec() to execute a command. This call might allow an attacker to inject malicious commands.</p></li>\n</ol>\n\n<p>So i have tried with process builder also. </p>\n\n<pre><code>private static void gethostname(String cmd1) throws IOException {\n        if(Pattern.matches(\"[A-Za-z]+\", cmd1)) {\n        ProcessBuilder pb = new ProcessBuilder(cmd1);\n        Process p = pb.start();\n            BufferedReader reader = new BufferedReader(new InputStreamReader(\n                    p.getInputStream()));\n            String readline;\n            while ((readline = reader.readLine()) != null) {\n                System.out.println(readline);\n            }\n        }\n    }\n</code></pre>\n\n<p>Even this is giving me an security issue <strong>This start() call might allow an attacker to inject malicious commands.</strong></p>\n\n<p>What will be the ideal fix for this issue?</p>\n\n<p>Thanks in advance</p>\n"
+}

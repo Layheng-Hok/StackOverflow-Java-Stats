@@ -1,0 +1,193 @@
+{
+  "tags" : [ "java", "xsd" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1542133,
+      "reputation" : 6557,
+      "user_id" : 1955871,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/XiFZh.jpg?s=256",
+      "display_name" : "Rob",
+      "link" : "https://stackoverflow.com/users/1955871/rob"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1445380947,
+    "creation_date" : 1445380947,
+    "answer_id" : 33248073,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I have had success with</p>\n\n<ol>\n<li><p>Put both the schema and bindings in src/main/resources</p>\n\n<p>src/main/resources/myxsd.xsd</p>\n\n<p>src/main/resources/mybindings.xjb</p></li>\n<li><p>Point your maven plugin that is going to run xjc to find the files there</p></li>\n<li><p>In the bindings file use</p>\n\n<p>schemaLocation=\"myxsd.xsd\"</p></li>\n</ol>\n\n<p>If you want to add some directories under src/main/resources, you can certainly do that - you will have to figure out the proper relative path to use when specifying schemaLocation.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1230559,
+      "reputation" : 3537,
+      "user_id" : 1195266,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://i.sstatic.net/6c5Fj.jpg?s=256",
+      "display_name" : "Macilias",
+      "link" : "https://stackoverflow.com/users/1195266/macilias"
+    },
+    "is_accepted" : true,
+    "score" : 11,
+    "last_activity_date" : 1448286126,
+    "creation_date" : 1448286126,
+    "answer_id" : 33872554,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In my environment (version 2.2) it only worked when the files was in dedicated folders (schema in src/main/xsd/schema.xsd and binding ind src/main/xsb/binding.xsb) and the binding file referenced the schema relatively: schemaLocation=\"../xsd/schema.xsd\"</p>\n\n<p>It really seams to be fragile.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1843594,
+      "reputation" : 741,
+      "user_id" : 1672486,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f4b455fb1c91e2f32a79b48e8191c6fe?s=256&d=identicon&r=PG",
+      "display_name" : "Vivek Shukla",
+      "link" : "https://stackoverflow.com/users/1672486/vivek-shukla"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1525398067,
+    "last_edit_date" : 1525398067,
+    "creation_date" : 1510035938,
+    "answer_id" : 47151290,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>While looking at problem, I can suggest below steps:<br></p>\n\n<p>First, assuming you are using some plugin to generate your stubs. I use cxf-codegen-plugin( you can use any), important step is to define the location of your binding file, let's say its inside a resources\\wsdl<br>Here is the snippet:</p>\n\n<pre><code>&lt;plugin&gt;\n    &lt;groupId&gt;org.apache.cxf&lt;/groupId&gt;\n    &lt;artifactId&gt;cxf-codegen-plugin&lt;/artifactId&gt;\n    &lt;version&gt;${cxf.version}&lt;/version&gt;\n    &lt;configuration&gt;\n        &lt;encoding&gt;UTF-8&lt;/encoding&gt;\n    &lt;/configuration&gt;\n    &lt;executions&gt;\n        &lt;execution&gt;\n            &lt;id&gt;generate-sources&lt;/id&gt;\n            &lt;phase&gt;generate-sources&lt;/phase&gt;\n            &lt;configuration&gt;\n                &lt;wsdlOptions&gt;\n                    &lt;wsdlOption&gt;\n                        &lt;wsdl&gt;${basedir}/src/main/resources/wsdl/YOUR_WSDL_NAME.wsdl&lt;/wsdl&gt;\n                        &lt;wsdlLocation&gt;classpath:wsdl/YOUR_WSDL_NAME.wsdl&lt;/wsdlLocation&gt;\n                        &lt;extraargs&gt;\n                            &lt;extraarg&gt;-xjc-Xts&lt;/extraarg&gt;\n                        &lt;/extraargs&gt;\n                        &lt;bindingFiles&gt;\n                            &lt;bindingFile&gt;${basedir}/src/main/resources/wsdl/binding.xml&lt;/bindingFile&gt;\n                        &lt;/bindingFiles&gt;\n                    &lt;/wsdlOption&gt;\n                &lt;/wsdlOptions&gt;\n            &lt;/configuration&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;wsdl2java&lt;/goal&gt;\n            &lt;/goals&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n\n    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.apache.cxf.xjcplugins&lt;/groupId&gt;\n            &lt;artifactId&gt;cxf-xjc-ts&lt;/artifactId&gt;\n            &lt;version&gt;${cxf.version}&lt;/version&gt;\n        &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n&lt;/plugin&gt;\n</code></pre>\n\n<p>Next, so now while executing \"mvn generate-sources\", maven have idea where to look for your binding file. Let's assume that you are also putting your xsd file in resources\\wsdl folder (you can have any path) <br>\n Let's see the snippet of binding.xml</p>\n\n<pre><code>&lt;jxb:bindings schemaLocation=\"YOUR_XSD_FILE.xsd\" node=\"/xs:schema\"&gt;\n        .....\n&lt;/jxb:bindings&gt;\n</code></pre>\n\n<p><br>\nSince you have already defined your binding file path in maven plugin, and your xsd are also in that path, you needn't to define this path again in schemaLocation of your binding file.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 12076581,
+        "reputation" : 479,
+        "user_id" : 8829807,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6c2aad6cb5729c6f9104161964473c79?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tama",
+        "link" : "https://stackoverflow.com/users/8829807/tama"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1548778932,
+      "post_id" : 48457782,
+      "comment_id" : 95660958,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "you saved my ugly day ;) those bindings are really a pain in the (.) !!"
+    } ],
+    "owner" : {
+      "account_id" : 5396455,
+      "reputation" : 6074,
+      "user_id" : 4297539,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/f3d400b65c2d7331fb33155b0354fa00?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Kirill",
+      "link" : "https://stackoverflow.com/users/4297539/kirill"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1516954632,
+    "creation_date" : 1516954632,
+    "answer_id" : 48457782,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It starts working after I add my xsd in pom-file in configuration of a plugin, like this:</p>\n\n<pre><code>                &lt;bindingDirectory&gt;\n                    src/main/resources/binding\n                &lt;/bindingDirectory&gt;\n\n                &lt;bindingFiles&gt;\n                    &lt;bindingFile&gt;bindings.xjb&lt;/bindingFile&gt;\n                    &lt;bindingFile&gt;../xsd/egrul.xsd&lt;/bindingFile&gt;\n                    &lt;bindingFile&gt;../xsd/arrays.xsd&lt;/bindingFile&gt;\n                &lt;/bindingFiles&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 178970,
+      "reputation" : 5385,
+      "user_id" : 411282,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/14d0a8831828a8d4ffe2f78964cc0332?s=256&d=identicon&r=PG",
+      "display_name" : "Joshua Goldberg",
+      "link" : "https://stackoverflow.com/users/411282/joshua-goldberg"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1555984011,
+    "last_edit_date" : 1555984011,
+    "creation_date" : 1555959751,
+    "answer_id" : 55799687,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I received this error during compilation because my IDE had added a <code>bin/</code> directory under the package with the JAXB compilation.  It was fixed by either using <code>rm -rf BaseDirectory/bin/</code> or <code>rm -rf BaseDirectory; git co BaseDirectory</code>.  The latter is probably better/more complete.</p>\n\n<p>(Eclipse, which I use rarely, compiles outputs into <code>bin/</code>, whereas IntelliJ IDEA or raw gradle compiles into <code>build/</code>)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 227148,
+      "reputation" : 713,
+      "user_id" : 488635,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/41a63e9dfba2b183fa851c3a345f4a32?s=256&d=identicon&r=PG",
+      "display_name" : "Vitaly Sazanovich",
+      "link" : "https://stackoverflow.com/users/488635/vitaly-sazanovich"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1587548347,
+    "creation_date" : 1587548347,
+    "answer_id" : 61361883,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In my case I just had to update maven-jaxb2-plugin version:</p>\n\n<pre><code>&lt;groupId&gt;org.jvnet.jaxb2.maven2&lt;/groupId&gt;\n                &lt;artifactId&gt;maven-jaxb2-plugin&lt;/artifactId&gt;\n                &lt;version&gt;0.14.0&lt;/version&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4635391,
+      "reputation" : 1277,
+      "user_id" : 3756780,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c5977a3a9a564a16ece2dd35b90c6388?s=256&d=identicon&r=PG",
+      "display_name" : "slindenau",
+      "link" : "https://stackoverflow.com/users/3756780/slindenau"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1658916673,
+    "creation_date" : 1658916673,
+    "answer_id" : 73136071,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In my case the project was using the following plugin:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;groupId&gt;org.jvnet.jax-ws-commons&lt;/groupId&gt;\n&lt;artifactId&gt;jaxws-maven-plugin&lt;/artifactId&gt;\n&lt;version&gt;2.2.1&lt;/version&gt;\n</code></pre>\n<p>With the following error message:</p>\n<blockquote>\n<p>&quot;file:/D:/some-folder-<strong>[tag]</strong>/mywsdl.wsdl&quot; is not a part of this compilation.\nIs this a mistake for &quot;file:/D:/some-folder-<strong>%5Btag%5D</strong>/myxjb.xjb&quot;?</p>\n</blockquote>\n<p>So this error was caused by the brackets <code>[]</code> in my local folder name. It appears this specific plugin and/or version did not understand that when the encoded versions <code>%5B</code> and <code>%5D</code> were used.</p>\n<p>The solution is to not put any possible confusing characters in the local folder name and path. I would suggest not using <code>spaces</code> or any other character that gets encoded.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 125029,
+      "reputation" : 428,
+      "user_id" : 682256,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2e1fbcadf1e9088c5aa70abed5d51f80?s=256&d=identicon&r=PG",
+      "display_name" : "Simon Logic",
+      "link" : "https://stackoverflow.com/users/682256/simon-logic"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764247482,
+    "creation_date" : 1764247482,
+    "answer_id" : 79831719,
+    "question_id" : 33232039,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The problem can be it scans for wrong <a href=\"https://stackoverflow.com/questions/33232039/xsd-is-not-a-part-of-this-compilation-is-this-a-mistake-for-xjb\">.xjb</a> file which is designed for another shema.</p>\n<p>Plugin scans all <a href=\"https://stackoverflow.com/questions/33232039/xsd-is-not-a-part-of-this-compilation-is-this-a-mistake-for-xjb\">.xjb</a> files by default. I had to put this one for plugin org.jvnet.jaxb:jaxb-maven-plugin:4.0.9:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;configuration&gt;\n...\n    &lt;bindingIncludes&gt;\n        &lt;!-- DO NOT REMOVE: we skip all *.xjb --&gt;\n    &lt;/bindingIncludes&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 69666,
+    "reputation" : 6711,
+    "user_id" : 202576,
+    "user_type" : "registered",
+    "accept_rate" : 47,
+    "profile_image" : "https://www.gravatar.com/avatar/bdf45a8317ff3471cdcc7ba2f18c79a1?s=256&d=identicon&r=PG",
+    "display_name" : "onknows",
+    "link" : "https://stackoverflow.com/users/202576/onknows"
+  },
+  "is_answered" : true,
+  "view_count" : 28463,
+  "accepted_answer_id" : 33872554,
+  "answer_count" : 8,
+  "score" : 18,
+  "last_activity_date" : 1764247482,
+  "creation_date" : 1445330957,
+  "question_id" : 33232039,
+  "link" : "https://stackoverflow.com/questions/33232039/xsd-is-not-a-part-of-this-compilation-is-this-a-mistake-for-xjb",
+  "title" : ".xsd is not a part of this compilation. Is this a mistake for .xjb",
+  "body" : "<p>I am trying to change <code>schemaLocation</code> in my <code>xjb</code> file to use not a remote file using URL but to use a local copy that is also under version control.</p>\n\n<p>So for example my <code>xjb</code> file has something similar to</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;jxb:bindings\n        xmlns:jxb=\"http://java.sun.com/xml/ns/jaxb\"\n        xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n        xsd:ID=\"JaxbBindingsForWMiddleware\"\n        version=\"2.0\"&gt;\n\n    &lt;jxb:bindings node=\"/xsd:schema\"\n                  schemaLocation=\"http://myserver:80/a/b/c/d/myxsd.xsd\"&gt;\n</code></pre>\n\n<p>When I change this to local copy for example</p>\n\n<pre><code>schemaLocation=\"../../src/main/resources/myxsd.xsd\"&gt;\n</code></pre>\n\n<p><code>mvn clean install</code> will fail with a message similar to</p>\n\n<blockquote>\n  <p>[WARNING]       Caused by: com.sun.istack.SAXParseException2;\n  systemId:\n  file:/E:/somefolder/somefolder/myjavaproject/target/bindings/myxjb.xjb;\n  lineNumber: 33; columnNumber: 33;\n  \"file:/E:/somefolder/somefolder/myjavaproject/target/bindings/mywsdl.wsdl\"\n  is not a part of this compilation. Is this a mistake for\n  \"file:/E:/somefolder/somefolder/myjavaproject/target/bindings/myxjb.xjb\"?</p>\n</blockquote>\n\n<p>I noticed that it is looking for my wsdl file in the <code>target</code> directory. I can manipulate the <code>schemaLocation</code> in such way that it points to the <code>src</code> directory. The path then exists but the message remains.</p>\n\n<p>I can also put the wsdl in the target directory, where java tries to find it but in that case also, the message stays the same.</p>\n\n<p>So it looks like something specific needs to happen to make it part of this compilation. What should be done to compile this in the correct way?</p>\n"
+}

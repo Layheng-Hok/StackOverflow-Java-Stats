@@ -1,0 +1,126 @@
+{
+  "tags" : [ "java", "c++", "java-native-interface" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 918082,
+      "reputation" : 55903,
+      "user_id" : 950427,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/hq0mB.jpg?s=256",
+      "display_name" : "Jared Burrows",
+      "link" : "https://stackoverflow.com/users/950427/jared-burrows"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1369450910,
+    "post_id" : 16745405,
+    "comment_id" : 24119879,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Where is your native methods? Are you creating the correct lib.so as well as loading it?"
+  }, {
+    "owner" : {
+      "account_id" : 2813544,
+      "reputation" : 23,
+      "user_id" : 2419260,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/abbfa0fb4897066526465861e1c56a80?s=256&d=identicon&r=PG",
+      "display_name" : "fussel",
+      "link" : "https://stackoverflow.com/users/2419260/fussel"
+    },
+    "reply_to_user" : {
+      "account_id" : 918082,
+      "reputation" : 55903,
+      "user_id" : 950427,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/hq0mB.jpg?s=256",
+      "display_name" : "Jared Burrows",
+      "link" : "https://stackoverflow.com/users/950427/jared-burrows"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1369490781,
+    "post_id" : 16745405,
+    "comment_id" : 24127478,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "the native methods and the MyEventReceiver class are all in one Windows DLL..there are a few dozens of other native functions that i use in my java program..they all work finde (but they all dont pass JNIEnv pointers and jobjects around :) )...so i dont think its a problem with loading the library"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2813544,
+        "reputation" : 23,
+        "user_id" : 2419260,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/abbfa0fb4897066526465861e1c56a80?s=256&d=identicon&r=PG",
+        "display_name" : "fussel",
+        "link" : "https://stackoverflow.com/users/2419260/fussel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1369490608,
+      "post_id" : 16745557,
+      "comment_id" : 24127436,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "thanks for the help, i didnt know that the JNIEnv pointer becomes invalid too...i tried to fix my code (see edit in my question) but i still have problems"
+    }, {
+      "owner" : {
+        "account_id" : 2813544,
+        "reputation" : 23,
+        "user_id" : 2419260,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/abbfa0fb4897066526465861e1c56a80?s=256&d=identicon&r=PG",
+        "display_name" : "fussel",
+        "link" : "https://stackoverflow.com/users/2419260/fussel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1369508945,
+      "post_id" : 16745557,
+      "comment_id" : 24132277,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "i fixed it...the problem was that the &quot;findClass&quot; and &quot;getMethodID&quot; methods were still in the constructor, not in the &quot;test&quot;method :)"
+    } ],
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "is_accepted" : true,
+    "score" : 3,
+    "last_activity_date" : 1763083358,
+    "last_edit_date" : 1763083358,
+    "creation_date" : 1369445143,
+    "answer_id" : 16745557,
+    "question_id" : 16745405,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to read the chapter in the JNI Specification about global references. The <code>jobject</code> you were passed in your JNI method is only valid for the life of that method. You need to convert it to a <code>GlobalRef</code>, maybe a <code>WeakGlobalRef</code>, before you store it anywhere that is going to outlive the current invocation.</p>\n<p>A similar thing applies to the <code>JNIEnv</code> pointer. It's only valid for the duration of the method it is passed to. If you want to use one in a different thread or at a later time you must get a new one via <code>AttachThread()</code>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2813544,
+    "reputation" : 23,
+    "user_id" : 2419260,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/abbfa0fb4897066526465861e1c56a80?s=256&d=identicon&r=PG",
+    "display_name" : "fussel",
+    "link" : "https://stackoverflow.com/users/2419260/fussel"
+  },
+  "is_answered" : true,
+  "view_count" : 3961,
+  "accepted_answer_id" : 16745557,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1763083358,
+  "creation_date" : 1369443221,
+  "last_edit_date" : 1485847896,
+  "question_id" : 16745405,
+  "link" : "https://stackoverflow.com/questions/16745405/calling-java-method-based-on-jobject-fails-invalid-reference",
+  "title" : "calling java method based on jobject fails (invalid reference?)",
+  "body" : "<p>I have the following problem:</p>\n\n<p>in my java program I'm calling a native function that creates an object of the \"MyEventReceiver\" class in C++, later in that java program I'm calling an native function that calls the \"test\" method of that object. In this \"test\"-method I want to call a method of the java object that I used to call the second native function, but as soon as make this call, the jvm crashes. </p>\n\n<p>This is the native code that creates the MyEventReceiver object:</p>\n\n<pre><code>JNIEXPORT jlong JNICALL Java_irr4jEventReceiver_native_1createEventReceiver\n  (JNIEnv *env, jobject obj){\n    MyEventReceiver *rec = new MyEventReceiver(env, obj);\n    return (long)rec;\n}\n</code></pre>\n\n<p>this is the native code that i use later in the program to call the \"test\" method in that object:</p>\n\n<pre><code>JNIEXPORT void JNICALL Java_irr4jEventReceiver_native_1testmethode\n  (JNIEnv *env, jobject obj, jlong ptrrec){\n  MyEventReceiver *rec = (MyEventReceiver*)ptrrec;\n  rec-&gt;test();\n}\n</code></pre>\n\n<p>and this is the <code>MyEventReceiver</code> class:</p>\n\n<pre><code>class MyEventReceiver : public IEventReceiver\n{\npublic:\nJNIEnv *myenv;\njobject receiverobj;\njclass SEventclass;\njobject eventobj;\njmethodID cid;\n\njclass cevrec;\njmethodID meth2;\npublic:    \n\n    void test(){\n\n         eventobj = myenv-&gt;AllocObject(SEventclass);                            \n         eventobj = myenv-&gt;NewObject(SEventclass, cid);                       \n         myenv-&gt;CallVoidMethod(receiverobj,meth2,eventobj); //this is the line that causes the crash\n\n    }\n\n\n    MyEventReceiver(JNIEnv *env, jobject obj)\n    {\n\n        this-&gt;myenv=env;    \n        receiverobj = env-&gt;NewGlobalRef(obj);\n\n        SEventclass = myenv-&gt;FindClass(\"SEvent\");\n        cid = myenv-&gt;GetMethodID(SEventclass,\"&lt;init&gt;\", \"()V\");   \n        cevrec = myenv-&gt;FindClass(\"MyEventReceiver\");                       \n        meth2 =myenv-&gt;GetMethodID(cevrec, \"OnEvent\", \"(LSEvent;)V\");                     \n        //test();\n    }\n};\n</code></pre>\n\n<p>if I call the method \"test\" at the end of the constructor, it works... only if I make the call later out of the java program... I think it has something to do with the jobject \"receiverobj\"... seems to get invalid after some time but I don't know why\n...I stripped the code a bit...deleted some debug code. The \"eventobj\" I'm creating is fine... I can call other methods of that object, the methodIDs are also fine, just the line:</p>\n\n<pre><code>    myenv-&gt;CallVoidMethod(receiverobj,meth2,eventobj);\n</code></pre>\n\n<p>gives me problems and i dont know why :)</p>\n\n<p>crash message is:</p>\n\n<pre><code>#\n# A fatal error has been detected by the Java Runtime Environment:\n#\n#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x67d594f4, pid=5292, tid=2400\n#\n# JRE version: 7.0_21-b11\n# Java VM: Java HotSpot(TM) Client VM (23.21-b01 mixed mode, sharing windows-x86 )\n# Problematic frame:\n# V  [jvm.dll+0xa94f4]\n#\n# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows\n#\n# An error report file with more information is saved as:\n# G:\\irr4jjava\\irr4j\\hs_err_pid5292.log\n#\n# If you would like to submit a bug report, please visit:\n#   http://bugreport.sun.com/bugreport/crash.jsp\n#\n</code></pre>\n\n<p><strong>EDIT:</strong></p>\n\n<p>Thanks for the help so far. I tried to use global refs and attached thread but I can't get it to work. I'm not sure if I understood the thing with the attached thread...</p>\n\n<p>I modified the first native method to create a global reference to the jobject and pass it to the constructor:\n    JavaVM *jvm;</p>\n\n<pre><code>JNIEXPORT jlong JNICALL Java_irr4jEventReceiver_native_1createEventReceiver\n  (JNIEnv *env, jobject obj){\n      jobject recobj = env-&gt;NewGlobalRef(obj);\n      env-&gt;GetJavaVM(&amp;jvm);\n      MyEventReceiver *rec = new MyEventReceiver(recobj);\n      return (long)rec;\n}   \n</code></pre>\n\n<p>in the class \"MyReceiverObject\" I try attach the thread but it still crashes:</p>\n\n<pre><code>class MyEventReceiver : public IEventReceiver\n{\npublic:\nJNIEnv *myenv;\njobject receiverobj;\njclass SEventclass;\njobject eventobj;\njmethodID cid;\njclass cevrec;\njmethodID meth2;\npublic:\n\n    void test(){\n\n         jvm-&gt;AttachCurrentThread((void**)&amp;myenv,NULL);\n\n         eventobj = myenv-&gt;AllocObject(SEventclass);     //crash                        \n                 eventobj = myenv-&gt;NewObject(SEventclass, cid);                      \n         myenv-&gt;CallVoidMethod(receiverobj,meth2,eventobj);\n    }\n\n\n    MyEventReceiver(jobject obj)\n    {\n\n        jvm-&gt;AttachCurrentThread((void**)&amp;myenv,NULL);      \n        receiverobj=obj;\n\n        SEventclass = myenv-&gt;FindClass(\"SEvent\");\n        cid = myenv-&gt;GetMethodID(SEventclass,\"&lt;init&gt;\", \"()V\");      \n        cevrec = myenv-&gt;FindClass(\"MyEventReceiver\");                       \n        meth2 =myenv-&gt;GetMethodID(cevrec, \"OnEvent\", \"(LSEvent;)V\");        \n\n        //test();\n    }\n};\n</code></pre>\n"
+}

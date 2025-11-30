@@ -1,0 +1,78 @@
+{
+  "tags" : [ "java", "android", "flutter", "android-service" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 14688826,
+      "reputation" : 575,
+      "user_id" : 10608063,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6a3f2180fa312b662802e3576e7153fc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Maximilian Speicher",
+      "link" : "https://stackoverflow.com/users/10608063/maximilian-speicher"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1565954418,
+    "post_id" : 57523637,
+    "comment_id" : 101513894,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You could try placing the <code>startForeground</code> in the <code>onCreate</code> even before <code>super.onCreate</code>. At least this is what saved me once, when using a Foreground Service."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5454187,
+        "reputation" : 482,
+        "user_id" : 4338159,
+        "user_type" : "registered",
+        "profile_image" : "https://lh4.googleusercontent.com/-i5oRHyd1yFk/AAAAAAAAAAI/AAAAAAAAAAs/BVkqYZHEoms/s256-rj/photo.jpg",
+        "display_name" : "Karol Wasowski",
+        "link" : "https://stackoverflow.com/users/4338159/karol-wasowski"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1566053024,
+      "post_id" : 57527317,
+      "comment_id" : 101538988,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "These things helped, but what seemed to be the issue was, that I didn&#39;t add the FOREGROUND_SERVICE permission to AndroidManifest.xml. Thanks for your suggestion!"
+    } ],
+    "owner" : {
+      "account_id" : 5480984,
+      "reputation" : 119,
+      "user_id" : 8257738,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WLptj.jpg?s=256",
+      "display_name" : "Mehran Rasa",
+      "link" : "https://stackoverflow.com/users/8257738/mehran-rasa"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1565969287,
+    "creation_date" : 1565969287,
+    "answer_id" : 57527317,
+    "question_id" : 57523637,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<ul>\n<li><p>I highly recommend reading this topic : <a href=\"https://stackoverflow.com/questions/44425584/context-startforegroundservice-did-not-then-call-service-startforeground\">Context.startForegroundService() did not then call Service.startForeground()\n</a></p></li>\n<li><p>From my experience (Working on the same scenario), you will face lots of unexpected bugs on different devices and different SDK versions by starting a Foreground Service using <code>startForegroundService</code> command. Just use the old <code>startService</code> method and you'll be fine.</p></li>\n</ul>\n\n<p><em>Also what's the purpose of using <code>START_STICKY</code> while it's a Foreground Service and it's guaranteed to be running as long as the ongoing notification displays?</em></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5454187,
+    "reputation" : 482,
+    "user_id" : 4338159,
+    "user_type" : "registered",
+    "profile_image" : "https://lh4.googleusercontent.com/-i5oRHyd1yFk/AAAAAAAAAAI/AAAAAAAAAAs/BVkqYZHEoms/s256-rj/photo.jpg",
+    "display_name" : "Karol Wasowski",
+    "link" : "https://stackoverflow.com/users/4338159/karol-wasowski"
+  },
+  "is_answered" : false,
+  "view_count" : 1017,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1760702154,
+  "creation_date" : 1565954027,
+  "last_edit_date" : 1760702154,
+  "question_id" : 57523637,
+  "link" : "https://stackoverflow.com/questions/57523637/service-oncreate-and-onstartcommand-dont-run",
+  "title" : "Service onCreate and onStartCommand don&#39;t run",
+  "body" : "<p>I'm building an android service for audio playback (it's a flutter app using native code for playback), but when launching the service it doesn't seem to run <code>onCreate()</code> and <code>onStartCommand()</code>.</p>\n<p>I've tested it with putting some print or log statements in those functions, but they never run. I've also made sure to add the service into the <code>AndroidManifest.xml</code></p>\n<p>Here is how I launch the service:</p>\n<pre><code>public class MainActivity extends FlutterActivity implements MethodCallHandler {\n  public void onMethodCall(MethodCall call, Result result) {\n    switch (call.method) {\n      [...]\n      case &quot;startService&quot;:\n        Intent serviceIntent = new Intent(getFlutterView().getContext(), AudioService.class);\n        if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) {\n          this.startForegroundService(serviceIntent);\n        } else {\n          this.startService(serviceIntent);\n        }\n        break;\n        [...]\n    }\n}\n</code></pre>\n<p><a href=\"https://api.flutter.dev/javadoc/io/flutter/app/FlutterActivity.html\" rel=\"nofollow noreferrer\">FlutterActivity</a> is a class that extends Activity</p>\n<p>Here is the service class:</p>\n<pre><code>public class AudioService extends Service {\n  public MediaPlayer audioPlayer;\n\n  @Override\n  public IBinder onBind(Intent intent) {\n      return null;\n  }\n\n  @Override\n  public void onCreate() {\n    super.onCreate();\n\n    Log.i(&quot;Audio&quot;, &quot;onCreate()&quot;);\n  }\n\n  @Nullable\n  @Override\n  public int onStartCommand(Intent intent, int flags, int startId) {\n    super.onStartCommand(intent, flags, startId);\n\n    Log.i(&quot;Audio&quot;, &quot;Starting service...&quot;);\n\n    // create notification\n    Intent notificationIntent = new Intent(this, MainActivity.class);\n    PendingIntent pendingIntent = PendingIntent.getActivity(\n            this,\n            0,\n            notificationIntent,\n            0\n    );\n\n    Notification audioNotification = new NotificationCompat.Builder(this, CHANNEL_ID)\n            .setContentTitle(&quot;Foreground service is running&quot;)\n            .setContentText(&quot;This notification does nothing&quot;)\n            .setSmallIcon(R.drawable.app_icon)\n            .setContentIntent(pendingIntent)\n            .build();\n\n    startForeground(1, audioNotification);\n\n    audioPlayer = new MediaPlayer();\n\n    Log.i(&quot;Audio&quot;, &quot;Service started successfuly&quot;);\n    return START_STICKY;\n  }\n\n  @Override\n  public void onDestroy() {\n    super.onDestroy();\n\n    // destroy the player\n    stopAudio();\n  }\n  [...]\n}\n</code></pre>\n<p>And the service declaration in AndroidManifest:</p>\n<pre><code>&lt;service \n      android:name=&quot;.AudioService&quot;\n      android:process=&quot;net.tailosive.app.AudioService&quot;\n      android:enabled=&quot;true&quot;\n      android:exported=&quot;true&quot;/&gt;\n</code></pre>\n<p>I don't see what I'm doing wrong here.\nA thing worth mentioning is that the installed package name is net.tailosive.app, but the the package name included in java files, directories and manifest is com.example.tailosive. Could this be an issue?</p>\n"
+}

@@ -1,0 +1,45 @@
+{
+  "tags" : [ "java", "spring", "wiremock" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 154180,
+      "reputation" : 7307,
+      "user_id" : 369930,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/rLAH2.png?s=256",
+      "display_name" : "markdsievers",
+      "link" : "https://stackoverflow.com/users/369930/markdsievers"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1493202988,
+    "last_edit_date" : 1493202988,
+    "creation_date" : 1493202324,
+    "answer_id" : 43631505,
+    "question_id" : 43506642,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Totally possible. What you want is a <a href=\"http://wiremock.org/docs/extending-wiremock/#response-definition-transformation\" rel=\"nofollow noreferrer\">Response Transformer</a>.</p>\n\n<p>You have done the right thing with the path regex matcher which will identify a positive match - that is the end of it's involvement though, the rest is up to the Response Transformer. </p>\n\n<p>You have a couple of options for parsing out the <code>dynamicPath</code> part with Response Transformers, you can either a) supply it as a parameter to the transformer or b) let the Response Transformer evaluate the request URL for the path. Here is an example letting the Response Transformer do all the work.</p>\n\n<pre><code>public static class DynamicTransformer extends ResponseDefinitionTransformer {\n\n    @Override\n    public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition, FileSource files, Parameters parameters) {\n          String path = request.getUrl();\n          String dynamicPath = ...;     // Pull out the dynamic part\n          String transformedJson = ...; // Render the JSON string applicable \n          return new ResponseDefinitionBuilder()\n                .withHeader(\"Content-Type\", \"application/json\")\n                .withStatus(200)\n                .withBody(transformedJson)\n                .build();\n    } \n\n    @Override\n    public String name() {\n        return \"dynamic-transformer\";\n    }      \n</code></pre>\n\n<p>So then your test looks like</p>\n\n<pre><code>WireMockServer wireMock = new WireMockServer(wireMockConfig()\n     .extensions(new DynamicTransformer()));\n\nstubFor(get(urlPathMatching(\"/test/dynamic/[^/]+/help\"))\n    .withHeader(\"accept\", equalTo(\"application/json\"))\n    .willReturn(aResponse()\n    .withTransformers(\"dynamic-transformer\")));\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4445794,
+    "reputation" : 51,
+    "user_id" : 3619109,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/db060335b2d84b46ad430ef512ccd684?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "cr0mbly",
+    "link" : "https://stackoverflow.com/users/3619109/cr0mbly"
+  },
+  "is_answered" : false,
+  "view_count" : 9169,
+  "answer_count" : 1,
+  "score" : 4,
+  "last_activity_date" : 1762970555,
+  "creation_date" : 1492638423,
+  "last_edit_date" : 1492638830,
+  "question_id" : 43506642,
+  "link" : "https://stackoverflow.com/questions/43506642/resolve-dynamic-path-in-wiremock",
+  "title" : "Resolve dynamic path in wireMock",
+  "body" : "<p>Hi there I've relativley new to the Wiremock framework. I've got a test enviroment working but I need to for our integration testing need to resolve a dynamic path such as</p>\n\n<p>/test/dynamic/{dynamicpath}/help</p>\n\n<p>where dynamic path is going to be a variable that I want to resolve and then present different data from using a subset of a json file such as</p>\n\n<p>{\n  dynamicpathA : \"hello\",\n  dynamicpathB \"world\"\n}</p>\n\n<p>at the moment I have :</p>\n\n<pre><code>    stubFor(get(urlPathMatching(\"/test/dynamic/{dynamicpath}/help\"))\n            .withHeader(\"accept\", equalTo(\"application/json\"))\n            .willReturn(aResponse().withBody(readFile(RESOURCES + \"test.json\", Charset.defaultCharset()))));\n</code></pre>\n\n<p>which will return an entire json file with the full subset of data but not the individual components in relation to the dynamic uri. My question is there a way to resolve the dynamic url and return dynamic data from the json? </p>\n\n<p>I hope I'm being specific enough I'll update as need be.</p>\n"
+}

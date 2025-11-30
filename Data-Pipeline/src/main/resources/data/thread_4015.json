@@ -1,0 +1,78 @@
+{
+  "tags" : [ "java", "unit-testing", "mockito", "spring-boot-test" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 14822168,
+      "reputation" : 78,
+      "user_id" : 10704082,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-6RGHL39PnoM/AAAAAAAAAAI/AAAAAAAAAJU/LKHgNCPGhko/s256-rj/photo.jpg",
+      "display_name" : "Israel Oluwole",
+      "link" : "https://stackoverflow.com/users/10704082/israel-oluwole"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1692303583,
+    "creation_date" : 1692303583,
+    "answer_id" : 76924857,
+    "question_id" : 76919277,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I used the @SpyBean annotation on the targetted service like so</p>\n<pre class=\"lang-java prettyprint-override\"><code>    ...\n    @Autowired\n    @SpyBean\n    private FirebaseService firebaseService\n    ...\n\n    ...\n    doReturn(...).when(firebaseService).doSomething();\n    ...\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1761141918,
+      "post_id" : 79796736,
+      "comment_id" : 140810877,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Your answer could be improved with additional supporting information. Please <a href=\"https://stackoverflow.com/posts/79796736/edit\">edit</a> to add further details, such as citations or documentation, so that others can confirm that your answer is correct. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    } ],
+    "owner" : {
+      "account_id" : 28219797,
+      "reputation" : 1,
+      "user_id" : 21570712,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AGNmyxY_scPiDPxx_1IbsGH-gL4NOalz4HzWFu2GX0ns=k-s256",
+      "display_name" : "Tom",
+      "link" : "https://stackoverflow.com/users/21570712/tom"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761134502,
+    "creation_date" : 1761134502,
+    "answer_id" : 79796736,
+    "question_id" : 76919277,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>@Autowired\n@MockitoSpyBean\n</code></pre>\n<p>New version of @SpyBean helped me as well.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 14822168,
+    "reputation" : 78,
+    "user_id" : 10704082,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/-6RGHL39PnoM/AAAAAAAAAAI/AAAAAAAAAJU/LKHgNCPGhko/s256-rj/photo.jpg",
+    "display_name" : "Israel Oluwole",
+    "link" : "https://stackoverflow.com/users/10704082/israel-oluwole"
+  },
+  "is_answered" : true,
+  "view_count" : 1343,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1761134502,
+  "creation_date" : 1692256975,
+  "last_edit_date" : 1692296370,
+  "question_id" : 76919277,
+  "link" : "https://stackoverflow.com/questions/76919277/how-do-i-fix-java-lang-illegalstateexception-failed-to-unwrap-proxied-object-er",
+  "title" : "How do I fix java.lang.IllegalStateException: Failed to unwrap proxied object error",
+  "body" : "<p>I have this sample implementation and test but I get the error</p>\n<pre><code>java.lang.IllegalStateException: Failed to unwrap proxied object\n...\nE.g. thenReturn() may be missing.\nExamples of correct stubbing:\n    when(mock.isOk()).thenReturn(true);\n    when(mock.isOk()).thenThrow(exception);\n    doThrow(exception).when(mock).someVoidMethod();\nHints:\n 1. missing thenReturn()\n 2. you are trying to stub a final method, which is not supported\n 3. you are stubbing the behaviour of another mock inside before 'thenReturn' instruction is completed\n...\n</code></pre>\n<pre class=\"lang-java prettyprint-override\"><code>...\n\n@Service\npublic class FirebaseService {\n    ...\n\n    public FirebaseService(...) {\n        ...\n    }\n\n\n    public FirebaseApp initializeApp() {\n\n        try {\n            ...\n            InputStream inputStream = getServiceAccountFileInputStream();\n            ...\n        } catch (IOException e) {\n            throw new RuntimeException(e);\n        }\n\n    }\n\n    public InputStream getServiceAccountFileInputStream() throws IOException {\n        ...\n    }\n}\n\n...\n\n@ExtendWith(SpringExtension.class)\n@RunWith(SpringRunner.class)\n@SpringBootTest\npublic class FirebaseServiceTest {\n\n    ...\n    @Autowired\n    private FirebaseService firebaseService;\n    ...\n\n    @Test\n    public void whenGetAppIsEmpty_thenReturnFirebaseAppInstanceFromInitializeApp() throws IOException {\n        ...\n        InputStream inputStream = mock(InputStream.class);\n        ...\n        FirebaseService firebaseServiceSpy = spy(firebaseService);\n\n// Specifically at this point       \ndoReturn(FileInputStream.nullInputStream()).when(firebaseServiceSpy).getServiceAccountFileInputStream();\n        ...\n    }\n}\n</code></pre>\n<p>I am new to testing so I appreciate the help of anyone that can help me realize what I have done wrong.\nThank you</p>\n<p>I tried spying on the autowired dependency like this and I am expecting the method to return the null input stream...</p>\n<pre class=\"lang-java prettyprint-override\"><code>...\nFirebaseService firebaseServiceSpy = spy(firebaseService);\ndoReturn(FileInputStream.nullInputStream()).when(firebaseServiceSpy).getServiceAccountFileInputStream();\n...\n</code></pre>\n"
+}

@@ -1,0 +1,118 @@
+{
+  "tags" : [ "java", "spring", "hibernate", "spring-mvc" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3985071,
+        "reputation" : 990,
+        "user_id" : 3285905,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/ew896.jpg?s=256",
+        "display_name" : "Jos&#233; Mendes",
+        "link" : "https://stackoverflow.com/users/3285905/jos%c3%a9-mendes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442858588,
+      "post_id" : 32694543,
+      "comment_id" : 53246555,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "what you can do also is add <code>@Transactional(isolation = Isolation.READ_COMMITTED)</code> So you don&#39;t need to flush the session that can overwhelm your database. But for this you need to create a service that calls a DAO. It&#39;s not applicable for the situation above but it&#39;s a good alternative to do not call the <code>session.flush()</code>"
+    }, {
+      "owner" : {
+        "account_id" : 2035096,
+        "reputation" : 2019,
+        "user_id" : 1817617,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://i.sstatic.net/0eQ7U.jpg?s=256",
+        "display_name" : "Sumon Bappi",
+        "link" : "https://stackoverflow.com/users/1817617/sumon-bappi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442903018,
+      "post_id" : 32694543,
+      "comment_id" : 53262280,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "thanks for your reply. I have tried your solution but no luck. It is giving the following error &gt;&gt;  <code>org.hibernate.impl.SessionFactoryObjectFactory - Not binding factory to JNDI, no JNDI name configured</code> , <code>org.hibernate.util.JDBCExceptionReporter - SQL Error: 1364, SQLState: HY000</code> , <code>org.hibernate.util.JDBCExceptionReporter - Field &#39;id&#39; doesn&#39;t have a default value</code> , <code>org.hibernate.exception.GenericJDBCException: could not insert: [com.model.EmployeeAnnotation]</code>"
+    }, {
+      "owner" : {
+        "account_id" : 5523724,
+        "reputation" : 22562,
+        "user_id" : 4385895,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/7f9ad5b62002bb827c13988d289b644a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Vasu",
+        "link" : "https://stackoverflow.com/users/4385895/vasu"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442903838,
+      "post_id" : 32694543,
+      "comment_id" : 53262688,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It says that id (primary key) is not generated, because you did not specify any strategy, so you can change your id (instance variable) as below:     @GeneratedValue(strategy=GenerationType.AUTO)"
+    }, {
+      "owner" : {
+        "account_id" : 2035096,
+        "reputation" : 2019,
+        "user_id" : 1817617,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://i.sstatic.net/0eQ7U.jpg?s=256",
+        "display_name" : "Sumon Bappi",
+        "link" : "https://stackoverflow.com/users/1817617/sumon-bappi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442914870,
+      "post_id" : 32694543,
+      "comment_id" : 53269402,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "hey solve it. problem was in the domain and creation of table."
+    } ],
+    "owner" : {
+      "account_id" : 5523724,
+      "reputation" : 22562,
+      "user_id" : 4385895,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://www.gravatar.com/avatar/7f9ad5b62002bb827c13988d289b644a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vasu",
+      "link" : "https://stackoverflow.com/users/4385895/vasu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1442836751,
+    "last_edit_date" : 1442836751,
+    "creation_date" : 1442836361,
+    "answer_id" : 32694543,
+    "question_id" : 32694100,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You have to call <strong>session.flush()</strong> in your submitAdmissionForm() method before calling Transaction commit(), please look at the below recommendation from Hibernate API <strong>(Emphasis mine)</strong>:</p>\n\n<blockquote>\n  <p>Force this session to flush. Must be called at the end of a unit of\n  work, <strong>before committing the transaction and closing the session</strong>\n  (depending on flush-mode, Transaction.commit() calls this method).\n  Flushing is the process of synchronizing the underlying persistent\n  store with persistable state held in memory.</p>\n  \n  <p>Throws: HibernateException - Indicates problems flushing the session\n  or talking to the database.</p>\n</blockquote>\n\n<p><a href=\"https://docs.jboss.org/hibernate/orm/3.5/api/org/hibernate/Session.html#flush()\" rel=\"nofollow\">https://docs.jboss.org/hibernate/orm/3.5/api/org/hibernate/Session.html#flush()</a></p>\n\n<p>P.S.: Also, in general, it is not a good practice to merge daatabase related logic into controllers, you need to follow services/DAOs to ensure that they are easily maintainable for future requirements. If it is just for your learning purpose, it is fine, you can do this.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2035096,
+    "reputation" : 2019,
+    "user_id" : 1817617,
+    "user_type" : "registered",
+    "accept_rate" : 60,
+    "profile_image" : "https://i.sstatic.net/0eQ7U.jpg?s=256",
+    "display_name" : "Sumon Bappi",
+    "link" : "https://stackoverflow.com/users/1817617/sumon-bappi"
+  },
+  "is_answered" : false,
+  "view_count" : 474,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762497737,
+  "creation_date" : 1442834997,
+  "last_edit_date" : 1762497737,
+  "question_id" : 32694100,
+  "link" : "https://stackoverflow.com/questions/32694100/hibernate-and-spring-mvc-combination-is-not-working-properly",
+  "title" : "Hibernate and Spring mvc combination is not working properly",
+  "body" : "<p>I am learning Spring mvc with Hibernate. I have tried a tutorial where it shows with reverse engineering and hbm.xml. But I want to use annotated domain class for it. For which I am trying some but no luck.</p>\n<p>I have taken a web project in Netbeans with Spring and Hibernate framework. When I submit the form it work fine and redirect to other page but data is not saved. How can I resolve this? Here are my attempts below.</p>\n<p>My project structure:</p>\n<p><a href=\"https://i.sstatic.net/GduMo.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/GduMo.png\" alt=\"enter code here\" /></a></p>\n<p>My dispatcher-servlet.xml:</p>\n<pre><code>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;\n       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;\n       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;\n       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;\n       xmlns:p=&quot;http://www.springframework.org/schema/p&quot;\n       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;\n       xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;\n       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans \n        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd\n        http://www.springframework.org/schema/aop \n        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd\n        http://www.springframework.org/schema/tx \n        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd\n    http://www.springframework.org/schema/context\n        http://www.springframework.org/schema/context/spring-context-3.0.xsd\n        http://www.springframework.org/schema/mvc\n        http://www.springframework.org/schema/mvc/spring-mvc.xsd&quot;&gt;\n\n    \n    &lt;context:component-scan base-package=&quot;com.controller&quot; /&gt;     \n    &lt;mvc:annotation-driven/&gt;\n\n    &lt;bean id=&quot;viewResolver&quot;\n          class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;\n          p:prefix=&quot;/WEB-INF/jsp/&quot;\n          p:suffix=&quot;.jsp&quot; /&gt;\n\n&lt;/beans&gt;\n</code></pre>\n<p>My application context:</p>\n<pre><code>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;\n       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;\n       xmlns:p=&quot;http://www.springframework.org/schema/p&quot;\n       xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;\n       xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;\n       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd\n       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd\n       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd&quot;&gt;\n\n\n\n&lt;/beans&gt;\n</code></pre>\n<p>My web.xml:</p>\n<pre><code>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;\n&lt;web-app version=&quot;3.0&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;&gt;\n    &lt;context-param&gt;\n        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;\n        &lt;param-value&gt;/WEB-INF/applicationContext.xml&lt;/param-value&gt;\n    &lt;/context-param&gt;\n    &lt;listener&gt;\n        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;\n    &lt;/listener&gt;\n    &lt;servlet&gt;\n        &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;\n        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;\n        &lt;load-on-startup&gt;2&lt;/load-on-startup&gt;\n    &lt;/servlet&gt;\n    &lt;servlet-mapping&gt;\n        &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;\n        &lt;url-pattern&gt;*.html&lt;/url-pattern&gt;\n    &lt;/servlet-mapping&gt;\n    &lt;session-config&gt;\n        &lt;session-timeout&gt;\n            30\n        &lt;/session-timeout&gt;\n    &lt;/session-config&gt;\n    &lt;welcome-file-list&gt;\n        &lt;welcome-file&gt;redirect.jsp&lt;/welcome-file&gt;\n    &lt;/welcome-file-list&gt;\n&lt;/web-app&gt;\n</code></pre>\n<p>My hibernate.cfg.xml:</p>\n<pre><code>    &lt;?xml version='1.0' encoding='utf-8'?&gt;\n&lt;!DOCTYPE hibernate-configuration PUBLIC\n        &quot;-//Hibernate/Hibernate Configuration DTD 3.0//EN&quot;\n        &quot;http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd&quot;&gt;\n&lt;hibernate-configuration&gt;\n  &lt;session-factory&gt;\n    &lt;property name=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLDialect&lt;/property&gt;\n    &lt;property name=&quot;hibernate.connection.driver_class&quot;&gt;com.mysql.jdbc.Driver&lt;/property&gt;\n    &lt;property name=&quot;hibernate.connection.url&quot;&gt;jdbc:mysql://localhost:3306/springhibernate?zeroDateTimeBehavior=convertToNull&lt;/property&gt;\n    &lt;property name=&quot;hibernate.connection.username&quot;&gt;root&lt;/property&gt;\n    &lt;property name=&quot;hibernate.jdbc.batch_size&quot;&gt;50&lt;/property&gt;\n    &lt;property name=&quot;hibernate.show_sql&quot;&gt;true&lt;/property&gt;\n    &lt;property name=&quot;hibernate.query.factory_class&quot;&gt;org.hibernate.hql.ast.ASTQueryTranslatorFactory&lt;/property&gt;\n  &lt;/session-factory&gt;\n&lt;/hibernate-configuration&gt;\n</code></pre>\n<p>My User controller:</p>\n<pre><code>    @Controller\npublic class UserController {\n    \n   private static SessionFactory factory;\n   \n    @RequestMapping(value=&quot;/getForm&quot;, method = RequestMethod.GET)\n    public ModelAndView getDemoForm(){        \n        ModelAndView model = new ModelAndView(&quot;demoForm&quot;);        \n        return model;\n    }\n    \n    @RequestMapping(value = &quot;/submitDemoForm.html&quot;, method = RequestMethod.POST)\n    public ModelAndView submitAdmissionForm(@ModelAttribute(&quot;employee&quot;) EmployeeAnnotation employee) {\n        try {\n            factory = new AnnotationConfiguration().\n                    configure().\n                    //addPackage(&quot;com.xyz&quot;) //add package if used.\n                    addAnnotatedClass(EmployeeAnnotation.class).\n                    buildSessionFactory();\n        } catch (Throwable ex) {\n            System.err.println(&quot;Failed to create sessionFactory object.&quot; + ex);\n            throw new ExceptionInInitializerError(ex);\n        }\n        \n        Session session = factory.openSession();\n        Transaction tx = null;\n        Integer employeeID = null;\n        try {\n            tx = session.beginTransaction();\n            employeeID = (Integer) session.save(employee);\n            tx.commit();\n        } catch (HibernateException e) {\n            if (tx != null) {\n                tx.rollback();\n            }\n            e.printStackTrace();\n        } finally {\n            session.close();\n        }\n        \n        ModelAndView model = new ModelAndView(&quot;demoFormSuccess&quot;);\n\n        return model;\n    }\n    \n}\n</code></pre>\n<p>My EmployeeAnnotation Class (pojo):</p>\n<pre><code>import javax.persistence.*;\n\n@Entity\n@Table(name = &quot;employee_annotation&quot;)\npublic class EmployeeAnnotation {\n   @Id @GeneratedValue\n   @Column(name = &quot;id&quot;)\n   private int id;\n\n   @Column(name = &quot;first_name&quot;)\n   private String firstName;\n\n   @Column(name = &quot;last_name&quot;)\n   private String lastName;\n\n   @Column(name = &quot;salary&quot;)\n   private int salary;  \n\n   public EmployeeAnnotation() {}\n   public int getId() {\n      return id;\n   }\n   public void setId( int id ) {\n      this.id = id;\n   }\n   public String getFirstName() {\n      return firstName;\n   }\n   public void setFirstName( String first_name ) {\n      this.firstName = first_name;\n   }\n   public String getLastName() {\n      return lastName;\n   }\n   public void setLastName( String last_name ) {\n      this.lastName = last_name;\n   }\n   public int getSalary() {\n      return salary;\n   }\n   public void setSalary( int salary ) {\n      this.salary = salary;\n   }\n}\n</code></pre>\n<p>My demoForm.jsp:</p>\n<pre><code>    &lt;form action=&quot;/springMvcHibernate/submitDemoForm.html&quot; method=&quot;post&quot;&gt;\n    \n    &lt;p&gt;\n      Firts Name : &lt;input type=&quot;text&quot; name=&quot;firstName&quot;/&gt;\n    &lt;/p&gt;\n    &lt;p&gt;\n      Last Name : &lt;input type=&quot;text&quot; name=&quot;lastName&quot;/&gt;\n    &lt;/p&gt;\n    &lt;p&gt;\n            Salary : &lt;input type=&quot;number&quot; name=&quot;salary&quot;/&gt;\n    &lt;/p&gt;\n    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;\n\n&lt;/form&gt;\n</code></pre>\n<p>My demoFormSuccess.jsp:</p>\n<pre><code>&lt;body&gt;\n    &lt;h1&gt;ID is :: ${employee.id}&lt;/h1&gt;\n&lt;/body&gt;\n</code></pre>\n"
+}

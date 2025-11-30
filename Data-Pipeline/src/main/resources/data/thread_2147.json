@@ -1,0 +1,119 @@
+{
+  "tags" : [ "java", "class", "scala" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 21713,
+      "reputation" : 297798,
+      "user_id" : 53013,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/6d43da5df0e52fc31c55e6a227bb23f4?s=256&d=identicon&r=PG",
+      "display_name" : "Daniel C. Sobral",
+      "link" : "https://stackoverflow.com/users/53013/daniel-c-sobral"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1247747414,
+    "post_id" : 1135248,
+    "comment_id" : 23813412,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "VonC already provided the answer, but take a look at my own <a href=\"http://stackoverflow.com/questions/1094173/how-do-i-get-around-type-erasure-on-scala-or-why-cant-i-get-the-type-parameter\">question/answer</a> on Scala &amp; Erasure. I think it might provide you with ideas to do things in a different way than what you are trying."
+  }, {
+    "owner" : {
+      "account_id" : 2503348,
+      "reputation" : 53077,
+      "user_id" : 5249621,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/lLtZV.jpg?s=256",
+      "display_name" : "Dmytro Mitin",
+      "link" : "https://stackoverflow.com/users/5249621/dmytro-mitin"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1680942956,
+    "post_id" : 1135248,
+    "comment_id" : 133982327,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<a href=\"https://stackoverflow.com/questions/68914075\">stackoverflow.com/questions/68914075</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 42511,
+      "reputation" : 9331,
+      "user_id" : 123862,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/jzzmb.jpg?s=256",
+      "display_name" : "Jonathan Graehl",
+      "link" : "https://stackoverflow.com/users/123862/jonathan-graehl"
+    },
+    "is_accepted" : false,
+    "score" : 51,
+    "last_activity_date" : 1451090153,
+    "last_edit_date" : 1451090153,
+    "creation_date" : 1247716602,
+    "answer_id" : 1135310,
+    "question_id" : 1135248,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>classOf[Account]</code> in Scala is equivalent to <code>Account.class</code> in Java.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 27620,
+        "reputation" : 9075,
+        "user_id" : 73046,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://i.sstatic.net/pWrkh.jpg?s=256",
+        "display_name" : "James Moore",
+        "link" : "https://stackoverflow.com/users/73046/james-moore"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1320879803,
+      "post_id" : 1135317,
+      "comment_id" : 9892292,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "FYI, The ticket @VonC mentioned was marked fixed on 22/Jun/11.  In 2.9.1, getClass now does: scala&gt; &quot;foo&quot;.getClass res0: java.lang.Class[_ &lt;: java.lang.String] = class java.lang.String"
+    } ],
+    "owner" : {
+      "account_id" : 4243,
+      "reputation" : 1359794,
+      "user_id" : 6309,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/I4fiW.jpg?s=256",
+      "display_name" : "VonC",
+      "link" : "https://stackoverflow.com/users/6309/vonc"
+    },
+    "is_accepted" : true,
+    "score" : 272,
+    "last_activity_date" : 1454138583,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1247716793,
+    "answer_id" : 1135317,
+    "question_id" : 1135248,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>According to &quot;<a href=\"http://web.archive.org/web/20100601092747/http://programming-scala.labs.oreilly.com/ch12.html\" rel=\"noreferrer\">The Scala Type System</a>&quot;,</p>\n<pre><code>val c = new C\nval clazz = c.getClass              // method from java.lang.Object\nval clazz2 = classOf[C]             // Scala method: classOf[C] ~ C.class\nval methods = clazz.getMethods      // method from java.lang.Class&lt;T&gt;\n</code></pre>\n<blockquote>\n<p>The <code>classOf[T]</code> method returns the runtime representation for a Scala type. It is analogous to the Java expression <code>T.class</code>.<br />\nUsing <code>classOf[T]</code> is convenient when you have a type that you want information about, while <code>getClass</code> is convenient for retrieving the same information from an instance of the type.</p>\n</blockquote>\n<p>However, <code>classOf[T]</code> and <code>getClass</code> return slightly different values, reflecting the effect of type erasure on the JVM, in the case of getClass.</p>\n<pre><code>scala&gt; classOf[C]\nres0: java.lang.Class[C] = class C\n\nscala&gt; c.getClass\nres1: java.lang.Class[_] = class C\n</code></pre>\n<p>That is why the <a href=\"http://www.scala-lang.org/old/node/626.html\" rel=\"noreferrer\">following will not work</a>:</p>\n<pre><code>val xClass: Class[X] = new X().getClass //it returns Class[_], nor Class[X]\n\nval integerClass: Class[Integer] = new Integer(5).getClass //similar error\n</code></pre>\n<p>There is a <a href=\"http://lampsvn.epfl.ch/trac/scala/ticket/490\" rel=\"noreferrer\">ticket regarding the return type of <code>getClass</code></a>.</p>\n<p>(<a href=\"https://stackoverflow.com/users/73046/james-moore\">James Moore</a> reports that the ticket is &quot;now&quot;, ie Nov. 2011, two years later, fixed.<br />\nIn 2.9.1, <code>getClass</code> now does:</p>\n<pre><code>scala&gt; &quot;foo&quot;.getClass \n       res0: java.lang.Class[_ &lt;: java.lang.String] = class java.lang.String\n</code></pre>\n<p>)</p>\n<p>Back in 2009:</p>\n<blockquote>\n<p>It would be useful if Scala were to treat the return from getClass() as a java.lang.Class[T] forSome { val T : C } where C is something like the erasure of the static type of the expression on which getClass is called</p>\n<p>It would let me do something like the following where I want to introspect on a class but shouldn't need a class instance.<br />\nI also want to limit the types of classes I want to introspect on, so I use Class[_ &lt;: Foo]. But this prevents me from passing in a Foo class by using Foo.getClass() without a cast.</p>\n</blockquote>\n<p>Note: regarding <code>getClass</code>, a possible workaround would be:</p>\n<pre><code>class NiceObject[T &lt;: AnyRef](x : T) {\n  def niceClass : Class[_ &lt;: T] = x.getClass.asInstanceOf[Class[T]]\n}\n\nimplicit def toNiceObject[T &lt;: AnyRef](x : T) = new NiceObject(x)\n\nscala&gt; &quot;Hello world&quot;.niceClass                                       \nres11: java.lang.Class[_ &lt;: java.lang.String] = class java.lang.String\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 15008,
+    "reputation" : 28350,
+    "user_id" : 31288,
+    "user_type" : "registered",
+    "accept_rate" : 88,
+    "profile_image" : "https://www.gravatar.com/avatar/fedf72f44320f19923a6c2592be0a04d?s=256&d=identicon&r=PG",
+    "display_name" : "Kekoa",
+    "link" : "https://stackoverflow.com/users/31288/kekoa"
+  },
+  "is_answered" : true,
+  "view_count" : 104852,
+  "accepted_answer_id" : 1135317,
+  "answer_count" : 2,
+  "score" : 187,
+  "last_activity_date" : 1454138583,
+  "creation_date" : 1247714690,
+  "question_id" : 1135248,
+  "link" : "https://stackoverflow.com/questions/1135248/scala-equivalent-of-java-java-lang-classt-object",
+  "title" : "Scala equivalent of Java java.lang.Class&lt;T&gt; Object",
+  "body" : "<p>The question is best explained by an example:</p>\n\n<p>In Java for a JPA EntityManager, I can do the following(Account is my Entity class):</p>\n\n<pre><code>Account result = manager.find(Account.class, primaryKey);\n</code></pre>\n\n<p>In Scala, my naive attempt is:</p>\n\n<pre><code>val result = manager.find(Account.class, primaryKey)\n</code></pre>\n\n<p>But when I try to use <code>Account.class</code> in Scala, it seems to not like this.  How can I specify the java.lang.Class object for the Account class in Scala?</p>\n"
+}

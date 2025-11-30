@@ -1,0 +1,114 @@
+{
+  "tags" : [ "java", "file" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3013228,
+      "reputation" : 209770,
+      "user_id" : 2587435,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/w9jTN.jpg?s=256",
+      "display_name" : "Paul Samsotha",
+      "link" : "https://stackoverflow.com/users/2587435/paul-samsotha"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1673635042,
+    "post_id" : 75113165,
+    "comment_id" : 132551287,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I would do <code>while ((szSearch = br.readLine()) != null)</code>."
+  }, {
+    "owner" : {
+      "account_id" : 6606677,
+      "reputation" : 1251,
+      "user_id" : 5103317,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c81d92487b054d7290b4f36562c0ee02?s=256&d=identicon&r=PG",
+      "display_name" : "Old Dog Programmer",
+      "link" : "https://stackoverflow.com/users/5103317/old-dog-programmer"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1673635422,
+    "post_id" : 75113165,
+    "comment_id" : 132551374,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Your code reads only the first line of the file: <code>szSearch = br.readLine();</code> . The body of your <code>while</code> loop contains no line that will read from <code>br</code>. To fix it, you need <code>szSearch = br.readLine();</code> inside the body of the while loop. In addition, you need to change the condition of the <code>while</code> loop to exit when the end of the file is reached, not dependent on whether <code>szSearch</code> contains the word being sought."
+  }, {
+    "owner" : {
+      "account_id" : 6606677,
+      "reputation" : 1251,
+      "user_id" : 5103317,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c81d92487b054d7290b4f36562c0ee02?s=256&d=identicon&r=PG",
+      "display_name" : "Old Dog Programmer",
+      "link" : "https://stackoverflow.com/users/5103317/old-dog-programmer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1673635459,
+    "post_id" : 75113165,
+    "comment_id" : 132551387,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "By the way, if the first line of the file contains the word being sought, your code could go into an infinite loop."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 18272577,
+      "reputation" : 154,
+      "user_id" : 13303074,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7b2fcddb2965ae44405cf01503939b20?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Luis Fernando Prudencio Cruz",
+      "link" : "https://stackoverflow.com/users/13303074/luis-fernando-prudencio-cruz"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1673635174,
+    "creation_date" : 1673635174,
+    "answer_id" : 75113264,
+    "question_id" : 75113165,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Try replacing the while you have with this block of code, it probably requires some tweaking as I didn't test the code, but the logic I think solves it.</p>\n<pre><code>while ((strCurrentLine = objReader.readLine ())! = null) {\n    List&lt;String&gt; words = Arrays.asList(strCurrentLine.split(&quot; &quot;));\n    iCount += words.stream().hasMatch(w -&gt; w.equals(szWord)).count();\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759187528,
+    "last_edit_date" : 1759187528,
+    "creation_date" : 1759181065,
+    "answer_id" : 79778544,
+    "question_id" : 75113165,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <a href=\"https://stackoverflow.com/a/75113264/642706\">Answer by Cruz</a> appears to be correct.</p>\n<p>Here is my variation on his idea of using streams. And I fleshed out the code to make a full working example.</p>\n<p>Sample data.</p>\n<pre class=\"lang-java prettyprint-override\"><code>String input = &quot;&quot;&quot;\n        bird cat bird dog\n        cat cat dog bird\n        elephant bird bird armadillo\n        &quot;&quot;&quot;;\nfinal String TARGET_WORD = &quot;bird&quot;;\nfinal long EXPECTED_COUNT = 5L;\n</code></pre>\n<p>Get a stream of lines. Make a stream of the array of words split from each line. Filter that stream of words for those that match our target of <code>bird</code> while ignoring uppercase/lowercase. Get a count of the matches for that line. Put those counts into a <code>LongStream</code>. Ask the <code>LongStream</code> to sum all those count-per-line numbers.</p>\n<pre class=\"lang-java prettyprint-override\"><code>long count =\n        input\n                .lines()  // Returns a Stream&lt;String&gt;, one element for every line of text in our file.\n                .mapToLong(  // Using `long` rather than `int` to match `Stream#count()` returning `long`.\n                        line -&gt;\n                                Arrays\n                                        .stream( line.split( &quot; &quot; ) )  // Get a Stream&lt;String&gt; of words in line.\n                                        .filter( TARGET_WORD :: equalsIgnoreCase )  // Filter for those words that match the target word.\n                                        .count()  // Count  the number of words that match the target word in this line.\n                )  // Returns a `LongStream` where each `long` element value is the count of target words in the line.\n                .sum();  // Total of all the `long` elements in our `LongStream`, adding all the lines’ counts together.\n</code></pre>\n<p>Dump to console.</p>\n<pre class=\"lang-java prettyprint-override\"><code>IO.println( &quot;count = &quot; + count + &quot;. Matches expected &quot; + EXPECTED_COUNT + &quot;: &quot; + ( count == EXPECTED_COUNT ) );  // Before Java 25, swap `IO` for `System.out`. \n</code></pre>\n<blockquote>\n<p>countBird = 5. Matches expected 5: true</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 27400817,
+    "reputation" : 11,
+    "user_id" : 20902254,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/dfdd65fc03fbf7c30888ea9dbfff7e31?s=256&d=identicon&r=PG",
+    "display_name" : "Marbles28",
+    "link" : "https://stackoverflow.com/users/20902254/marbles28"
+  },
+  "is_answered" : true,
+  "view_count" : 59,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1759187528,
+  "creation_date" : 1673634526,
+  "question_id" : 75113165,
+  "link" : "https://stackoverflow.com/questions/75113165/how-can-i-get-a-variable-to-read-a-file-and-check-how-many-times-it-contains-a-w",
+  "title" : "How can I get a variable to read a file and check how many times it contains a word?",
+  "body" : "<p>I wanted &quot;szSearch&quot; to read the WORDLIST.txt file and check how many times the user's word appears in the file. So for example,</p>\n<p>What word are you searching for? <strong>long</strong>\nSearching the file...<br />\nThe word long appears 24 times in the file WORDLIST.txt.</p>\n<p>--- File End ---</p>\n<pre><code>public static void main(String[] args) \n{\n    //creating scanner objects which  will be used to read in the file\n    FileReader file = null;\n    BufferedReader br = null;\n    \n    //declaring variables and assigning values\n    Scanner szKeyboard = new Scanner (System.in);\n    String szWord = &quot;&quot;;\n    String szSearch;\n    int iCount = 0;\n    \n    try\n    {\n        //open the file WORDLIST.txt using the Scanner and File classes\n        //File object used to open and store the file\n        //Scanner object will be used to read through the file object\n        file = new FileReader(&quot;WORDLIST.txt&quot;);\n        \n        //needed for methods\n        br = new BufferedReader(file);\n        \n        //ask the user what word they're searching for\n        System.out.print(&quot;What word are you searching for? &quot;);\n        szWord = szKeyboard.nextLine();\n        System.out.println(&quot;Searching the file...&quot;);\n        \n        szSearch = br.readLine();\n        \n        //method to count how many times that word occurs in the WORDLIST.txt file\n        while (szSearch.contains(szWord))\n        {\n            iCount = iCount + 1;\n        }\n        \n        System.out.println(&quot;The word &quot; + szWord  + &quot; appears &quot; + iCount + &quot; times in the file WORDLIST.txt.&quot;);\n        \n    }//end try\n    catch (Exception e)\n    {\n        System.out.println(&quot;Error - Writing to File: &quot; + e);\n    }//end catch\n    finally\n    {\n        //close scanner\n        szKeyboard.close();\n\n        //finally runs regardless of wheter the try has worked\n        //the aim of a finally is to tidy up any loose ends\n        //if the contents within read is not equal to nothing i.e. it was possible to open and read\n        //close the file (try) if the file was not loaded catch the exception IOException\n        try\n        {\n            br.close();\n    `your text` }\n        catch(IOException e)\n        {\n            System.out.println(&quot;Error - Closing BufferReader: &quot; + e);\n        }\n\n        try\n        {\n            file.close();\n        }\n        catch(IOException e)\n        {\n            System.out.println(&quot;Error - closing FileReader: &quot; + e);\n        }\n        System.out.println(&quot;\\n\\n--- File End ---&quot;);\n    }//end try catch finally`\n    \n}//end class\n</code></pre>\n<hr />\n<p>This is what I tried doing but when I run it, it says:</p>\n<p>What word are you searching for? <strong>long</strong>\nSearching the file...\nThe word long appears 0 times in the file WORDLIST.txt.</p>\n<p>--- File End ---</p>\n"
+}

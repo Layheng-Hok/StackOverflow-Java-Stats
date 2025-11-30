@@ -1,0 +1,87 @@
+{
+  "tags" : [ "java", "websocket", "dns", "vert.x" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 11342861,
+      "reputation" : 34142,
+      "user_id" : 8316315,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/03756e348413c4cf11b7e4b0530e0ebf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Florian Weimer",
+      "link" : "https://stackoverflow.com/users/8316315/florian-weimer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1550351842,
+    "post_id" : 54726822,
+    "comment_id" : 96239111,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Are you sure the name is available over DNS at all? Multicast DNS does not count. What does <code>dig somehost</code> say?"
+  }, {
+    "owner" : {
+      "account_id" : 1819392,
+      "reputation" : 1463,
+      "user_id" : 1653759,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://i.sstatic.net/8hQMe.jpg?s=256",
+      "display_name" : "Rajesh Narravula",
+      "link" : "https://stackoverflow.com/users/1653759/rajesh-narravula"
+    },
+    "reply_to_user" : {
+      "account_id" : 11342861,
+      "reputation" : 34142,
+      "user_id" : 8316315,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/03756e348413c4cf11b7e4b0530e0ebf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Florian Weimer",
+      "link" : "https://stackoverflow.com/users/8316315/florian-weimer"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1550370743,
+    "post_id" : 54726822,
+    "comment_id" : 96242639,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Yeah I&#39;m sure DNS available for the host, <code>somehost</code> is some thing internal i can&#39;t reveal."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 18499897,
+      "reputation" : 61,
+      "user_id" : 13477480,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ead29698a45240f4687613357d310f64?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Martin Traverse",
+      "link" : "https://stackoverflow.com/users/13477480/martin-traverse"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1589026094,
+    "creation_date" : 1589026094,
+    "answer_id" : 61696474,
+    "question_id" : 54726822,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had a similar issue which was due to a machine remembering DNS details of a network it was no longer connected to, and trying to use those servers as the default. This was on Windows 10 / OpenJDK 11 and the stale DNS servers were hidden away in the registry, they didn't show up using ipconfig /all.</p>\n\n<p>I have a workaround that you can see here:</p>\n\n<p><a href=\"https://stackoverflow.com/questions/42110790/vertx-httpclient-getnow-not-working/61696414#61696414\">Vertx HttpClient getNow not working</a></p>\n\n<p>I have also raised a ticket with Netty, to suggest filtering out invalid DNS servers when they are discovering the defaults.</p>\n\n<p><a href=\"https://github.com/netty/netty/issues/10264\" rel=\"nofollow noreferrer\">https://github.com/netty/netty/issues/10264</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1819392,
+    "reputation" : 1463,
+    "user_id" : 1653759,
+    "user_type" : "registered",
+    "accept_rate" : 74,
+    "profile_image" : "https://i.sstatic.net/8hQMe.jpg?s=256",
+    "display_name" : "Rajesh Narravula",
+    "link" : "https://stackoverflow.com/users/1653759/rajesh-narravula"
+  },
+  "is_answered" : false,
+  "view_count" : 9648,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1760022230,
+  "creation_date" : 1550345123,
+  "question_id" : 54726822,
+  "link" : "https://stackoverflow.com/questions/54726822/java-net-unknownhostexception-failed-to-resolve-in-vertx",
+  "title" : "java.net.UnknownHostException: failed to resolve in Vertx",
+  "body" : "<p>I'm establishing websocket connection, when it WS connection it is establishing, if that is WSS connection getting error.</p>\n\n<p><strong>Code:</strong></p>\n\n<pre><code>public void start() throws Exception {\n  HttpClientOptions options = new HttpClientOptions();\n  options.setSsl(true);\n  HttpClient client = vertx.createHttpClient(options);\n  MultiMap form = MultiMap.caseInsensitiveMultiMap();\n  form.set(\"Authorization\", \"bearer token\");\n  RequestOptions options2 = new RequestOptions()\n     .setHost(\"somehost\")\n     .setPort(443)\n     .setSsl(true)\n     .setURI(\"/someuri\");\n  client.websocket(options2, form, (ctx) -&gt;{\n    ctx.textMessageHandler( msg -&gt; {\n      System.out.println(msg);\n    }).exceptionHandler((e) -&gt; {\n      e.printStackTrace();\n      client.close();\n    });\n  }, (exec) -&gt; {\n    exec.printStackTrace();\n  });\n}\n</code></pre>\n\n<p><strong>pom.xml:</strong></p>\n\n<pre><code>&lt;dependency&gt;\n  &lt;groupId&gt;io.vertx&lt;/groupId&gt;\n  &lt;artifactId&gt;vertx-core&lt;/artifactId&gt;\n  &lt;version&gt;3.6.3&lt;/version&gt;\n&lt;/dependency&gt;\n&lt;dependency&gt;\n  &lt;groupId&gt;io.vertx&lt;/groupId&gt;\n  &lt;artifactId&gt;vertx-web&lt;/artifactId&gt;\n  &lt;version&gt;3.6.3&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n\n<p>Exception:</p>\n\n<blockquote>\n  <p>java.net.UnknownHostException: failed to resolve 'somehost'. Exceeded\n  max queries per resolve 4    </p>\n  \n  <p>at\n  io.netty.resolver.dns.DnsResolveContext.finishResolve(DnsResolveContext.java:845)\n  at\n  io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:806)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:333)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:322)\n  at\n  io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:779)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:333)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:322)\n  at\n  io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:779)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:333)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:322)\n  at\n  io.netty.resolver.dns.DnsResolveContext.tryToFinishResolve(DnsResolveContext.java:779)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:333)\n  at\n  io.netty.resolver.dns.DnsResolveContext.query(DnsResolveContext.java:322)\n  at\n  io.netty.resolver.dns.DnsResolveContext.access$500(DnsResolveContext.java:62)\n  at\n  io.netty.resolver.dns.DnsResolveContext$3.operationComplete(DnsResolveContext.java:379)\n  at\n  io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:511)\n  at\n  io.netty.util.concurrent.DefaultPromise.notifyListeners0(DefaultPromise.java:504)\n  at\n  io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:483)\n  at\n  io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:424)\n  at\n  io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:121)\n  at\n  io.netty.resolver.dns.DnsQueryContext.setFailure(DnsQueryContext.java:216)\n  at\n  io.netty.resolver.dns.DnsQueryContext.access$300(DnsQueryContext.java:43)\n  at\n  io.netty.resolver.dns.DnsQueryContext$4.run(DnsQueryContext.java:166) \n  at\n  io.netty.util.concurrent.PromiseTask$RunnableAdapter.call(PromiseTask.java:38)\n  at\n  io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:127)\n  at\n  io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:163)\n  at\n  io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:404)\n  at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:462)   at\n  io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:897)\n  at\n  io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)\n  at java.lang.Thread.run(Thread.java:748) </p>\n  \n  <p>Caused by:\n  io.netty.resolver.dns.DnsNameResolverTimeoutException:\n  [/xx.xxx.xxx.xxx:xx] query timed out after 5000 milliseconds (no stack\n  trace available)</p>\n</blockquote>\n\n<p>If i used <code>System.setProperty(\"vertx.disableDnsResolver\", \"true\")</code> connection establishing but i needed with DNS.</p>\n"
+}

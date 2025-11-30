@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "concurrency", "java.util.concurrent", "concurrenthashmap", "reentrantlock" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 29741040,
+      "reputation" : 3,
+      "user_id" : 22793306,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocL3WXuzJiWnztlDEXi6alymXvqFCZaqSDKNGkV9lkR6=k-s256",
+      "display_name" : "Isira Ratnayake",
+      "link" : "https://stackoverflow.com/users/22793306/isira-ratnayake"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761372229,
+    "last_edit_date" : 1761372229,
+    "creation_date" : 1761372111,
+    "answer_id" : 79799340,
+    "question_id" : 67387150,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Two threads contend for the same lock. After first one releases it, the second will still acquire it. But before the second unlocks, the first will remove the lock from the map leading to NullPointerException.</p>\n<p>Fix: You must hold a reference to the lock on the first get. (Use computeIfAbsent for simplicity). This ensures that even if the cache is cleared, the threads that are waiting on the lock are not affected.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6740288,
+    "reputation" : 2395,
+    "user_id" : 5193747,
+    "user_type" : "registered",
+    "accept_rate" : 47,
+    "profile_image" : "https://i.sstatic.net/bc7P6.png?s=256",
+    "display_name" : "Kamil W",
+    "link" : "https://stackoverflow.com/users/5193747/kamil-w"
+  },
+  "is_answered" : false,
+  "view_count" : 195,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761372229,
+  "creation_date" : 1620139968,
+  "question_id" : 67387150,
+  "link" : "https://stackoverflow.com/questions/67387150/remove-unused-reentrantlock-from-concurrenthashmap",
+  "title" : "Remove unused ReentrantLock from ConcurrentHashMap",
+  "body" : "<p>I have a method in service which fetches entity if exists otherwise it creates new one and returns (for questions purposes let's say entity is a just a string).</p>\n<p>Method is executed by multiple threads so if two of them will call method <code>getOrCreateEntity</code> with same value and at the same time then they can finish with creating two identical objects, so next <code>getEntity</code> call will return two same objects where only one is allowed.</p>\n<p>I tried to make lock for each unique entity name by combaining <code>ConcurrentHashMap</code> with <code>ReentrantLock</code>, in general it works pretty well, problems happens when I trying to remove map entry with lock which is no longer needed, then and some point I'm getting <code>NullPointerException</code> when I'm calling <code>unlock()</code> method.</p>\n<p>I'd like to have correct synchronization for each unique value.</p>\n<p>My dummy class to test work concept</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class EntityService {\n\n    private static final ConcurrentHashMap&lt;String, ReentrantLock&gt; lockMap = new ConcurrentHashMap&lt;&gt;();\n\n    private static final List&lt;String&gt; entityList = new ArrayList&lt;&gt;();\n\n    public String getOrCreateEntity(String entityName){\n        lockMap.putIfAbsent(entityName, new ReentrantLock());\n        lockMap.get(entityName).lock();\n        try {\n            return getEntity(entityName).orElseGet(() -&gt; createEntity(entityName));\n        } finally {\n            lockMap.get(entityName).unlock(); // &lt;--- Nullpointer \n            if(lockMap.containsKey(entityName) &amp;&amp; !lockMap.get(entityName).isLocked()){\n                lockMap.remove(entityName);\n            }\n        }\n\n    }\n\n    private String createEntity(String entityName){\n        entityList.add(entityName);\n        return entityName;\n    }\n\n    private Optional&lt;String&gt; getEntity(String entityName){\n        List&lt;String&gt; result = entityList.stream()\n                .filter(tabName -&gt; tabName.equals(entityName))\n                .collect(Collectors.toList());\n\n        if(result.size() &gt; 1){\n            throw new RuntimeException();\n        } else if (result.size() == 1) {\n            return Optional.of(result.get(0));\n        } else {\n            return Optional.empty();\n        }\n    }\n}\n</code></pre>\n<p>My test case is pretty simple</p>\n<pre><code>class ReentrantLockServiceTest extends Specification {\n\n    def service = new EntityService()\n\n    def executor = Executors.newFixedThreadPool(200)\n\n    def &quot;test lock&quot;(){\n        expect:\n        for (i in 0..20000) {\n            executor.execute{ -&gt; service.getOrCreateEntity(RandomUtils.nextInt(1,4) as String) }\n        }\n        Thread.sleep(5000)\n    }\n\n}\n</code></pre>\n<p>What I'm missing? Maybe there are better concurrency classes to perform my desired behavior?</p>\n"
+}

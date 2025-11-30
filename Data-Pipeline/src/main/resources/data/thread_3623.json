@@ -1,0 +1,112 @@
+{
+  "tags" : [ "java", "maven" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 21994,
+      "reputation" : 75391,
+      "user_id" : 53897,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://i.sstatic.net/enNdg.jpg?s=256",
+      "display_name" : "Thorbj&#248;rn Ravn Andersen",
+      "link" : "https://stackoverflow.com/users/53897/thorbj%c3%b8rn-ravn-andersen"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1484777094,
+    "last_edit_date" : 1495542837,
+    "creation_date" : 1484777094,
+    "answer_id" : 41730283,
+    "question_id" : 41730191,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Relative paths work relative to the current working directory.  Maven does not set it, so it is inherited from whatever value it had in the Java process your code is executing in.</p>\n\n<p>The only reliable way is to figure it out in your own code.    Depending on how you do things, there are several ways to do so.  See <a href=\"https://stackoverflow.com/q/4032957/53897\">How to get the real path of Java application at runtime?</a> for suggestions.  You are most likely looking at <code>this.getClass().getProtectionDomain().getCodeSource().getLocation()</code> and then you know where the class file is and can navigate relative to that.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9443335,
+        "reputation" : 15700,
+        "user_id" : 7023245,
+        "user_type" : "registered",
+        "accept_rate" : 25,
+        "profile_image" : "https://i.sstatic.net/Q7X4B.png?s=256",
+        "display_name" : "Timothy Truckle",
+        "link" : "https://stackoverflow.com/users/7023245/timothy-truckle"
+      },
+      "reply_to_user" : {
+        "account_id" : 21994,
+        "reputation" : 75391,
+        "user_id" : 53897,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://i.sstatic.net/enNdg.jpg?s=256",
+        "display_name" : "Thorbj&#248;rn Ravn Andersen",
+        "link" : "https://stackoverflow.com/users/53897/thorbj%c3%b8rn-ravn-andersen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1484777610,
+      "post_id" : 41730304,
+      "comment_id" : 70655250,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Thorbj&#248;rnRavnAndersen you&#39;re right, I mixed it up with <code>getResource()</code>"
+    } ],
+    "owner" : {
+      "account_id" : 9443335,
+      "reputation" : 15700,
+      "user_id" : 7023245,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://i.sstatic.net/Q7X4B.png?s=256",
+      "display_name" : "Timothy Truckle",
+      "link" : "https://stackoverflow.com/users/7023245/timothy-truckle"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1484778051,
+    "last_edit_date" : 1484778051,
+    "creation_date" : 1484777211,
+    "answer_id" : 41730304,
+    "question_id" : 41730191,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p>Why does it report \"No such file or dirctory\"? The relative path should work. Right?</p>\n</blockquote>\n\n<p>wrong.</p>\n\n<p>Your classes are compiled to <code>$PROJECT_ROOT/target/classes</code>\nand your resources are copied to the same folder keeping their relative paths <em>below</em> <code>src/main/resources</code>.</p>\n\n<p><strike> \nThe file will be located relative to the <em>classpath</em> of which the root is <code>$PROJECT_ROOT/target/classes</code>. Therefore you have to write in your Pdf.java:</p>\n\n<pre><code>File file = new File(\"/files/x.pdf\");\n</code></pre>\n\n<p></strike> </p>\n\n<p>Your relative path will be evaluated from the projects <em>current working directory</em> which is <code>$PROJECT_ROOT</code> (AFAIR).</p>\n\n<p>But it does not matter because you want that to work in your final application and not only in your build environment. Therefore you should access the file with <code>getClass().getResource(\"/path/to/file/within/classpath\")</code> which searches the file in the <em>class path</em>   of which the root is <code>$PROJECT_ROOT/target/classes</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 263358,
+      "reputation" : 253,
+      "user_id" : 3358586,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/4JHYj.jpg?s=256",
+      "display_name" : "Nord",
+      "link" : "https://stackoverflow.com/users/3358586/nord"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1484780316,
+    "last_edit_date" : 1484780316,
+    "creation_date" : 1484779767,
+    "answer_id" : 41730870,
+    "question_id" : 41730191,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>No the way you are referencing the files is according to your file system. Java knows about the classpath not the file system if you want to reference something like that you have to use the fully qualified name of the file. \nAlso I do not know if File constructor works with the classpath since it's an abstraction to manage the file system it will depend where the application is run from. Say it is run from the target directory at the same level as source in that case you have to go one directory up and then on src then test the resources the files and finally in x.pdf. </p>\n\n<p>Since you are using a resources folder I think you want the file to be on the classpath and then you can load a resource with:</p>\n\n<pre><code>InputStream in = this.getClass().getClassLoader()\n                            .getResourceAsStream(\"&lt;path in classpath&gt;\");\n</code></pre>\n\n<p>Then you can create a FileInputStream or something to wrap around the file. Otherwise use the fully qualiefied name and put it somewere like /home/{user}/files/x.pdf.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 357630,
+    "reputation" : 10631,
+    "user_id" : 697911,
+    "user_type" : "registered",
+    "accept_rate" : 53,
+    "profile_image" : "https://www.gravatar.com/avatar/07914aa26b65ff1a5ab0536ae4288990?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user697911",
+    "link" : "https://stackoverflow.com/users/697911/user697911"
+  },
+  "is_answered" : true,
+  "view_count" : 9643,
+  "answer_count" : 3,
+  "score" : 2,
+  "last_activity_date" : 1762013370,
+  "creation_date" : 1484776614,
+  "question_id" : 41730191,
+  "link" : "https://stackoverflow.com/questions/41730191/using-relative-path-in-a-maven-project",
+  "title" : "Using relative path in a maven project",
+  "body" : "<p>I have a maven project with these standard directory structures:</p>\n\n<p>src/main/java</p>\n\n<p>src/main/java/pdf/Pdf.java</p>\n\n<p>src/test/resources</p>\n\n<p>src/test/resources/files/x.pdf</p>\n\n<p>In my Pdf.java, </p>\n\n<pre><code>File file = new File(\"../../../test/resources/files/x.pdf\");\n</code></pre>\n\n<p>Why does it report \"No such file or dirctory\"? The relative path should work. Right?</p>\n"
+}

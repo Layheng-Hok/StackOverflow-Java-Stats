@@ -1,0 +1,42 @@
+{
+  "tags" : [ "java", "ajax", "spring" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 114756,
+      "reputation" : 57451,
+      "user_id" : 301607,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/c1a7b23a820171d3370a308139556e29?s=256&d=identicon&r=PG",
+      "display_name" : "StanislavL",
+      "link" : "https://stackoverflow.com/users/301607/stanislavl"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1496643789,
+    "post_id" : 44356029,
+    "comment_id" : 75727232,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Try to the <code>@ModelAttribute(&quot;formCargo&quot;)</code> from the controller&#39;s getFormCargo()."
+  } ],
+  "owner" : {
+    "account_id" : 8527532,
+    "reputation" : 11,
+    "user_id" : 6392498,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/e128878b62d220973415d02472bcd667?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Student X",
+    "link" : "https://stackoverflow.com/users/6392498/student-x"
+  },
+  "is_answered" : false,
+  "view_count" : 1269,
+  "answer_count" : 0,
+  "score" : 1,
+  "last_activity_date" : 1761476186,
+  "creation_date" : 1496592306,
+  "last_edit_date" : 1761476186,
+  "question_id" : 44356029,
+  "link" : "https://stackoverflow.com/questions/44356029/spring-mvc-how-to-submit-a-form-by-ajax-and-get-in-the-controller-using-modelat",
+  "title" : "Spring MVC, How to submit a form by AJAX and get in the controller using ModelAttribute @Valid",
+  "body" : "<p>I have the following Form:</p>\n\n<pre><code>&lt;form:form method=\"POST\" action=\"${root}/Rhindo/Gerente/AddCargo\" commandName=\"formCargo\" &gt;\n    &lt;div class=\"modal-body\"&gt;\n        &lt;div class=\"row\"&gt;\n            &lt;div class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\"&gt;\n                &lt;label class=\"text-muted\"&gt;Nome&lt;/label&gt;\n                &lt;form:input type=\"text\" path=\"nome\" cssClass=\"form-control\"/&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        &lt;form:errors path=\"nome\" cssClass=\"text-danger\" /&gt;\n        &lt;br /&gt;&lt;br /&gt;\n        &lt;div class=\"row\"&gt;\n            &lt;div class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\"&gt;\n                &lt;label class=\"text-muted\"&gt;Salario&lt;/label&gt;\n                &lt;form:input path=\"salario\" placeholder=\"Somente Números\" cssClass=\"form-control\" value=\"\"/&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        &lt;form:errors path=\"salario\" cssClass=\"text-danger\" /&gt;\n        &lt;br /&gt;&lt;br /&gt;\n        &lt;div class=\"row\"&gt;\n            &lt;div class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\"&gt;\n                &lt;label class=\"text-muted\"&gt;Requisitos&lt;/label&gt;\n                &lt;form:textarea type=\"text\" path=\"requisitos\" cssClass=\"form-control\" style=\"resize: none\"/&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n        &lt;form:errors path=\"salario\" cssClass=\"text-danger\" /&gt;\n        &lt;br /&gt;&lt;br /&gt;\n        &lt;div class=\"row\"&gt;\n            &lt;div class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\"&gt;\n                &lt;label class=\"text-muted\"&gt;Carga Mínima&lt;/label&gt;\n                &lt;form:input type=\"text\" path=\"cargamin\" cssClass=\"form-control\" value=\"\"/&gt;\n                &lt;form:errors path=\"cargamin\" cssClass=\"text-danger\" /&gt;\n            &lt;/div&gt;\n            &lt;div class=\"col-xs-6 col-sm-6 col-md-6 col-lg-6\"&gt;\n                &lt;label class=\"text-muted\"&gt;Desconto Impostos&lt;/label&gt;\n                &lt;form:input type=\"text\" path=\"descImpostos\" cssClass=\"form-control\" value=\"\"/&gt;\n                &lt;form:errors path=\"descImpostos\" cssClass=\"text-danger\" /&gt;\n                &lt;br /&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;\n    &lt;/div&gt;\n    &lt;div class=\"modal-footer\"&gt;\n        &lt;input type=\"button\" class=\"btn btn-warning\" value=\"Cancelar\" data-dismiss=\"modal\" /&gt;\n        &lt;input type=\"submit\" class=\"btn btn-primary\" value=\"Cadastrar Cargo\" id=\"cadCargo\" /&gt;\n    &lt;/div&gt;\n&lt;/form:form&gt;\n</code></pre>\n\n<p>Class:</p>\n\n<pre><code>@Model\npublic class CargoCadastroModel {\n\n    @NotEmpty(message = \"Informe o nome!\") @Pattern(regexp = \"^\\\\p{L}+(?: \\\\p{L}+)*$\", message = \"Nome inválido\")\n    private String nome;\n\n    @NotEmpty(message = \"Informe o salário!\") @Pattern(regexp = \"[0-9]d+,d{0,2}$\", message = \"Valor inválido\")\n    private String salario;\n\n    @NotEmpty(message = \"Informe os Requisitos!\")\n    private String requisitos;\n\n    @NotEmpty(message = \"Informe a carga mínima!\") @Pattern(regexp = \"[0-9]+$\", message = \"Valor inválido, somente números\")\n    private String cargamin;\n\n    @NotEmpty(message = \"Informe o imposto!\") @Pattern(regexp = \"[0-9]d+,d{0,2}$\", message = \"Valor inválido somente números\")\n    private String descImpostos;\n\n    public CargoCadastroModel() {\n    }\n</code></pre>\n\n<p>Ajax script:</p>\n\n<pre><code>$(document).on('click', '#cadCargo', function (e) {\n    e.preventDefault();  // prevent standard form submission\n    var fdata = new FormData($('#formCargo')[0]);\n    debugger;\n    $.ajax({\n        type: 'post',\n        url: '/Rhindo/Gerente/AddCargo',\n        data: fdata,\n        async: false,\n        cache: false,\n        processData: false,\n        dataType: \"html\",\n        contentType: 'application/json',\n        success: function (content) {\n            debugger;\n            $(\"#cadModal\").html(content);\n        },\n    });\n    return false;\n});\n</code></pre>\n\n<p>and Controller:</p>\n\n<pre><code>@RequestMapping(value = \"/Gerente/AddCargo\", method = RequestMethod.POST)\npublic String getFormCargo(@RequestBody @ModelAttribute(\"formCargo\") @Valid CargoCadastroModel cargoModel, BindingResult bindingResult, Model model) {\n    if (bindingResult.hasErrors()) {\n        model.addAttribute(cargoModel);\n        return \"/gerente/cadastroCargo\";\n    }\n    else{\n\n    }\n    return \"/gerente/cadastroCargo\";\n}\n</code></pre>\n\n<p>But in the controller my model is always null; \ni just have tried with JSON.strignfy, serialize, and nothing work\nPlease, help</p>\n"
+}

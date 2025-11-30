@@ -1,0 +1,61 @@
+{
+  "tags" : [ "java", "jsp", "struts-1" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 91502,
+      "reputation" : 89455,
+      "user_id" : 251173,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/23de335ea2208b179ece18bec0b2597f?s=256&d=identicon&r=PG",
+      "display_name" : "Buhake Sindi",
+      "link" : "https://stackoverflow.com/users/251173/buhake-sindi"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1306746920,
+    "post_id" : 6110075,
+    "comment_id" : 7178571,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I don&#39;t see your mappings of <code>UserAction</code> in your <code>struts-config.xml</code>."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1519726,
+      "reputation" : 9,
+      "user_id" : 1419743,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/2cf492f9c473f866e021fe06d211b72a?s=256&d=identicon&r=PG",
+      "display_name" : "vikas",
+      "link" : "https://stackoverflow.com/users/1419743/vikas"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1338091816,
+    "creation_date" : 1338091816,
+    "answer_id" : 10771592,
+    "question_id" : 6110075,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Simply pass method name to your parameter variable, which you want to call </p>\n\n<p>\n    \n        \n    </p>\n\n<pre><code>&lt;action path=\"/dispatch.do?getMethodtocall=display\" parameter=\"getMethodtocall\" name=\"UserForm\" scope=\"session\" type=\"com.tk20.TestDispatchAction\"&gt;\n    &lt;forward name=\"success\" path=\"/index.jsp\" /&gt;\n&lt;/action&gt;\n\n&lt;action path=\"/Welcome\" forward=\"/welcomeStruts.jsp\" /&gt;\n</code></pre>\n\n<p></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 756581,
+    "reputation" : 11,
+    "user_id" : 767669,
+    "user_type" : "unregistered",
+    "profile_image" : "https://www.gravatar.com/avatar/7b29b69e63455604459fbfeab8295751?s=256&d=identicon&r=PG",
+    "display_name" : "amit4444",
+    "link" : "https://stackoverflow.com/users/767669/amit4444"
+  },
+  "is_answered" : false,
+  "view_count" : 8483,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761573635,
+  "creation_date" : 1306238547,
+  "last_edit_date" : 1482861138,
+  "question_id" : 6110075,
+  "link" : "https://stackoverflow.com/questions/6110075/struts-call-a-a-method-of-dispatchaction-from-another-dispatchaction",
+  "title" : "Struts : call a a method of DispatchAction from another DispatchAction",
+  "body" : "<p>I want to call a a method of dispatchAction from another dispatch action.\nI want that when I click on update or delete \"Inside display user method\" will be diplayed on my jsp.</p>\n\n<p><strong>Struts config file</strong></p>\n\n<pre><code>&lt;action-mappings&gt;\n    &lt;action input=\"/index.jsp\" parameter=\"methodtocall\" name=\"UserForm\" path=\"/UserAction\" scope=\"session\" type=\"com.tk20.UserAction\"&gt;\n        &lt;forward name=\"success\" path=\"/dispatch.do?getMethodtocall=display.do\" /&gt;\n    &lt;/action&gt;\n\n    &lt;action path=\"/dispatch.do?getMethodtocall=display\" parameter=\"getMethodtocall\" name=\"UserForm\" scope=\"session\" type=\"com.tk20.TestDispatchAction\"&gt;\n        &lt;forward name=\"success\" path=\"/index.jsp\" /&gt;\n    &lt;/action&gt;\n\n    &lt;action path=\"/Welcome\" forward=\"/welcomeStruts.jsp\" /&gt;\n&lt;/action-mappings&gt;\n</code></pre>\n\n<p><strong>dispactch action classes</strong></p>\n\n<pre><code>public class UserAction extends DispatchAction {\n\n    /* forward name=\"success\" path=\"\" */\n    private final static String SUCCESS = \"success\";\n\n    /**\n     * This is the Struts action method called on\n     * http://.../actionPath?method=myAction1,\n     * where \"method\" is the value specified in &lt;action&gt; element : \n     * ( &lt;action parameter=\"method\" .../&gt; )\n     */\n    public ActionForward add(ActionMapping mapping, ActionForm form,\n            HttpServletRequest request, HttpServletResponse response)\n            throws Exception {\n        UserForm userForm = (UserForm) form;\n\n        return mapping.findForward(\"dispatch\");\n    }\n\n\n    public ActionForward update(ActionMapping mapping, ActionForm form,\n            HttpServletRequest request, HttpServletResponse response)\n            throws Exception {\n        UserForm userForm = (UserForm) form;\n        userForm.setMessage(\"Inside update user method.\");\n        return mapping.findForward(SUCCESS);\n    }\n\n    public ActionForward delete(ActionMapping mapping, ActionForm form,\n            HttpServletRequest request, HttpServletResponse response)\n            throws Exception {\n        UserForm userForm = (UserForm) form;\n        userForm.setMessage(\"Inside delete user method.\");\n        return mapping.findForward(SUCCESS);\n    }\n}\n</code></pre>\n\n<p><p></p>\n\n<pre><code>public class TestDispatchAction extends DispatchAction {\n\n    /* forward name=\"success\" path=\"\" */\n    private final static String SUCCESS = \"success\";\n\n    /**\n     * This is the Struts action method called on\n     * http://.../actionPath?method=myAction1,\n     * where \"method\" is the value specified in &lt;action&gt; element : \n     * ( &lt;action parameter=\"method\" .../&gt; )\n     */\n    public ActionForward display(ActionMapping mapping, ActionForm form,\n            HttpServletRequest request, HttpServletResponse response)\n            throws Exception {\n        UserForm userForm = (UserForm) form;\n        userForm.setMessage(\"Inside display user method.\");\n        return mapping.findForward(SUCCESS);\n    }\n\n}\n</code></pre>\n\n<p>JSP page</p>\n\n<pre><code>&lt;html&gt;\n&lt;head&gt;\n&lt;script type=\"text/javascript\"&gt;\n    function submitForm() {\n        document.forms[0].action = \"UserAction.do?methodtocall=add\";\n        document.forms[0].submit();\n    }\n&lt;/script&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&lt;html:form action=\"UserAction\"&gt;\n    &lt;table&gt;\n        &lt;tr&gt;&lt;td&gt;&lt;bean:write name=\"UserForm\" property=\"message\" /&gt;&lt;/td&gt;&lt;/tr&gt;\n        &lt;tr&gt;&lt;td&gt;&lt;html:submit value=\"Add\" onclick=\"submitForm()\" /&gt;&lt;/td&gt;&lt;/tr&gt;\n        &lt;tr&gt;&lt;td&gt;&lt;html:submit property=\"methodtocall\" value=\"update\" /&gt;&lt;/td&gt;&lt;/tr&gt;\n        &lt;tr&gt;&lt;td&gt;&lt;html:submit property=\"methodtocall\"&gt;delete&lt;/html:submit&gt;&lt;/td&gt;&lt;/tr&gt;\n    &lt;/table&gt;\n&lt;/html:form&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n</code></pre>\n\n<p>thanks</p>\n"
+}

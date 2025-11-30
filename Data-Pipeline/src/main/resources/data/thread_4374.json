@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "jsch" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 7792408,
+      "reputation" : 520,
+      "user_id" : 5894853,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/orI5A.jpg?s=256",
+      "display_name" : "JediCate",
+      "link" : "https://stackoverflow.com/users/5894853/jedicate"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1642763263,
+    "last_edit_date" : 1642763263,
+    "creation_date" : 1635851930,
+    "answer_id" : 69809507,
+    "question_id" : 63180250,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I don't know if you solved this. If you did I would be curious to know what worked for you. Otherwise  I would try two things:</p>\n<ol>\n<li>Use session.setServerAliveInterval(myKeepAliveTimeoutMsgInMilis), also in the documentation.</li>\n<li>Using the channel.connect(0) with the 0 parameter this way the default connection timeout of 50 second will be applied. If using it without a parameter then there is no timeout applied. Check the <a href=\"https://epaul.github.io/jsch-documentation/simple.javadoc/com/jcraft/jsch/Channel.html#connect-int-\" rel=\"nofollow noreferrer\">documentation</a>.</li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 538250,
+    "reputation" : 14757,
+    "user_id" : 903137,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://i.sstatic.net/ontRB.jpg?s=256",
+    "display_name" : "Ashish",
+    "link" : "https://stackoverflow.com/users/903137/ashish"
+  },
+  "is_answered" : false,
+  "view_count" : 8567,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760371460,
+  "creation_date" : 1596138057,
+  "question_id" : 63180250,
+  "link" : "https://stackoverflow.com/questions/63180250/connection-timeout-with-jsch-library",
+  "title" : "Connection timeout with Jsch library",
+  "body" : "<p>I have implemented the sftp connectivity using JSch library but I keep getting the connection timeout error. I have tried with increasing the timeout value but nothing seems to be working. I can however access the ftp site using brower just fine. My code is as follows:</p>\n<pre><code>public class FileTransfer {\n    public static void main(String[] args) {\n        final String hostName = &quot;filetransfer.company.com&quot;;\n        final int port = 22;\n        final String userName = &quot;user_name&quot;;\n        final String password = &quot;password&quot; ;\n        JSch jsch = new JSch();\n        String knowHosts = new StringBuilder().append(System.getProperty(&quot;user.home&quot;)).append(&quot;/.ssh/known_hosts&quot;).toString();\n        System.out.println(knowHosts);\n        try {\n            jsch.setKnownHosts(knowHosts);\n            Session session = jsch.getSession(userName, hostName, port);\n            System.out.println(&quot;session created&quot;);\n            session.setPassword(password);\n            System.out.println(&quot;all properties set &quot;+session.toString());\n            session.setConfig(&quot;StrictHostKeyChecking&quot;, &quot;no&quot;);\n            //session.setSocketFactory(new SocketFactoryWithTimeout());\n            session.connect(60000);\n            System.out.println(&quot;session connected&quot;);\n            Channel channel = session.openChannel(&quot;sftp&quot;);\n            channel.connect();\n            System.out.println(&quot;channel created and connected&quot;);\n            ChannelSftp channelSftp = (ChannelSftp) channel;\n            channelSftp.get(&quot;sample_file.csv&quot;, &quot;src/main/resources/downloaded_file.csv&quot;);\n            channelSftp.exit();\n            System.out.println(&quot;file download and saved in resource directory&quot;);\n        } catch (JSchException | SftpException e) {\n            e.printStackTrace();\n        }\n    }\n}\n</code></pre>\n<p>the error I am getting is :</p>\n<pre><code>session created\nall properties set com.jcraft.jsch.Session@30f39991\ncom.jcraft.jsch.JSchException: java.net.ConnectException: Connection timed out: connect\n    at com.jcraft.jsch.Util.createSocket(Util.java:394)\n    at com.jcraft.jsch.Session.connect(Session.java:215)\n    at com.wf.se.ftp.FileTransfer.main(FileTransfer.java:22)\nCaused by: java.net.ConnectException: Connection timed out: connect\n    at java.net.DualStackPlainSocketImpl.connect0(Native Method)\n    at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)\n    at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)\n    at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)\n    at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)\n    at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)\n    at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)\n    at java.net.Socket.connect(Socket.java:606)\n    at java.net.Socket.connect(Socket.java:555)\n    at java.net.Socket.&lt;init&gt;(Socket.java:451)\n    at java.net.Socket.&lt;init&gt;(Socket.java:228)\n    at com.jcraft.jsch.Util$1.run(Util.java:362)\n    at java.lang.Thread.run(Thread.java:748)\n</code></pre>\n<p>any suggestion would be helpful. thank you.</p>\n"
+}

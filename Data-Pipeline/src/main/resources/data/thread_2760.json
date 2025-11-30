@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "spring", "junit5", "spring-boot-test" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 15361,
+      "reputation" : 5459,
+      "user_id" : 32352,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/25c1ae809b29bdbe028ff0d3ef8b6efe?s=256&d=identicon&r=PG",
+      "display_name" : "johanneslink",
+      "link" : "https://stackoverflow.com/users/32352/johanneslink"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1628527284,
+    "post_id" : 68707300,
+    "comment_id" : 121439193,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "How’s the mocked attachment service suppose to get into your postEventHandler? You have to use Spring‘s mechanisms to create the handler, otherwise it won’t be able to inject mocks at the applicable places."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 16184453,
+      "reputation" : 53,
+      "user_id" : 13762575,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4ed30e1e9276276dff9b7e979932e053?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Anton",
+      "link" : "https://stackoverflow.com/users/13762575/anton"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1658146162,
+    "last_edit_date" : 1658146162,
+    "creation_date" : 1658137884,
+    "answer_id" : 73020342,
+    "question_id" : 68707300,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I met a similar problem: I also had null in mocked bean, but only when I run several tests at once (for example, when I run &quot;mvn clean package&quot;)</p>\n<p>If it was your case (or if it case of someone, who will see this post), then this situation might be solved by annotation @DirtiesContext on every test class youre running</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1713714,
+      "reputation" : 829,
+      "user_id" : 1571268,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/6xjJN.jpg?s=256",
+      "display_name" : "criztovyl",
+      "link" : "https://stackoverflow.com/users/1571268/criztovyl"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1658260496,
+    "creation_date" : 1658260496,
+    "answer_id" : 73042786,
+    "question_id" : 68707300,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As @johanneslink said, the problem is this line:</p>\n<pre><code>PostEventHandler postEventHandler = new PostEventHandler();\n</code></pre>\n<p>Spring won't inject anything into your <code>PostEventHandler</code> bean if you manually construct it.</p>\n<p>The following should make your test work, note the <code>@Autowired</code> <code>postEventHandler</code>. :)</p>\n<pre><code>@SpringBootTest\npublic class PostEventHandlerTest {\n\n    @MockBean\n    private AttachmentService attachmentService;\n\n    @Autowired\n    PostEventHandler postEventHandler;\n    \n    @Test\n    public void handlePostBeforeCreateTest() throws Exception {\n    \n        Post post = new Post(&quot;First Post&quot;, &quot;Post Added&quot;, null, null, &quot;&quot;, &quot;&quot;);\n        \n        Mockito.when(attachmentService.storeFile(&quot;abc.txt&quot;, &quot;&quot;)).thenReturn(new Attachment());\n\n        postEventHandler.handlePostBeforeCreate(post);\n        \n        verify(attachmentService, times(1)).storeFile(&quot;abc.txt&quot;, &quot;&quot;);\n   }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 11319432,
+    "reputation" : 71,
+    "user_id" : 8300156,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/6c5928fa70642ed2c26ae47eedf74cae?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "bhavya",
+    "link" : "https://stackoverflow.com/users/8300156/bhavya"
+  },
+  "is_answered" : false,
+  "view_count" : 13451,
+  "answer_count" : 2,
+  "score" : 7,
+  "last_activity_date" : 1763971555,
+  "creation_date" : 1628487573,
+  "last_edit_date" : 1629360983,
+  "question_id" : 68707300,
+  "link" : "https://stackoverflow.com/questions/68707300/mockbean-is-returning-null-object",
+  "title" : "@MockBean is returning null object",
+  "body" : "<p>I am trying to use @MockBean;  java version 11, Spring Framework Version (5.3.8), Spring Boot Version(2.5.1) and Junit Jupiter (5.7.2) .</p>\n<pre><code>    @SpringBootTest\n    public class PostEventHandlerTest {\n        @MockBean\n        private AttachmentService attachmentService;\n\n        @Test\n        public void handlePostBeforeCreateTest() throws Exception {\n            Post post = new Post(&quot;First Post&quot;, &quot;Post Added&quot;, null, null, &quot;&quot;, &quot;&quot;);\n            \n            Mockito.when(attachmentService.storeFile(&quot;abc.txt&quot;, &quot;&quot;)).thenReturn(new Attachment());\n     \n            PostEventHandler postEventHandler = new PostEventHandler();\n            postEventHandler.handlePostBeforeCreate(post);\n            verify(attachmentService, times(1)).storeFile(&quot;abc.txt&quot;, &quot;&quot;);\n       }\n    }\n</code></pre>\n<pre><code>    @Slf4j\n    @Component\n    @Configuration\n    @RepositoryEventHandler\n    public class PostEventHandler {\n           @Autowired\n           private AttachmentService attachmentService;\n\n           @Autowired\n           private PostRepository postRepository;\n\n           public void handlePostBeforeCreate(Post post) throws Exception {\n             ...\n             /* Here attachmentService is found null when we execute above test*/\n             attachmentService.storeFile(fileName, content);\n             ...\n           }\n    }\n</code></pre>\n<p>attachmentService is not being mocked it gives null in return</p>\n"
+}

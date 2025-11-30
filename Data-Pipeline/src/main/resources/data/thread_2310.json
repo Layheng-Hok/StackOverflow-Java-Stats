@@ -1,0 +1,377 @@
+{
+  "tags" : [ "java", "spring", "jackson", "jax-rs", "resteasy" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1178649,
+        "reputation" : 5361,
+        "user_id" : 1154065,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/5fc9402ca3cc5ffaca66651cc79cb6be?s=256&d=identicon&r=PG",
+        "display_name" : "isah",
+        "link" : "https://stackoverflow.com/users/1154065/isah"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1388404260,
+      "post_id" : 20838816,
+      "comment_id" : 31255040,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Great, I wrapped in collection because there was an example in Resteasy docs, but it was with XML."
+    }, {
+      "owner" : {
+        "account_id" : 7565436,
+        "reputation" : 1279,
+        "user_id" : 5741227,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/1d13cf5faeab09d5f2f41222a9ecf3e9?s=256&d=identicon&r=PG",
+        "display_name" : "iamjoshua",
+        "link" : "https://stackoverflow.com/users/5741227/iamjoshua"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1555236529,
+      "post_id" : 20838816,
+      "comment_id" : 98033559,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "come to think of it. I&#39;m pretty sure that I have the right code and debugging this for hours, and changing my codes along the way. Turns out I was just missing the square brackets to indicate my post is an array.Arrg. Well I guess this is a newbies curse, LOL. To anyone new to JSON and Spring Data, don&#39;t follow my footsteps. :("
+    } ],
+    "owner" : {
+      "account_id" : 154496,
+      "reputation" : 8813,
+      "user_id" : 370481,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://www.gravatar.com/avatar/1b2827268671d62f8556627b9623ed1e?s=256&d=identicon&r=PG",
+      "display_name" : "Eugen",
+      "link" : "https://stackoverflow.com/users/370481/eugen"
+    },
+    "is_accepted" : true,
+    "score" : 195,
+    "last_activity_date" : 1671785992,
+    "last_edit_date" : 1671785992,
+    "creation_date" : 1388403701,
+    "answer_id" : 20838816,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The problem is the JSON - this cannot, by default, be deserialized into a <code>Collection</code> because it's not actually a JSON Array - that would look like this:</p>\n<pre><code>[\n    {\n        &quot;name&quot;: &quot;Test order1&quot;,\n        &quot;detail&quot;: &quot;ahk ks&quot;\n    },\n    {\n        &quot;name&quot;: &quot;Test order2&quot;,\n        &quot;detail&quot;: &quot;Fisteku&quot;\n    }\n]\n</code></pre>\n<p>Since you're not controlling the exact process of deserialization (RestEasy does) - <strong>a first option</strong> would be to simply inject the JSON as a <code>String</code> and then take control of the deserialization process:</p>\n<pre><code>Collection&lt;COrder&gt; readValues = new ObjectMapper().readValue(\n    jsonAsString, new TypeReference&lt;Collection&lt;COrder&gt;&gt;() { }\n);\n</code></pre>\n<p>You would loose a bit of the convenience of not having to do that yourself, but you would easily sort out the problem.</p>\n<p><strong>Another option</strong> - if you cannot change the JSON - would be to construct a wrapper to fit the structure of your JSON input - and use that instead of <code>Collection&lt;COrder&gt;</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9130923,
+      "reputation" : 2269,
+      "user_id" : 6792588,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8e081456a4b051ad81d557d672db8fa0?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Naor Bar",
+      "link" : "https://stackoverflow.com/users/6792588/naor-bar"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1494849814,
+    "creation_date" : 1494849814,
+    "answer_id" : 43979056,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>This will work:</strong></p>\n\n<p>The problem may happen when you're trying to read a list with a single element as a <strong>JsonArray</strong> rather than a <strong>JsonNode</strong> or vice versa.</p>\n\n<p>Since you can't know for sure if the returned list contains a single element <em>(so the json looks like this <strong>{...}</strong>)</em> or multiple elements <em>(and the json looks like this <strong>[{...},{...}]</strong>)</em> - \nyou'll have to check in runtime the type of the element.</p>\n\n<p>It should look like this:</p>\n\n<p><strong><em>(Note: in this code sample I'm using com.fasterxml.jackson)</em></strong> </p>\n\n<pre><code>String jsonStr = response.readEntity(String.class);\nObjectMapper mapper = new ObjectMapper();\nJsonNode rootNode = mapper.readTree(jsonStr);\n\n// Start by checking if this is a list -&gt; the order is important here:                      \nif (rootNode instanceof ArrayNode) {\n    // Read the json as a list:\n    myObjClass[] objects = mapper.readValue(rootNode.toString(), myObjClass[].class);\n    ...\n} else if (rootNode instanceof JsonNode) {\n    // Read the json as a single object:\n    myObjClass object = mapper.readValue(rootNode.toString(), myObjClass.class);\n    ...\n} else {\n    ...\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2085098,
+        "reputation" : 459,
+        "user_id" : 1856258,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/gADgz.jpg?s=256",
+        "display_name" : "leole",
+        "link" : "https://stackoverflow.com/users/1856258/leole"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1611124829,
+      "post_id" : 50135534,
+      "comment_id" : 116346067,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This helped me to &quot;ignore&quot; the wrong brackets ... and in Combination mit JsonNode and converting it to String before Jackson-parsing got me running  again :-) ... <code>JsonNode oJsonNode = oJacksonObjectMapper.readTree(sJsonString);</code> and <code>JsonNode oRoutesNode = oJsonNode.get(&quot;collection&quot;);</code> and <code>mapper.readValue(oRoutesNode.toString(), oTypeFactory.constructCollectionType(List....</code>"
+    } ],
+    "owner" : {
+      "account_id" : 10289181,
+      "reputation" : 1738,
+      "user_id" : 7591401,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/71337590e33f1870fbe74239cc0e1fd7?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Salah Atwa",
+      "link" : "https://stackoverflow.com/users/7591401/salah-atwa"
+    },
+    "is_accepted" : false,
+    "score" : 116,
+    "last_activity_date" : 1528807497,
+    "last_edit_date" : 1528807497,
+    "creation_date" : 1525266730,
+    "answer_id" : 50135534,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Instead of the JSON document, you can update the ObjectMapper object like below : </p>\n\n<pre><code>ObjectMapper mapper = new ObjectMapper();\nmapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 182665,
+      "reputation" : 1089,
+      "user_id" : 417541,
+      "user_type" : "registered",
+      "accept_rate" : 42,
+      "profile_image" : "https://www.gravatar.com/avatar/d942b4ec56939565e7f7be59dfe92615?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Do Will",
+      "link" : "https://stackoverflow.com/users/417541/do-will"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1531776239,
+    "creation_date" : 1531776239,
+    "answer_id" : 51370300,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had this issue on a REST API that was created using Spring framework. Adding a @ResponseBody annotation (to make the response JSON) resolved it.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12667290,
+      "reputation" : 11,
+      "user_id" : 9206106,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6f5581f42e24a2f3110746d452222087?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ambuj Sinha",
+      "link" : "https://stackoverflow.com/users/9206106/ambuj-sinha"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1547254893,
+    "last_edit_date" : 1547254893,
+    "creation_date" : 1547240080,
+    "answer_id" : 54153916,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Normally we face this issue when there is a problem mapping JSON node with that of Java object. I faced the same issue because in the swagger the node was defined as of Type array and the JSON object was having only one element , hence the system was having difficulty in mapping one element list to an array.</p>\n\n<p>In Swagger the element was defined as</p>\n\n<pre><code>Test:\n \"type\": \"array\",\n \"minItems\": 1,\n \"items\": {\n   \"$ref\": \"#/definitions/TestNew\"\n  }\n</code></pre>\n\n<p>While it should be</p>\n\n<pre><code>Test:\n    \"$ref\": \"#/definitions/TestNew\"\n</code></pre>\n\n<p>And <code>TestNew</code> should be of type array</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 463246,
+      "reputation" : 17232,
+      "user_id" : 866021,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/jYLJl.jpg?s=256",
+      "display_name" : "Adil B",
+      "link" : "https://stackoverflow.com/users/866021/adil-b"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1555003324,
+    "creation_date" : 1555003324,
+    "answer_id" : 55638065,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Related to Eugen's answer, you can solve this particular case by creating a wrapper POJO object that contains a <code>Collection&lt;COrder&gt;</code> as its member variable. This will properly guide Jackson to place the actual <code>Collection</code> data inside the POJO's member variable and produce the JSON you are looking for in the API request.</p>\n\n<p>Example:</p>\n\n<pre><code>public class ApiRequest {\n\n   @JsonProperty(\"collection\")\n   private Collection&lt;COrder&gt; collection;\n\n   // getters\n}\n</code></pre>\n\n<p>Then set the parameter type of <code>COrderRestService.postOrder()</code> to be your new  <code>ApiRequest</code> wrapper POJO instead of <code>Collection&lt;COrder&gt;</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7335793,
+      "reputation" : 1620,
+      "user_id" : 5587233,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-G9WLQnpkeX4/AAAAAAAAAAI/AAAAAAAACPw/1nDRr-FsAks/s256-rj/photo.jpg",
+      "display_name" : "Tanel",
+      "link" : "https://stackoverflow.com/users/5587233/tanel"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1564239135,
+    "last_edit_date" : 1564239135,
+    "creation_date" : 1564238824,
+    "answer_id" : 57233209,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Same issue:</p>\n\n<pre><code>com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.util.UUID` out of START_OBJECT token\n</code></pre>\n\n<p>What caused it was the following:</p>\n\n<pre><code>ResponseEntity&lt;UUID&gt; response = restTemplate.postForEntity(\"/example/\", null, UUID.class);\n</code></pre>\n\n<p>In my test I purposely set the request as null (no content POST). As previously mentioned, the cause for the OP was the same because the request didn't contain a valid JSON, so it couldn't be automatically identified as an application/json request which was the limitation on the server (<code>consumes = \"application/json\"</code>). A valid JSON request would be. What fixed it was populating an entity with null body and json headers explicitly. </p>\n\n<pre><code>HttpHeaders headers = new HttpHeaders();\nheaders.setContentType(MediaType.APPLICATION_JSON);\nHttpEntity request = new HttpEntity&lt;&gt;(null, headers);\nResponseEntity&lt;UUID&gt; response = restTemplate.postForEntity(\"/example/\", request, UUID.class);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5313916,
+        "reputation" : 1379,
+        "user_id" : 4239364,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/6GtGW.jpg?s=256",
+        "display_name" : "Ioannis Barakos",
+        "link" : "https://stackoverflow.com/users/4239364/ioannis-barakos"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1571922686,
+      "post_id" : 58541865,
+      "comment_id" : 103405796,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Please provide a complete answer with some code inside code blocks and some text evaluating the correctness of your answer"
+    } ],
+    "owner" : {
+      "account_id" : 11354824,
+      "reputation" : 117,
+      "user_id" : 8324734,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-SQht3u9Gldw/AAAAAAAAAAI/AAAAAAAADsM/-EZpxaIlLcU/s256-rj/photo.jpg",
+      "display_name" : "Suhas Saheer",
+      "link" : "https://stackoverflow.com/users/8324734/suhas-saheer"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1598292394,
+    "last_edit_date" : 1598292394,
+    "creation_date" : 1571921680,
+    "answer_id" : 58541865,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)\nprivate List&lt; COrder &gt; orders;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13035163,
+      "reputation" : 1283,
+      "user_id" : 9420335,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YXXvW.jpg?s=256",
+      "display_name" : "Akshay Chopra",
+      "link" : "https://stackoverflow.com/users/9420335/akshay-chopra"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1577366792,
+    "creation_date" : 1577366792,
+    "answer_id" : 59489158,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In my case, the error was being shown because when I was reading my JSON file using Jackson library, my JSON file contained only 1 object. Hence it started with \"{\" and ended with \"}\". But while reading it and storing it in a variable, I was storing it in an Array object (As in my case, there could be more than 1 object).</p>\n\n<p>Hence, I added \"[\" in the start and \"]\" in the end of my JSON file to convert it into an array of object and it worked perfectly fine without any error.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5741482,
+      "reputation" : 1050,
+      "user_id" : 4534078,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uJT9J.jpg?s=256",
+      "display_name" : "Reginaldo Santos",
+      "link" : "https://stackoverflow.com/users/4534078/reginaldo-santos"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1580315765,
+    "last_edit_date" : 1580315765,
+    "creation_date" : 1580314913,
+    "answer_id" : 59971392,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I ran into this same problem these days and maybe some more detail might be helpful to somebody else.</p>\n\n<p>I was looking some security guidelines for REST APIs and crossed a <a href=\"https://haacked.com/archive/2008/11/20/anatomy-of-a-subtle-json-vulnerability.aspx/\" rel=\"nofollow noreferrer\">very intriguing issue</a> with json arrays. Check the link for details, but basically, you should wrap them within an Object as we already saw in this post question.</p>\n\n<p>So, instead of:</p>\n\n<pre><code>  [\n    {\n      \"name\": \"order1\"\n    },\n    {\n      \"name\": \"order2\"\n    }\n  ]\n</code></pre>\n\n<p>It's advisable that we always do:</p>\n\n<pre><code>  {\n    \"data\": [\n      {\n        \"name\": \"order1\"\n      },\n      {\n        \"name\": \"order2\"\n      }\n    ]\n  }\n</code></pre>\n\n<p>This is pretty straight-forward when you doing a <em>GET</em>, but might give you some trouble if, instead, your trying to <em>POST/PUT</em> the very same json.</p>\n\n<p>In my case, I had more than one <em>GET</em> that was a <em>List</em> and more than one <em>POST/PUT</em> that would receive the very same json.</p>\n\n<p>So what I end up doing was to use a very simple <strong>Wrapper</strong> object for a <strong>List</strong>:</p>\n\n<pre><code>public class Wrapper&lt;T&gt; {\n  private List&lt;T&gt; data;\n\n  public Wrapper() {}\n\n  public Wrapper(List&lt;T&gt; data) {\n    this.data = data;\n  }\n  public List&lt;T&gt; getData() {\n    return data;\n  }\n  public void setData(List&lt;T&gt; data) {\n    this.data = data;\n  }\n}\n</code></pre>\n\n<p>Serialization of my lists were made with a <em>@ControllerAdvice</em>:</p>\n\n<pre><code>@ControllerAdvice\npublic class JSONResponseWrapper implements ResponseBodyAdvice&lt;Object&gt; {\n\n  @Override\n  public boolean supports(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType) {\n    return true;\n  }\n\n  @Override\n  @SuppressWarnings(\"unchecked\")\n  public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {\n    if (body instanceof List) {\n      return new Wrapper&lt;&gt;((List&lt;Object&gt;) body);\n    }\n    else if (body instanceof Map) {\n      return Collections.singletonMap(\"data\", body);\n    }  \n    return body;\n  }\n}\n</code></pre>\n\n<p>So, all the Lists and Maps where wrapped over a <em>data</em> object as below:</p>\n\n<pre><code>  {\n    \"data\": [\n      {...}\n    ]\n  }\n</code></pre>\n\n<p>Deserialization was still default, just using de <strong>Wrapper</strong> Object:</p>\n\n<pre><code>@PostMapping(\"/resource\")\npublic ResponseEntity&lt;Void&gt; setResources(@RequestBody Wrapper&lt;ResourceDTO&gt; wrappedResources) {\n  List&lt;ResourceDTO&gt; resources = wrappedResources.getData();\n  // your code here\n  return ResponseEntity\n           .ok()\n           .build();\n}\n</code></pre>\n\n<p>That was it! Hope it helps someone.</p>\n\n<p><strong>Note:</strong> tested with SpringBoot <em>1.5.5.RELEASE</em>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10178814,
+      "reputation" : 147,
+      "user_id" : 7516451,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-GCunvZgXl8E/AAAAAAAAAAI/AAAAAAAAANQ/KJvP0QSPIiY/s256-rj/photo.jpg",
+      "display_name" : "phirzel",
+      "link" : "https://stackoverflow.com/users/7516451/phirzel"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1588758335,
+    "creation_date" : 1588758335,
+    "answer_id" : 61632066,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As mentioned above the following would solve the problem: <code>mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);</code></p>\n\n<p>However in my case the provider did this [0..1] or [0..*] serialization rather as a bug and I could not enforce fixing. On the other hand it did not want to impact my strict mapper for all other cases which needs to be validated strictly.</p>\n\n<p>So I did a Jackson NASTY HACK (which should not be copied in general ;-) ), especially because my SingleOrListElement had only few properties to patch:</p>\n\n<pre><code>@JsonProperty(value = \"SingleOrListElement\", access = JsonProperty.Access.WRITE_ONLY)\nprivate Object singleOrListElement; \n\npublic List&lt;SingleOrListElement&gt; patch(Object singleOrListElement) {\n  if (singleOrListElement instanceof List) {\n    return (ArrayList&lt;SingleOrListElement&gt;) singleOrListElement;\n  } else {\n    LinkedHashMap map = (LinkedHashMap) singleOrListElement;\n    return Collections.singletonList(SingletonList.builder()\n                            .property1((String) map.get(\"p1\"))\n                            .property2((Integer) map.get(\"p2\"))\n                            .build());\n  }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3988446,
+      "reputation" : 3547,
+      "user_id" : 3288258,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/tfYu4.png?s=256",
+      "display_name" : "Forrest",
+      "link" : "https://stackoverflow.com/users/3288258/forrest"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1609277869,
+    "creation_date" : 1609277869,
+    "answer_id" : 65499085,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>After struggling with this thing for WAY too long, here is the super easy solution.</p>\n<p>My controller was looking for</p>\n<pre><code>@RequestBody List&lt;String&gt; ids\n</code></pre>\n<p>and I had the request body as</p>\n<pre><code>{\n    &quot;ids&quot;: [\n        &quot;1234&quot;,\n        &quot;5678&quot;\n     ]\n}\n</code></pre>\n<p>and the solution was to change the body simply to</p>\n<pre><code>[&quot;1234&quot;, &quot;5678&quot;]\n</code></pre>\n<p>Yup. Just that easy.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12315202,
+      "reputation" : 358,
+      "user_id" : 8985718,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/VFhO9.jpg?s=256",
+      "display_name" : "Sayed Hussainullah Sadat",
+      "link" : "https://stackoverflow.com/users/8985718/sayed-hussainullah-sadat"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1636016680,
+    "creation_date" : 1636016680,
+    "answer_id" : 69836706,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I was working with the same issue, I wanted to store multiple records at once.</p>\n<p>After a lot of research, <strong>I found an easy solution that worked immediately</strong>.</p>\n<p><strong>Before solving the problem code:</strong></p>\n<p><strong>Controller method</strong></p>\n<pre><code>   @PostMapping(&quot;/addList&quot;)\npublic ResponseEntity&lt;List&lt;Alarm&gt;&gt; saveAlarmList(@RequestBody List&lt;AlarmDTO&gt; dtos) {\n    return ResponseEntity.ok(alarmService.saveAlarmList(dtos));\n}\n</code></pre>\n<p><strong>Service method</strong></p>\n<pre><code> public List&lt;Alarm&gt; saveAlarmList(List&lt;AlarmDTO&gt; dtos) {\n\n    List&lt;Alarm&gt; alarmList = new ArrayList&lt;&gt;();\n    for (AlarmDTO dto: dtos) {\n        Alarm newAlarm = AlarmDtoMapper.map(dto);\n        alarmList.add(newAlarm);\n    }\n\n    return alarmRepository.saveAll(alarmList);\n}\n</code></pre>\n<p><strong>Entity class</strong></p>\n<pre><code>   public class Alarm{\n\n@Id\n@Basic(optional = false)\n@NotNull\n@Column(name = &quot;alarm_id&quot;)\nprivate Long alarmId;\n\n@Basic(optional = false)\n@NotNull\n@Size(min = 1, max = 100)\n@Column(name = &quot;alarm_name&quot;)\nprivate String alarmName;\n</code></pre>\n<p>}</p>\n<p><strong>postman object</strong></p>\n<pre><code>   [\n    {\n      &quot;alarmId&quot;:&quot;55&quot;,\n      &quot;alarmName&quot;:&quot;fgdffg&quot;,\n    },\n    {\n      &quot;alarmId&quot;:&quot;77788&quot;,\n      &quot;alarmName&quot;:&quot;hjjjjfk&quot;,\n    }\n   ]\n</code></pre>\n<p><strong>and another format</strong></p>\n<pre><code>      { \n        &quot;list&quot;:   [\n           {\n             &quot;alarmId&quot;:&quot;55&quot;,\n             &quot;alarmName&quot;:&quot;fgdffg&quot;,\n           },\n           {\n              &quot;alarmId&quot;:&quot;77788&quot;,\n              &quot;alarmName&quot;:&quot;hjjjjfk&quot;,\n           }\n         ]\n        }\n</code></pre>\n<p>In both methods, it was giving an error of serialization/deserialization.</p>\n<p>then I just <strong>implemented the Serializable interface in the Entity class</strong> as follows.</p>\n<p><strong>Entity class</strong></p>\n<pre><code>  public class Alarm implements Serializable\n  {\n      @Id\n      @Basic(optional = false)\n      @NotNull\n      @Column(name = &quot;alarm_id&quot;)\n      private Long alarmId;\n\n      @Basic(optional = false)\n      @NotNull\n      @Size(min = 1, max = 100)\n      @Column(name = &quot;alarm_name&quot;)\n      private String alarmName;\n   }\n</code></pre>\n<p>After this modification the first type of request object from postman worked.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5297121,
+      "reputation" : 129,
+      "user_id" : 4228000,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/9415P.png?s=256",
+      "display_name" : "Azhwani",
+      "link" : "https://stackoverflow.com/users/4228000/azhwani"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1681835105,
+    "creation_date" : 1681835105,
+    "answer_id" : 76046963,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The error message &quot;Can not Deserialize Instance of java.util.ArrayList Out of start_object Token&quot; typically occurs when you are trying to deserialize a JSON object to an ArrayList in Java, but the JSON data is not in the expected format.</p>\n<p>This error message indicates that the JSON data that you are trying to deserialize is starting with a JSON object token {...}, but your code is expecting an array token [...]</p>\n<p>Reference: <a href=\"https://devwithus.com/can-not-deserialize-instance-of-java-util-arraylist-start-object-token/\" rel=\"nofollow noreferrer\">https://devwithus.com/can-not-deserialize-instance-of-java-util-arraylist-start-object-token/</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16007936,
+      "reputation" : 61,
+      "user_id" : 14318913,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/TKnF9.png?s=256",
+      "display_name" : "Crystyan S. Santos",
+      "link" : "https://stackoverflow.com/users/14318913/crystyan-s-santos"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1743445612,
+    "creation_date" : 1743445612,
+    "answer_id" : 79546992,
+    "question_id" : 20837856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I Solved this error using the article shared here: <a href=\"https://dzone.com/articles/configuring-a-custom-objectmapper-for-spring-restt\" rel=\"nofollow noreferrer\">https://dzone.com/articles/configuring-a-custom-objectmapper-for-spring-restt</a></p>\n<p>After custom the bean for RestTemplate i could request and deserialize without errors.</p>\n<p><strong>Pre test configuration:</strong></p>\n<pre><code>\n@TestConfiguration\n    public static class WebClientSetting {\n\n        private ObjectMapper createObjectMapper() {\n\n            ObjectMapper objectMapper = new ObjectMapper();\n            objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);\n\n            return objectMapper;\n        }\n\n        private MappingJackson2HttpMessageConverter createMappingJacksonHttpMessageConverter() {\n\n            MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();\n            converter.setObjectMapper(createObjectMapper());\n            return converter;\n        }\n\n\n        @Bean\n        public RestTemplate createRestTemplate() {\n            RestTemplate restTemplate = new RestTemplate();\n            restTemplate.getMessageConverters().add(0, createMappingJacksonHttpMessageConverter());\n            return restTemplate;\n        }\n    }\n</code></pre>\n<p><strong>Tests:</strong></p>\n<pre><code>    @Test\n    void returnsAListOfOrderResponses(){\n\n\n        //arrange\n        String url = &quot;http://localhost:&quot;+ port + &quot;/api/v1/orders/&quot;;\n\n        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(url);\n        HttpHeaders headers = new HttpHeaders();\n\n        //Assert\n        ResponseEntity&lt;List&lt;OrderResponse&gt;&gt; responseEntity = restTemplate.exchange (uriBuilder.toUriString (),\n                HttpMethod.GET, null, new ParameterizedTypeReference&lt;&gt; () {\n                });\n\n        System.out.println (responseEntity.getBody ());\n\n    }\n</code></pre>\n<p>Result:</p>\n<p><a href=\"https://i.sstatic.net/TbPRMfJj.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/TbPRMfJj.png\" alt=\"enter image description here\" /></a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1178649,
+    "reputation" : 5361,
+    "user_id" : 1154065,
+    "user_type" : "registered",
+    "accept_rate" : 92,
+    "profile_image" : "https://www.gravatar.com/avatar/5fc9402ca3cc5ffaca66651cc79cb6be?s=256&d=identicon&r=PG",
+    "display_name" : "isah",
+    "link" : "https://stackoverflow.com/users/1154065/isah"
+  },
+  "is_answered" : true,
+  "view_count" : 677746,
+  "accepted_answer_id" : 20838816,
+  "answer_count" : 15,
+  "score" : 177,
+  "last_activity_date" : 1743445612,
+  "creation_date" : 1388399993,
+  "last_edit_date" : 1447176508,
+  "question_id" : 20837856,
+  "link" : "https://stackoverflow.com/questions/20837856/can-not-deserialize-instance-of-java-util-arraylist-out-of-start-object-token",
+  "title" : "Can not deserialize instance of java.util.ArrayList out of START_OBJECT token",
+  "body" : "<p>I'm trying to POST a <code>List</code> of custom objects. \nMy JSON in request body is this:</p>\n\n<pre><code>{\n    \"collection\": [\n        {\n            \"name\": \"Test order1\",\n            \"detail\": \"ahk ks\"\n        },\n        {\n            \"name\": \"Test order2\",\n            \"detail\": \"Fisteku\"\n        }\n    ]\n}\n</code></pre>\n\n<p>Server side code that handles the request:</p>\n\n<pre><code>import java.util.Collection;\n\nimport javax.ws.rs.Consumes;\nimport javax.ws.rs.POST;\nimport javax.ws.rs.Path;\nimport javax.ws.rs.Produces;\nimport javax.ws.rs.core.MediaType;\nimport javax.ws.rs.core.Response;\n\n\n@Path(value = \"/rest/corder\")\npublic class COrderRestService {\n\n    @POST\n    @Produces(MediaType.APPLICATION_JSON)\n    @Consumes(MediaType.APPLICATION_JSON)\n    public Response postOrder(Collection&lt;COrder&gt; orders) {\n        StringBuilder stringBuilder = new StringBuilder();\n        for (COrder c : orders) {\n            stringBuilder.append(c.toString());\n        }\n        System.out.println(stringBuilder);\n        return Response.ok(stringBuilder, MediaType.APPLICATION_JSON).build();\n    }\n}\n</code></pre>\n\n<p>Entity <code>COrder</code>:</p>\n\n<pre><code>import javax.xml.bind.annotation.XmlRootElement;\n\n@XmlRootElement\npublic class COrder {\n    String name;\n    String detail;\n\n    @Override\n    public String toString() {\n        return \"COrder [name=\" + name + \", detail=\" + detail\n                + \", getClass()=\" + getClass() + \", hashCode()=\" + hashCode()\n                + \", toString()=\" + super.toString() + \"]\";\n    }\n}\n</code></pre>\n\n<p>But an exception is thrown:</p>\n\n<pre><code>SEVERE: Failed executing POST /rest/corder\norg.jboss.resteasy.spi.ReaderException: org.codehaus.jackson.map.JsonMappingException: Can not deserialize instance of java.util.ArrayList out of START_OBJECT token\n at [Source: org.apache.catalina.connector.CoyoteInputStream@6de8c535; line: 1, column: 1]\n    at org.jboss.resteasy.core.MessageBodyParameterInjector.inject(MessageBodyParameterInjector.java:183)\n    at org.jboss.resteasy.core.MethodInjectorImpl.injectArguments(MethodInjectorImpl.java:88)\n    at org.jboss.resteasy.core.MethodInjectorImpl.invoke(MethodInjectorImpl.java:111)\n    at org.jboss.resteasy.core.ResourceMethodInvoker.invokeOnTarget(ResourceMethodInvoker.java:280)\n    at org.jboss.resteasy.core.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:234)\n    at org.jboss.resteasy.core.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:221)\n    at org.jboss.resteasy.core.SynchronousDispatcher.invoke(SynchronousDispatcher.java:356)\n    at org.jboss.resteasy.core.SynchronousDispatcher.invoke(SynchronousDispatcher.java:179)\n    at org.jboss.resteasy.plugins.server.servlet.ServletContainerDispatcher.service(ServletContainerDispatcher.java:220)\n    at org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.service(HttpServletDispatcher.java:56)\n    at org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher.service(HttpServletDispatcher.java:51)\n    at javax.servlet.http.HttpServlet.service(HttpServlet.java:728)\n    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:305)\n    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)\n    at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)\n    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:243)\n    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)\n    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:222)\n    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)\n    at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)\n    at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:171)\n    at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:100)\n    at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:953)\n    at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)\n    at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:408)\n    at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1041)\n    at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:603)\n    at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:312)\n    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)\n    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)\n    at java.lang.Thread.run(Thread.java:724)\n</code></pre>\n"
+}

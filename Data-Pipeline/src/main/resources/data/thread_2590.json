@@ -1,0 +1,180 @@
+{
+  "tags" : [ "java", "loops", "if-statement" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2933712,
+      "reputation" : 6591,
+      "user_id" : 2513200,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/3d4b041c512a4e708a42494eb465b40f?s=256&d=identicon&r=PG",
+      "display_name" : "Hulk",
+      "link" : "https://stackoverflow.com/users/2513200/hulk"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1604397146,
+    "post_id" : 64660397,
+    "comment_id" : 114328780,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "What do you want to fix about it? Does it currently do something wrong?"
+  }, {
+    "owner" : {
+      "account_id" : 2933712,
+      "reputation" : 6591,
+      "user_id" : 2513200,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/3d4b041c512a4e708a42494eb465b40f?s=256&d=identicon&r=PG",
+      "display_name" : "Hulk",
+      "link" : "https://stackoverflow.com/users/2513200/hulk"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1604397249,
+    "post_id" : 64660397,
+    "comment_id" : 114328820,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "It seems you try to initialize Strings via out-parameters in your <code>create_messages</code> - that is not possible in Java. References are passed by value, and cannot be modified within a method in a way that would be visible from outside the method."
+  }, {
+    "owner" : {
+      "account_id" : 2933712,
+      "reputation" : 6591,
+      "user_id" : 2513200,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/3d4b041c512a4e708a42494eb465b40f?s=256&d=identicon&r=PG",
+      "display_name" : "Hulk",
+      "link" : "https://stackoverflow.com/users/2513200/hulk"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1604397333,
+    "post_id" : 64660397,
+    "comment_id" : 114328852,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "See <a href=\"https://stackoverflow.com/questions/40480/is-java-pass-by-reference-or-pass-by-value\" title=\"is java pass by reference or pass by value\">stackoverflow.com/questions/40480/&hellip;</a>"
+  }, {
+    "owner" : {
+      "account_id" : 4617916,
+      "reputation" : 120003,
+      "user_id" : 3744182,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8e5a880622e118e401915b48f1cc0cf3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dbc",
+      "link" : "https://stackoverflow.com/users/3744182/dbc"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1764298754,
+    "post_id" : 64660397,
+    "comment_id" : 140876871,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "We would need to see a <a href=\"https://stackoverflow.com/help/minimal-reproducible-example\">minimal reproducible example</a> to answer your question specifically.  For general information on resolving the <i>Non-static variable cannot be referenced from a static context</i> compilation error, see <a href=\"https://stackoverflow.com/q/2559527\">Non-static variable cannot be referenced from a static context</a>."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 18608321,
+      "reputation" : 3495,
+      "user_id" : 13561410,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b996f63115383a81f373590afe0a1def?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Oskar Grosser",
+      "link" : "https://stackoverflow.com/users/13561410/oskar-grosser"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1605100095,
+    "last_edit_date" : 1605100095,
+    "creation_date" : 1604402312,
+    "answer_id" : 64661824,
+    "question_id" : 64660397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Edit:</strong> This answer might seem outdated since the OP decided to edit the question, removing his code in the process.</p>\n<p>There are 2 errors in your code:</p>\n<ol>\n<li>Your inner class <code>Station</code> is not static, meaning you cannot instantiate it in a static context. This is producing the error messages you see.</li>\n<li>You are thinking that Java is pass-by-reference, and are trying to override the value the variable(s) are pointing to (which you cannot do in Java).</li>\n</ol>\n<p>You can fix your mistakes by making your <code>Station</code>-class static (<code>static class Station</code>), and by making the stations you use class-variables, and using their fields to create a String.<br />\nYou could also implement a <code>getInfo()</code>-method for the <code>Station</code>-class that prepares its info on its own. With this, you can just call <code>System.out.println(STATION_YOU_WANT.getInfo())</code>.</p>\n<p>I have taken a bit of my time to write a commented solution to the question.<br />\nThe most confusing part of it is probably the use of <a href=\"https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html#varargs\" rel=\"nofollow noreferrer\"><em>varargs</em></a> (<code>String...</code> in the code below). They basically allow you to pass any number of arguments to a method, which will inherently be converted to an array by Java.</p>\n<pre class=\"lang-java prettyprint-override\"><code>import java.util.HashMap;\nimport java.util.Locale;\nimport java.util.Scanner;\n\npublic class StationInformation {\n  private static class Station {\n    private String name;\n    private int distanceToPlatform;\n    private boolean stepFree;\n    private String[] alternateNames;\n    \n    Station(String name, int distanceToPlatform, boolean stepFree, String...alternateNames) {\n      this.name = name;\n      this.distanceToPlatform = distanceToPlatform;\n      this.stepFree = stepFree;\n      this.alternateNames = alternateNames; // 'String...' makes that parameter optional, resulting in 'null' if no value is passed\n    }\n    \n    String getInfo() {\n      return name + &quot; does&quot; + (stepFree ? &quot; &quot; : &quot; not &quot;)\n        + &quot;have step free access.\\nIt is &quot; + distanceToPlatform + &quot;m from entrance to platform.&quot;;\n    }\n  }\n  \n  private static HashMap&lt;String, Station&gt; stations = new HashMap&lt;String, Station&gt;();\n  \n  public static void main(String[] args) {\n    createStations();\n    \n    // The Program\n    Scanner scanner = new Scanner(System.in);\n    \n    // Keep requesting input until receiving a valid number\n    int num;\n    for (;;) { // 'for (;;) ...' is effectively the same as 'while (true) ...'\n      System.out.print(&quot;How many stations do you need to know about? &quot;);\n      String input = scanner.nextLine();\n      \n      try {\n        num = Integer.parseInt(input);\n        break;\n      } catch (Exception exc) {\n        // Do nothing\n      }\n      \n      System.out.println(&quot;Please enter a correct number.&quot;);\n    }\n    \n    for (int i = 0; i &lt; num; ++i) {\n      System.out.print(&quot;\\nWhat station do you need to know about? &quot;);\n      String input = scanner.nextLine();\n      \n      // If available, show Station-information\n      if (stations.containsKey(input.toLowerCase(Locale.ROOT))) {\n        System.out.println(stations.get(input.toLowerCase(Locale.ROOT)).getInfo());\n      } else {\n        System.out.println(&quot;\\&quot;&quot; + input + &quot;\\&quot; is not a London Underground Station.&quot;);\n      }\n    }\n    \n    scanner.close(); // Close Scanner; Here actually not needed because program will be closed right after, freeing its resources anyway\n  }\n  \n  private static void createStations() {\n    // Add new Stations here to automatically add them to the HashMap\n    Station[] stations = new Station[] {\n      new Station(&quot;Stepney Green&quot;, 100, false),\n      new Station(&quot;King's Cross&quot;, 700, true, &quot;Kings Cross&quot;),\n      new Station(&quot;Oxford Circus&quot;, 200, true)\n    };\n    \n    for (Station station : stations) {\n      StationInformation.stations.put(station.name.toLowerCase(Locale.ROOT), station);\n      \n      // Alternative names will be mapped to the same Station\n      if (station.alternateNames == null) continue;\n      for (String altName : station.alternateNames)\n        StationInformation.stations.put(altName.toLowerCase(Locale.ROOT), station);\n    }\n  }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 19831218,
+        "reputation" : 21,
+        "user_id" : 14525743,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/92dc32d10e9d36401a89653d34c0ea32?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "onlinegamerunibro",
+        "link" : "https://stackoverflow.com/users/14525743/onlinegamerunibro"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1604403126,
+      "post_id" : 64661908,
+      "comment_id" : 114331416,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I get this error after modifying the program:                                                                                                             <code>Error: Could not find or load main class StationInformation Caused by: java.lang.ClassNotFoundException: StationInformation </code>"
+    }, {
+      "owner" : {
+        "account_id" : 16633951,
+        "reputation" : 1,
+        "user_id" : 12021132,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-I4ICGg0jqXA/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reUsfSZpXr5v257Rkw_ZCDQAtf-mA/s256-rj/photo.jpg",
+        "display_name" : "Saurabh Potdar",
+        "link" : "https://stackoverflow.com/users/12021132/saurabh-potdar"
+      },
+      "reply_to_user" : {
+        "account_id" : 19831218,
+        "reputation" : 21,
+        "user_id" : 14525743,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/92dc32d10e9d36401a89653d34c0ea32?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "onlinegamerunibro",
+        "link" : "https://stackoverflow.com/users/14525743/onlinegamerunibro"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1604403878,
+      "post_id" : 64661908,
+      "comment_id" : 114331692,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Now it will work. I had renamed StationInformation to Main."
+    } ],
+    "owner" : {
+      "account_id" : 16633951,
+      "reputation" : 1,
+      "user_id" : 12021132,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-I4ICGg0jqXA/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3reUsfSZpXr5v257Rkw_ZCDQAtf-mA/s256-rj/photo.jpg",
+      "display_name" : "Saurabh Potdar",
+      "link" : "https://stackoverflow.com/users/12021132/saurabh-potdar"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1604403900,
+    "last_edit_date" : 1604403900,
+    "creation_date" : 1604402625,
+    "answer_id" : 64661908,
+    "question_id" : 64660397,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have made Station class as static and returning a list from create_messages().</p>\n<pre><code>//this program tells the user whether a station is a step free access station or not and how far is it from the platform\n\nimport java.util.Scanner; // imports the scanner function to input data from the user\nimport java.util.ArrayList;\nimport java.util.List;\n\nclass StationInformation {\n    public static void main(String[] args) // main method where methods are sequenced\n    {\n        int numberOfStations = inputint(&quot;how many stations do you want to know about?&quot;);\n        String station;\n\n        for (int i = 1; i &lt;= numberOfStations; i++) {\n            station = inputstring(&quot;what station do you want to know about?&quot;);\n            search_station(station);\n\n        }\n\n        System.exit(0);\n    }\n\n// A method to input integers\n    public static int inputint(String message) {\n        Scanner scanner = new Scanner(System.in);\n        int answer;\n\n        System.out.println(message);\n        answer = Integer.parseInt(scanner.nextLine());\n\n        return answer;\n    } // END inputInt\n\n    public static String inputstring(String message) {\n        Scanner scanner = new Scanner(System.in);\n        String answer;\n\n        System.out.println(message);\n        answer = scanner.nextLine();\n\n        return answer;\n    }\n\n    public static String create_message(Station station) {\n        String message;\n        if (station.step_free_access == true) {\n            message = (station.name + &quot;does have step free access. &quot; + &quot;it is &quot; + station.distance_from_platform\n                    + &quot;m away from the entrance&quot;);\n        } else {\n            message = (station.name + &quot;does not have step free access. &quot; + &quot;it is &quot; + station.distance_from_platform\n                    + &quot;m away from the entrance&quot;);\n        }\n        return message;\n    }\n\n    public static List&lt;String&gt; create_messages() {\n        Station mile_end = new StationInformation.Station();\n        Station oxford_circus = new Station();\n        Station kings_cross = new Station();\n        Station stepney_green = new Station();\n\n        mile_end.distance_from_platform = 50;\n        mile_end.name = &quot;Mile End &quot;;\n        mile_end.step_free_access = false;\n        String message1 = create_message(mile_end);\n\n        oxford_circus.distance_from_platform = 200;\n        oxford_circus.name = &quot; Oxford Circus &quot;;\n        oxford_circus.step_free_access = true;\n        String message2 = create_message(oxford_circus);\n\n        kings_cross.distance_from_platform = 700;\n        kings_cross.name = &quot; kings cross &quot;;\n        kings_cross.step_free_access = true;\n        String message3 = create_message(kings_cross);\n\n        stepney_green.distance_from_platform = 300;\n        stepney_green.name = &quot; Stepney Green &quot;;\n        stepney_green.step_free_access = false;\n        String message4 = create_message(stepney_green);\n\n        List&lt;String&gt; list = new ArrayList&lt;&gt;();\n        list.add(message1);\n        list.add(message2);\n        list.add(message3);\n        list.add(message4);\n        return list;\n    }\n\n    public static void search_station(String station) {\n\n        List&lt;String&gt; list = create_messages();\n        String mileEndMessage = list.get(0);\n        String oxfordCircusMessage = list.get(1);\n        String kingsCrossMessage = list.get(2);\n        String stepneyGreenMessage = list.get(3);\n\n        if (station.equals(&quot;Mile End&quot;)) {\n            System.out.println(mileEndMessage);\n        } else if (station.equals(&quot;kings cross&quot;)) {\n            System.out.println(kingsCrossMessage);\n        } else if (station.equals(&quot;oxford circus&quot;)) {\n            System.out.println(oxfordCircusMessage);\n        } else if (station.equals(&quot;stepney green&quot;)) {\n            System.out.println(stepneyGreenMessage);\n        } else {\n            System.out.println(station + &quot; is not a London underground station &quot;);\n        }\n\n    }\n\n    static class Station // a record to store information about stations\n    {\n        int distance_from_platform;\n        String name;\n        boolean step_free_access;\n    }\n\n}\n\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 19831218,
+    "reputation" : 21,
+    "user_id" : 14525743,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/92dc32d10e9d36401a89653d34c0ea32?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "onlinegamerunibro",
+    "link" : "https://stackoverflow.com/users/14525743/onlinegamerunibro"
+  },
+  "is_answered" : false,
+  "view_count" : 232,
+  "closed_date" : 1764318284,
+  "answer_count" : 2,
+  "score" : -2,
+  "last_activity_date" : 1764298505,
+  "creation_date" : 1604396969,
+  "last_edit_date" : 1605005331,
+  "question_id" : 64660397,
+  "link" : "https://stackoverflow.com/questions/64660397/how-can-i-fix-these-errors-java-program",
+  "closed_reason" : "Not suitable for this site",
+  "title" : "How can I fix these errors? java program",
+  "body" : "<p>I have been working on a program.</p>\n<p>I keep getting these errors:</p>\n<pre><code>StationInformation.java:65: error: non-static variable this cannot be referenced from a static context\n      Station mile_end = new Station();\n                         ^\nStationInformation.java:66: error: non-static variable this cannot be referenced from a static context\n      Station oxford_circus  = new Station();\n                               ^\nStationInformation.java:67: error: non-static variable this cannot be referenced from a static context\n      Station kings_cross = new Station();\n                            ^\nStationInformation.java:68: error: non-static variable this cannot be referenced from a static context\n      Station stepney_green = new Station();\n                              ^\n4 errors\n</code></pre>\n<p>I want to fix the program.</p>\n"
+}

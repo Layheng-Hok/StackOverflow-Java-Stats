@@ -1,0 +1,98 @@
+{
+  "tags" : [ "java", "spring", "web-services", "soap" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10666146,
+        "reputation" : 956,
+        "user_id" : 7852676,
+        "user_type" : "registered",
+        "accept_rate" : 39,
+        "profile_image" : "https://i.sstatic.net/TlHpb.png?s=256",
+        "display_name" : "J. Abel",
+        "link" : "https://stackoverflow.com/users/7852676/j-abel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1498743383,
+      "post_id" : 44817333,
+      "comment_id" : 76633575,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hi, Thanks for answering.  I used your code and add it to mine, specifically in the line follows:   throw new SOAPFaultException(fault);  The strange is that I can see the responde in the console with &lt;faultcode&gt;99&lt;/faultcode&gt;, but not in the service response.  I continue to watch the &lt;faultcode&gt;SOAP-ENV:Server&lt;/faultcode&gt;.  As I want to catch the exception since a client in c#, it is necessary that in the java I create an exception related, if I wrote only the message (like you told me) then C# would not know that it is an exception. C# catches the excepcion with a try{}catch{} too."
+    } ],
+    "owner" : {
+      "account_id" : 5582693,
+      "reputation" : 512,
+      "user_id" : 4424117,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/346a5943b33ec1897617fc0dcf4075cb?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "newuserua_ext",
+      "link" : "https://stackoverflow.com/users/4424117/newuserua-ext"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1498715853,
+    "creation_date" : 1498715853,
+    "answer_id" : 44817333,
+    "question_id" : 44813606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Actually i could not get it. You throw FaultException then you catch and create some SOAPMessage? Without QName i got the expected result.</p>\n\n<pre><code>        SOAPMessage message = MessageFactory.newInstance().createMessage();\n        SOAPFault fault = message.getSOAPBody().addFault();\n        fault.setFaultString(\"Error\");\n        fault.setFaultCode(\"99\");\n\n        message.getSOAPBody().appendChild(fault);\n\n        message.writeTo(System.out);\n</code></pre>\n\n<p>Response  ;</p>\n\n<pre><code>&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"&gt;\n&lt;SOAP-ENV:Header/&gt;\n&lt;SOAP-ENV:Body&gt;\n    &lt;SOAP-ENV:Fault&gt;\n        &lt;faultcode&gt;99&lt;/faultcode&gt;\n        &lt;faultstring&gt;Error&lt;/faultstring&gt;\n    &lt;/SOAP-ENV:Fault&gt;\n&lt;/SOAP-ENV:Body&gt;\n</code></pre>\n\n<p></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12497485,
+      "reputation" : 1,
+      "user_id" : 9096973,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1b7fd0bf7a0f72001e958083d2344b0e?s=256&d=identicon&r=PG",
+      "display_name" : "Ritesh P",
+      "link" : "https://stackoverflow.com/users/9096973/ritesh-p"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1513225552,
+    "last_edit_date" : 1513225552,
+    "creation_date" : 1513224466,
+    "answer_id" : 47805744,
+    "question_id" : 44813606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can achieve this in multiple ways. If you have requirement to return dynamic custom fault codes in SOAP response. Do following:</p>\n\n<ol>\n<li>Declare a class which extends springs SoapFaultMappingExceptionResolver class</li>\n<li><p>In above declared class, override <code>protected SoapFaultDefinition getFaultDefinition(Object endpoint, Exception ex)</code> method And provide custom implmentation as follows:</p>\n\n<pre><code>@Override\nprotected SoapFaultDefinition getFaultDefinition(Object endpoint, Exception ex) {\n\n    String definitionText = \"SERVER\";\n    if (ex instanceof ServiceFaultException) {\n        MyServiceFault serviceFault = ((MyServiceFaultException) ex).getServiceFault();\n        QName faultCode = new QName(\"http://schemas.xmlsoap.org/soap/envelope/\", serviceFault.getErrorCd());\n        definitionText = faultCode.toString();\n    }\n    SoapFaultDefinitionEditor editor = new SoapFaultDefinitionEditor();\n    editor.setAsText(definitionText);\n    return (SoapFaultDefinition) editor.getValue();\n}\n</code></pre></li>\n</ol>\n\n<p>You can add further details to error response by overriding </p>\n\n<pre><code>customizeFault(Object endpoint, Exception ex, SoapFault fault)\n</code></pre>\n\n<p>of this class.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 29564190,
+      "reputation" : 1,
+      "user_id" : 22658025,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0c7261bc96d11b05105623969f744ce2?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Kyu Park",
+      "link" : "https://stackoverflow.com/users/22658025/kyu-park"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1696000776,
+    "creation_date" : 1696000776,
+    "answer_id" : 77203109,
+    "question_id" : 44813606,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I actually was stuck in the same problem for a week but I figured it out. I know it is an old question, but wanted to leave my solution for those who still struggled in 2023 like me.</p>\n<p>When you throw the SOAPFault <code>throw new SOAPFaultException(fault)</code>, it will use SOAP's default XML to return the fault. And for some reason that efault XML lets you modify the fault string but not the fault code, thus why in console it says you modified the SOAPFault, but the rendered SOAPFaultException will have no change as it will try to stick with the default SOAP XML, thus your case.</p>\n<p>The solution is to make your CustomException class, and making a class that extends AbstractSoapFaultDefinitionExceptionResolver, so that when Spring WS observes the CustomException thrown, then it uses the custom resolver.</p>\n<p>So you will need two classes, CustomException:</p>\n<pre class=\"lang-java prettyprint-override\"><code>  public class CustomException extends Exception {\n}\n</code></pre>\n<p>and the exception resolver:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class ExceptionResolver extends AbstractSoapFaultDefinitionExceptionResolver {\n\n    @Override\n    protected SoapFaultDefinition getFaultDefinition(Object endpoint, Exception ex) {\n        if (ex instanceof CustomException) {\n            // do something\n        }\n    }\n    @Override\n    protected void customizeFault(Object endpoint, Exception ex, SoapFault fault) {\n        if (ex instanceof CustomException) {\n            CustomException customException = ((CustomException) ex);\n            try {\n                     // customize your fault message\n                } catch (Exception e) {\n                    throw new RuntimeException(&quot;Error customizing&quot;, e);\n                }\n            }\n        }\n    }\n}\n</code></pre>\n<p>and then in webservice.config, let Spring know to use this resolver</p>\n<pre class=\"lang-java prettyprint-override\"><code>    @Bean(name = &quot;soapFaultAnnotationExceptionResolver&quot;)\n    public ExceptionResolver exceptionResolver() {\n        return new ExceptionResolver();\n    }\n</code></pre>\n<p>You might have to enable the allow-bean-definition-overriding option if it hasn't been already.</p>\n<p>Hopefully this helps anyone struggling!</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10666146,
+    "reputation" : 956,
+    "user_id" : 7852676,
+    "user_type" : "registered",
+    "accept_rate" : 39,
+    "profile_image" : "https://i.sstatic.net/TlHpb.png?s=256",
+    "display_name" : "J. Abel",
+    "link" : "https://stackoverflow.com/users/7852676/j-abel"
+  },
+  "is_answered" : false,
+  "view_count" : 16266,
+  "answer_count" : 3,
+  "score" : 1,
+  "last_activity_date" : 1761606580,
+  "creation_date" : 1498689427,
+  "question_id" : 44813606,
+  "link" : "https://stackoverflow.com/questions/44813606/faultcodesoap-envserver-faultcode-is-always-the-same-value-in-soap-and-spri",
+  "title" : "&lt;faultcode&gt;SOAP-ENV:Server&lt;/faultcode&gt; is always the same value in SOAP and Spring WS",
+  "body" : "<p>I am to try catching the exception from a SOAP web service in Spring WS (java) with the follows code:</p>\n\n<pre><code>String faultString = \"String Y\";\n            String faultCodeValue = \"Code X\";\n            QName faultCode = new QName(\"http://schemas.xmlsoap.org/soap/envelope/\", faultCodeValue);\n            SOAPFault soapFault = null;\n            soapFault = SOAPFactory.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL).createFault(faultString, faultCode);\n            throw new SOAPFaultException(soapFault);\n</code></pre>\n\n<p>However I always getting the same <code>&lt;faultcode&gt;</code>   like this <code>(&lt;faultcode&gt;SOAP-ENV:Server&lt;/faultcode&gt;)</code></p>\n\n<p>(even when I changed the value in <code>faultCodeValue</code> variable):</p>\n\n<pre><code>&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"&gt;\n   &lt;SOAP-ENV:Header/&gt;\n   &lt;SOAP-ENV:Body&gt;\n      &lt;SOAP-ENV:Fault&gt;\n         &lt;faultcode&gt;SOAP-ENV:Server&lt;/faultcode&gt;\n         &lt;faultstring xml:lang=\"en\"&gt;String Y&lt;/faultstring&gt;\n      &lt;/SOAP-ENV:Fault&gt;\n   &lt;/SOAP-ENV:Body&gt;\n&lt;/SOAP-ENV:Envelope&gt;\n</code></pre>\n\n<p>Does Someone knows how to change this value in the web service response?</p>\n"
+}

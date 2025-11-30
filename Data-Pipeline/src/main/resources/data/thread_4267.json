@@ -1,0 +1,108 @@
+{
+  "tags" : [ "java", "apache-kafka", "kafka-consumer-api", "kafka-producer-api", "spring-kafka" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2800928,
+      "reputation" : 1373,
+      "user_id" : 2409190,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/090828a13e47ecd35a890ac312e9717d?s=256&d=identicon&r=PG",
+      "display_name" : "Avinash",
+      "link" : "https://stackoverflow.com/users/2409190/avinash"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1519826295,
+    "post_id" : 46932127,
+    "comment_id" : 85067017,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Hey Prakash, how many partitions are there in your topic that you are using to  publish the messages?"
+  }, {
+    "owner" : {
+      "account_id" : 4322888,
+      "reputation" : 4128,
+      "user_id" : 4408364,
+      "user_type" : "registered",
+      "accept_rate" : 42,
+      "profile_image" : "https://i.sstatic.net/V48xC.png?s=256",
+      "display_name" : "Prakash P",
+      "link" : "https://stackoverflow.com/users/4408364/prakash-p"
+    },
+    "reply_to_user" : {
+      "account_id" : 2800928,
+      "reputation" : 1373,
+      "user_id" : 2409190,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/090828a13e47ecd35a890ac312e9717d?s=256&d=identicon&r=PG",
+      "display_name" : "Avinash",
+      "link" : "https://stackoverflow.com/users/2409190/avinash"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1520168142,
+    "post_id" : 46932127,
+    "comment_id" : 85196171,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "topic has 5 partitions"
+  }, {
+    "owner" : {
+      "account_id" : 4948901,
+      "reputation" : 4486,
+      "user_id" : 3983547,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/e20b1cfa433e5aebb01b7dc66d33e93c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dbustosp",
+      "link" : "https://stackoverflow.com/users/3983547/dbustosp"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1529183711,
+    "post_id" : 46932127,
+    "comment_id" : 88784311,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Hey @CodeX, were you able to solve the problem?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 10064498,
+      "reputation" : 676,
+      "user_id" : 7440073,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/zvvU2.jpg?s=256",
+      "display_name" : "meiskalt7",
+      "link" : "https://stackoverflow.com/users/7440073/meiskalt7"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1528886428,
+    "creation_date" : 1528886428,
+    "answer_id" : 50835137,
+    "question_id" : 46932127,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Change default bootstrap-servers property:</p>\n\n<pre><code>private List&lt;String&gt; bootstrapServers = new ArrayList&lt;String&gt;(\n            Collections.singletonList(\"localhost:9092\"));\n</code></pre>\n\n<p>to yours:</p>\n\n<pre><code>spring.kafka.bootstrap-servers: ${kafka.binder.broker}:${kafka.binder.defaultBrokerPort}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4322888,
+    "reputation" : 4128,
+    "user_id" : 4408364,
+    "user_type" : "registered",
+    "accept_rate" : 42,
+    "profile_image" : "https://i.sstatic.net/V48xC.png?s=256",
+    "display_name" : "Prakash P",
+    "link" : "https://stackoverflow.com/users/4408364/prakash-p"
+  },
+  "is_answered" : false,
+  "view_count" : 9378,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1760558420,
+  "creation_date" : 1508933520,
+  "last_edit_date" : 1508934351,
+  "question_id" : 46932127,
+  "link" : "https://stackoverflow.com/questions/46932127/kafka-failed-to-update-metadata",
+  "title" : "Kafka Failed to update metadata",
+  "body" : "<p>I am using Kafka v0.10.1.1 with <strong>Spring-boot</strong>.</p>\n\n<p>I am trying to produce a message in a Kafka topic <code>mobile-user</code> using the below producer code: </p>\n\n<p><strong>Topic <code>mobile-user</code> have 5 partitions and 2 replication factor</strong>. I have attached my <strong>Kafka settings at the end of the question</strong>.</p>\n\n<pre><code>package com.service;\n\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.kafka.core.KafkaTemplate;\nimport org.springframework.kafka.support.SendResult;\nimport org.springframework.stereotype.Service;\nimport org.springframework.util.concurrent.ListenableFuture;\nimport org.springframework.util.concurrent.ListenableFutureCallback;\n\nimport com.shephertz.karma.constant.Constants;\nimport com.shephertz.karma.exception.KarmaException;\nimport com.shephertz.karma.util.Utils;\n\n/**\n * @author Prakash Pandey\n */\n@Service\npublic class NotificationSender {\n\n    @Autowired\n    private KafkaTemplate&lt;String, String&gt; kafkaTemplate;\n\n    private static Logger LOGGER = LoggerFactory.getLogger(NotificationSender.class);\n\n    // Send Message\n    public void sendMessage(String topicName, String message) throws KarmaException {\n        LOGGER.debug(\"========topic Name===== \" + topicName + \"=========message=======\" + message);\n        ListenableFuture&lt;SendResult&lt;String, String&gt;&gt; result = kafkaTemplate.send(topicName, message);\n        result.addCallback(new ListenableFutureCallback&lt;SendResult&lt;String, String&gt;&gt;() {\n            @Override\n            public void onSuccess(SendResult&lt;String, String&gt; result) {\n                LOGGER.info(\"sent message='{}'\" + \" to partition={}\" + \" with offset={}\", message,\n                        result.getRecordMetadata().partition(), result.getRecordMetadata().offset());\n            }\n\n            @Override\n            public void onFailure(Throwable ex) {\n                LOGGER.error(Constants.PRODUCER_MESSAGE_EXCEPTION.getValue() + Utils.getStackTrace(ex));\n\n            }\n        });\n\n        LOGGER.debug(\"Payload sent to kafka\");\n        LOGGER.debug(\"topic: \" + topicName + \", payload: \" + message);\n    }\n}\n</code></pre>\n\n<p><strong>Problem:</strong> </p>\n\n<p>I am successfully able to sent message to kafka but sometimes I am receiving this error:</p>\n\n<pre><code>org.apache.kafka.common.errors.TimeoutException: Failed to update metadata after 5000 ms.\n2017-10-25 06:21:48, [ERROR] [karma-unified-notification-dispatcher - NotificationDispatcherSender - onFailure:43] Exception in sending message to kafka for queryorg.springframework.kafka.core.KafkaProducerException: Failed to send; nested exception is org.apache.kafka.common.errors.TimeoutException: Failed to update metadata after 5000 ms.\n        at org.springframework.kafka.core.KafkaTemplate$1.onCompletion(KafkaTemplate.java:255)\n        at org.apache.kafka.clients.producer.KafkaProducer.doSend(KafkaProducer.java:486)\n        at org.apache.kafka.clients.producer.KafkaProducer.send(KafkaProducer.java:436)\n        at org.springframework.kafka.core.DefaultKafkaProducerFactory$CloseSafeProducer.send(DefaultKafkaProducerFactory.java:156)\n        at org.springframework.kafka.core.KafkaTemplate.doSend(KafkaTemplate.java:241)\n        at org.springframework.kafka.core.KafkaTemplate.send(KafkaTemplate.java:151)\nCaused by: org.apache.kafka.common.errors.TimeoutException: Failed to update metadata after 5000 ms.    \n</code></pre>\n\n<p><strong>Kafka properties</strong>:</p>\n\n<pre><code>spring.kafka.producer.retries=5\nspring.kafka.producer.batch-size=1000\nspring.kafka.producer.request.timeout.ms=60000\nspring.kafka.producer.linger.ms=10\nspring.kafka.producer.acks=1\nspring.kafka.producer.buffer-memory=33554432\nspring.kafka.producer.max.block.ms=5000\nspring.kafka.topic.retention=86400000\n\nspring.zookeeper.hosts=192.20.1.19:2181,10.20.1.20:2181,10.20.1.26:2181\nspring.kafka.session.timeout=30000\nspring.kafka.connection.timeout=10000\nspring.kafka.topic.partition=5\nspring.kafka.message.replication=2\n\nspring.kafka.listener.concurrency=1\nspring.kafka.listener.poll-timeout=3000\nspring.kafka.consumer.auto-commit-interval=1000\nspring.kafka.consumer.enable-auto-commit=false\nspring.kafka.consumer.auto-offset-reset=earliest\nspring.kafka.consumer.max-poll-records=200\nspring.kafka.consumer.max-poll-interval-ms=300000\n</code></pre>\n\n<p>It would be very helpful if you could help me solving this problem.\nThanks.</p>\n\n<p><strong>Please note:</strong> I am not receiving this above message every time. I am successfully able to produce a message to <code>kafka-topic</code> and successfully consume it on <code>consumer</code>. This above error comes approxmately after <code>1000</code> successfully produced message.</p>\n"
+}

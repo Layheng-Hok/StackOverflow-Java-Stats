@@ -1,0 +1,79 @@
+{
+  "tags" : [ "java", "redis", "redisson" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1691630,
+      "reputation" : 51047,
+      "user_id" : 1553851,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/ad333c218c8f2fb917cf506919fc95f4?s=256&d=identicon&r=PG",
+      "display_name" : "shmosel",
+      "link" : "https://stackoverflow.com/users/1553851/shmosel"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1683842688,
+    "post_id" : 76231833,
+    "comment_id" : 134432830,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Why do you check <code>isLockAcquired</code> at the beginning vs. <code>lock != null &amp;&amp; lock.isLocked() &amp;&amp; lock.isHeldByCurrentThread()</code> in the <code>finally</code>?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 399098,
+      "reputation" : 10842,
+      "user_id" : 764206,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/69a2897401b5e9d1aa5b25316d971271?s=256&d=identicon&r=PG",
+      "display_name" : "Nikita Koksharov",
+      "link" : "https://stackoverflow.com/users/764206/nikita-koksharov"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1713421615,
+    "creation_date" : 1713421615,
+    "answer_id" : 78345267,
+    "question_id" : 76231833,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The error <code>The user executing the script can't publish to the channel mentioned in the command script</code> means that there is a limitation from your Redis vendor.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16808432,
+      "reputation" : 333,
+      "user_id" : 12420848,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a4a0f16ac5f359f445374f371e22b212?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "liginity",
+      "link" : "https://stackoverflow.com/users/12420848/liginity"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764056227,
+    "creation_date" : 1764056227,
+    "answer_id" : 79829397,
+    "question_id" : 76231833,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I meet the same error: <code>ERR The user executing the script can't publish to the channel mentioned in the command script</code>, when using Redisson <code>RLock</code>. It is a permission issue for Redis 7.0 pubsub channel in my case.</p>\n<p>The user can't publish to the channel because the default ACL setting for pubsub blocks access to all channels. The background is that Redis Open Source 7.0 has more restrictive permission settings by default, doc <a href=\"https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/\" rel=\"nofollow noreferrer\">link</a></p>\n<blockquote>\n<p>From 7.0, The acl-pubsub-default value is set to resetchannels to restrict the channels access by default to provide better security. The default can be set to allchannels via the acl-pubsub-default configuration directive to be compatible with previous versions.</p>\n</blockquote>\n<p>One simple solution is to grant permission to all channels. Edit the Redis config file, <code>/etc/redis/redis.conf</code> on Debian,</p>\n<pre class=\"lang-none prettyprint-override\"><code># acl-pubsub-default resetchannels\nacl-pubsub-default allchannels\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 28584453,
+    "reputation" : 11,
+    "user_id" : 21884989,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/0fde6951ce7ca57666ec11b2c22838d9?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "vot_vam_i_xixi_xaxa",
+    "link" : "https://stackoverflow.com/users/21884989/vot-vam-i-xixi-xaxa"
+  },
+  "is_answered" : false,
+  "view_count" : 633,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1764056227,
+  "creation_date" : 1683841955,
+  "last_edit_date" : 1683842317,
+  "question_id" : 76231833,
+  "link" : "https://stackoverflow.com/questions/76231833/java-redisson-unlock-exception",
+  "title" : "Java Redisson unlock exception",
+  "body" : "<p>I'm using this common code in my distributed locker service:</p>\n<pre><code>private &lt;T&gt; T lockAndProcessTask(String lockKey, boolean waitForLockRelease, Supplier&lt;T&gt; task, Supplier&lt;T&gt; onLockAcquireFail) {\n    boolean isLockAcquired = false;\n    RLock lock = null;\n    T result;\n    try {\n        val lockAcquireWaitTime = waitForLockRelease ? LOCK_ACQUIRE_WAIT_TIME_MS : 0;\n        try {\n            lock = redissonClient.getLock(lockKey);\n            isLockAcquired = lock.tryLock(lockAcquireWaitTime, LOCK_LEASE_TIME_MS, MILLISECONDS);\n        } catch (Exception e) {\n            log.error(&quot;Failed to lock, lockKey = {}&quot;, lockKey, e);\n        }\n        if (isLockAcquired) {\n            log.debug(&quot;Lock acquired, lockKey = {}&quot;, lockKey);\n            result = task.get();\n        } else {\n            log.debug(&quot;Failed to acquire lock, lockKey = {}&quot;, lockKey);\n            result = onLockAcquireFail.get();\n        }\n    } finally {\n        try {\n            if (lock != null &amp;&amp; lock.isLocked() &amp;&amp; lock.isHeldByCurrentThread()) {\n                lock.unlock();\n            }\n        } catch (Exception e) {\n            log.error(&quot;Failed to unlock, lockKey = {}&quot;, lockKey, e);\n        }\n    }\n    return result;\n}\n</code></pre>\n<p>And getting this error when trying to unlock <code>RLock</code>: <code>lock.unlock()</code></p>\n<p>Trace:</p>\n<pre><code>2023-05-11 21:42:22 [cs-async-358] ERROR c.w.c.s.s.DistributedLockerService - Failed to unlock, lockKey = TEST_LOCK_9000\norg.redisson.client.RedisException: Unexpected exception while processing command\nCaused by: java.util.concurrent.CompletionException: org.redisson.client.RedisException: ERR The user executing the script can't publish to the channel mentioned in the command script: 4dfe249c1asdvdff2dbd408626b9aff7, on @user_script:1.. channel: [id: 0xe6b7d174, L:/172.20.0.5:45526 - R:121.187.117.226/156.121.137.203:6379] command: (EVAL), promise: java.util.concurrent.CompletableFuture@22484e24[Not completed], params: [if (redis.call('hexists', KEYS[1], ARGV[3]) == 0) then return nil;end; local counter = redis.call('hincrby', KEYS[1], ARGV[3], -1); if (counter &gt; 0) then redis.call('pexpire', KEYS[1], ARGV[2]); return 0; else redis.call('del', KEYS[1]); redis.call('publish', KEYS[2], ARGV[1]); return 1; end; return nil;, 2, TEST_LOCK_9000, redisson_lock__channel:{TEST_LOCK_9000}, 0, 3600000, 4ac2378c-7582-4f9a-9cdfa7-8a6823e4709a:57312]\n        at org.redisson.RedissonBaseLock.lambda$evalWriteAsync$0(RedissonBaseLock.java:228)\n        at java.util.concurrent.CompletableFuture.uniHandle(CompletableFuture.java:822)\n        at java.util.concurrent.CompletableFuture$UniHandle.tryFire(CompletableFuture.java:797)\n        at java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:474)\n        at java.util.concurrent.CompletableFuture.completeExceptionally(CompletableFuture.java:1977)\n        at org.redisson.command.CommandBatchService.lambda$executeAsync$7(CommandBatchService.java:284)\n        at java.util.concurrent.CompletableFuture.uniWhenComplete(CompletableFuture.java:760)\n        at java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(CompletableFuture.java:736)\n        at java.util.concurrent.CompletableFuture.postComplete(CompletableFuture.java:474)\n</code></pre>\n<p>Do u have any ideas how to fix this?</p>\n<p>I tried to find some info, but didn't find anything similar. My pom.xml:</p>\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.redisson&lt;/groupId&gt;\n    &lt;artifactId&gt;redisson&lt;/artifactId&gt;\n    &lt;version&gt;3.19.3&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n"
+}

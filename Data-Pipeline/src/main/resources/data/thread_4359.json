@@ -1,0 +1,264 @@
+{
+  "tags" : [ "java", "arrays", "average", "sub-array" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 21964729,
+      "reputation" : 1843,
+      "user_id" : 16242139,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/PzIOC.jpg?s=256",
+      "display_name" : "Zero",
+      "link" : "https://stackoverflow.com/users/16242139/zero"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1689077437,
+    "creation_date" : 1689077437,
+    "answer_id" : 76661841,
+    "question_id" : 76660197,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need move</p>\n<pre><code>max = Math.max(max, s);\n</code></pre>\n<p>out of the inner loop, so that it takes the max sum of the entire window of <code>k</code> numbers. Putting it inside will fail if windows have any trailing negative values.</p>\n<p>Also, reset <code>s</code> to 0 with each window check.</p>\n<p>Final code will be</p>\n<pre><code>class Solution {\n    public double findMaxAverage(int[] nums, int k) {\n        int n = nums.length;\n        double s = 0;\n        double max = Integer.MIN_VALUE;\n\n        if (n == 1){\n            max = Double.valueOf(nums[0]);\n        } else{\n            for(int i = 0; i &lt; n-k; i++){\n                s = 0;\n                for(int j = i; j &lt; i+k; j++){\n                    s += nums[j]; \n                }\n                max = Math.max(max, s);\n            }\n        }\n\n        return max/k;\n    }\n}\n</code></pre>\n<p>This code is passing LeetCode testcases.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 21964729,
+        "reputation" : 1843,
+        "user_id" : 16242139,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/PzIOC.jpg?s=256",
+        "display_name" : "Zero",
+        "link" : "https://stackoverflow.com/users/16242139/zero"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1689164973,
+      "post_id" : 76667211,
+      "comment_id" : 135174259,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Just wanted to ask, how is your <i>optimized</i> code has linear time, whereas initial code has quadratic time, as you said?"
+    }, {
+      "owner" : {
+        "account_id" : 17080101,
+        "reputation" : 93,
+        "user_id" : 12358700,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/LqVXb.jpg?s=256",
+        "display_name" : "Jesse",
+        "link" : "https://stackoverflow.com/users/12358700/jesse"
+      },
+      "reply_to_user" : {
+        "account_id" : 21964729,
+        "reputation" : 1843,
+        "user_id" : 16242139,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/PzIOC.jpg?s=256",
+        "display_name" : "Zero",
+        "link" : "https://stackoverflow.com/users/16242139/zero"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1689218025,
+      "post_id" : 76667211,
+      "comment_id" : 135183015,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Zero In the &quot;original code,&quot; there are two nested loops. The outer loop runs for (n - k + 1) iterations, and the inner loop runs for k iterations. As a result, the total number of comparisons is (n - k + 1) * k, which leads to a time complexity of O(n^2)."
+    }, {
+      "owner" : {
+        "account_id" : 17080101,
+        "reputation" : 93,
+        "user_id" : 12358700,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/LqVXb.jpg?s=256",
+        "display_name" : "Jesse",
+        "link" : "https://stackoverflow.com/users/12358700/jesse"
+      },
+      "reply_to_user" : {
+        "account_id" : 21964729,
+        "reputation" : 1843,
+        "user_id" : 16242139,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/PzIOC.jpg?s=256",
+        "display_name" : "Zero",
+        "link" : "https://stackoverflow.com/users/16242139/zero"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1689218044,
+      "post_id" : 76667211,
+      "comment_id" : 135183016,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Zero  In the &quot;optimized code,&quot; the sliding window technique is used to eliminate the inner loop. It maintains two pointers, l and r, representing the left and right boundaries of the current window. In each iteration, the window moves by incrementing r and decrementing l. The current subarray sum is updated by subtracting the value of the left element of the window and adding the value of the right element. This approach only requires traversing the array once, resulting in a time complexity of O(n)."
+    }, {
+      "owner" : {
+        "account_id" : 21964729,
+        "reputation" : 1843,
+        "user_id" : 16242139,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/PzIOC.jpg?s=256",
+        "display_name" : "Zero",
+        "link" : "https://stackoverflow.com/users/16242139/zero"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1689247121,
+      "post_id" : 76667211,
+      "comment_id" : 135187872,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I know the sliding window technique @jesse, and as you explained above the original code, indeed has two nested loops, but so does your optimized code, just changed from <code>while</code> to <code>for</code>. You explained upper code runs for <code>(n-k+1)*k</code> which is the same for optimized code also. It is just that <code>k</code> is taken constant, so it is not counted in time complexity and it is therefore calculated as <code>O(n)</code> (in both cases, as there&#39;s only one <code>n</code>). Sliding Window is somewhat confusing at the start, and sometimes even instructors also confuse it but do the calculations mate."
+    }, {
+      "owner" : {
+        "account_id" : 17080101,
+        "reputation" : 93,
+        "user_id" : 12358700,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/LqVXb.jpg?s=256",
+        "display_name" : "Jesse",
+        "link" : "https://stackoverflow.com/users/12358700/jesse"
+      },
+      "reply_to_user" : {
+        "account_id" : 21964729,
+        "reputation" : 1843,
+        "user_id" : 16242139,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/PzIOC.jpg?s=256",
+        "display_name" : "Zero",
+        "link" : "https://stackoverflow.com/users/16242139/zero"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1689306096,
+      "post_id" : 76667211,
+      "comment_id" : 135197741,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Zero In this problem, k is not constant. There are constraints on <code>k</code>: <code>n == nums.length, 1 &lt;= k &lt;= n &lt;= 10^5</code>. Let&#39;s consider a case where <code>n = 10^5</code> and <code>k = n &#47; 2</code>. In this scenario, the original code runs for <code>(n&#47;2+1)*n&#47;2</code>, which is almost equal to <code>n^2</code>. Therefore, in terms of Big O notation, we would refer to the time complexity as <code>O(n^2)</code>, as we always consider the worst case scenario.&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 21964729,
+        "reputation" : 1843,
+        "user_id" : 16242139,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/PzIOC.jpg?s=256",
+        "display_name" : "Zero",
+        "link" : "https://stackoverflow.com/users/16242139/zero"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1689329566,
+      "post_id" : 76667211,
+      "comment_id" : 135201298,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Oh sorry @Jesse, I misunderstood your solution."
+    } ],
+    "owner" : {
+      "account_id" : 17080101,
+      "reputation" : 93,
+      "user_id" : 12358700,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/LqVXb.jpg?s=256",
+      "display_name" : "Jesse",
+      "link" : "https://stackoverflow.com/users/12358700/jesse"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1689137910,
+    "last_edit_date" : 1689137910,
+    "creation_date" : 1689137116,
+    "answer_id" : 76667211,
+    "question_id" : 76660197,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Fixed the solution</h2>\n<p>Here are the issues with the provided solution:</p>\n<ol>\n<li><p>The inner loop's iteration condition is incorrect. It should be <code>j &lt;= i + k - 1</code> instead of <code>j &lt; i + k - 1</code>. The original condition causes the loop to terminate one index before the desired subarray length.</p>\n</li>\n<li><p>The accumulation of the sum (<code>s</code>) is not reset correctly within each iteration of the outer loop. Currently, the sum keeps accumulating from the previous subarray, leading to incorrect results. The <code>s</code> variable should be reset to 0 at the beginning of each outer loop iteration.</p>\n</li>\n<li><p>The maximum value (<code>max</code>) is not being calculated correctly. The current implementation compares the cumulative sum (<code>s</code>) with the maximum value (<code>max</code>) within the inner loop, which results in incorrect values. Instead, the maximum value should be updated after each subarray's sum is calculated, not within the inner loop.</p>\n</li>\n</ol>\n<p>Here's the corrected code:</p>\n<pre><code>class Solution {\n    public double findMaxAverage(int[] nums, int k) {\n        int n = nums.length;\n        double max = Integer.MIN_VALUE;\n\n        if (n == 1) {\n            max = Double.valueOf(nums[0]);\n        } else {\n            for (int i = 0; i &lt;= n - k; i++) {\n                double s = 0;\n                for (int j = i; j &lt;= i + k - 1; j++) {\n                    s += nums[j];\n                }\n                max = Math.max(max, s);\n            }\n        }\n        return max / k;\n    }\n}\n</code></pre>\n<p>With these corrections, the solution should correctly calculate and return the maximum average value.</p>\n<h2>Optimization</h2>\n<p>Due to the time complexity issue of the previous code, which was <code>O(n^2)</code> and resulted in <strong>exceeding the time limit</strong>, it was necessary to optimize it using the sliding window technique to achieve a time complexity of <code>O(n)</code>. Here's the optimized code:</p>\n<pre><code>class Solution {\n    public double findMaxAverage(int[] nums, int k) {\n        int n = nums.length;\n        int maxSubSum = Integer.MIN_VALUE;\n        int currentSubSum = 0;\n        int l = 0;\n        int r = 0;\n        while (l + k - 1 &lt; n) {\n            while (r - l + 1 &lt;= k) {\n                currentSubSum += nums[r];\n                r++;\n            }\n            maxSubSum = Math.max(maxSubSum, currentSubSum);\n            currentSubSum -= nums[l];\n            l++;\n        }\n        return (double) maxSubSum / k;\n    }\n}\n</code></pre>\n<h2>The explanation of the optimized solution</h2>\n<p>Here's the explanation of the optimized solution with a time complexity of <code>O(n)</code>:</p>\n<p>The optimized solution uses a sliding window technique to find the maximum subarray sum. Here's how it works:</p>\n<ol>\n<li><p>Initialize the variables <code>maxSubSum</code> and <code>currentSubSum</code> to track the maximum subarray sum and the sum of the current subarray, respectively. Set <code>maxSubSum</code> to <code>Integer.MIN_VALUE</code> to ensure correct initialization.</p>\n</li>\n<li><p>Initialize two pointers, <code>l</code> and <code>r</code>, representing the left and right boundaries of the subarray.</p>\n</li>\n<li><p>While the right boundary <code>r</code> is within the array bounds and while the subarray length <code>(r - l + 1)</code> is less than or equal to <code>k</code>, perform the following steps:</p>\n<ul>\n<li>Add the element at the right boundary (<code>nums[r]</code>) to the <code>currentSubSum</code>.</li>\n<li>Increment the right boundary <code>r</code>.</li>\n</ul>\n</li>\n<li><p>Once the subarray length exceeds <code>k</code>, update the <code>maxSubSum</code> by comparing it with the <code>currentSubSum</code>. Take the maximum of the two values.</p>\n</li>\n<li><p>Subtract the element at the left boundary (<code>nums[l]</code>) from the <code>currentSubSum</code> and increment the left boundary <code>l</code>.</p>\n</li>\n<li><p>Repeat steps 3 to 5 until the left boundary <code>l</code> reaches the end of the array.</p>\n</li>\n<li><p>Finally, return the maximum subarray sum (<code>maxSubSum</code>) divided by <code>k</code> as the maximum average value.</p>\n</li>\n</ol>\n<p>This optimized solution avoids unnecessary recalculations by using a sliding window approach, reducing the time complexity to <code>O(n)</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 454681,
+      "reputation" : 761,
+      "user_id" : 852400,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/e15ee6fe4db36ee17e37c89a19617820?s=256&d=identicon&r=PG",
+      "display_name" : "wayne.blackmon",
+      "link" : "https://stackoverflow.com/users/852400/wayne-blackmon"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1720114726,
+    "creation_date" : 1720114726,
+    "answer_id" : 78708356,
+    "question_id" : 76660197,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have tested both Jesse's sliding window solution and a nested for loop solution on Leetcode.   My solutions are a bit different but both work.  There is a huge difference in run time between the solutions.</p>\n<p>Nested for loops:</p>\n<pre><code>public static double findMaxAverage(int[] nums, int k) {                   \n                                                \n    int n = nums.length;                                                  \n    double max = Integer.MIN_VALUE;                                       \n    double avg = 0;                                                       \n    for (int i = 0; i &lt; n; i++) {                                         \n        if ((i + k) &lt; n) {                                                \n            double sum = 0;                                               \n            for (int j = i; j &lt; k + i; j++) {                                                    \n                sum += nums[j];                                           \n            }                                                                                   \n            if (sum &gt; max) {                                              \n                max = sum;                                                                  \n            }                                                             \n        }                                                                 \n    }                                                                     \n    return max / k;                                                       \n}\n</code></pre>\n<p><em>Runtime 5ms.</em></p>\n<p>Sliding window:</p>\n<pre><code>public static double findMaxAverageSliding(int[] nums, int k) {          \n    printArray(nums);                                                   \n    int n = nums.length;                                                \n    double max = Integer.MIN_VALUE;                                     \n    double sum = 0;                                                     \n                                                                        \n    int left = 0;                                                       \n    int right = 0;                                                      \n                                                                        \n    while (left + k &lt;= n) {                                             \n        while (right - left &lt; k) {                                      \n            sum += nums[right];                                         \n            right++;                                                    \n        }                                                               \n        max = Math.max(max, sum);                                       \n        sum -= nums[left];                                              \n        left++;                                                         \n    }                                                                   \n                                                                        \n    return max / k;                                                     \n}                                                                       \n</code></pre>\n<p><em>Runtime 0ms.</em></p>\n<p>Looks like sliding window is the superior solution.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10026114,
+        "reputation" : 23,
+        "user_id" : 7414246,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/fd96bd8d6d6a778ee0a5ca51ff8e29d6?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "amardip kumar",
+        "link" : "https://stackoverflow.com/users/7414246/amardip-kumar"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1732118955,
+      "post_id" : 79208055,
+      "comment_id" : 139673056,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "solutions: find the possible continuous subarray with length of k"
+    }, {
+      "owner" : {
+        "account_id" : 5392262,
+        "reputation" : 5120,
+        "user_id" : 4294399,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/wjTzAAY8.jpg?s=256",
+        "display_name" : "General Grievance",
+        "link" : "https://stackoverflow.com/users/4294399/general-grievance"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1760382832,
+      "post_id" : 79208055,
+      "comment_id" : 140793559,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Question is a debugging question using Java. This is not even Java."
+    } ],
+    "owner" : {
+      "account_id" : 10026114,
+      "reputation" : 23,
+      "user_id" : 7414246,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fd96bd8d6d6a778ee0a5ca51ff8e29d6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "amardip kumar",
+      "link" : "https://stackoverflow.com/users/7414246/amardip-kumar"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1732118752,
+    "creation_date" : 1732118752,
+    "answer_id" : 79208055,
+    "question_id" : 76660197,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>def max_avg_subarray(nums, k):\n    max_avg = 0\n    start = k\n    base = 0\n    for i in range(start, len(nums)+1):\n        sum_sub = sum(nums[base: i])\n        avg = sum_sub/k\n        max_avg = max(max_avg, avg)\n        base +=1\n    return max_avg\nnums =  [1,12,-5,-6,50,3]\nk = 4\nprint (max_avg_subarray(nums, k))\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 28993019,
+    "reputation" : 3,
+    "user_id" : 22208308,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/6c8affc5d6f574810518eec37a0889fe?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Gargi ",
+    "link" : "https://stackoverflow.com/users/22208308/gargi"
+  },
+  "is_answered" : true,
+  "view_count" : 1580,
+  "accepted_answer_id" : 76667211,
+  "answer_count" : 4,
+  "score" : 0,
+  "last_activity_date" : 1760391180,
+  "creation_date" : 1689065503,
+  "last_edit_date" : 1760391180,
+  "question_id" : 76660197,
+  "link" : "https://stackoverflow.com/questions/76660197/why-does-my-code-return-12-instead-of-12-75-for-leetcode-problem-643-maximum",
+  "title" : "Why does my code return 12 instead of 12.75 for Leetcode problem #643? (Maximum Average Subarray)",
+  "body" : "<p>Question:</p>\n<blockquote>\n<p>You are given an integer array nums consisting of n elements, and an integer k.Find a contiguous subarray whose length is equal to k that has the maximum average value and return this value.\nTest Case- nums = [1,12,-5,-6,50,3], k = 4</p>\n</blockquote>\n<p>The answer I am getting is 12.00000 instead of 12.75000. This happens every time there a max value that is not completely divisible by k.</p>\n<p>Can someone tell me why?</p>\n<p>Here's my solution:</p>\n<pre class=\"lang-java prettyprint-override\"><code>class Solution {\n    public double findMaxAverage(int[] nums, int k) {\n        int n = nums.length;\n        double s = 0;\n        double max = Integer.MIN_VALUE;\n\n        if (n == 1){\n            max = Double.valueOf(nums[0]);\n        } \n        else {\n            for (int i = 0; i &lt;= n-k; i++){\n                for(int j = i; j &lt; i+k-1; j++){\n                    s += nums[j]; \n                    max = Math.max(max, s);\n                }\n            }\n        }\n        return max/k;\n    }\n}\n</code></pre>\n"
+}

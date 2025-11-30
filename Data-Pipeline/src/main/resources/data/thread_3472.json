@@ -1,0 +1,85 @@
+{
+  "tags" : [ "java" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 15856821,
+      "reputation" : 2486,
+      "user_id" : 11441011,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6b8cfca4f9fe4cdc7a0914f595a79f14?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "maloomeister",
+      "link" : "https://stackoverflow.com/users/11441011/maloomeister"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1631801381,
+    "post_id" : 69209969,
+    "comment_id" : 122325519,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Please <a href=\"https://stackoverflow.com/posts/69209969/edit\">edit</a> your question to provide your current output and your expected output. This will help to people help you without having to pull the code and running it themselves."
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user16669986"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1631802975,
+    "post_id" : 69209969,
+    "comment_id" : 122326346,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "you are close to do it so i will not post answer to make you able to work on it first you do not need to use String.valueOf(count); just use count it will be appended to the string in your for loop when i=0 it will not do anything then when it be 1 it find a twice so the count is 2 then when it go for it go for second if statement the else if part so it make the current char B be 2 not which it should make the old char which is on i-1 to be 2 another issue that the last case i will not be counted use your ide debug mode and it will help you identify the issue"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user16669986"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1631977325,
+    "post_id" : 69209969,
+    "comment_id" : 122371617,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "forget to mention that it better to use <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/StringBuilder.html\" rel=\"nofollow noreferrer\">docs.oracle.com/en/java/javase/17/docs/api/java.base/java/la&zwnj;&#8203;ng/&hellip;</a> stringbuilder than string when you do a lot of modification to the string as you already doing with the eString variable"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 18243171,
+      "reputation" : 19670,
+      "user_id" : 13279831,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a024ea95c3bbdcbdaef5becfc78b2aa0?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Nowhere Man",
+      "link" : "https://stackoverflow.com/users/13279831/nowhere-man"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1631804327,
+    "last_edit_date" : 1631804327,
+    "creation_date" : 1631803992,
+    "answer_id" : 69210711,
+    "question_id" : 69209969,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The main error in the logic is that this code is missing <em>current</em> character for each <code>count</code> is incremented.</p>\n<p>So, in the line <code>eString = eString + uString.charAt(i) + String.valueOf(count);</code> the <em>next</em> character is added to the result string.</p>\n<p>The logic may be fixed by adding the first character before the loop, starting the loop from index 1, and adding the counter after the loop.</p>\n<p>Conditions <code>if (i != 0)</code> may be removed altogether then:</p>\n<pre class=\"lang-java prettyprint-override\"><code>String eString = &quot;&quot;;\n\nif (!uString.isEmpty()) {// there's something to count\n\n    int count = 1;\n    String eString = &quot;&quot; + uString.charAt(0);\n\n    for (int i = 1, n = uString.length(); i &lt; n; i++) {\n        if (uString.charAt(i) == uString.charAt(i-1)) {\n            count++;\n        } else {\n            // append count for previous character and then the current char\n            eString = eString + count + uString.charAt(i);\n            count = 1;\n        }\n        System.out.println(String.valueOf(uString.charAt(i)) + i + count); //just to see what's happening in my code\n    }\n    eString = eString + String.valueOf(count);\n}\nSystem.out.println(&quot;Unencoded string's length: &quot; + uString.length() + &quot;\\nEncoded string:&quot; + eString + &quot;, encoded string's length: &quot; + eString.length());\n</code></pre>\n<hr />\n<p>Another approach could be to use an <em>empty</em> nested loop (and a <code>StringBuilder</code> to concatenate the characters and counter more efficiently):</p>\n<pre class=\"lang-java prettyprint-override\"><code>StringBuilder sb = new StringBuilder();\nfor (int i = 0, n = uString.length(); i &lt; n; i++) {\n    int count = 1;\n    char c = uString.charAt(i);\n    // loop without body just to increment counter\n    for (int j = i + 1; j &lt; n &amp;&amp; uString.charAt(j) == c; j++, i++, count++);\n\n    sb.append(c).append(count);\n}\nString eString = sb.toString();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22771637,
+    "reputation" : 1,
+    "user_id" : 16928969,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f6383c48dd25f476e5cf963ba278750b?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "papereraser",
+    "link" : "https://stackoverflow.com/users/16928969/papereraser"
+  },
+  "is_answered" : false,
+  "view_count" : 60,
+  "answer_count" : 1,
+  "score" : -3,
+  "last_activity_date" : 1762374948,
+  "creation_date" : 1631801199,
+  "last_edit_date" : 1762374948,
+  "question_id" : 69209969,
+  "link" : "https://stackoverflow.com/questions/69209969/having-difficulty-with-logic-in-basic-java-rle-program",
+  "title" : "Having difficulty with logic in basic Java RLE program",
+  "body" : "<p>Learning Java at the moment, having difficulty with this fairly basic RLE program.\nI think the error is to do with when the character count is being reset? It seems to be outputting the previous values that should have been moved on from.</p>\n<p>Please help! I feel so dumb that I can't figure out how to fix it haha</p>\n<p>e.g. for formatting: AABCEDDDGHIIIII would be converted to A2B1C1E1D3G1H1I5</p>\n<pre><code>import java.util.Scanner;\n\nclass Main {\n  public static void main(String[] args) {\n    Scanner input = new Scanner(System.in);\n    \n    System.out.println(&quot;Enter string for encoding: &quot;);\n    String uString = input.next();\n\n    int count = 1;\n    String eString = &quot;&quot;;\n\n    for (int i = 0; i &lt; uString.length(); i++){\n      if ((i != 0) &amp;&amp; (uString.charAt(i) == uString.charAt(i-1))){\n        count++;\n      }else if(i!= 0){\n        eString = eString + uString.charAt(i) + String.valueOf(count);\n        count = 1;\n      }\n      System.out.println(String.valueOf(uString.charAt(i)) + String.valueOf(i) + String.valueOf(count)); //just to see what's happening in my code\n    }System.out.println(&quot;Unencoded string's length: &quot; + uString.length() + &quot;\\nEncoded string:&quot; + eString + &quot;, encoded string's length: &quot; + eString.length());\n  }\n}```\n</code></pre>\n"
+}

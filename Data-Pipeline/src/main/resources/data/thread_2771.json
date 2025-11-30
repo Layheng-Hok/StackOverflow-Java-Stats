@@ -1,0 +1,192 @@
+{
+  "tags" : [ "java", "authentication", "kerberos", "ntlm", "httpurlconnection" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 20091,
+        "reputation" : 64367,
+        "user_id" : 47633,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://www.gravatar.com/avatar/b072fc2897196b3bafcd337bc9c91e2d?s=256&d=identicon&r=PG",
+        "display_name" : "opensas",
+        "link" : "https://stackoverflow.com/users/47633/opensas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1248634464,
+      "post_id" : 1174149,
+      "comment_id" : 1007177,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Hey Matt, thanks a lot for your answer, but I wonder if it&#39;s possible to do this, with the buil-in JRE classes, using kerberos instead of ntlm... I mean, kerberos is not ptopietary stuff like NTLM..."
+    }, {
+      "owner" : {
+        "account_id" : 5146,
+        "reputation" : 1823,
+        "user_id" : 8134,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/db4b84fced0f52aec4a223c4f7c44e25?s=256&d=identicon&r=PG",
+        "display_name" : "user8134",
+        "link" : "https://stackoverflow.com/users/8134/user8134"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1265679677,
+      "post_id" : 1174149,
+      "comment_id" : 2180932,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Last I heard, the Apache client does NOT support NTLMv2. And they are reluctant to tap JCIFS because a) they claim it&#39;s LGPLv2 is not compatible with their license and b) they are generally are weary of MS stuff. But it does not matter because if you want to interop with Microsoft, NTLM is the common denominator of authentication mechanisms. Kerberos does not work if the client does not have access to a domain controller or if time sync is off or if DNS isn&#39;t quite right or ... etc."
+    }, {
+      "owner" : {
+        "account_id" : 4177,
+        "reputation" : 33946,
+        "user_id" : 6198,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/3009757364d976819b7ed378be955843?s=256&d=identicon&r=PG",
+        "display_name" : "Matt Solnit",
+        "link" : "https://stackoverflow.com/users/6198/matt-solnit"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1265735107,
+      "post_id" : 1174149,
+      "comment_id" : 2186077,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Hi ioplex.  I&#39;m not sure where you heard this, but it is incorrect.  Please check out the docs I linked to.  I have successfully used NTLM with both HttpClient 3.x and with 4.0."
+    }, {
+      "owner" : {
+        "account_id" : 72556,
+        "reputation" : 1152,
+        "user_id" : 209452,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/75c44da7d9688af1cb4bc2af51a233ad?s=256&d=identicon&r=PG",
+        "display_name" : "Attila Csipak",
+        "link" : "https://stackoverflow.com/users/209452/attila-csipak"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1502282352,
+      "post_id" : 1174149,
+      "comment_id" : 78140770,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The first link is broken."
+    } ],
+    "owner" : {
+      "account_id" : 4177,
+      "reputation" : 33946,
+      "user_id" : 6198,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/3009757364d976819b7ed378be955843?s=256&d=identicon&r=PG",
+      "display_name" : "Matt Solnit",
+      "link" : "https://stackoverflow.com/users/6198/matt-solnit"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1265735220,
+    "last_edit_date" : 1265735220,
+    "creation_date" : 1248379482,
+    "answer_id" : 1174149,
+    "question_id" : 1168526,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>According to <a href=\"http://oaklandsoftware.com/papers/ntlm.html\" rel=\"nofollow noreferrer\">this page</a>, you <em>can</em> use the built-in JRE classes, with the caveat that earlier versions of Java can only do this on a Windows machine.</p>\n\n<p>However, if you are willing to live with a 3rd-party dependency, IMO <a href=\"http://hc.apache.org/httpclient-3.x/index.html\" rel=\"nofollow noreferrer\">Apache Commons HttpClient 3.x</a> is the way to go.  <a href=\"http://hc.apache.org/httpclient-3.x/authentication.html\" rel=\"nofollow noreferrer\">Here</a> is the documentation for using authentication, including NTLM.  In general, HttpClient is a much more functional library.</p>\n\n<p>The latest version of HttpClient is 4.0, but <del>apparently this version <a href=\"http://hc.apache.org/httpcomponents-client/ntlm.html\" rel=\"nofollow noreferrer\">does not support NTLM</a></del> this version <a href=\"http://hc.apache.org/httpcomponents-client/ntlm.html\" rel=\"nofollow noreferrer\">requires a tiny bit of extra work</a>.</p>\n\n<p>Here is what I <strong>think</strong> the code would look like, although I haven't tried it:</p>\n\n<pre><code>HttpClient httpClient = new HttpClient();\nhttpClient.getState().setCredentials(AuthScope.ANY, new NTCredentials(user, password, hostPortionOfURL, domain));\nGetMethod request = new GetMethod(url);\nBufferedReader reader = new InputStreamReader(request.getResponseBodyAsStream());\n</code></pre>\n\n<p>Good luck.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 284551,
+        "reputation" : 1422,
+        "user_id" : 582727,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/BcDGo.jpg?s=256",
+        "display_name" : "Daniel",
+        "link" : "https://stackoverflow.com/users/582727/daniel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446718645,
+      "post_id" : 1679576,
+      "comment_id" : 54864055,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "actually works w/o any libraries with code conn.setRequestProperty(&quot;Authorization&quot;, &quot;Basic&quot; + &quot; &quot; + token);"
+    }, {
+      "owner" : {
+        "account_id" : 1849412,
+        "reputation" : 2771,
+        "user_id" : 1676293,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://i.sstatic.net/XVvs9.jpg?s=256",
+        "display_name" : "Scott Boring",
+        "link" : "https://stackoverflow.com/users/1676293/scott-boring"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1500244971,
+      "post_id" : 1679576,
+      "comment_id" : 77237266,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This doesn&#39;t answer the question. This solution works for Basic authentication but does not work for Kerbos or NTLM authentication as the question asks."
+    } ],
+    "owner" : {
+      "account_id" : 69719,
+      "reputation" : 247,
+      "user_id" : 202722,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c2f2c774a54a637d217fd1d20f79d4f2?s=256&d=identicon&r=PG",
+      "display_name" : "Pat Gonzalez",
+      "link" : "https://stackoverflow.com/users/202722/pat-gonzalez"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1258395836,
+    "last_edit_date" : 1258395836,
+    "creation_date" : 1257416097,
+    "answer_id" : 1679576,
+    "question_id" : 1168526,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Take a look at the SpnegoHttpURLConnection class in the SPNEGO HTTP Servlet Filter project. This project has some examples as well.</p>\n\n<p>This project has a <a href=\"http://spnego.sourceforge.net/api/net/sourceforge/spnego/SpnegoHttpURLConnection.html\" rel=\"nofollow noreferrer\">client library</a> that pretty much does what you are doing in your example.</p>\n\n<p>Take a look this example from the javadoc...</p>\n\n<pre><code> public static void main(final String[] args) throws Exception {\n     final String creds = \"dfelix:myp@s5\";\n\n     final String token = Base64.encode(creds.getBytes());\n\n     URL url = new URL(\"http://medusa:8080/index.jsp\");\n\n     HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n\n     conn.setRequestProperty(Constants.AUTHZ_HEADER\n             , Constants.BASIC_HEADER + \" \" + token);\n\n     conn.connect();\n\n     System.out.println(\"Response Code:\" + conn.getResponseCode());\n }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1049344,
+      "reputation" : 1652,
+      "user_id" : 1053629,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/DTb5c.jpg?s=256",
+      "display_name" : "Tires",
+      "link" : "https://stackoverflow.com/users/1053629/tires"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1405690692,
+    "last_edit_date" : 1405690692,
+    "creation_date" : 1344356587,
+    "answer_id" : 11850163,
+    "question_id" : 1168526,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A compatible solution for java.net.URLStreamHandler and java.net.URL is com.intersult.net.http.NtlmHandler:</p>\n\n<pre><code>NtlmHandler handler = new NtlmHandler();\nhandler.setUsername(\"domain\\\\username\");\nhandler.setPassword(\"password\");\nURL url = new URL(null, urlString, handler);\nURLConnection connection = url.openConnection();\n</code></pre>\n\n<p>You also can use java.net.Proxy within url.openConnection(proxy).</p>\n\n<p>Use Maven-Dependency:</p>\n\n<pre><code>    &lt;dependency&gt;\n        &lt;groupId&gt;com.intersult&lt;/groupId&gt;\n        &lt;artifactId&gt;http&lt;/artifactId&gt;\n        &lt;version&gt;1.1&lt;/version&gt;\n    &lt;/dependency&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 20091,
+    "reputation" : 64367,
+    "user_id" : 47633,
+    "user_type" : "registered",
+    "accept_rate" : 61,
+    "profile_image" : "https://www.gravatar.com/avatar/b072fc2897196b3bafcd337bc9c91e2d?s=256&d=identicon&r=PG",
+    "display_name" : "opensas",
+    "link" : "https://stackoverflow.com/users/47633/opensas"
+  },
+  "is_answered" : false,
+  "view_count" : 20170,
+  "answer_count" : 3,
+  "score" : 6,
+  "last_activity_date" : 1763935635,
+  "creation_date" : 1248299838,
+  "last_edit_date" : 1248313368,
+  "question_id" : 1168526,
+  "link" : "https://stackoverflow.com/questions/1168526/authenticate-with-ntlm-or-kerberos-using-java-urlconnection",
+  "title" : "authenticate with ntlm (or kerberos) using java UrlConnection",
+  "body" : "<p>I need to consume a rest web service with java, passing the credentials of a domain user account.</p>\n\n<p>right now I'm doing it with classic asp</p>\n\n<pre><code>\nset xmlHttp = server.createObject( \"msxml2.serverxmlhttp\" )\nxmlHttp.open method, url, false, domain & \"\\\" & user, password\nxmlHttp.send body\nout = xmlHttp.responseText\nset xmlHttp = nothing\n</code></pre>\n\n<p>and with asp.net</p>\n\n<pre><code>\n\nHttpWebRequest request = (HttpWebRequest) WebRequest.Create( url );\n\nrequest.Credentials = new NetworkCredential(user, password, domain);\n\nrequest.Method = WebRequestMethods.Http.Get\n\nHttpWebResponse response = (HttpWebResponse) request.GetResponse();\n\nStreamReader outStream = new StreamReader( response.GetResponseStream(), Encoding.UTF8) ;\n\noutput = outStream.ReadToEnd();\n\n</code></pre>\n\n<p>how can I achieve this with java? Take into account that I'm not using the credentials of the currently logged user, I'm specifing the domain account (I have the password)</p>\n\n<p>please tell me it's as easy as with classic asp and asp.net....</p>\n"
+}

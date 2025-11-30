@@ -1,0 +1,659 @@
+{
+  "tags" : [ "java", "maven", "maven-2", "pom.xml" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1056871,
+      "reputation" : 121815,
+      "user_id" : 1059372,
+      "user_type" : "registered",
+      "accept_rate" : 97,
+      "profile_image" : "https://i.sstatic.net/W6OMC.png?s=256",
+      "display_name" : "Eugene",
+      "link" : "https://stackoverflow.com/users/1059372/eugene"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1662656377,
+    "post_id" : 2681759,
+    "comment_id" : 130062118,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "that is the reason I hate maven, when things get complicated - I want gradle. with variant aware functionality, in gradle this is not complicated."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 124810,
+        "reputation" : 2189,
+        "user_id" : 320151,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/0knZtTVC.png?s=256",
+        "display_name" : "Miguel",
+        "link" : "https://stackoverflow.com/users/320151/miguel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1271931995,
+      "post_id" : 2684291,
+      "comment_id" : 2710860,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks for your reply. It contains a lot of useful information.  Regarding 1) As you have noticed will not be optimal because parent pom no only contains dependencies that transitively will be resolved if base was marked as a dependency, but also common reporting, source management, and other stuff reused among every project in the company.  In relation to 2) I tried it, but also specifying artifact&#39;s scope as provided, and it worked :). At first, I thought that as compile takes precedence over provided, it won&#39;t work, but fortunately I was wrong (child POM overrides parent&#39;s configuration)"
+    } ],
+    "owner" : {
+      "account_id" : 26957,
+      "reputation" : 571927,
+      "user_id" : 70604,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/dc1a5b5fdba36ae9cdcf6e267f1a86ca?s=256&d=identicon&r=PG",
+      "display_name" : "Pascal Thivent",
+      "link" : "https://stackoverflow.com/users/70604/pascal-thivent"
+    },
+    "is_accepted" : true,
+    "score" : 67,
+    "last_activity_date" : 1523518959,
+    "last_edit_date" : 1523518959,
+    "creation_date" : 1271863726,
+    "answer_id" : 2684291,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Some ideas:</p>\n\n<ol>\n<li><p>Maybe you could simply not inherit from the parent in that case (and declare a dependency on <code>base</code> with the exclusion). Not handy if you have lot of stuff in the parent pom.</p></li>\n<li><p>Another thing to test would be to declare the <code>mail</code> artifact with the version required by <code>ALL-DEPS</code> under the <code>dependencyManagement</code> in the parent pom to force the convergence (although I'm not sure this will solve the scoping problem).</p></li>\n</ol>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;dependencyManagement&gt;\n  &lt;dependencies&gt;\n    &lt;dependency&gt;    \n      &lt;groupId&gt;javax.mail&lt;/groupId&gt;\n      &lt;artifactId&gt;mail&lt;/artifactId&gt;\n      &lt;version&gt;???&lt;/version&gt;&lt;!-- put the \"right\" version here --&gt;\n    &lt;/dependency&gt;\n  &lt;/dependencies&gt;\n&lt;/dependencyManagement&gt;\n</code></pre>\n\n<ol>\n<li>Or you could exclude the <code>mail</code> dependency from log4j if you're not using the features relying on it (and this is what I would do):</li>\n</ol>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;dependency&gt;\n  &lt;groupId&gt;log4j&lt;/groupId&gt;\n  &lt;artifactId&gt;log4j&lt;/artifactId&gt;\n  &lt;version&gt;1.2.15&lt;/version&gt;\n  &lt;scope&gt;provided&lt;/scope&gt;\n  &lt;exclusions&gt;\n    &lt;exclusion&gt;\n      &lt;groupId&gt;javax.mail&lt;/groupId&gt;\n      &lt;artifactId&gt;mail&lt;/artifactId&gt;\n    &lt;/exclusion&gt;\n    &lt;exclusion&gt;\n      &lt;groupId&gt;javax.jms&lt;/groupId&gt;\n      &lt;artifactId&gt;jms&lt;/artifactId&gt;\n    &lt;/exclusion&gt;\n    &lt;exclusion&gt;\n      &lt;groupId&gt;com.sun.jdmk&lt;/groupId&gt;\n      &lt;artifactId&gt;jmxtools&lt;/artifactId&gt;\n    &lt;/exclusion&gt;\n    &lt;exclusion&gt;\n      &lt;groupId&gt;com.sun.jmx&lt;/groupId&gt;\n      &lt;artifactId&gt;jmxri&lt;/artifactId&gt;\n    &lt;/exclusion&gt;\n  &lt;/exclusions&gt;\n&lt;/dependency&gt;\n</code></pre>\n\n<ol>\n<li>Or you could revert to the version 1.2.14 of log4j instead of the heretic 1.2.15 version (why didn't they mark the above dependencies as <em>optional</em>?!).</li>\n</ol>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 124810,
+        "reputation" : 2189,
+        "user_id" : 320151,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/0knZtTVC.png?s=256",
+        "display_name" : "Miguel",
+        "link" : "https://stackoverflow.com/users/320151/miguel"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1271945884,
+      "post_id" : 2686464,
+      "comment_id" : 2712778,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Your approach, as Pascal&#39;s workaround #2 is also valid, in fact, you also took into account that mail dependency should  be declared as provided. Thank you."
+    }, {
+      "owner" : {
+        "account_id" : 2063259,
+        "reputation" : 13223,
+        "user_id" : 1839360,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/0utkC.jpg?s=256",
+        "display_name" : "Yan Khonski",
+        "link" : "https://stackoverflow.com/users/1839360/yan-khonski"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1556888268,
+      "post_id" : 2686464,
+      "comment_id" : 98591222,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Scope provided did not work for me. I used scope test, please check my answer.  <a href=\"https://stackoverflow.com/a/55970293/4587961\">stackoverflow.com/a/55970293/4587961</a>"
+    } ],
+    "owner" : {
+      "account_id" : 88889,
+      "reputation" : 179,
+      "user_id" : 245615,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/86fec6d2472483b896d9512aef9b4394?s=256&d=identicon&r=PG",
+      "display_name" : "porterhouse91",
+      "link" : "https://stackoverflow.com/users/245615/porterhouse91"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1523519071,
+    "last_edit_date" : 1523519071,
+    "creation_date" : 1271883091,
+    "answer_id" : 2686464,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Have you tried explicitly declaring the version of mail.jar you want?  Maven's dependency resolution should use this for dependency resolution over all other versions.</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;project&gt;\n  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n  &lt;groupId&gt;test&lt;/groupId&gt;\n  &lt;artifactId&gt;jruby&lt;/artifactId&gt;\n    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;\n    &lt;parent&gt;\n        &lt;artifactId&gt;base&lt;/artifactId&gt;\n        &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n        &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;/parent&gt;\n    &lt;dependencies&gt;          \n        &lt;dependency&gt;\n            &lt;groupId&gt;javax.mail&lt;/groupId&gt;\n            &lt;artifactId&gt;mail&lt;/artifactId&gt;\n            &lt;version&gt;VERSION-#&lt;/version&gt;\n            &lt;scope&gt;provided&lt;/scope&gt;\n        &lt;/dependency&gt; \n        &lt;dependency&gt;\n            &lt;groupId&gt;com.liferay.portal&lt;/groupId&gt;\n            &lt;artifactId&gt;ALL-DEPS&lt;/artifactId&gt;\n            &lt;version&gt;1.0&lt;/version&gt;\n            &lt;scope&gt;provided&lt;/scope&gt;\n            &lt;type&gt;pom&lt;/type&gt;\n        &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n&lt;/project&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1259218,
+      "reputation" : 2530,
+      "user_id" : 1218010,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/AJqazS08.png?s=256",
+      "display_name" : "Ajax",
+      "link" : "https://stackoverflow.com/users/1218010/ajax"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1557852499,
+    "last_edit_date" : 1557852499,
+    "creation_date" : 1351540885,
+    "answer_id" : 13128748,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Best bet is to make the dependencies you don't always want to inherit intransitive.</p>\n\n<p>You can do this by marking them in the parent pom with scope provided.</p>\n\n<p>If you still want the parent to manage versions of these deps, you can use the <code>&lt;dependencyManagement&gt;</code> tag to setup the versions you want without explicitly inheriting them, or passing that inheritance along to children.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2392650,
+        "reputation" : 2858,
+        "user_id" : 2092205,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/fda9120f9f2e64e8e258cb1f33e159b9?s=256&d=identicon&r=PG",
+        "display_name" : "Matthew Wise",
+        "link" : "https://stackoverflow.com/users/2092205/matthew-wise"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1402396238,
+      "post_id" : 19931136,
+      "comment_id" : 37246334,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "+1 for this, although the child pom should be using &lt;dependencies&gt; section rather than &lt;dependencyManagement&gt; since the latter is for managing the <i>versions</i> of dependencies from within a parent pom."
+    }, {
+      "owner" : {
+        "account_id" : 1681986,
+        "reputation" : 4566,
+        "user_id" : 1546042,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/6HW7nXGB.png?s=256",
+        "display_name" : "BitfulByte",
+        "link" : "https://stackoverflow.com/users/1546042/bitfulbyte"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1476103702,
+      "post_id" : 19931136,
+      "comment_id" : 67196798,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is also known as the BOM, a.k.a. bill of materials :-)"
+    }, {
+      "owner" : {
+        "account_id" : 367746,
+        "reputation" : 25686,
+        "user_id" : 714112,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/83b2bbbdc0f34ed6148dab188c6bb987?s=256&d=identicon&r=PG",
+        "display_name" : "Sridhar Sarnobat",
+        "link" : "https://stackoverflow.com/users/714112/sridhar-sarnobat"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1513894823,
+      "post_id" : 19931136,
+      "comment_id" : 82836165,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Does this only work with transitive dependencies? My parent pom contains log4j and it&#39;s preventing my pom&#39;s logback working properly."
+    }, {
+      "owner" : {
+        "account_id" : 410790,
+        "reputation" : 688,
+        "user_id" : 6108874,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/684e8cb90842d9f8e07466d4794892a8?s=256&d=identicon&r=PG",
+        "display_name" : "Gerard Bosch",
+        "link" : "https://stackoverflow.com/users/6108874/gerard-bosch"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1599308380,
+      "post_id" : 19931136,
+      "comment_id" : 112738305,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Hi there, is this really known as BOM? I&#39;ve seen BOMs are only called as such in the context of defining dependencies in a <code>&lt;dependencyManagement&gt;</code> block. This approach is different as relies on transitivity to deliver dependencies. Can this be called BOM? Side question: Is there any way to distribute test scope dependencies without hard-declaring it in a parent so they can be excluded? Thx!"
+    }, {
+      "owner" : {
+        "account_id" : 410790,
+        "reputation" : 688,
+        "user_id" : 6108874,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/684e8cb90842d9f8e07466d4794892a8?s=256&d=identicon&r=PG",
+        "display_name" : "Gerard Bosch",
+        "link" : "https://stackoverflow.com/users/6108874/gerard-bosch"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1599330640,
+      "post_id" : 19931136,
+      "comment_id" : 112744337,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I answer myself to the 2nd question: To distribute non-compile scoped deps, explicitly declare it as <code>compile</code> scope in the libraries descriptor POM, and then, define somewhere a <code>dependencyManagement</code> that redefines the scope properly to <code>test&#47;provided</code>. This way you can deliver dependencies without hard-declaring it in the parent but in a dedicated dependency of dependencies instead. P.S. Still don&#39;t know if is considered a BOM or not."
+    }, {
+      "owner" : {
+        "account_id" : 34031,
+        "reputation" : 9823,
+        "user_id" : 95750,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/5666019ae946f06e81d3729416b76d9d?s=256&d=identicon&r=PG",
+        "display_name" : "haridsv",
+        "link" : "https://stackoverflow.com/users/95750/haridsv"
+      },
+      "reply_to_user" : {
+        "account_id" : 410790,
+        "reputation" : 688,
+        "user_id" : 6108874,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/684e8cb90842d9f8e07466d4794892a8?s=256&d=identicon&r=PG",
+        "display_name" : "Gerard Bosch",
+        "link" : "https://stackoverflow.com/users/6108874/gerard-bosch"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1641204705,
+      "post_id" : 19931136,
+      "comment_id" : 124738343,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "As @GerardBosch mentioned, this is <i>not</i> same as BOM approach. In BOM approach, the BOM POM declares managed dependencies which are then imported into a project POM using the special <code>scope</code> called <code>import</code> and then the project needs to further declare them as direct dependencies. The above approach brings in all required dependencies transitively and would be considered an anti-pattern and not advisable as a generic alternative to BOM."
+    } ],
+    "owner" : {
+      "account_id" : 106263,
+      "reputation" : 3348,
+      "user_id" : 283136,
+      "user_type" : "registered",
+      "accept_rate" : 38,
+      "profile_image" : "https://i.sstatic.net/J2I5Z.jpg?s=256",
+      "display_name" : "timomeinen",
+      "link" : "https://stackoverflow.com/users/283136/timomeinen"
+    },
+    "is_accepted" : false,
+    "score" : 44,
+    "last_activity_date" : 1523519052,
+    "last_edit_date" : 1523519052,
+    "creation_date" : 1384264706,
+    "answer_id" : 19931136,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can group your dependencies within a different project with packaging <code>pom</code> as described by Sonatypes <a href=\"http://books.sonatype.com/mvnref-book/reference/pom-relationships-sect-pom-best-practice.html\" rel=\"noreferrer\">Best Practices</a>:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;project&gt;\n    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n    &lt;artifactId&gt;base-dependencies&lt;/artifactId&gt;\n    &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n    &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;packaging&gt;pom&lt;/packaging&gt;\n    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;javax.mail&lt;/groupId&gt;\n            &lt;artifactId&gt;mail&lt;/artifactId&gt;\n            &lt;version&gt;1.4&lt;/version&gt;\n        &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n&lt;/project&gt;\n</code></pre>\n\n<p>and reference them from your parent-pom (watch the dependency <code>&lt;type&gt;pom&lt;/type&gt;</code>):</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;project&gt;\n    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n    &lt;artifactId&gt;base&lt;/artifactId&gt;\n    &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n    &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;packaging&gt;pom&lt;/packaging&gt;\n    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;artifactId&gt;base-dependencies&lt;/artifactId&gt;\n            &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n            &lt;version&gt;1.0.0&lt;/version&gt;\n            &lt;type&gt;pom&lt;/type&gt;\n        &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n&lt;/project&gt;\n</code></pre>\n\n<p>Your child-project inherits this parent-pom as before. But now, the mail dependency can be excluded in the child-project within the <code>dependencyManagement</code> block:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;project&gt;\n    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n    &lt;groupId&gt;test&lt;/groupId&gt;\n    &lt;artifactId&gt;jruby&lt;/artifactId&gt;\n    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;\n    &lt;parent&gt;\n        &lt;artifactId&gt;base&lt;/artifactId&gt;\n        &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n        &lt;version&gt;1.0.0&lt;/version&gt;\n    &lt;/parent&gt;\n\n    &lt;dependencyManagement&gt;\n        &lt;dependencies&gt;\n            &lt;dependency&gt;\n                &lt;artifactId&gt;base-dependencies&lt;/artifactId&gt;\n                &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n                &lt;version&gt;1.0.0&lt;/version&gt;\n                &lt;exclusions&gt;\n                    &lt;exclusion&gt;\n                        &lt;groupId&gt;javax.mail&lt;/groupId&gt;\n                        &lt;artifactId&gt;mail&lt;/artifactId&gt;\n                    &lt;/exclusion&gt;\n                &lt;/exclusions&gt;\n            &lt;/dependency&gt;\n        &lt;/dependencies&gt;\n    &lt;/dependencyManagement&gt;\n&lt;/project&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 367746,
+        "reputation" : 25686,
+        "user_id" : 714112,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/83b2bbbdc0f34ed6148dab188c6bb987?s=256&d=identicon&r=PG",
+        "display_name" : "Sridhar Sarnobat",
+        "link" : "https://stackoverflow.com/users/714112/sridhar-sarnobat"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1513968105,
+      "post_id" : 37676239,
+      "comment_id" : 82861698,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Welcome to Stack Overflow, and don&#39;t let the rude people I constantly have dismiss my questions discourage you from posting."
+    } ],
+    "owner" : {
+      "account_id" : 8589624,
+      "reputation" : 27,
+      "user_id" : 6434599,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6P3Eq.png?s=256",
+      "display_name" : "bastienb1991",
+      "link" : "https://stackoverflow.com/users/6434599/bastienb1991"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1523519011,
+    "last_edit_date" : 1523519011,
+    "creation_date" : 1465293713,
+    "answer_id" : 37676239,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When you call a package but do not want some of its dependencies you can do a thing like this (in this case I did not want the old log4j to be added because I needed to use the newer one):</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;dependency&gt;\n  &lt;groupId&gt;package&lt;/groupId&gt;\n  &lt;artifactId&gt;package-pk&lt;/artifactId&gt;\n  &lt;version&gt;${package-pk.version}&lt;/version&gt;\n\n  &lt;exclusions&gt;\n    &lt;exclusion&gt;\n      &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;\n      &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;\n    &lt;/exclusion&gt;\n    &lt;exclusion&gt;\n      &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;\n      &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;\n    &lt;/exclusion&gt;\n  &lt;/exclusions&gt;\n&lt;/dependency&gt;\n\n&lt;!-- LOG4J --&gt;\n&lt;dependency&gt;\n  &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;\n  &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;\n  &lt;version&gt;2.5&lt;/version&gt;\n&lt;/dependency&gt;\n&lt;dependency&gt;\n  &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;\n  &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;\n  &lt;version&gt;2.5&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n\n<p>This works for me... but I am pretty new to java/maven so it is maybe not optimum.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 21994,
+        "reputation" : 75391,
+        "user_id" : 53897,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://i.sstatic.net/enNdg.jpg?s=256",
+        "display_name" : "Thorbj&#248;rn Ravn Andersen",
+        "link" : "https://stackoverflow.com/users/53897/thorbj%c3%b8rn-ravn-andersen"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1548879257,
+      "post_id" : 47933295,
+      "comment_id" : 95706398,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Document this (and the procedure you followed) very carefully as the future maintainers need to redo this if needing to use an updated version of the parent pom."
+    }, {
+      "owner" : {
+        "account_id" : 5041765,
+        "reputation" : 907,
+        "user_id" : 4048904,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/861d374bee3bf63e53babcefdc365e86?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Amit Goldstein",
+        "link" : "https://stackoverflow.com/users/4048904/amit-goldstein"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1552987973,
+      "post_id" : 47933295,
+      "comment_id" : 97208280,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Surely you mean don&#39;t use dependencies in parent pom? Parent pom is still very useful to manage dependency versions, and common plugins. Just using it to inject dependency can backfire - we use it only for the must-have dependencies (like a set of essential spring boot starters for a parent for microservices)"
+    }, {
+      "owner" : {
+        "account_id" : 367746,
+        "reputation" : 25686,
+        "user_id" : 714112,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/83b2bbbdc0f34ed6148dab188c6bb987?s=256&d=identicon&r=PG",
+        "display_name" : "Sridhar Sarnobat",
+        "link" : "https://stackoverflow.com/users/714112/sridhar-sarnobat"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1553217151,
+      "post_id" : 47933295,
+      "comment_id" : 97311980,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "No I’m not saying use a lightweight parent pom. Others on your team won’t allow you to trim the parent pom because other apps depend on the junk in the parent pom that you don’t want."
+    } ],
+    "owner" : {
+      "account_id" : 367746,
+      "reputation" : 25686,
+      "user_id" : 714112,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/83b2bbbdc0f34ed6148dab188c6bb987?s=256&d=identicon&r=PG",
+      "display_name" : "Sridhar Sarnobat",
+      "link" : "https://stackoverflow.com/users/714112/sridhar-sarnobat"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1567640978,
+    "last_edit_date" : 1567640978,
+    "creation_date" : 1513893662,
+    "answer_id" : 47933295,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>Don't use a parent pom</h1>\n\n<p>This might sound extreme, but the same way \"inheritance hell\" is a reason some people turn their backs on Object Oriented Programming (or <a href=\"https://en.wikipedia.org/wiki/Composition_over_inheritance\" rel=\"noreferrer\">prefer composition over inheritance</a>), remove the problematic <code>&lt;parent&gt;</code> block and <a href=\"https://en.wikipedia.org/wiki/Copy_and_paste_programming\" rel=\"noreferrer\">copy and paste</a> whatever <code>&lt;dependencies&gt;</code> you need (if your team gives you this liberty).</p>\n\n<p>The assumption that splitting of poms into a parent and child for \"reuse\" and \"avoidance of redunancy\" should be ignored and you should serve your immediate needs first (the cure is worst than the disease). Besides, redundancy has its advantages - namely independence of external changes (i.e stability).</p>\n\n<p>This is easier than it sounds if you generate the effective pom (eclipse provides it but you can generate it from the command line with <code>mvn help:effective</code>).</p>\n\n<h3>Example</h3>\n\n<p>I want to use <code>logback</code> as my slf4j binding, but my parent pom includes the <code>log4j</code> dependency. I don't want to go and have to push the other children's dependence on log4j down into their own <code>pom.xml</code> files so that mine is unobstructed.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1241237,
+        "reputation" : 133,
+        "user_id" : 1722709,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/rvYkS.jpg?s=256",
+        "display_name" : "Rov",
+        "link" : "https://stackoverflow.com/users/1722709/rov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1559583512,
+      "post_id" : 48103554,
+      "comment_id" : 99458763,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you for your answer, on Windows 10 I had to run <code>notepad empty.class</code> then <code>jar cvf empty.jar empty.class</code> to generate an empty jar."
+    }, {
+      "owner" : {
+        "account_id" : 5599655,
+        "reputation" : 2463,
+        "user_id" : 4436276,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://i.sstatic.net/Uaz4Q.jpg?s=256",
+        "display_name" : "Piotr Żak",
+        "link" : "https://stackoverflow.com/users/4436276/piotr-%c5%bbak"
+      },
+      "edited" : false,
+      "score" : 19,
+      "creation_date" : 1588770895,
+      "post_id" : 48103554,
+      "comment_id" : 109026278,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Looks like bad practice"
+    }, {
+      "owner" : {
+        "account_id" : 5149805,
+        "reputation" : 1361,
+        "user_id" : 4124718,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bb6850d6923ab2a251b6da731c9b71e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Arnab",
+        "link" : "https://stackoverflow.com/users/4124718/arnab"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1732308254,
+      "post_id" : 48103554,
+      "comment_id" : 139688284,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I hope there&#39;s a simple and cleaner approach to it."
+    } ],
+    "owner" : {
+      "account_id" : 465094,
+      "reputation" : 4526,
+      "user_id" : 868975,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/YLmDb.png?s=256",
+      "display_name" : "Bax",
+      "link" : "https://stackoverflow.com/users/868975/bax"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1652970098,
+    "last_edit_date" : 1652970098,
+    "creation_date" : 1515099871,
+    "answer_id" : 48103554,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Redefine the dependency (in the child pom) with <code>scope</code> system pointing to an empty jar :</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;dependency&gt;\n    &lt;groupId&gt;dependency.coming&lt;/groupId&gt;\n    &lt;artifactId&gt;from.parent&lt;/artifactId&gt;\n    &lt;version&gt;0&lt;/version&gt;\n    &lt;scope&gt;system&lt;/scope&gt;\n    &lt;systemPath&gt;${project.basedir}/empty.jar&lt;/systemPath&gt;\n&lt;/dependency&gt;\n</code></pre>\n<p>The jar can contain just a single empty file :</p>\n<pre><code>touch empty.txt\njar cvf empty.jar empty.txt\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2063259,
+      "reputation" : 13223,
+      "user_id" : 1839360,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/0utkC.jpg?s=256",
+      "display_name" : "Yan Khonski",
+      "link" : "https://stackoverflow.com/users/1839360/yan-khonski"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1556888160,
+    "creation_date" : 1556888160,
+    "answer_id" : 55970293,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I really needed to do this dirty thing... Here is how</p>\n\n<p>I redefined those dependencies with scope <code>test</code>. Scope <code>provided</code> did not work for me. </p>\n\n<p>We use spring Boot plugin to build fat jar. We have module <strong>common</strong> which defines common libraries, for example Springfox swagger-2. My <strong>super-service</strong> needs to have parent <strong>common</strong> (it does not want to do so, but company rules force!)</p>\n\n<p>So my parent or commons has pom.</p>\n\n<pre><code>&lt;dependencyManagement&gt;\n\n    &lt;!- I do not need Springfox in one child but in others -&gt;\n\n    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;io.springfox&lt;/groupId&gt;\n            &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;\n            &lt;version&gt;${swagger.version}&lt;/version&gt;\n            &lt;exclusions&gt;\n                &lt;exclusion&gt;\n                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;\n                    &lt;artifactId&gt;guava&lt;/artifactId&gt;\n                &lt;/exclusion&gt;\n            &lt;/exclusions&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;io.springfox&lt;/groupId&gt;\n            &lt;artifactId&gt;springfox-swagger-ui&lt;/artifactId&gt;\n            &lt;version&gt;${swagger.version}&lt;/version&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;io.springfox&lt;/groupId&gt;\n            &lt;artifactId&gt;springfox-bean-validators&lt;/artifactId&gt;\n            &lt;version&gt;${swagger.version}&lt;/version&gt;\n        &lt;/dependency&gt;\n\n       &lt;!- All services need them -&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;junit&lt;/groupId&gt;\n            &lt;artifactId&gt;junit&lt;/artifactId&gt;\n            &lt;version&gt;${junit.version}&lt;/version&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.apache.poi&lt;/groupId&gt;\n            &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;\n            &lt;version&gt;${apache.poi.version}&lt;/version&gt;\n        &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n&lt;/dependencyManagement&gt;\n</code></pre>\n\n<p>And my <strong>super-service</strong> pom.</p>\n\n<pre><code>&lt;name&gt;super-service&lt;/name&gt;\n&lt;parent&gt;\n    &lt;groupId&gt;com.company&lt;/groupId&gt;\n    &lt;artifactId&gt;common&lt;/artifactId&gt;\n    &lt;version&gt;1&lt;/version&gt;\n&lt;/parent&gt;\n\n&lt;dependencies&gt;\n\n    &lt;!- I don't need them -&gt;\n\n    &lt;dependency&gt;\n        &lt;groupId&gt;io.springfox&lt;/groupId&gt;\n        &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;\n        &lt;scope&gt;test&lt;/scope&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;io.springfox&lt;/groupId&gt;\n        &lt;artifactId&gt;springfox-bean-validators&lt;/artifactId&gt;\n        &lt;scope&gt;test&lt;/scope&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;io.springfox&lt;/groupId&gt;\n        &lt;artifactId&gt;springfox-core&lt;/artifactId&gt;\n        &lt;version&gt;2.8.0&lt;/version&gt;\n        &lt;scope&gt;test&lt;/scope&gt;\n    &lt;/dependency&gt;\n\n    &lt;!- Required dependencies -&gt;\n\n    &lt;dependency&gt;\n        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n     &lt;dependency&gt;\n        &lt;groupId&gt;junit&lt;/groupId&gt;\n        &lt;artifactId&gt;junit&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;org.apache.poi&lt;/groupId&gt;\n        &lt;artifactId&gt;poi-ooxml&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n&lt;/dependencies&gt;\n</code></pre>\n\n<p>This is size of the final fat artifact</p>\n\n<pre><code>82.3 MB (86,351,753 bytes) - redefined dependency with scope test\n86.1 MB (90,335,466 bytes) - redefined dependency with scope provided\n86.1 MB (90,335,489 bytes) - without exclusion\n</code></pre>\n\n<p>Also this answer is worth mentioning - I wanted to do so, but I am lazy...\n<a href=\"https://stackoverflow.com/a/48103554/4587961\">https://stackoverflow.com/a/48103554/4587961</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2190504,
+        "reputation" : 1514,
+        "user_id" : 1937681,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/73c26743bab6d7c851410768b17662a9?s=256&d=identicon&r=PG",
+        "display_name" : "blackr1234",
+        "link" : "https://stackoverflow.com/users/1937681/blackr1234"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1658745405,
+      "post_id" : 59214817,
+      "comment_id" : 129119195,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "But you will lose the properties, right?"
+    }, {
+      "owner" : {
+        "account_id" : 465839,
+        "reputation" : 6815,
+        "user_id" : 870207,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/50fa4a2d71492f94030da21388aecd54?s=256&d=identicon&r=PG",
+        "display_name" : "teknopaul",
+        "link" : "https://stackoverflow.com/users/870207/teknopaul"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1730132364,
+      "post_id" : 59214817,
+      "comment_id" : 139537934,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This does not remove the dependency according to dependency convergence checks"
+    } ],
+    "owner" : {
+      "account_id" : 2274474,
+      "reputation" : 127,
+      "user_id" : 6536262,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/220f3c9fd7ada877b1c528173384d843?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Viki Jain",
+      "link" : "https://stackoverflow.com/users/6536262/viki-jain"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1575641564,
+    "creation_date" : 1575641564,
+    "answer_id" : 59214817,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>We can add the parent pom as a dependency with type pom and make exclusion on that. Because anyhow parent pom is downloaded. This worked for me</p>\n\n<pre><code>&lt;dependency&gt;\n  &lt;groupId&gt;com.abc.boot&lt;/groupId&gt;\n  &lt;artifactId&gt;abc-boot-starter-parent&lt;/artifactId&gt;\n  &lt;version&gt;2.1.5.RELEASE&lt;/version&gt;\n  &lt;type&gt;pom&lt;/type&gt;\n  &lt;exclusions&gt;\n    &lt;exclusion&gt;\n      &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;\n      &lt;artifactId&gt;gson&lt;/artifactId&gt;\n    &lt;/exclusion&gt;\n  &lt;/exclusions&gt;   \n&lt;/dependency&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5149805,
+        "reputation" : 1361,
+        "user_id" : 4124718,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bb6850d6923ab2a251b6da731c9b71e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Arnab",
+        "link" : "https://stackoverflow.com/users/4124718/arnab"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1732308224,
+      "post_id" : 66152824,
+      "comment_id" : 139688283,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This doesn&#39;t work for direct dependencies to the parent. E.g. in the above example, what would you do if you have to exclude &quot;org.springframework.boot:spring-boot-starter-test&quot;"
+    } ],
+    "owner" : {
+      "account_id" : 20687796,
+      "reputation" : 55,
+      "user_id" : 15189845,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/227a80db8bcc604eb58c4cb2682070b7?s=256&d=identicon&r=PG",
+      "display_name" : "fritzthecat",
+      "link" : "https://stackoverflow.com/users/15189845/fritzthecat"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1613038973,
+    "creation_date" : 1613038973,
+    "answer_id" : 66152824,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Repeat the parent's dependency in child pom.xml and insert the exclusion there:</p>\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;\n    &lt;scope&gt;test&lt;/scope&gt;\n    &lt;exclusions&gt;\n        &lt;exclusion&gt;\n            &lt;groupId&gt;com.vaadin.external.google&lt;/groupId&gt;\n            &lt;artifactId&gt;android-json&lt;/artifactId&gt;\n        &lt;/exclusion&gt;\n    &lt;/exclusions&gt;\n&lt;/dependency&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1056871,
+        "reputation" : 121815,
+        "user_id" : 1059372,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://i.sstatic.net/W6OMC.png?s=256",
+        "display_name" : "Eugene",
+        "link" : "https://stackoverflow.com/users/1059372/eugene"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1662660329,
+      "post_id" : 70393506,
+      "comment_id" : 130063343,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "have you read the actual question?"
+    } ],
+    "owner" : {
+      "account_id" : 23154670,
+      "reputation" : 217,
+      "user_id" : 17256101,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/bLNRT.png?s=256",
+      "display_name" : "Amir Shaikh",
+      "link" : "https://stackoverflow.com/users/17256101/amir-shaikh"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1639745651,
+    "creation_date" : 1639745651,
+    "answer_id" : 70393506,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Disable Child Artifact inherited from Parent</strong></p>\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;\n    &lt;exclusions&gt;                                               \n        &lt;exclusion&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;         \n            &lt;artifactId&gt;spring-boot-starter-logging&lt;/artifactId&gt; \n        &lt;/exclusion&gt;\n    &lt;/exclusions&gt;\n&lt;/dependency&gt;\n</code></pre>\n<p><strong>Remove Specific Artifact from Parent</strong></p>\n<pre><code>    &lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;\n    &lt;exclusions&gt;                                  \n        &lt;exclusion&gt;                                     \n        &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;         \n        &lt;artifactId&gt;log4j-to-slf4j&lt;/artifactId&gt;             \n        &lt;/exclusion&gt;\n        &lt;exclusion&gt;                                     \n            &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;               \n            &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;     \n        &lt;/exclusion&gt;\n    &lt;/exclusions&gt;\n&lt;/dependency&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 465839,
+        "reputation" : 6815,
+        "user_id" : 870207,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/50fa4a2d71492f94030da21388aecd54?s=256&d=identicon&r=PG",
+        "display_name" : "teknopaul",
+        "link" : "https://stackoverflow.com/users/870207/teknopaul"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1730131947,
+      "post_id" : 77360128,
+      "comment_id" : 139537908,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "For me complains that version is not provided, which makes sense that is what dependency management is doing"
+    } ],
+    "owner" : {
+      "account_id" : 8439378,
+      "reputation" : 41,
+      "user_id" : 6332468,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/3xHxq.jpg?s=256",
+      "display_name" : "Jeff McClure",
+      "link" : "https://stackoverflow.com/users/6332468/jeff-mcclure"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1698241962,
+    "creation_date" : 1698241962,
+    "answer_id" : 77360128,
+    "question_id" : 2681759,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Within the &lt;dependencyManagement&gt; make the jar scope=provided</p>\n<pre><code>&lt;dependencyManagement&gt;\n    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;group-to-exclude&lt;/groupId&gt;\n            &lt;artifactId&gt;artifact-to-exclude&lt;/artifactId&gt;\n            &lt;scope&gt;provided&lt;/scope&gt;\n        &lt;/dependency&gt;\n</code></pre>\n<p>...\n\n</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 124810,
+    "reputation" : 2189,
+    "user_id" : 320151,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/0knZtTVC.png?s=256",
+    "display_name" : "Miguel",
+    "link" : "https://stackoverflow.com/users/320151/miguel"
+  },
+  "is_answered" : true,
+  "view_count" : 266395,
+  "accepted_answer_id" : 2684291,
+  "answer_count" : 12,
+  "score" : 177,
+  "last_activity_date" : 1698241962,
+  "creation_date" : 1271842837,
+  "last_edit_date" : 1654200441,
+  "question_id" : 2681759,
+  "link" : "https://stackoverflow.com/questions/2681759/is-there-anyway-to-exclude-artifacts-inherited-from-a-parent-pom",
+  "title" : "Is there anyway to exclude artifacts inherited from a parent POM?",
+  "body" : "<p>Artifacts from dependencies can be excluded by declaring an <code>&lt;exclusions&gt;</code> element inside a <code>&lt;dependency&gt;</code> But in this case it's needed to exclude an artifact inherited from a parent project. An excerpt of the POM under discussion follows:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;project&gt;\n  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n  &lt;groupId&gt;test&lt;/groupId&gt;\n  &lt;artifactId&gt;jruby&lt;/artifactId&gt;\n  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;\n  &lt;parent&gt;\n      &lt;artifactId&gt;base&lt;/artifactId&gt;\n      &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n      &lt;version&gt;1.0.0&lt;/version&gt;\n  &lt;/parent&gt;\n\n  &lt;dependencies&gt;      \n      &lt;dependency&gt;\n          &lt;groupId&gt;com.liferay.portal&lt;/groupId&gt;\n          &lt;artifactId&gt;ALL-DEPS&lt;/artifactId&gt;\n          &lt;version&gt;1.0&lt;/version&gt;\n          &lt;scope&gt;provided&lt;/scope&gt;\n          &lt;type&gt;pom&lt;/type&gt;\n      &lt;/dependency&gt;\n  &lt;/dependencies&gt;\n&lt;/project&gt;\n</code></pre>\n<p><code>base</code> artifact, depends on  <code>javax.mail:mail-1.4.jar</code>, and <code>ALL-DEPS</code> depends on another version of the same library. Due to the fact that <code>mail.jar</code> from <code>ALL-DEPS</code> exist on the execution environment, although not exported, collides with the <code>mail.jar</code> that exists on the parent, which is scoped as <code>compile</code>.</p>\n<p>A solution could be to rid off mail.jar from the parent POM, but most of the projects that inherit base, need it (as is a transtive dependency for log4j). So What I would like to do is to simply <strong>exclude parent's library from the child project</strong>, as it could be done if <code>base</code> was a dependency and not the parent pom:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>...\n    &lt;dependency&gt;\n        &lt;artifactId&gt;base&lt;/artifactId&gt;\n        &lt;groupId&gt;es.uniovi.innova&lt;/groupId&gt;\n        &lt;version&gt;1.0.0&lt;/version&gt;\n        &lt;type&gt;pom&lt;type&gt;\n        &lt;exclusions&gt;\n          &lt;exclusion&gt;\n             &lt;groupId&gt;javax.mail&lt;/groupId&gt;\n             &lt;artifactId&gt;mail&lt;/artifactId&gt;\n          &lt;/exclusion&gt;\n        &lt;/exclusions&gt;\n    &lt;/dependency&gt;\n...\n</code></pre>\n"
+}

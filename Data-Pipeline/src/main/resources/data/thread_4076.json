@@ -1,0 +1,109 @@
+{
+  "tags" : [ "java", "spring", "spring-mvc-test" ],
+  "comments" : [ {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user180100"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1391755553,
+    "post_id" : 21620964,
+    "comment_id" : 32670147,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Checkout the <code>ExpectedException</code> rule and write your own derivative for your wrapped exception?"
+  }, {
+    "owner" : {
+      "account_id" : 3330502,
+      "reputation" : 1307,
+      "user_id" : 2799561,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/5ef9431d7ceb994eb3a721f9bde165ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "jacquard",
+      "link" : "https://stackoverflow.com/users/2799561/jacquard"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1391755852,
+    "post_id" : 21620964,
+    "comment_id" : 32670245,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "That means I am bending my test case to accept <code>NestedServletException</code>. What I want is to somehow change the controller behaviour to throw the <code>MethodArgumentNotValidException</code> directly instead of nesting it inside <code>NestedServletException</code>"
+  }, {
+    "owner" : {
+      "account_id" : 290683,
+      "reputation" : 13449,
+      "user_id" : 592355,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/2nAdA.jpg?s=256",
+      "display_name" : "xerx593",
+      "link" : "https://stackoverflow.com/users/592355/xerx593"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1666787529,
+    "post_id" : 21620964,
+    "comment_id" : 131017856,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Why struggle with some &quot;mock servlet&quot; exception handling (details + &quot;simple resolution&quot;)? Better: expect status is &quot;bad request&quot;!?"
+  }, {
+    "owner" : {
+      "account_id" : 290683,
+      "reputation" : 13449,
+      "user_id" : 592355,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/2nAdA.jpg?s=256",
+      "display_name" : "xerx593",
+      "link" : "https://stackoverflow.com/users/592355/xerx593"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1666787678,
+    "post_id" : 21620964,
+    "comment_id" : 131017905,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "..but reason for &quot;nested exception&quot; could also be <i>any</i> &quot;servlet exception&quot; (before/after validation;)!!"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3514520,
+      "reputation" : 180,
+      "user_id" : 2938285,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/4QXYM.png?s=256",
+      "display_name" : "Pedro Gonzalez",
+      "link" : "https://stackoverflow.com/users/2938285/pedro-gonzalez"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1431085017,
+    "creation_date" : 1431085017,
+    "answer_id" : 30122876,
+    "question_id" : 21620964,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I had similar issue and I fixed it extending my exception class from NestedServletException. For example:</p>\n\n<pre><code>@RequestMapping(value = \"/updateForm/{roleID}\", method = RequestMethod.GET)\n   public String updateForm(@PathVariable Long roleID, Model model, HttpSession session) throws ElementNotFoundException {\n\n  Role role = roleService.findOne(roleID);\n  if (role == null) {\n     throw new ElementNotFoundException(\"Role\");\n  }\n\n  ...\n}\n</code></pre>\n\n<p>And my exception looks like:</p>\n\n<pre><code>public class ElementNotFoundException extends NestedServletException {\n\n   private static final long serialVersionUID = 2689075086409560459L;\n\n   private String typeElement;\n\n   public ElementNotFoundException(String typeElement) {\n     super(typeElement);\n     this.typeElement = typeElement;\n   }\n\n   public String getTypeElement() {\n     return typeElement;\n   }\n\n}\n</code></pre>\n\n<p>So my test is:</p>\n\n<pre><code>@Test(expected = ElementNotFoundException.class)\npublic void updateForm_elementNotFound_Test() throws Exception {\n  String roleID = \"1\";\n\n  Mockito.when(roleService.findOne(Long.valueOf(roleID))).thenReturn(null);\n\n  mockMvc.perform(get(\"/role/updateForm/\" + roleID)).andExpect(status().isOk()).andExpect(view().name(\"exception/elementNotFound\"));\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3330502,
+    "reputation" : 1307,
+    "user_id" : 2799561,
+    "user_type" : "registered",
+    "accept_rate" : 57,
+    "profile_image" : "https://www.gravatar.com/avatar/5ef9431d7ceb994eb3a721f9bde165ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "jacquard",
+    "link" : "https://stackoverflow.com/users/2799561/jacquard"
+  },
+  "is_answered" : false,
+  "view_count" : 16647,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1760986860,
+  "creation_date" : 1391755258,
+  "last_edit_date" : 1391755897,
+  "question_id" : 21620964,
+  "link" : "https://stackoverflow.com/questions/21620964/handling-methodargumentnotvalidexception-in-junit-testcase",
+  "title" : "Handling MethodArgumentNotValidException in Junit testcase?",
+  "body" : "<p>I am using spring MVC testing: In my test case, I am passing an invalid <code>Bar</code> object(age with zero). The <code>MethodArgumentNotValidException</code> is being thrown, but it is nested inside a <code>NestedServletException</code>. Is there anyway to throw the <code>MethodArgumentNotValidException</code> exception from the controller through an existing/custom <code>HandlerExceptionResolver</code>, so that my current test case <code>checkHit2</code> passes?</p>\n\n<p><strong>Controller:</strong></p>\n\n<pre><code>@RequestMapping(value=\"/test\", method = RequestMethod.POST, headers=\"Accept=application/json\")\n    @ResponseBody\n    public Bar getTables(@Valid @RequestBody Bar id) {\n        return id;\n\n    }\n</code></pre>\n\n<p><strong>TestCase</strong></p>\n\n<pre><code>@Before\npublic void setUp() {\n\n    mockMvc =  standaloneSetup(excelFileUploader).setHandlerExceptionResolvers(new SimpleMappingExceptionResolver()).build();\n}\n\n@Test(expected=MethodArgumentNotValidException.class)\n    public void checkHit2() throws Exception {\n        Bar b = new Bar(0, \"Sfd\");\n        mockMvc.perform(\n                post(\"/excel/tablesDetail\").contentType(\n                        MediaType.APPLICATION_JSON).content(\n                        TestUtil.convertObjectToJsonBytes(b)));\n</code></pre>\n\n<p><strong>Bar</strong></p>\n\n<pre><code>public class Bar {\n\n    @JsonProperty(\"age\")\n    @Min(value =1)\n    private int age;\npublic Bar(int age, String name) {\n        super();\n        this.age = age;\n        this.name = name;\n    }\n...\n}\n</code></pre>\n\n<p><strong>Junit output</strong></p>\n\n<pre><code>java.lang.Exception: Unexpected exception, \nexpected&lt;org.springframework.web.bind.MethodArgumentNotValidException&gt; but \nwas&lt;org.springframework.web.util.NestedServletException&gt;\n</code></pre>\n"
+}

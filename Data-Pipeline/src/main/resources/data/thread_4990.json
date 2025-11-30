@@ -1,0 +1,116 @@
+{
+  "tags" : [ "java", "jdbc", "db2" ],
+  "comments" : [ {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user330315"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1424156933,
+    "post_id" : 28556425,
+    "comment_id" : 45425000,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Sharing a connection over different threads doesn&#39;t make sense as you can only run a single statement at a given point in time on one connection (so all your statements are serialized on the connection). Closing the connection in the first thread will apparently make all other threads defunct as well."
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user330315"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1424157035,
+    "post_id" : 28556425,
+    "comment_id" : 45425038,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "&quot;<i>Is it required to make an explicit commit for a DROP</i>&quot; - this depends on the DBMS. Some support transactional DDL (e.g. Postgres) some don&#39;t (e.g. Oracle)"
+  }, {
+    "owner" : {
+      "account_id" : 2339515,
+      "reputation" : 3754,
+      "user_id" : 2051126,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/W3bmE.jpg?s=256",
+      "display_name" : "Somnath Musib",
+      "link" : "https://stackoverflow.com/users/2051126/somnath-musib"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1424157256,
+    "post_id" : 28556425,
+    "comment_id" : 45425130,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@a_horse_with_no_name: No, I am not doing the way you imagined. I am passing the same connection to all the threads and then my main thread is in wait for completion of all newly spawned threads (future.get()). Once all threads are done, then my main thread is going ahead for deleting the first table and closing the connection."
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user330315"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1424157607,
+    "post_id" : 28556425,
+    "comment_id" : 45425266,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Ah, OK. But still: you don&#39;t parallelize the database access this way. You can&#39;t have concurrent statements on the same connection. Neither <code>java.sql.Statement</code> nor <code>java.sql.Connection</code> is thread safe. I wouldn&#39;t be surprised if that is causing the problems you have."
+  }, {
+    "owner" : {
+      "account_id" : 2339515,
+      "reputation" : 3754,
+      "user_id" : 2051126,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/W3bmE.jpg?s=256",
+      "display_name" : "Somnath Musib",
+      "link" : "https://stackoverflow.com/users/2051126/somnath-musib"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1424158020,
+    "post_id" : 28556425,
+    "comment_id" : 45425429,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@a_horse_with_no_name Yes, your point is correct. Instead of passing the same connection to all thread, I should take  a new connection for each thread. Thanks."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 13243439,
+      "reputation" : 1,
+      "user_id" : 9563242,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e809fab4258efeda70ad9ac51bdbe3c1?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vinay",
+      "link" : "https://stackoverflow.com/users/9563242/vinay"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1646039840,
+    "creation_date" : 1646039840,
+    "answer_id" : 71292751,
+    "question_id" : 28556425,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In Db2, you need to commit the transaction with COMMIT or ROLLBACK before closing the DB connection. COMMIT and ROLLBACK are done only when you make changes to the DB data such as ʻINSERTandDELETE, and COMMITandROLLBACK are used for SELECTthat only refers to the data. I'm sure there are many people who don't pay attention to-, but at least in Db2, you need to be aware of transactions even in the case ofSELECT`.</p>\n<p>In the source code above, autocommit was turned off (con.setAutoCommit (false)). If auto-commit = true, the jdbc driver will automatically commit when you call Connection :: close, but if auto-commit = false, the programmer will explicitly Connection :: commit or . If you do not call Connection :: rollback, the transaction will not be committed. In other words, in the source code above, we turned off autocommit, so we tried to close the connection without confirming the transaction, resulting in ʻERRORCODE = -4471`.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2339515,
+    "reputation" : 3754,
+    "user_id" : 2051126,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://i.sstatic.net/W3bmE.jpg?s=256",
+    "display_name" : "Somnath Musib",
+    "link" : "https://stackoverflow.com/users/2051126/somnath-musib"
+  },
+  "is_answered" : false,
+  "view_count" : 9586,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1758967540,
+  "creation_date" : 1424156623,
+  "last_edit_date" : 1646039949,
+  "question_id" : 28556425,
+  "link" : "https://stackoverflow.com/questions/28556425/failed-to-close-database-connection",
+  "title" : "Failed to close database connection",
+  "body" : "<p>I am working on a Java based utility that migrates some column values from one table to another table. My first table contains a ID column, whose values are of fixed type (e.g. Some enum type in Java that were inserted earlier in first table) </p>\n\n<p>Below are the summarized steps that I am following:</p>\n\n<ol>\n<li>Getting a new database connection and setting autocommit as false.</li>\n<li>Selecting the unique type of ids from first table.</li>\n<li>Creating a thread pool for each uniqueu id. While submitting the migration job, I am passing the same database connection to each thread obtained previously.</li>\n<li>Each thread is migrating the values from first table to second table and at the end each are performing a database commit.</li>\n<li>Till this time my main thread is waiting on future.get().</li>\n<li>Once all threads are done, with my main thread I am dropping the first table (and doing an explicit commit) and closing the connection.</li>\n</ol>\n\n<p>This utility is supported for Oracle, UDB and ZOS databases and working fine for Oracle and UDB. However, for ZOS databases while closing the database connection, I am getting below exception:</p>\n\n<pre><code>com.ibm.db2.jcc.a.SqlException: [jcc][t4][10251][10308][3.52.90] java.sql.Connection.close() requested while a transaction is in progress on the connection.\nThe transaction remains active, and the connection cannot be closed.\nERRORCODE=-4471, SQLSTATE=null\n</code></pre>\n\n<ol>\n<li><p>Here, in my main thread I am first dropping the table and then closing the connection, thus doing these in a sequential manner. Then why I am getting the above exception? What I am doing wrong? </p></li>\n<li><p>Is it required to make an explicit commit for a DROP as I am setting autocommit as false?</p></li>\n</ol>\n"
+}

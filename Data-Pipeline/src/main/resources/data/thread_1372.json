@@ -1,0 +1,407 @@
+{
+  "tags" : [ "java", "layout", "jtable", "layout-manager", "null-layout-manager" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 70123,
+      "reputation" : 51647,
+      "user_id" : 203657,
+      "user_type" : "registered",
+      "accept_rate" : 53,
+      "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+      "display_name" : "kleopatra",
+      "link" : "https://stackoverflow.com/users/203657/kleopatra"
+    },
+    "edited" : false,
+    "score" : 19,
+    "creation_date" : 1302527158,
+    "post_id" : 5621338,
+    "comment_id" : 6404963,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "just to emphasize jzd&#39;s answer: forget about null layout. That&#39;s <i>definitely un-swing&#39;ish</i> - either learn using LayoutManagers or use a different language."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 242372,
+      "reputation" : 23637,
+      "user_id" : 513838,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/9b9053b4f27a3ce3876212e87e06fbe9?s=256&d=identicon&r=PG",
+      "display_name" : "jzd",
+      "link" : "https://stackoverflow.com/users/513838/jzd"
+    },
+    "is_accepted" : false,
+    "score" : 50,
+    "last_activity_date" : 1302525942,
+    "creation_date" : 1302525942,
+    "answer_id" : 5621466,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Don't use a null layout.  Learn to use LayoutManagers:</p>\n\n<p><a href=\"http://download.oracle.com/javase/tutorial/uiswing/layout/using.html\" rel=\"noreferrer\">http://download.oracle.com/javase/tutorial/uiswing/layout/using.html</a></p>\n\n<p>LayoutManagers allow you to properly handle things window resizing or dynamic component counts.  They might seem intimidating at first, but they are worth the effort to learn.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 304151,
+      "reputation" : 7953,
+      "user_id" : 613495,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://www.gravatar.com/avatar/4806b75c87fc902ce3f0ef7d544752b7?s=256&d=identicon&r=PG",
+      "display_name" : "Boro",
+      "link" : "https://stackoverflow.com/users/613495/boro"
+    },
+    "is_accepted" : false,
+    "score" : 17,
+    "last_activity_date" : 1302533262,
+    "creation_date" : 1302533262,
+    "answer_id" : 5623084,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you are using null layout manager you always need to set the bounds of a component.\nThat is the problem in your case.</p>\n\n<p>You should do what everyone suggest here and go and use some layout manager believe they save time.\nGo and check out the tutorial in @jzd's post.</p>\n\n<p>Enjoy, Boro.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 183279,
+      "reputation" : 168989,
+      "user_id" : 418556,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/yOfDr.png?s=256",
+      "display_name" : "Andrew Thompson",
+      "link" : "https://stackoverflow.com/users/418556/andrew-thompson"
+    },
+    "is_accepted" : false,
+    "community_owned_date" : 1302581019,
+    "score" : 189,
+    "last_activity_date" : 1460417693,
+    "last_edit_date" : 1460417693,
+    "creation_date" : 1302580961,
+    "answer_id" : 5630271,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<h1>Nested/Combination Layout Example</h1>\n\n<p>The Java Tutorial has comprehensive information on using layout managers. See the <a href=\"http://download.oracle.com/javase/tutorial/uiswing/layout/index.html\">Laying Out Components Within a Container</a> lesson for further details.</p>\n\n<p>One aspect of layouts that is <em>not</em> covered well by the tutorial is that of nested layouts, putting one layout inside another to get complex effects.</p>\n\n<p>The following code puts a variety of components into a frame to demonstrate how to use nested layouts.  All the layouts that are explicitly set are shown as a titled-border for the panel on which they are used.</p>\n\n<p>Notable aspects of the code are:</p>\n\n<ul>\n<li>There is a combo-box to change PLAF (Pluggable Look and Feel) at run-time.</li>\n<li>The GUI is expandable to the user's need.</li>\n<li>The image in the bottom of the split-pane is centered in the scroll-pane.</li>\n<li>The label instances on the left are dynamically added using the button.</li>\n</ul>\n\n<h3>Nimbus PLAF</h3>\n\n<p><img src=\"https://i.sstatic.net/RljPH.png\" width=\"681\" height=\"580\" title=\"GUI screen shot with Nimbus PLAF\"></p>\n\n<h2>NestedLayoutExample.java</h2>\n\n<pre><code>import java.awt.*;\nimport java.awt.image.BufferedImage;\nimport java.awt.event.ActionListener;\nimport java.awt.event.ActionEvent;\nimport javax.swing.*;\nimport javax.swing.table.DefaultTableModel;\nimport javax.swing.border.TitledBorder;\n\n/** A short example of a nested layout that can change PLAF at runtime.\nThe TitledBorder of each JPanel shows the layouts explicitly set.\n@author Andrew Thompson\n@version 2011-04-12 */\nclass NestedLayoutExample {\n\n    public static void main(String[] args) {\n\n        Runnable r = new Runnable() {\n\n            public void run() {\n                final JFrame frame = new JFrame(\"Nested Layout Example\");\n                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n\n                final JPanel gui = new JPanel(new BorderLayout(5,5));\n                gui.setBorder( new TitledBorder(\"BorderLayout(5,5)\") );\n\n                //JToolBar tb = new JToolBar();\n                JPanel plafComponents = new JPanel(\n                    new FlowLayout(FlowLayout.RIGHT, 3,3));\n                plafComponents.setBorder(\n                    new TitledBorder(\"FlowLayout(FlowLayout.RIGHT, 3,3)\") );\n\n                final UIManager.LookAndFeelInfo[] plafInfos =\n                    UIManager.getInstalledLookAndFeels();\n                String[] plafNames = new String[plafInfos.length];\n                for (int ii=0; ii&lt;plafInfos.length; ii++) {\n                    plafNames[ii] = plafInfos[ii].getName();\n                }\n                final JComboBox plafChooser = new JComboBox(plafNames);\n                plafComponents.add(plafChooser);\n\n                final JCheckBox pack = new JCheckBox(\"Pack on PLAF change\", true);\n                plafComponents.add(pack);\n\n                plafChooser.addActionListener( new ActionListener(){\n                    public void actionPerformed(ActionEvent ae) {\n                        int index = plafChooser.getSelectedIndex();\n                        try {\n                            UIManager.setLookAndFeel(\n                                plafInfos[index].getClassName() );\n                            SwingUtilities.updateComponentTreeUI(frame);\n                            if (pack.isSelected()) {\n                                frame.pack();\n                                frame.setMinimumSize(frame.getSize());\n                            }\n                        } catch(Exception e) {\n                            e.printStackTrace();\n                        }\n                    }\n                } );\n\n                gui.add(plafComponents, BorderLayout.NORTH);\n\n                JPanel dynamicLabels = new JPanel(new BorderLayout(4,4));\n                dynamicLabels.setBorder(\n                    new TitledBorder(\"BorderLayout(4,4)\") );\n                gui.add(dynamicLabels, BorderLayout.WEST);\n\n                final JPanel labels = new JPanel(new GridLayout(0,2,3,3));\n                labels.setBorder(\n                    new TitledBorder(\"GridLayout(0,2,3,3)\") );\n\n                JButton addNew = new JButton(\"Add Another Label\");\n                dynamicLabels.add( addNew, BorderLayout.NORTH );\n                addNew.addActionListener( new ActionListener(){\n\n                    private int labelCount = 0;\n\n                    public void actionPerformed(ActionEvent ae) {\n                        labels.add( new JLabel(\"Label \" + ++labelCount) );\n                        frame.validate();\n                    }\n                } );\n\n                dynamicLabels.add( new JScrollPane(labels), BorderLayout.CENTER );\n\n                String[] header = {\"Name\", \"Value\"};\n                String[] a = new String[0];\n                String[] names = System.getProperties().\n                    stringPropertyNames().toArray(a);\n                String[][] data = new String[names.length][2];\n                for (int ii=0; ii&lt;names.length; ii++) {\n                    data[ii][0] = names[ii];\n                    data[ii][1] = System.getProperty(names[ii]);\n                }\n                DefaultTableModel model = new DefaultTableModel(data, header);\n                JTable table = new JTable(model);\n                try {\n                    // 1.6+\n                    table.setAutoCreateRowSorter(true);\n                } catch(Exception continuewithNoSort) {\n                }\n                JScrollPane tableScroll = new JScrollPane(table);\n                Dimension tablePreferred = tableScroll.getPreferredSize();\n                tableScroll.setPreferredSize(\n                    new Dimension(tablePreferred.width, tablePreferred.height/3) );\n\n                JPanel imagePanel = new JPanel(new GridBagLayout());\n                imagePanel.setBorder(\n                    new TitledBorder(\"GridBagLayout()\") );\n\n                BufferedImage bi = new BufferedImage(\n                    200,200,BufferedImage.TYPE_INT_ARGB);\n                Graphics2D g = bi.createGraphics();\n                GradientPaint gp = new GradientPaint(\n                    20f,20f,Color.red, 180f,180f,Color.yellow);\n                g.setPaint(gp);\n                g.fillRect(0,0,200,200);\n                ImageIcon ii = new ImageIcon(bi);\n                JLabel imageLabel = new JLabel(ii);\n                imagePanel.add( imageLabel, null );\n\n                JSplitPane splitPane = new JSplitPane(\n                    JSplitPane.VERTICAL_SPLIT,\n                    tableScroll,\n                    new JScrollPane(imagePanel));\n                gui.add( splitPane, BorderLayout.CENTER );\n\n                frame.setContentPane(gui);\n\n                frame.pack();\n\n                frame.setLocationRelativeTo(null);\n                try {\n                    // 1.6+\n                    frame.setLocationByPlatform(true);\n                    frame.setMinimumSize(frame.getSize());\n                } catch(Throwable ignoreAndContinue) {\n                }\n\n                frame.setVisible(true);\n            }\n        };\n        SwingUtilities.invokeLater(r);\n    }\n}\n</code></pre>\n\n<h2>Other Screen Shots</h2>\n\n<h3>Windows PLAF</h3>\n\n<p><img src=\"https://i.sstatic.net/fHnCI.png\" width=\"681\" height=\"580\" title=\"GUI screen shot with Windows PLAF\"></p>\n\n<h3>Mac OS X Aqua PLAF</h3>\n\n<p><img src=\"https://i.sstatic.net/Jaqap.png\" width=\"681\" height=\"580\" title=\"GUI screen shot with Aqua PLAF\"></p>\n\n<h3>Ubuntu GTK+ PLAF</h3>\n\n<p><img src=\"https://i.sstatic.net/521zz.png\" width=\"681\" height=\"580\" title=\"GUI screen shot with GTK+ PLAF\"></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 290893,
+      "reputation" : 3714,
+      "user_id" : 592704,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/140ad5108b9900e7ae9b6e3115a42313?s=256&d=identicon&r=PG",
+      "display_name" : "user592704",
+      "link" : "https://stackoverflow.com/users/592704/user592704"
+    },
+    "is_accepted" : false,
+    "score" : 21,
+    "last_activity_date" : 1311006989,
+    "creation_date" : 1311006989,
+    "answer_id" : 6736230,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>As I can remember, the <strong>null</strong> layout means an absolute position so it will be pretty hard you to count the X point for your JTable left upper corner location. But if you just want to have all panel components one by one you can use FlowLayout() manager as</p>\n\n<pre><code>JPanel panel=new JPanel(new FlowLayout());\npanel.add(new aComponent());\npanel.add(new bComponent());\npanel.add(new JTable());\n</code></pre>\n\n<p>or if you need to fill the panel you should use GridLayout() as...</p>\n\n<pre><code>int x=2,y=2;\nJPanel panel=new JPanel(new GridLayout(y,x));\npanel.add(new aComponent());\npanel.add(new bComponent());\npanel.add(new JTable());\n</code></pre>\n\n<p>Good luck</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1867211,
+      "reputation" : 172,
+      "user_id" : 1690448,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0f87e3b50c40929364a3ecac7a3c7a54?s=256&d=identicon&r=PG",
+      "display_name" : "Sankar",
+      "link" : "https://stackoverflow.com/users/1690448/sankar"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1348318869,
+    "creation_date" : 1348318869,
+    "answer_id" : 12543988,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can make use of the following code. To add JTable to JPanel.</p>\n\n<pre><code>JPanel panel = new JPanel();\nthis.setContentPane(panel);\npanel.setLayout(null);\nString data[][] = {{\"1.\", \"ABC\"}, {\"2.\", \"DEF\"}, {\"3.\", \"GHI\" }};\nString col[] = {\"Sr. No\", \"Name\"};\nJTable table = new JTable(data,col);\ntable.setBounds(100, 100, 100, 80);\npanel.add(table);\nsetVisible(true);\nsetSize(300,300);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1133543,
+      "reputation" : 1008,
+      "user_id" : 1119076,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/68715865c30f64df9fb2c0e92e625596?s=256&d=identicon&r=PG",
+      "display_name" : "sergpank",
+      "link" : "https://stackoverflow.com/users/1119076/sergpank"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1518070383,
+    "last_edit_date" : 1518070383,
+    "creation_date" : 1349339654,
+    "answer_id" : 12723353,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>JTable</code> should be added into the <code>JScrollPane</code> which actually should be added into the <code>JPanel</code>.</p>\n\n<p>The <code>JPanel</code> should have some layout manager.</p>\n\n<p>If you don't care about the precision of components size you can use pure <code>BorderLayout</code> and combine it with <code>FlowLayout</code> and <code>GridLayout</code>. if you need precision - use jgoodies <code>FormLayout</code>.</p>\n\n<p>The <code>FormLayout</code> is really tricky one, but you can play a little with <code>WindowBuilder</code> (which is embedded into Eclipse) and a look at the code it generates. It may look complicated but it is just an ignorance.</p>\n\n<p>Good luck. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 70123,
+        "reputation" : 51647,
+        "user_id" : 203657,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+        "display_name" : "kleopatra",
+        "link" : "https://stackoverflow.com/users/203657/kleopatra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1406612289,
+      "post_id" : 24994223,
+      "comment_id" : 38886898,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "no ... three errors in three consecutive lines and not solving the  (bad as it is) requirement"
+    }, {
+      "owner" : {
+        "account_id" : 4792902,
+        "reputation" : 5255,
+        "user_id" : 3871551,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/b80158d9830b599265d4dc6edcf12c03?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Leo",
+        "link" : "https://stackoverflow.com/users/3871551/leo"
+      },
+      "reply_to_user" : {
+        "account_id" : 70123,
+        "reputation" : 51647,
+        "user_id" : 203657,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+        "display_name" : "kleopatra",
+        "link" : "https://stackoverflow.com/users/203657/kleopatra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1406700592,
+      "post_id" : 24994223,
+      "comment_id" : 38926563,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "use frame instead of panel and try."
+    }, {
+      "owner" : {
+        "account_id" : 70123,
+        "reputation" : 51647,
+        "user_id" : 203657,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+        "display_name" : "kleopatra",
+        "link" : "https://stackoverflow.com/users/203657/kleopatra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1406758245,
+      "post_id" : 24994223,
+      "comment_id" : 38960711,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "you didn&#39;t even try to find your errors, did you? Sometimes (like now) I really would like to have as many downvotes as there are errors in the code/answer .."
+    }, {
+      "owner" : {
+        "account_id" : 4792902,
+        "reputation" : 5255,
+        "user_id" : 3871551,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/b80158d9830b599265d4dc6edcf12c03?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Leo",
+        "link" : "https://stackoverflow.com/users/3871551/leo"
+      },
+      "reply_to_user" : {
+        "account_id" : 70123,
+        "reputation" : 51647,
+        "user_id" : 203657,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+        "display_name" : "kleopatra",
+        "link" : "https://stackoverflow.com/users/203657/kleopatra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1406788375,
+      "post_id" : 24994223,
+      "comment_id" : 38968770,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "which three lines? rowdata and coldata you have to add."
+    }, {
+      "owner" : {
+        "account_id" : 70123,
+        "reputation" : 51647,
+        "user_id" : 203657,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+        "display_name" : "kleopatra",
+        "link" : "https://stackoverflow.com/users/203657/kleopatra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1406953354,
+      "post_id" : 24994223,
+      "comment_id" : 39042985,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "4, 5, 6 (and the last)"
+    }, {
+      "owner" : {
+        "account_id" : 4792902,
+        "reputation" : 5255,
+        "user_id" : 3871551,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/b80158d9830b599265d4dc6edcf12c03?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Leo",
+        "link" : "https://stackoverflow.com/users/3871551/leo"
+      },
+      "reply_to_user" : {
+        "account_id" : 70123,
+        "reputation" : 51647,
+        "user_id" : 203657,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+        "display_name" : "kleopatra",
+        "link" : "https://stackoverflow.com/users/203657/kleopatra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1407132746,
+      "post_id" : 24994223,
+      "comment_id" : 39081885,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Sorry boss, it doesn&#39;t give any error for me. As I told you have to give your rowdata and coldata and import proper package."
+    }, {
+      "owner" : {
+        "account_id" : 70123,
+        "reputation" : 51647,
+        "user_id" : 203657,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+        "display_name" : "kleopatra",
+        "link" : "https://stackoverflow.com/users/203657/kleopatra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1407139535,
+      "post_id" : 24994223,
+      "comment_id" : 39084600,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "A: take it for granted that there is something wrong with those lines. B: find out what it is (no rocket science, just a bit of searching). C: you improved your skills and your knowledge. Or refuse to learn, your choice obviously ;-) Bye."
+    } ],
+    "owner" : {
+      "account_id" : 4792902,
+      "reputation" : 5255,
+      "user_id" : 3871551,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/b80158d9830b599265d4dc6edcf12c03?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Leo",
+      "link" : "https://stackoverflow.com/users/3871551/leo"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1406546708,
+    "creation_date" : 1406546708,
+    "answer_id" : 24994223,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>JPanel panel = new JPanel();\nJTable table = new JTable(rowData, colData);\nJScrollPane scrollPane = new JScrollPane(table);\npanel.add(scrollPane, BorderLayout.CENTER);\npanel.setSize(800, 150);\npanel.add(table);\npanel.setLocationRelativeTo(null);\npanel.setVisible(true);\n</code></pre>\n\n<p>Hope this helps.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6994576,
+      "reputation" : 104,
+      "user_id" : 5362637,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a1f3f779339adef3a224c6210a2bd020?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "krpa",
+      "link" : "https://stackoverflow.com/users/5362637/krpa"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1448539435,
+    "creation_date" : 1448539435,
+    "answer_id" : 33938242,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>JFrame frame = new JFrame(\"Sample Frame\");\nframe.setSize(600, 600);\nframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n    JPanel panel = new JPanel();\n        DefaultTableModel dfm = new DefaultTableModel(data, columnNames);\n        JTable table = new JTable(dfm);\n        JScrollPane scrollPane = new JScrollPane(table);\n    panel.add(scrollPane);\nframe.add(panel);\nframe.setVisible(true);\n</code></pre>\n\n<p>table model depends on your requirement</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7804670,
+      "reputation" : 688,
+      "user_id" : 5902918,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e778ed05a48d9fb7f2539b4a6ba7141d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "S.B",
+      "link" : "https://stackoverflow.com/users/5902918/s-b"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1456401195,
+    "creation_date" : 1456401195,
+    "answer_id" : 35626538,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>this.setTitle(\"Sample\");\n        JPanel p = new JPanel(new BorderLayout());\n        WindowEvent we = new WindowEvent(this, WindowEvent.WINDOW_CLOSED);\n        this.addWindowListener(new WindowAdapter() {\n            public void windowClosing(WindowEvent we) {\n                System.exit(0);\n            }\n        }); \n        // Create columns names\n        String columnNames[] = { \"FirstCol\", \"SecondCol\",\n                \"ThirdCol\", \"FourthCol\" };\n        dataModel = new DefaultTableModel();\n        for (int col = 0; col &lt; columnNames.length; col++) {\n            dataModel.addColumn(columnNames[col]);\n        }\n        // Create a new table instance\n        table = new JTable(dataModel);\n        table.setPreferredScrollableViewportSize(new Dimension(200, 120));\n        table.setFillsViewportHeight(true);\n        table.setShowGrid(true);\n        table.setAutoscrolls(true);\n\n        // Add the table to a scrolling pane\n        scrollPane = new JScrollPane(table,\n                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,\n                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);\n        scrollPane.setPreferredSize(new Dimension(700, 700));\n        JPanel jpResultPanel = new JPanel();\n        jpResultPanel.setBorder(BorderFactory.createTitledBorder(\n                BorderFactory.createEtchedBorder(), \"Result\",\n                TitledBorder.CENTER, TitledBorder.TOP));\n        jpResultPanel.add(scrollPane);\n        add(jpResultPanel);\n        pack();\n        setSize(720, 720);\n        setVisible(true);\n</code></pre>\n\n<p>Try this.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6583530,
+      "reputation" : 182,
+      "user_id" : 5087059,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t6bNO.png?s=256",
+      "display_name" : "Kevin Wang",
+      "link" : "https://stackoverflow.com/users/5087059/kevin-wang"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1484146740,
+    "creation_date" : 1484146740,
+    "answer_id" : 41594089,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When a component have a \"null\" layout, you have to manage the layout by yourself, that means you have to calculate the dimensions and locations for the children of the component to decide where they are drawn. Quite tedious unless it is absolutely necessary.</p>\n\n<p>If you really want that fine-grained control, maybe try GridBagLayout first before going mudding with the UI arrangement.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1411666,
+      "reputation" : 4352,
+      "user_id" : 1338132,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0f1831eadc92d0cbcfff8443888b01f3?s=256&d=identicon&r=PG",
+      "display_name" : "Axel Podehl",
+      "link" : "https://stackoverflow.com/users/1338132/axel-podehl"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1496827812,
+    "creation_date" : 1496827812,
+    "answer_id" : 44408753,
+    "question_id" : 5621338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>First, you should seriously consider other Layout managers, for example the BorderLayoutManager (new JPanel(new BorderLayout())) is a good start. </p>\n\n<p>Also when designing your dialog, remember that you can and should <strong>nest your layouts</strong>: one JPanel inside another JPanel (e.g. a GridLayout inside a BorderLayout). Please note: a 'good' dialog should <strong>resize properly</strong>, so that if the user resizes your Frame, you want to automatically extend your information objects such as your table, and not show large areas of JPanel background. That's something you cannot achieve with a NullLayout.</p>\n\n<p>But there are probably cases - somewhere in this big world - where a NullLayout is just the thing. So here's an example:</p>\n\n<pre><code>import java.awt.Dimension;\nimport javax.swing.JFrame;\nimport javax.swing.JPanel;\nimport javax.swing.JScrollPane;\nimport javax.swing.JTable;\nimport javax.swing.table.DefaultTableModel;\n\npublic class JTableInNullLayout\n{\n  public static void main(String[] argv) throws Exception {\n\n      DefaultTableModel model = new DefaultTableModel(\n          new String[][] { { \"a\", \"123\"} , {\"b\", \"456\"} }, \n          new String[] { \"name\", \"value\" } );\n\n      JTable t = new JTable(model);\n\n      JPanel panel = new JPanel(null);\n\n      JScrollPane scroll = new JScrollPane(t);\n      scroll.setBounds( 0, 20, 150, 100 ); // x, y, width, height\n      panel.add(scroll);\n\n      JFrame frame = new JFrame();\n      frame.add(panel);\n      frame.setPreferredSize( new Dimension(200,200));\n      frame.pack();\n      frame.setVisible(true);\n  }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 736463,
+    "reputation" : 2505,
+    "user_id" : 702156,
+    "user_type" : "unregistered",
+    "profile_image" : "https://www.gravatar.com/avatar/9ea22dec1e301d5ffff51c1e3d4b99f7?s=256&d=identicon&r=PG",
+    "display_name" : "Sagar",
+    "link" : "https://stackoverflow.com/users/702156/sagar"
+  },
+  "is_answered" : true,
+  "view_count" : 51450,
+  "answer_count" : 11,
+  "score" : 248,
+  "last_activity_date" : 1537629308,
+  "creation_date" : 1302525334,
+  "last_edit_date" : 1537629308,
+  "question_id" : 5621338,
+  "link" : "https://stackoverflow.com/questions/5621338/how-to-add-jtable-in-jpanel-with-null-layout",
+  "title" : "How to add JTable in JPanel with null layout?",
+  "body" : "<p>I want to add <code>JTable</code> into <code>JPanel</code> whose layout is <code>null</code>.  <code>JPanel</code> contains other components. I have to add <code>JTable</code> at proper position.</p>\n"
+}

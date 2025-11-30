@@ -1,0 +1,327 @@
+{
+  "tags" : [ "java", "date", "simpledateformat", "iso8601" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 274077,
+      "reputation" : 13754,
+      "user_id" : 566092,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://www.gravatar.com/avatar/07e3c11b5f51307c09864e0b21c3ae9d?s=256&d=identicon&r=PG",
+      "display_name" : "coding_idiot",
+      "link" : "https://stackoverflow.com/users/566092/coding-idiot"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1350068437,
+    "post_id" : 2597083,
+    "comment_id" : 17414316,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "do you know what does this &quot;T&quot; means ? As far as I think the whole date along with the &#39;T&#39; should be converted to the date (not skipping it through &#39;Single Quotes&#39;, but the thing we&#39;re missing is the parse pattern."
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user177800"
+    },
+    "edited" : false,
+    "score" : 11,
+    "creation_date" : 1430365509,
+    "post_id" : 2597083,
+    "comment_id" : 48037876,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "The <code>T</code> stands for <i>time</i> and is part of the <a href=\"http://en.wikipedia.org/wiki/ISO_8601\" rel=\"nofollow noreferrer\">ISO8601</a> standard for international date time formatting."
+  }, {
+    "owner" : {
+      "account_id" : 2565621,
+      "reputation" : 2142,
+      "user_id" : 2225787,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/dc0V7.jpg?s=256",
+      "display_name" : "Agi Hammerthief",
+      "link" : "https://stackoverflow.com/users/2225787/agi-hammerthief"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1548078658,
+    "post_id" : 2597083,
+    "comment_id" : 95403330,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "That&#39;s odd. Wrapping the <code>T</code> in single quotes worked for me (at least in terms of solving the parse error)."
+  }, {
+    "owner" : {
+      "account_id" : 7612423,
+      "reputation" : 87400,
+      "user_id" : 5772882,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8283c64511fa80afed5259d10850168f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Anonymous",
+      "link" : "https://stackoverflow.com/users/5772882/anonymous"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1636774678,
+    "post_id" : 2597083,
+    "comment_id" : 123653316,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "For new readers to the question I recommend you don’t use <code>SimpleDateFormat</code> and <code>Date</code>. Those classes are poorly designed and long outdated, the former in particular notoriously troublesome. Instead use either <code>OffsetDateTime</code> or <code>Instant</code>. Both are from <a href=\"https://docs.oracle.com/javase/tutorial/datetime/\" rel=\"nofollow noreferrer\">java.time, the modern Java date and time API</a>."
+  }, {
+    "owner" : {
+      "account_id" : 798656,
+      "reputation" : 73,
+      "user_id" : 869943,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/182fd484a203ce50effe6ca7ba28c492?s=256&d=identicon&r=PG",
+      "display_name" : "Roman Hornich",
+      "link" : "https://stackoverflow.com/users/869943/roman-hornich"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1713215579,
+    "post_id" : 2597083,
+    "comment_id" : 138095708,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "So I ran into this same problem. It&#39;s a bandaid workaround but you can edit your input as it comes in to replace the &#39;T&#39; with a space, then change your format to &quot;yyyy-MM-dd hh:mm:ss&#39;Z&#39;&quot;"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user177800"
+    },
+    "is_accepted" : true,
+    "score" : 242,
+    "last_activity_date" : 1531320181,
+    "last_edit_date" : 1531320181,
+    "creation_date" : 1270692507,
+    "answer_id" : 2597111,
+    "question_id" : 2597083,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h3>Update for Java 8 and higher</h3>\n\n<p>You can now simply do <code>Instant.parse(\"2015-04-28T14:23:38.521Z\")</code> and get the correct thing now, especially since you should be using <code>Instant</code> instead of the broken <code>java.util.Date</code> with the most recent versions of Java. </p>\n\n<p>You should be using <code>DateTimeFormatter</code> instead of <code>SimpleDateFormatter</code> as well.</p>\n\n<h3>Original Answer:</h3>\n\n<blockquote>\n  <p>The explanation below is still valid as as what the format represents.\n  But it was written before Java 8 was ubiquitous so it uses the old\n  classes that you should not be using if you are using Java 8 or\n  higher.</p>\n</blockquote>\n\n<h3>This works with the input with the trailing <code>Z</code> as demonstrated:</h3>\n\n<blockquote>\n  <p>In the pattern the <code>T</code> is escaped with <code>'</code> on either side.  </p>\n  \n  <p>The pattern for the <code>Z</code> at the end is actually <code>XXX</code> as documented\n  in the JavaDoc for <code>SimpleDateFormat</code>, it is just not very clear\n  on actually how to use it since <code>Z</code> is the marker for the old\n  <code>TimeZone</code> information as well.</p>\n</blockquote>\n\n<h3><a href=\"https://github.com/jarrodhroberson/Stack-Overflow/blob/master/src/main/java/com/stackoverflow/Q2597083.java\" rel=\"noreferrer\">Q2597083.java</a></h3>\n\n<pre><code>import java.text.SimpleDateFormat;\nimport java.util.Calendar;\nimport java.util.Date;\nimport java.util.GregorianCalendar;\nimport java.util.TimeZone;\n\npublic class Q2597083\n{\n    /**\n     * All Dates are normalized to UTC, it is up the client code to convert to the appropriate TimeZone.\n     */\n    public static final TimeZone UTC;\n\n    /**\n     * @see &lt;a href=\"http://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations\"&gt;Combined Date and Time Representations&lt;/a&gt;\n     */\n    public static final String ISO_8601_24H_FULL_FORMAT = \"yyyy-MM-dd'T'HH:mm:ss.SSSXXX\";\n\n    /**\n     * 0001-01-01T00:00:00.000Z\n     */\n    public static final Date BEGINNING_OF_TIME;\n\n    /**\n     * 292278994-08-17T07:12:55.807Z\n     */\n    public static final Date END_OF_TIME;\n\n    static\n    {\n        UTC = TimeZone.getTimeZone(\"UTC\");\n        TimeZone.setDefault(UTC);\n        final Calendar c = new GregorianCalendar(UTC);\n        c.set(1, 0, 1, 0, 0, 0);\n        c.set(Calendar.MILLISECOND, 0);\n        BEGINNING_OF_TIME = c.getTime();\n        c.setTime(new Date(Long.MAX_VALUE));\n        END_OF_TIME = c.getTime();\n    }\n\n    public static void main(String[] args) throws Exception\n    {\n\n        final SimpleDateFormat sdf = new SimpleDateFormat(ISO_8601_24H_FULL_FORMAT);\n        sdf.setTimeZone(UTC);\n        System.out.println(\"sdf.format(BEGINNING_OF_TIME) = \" + sdf.format(BEGINNING_OF_TIME));\n        System.out.println(\"sdf.format(END_OF_TIME) = \" + sdf.format(END_OF_TIME));\n        System.out.println(\"sdf.format(new Date()) = \" + sdf.format(new Date()));\n        System.out.println(\"sdf.parse(\\\"2015-04-28T14:23:38.521Z\\\") = \" + sdf.parse(\"2015-04-28T14:23:38.521Z\"));\n        System.out.println(\"sdf.parse(\\\"0001-01-01T00:00:00.000Z\\\") = \" + sdf.parse(\"0001-01-01T00:00:00.000Z\"));\n        System.out.println(\"sdf.parse(\\\"292278994-08-17T07:12:55.807Z\\\") = \" + sdf.parse(\"292278994-08-17T07:12:55.807Z\"));\n    }\n}\n</code></pre>\n\n<h3>Produces the following output:</h3>\n\n<pre><code>sdf.format(BEGINNING_OF_TIME) = 0001-01-01T00:00:00.000Z\nsdf.format(END_OF_TIME) = 292278994-08-17T07:12:55.807Z\nsdf.format(new Date()) = 2015-04-28T14:38:25.956Z\nsdf.parse(\"2015-04-28T14:23:38.521Z\") = Tue Apr 28 14:23:38 UTC 2015\nsdf.parse(\"0001-01-01T00:00:00.000Z\") = Sat Jan 01 00:00:00 UTC 1\nsdf.parse(\"292278994-08-17T07:12:55.807Z\") = Sun Aug 17 07:12:55 UTC 292278994\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 322981,
+        "reputation" : 346727,
+        "user_id" : 642706,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+        "display_name" : "Basil Bourque",
+        "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+      },
+      "reply_to_user" : {
+        "account_id" : 6786761,
+        "reputation" : 2076,
+        "user_id" : 5225247,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/1ff61b72731068781c2d15e1ddb252e4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Aalap Patel",
+        "link" : "https://stackoverflow.com/users/5225247/aalap-patel"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1507312104,
+      "post_id" : 25979660,
+      "comment_id" : 80174621,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@AalapPatel Be aware that the Joda-Time project is now in maintenance mode. The team advises migration to the java.time classes. Both efforts are led by the same man, Stephen Colebourne."
+    }, {
+      "owner" : {
+        "account_id" : 6786761,
+        "reputation" : 2076,
+        "user_id" : 5225247,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/1ff61b72731068781c2d15e1ddb252e4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Aalap Patel",
+        "link" : "https://stackoverflow.com/users/5225247/aalap-patel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1507312309,
+      "post_id" : 25979660,
+      "comment_id" : 80174696,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thank you, I use it to get miliseconds from server returned UTC time and/or locale time and works well for me in this case.."
+    }, {
+      "owner" : {
+        "account_id" : 3484522,
+        "reputation" : 6757,
+        "user_id" : 2915785,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/JkoNf.png?s=256",
+        "display_name" : "Naveed Ahmad",
+        "link" : "https://stackoverflow.com/users/2915785/naveed-ahmad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1523006386,
+      "post_id" : 25979660,
+      "comment_id" : 86390267,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Instant.parse needs min api level 26 in android"
+    }, {
+      "owner" : {
+        "account_id" : 322981,
+        "reputation" : 346727,
+        "user_id" : 642706,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+        "display_name" : "Basil Bourque",
+        "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+      },
+      "reply_to_user" : {
+        "account_id" : 3484522,
+        "reputation" : 6757,
+        "user_id" : 2915785,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/JkoNf.png?s=256",
+        "display_name" : "Naveed Ahmad",
+        "link" : "https://stackoverflow.com/users/2915785/naveed-ahmad"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1523029593,
+      "post_id" : 25979660,
+      "comment_id" : 86405814,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@NaveedAhmad See the bullets at bottom of Answer about <i>ThreeTen-Backport</i> and <i>ThreeTenABP</i> projects."
+    } ],
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 32,
+    "last_activity_date" : 1573753754,
+    "last_edit_date" : 1573753754,
+    "creation_date" : 1411406267,
+    "answer_id" : 25979660,
+    "question_id" : 2597083,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>tl;dr</h1>\n\n<p>Use <code>java.time.Instant</code> class to parse text in standard ISO 8601 format, representing a moment in UTC. </p>\n\n<pre><code>Instant.parse( \"2010-10-02T12:23:23Z\" )\n</code></pre>\n\n<h1>ISO 8601</h1>\n\n<p>That format is defined by the <a href=\"http://en.wikipedia.org/wiki/ISO_8601\" rel=\"noreferrer\">ISO 8601</a> standard for date-time string formats.</p>\n\n<p>Both:</p>\n\n<ul>\n<li><a href=\"http://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html\" rel=\"noreferrer\">java.time framework</a> built into Java 8 and later (<a href=\"http://docs.oracle.com/javase/tutorial/datetime/TOC.html\" rel=\"noreferrer\">Tutorial</a>)</li>\n<li><a href=\"http://www.joda.org/joda-time/\" rel=\"noreferrer\">Joda-Time</a> library</li>\n</ul>\n\n<p>…use ISO 8601 formats by default for parsing and generating strings. </p>\n\n<p>You should generally <strong>avoid using the old java.util.Date</strong>/.Calendar &amp; java.text.SimpleDateFormat classes as they are notoriously troublesome, confusing, and flawed. If required for interoperating, you can convert to and fro.</p>\n\n<h1>java.time</h1>\n\n<p>Built into Java 8 and later is the new <a href=\"http://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html\" rel=\"noreferrer\">java.time</a> framework. Inspired by <a href=\"http://www.joda.org/joda-time/\" rel=\"noreferrer\">Joda-Time</a>, defined by <a href=\"http://jcp.org/en/jsr/detail?id=310\" rel=\"noreferrer\">JSR 310</a>, and extended by the <a href=\"http://www.threeten.org/threeten-extra/\" rel=\"noreferrer\">ThreeTen-Extra</a> project.</p>\n\n<pre><code>Instant instant = Instant.parse( \"2010-10-02T12:23:23Z\" );  // `Instant` is always in UTC.\n</code></pre>\n\n<p>Convert to the old class.</p>\n\n<pre><code>java.util.Date date = java.util.Date.from( instant );  // Pass an `Instant` to the `from` method.\n</code></pre>\n\n<p><strong>Time Zone</strong></p>\n\n<p>If needed, you can assign a time zone.</p>\n\n<pre><code>ZoneId zoneId = ZoneId.of( \"America/Montreal\" ); // Define a time zone rather than rely implicitly on JVM’s current default time zone.\nZonedDateTime zdt = ZonedDateTime.ofInstant( instant , zoneId );  // Assign a time zone adjustment from UTC.\n</code></pre>\n\n<p>Convert.</p>\n\n<pre><code>java.util.Date date = java.util.Date.from( zdt.toInstant() );  // Extract an `Instant` from the `ZonedDateTime` to pass to the `from` method.\n</code></pre>\n\n<h1>Joda-Time</h1>\n\n<p>UPDATE: The Joda-Time project is now in maintenance mode. The team advises migration to the <em>java.time</em> classes.</p>\n\n<p>Here is some example code in Joda-Time 2.8.</p>\n\n<pre><code>org.joda.time.DateTime dateTime_Utc = new DateTime( \"2010-10-02T12:23:23Z\" , DateTimeZone.UTC );  // Specifying a time zone to apply, rather than implicitly assigning the JVM’s current default.\n</code></pre>\n\n<p>Convert to old class. Note that the assigned time zone is lost in conversion, as j.u.Date cannot be assigned a time zone.</p>\n\n<pre><code>java.util.Date date = dateTime_Utc.toDate(); // The `toDate` method converts to old class.\n</code></pre>\n\n<p><strong>Time Zone</strong></p>\n\n<p>If needed, you can assign a time zone.</p>\n\n<pre><code>DateTimeZone zone = DateTimeZone.forID( \"America/Montreal\" );\nDateTime dateTime_Montreal = dateTime_Utc.withZone ( zone );\n</code></pre>\n\n<hr>\n\n<p><a href=\"https://i.sstatic.net/XuzUE.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/XuzUE.png\" alt=\"Table of date-time types in Java, both modern and legacy.\"></a></p>\n\n<hr>\n\n<h1>About <em>java.time</em></h1>\n\n<p>The <a href=\"http://docs.oracle.com/javase/10/docs/api/java/time/package-summary.html\" rel=\"noreferrer\"><em>java.time</em></a> framework is built into Java 8 and later. These classes supplant the troublesome old <a href=\"https://en.wikipedia.org/wiki/Legacy_system\" rel=\"noreferrer\">legacy</a> date-time classes such as <a href=\"https://docs.oracle.com/javase/10/docs/api/java/util/Date.html\" rel=\"noreferrer\"><code>java.util.Date</code></a>, <a href=\"https://docs.oracle.com/javase/10/docs/api/java/util/Calendar.html\" rel=\"noreferrer\"><code>Calendar</code></a>, &amp; <a href=\"http://docs.oracle.com/javase/10/docs/api/java/text/SimpleDateFormat.html\" rel=\"noreferrer\"><code>SimpleDateFormat</code></a>.</p>\n\n<p>The <a href=\"http://www.joda.org/joda-time/\" rel=\"noreferrer\"><em>Joda-Time</em></a> project, now in <a href=\"https://en.wikipedia.org/wiki/Maintenance_mode\" rel=\"noreferrer\">maintenance mode</a>, advises migration to the <a href=\"http://docs.oracle.com/javase/10/docs/api/java/time/package-summary.html\" rel=\"noreferrer\">java.time</a> classes.</p>\n\n<p>To learn more, see the <a href=\"http://docs.oracle.com/javase/tutorial/datetime/TOC.html\" rel=\"noreferrer\"><em>Oracle Tutorial</em></a>. And search Stack Overflow for many examples and explanations. Specification is <a href=\"https://jcp.org/en/jsr/detail?id=310\" rel=\"noreferrer\">JSR 310</a>.</p>\n\n<p>You may exchange <em>java.time</em> objects directly with your database. Use a <a href=\"https://en.wikipedia.org/wiki/JDBC_driver\" rel=\"noreferrer\">JDBC driver</a> compliant with <a href=\"http://openjdk.java.net/jeps/170\" rel=\"noreferrer\">JDBC 4.2</a> or later. No need for strings, no need for <code>java.sql.*</code> classes.</p>\n\n<p>Where to obtain the java.time classes? </p>\n\n<ul>\n<li><a href=\"https://en.wikipedia.org/wiki/Java_version_history#Java_SE_8\" rel=\"noreferrer\"><strong>Java SE 8</strong></a>, <a href=\"https://en.wikipedia.org/wiki/Java_version_history#Java_SE_9\" rel=\"noreferrer\"><strong>Java SE 9</strong></a>, and later\n\n<ul>\n<li>Built-in. </li>\n<li>Part of the standard Java API with a bundled implementation.</li>\n<li>Java 9 adds some minor features and fixes.</li>\n</ul></li>\n<li><a href=\"https://en.wikipedia.org/wiki/Java_version_history#Java_SE_6\" rel=\"noreferrer\"><strong>Java SE 6</strong></a> and <a href=\"https://en.wikipedia.org/wiki/Java_version_history#Java_SE_7\" rel=\"noreferrer\"><strong>Java SE 7</strong></a>\n\n<ul>\n<li>Much of the java.time functionality is back-ported to Java 6 &amp; 7 in <a href=\"http://www.threeten.org/threetenbp/\" rel=\"noreferrer\"><strong><em>ThreeTen-Backport</em></strong></a>.</li>\n</ul></li>\n<li><a href=\"https://en.wikipedia.org/wiki/Android_(operating_system)\" rel=\"noreferrer\"><strong>Android</strong></a>\n\n<ul>\n<li>Later versions of Android bundle implementations of the java.time classes.</li>\n<li>For earlier Android (&lt;26), the <a href=\"https://github.com/JakeWharton/ThreeTenABP\" rel=\"noreferrer\"><strong><em>ThreeTenABP</em></strong></a> project adapts <em>ThreeTen-Backport</em> (mentioned above). See <a href=\"http://stackoverflow.com/q/38922754/642706\"><em>How to use ThreeTenABP…</em></a>.</li>\n</ul></li>\n</ul>\n\n<p><a href=\"https://i.sstatic.net/aFsW9.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/aFsW9.png\" alt=\"Table of which java.time library to use with which version of Java or Android.\"></a></p>\n\n<p>The <a href=\"http://www.threeten.org/threeten-extra/\" rel=\"noreferrer\"><strong>ThreeTen-Extra</strong></a> project extends java.time with additional classes. This project is a proving ground for possible future additions to java.time. You may find some useful classes here such as <a href=\"http://www.threeten.org/threeten-extra/apidocs/org/threeten/extra/Interval.html\" rel=\"noreferrer\"><code>Interval</code></a>, <a href=\"http://www.threeten.org/threeten-extra/apidocs/org/threeten/extra/YearWeek.html\" rel=\"noreferrer\"><code>YearWeek</code></a>, <a href=\"http://www.threeten.org/threeten-extra/apidocs/org/threeten/extra/YearQuarter.html\" rel=\"noreferrer\"><code>YearQuarter</code></a>, and <a href=\"http://www.threeten.org/threeten-extra/apidocs/index.html\" rel=\"noreferrer\">more</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7202279,
+      "reputation" : 3920,
+      "user_id" : 5499118,
+      "user_type" : "registered",
+      "accept_rate" : 8,
+      "profile_image" : "https://www.gravatar.com/avatar/0d9f4547c13a51541e9140e5e90f5046?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Alex Martian",
+      "link" : "https://stackoverflow.com/users/5499118/alex-martian"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1573648668,
+    "last_edit_date" : 1573648668,
+    "creation_date" : 1573647464,
+    "answer_id" : 58836966,
+    "question_id" : 2597083,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are two answers above up-to-now and they are both long (and <em>tl;dr</em> too short IMHO), so I write summary from my experience starting to use new <a href=\"https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html\" rel=\"nofollow noreferrer\">java.time</a> library (applicable as noted in other answers to Java version 8+). <a href=\"https://www.iso.org/iso-8601-date-and-time-format.html\" rel=\"nofollow noreferrer\">ISO 8601</a> sets standard way to write dates: <code>YYYY-MM-DD</code> so the format of date-time is only as below (could be 0, 3, 6 or 9 digits for milliseconds) and no formatting string necessary:</p>\n\n<pre><code>import java.time.Instant;\npublic static void main(String[] args) {\n    String date=\"2010-10-02T12:23:23Z\";\n    try {\n        Instant myDate = Instant.parse(date);\n    } catch (ParseException e) {\n        // TODO Auto-generated catch block\n        e.printStackTrace();\n    }\n}\n</code></pre>\n\n<p>I did not need it, but as getting year is in code from the question, then:<br>\nit is trickier, cannot be done from <code>Instant</code> directly, can be done via <code>Calendar</code> in way of questions <a href=\"https://stackoverflow.com/questions/136419/get-integer-value-of-the-current-year-in-java\">Get integer value of the current year in Java</a> and <a href=\"https://stackoverflow.com/questions/28779179/converting-java-time-to-calendar\">Converting java.time to Calendar</a> but IMHO as format is fixed substring is more simple to use:  </p>\n\n<pre><code>myDate.toString().substring(0,4);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7612423,
+        "reputation" : 87400,
+        "user_id" : 5772882,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/8283c64511fa80afed5259d10850168f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Anonymous",
+        "link" : "https://stackoverflow.com/users/5772882/anonymous"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1636775046,
+      "post_id" : 69949444,
+      "comment_id" : 123653342,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks. (1) Avoid <code>Timestamp</code> if you can. If for JDBC <a href=\"https://stackoverflow.com/a/67505173/5772882\">use <code>OffsetDateTime</code> or <code>LocalDateTime</code></a>. (2) Whether your conversion is correct depends. It also seems a bit more complicated than necessary."
+    }, {
+      "owner" : {
+        "account_id" : 7612423,
+        "reputation" : 87400,
+        "user_id" : 5772882,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/8283c64511fa80afed5259d10850168f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Anonymous",
+        "link" : "https://stackoverflow.com/users/5772882/anonymous"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1636775319,
+      "post_id" : 69949444,
+      "comment_id" : 123653373,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you do need an old-fashioned <code>Timestamp</code> for a legacy API not yet upgraded to java.time: <code>return Timestamp.from(OffsetDateTime.parse(dateAsString).toInstant(&zwnj;&#8203;));</code>. A bit simpler, isn’t it?"
+    }, {
+      "owner" : {
+        "account_id" : 2179728,
+        "reputation" : 80991,
+        "user_id" : 10819573,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/MWKel.jpg?s=256",
+        "display_name" : "Arvind Kumar Avinash",
+        "link" : "https://stackoverflow.com/users/10819573/arvind-kumar-avinash"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1669055134,
+      "post_id" : 69949444,
+      "comment_id" : 131551375,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<a href=\"https://stackoverflow.com/a/67953075/10819573\">&#39;Z&#39; is not the same as Z</a>"
+    } ],
+    "owner" : {
+      "account_id" : 18175401,
+      "reputation" : 69,
+      "user_id" : 13224251,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bd66b5c10fba0fb2878e1c3ce3903da5?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tiouliandine Maxim",
+      "link" : "https://stackoverflow.com/users/13224251/tiouliandine-maxim"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1636753886,
+    "creation_date" : 1636753886,
+    "answer_id" : 69949444,
+    "question_id" : 2597083,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can parse string to Timestamp with the following method:</p>\n<pre><code>public static void main(String[] args) {\n\n    String timeStr = &quot;2021-11-11T10:25:35+00:00&quot;;\n    System.out.println(convertStringToTimestamp(timeStr));\n\n}\n\nstatic Timestamp convertStringToTimestamp(String dateAsString) {\n    OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateAsString);\n    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd'T'HH:mm:ss'Z'&quot;);\n    return Optional.ofNullable(offsetDateTime.toString())\n            .map(value -&gt; LocalDateTime.parse(value, dateTimeFormatter))\n            .map(Timestamp::valueOf)\n            .orElse(null);\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 117060,
+    "reputation" : 36228,
+    "user_id" : 306719,
+    "user_type" : "registered",
+    "accept_rate" : 78,
+    "profile_image" : "https://www.gravatar.com/avatar/8b5f2224482b0bc3648353d36a0c8814?s=256&d=identicon&r=PG",
+    "display_name" : "hguser",
+    "link" : "https://stackoverflow.com/users/306719/hguser"
+  },
+  "is_answered" : true,
+  "view_count" : 217130,
+  "protected_date" : 1457017552,
+  "accepted_answer_id" : 2597111,
+  "answer_count" : 4,
+  "score" : 232,
+  "last_activity_date" : 1636753886,
+  "creation_date" : 1270692006,
+  "last_edit_date" : 1475798178,
+  "question_id" : 2597083,
+  "link" : "https://stackoverflow.com/questions/2597083/illegal-pattern-character-t-when-parsing-a-date-string-to-java-util-date",
+  "title" : "Illegal pattern character &#39;T&#39; when parsing a date string to java.util.Date",
+  "body" : "<p>I have a date string and I want to parse it to normal date use the java Date API,the following is my code:</p>\n\n<pre><code>public static void main(String[] args) {\n    String date=\"2010-10-02T12:23:23Z\";\n    String pattern=\"yyyy-MM-ddThh:mm:ssZ\";\n    SimpleDateFormat sdf=new SimpleDateFormat(pattern);\n    try {\n        Date d=sdf.parse(date);\n        System.out.println(d.getYear());\n    } catch (ParseException e) {\n        // TODO Auto-generated catch block\n        e.printStackTrace();\n    }\n}\n</code></pre>\n\n<p>However I got an exception: <code>java.lang.IllegalArgumentException: Illegal pattern character 'T'</code></p>\n\n<p>So I wonder if I have to split the string and parse it manually?</p>\n\n<p>BTW, I have tried to add a single quote character on either side of the T:   </p>\n\n<pre><code>String pattern=\"yyyy-MM-dd'T'hh:mm:ssZ\";\n</code></pre>\n\n<p>It also does not work.</p>\n"
+}

@@ -1,0 +1,93 @@
+{
+  "tags" : [ "java", "swing", "comboboxmodel" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 533594,
+        "reputation" : 3998,
+        "user_id" : 903998,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/pZCd4.jpg?s=256",
+        "display_name" : "Victor",
+        "link" : "https://stackoverflow.com/users/903998/victor"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1375138264,
+      "post_id" : 17914695,
+      "comment_id" : 26207579,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Very completed answer. So, to let me things clear... the fact we are facing here is that the code of the JComboBox can compare a Proxy &quot;A&quot; with a Proxied Object &quot;B&quot;, and besides, the proxy &quot;A&quot; is actually proxing the object &quot;B&quot;, the equals will fails due to the fact that they belong to different classes.. (any reasonable implementation of equals should return false). BTW i manage to do some work around.. returing the proxied object (in the getSelectedItem and getElementAt), and having a map of object -&gt; proxy (in order to retrieve the proxy that is proxing the object passed as key)"
+    }, {
+      "owner" : {
+        "account_id" : 969721,
+        "reputation" : 347625,
+        "user_id" : 992484,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://i.sstatic.net/K1mTV.jpg?s=256",
+        "display_name" : "MadProgrammer",
+        "link" : "https://stackoverflow.com/users/992484/madprogrammer"
+      },
+      "reply_to_user" : {
+        "account_id" : 533594,
+        "reputation" : 3998,
+        "user_id" : 903998,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/pZCd4.jpg?s=256",
+        "display_name" : "Victor",
+        "link" : "https://stackoverflow.com/users/903998/victor"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1375142297,
+      "post_id" : 17914695,
+      "comment_id" : 26208721,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yeah, that&#39;s basic.  If you try and do <code>proxyA.equals(proxyB)</code>, it is not actually comparing the two proxy objects, by comparing <code>proxyA.objectBeginProxied</code> with <code>proxyB</code> which will never be capable of return <code>true</code>.  That&#39;s an interesting work around, you might want to update you question with the work around for anybody else with the same problem"
+    } ],
+    "owner" : {
+      "account_id" : 969721,
+      "reputation" : 347625,
+      "user_id" : 992484,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/K1mTV.jpg?s=256",
+      "display_name" : "MadProgrammer",
+      "link" : "https://stackoverflow.com/users/992484/madprogrammer"
+    },
+    "is_accepted" : true,
+    "score" : 4,
+    "last_activity_date" : 1375061427,
+    "last_edit_date" : 1375061427,
+    "creation_date" : 1375060589,
+    "answer_id" : 17914695,
+    "question_id" : 17914317,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The problem is, the <code>JComboBox</code> is using <code>Object#equals</code> to compare values.</p>\n\n<p><code>JComboBox#setSelectedIndex</code> is calling <code>JComboBox#getSelectedItem</code>, which is using...</p>\n\n<pre><code>for (int i = 0; i &lt; dataModel.getSize(); i++) {\n    E element = dataModel.getElementAt(i);\n    if (anObject.equals(element)) {\n        found = true;\n        objectToSelect = element;\n        break;\n    }\n}\n</code></pre>\n\n<p>To verify that the object exists within the model before setting it.</p>\n\n<p>The problem is, your proxy object is calling <code>equals</code> not on the <code>Proxy</code> but is invoking <code>equals</code> in the object it is proxing, which ends up begin <code>false</code> (because <code>Proxy#equals(Proxy)</code> is more like <code>Proxy.objectBeginProxied#equsl(Proxy)</code></p>\n\n<p>This is actually noted in the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/reflect/Proxy.html\" rel=\"nofollow\">Java Docs</a></p>\n\n<blockquote>\n  <p>An invocation of the hashCode, equals, or toString methods declared in\n  java.lang.Object on a proxy instance will be encoded and dispatched to\n  the invocation handler's invoke method in the same manner as interface\n  method invocations are encoded and dispatched, as described above. The\n  declaring class of the Method object passed to invoke will be\n  java.lang.Object. Other public methods of a proxy instance inherited\n  from java.lang.Object are not overridden by a proxy class, so\n  invocations of those methods behave like they do for instances of\n  java.lang.Object.</p>\n</blockquote>\n\n<p>I'm not sure how you would fix this though</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 533594,
+    "reputation" : 3998,
+    "user_id" : 903998,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://i.sstatic.net/pZCd4.jpg?s=256",
+    "display_name" : "Victor",
+    "link" : "https://stackoverflow.com/users/903998/victor"
+  },
+  "is_answered" : true,
+  "view_count" : 152,
+  "accepted_answer_id" : 17914695,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1763998065,
+  "creation_date" : 1375056442,
+  "last_edit_date" : 1763998065,
+  "question_id" : 17914317,
+  "link" : "https://stackoverflow.com/questions/17914317/comboboxmodel-with-dynamic-proxied-objects",
+  "title" : "ComboBoxModel with Dynamic Proxied Objects",
+  "body" : "<p>As we know the <code>ComboBoxModel</code> interface is used to created a class in witch we can specify how to relate a collections of objects (the model) with the combobox, basically by supplying the necessary &quot;information&quot; on how to retrieve items and set current item.\nGenerally I wrote those classes declaring as member a <code>Collection &lt;of a concrete type&gt;</code>, and just delegate some functionality to the collection object in the implemented methods.\nWhen the actual class of all the contained object are a Not-Proxied object everything goes fine (surely 90% of the times we have this situation), but this time a face the fact to have references to Proxied Objects and things goes strangely wrong.\nThe JComboBox behavior goes wrong as it cannot change the current selection.</p>\n<p>I am trying to get some more information, but by now I only know that the method <code>setSelectedItem</code> of <code>ComboBoxModel</code> interface, that any concrete classes implements is not invoking when there are proxied objects around. That is my question: What is happening and, more important, is it fixable?</p>\n<p>I leave an example, ready to look and see for yourself.</p>\n<pre><code>import java.awt.event.ActionEvent;\nimport java.awt.event.ActionListener;\nimport java.lang.reflect.InvocationHandler;\nimport java.lang.reflect.Method;\nimport java.lang.reflect.Proxy;\nimport java.util.ArrayList;\nimport java.util.List;\nimport javax.swing.*;\n\n/**\n *\n * @author Administrador\n */\npublic class AComboBoxWithProxyProblem extends JFrame implements ActionListener\n{\n     ComboBoxModel modelWithProxies = new ItemComboBoxModelWithProxies();\n     ComboBoxModel modelWithoutProxies = new ItemComboBoxModelWithoutProxies();\n     \n        public AComboBoxWithProxyProblem()\n        {\n            final JComboBox comboBox = new JComboBox();\n            comboBox.addActionListener( this );\n            \n            \n            getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.LINE_AXIS));\n            getContentPane().add(comboBox);\n            \n            JRadioButton btnProxy = new JRadioButton(&quot;Proxy model&quot;);\n            btnProxy.addActionListener(new ActionListener() {\n\n                @Override\n                public void actionPerformed(ActionEvent e)\n                {\n                    comboBox.setModel(modelWithProxies);\n                    comboBox.setSelectedIndex(0);\n                }\n            });\n            \n            getContentPane().add(btnProxy);\n            \n            JRadioButton btnNoProxy = new JRadioButton(&quot;Non Proxy model&quot;);\n            btnNoProxy.addActionListener(new ActionListener() {\n\n                @Override\n                public void actionPerformed(ActionEvent e)\n                {\n                    comboBox.setModel(modelWithoutProxies);\n                    comboBox.setSelectedIndex(0);\n                }\n            });\n            \n            getContentPane().add(btnNoProxy);\n            \n            ButtonGroup group = new ButtonGroup();\n            group.add(btnProxy);\n            group.add(btnNoProxy);\n            \n            setTitle(&quot;Mmmm...&quot;);\n        }\n\n        @Override\n        public void actionPerformed(ActionEvent e)\n        {\n            JComboBox comboBox = (JComboBox)e.getSource();\n            Item item = (Item)comboBox.getSelectedItem();\n            System.out.println(&quot;[actionPerformed] - &quot; + item.getId() + &quot; : &quot; + item.getDescription() );\n        }\n\n\n    interface ItemInterface\n    {\n\n        String getDescription();\n\n        int getId();\n\n        @Override\n        String toString();\n\n    }\n\n    class Item implements AComboBoxWithProxyProblem.ItemInterface\n    {\n        private int id;\n        private String description;\n\n        public Item(int id, String description)\n        {\n            this.id = id;\n            this.description = description;\n        }\n\n        @Override\n        public int getId()\n        {\n            return id;\n        }\n\n        @Override\n        public String getDescription()\n        {\n            return description;\n        }\n\n        @Override\n        public String toString()\n        {\n            return description;\n        }\n\n    }\n        \n    private class ItemComboBoxModelWithoutProxies extends AbstractListModel implements ComboBoxModel\n    {\n        List&lt;ItemInterface&gt; foos;\n        ItemInterface selected;\n        \n        public ItemComboBoxModelWithoutProxies()\n        {\n            foos = new ArrayList&lt;&gt; ();\n            foos.add(new Item(1,&quot;One&quot;));\n            foos.add(new Item(2,&quot;Two&quot;));\n            foos.add(new Item(3,&quot;Three&quot;));\n        }\n\n        @Override\n        public Object getSelectedItem()\n        {\n            return selected;\n        }\n\n        @Override\n        public void setSelectedItem(Object tournament)\n        {\n            System.out.println(&quot;[setSelectedItem] &quot; + tournament);\n            selected = (ItemInterface) tournament;\n        }\n\n        @Override\n        public int getSize()\n        {\n            return this.foos.size();\n        }\n\n        @Override\n        public Object getElementAt(int i)\n        {\n            return this.foos.get(i);\n        }\n    }\n    \n    private class ItemComboBoxModelWithProxies extends AbstractListModel implements ComboBoxModel\n    {\n        List&lt;ItemInterface&gt; foos;\n        Object selected;\n        \n        public ItemComboBoxModelWithProxies()\n        {\n            foos = new ArrayList&lt;&gt; ();\n            ItemInterface item;\n            item = (ItemInterface) Proxy.newProxyInstance(Item.class.getClassLoader(),\n                    Item.class.getInterfaces(),\n                    new ItemInvocationHandler (new Item(1,&quot;One&quot;)));\n            foos.add(item);\n            \n            item = (ItemInterface) Proxy.newProxyInstance(Item.class.getClassLoader(),\n                    Item.class.getInterfaces(),\n                    new ItemInvocationHandler (new Item(2,&quot;Two&quot;)));\n            foos.add(item);\n            \n            item = (ItemInterface) Proxy.newProxyInstance(Item.class.getClassLoader(),\n                    Item.class.getInterfaces(),\n                    new ItemInvocationHandler (new Item(3,&quot;Three&quot;)));\n            foos.add(item);\n        }\n\n        @Override\n        public Object getSelectedItem()\n        {\n            return selected;\n        }\n\n        @Override\n        public void setSelectedItem(Object tournament)\n        {\n            System.out.println(&quot;[setSelectedItem] &quot; + tournament);\n            selected = (ItemInterface) tournament;\n        }\n\n        @Override\n        public int getSize()\n        {\n            return this.foos.size();\n        }\n\n        @Override\n        public Object getElementAt(int i)\n        {\n            return this.foos.get(i);\n        }\n        \n        private class ItemInvocationHandler implements InvocationHandler {\n            Item item;\n\n            public ItemInvocationHandler(Item item)\n            {\n                this.item = item;\n            }\n            \n            @Override\n            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable\n            {\n                return method.invoke(this.item, args);\n            }\n        }\n    }\n    \n    public static void main(String[] args)\n    {\n        JFrame frame = new AComboBoxWithProxyProblem();\n        frame.setDefaultCloseOperation( EXIT_ON_CLOSE );\n        frame.pack();\n        frame.setLocationRelativeTo(null);\n        frame.setVisible( true );\n    }\n\n}\n</code></pre>\n"
+}

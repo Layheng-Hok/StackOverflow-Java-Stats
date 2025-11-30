@@ -1,0 +1,135 @@
+{
+  "tags" : [ "java", "regex", "string", "escaping" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1494484,
+      "reputation" : 56882,
+      "user_id" : 1400768,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/tM0N8.png?s=256",
+      "display_name" : "nhahtdh",
+      "link" : "https://stackoverflow.com/users/1400768/nhahtdh"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1392113955,
+    "post_id" : 21698185,
+    "comment_id" : 32806831,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "This is <a href=\"http://stackoverflow.com/questions/21535811/regex-include-and-exclude-escape-sequences/21536109#21536109\">my answer</a> from another question that has similar requirement. It handles the case of multiple <code>\\</code> in a row. However, as fge suggested, you might be better off using a library, since my code is written without knowledge of corner cases in CSV format."
+  }, {
+    "owner" : {
+      "account_id" : 1542700,
+      "reputation" : 2121,
+      "user_id" : 1436954,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://i.sstatic.net/eSHM0.jpg?s=256",
+      "display_name" : "Ulrich Scholz",
+      "link" : "https://stackoverflow.com/users/1436954/ulrich-scholz"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1392115105,
+    "post_id" : 21698185,
+    "comment_id" : 32807579,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Thanks for the suggestion. I will have a look at it.  Nevertheless, I would like my project to have as few dependencies to additional artifacts as possible (guava and Apache Commons is ok). And probably this issue is the only one that would require that library.  So I would prefer not to use it."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1321086,
+      "reputation" : 4495,
+      "user_id" : 1266906,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c70b65184e456ff7e8751a3231b09c7c?s=256&d=identicon&r=PG",
+      "display_name" : "TheConstructor",
+      "link" : "https://stackoverflow.com/users/1266906/theconstructor"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1763633185,
+    "last_edit_date" : 1763633185,
+    "creation_date" : 1392246418,
+    "answer_id" : 21741861,
+    "question_id" : 21698185,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "\n<p>While certainly a dedicated library is a good idea the following will work</p>\n<pre class=\"lang-java prettyprint-override\"><code>    public static String[] splitValues(final String input) {\n        final ArrayList&lt;String&gt; result = new ArrayList&lt;String&gt;();\n        // (?:\\\\\\\\)* matches any number of \\-pairs\n        // (?&lt;!\\\\) ensures that the \\-pairs aren't preceded by a single \\\n        final Pattern pattern = Pattern.compile(&quot;(?&lt;!\\\\\\\\)(?:\\\\\\\\\\\\\\\\)*+,&quot;);\n        final Matcher matcher = pattern.matcher(input);\n        int previous = 0;\n        while (matcher.find()) {\n            result.add(input.substring(previous, matcher.end() - 1));\n            previous = matcher.end();\n        }\n        result.add(input.substring(previous, input.length()));\n        return result.toArray(new String[result.size()]);\n    }\n</code></pre>\n<p>Idea is to find <code>,</code> prefixed by no or even-numbered <code>\\</code> (i.e. not escaped <code>,</code>) and as the <code>,</code> is the last part of the pattern cut at <code>end()-1</code> which is just before the <code>,</code>.</p>\n<p>Function is tested against most odds I can think of except for <code>null</code>-input. If you like handling <code>List&lt;String&gt;</code> better you can of course change the return; I just adopted the pattern implemented in <code>split()</code> to handle escapes.</p>\n<p>Example class uitilizing this function:</p>\n<pre class=\"lang-java prettyprint-override\"><code>import java.util.ArrayList;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\npublic class Print {\n    public static void main(final String[] args) {\n        String input = &quot;,,\\\\,\\\\\\\\,,&quot;;\n        final String[] strings = splitValues(input);\n        System.out.print(&quot;\\&quot;&quot;+input+&quot;\\&quot; =&gt; &quot;);\n        printQuoted(strings);\n    }\n\n    public static String[] splitValues(final String input) {\n        final ArrayList&lt;String&gt; result = new ArrayList&lt;String&gt;();\n        // (?:\\\\\\\\)* matches any number of \\-pairs\n        // (?&lt;!\\\\) ensures that the \\-pairs aren't preceded by a single \\\n        final Pattern pattern = Pattern.compile(&quot;(?&lt;!\\\\\\\\)(?:\\\\\\\\\\\\\\\\)*+,&quot;);\n        final Matcher matcher = pattern.matcher(input);\n        int previous = 0;\n        while (matcher.find()) {\n            result.add(input.substring(previous, matcher.end() - 1));\n            previous = matcher.end();\n        }\n        result.add(input.substring(previous, input.length()));\n        return result.toArray(new String[result.size()]);\n    }\n\n    public static void printQuoted(final String[] strings) {\n        if (strings.length &gt; 0) {\n            System.out.print(&quot;[\\&quot;&quot;);\n            System.out.print(strings[0]);\n            for(int i = 1; i &lt; strings.length; i++) {\n                System.out.print(&quot;\\&quot;, \\&quot;&quot;);\n                System.out.print(strings[i]);\n            }\n            System.out.println(&quot;\\&quot;]&quot;);\n        } else {\n            System.out.println(&quot;[]&quot;);\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3895850,
+      "reputation" : 813,
+      "user_id" : 3303182,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/0a5c5ad25ae54bd2be9c5091cf5eb1d1?s=256&d=identicon&r=PG",
+      "display_name" : "Simon Soriano",
+      "link" : "https://stackoverflow.com/users/3303182/simon-soriano"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1392301683,
+    "creation_date" : 1392301683,
+    "answer_id" : 21756993,
+    "question_id" : 21698185,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In this case a custom function sounds better for me. Try this:</p>\n\n<pre><code>public String[] splitEscapedString(String s) {\n    //Character that won't appear in the string.\n    //If you are reading lines, '\\n' should work fine since it will never appear.\n    String c = \"\\n\";\n    StringBuilder sb = new StringBuilder();\n    for(int i = 0;i&lt;s.length();++i){\n        if(s.charAt(i)=='\\\\') {\n            //If the String is well formatted(all '\\' are followed by a character),\n            //this line should not have problem.\n            sb.append(s.charAt(++i));                \n        }\n        else {\n            if(s.charAt(i) == ',') {\n                sb.append(c);\n            }\n            else {\n                sb.append(s.charAt(i));\n            }\n        }\n    }\n    return sb.toString().split(c);\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10843,
+      "reputation" : 337423,
+      "user_id" : 20670,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/251f2449ffba9fbcc3491db6564ff4a2?s=256&d=identicon&r=PG",
+      "display_name" : "Tim Pietzcker",
+      "link" : "https://stackoverflow.com/users/20670/tim-pietzcker"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1392302627,
+    "creation_date" : 1392302627,
+    "answer_id" : 21757358,
+    "question_id" : 21698185,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Don't use <code>.split()</code> but find all matches between (unescaped) commas:</p>\n\n<pre><code>List&lt;String&gt; matchList = new ArrayList&lt;String&gt;();\nPattern regex = Pattern.compile(\n    \"(?:         # Start of group\\n\" +\n    \" \\\\\\\\.      # Match either an escaped character\\n\" +\n    \"|           # or\\n\" +\n    \" [^\\\\\\\\,]++ # Match one or more characters except comma/backslash\\n\" +\n    \")*          # Do this any number of times\", \n    Pattern.COMMENTS);\nMatcher regexMatcher = regex.matcher(subjectString);\nwhile (regexMatcher.find()) {\n    matchList.add(regexMatcher.group());\n} \n</code></pre>\n\n<p>Result: <code>[\"\", \"\", \"\\\\,\\\\\\\\\", \"\", \"\"]</code></p>\n\n<p>I used a <a href=\"http://www.regular-expressions.info/possessive.html\" rel=\"nofollow\">possessive quantifier</a> (<code>++</code>)  in order to avoid excessive backtracking due to the nested quantifiers.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 378142,
+      "reputation" : 1,
+      "user_id" : 730676,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d3dbced7becb1536d6686d64b3154906?s=256&d=identicon&r=PG",
+      "display_name" : "Nikunj",
+      "link" : "https://stackoverflow.com/users/730676/nikunj"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1622040480,
+    "creation_date" : 1622040480,
+    "answer_id" : 67707356,
+    "question_id" : 21698185,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have used below solution for generic sting splitter with quotes(' and &quot;) and escape(\\) character.</p>\n<pre><code>public static List&lt;String&gt; split(String str, final char splitChar) {\n    List&lt;String&gt; queries = new ArrayList&lt;&gt;();\n    int length = str.length();\n    int start = 0, current = 0;\n    char ch, quoteChar;\n    \n    while (current &lt; length) {\n        ch=str.charAt(current);\n        // Handle escape char by skipping next char\n        if(ch == '\\\\') {\n            current++;\n        }else if(ch == '\\'' || ch=='&quot;'){ // Handle quoted values\n            quoteChar = ch;\n            current++;\n            while(current &lt; length) {\n                ch = str.charAt(current);\n                // Handle escape char by skipping next char\n                if (ch == '\\\\') {\n                    current++;\n                } else if (ch == quoteChar) {\n                    break;\n                }\n                current++;\n            }\n        }else if(ch == splitChar) { // Split sting\n            queries.add(str.substring(start, current + 1));\n            start = current + 1;\n        }\n        current++;\n    }\n    // Add last value\n    if (start &lt; current) {\n        queries.add(str.substring(start));\n    }\n    return queries;\n}\n\npublic static void main(String[] args) {\n\n    String str = &quot;abc,x\\\\,yz,'de,f',\\&quot;lm,n\\&quot;&quot;;\n    List&lt;String&gt; queries = split(str, ',');\n    System.out.println(&quot;Size: &quot;+queries.size());\n    for (String query : queries) {\n        System.out.println(query);\n    }\n}\n</code></pre>\n<p>Getting result</p>\n<pre><code>Size: 4\nabc,\nx\\,yz,\n'de,f',\n&quot;lm,n&quot;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1542700,
+    "reputation" : 2121,
+    "user_id" : 1436954,
+    "user_type" : "registered",
+    "accept_rate" : 56,
+    "profile_image" : "https://i.sstatic.net/eSHM0.jpg?s=256",
+    "display_name" : "Ulrich Scholz",
+    "link" : "https://stackoverflow.com/users/1436954/ulrich-scholz"
+  },
+  "is_answered" : true,
+  "view_count" : 2566,
+  "answer_count" : 4,
+  "score" : 0,
+  "last_activity_date" : 1763633185,
+  "creation_date" : 1392111818,
+  "question_id" : 21698185,
+  "link" : "https://stackoverflow.com/questions/21698185/split-a-string-at-comma-but-avoid-escaped-comma-and-backslash",
+  "title" : "split a string at comma but avoid escaped comma and backslash",
+  "body" : "<p>I'd like to split a string at comma <code>\",\"</code>.  The string contains escaped commas <code>\"\\,\"</code> and escaped backslashs <code>\"\\\\\"</code>.  Commas at the beginning and end as well as several commas in a row should lead to empty strings.</p>\n\n<p>So <code>\",,\\,\\\\,,\"</code> should become <code>\"\"</code>, <code>\"\"</code>, <code>\"\\,\\\\\"</code>, <code>\"\"</code>, <code>\"\"</code></p>\n\n<p>Note that my example strings show backslash as single <code>\"\\\"</code>. Java strings would have them doubled. </p>\n\n<p>I tried with several packages but had no success.  My last idea would be to write my own parser.</p>\n"
+}

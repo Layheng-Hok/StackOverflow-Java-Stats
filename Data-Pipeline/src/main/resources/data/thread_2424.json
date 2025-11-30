@@ -1,0 +1,338 @@
+{
+  "tags" : [ "java", "unit-testing", "generics", "mockito", "bounded-wildcard" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 326971,
+      "reputation" : 10027,
+      "user_id" : 649048,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7ac2a20c156364b376b7e73f30d6ea05?s=256&d=identicon&r=PG",
+      "display_name" : "millhouse",
+      "link" : "https://stackoverflow.com/users/649048/millhouse"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1317180713,
+    "post_id" : 7366237,
+    "comment_id" : 9189496,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Can you update your code snippet to show the generic types?"
+  }, {
+    "owner" : {
+      "account_id" : 89088,
+      "reputation" : 2105,
+      "user_id" : 245997,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/470b3a2352b711eab9787275c9fa1ce2?s=256&d=identicon&r=PG",
+      "display_name" : "Shikhar Mishra",
+      "link" : "https://stackoverflow.com/users/245997/shikhar-mishra"
+    },
+    "reply_to_user" : {
+      "account_id" : 326971,
+      "reputation" : 10027,
+      "user_id" : 649048,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7ac2a20c156364b376b7e73f30d6ea05?s=256&d=identicon&r=PG",
+      "display_name" : "millhouse",
+      "link" : "https://stackoverflow.com/users/649048/millhouse"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1317737892,
+    "post_id" : 7366237,
+    "comment_id" : 9292378,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Done. I had to remove pre and code tags, they were stripping-off &lt;? extends Number&gt; from the type declaration."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 326971,
+      "reputation" : 10027,
+      "user_id" : 649048,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7ac2a20c156364b376b7e73f30d6ea05?s=256&d=identicon&r=PG",
+      "display_name" : "millhouse",
+      "link" : "https://stackoverflow.com/users/649048/millhouse"
+    },
+    "is_accepted" : false,
+    "score" : 39,
+    "last_activity_date" : 1317776491,
+    "creation_date" : 1317776491,
+    "answer_id" : 7655709,
+    "question_id" : 7366237,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I'm assuming you want to be able to load up <code>someList</code> with some known values; here's an approach that uses <code>Answer&lt;T&gt;</code> together with a templated helper method to keep everything type-safe:</p>\n\n<pre><code>@Test\npublic void testMockitoWithGenericsUsingAnswer()\n{\n    DummyClass dummyClass =  Mockito.mock(DummyClass.class);\n\n    Answer&lt;List&lt;Integer&gt;&gt; answer = setupDummyListAnswer(77, 88, 99);\n    Mockito.when(dummyClass.dummyMethod()).thenAnswer(answer);\n\n    ...\n}\n\nprivate &lt;N extends Number&gt; Answer&lt;List&lt;N&gt;&gt; setupDummyListAnswer(N... values) {\n    final List&lt;N&gt; someList = new ArrayList&lt;N&gt;();\n\n    someList.addAll(Arrays.asList(values));\n\n    Answer&lt;List&lt;N&gt;&gt; answer = new Answer&lt;List&lt;N&gt;&gt;() {\n        public List&lt;N&gt; answer(InvocationOnMock invocation) throws Throwable {\n            return someList;\n        }   \n    };\n    return answer;\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2780904,
+        "reputation" : 417,
+        "user_id" : 2393477,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/401b8697f51bf58015eb8fdcfe91450e?s=256&d=identicon&r=PG",
+        "display_name" : "ttati",
+        "link" : "https://stackoverflow.com/users/2393477/ttati"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1472571395,
+      "post_id" : 10688480,
+      "comment_id" : 65800473,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "this partially help me as well... but what happens if the list you expect to return is not empty?"
+    }, {
+      "owner" : {
+        "account_id" : 2780904,
+        "reputation" : 417,
+        "user_id" : 2393477,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/401b8697f51bf58015eb8fdcfe91450e?s=256&d=identicon&r=PG",
+        "display_name" : "ttati",
+        "link" : "https://stackoverflow.com/users/2393477/ttati"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1472572417,
+      "post_id" : 10688480,
+      "comment_id" : 65801214,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "instead of having an empty list you can you can also do :     List&lt;Number&gt; someList = new ArrayList&lt;Integer&gt;();     someList.add(aNumber);"
+    }, {
+      "owner" : {
+        "account_id" : 5261242,
+        "reputation" : 7943,
+        "user_id" : 4214921,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/9sBcG.jpg?s=256",
+        "display_name" : "potame",
+        "link" : "https://stackoverflow.com/users/4214921/potame"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1628783532,
+      "post_id" : 10688480,
+      "comment_id" : 121519668,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This answer around the same question is quite nice : <a href=\"https://stackoverflow.com/a/19119230/4214921\">stackoverflow.com/a/19119230/4214921</a>"
+    } ],
+    "owner" : {
+      "account_id" : 103560,
+      "reputation" : 6002,
+      "user_id" : 277307,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/6Y4Ny.jpg?s=256",
+      "display_name" : "John McCarthy",
+      "link" : "https://stackoverflow.com/users/277307/john-mccarthy"
+    },
+    "is_accepted" : true,
+    "score" : 250,
+    "last_activity_date" : 1561634127,
+    "last_edit_date" : 1561634127,
+    "creation_date" : 1337615564,
+    "answer_id" : 10688480,
+    "question_id" : 7366237,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can also use the non-type safe method <a href=\"https://static.javadoc.io/org.mockito/mockito-core/2.13.0/org/mockito/Mockito.html#doReturn-java.lang.Object-\" rel=\"noreferrer\" title=\"Mockito Javadoc - doReturn\">doReturn</a> for this purpose,</p>\n\n<pre><code>@Test\npublic void testMockitoWithGenerics()\n{\n    DummyClass dummyClass = Mockito.mock(DummyClass.class);\n    List&lt;? extends Number&gt; someList = new ArrayList&lt;Integer&gt;();\n\n    Mockito.doReturn(someList).when(dummyClass).dummyMethod();\n\n    Assert.assertEquals(someList, dummyClass.dummyMethod());\n}\n</code></pre>\n\n<p>as <a href=\"https://groups.google.com/d/msg/mockito/ljVV1GiJe9Y/9OdFbxvjQNcJ\" rel=\"noreferrer\" title=\"Mockito google groups discussion: thenReturn usage for generics\">discussed</a> on Mockito's google group.  </p>\n\n<p>While this is simpler than <code>thenAnswer</code>, again note that it is not type safe.  If you're concerned about type safety, millhouse's <a href=\"https://stackoverflow.com/a/7655709/277307\">answer</a> is correct.  </p>\n\n<h3>Additional Details</h3>\n\n<p>To be clear, here's the observed compiler error,</p>\n\n<blockquote>\n  <p><code>The method thenReturn(List&lt;capture#1-of ? extends Number&gt;) in the type OngoingStubbing&lt;List&lt;capture#1-of ? extends Number&gt;&gt; is not applicable for the arguments (List&lt;capture#2-of ? extends Number&gt;)</code></p>\n</blockquote>\n\n<p>I believe the compiler has assigned the first wildcard type during the <code>when</code> call and then cannot confirm that the second wildcard type in the <code>thenReturn</code> call is the same.   </p>\n\n<p>It looks like <code>thenAnswer</code> doesn't run into this issue because it accepts a wildcard type while <code>thenReturn</code> takes a non-wildcard type, which must be captured.  From Mockito's <a href=\"https://static.javadoc.io/org.mockito/mockito-core/2.13.0/org/mockito/stubbing/OngoingStubbing.html\" rel=\"noreferrer\" title=\"Mockito Javadoc - OngoingStubbing\">OngoingStubbing</a>,</p>\n\n<pre><code>OngoingStubbing&lt;T&gt; thenAnswer(Answer&lt;?&gt; answer);\nOngoingStubbing&lt;T&gt; thenReturn(T value);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 255208,
+        "reputation" : 153,
+        "user_id" : 535100,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3ac9b44939f43e8024b76219311db80b?s=256&d=identicon&r=PG",
+        "display_name" : "vacao",
+        "link" : "https://stackoverflow.com/users/535100/vacao"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1448031958,
+      "post_id" : 17867293,
+      "comment_id" : 55424646,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This seems straightforward, simple and, as near as I can tell, correct.  I&#39;m not sure why Mockito does not provide something similar to this.......unless it does?"
+    }, {
+      "owner" : {
+        "account_id" : 76789,
+        "reputation" : 3633,
+        "user_id" : 219584,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/zHzTs.jpg?s=256",
+        "display_name" : "fikovnik",
+        "link" : "https://stackoverflow.com/users/219584/fikovnik"
+      },
+      "edited" : false,
+      "score" : 21,
+      "creation_date" : 1452089878,
+      "post_id" : 17867293,
+      "comment_id" : 57015583,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In Java 8 it can be shortened: <code>Mockito.when(dummyClass.dummyMethod()).thenAnswer(x -&gt; someList)</code>, so no need for the utility method"
+    }, {
+      "owner" : {
+        "account_id" : 8897,
+        "reputation" : 11715,
+        "user_id" : 16206,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/63cb55b3966a6c3bfe829c00b74a4e4b?s=256&d=identicon&r=PG",
+        "display_name" : "borjab",
+        "link" : "https://stackoverflow.com/users/16206/borjab"
+      },
+      "reply_to_user" : {
+        "account_id" : 76789,
+        "reputation" : 3633,
+        "user_id" : 219584,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/zHzTs.jpg?s=256",
+        "display_name" : "fikovnik",
+        "link" : "https://stackoverflow.com/users/219584/fikovnik"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1459942143,
+      "post_id" : 17867293,
+      "comment_id" : 60512184,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@fikovnik What a great discovery &quot;thenAnswer&quot; !"
+    }, {
+      "owner" : {
+        "account_id" : 2920132,
+        "reputation" : 171,
+        "user_id" : 5325562,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/ZffWS.jpg?s=256",
+        "display_name" : "Maarten",
+        "link" : "https://stackoverflow.com/users/5325562/maarten"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1671454037,
+      "post_id" : 17867293,
+      "comment_id" : 132095660,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "You can write it quite elegantly like this:     public static &lt;T&gt; Answer&lt;T&gt; createAnswer(final T value) {         return (invocation) -&gt; value;     }"
+    } ],
+    "owner" : {
+      "account_id" : 881942,
+      "reputation" : 383,
+      "user_id" : 1979279,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b10852a47b177f8d8f1a9d96c6c20bfd?s=256&d=identicon&r=PG",
+      "display_name" : "Marek Radonsky",
+      "link" : "https://stackoverflow.com/users/1979279/marek-radonsky"
+    },
+    "is_accepted" : false,
+    "score" : 23,
+    "last_activity_date" : 1374781286,
+    "creation_date" : 1374781286,
+    "answer_id" : 17867293,
+    "question_id" : 7366237,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I hit the same thing yesterday. Both answers from @nondescript1 and @millhouse helped me to figure out a workaround. I've pretty much used the same code as @millhouse, except that I made it slightly more generic, because my error wasn't caused by a <code>java.util.List</code>, but the <code>com.google.common.base.Optional</code>. My little helper method therefore allows for any type <code>T</code> and not just <code>List&lt;T&gt;</code>:</p>\n\n<pre><code>public static &lt;T&gt; Answer&lt;T&gt; createAnswer(final T value) {\n    Answer&lt;T&gt; dummy = new Answer&lt;T&gt;() {\n        @Override\n        public T answer(InvocationOnMock invocation) throws Throwable {\n            return value;\n        }\n    };\n    return dummy;\n}\n</code></pre>\n\n<p>With this helper method you could write:</p>\n\n<pre><code>Mockito.when(dummyClass.dummyMethod()).thenAnswer(createAnswer(someList));\n</code></pre>\n\n<p>This compiles just fine and does the same thing as the <code>thenReturn(...)</code> method.</p>\n\n<p>Does someone know if the error that the Java compiler emits is a compiler bug or if the code is really incorrect?</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8565960,
+      "reputation" : 1108,
+      "user_id" : 6418426,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-kYoXkRwXLaM/AAAAAAAAAAI/AAAAAAAAUmI/dP4K1lA8fAw/s256-rj/photo.jpg",
+      "display_name" : "Andreas Siegel",
+      "link" : "https://stackoverflow.com/users/6418426/andreas-siegel"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1468410575,
+    "last_edit_date" : 1495541434,
+    "creation_date" : 1468410575,
+    "answer_id" : 38350921,
+    "question_id" : 7366237,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Although the utility method proposed by Marek Radonsky works, there is also an other option which doesn't even require the (IMHO strange looking) lambda expression fikovnik suggested:</p>\n\n<p>As <a href=\"https://stackoverflow.com/a/15944985/6418426\">this answer</a> to a similar question shows, you can also use the following:</p>\n\n<pre><code>BDDMockito.willReturn(someList).given(dummyClass).dummyMethod();\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3253109,
+        "reputation" : 331,
+        "user_id" : 2742897,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/0983d94668769aafa28be2716fea5138?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Venkatesh Kolla - user2742897",
+        "link" : "https://stackoverflow.com/users/2742897/venkatesh-kolla-user2742897"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1574770048,
+      "post_id" : 56791051,
+      "comment_id" : 104341307,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "though it doesn&#39;t give any compile time errors, the returned list is empty even when we are passing a list with entries."
+    } ],
+    "owner" : {
+      "account_id" : 494704,
+      "reputation" : 5447,
+      "user_id" : 1225882,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/vSHZ9.jpg?s=256",
+      "display_name" : "anothernode",
+      "link" : "https://stackoverflow.com/users/1225882/anothernode"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1562435069,
+    "last_edit_date" : 1562435069,
+    "creation_date" : 1561638589,
+    "answer_id" : 56791051,
+    "question_id" : 7366237,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I'm turning <a href=\"https://stackoverflow.com/questions/7366237/mockito-stubbing-methods-that-return-type-with-bounded-wild-cards/10688480#comment57015583_17867293\"><em>fikovnik</em>'s comment</a> into an answer here to give it more visibility as I think it's the most elegant solution using Java 8+.</p>\n\n<p>The <a href=\"https://static.javadoc.io/org.mockito/mockito-core/2.28.2/org/mockito/Mockito.html#doReturn\" rel=\"noreferrer\">Mockito documentation</a> recommends using <code>doReturn()</code> (as suggested in the accepted answer) only as a last resort.</p>\n\n<p>Instead, to circumevent the compiler error described in the question, the recommended Mockito <code>when()</code> approach can be used with <code>thenAnswer()</code> and a lambda (instead of a helper method):</p>\n\n<pre><code>Mockito.when(mockedClass.mockedMethod()).thenAnswer(x -&gt; resultList)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 706860,
+      "reputation" : 11354,
+      "user_id" : 601844,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ya3dBz0w.png?s=256",
+      "display_name" : "epox",
+      "link" : "https://stackoverflow.com/users/601844/epox"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1710097619,
+    "creation_date" : 1710097619,
+    "answer_id" : 78137156,
+    "question_id" : 7366237,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>Remove <code>? extends </code> from your DummyClass return type.</h1>\n<p><strong>Noncompliant Code Example:</strong></p>\n<blockquote>\n<p>--List&lt;? extends Number&gt; dummyMethod() {...}--</p>\n</blockquote>\n<p><strong>Compliant Solution</strong></p>\n<pre><code>List&lt;Number&gt; dummyMethod() {\n  \n  List&lt;Integer&gt; result = ...\n  return List.copyOf(result);\n}\n</code></pre>\n<p>NOTE: <code>List.copyOf()</code> implementation is performant <strong>if</strong> your collection is created with List.of, Stream.toList, etc., effectively doing a cast rather than a real copy. See its source code: <a href=\"https://github.com/AdoptOpenJDK/openjdk-jdk11/blob/master/src/java.base/share/classes/java/util/List.java#L1061\" rel=\"nofollow noreferrer\">src 1</a>, <strong><a href=\"https://github.com/AdoptOpenJDK/openjdk-jdk11/blob/master/src/java.base/share/classes/java/util/ImmutableCollections.java#L90\" rel=\"nofollow noreferrer\">src 2</a></strong>.</p>\n<p><strong>JUSTIFICATION:</strong> Using a wildcard like <code>&lt;? extends Number&gt;</code> in the return type is a critical &quot;Code Smell&quot;. Because would force your client code to struggle with wildcard-type declarations, as in your example with Mockito.</p>\n<h2>REFERENCEs:</h2>\n<ul>\n<li>Joshua Bloch &quot;<a href=\"https://rads.stackoverflow.com/amzn/click/com/0134685997\" rel=\"nofollow noreferrer\" rel=\"nofollow noreferrer\">Effective Java</a>&quot; Item 31:</li>\n</ul>\n<blockquote>\n<p><em><strong>Do not use</strong> &lt;&gt; <strong>wildcard types as return types</strong>, because it would force client code to use wildcards. Properly used, wildcards are nearly invisible to the user of a class. <strong>If the user of a class has to think about wildcard types, there is probably something wrong with its API.</strong></em></p>\n</blockquote>\n<ul>\n<li>Sonar code quality <a href=\"https://rules.sonarsource.com/java/RSPEC-1452/\" rel=\"nofollow noreferrer\">Rule java:S1452</a>\n<ul>\n<li>category: <strong>Code smell</strong>; severity: <strong>Critical</strong></li>\n</ul>\n</li>\n</ul>\n<blockquote>\n<p><em>It is highly recommended <strong>not</strong> to use wildcard types as return types. Because the type inference rules are fairly complex it is unlikely the user of that API will know how to use it correctly.</em></p>\n</blockquote>\n<blockquote>\n<p><em>...covariance is ineffective for the return type of a method since it is not an input position. Making it contravariant also has no effect since it is the receiver of the return value which must be contravariant (use-site variance in Java). Consequently, <strong>a return type containing wildcards is generally a mistake.</strong></em></p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 89088,
+    "reputation" : 2105,
+    "user_id" : 245997,
+    "user_type" : "registered",
+    "accept_rate" : 83,
+    "profile_image" : "https://www.gravatar.com/avatar/470b3a2352b711eab9787275c9fa1ce2?s=256&d=identicon&r=PG",
+    "display_name" : "Shikhar Mishra",
+    "link" : "https://stackoverflow.com/users/245997/shikhar-mishra"
+  },
+  "is_answered" : true,
+  "view_count" : 135882,
+  "accepted_answer_id" : 10688480,
+  "answer_count" : 6,
+  "score" : 172,
+  "last_activity_date" : 1710097619,
+  "creation_date" : 1315594758,
+  "last_edit_date" : 1400812586,
+  "question_id" : 7366237,
+  "link" : "https://stackoverflow.com/questions/7366237/mockito-stubbing-methods-that-return-type-with-bounded-wild-cards",
+  "title" : "Mockito: Stubbing Methods That Return Type With Bounded Wild-Cards",
+  "body" : "<p>Consider this code:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public class DummyClass {\n    public List&lt;? extends Number&gt; dummyMethod() {\n        return new ArrayList&lt;Integer&gt;();\n    }\n}\n</code></pre>\n\n<pre class=\"lang-java prettyprint-override\"><code>public class DummyClassTest {\n    public void testMockitoWithGenerics() {\n        DummyClass dummyClass = Mockito.mock(DummyClass.class);\n        List&lt;? extends Number&gt; someList = new ArrayList&lt;Integer&gt;();\n        Mockito.when(dummyClass.dummyMethod()).thenReturn(someList); //Compiler complains about this\n    }\n}\n</code></pre>\n\n<p>The compiler complains about the line that's trying to stub the behavior for <code>dummyMethod()</code>. Any pointers on how one goes about stubbing methods that return a type with bounded wild-cards?</p>\n"
+}

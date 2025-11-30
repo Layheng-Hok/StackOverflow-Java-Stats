@@ -1,0 +1,133 @@
+{
+  "tags" : [ "java", "spring", "reflection", "annotations", "spring-annotations" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13832917,
+        "reputation" : 1919,
+        "user_id" : 9985287,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mn5Ep.jpg?s=256",
+        "display_name" : "Mansur",
+        "link" : "https://stackoverflow.com/users/9985287/mansur"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1564117109,
+      "post_id" : 57212391,
+      "comment_id" : 100932104,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It worked!!! But why do you think it adds another level of complexity? Because I actually think changing an annotation with long parameters to an intuitive one is much more helpful. That&#39;s my thought. Could you please explain why do you think that way? Also, your solution does solve my problem in an amazing way, but returning to my generalized question, how can I replace an annotation with another in compile time. I searched for your suggestion in the first comment of yours, but I only found validation kind of stuff."
+    }, {
+      "owner" : {
+        "account_id" : 944235,
+        "reputation" : 4333,
+        "user_id" : 971808,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/dXKrK.gif?s=256",
+        "display_name" : "jeff",
+        "link" : "https://stackoverflow.com/users/971808/jeff"
+      },
+      "reply_to_user" : {
+        "account_id" : 13832917,
+        "reputation" : 1919,
+        "user_id" : 9985287,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mn5Ep.jpg?s=256",
+        "display_name" : "Mansur",
+        "link" : "https://stackoverflow.com/users/9985287/mansur"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1564136018,
+      "post_id" : 57212391,
+      "comment_id" : 100940139,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great! I totally agree that the smaller annotations are nicer in the method signature. I do understand the desire. But this is something custom that only your project will have vs any other Springfox project. The first time another developer encounters this they&#39;ll have to figure out how it works and how to extend it or fix it if problems occur."
+    }, {
+      "owner" : {
+        "account_id" : 944235,
+        "reputation" : 4333,
+        "user_id" : 971808,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/dXKrK.gif?s=256",
+        "display_name" : "jeff",
+        "link" : "https://stackoverflow.com/users/971808/jeff"
+      },
+      "reply_to_user" : {
+        "account_id" : 13832917,
+        "reputation" : 1919,
+        "user_id" : 9985287,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mn5Ep.jpg?s=256",
+        "display_name" : "Mansur",
+        "link" : "https://stackoverflow.com/users/9985287/mansur"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1564136547,
+      "post_id" : 57212391,
+      "comment_id" : 100940425,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "There are compiler annotation processors which allow you to manipulate annotations with COMPILE RetentionPolicy. I haven&#39;t done it before though so I can&#39;t give you much more than that. I did also find other SO questions where they used &quot;bytecode generation&quot; to dynamically add annotations such as <a href=\"https://stackoverflow.com/questions/1635108/adding-java-annotations-at-runtime\" title=\"adding java annotations at runtime\">stackoverflow.com/questions/1635108/&hellip;</a>. Here&#39;s an article on how to write a compiler annotation processor <a href=\"https://medium.com/@jintin/annotation-processing-in-java-3621cb05343a\" rel=\"nofollow noreferrer\">medium.com/@jintin/annotation-processing-in-java-3621cb05343&zwnj;&#8203;a</a>"
+    }, {
+      "owner" : {
+        "account_id" : 13832917,
+        "reputation" : 1919,
+        "user_id" : 9985287,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mn5Ep.jpg?s=256",
+        "display_name" : "Mansur",
+        "link" : "https://stackoverflow.com/users/9985287/mansur"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1564137260,
+      "post_id" : 57212391,
+      "comment_id" : 100940770,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I understand, but since it is a small project, I thought it will be worth trying :). Thanks for your help, I really appreciate it."
+    } ],
+    "owner" : {
+      "account_id" : 944235,
+      "reputation" : 4333,
+      "user_id" : 971808,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/dXKrK.gif?s=256",
+      "display_name" : "jeff",
+      "link" : "https://stackoverflow.com/users/971808/jeff"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1564108098,
+    "creation_date" : 1564108098,
+    "answer_id" : 57212391,
+    "question_id" : 57183887,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If I understand what you are asking for, this is possible without compile-time annotation processing. It's not pretty and it might be more complexity than it's worth, but here's one way to do it. </p>\n\n<p>Here's a custom annotation I made that is used for my shorthand <code>@ApiParam</code>. </p>\n\n<pre><code>@Retention(RetentionPolicy.RUNTIME)\n@Target(ElementType.PARAMETER)\npublic @interface GameIdParam {\n    String name() default \"My Game ID\";\n\n    String value() default \"The integer ID of a particular game\";\n}\n</code></pre>\n\n<p>You can define whatever properties in <code>@ApiParam</code> that you wish to override. Then you can use <a href=\"http://springfox.github.io/springfox/docs/current/#steps-to-create-a-plugin\" rel=\"nofollow noreferrer\">Springfox's Extension Framework</a> to implement a custom handler for the new annotation.</p>\n\n<pre><code>import com.google.common.base.Optional;\nimport io.swagger.annotations.ApiParam;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.core.annotation.AnnotationUtils;\nimport org.springframework.stereotype.Component;\nimport springfox.documentation.schema.Example;\nimport springfox.documentation.spi.DocumentationType;\nimport springfox.documentation.spi.schema.EnumTypeDeterminer;\nimport springfox.documentation.spi.service.contexts.ParameterContext;\nimport springfox.documentation.spring.web.DescriptionResolver;\nimport springfox.documentation.swagger.readers.parameter.ApiParamParameterBuilder;\n\nimport java.util.function.Predicate;\n\nimport static java.util.Optional.ofNullable;\nimport static springfox.documentation.swagger.common.SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER;\nimport static springfox.documentation.swagger.common.SwaggerPluginSupport.pluginDoesApply;\nimport static springfox.documentation.swagger.readers.parameter.Examples.examples;\n\n@Component\npublic class ShorthandAnnotationPlugin extends ApiParamParameterBuilder {\n    private final DescriptionResolver descriptions;\n    private final EnumTypeDeterminer enumTypeDeterminer;\n\n    @Autowired\n    public ShorthandAnnotationPlugin(\n            DescriptionResolver descriptions,\n            EnumTypeDeterminer enumTypeDeterminer) {\n        super(descriptions, enumTypeDeterminer);\n        this.descriptions = descriptions;\n        this.enumTypeDeterminer = enumTypeDeterminer;\n    }\n\n    @Override\n    public void apply(ParameterContext context) {\n        Optional&lt;GameIdParam&gt; gameIdParam = context.resolvedMethodParameter().findAnnotation(GameIdParam.class);\n\n        if (gameIdParam.isPresent()) {\n            GameIdParam annotation = gameIdParam.get();\n\n            // Instantiate an ApiParam so we can take default values for attributes we didn't override.\n            ApiParam parentAnnotation = AnnotationUtils.synthesizeAnnotation(ApiParam.class);\n\n            context.parameterBuilder().name(ofNullable(annotation.name())\n                    .filter(((Predicate&lt;String&gt;) String::isEmpty).negate()).orElse(null))\n                    .description(ofNullable(descriptions.resolve(annotation.value()))\n                            .filter(((Predicate&lt;String&gt;) String::isEmpty).negate()).orElse(null))\n                    .parameterAccess(ofNullable(parentAnnotation.access())\n                            .filter(((Predicate&lt;String&gt;) String::isEmpty).negate())\n                            .orElse(null))\n                    .defaultValue(ofNullable(parentAnnotation.defaultValue())\n                            .filter(((Predicate&lt;String&gt;) String::isEmpty).negate())\n                            .orElse(null))\n                    .allowMultiple(parentAnnotation.allowMultiple())\n                    .allowEmptyValue(parentAnnotation.allowEmptyValue())\n                    .required(parentAnnotation.required())\n                    .scalarExample(new Example(parentAnnotation.example()))\n                    .complexExamples(examples(parentAnnotation.examples()))\n                    .hidden(parentAnnotation.hidden())\n                    .collectionFormat(parentAnnotation.collectionFormat())\n                    .order(SWAGGER_PLUGIN_ORDER);\n        }\n    }\n\n    @Override\n    public boolean supports(DocumentationType documentationType) {\n        return pluginDoesApply(documentationType);\n    }\n}\n</code></pre>\n\n<p>I used <a href=\"https://github.com/springfox/springfox/blob/master/springfox-swagger-common/src/main/java/springfox/documentation/swagger/readers/parameter/ApiParamParameterBuilder.java\" rel=\"nofollow noreferrer\">Springfox's ApiParamParameterBuilder</a> as an example.</p>\n\n<p>Now, I can use my <code>@GameIdParam</code></p>\n\n<pre><code>@PostMapping(\"/{gameId}/info\")\npublic String play(@GameIdParam @PathVariable int gameId) // ...\n</code></pre>\n\n<p>This pattern could be generalized to work with a series of custom shorthand annotations. It's not pretty and it introduces another level of indirection that people who know Springfox Swagger won't be familiar with.</p>\n\n<p>Hope that helps! Good luck! </p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 13832917,
+    "reputation" : 1919,
+    "user_id" : 9985287,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/mn5Ep.jpg?s=256",
+    "display_name" : "Mansur",
+    "link" : "https://stackoverflow.com/users/9985287/mansur"
+  },
+  "is_answered" : true,
+  "view_count" : 2422,
+  "accepted_answer_id" : 57212391,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1762879722,
+  "creation_date" : 1563974220,
+  "last_edit_date" : 1634949503,
+  "question_id" : 57183887,
+  "link" : "https://stackoverflow.com/questions/57183887/replacing-an-annotation-with-another-annotation-during-compile-time-in-spring",
+  "title" : "Replacing an annotation with another annotation during compile time in Spring?",
+  "body" : "<p>I am using Swagger annotations over my controller parameters. So, I end up with annotations like <code>@ApiParam(name=&quot;default name&quot;, value=&quot;this is a default value&quot;)</code>. I think this is quite verbose. I would like to change it to something like <code>@Foo</code>. I want to know if there's a way to replace <code>@Foo</code> with <code>@ApiParam</code> during compile time. Also, since I am using Spring, I think I have to consider the annotation processing order in Spring, as well. I mean I shouldn't replace <code>@ApiParam</code> with <code>@Foo</code> after Swagger or Spring picks it up. Is there any way to do this?</p>\n<p>In simpler words, I have the same annotation with the same parameters used 5 times. Basically, I want to replace them with some custom annotation.</p>\n<p>I know I have to show what I have already tried, but I have no clue where to even start.</p>\n<p>Also, the question is not related to Swagger, it is just an example. I want to replace one annotation with another during compile time, so that the one picked up by Spring won't be the one I have put on the source code, but the one I have replaced.</p>\n"
+}

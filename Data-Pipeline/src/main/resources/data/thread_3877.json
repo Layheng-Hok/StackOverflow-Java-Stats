@@ -1,0 +1,106 @@
+{
+  "tags" : [ "java", "android", "gradle", "javadoc", "dokka" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 332814,
+      "reputation" : 3899,
+      "user_id" : 658323,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/692810e17401cf705f2de688067c429e?s=256&d=identicon&r=PG",
+      "display_name" : "steliosf",
+      "link" : "https://stackoverflow.com/users/658323/steliosf"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1641942395,
+    "post_id" : 64659317,
+    "comment_id" : 124939204,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Thank you! I was getting some build errors when generating dokka for unit tests, your suggestion of creating a separate task worked!"
+  }, {
+    "owner" : {
+      "account_id" : 7397636,
+      "reputation" : 2430,
+      "user_id" : 5629011,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/yYV64.jpg?s=256",
+      "display_name" : "alizeyn",
+      "link" : "https://stackoverflow.com/users/5629011/alizeyn"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1646237004,
+    "post_id" : 64659317,
+    "comment_id" : 126074589,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Possibly an out of scope question but how did you manage to ship the html docs with your SDK lib?"
+  }, {
+    "owner" : {
+      "account_id" : 225608,
+      "reputation" : 838,
+      "user_id" : 486178,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/48b9b8ec59a8c91e180804b706ef91ac?s=256&d=identicon&r=PG",
+      "display_name" : "Harri",
+      "link" : "https://stackoverflow.com/users/486178/harri"
+    },
+    "reply_to_user" : {
+      "account_id" : 7397636,
+      "reputation" : 2430,
+      "user_id" : 5629011,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/yYV64.jpg?s=256",
+      "display_name" : "alizeyn",
+      "link" : "https://stackoverflow.com/users/5629011/alizeyn"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1646409245,
+    "post_id" : 64659317,
+    "comment_id" : 126123137,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@alizeyn We ship the documentation as a separate archive. Together with our integration guide and other documentation. All of this is forwarded to the integrators."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 43829089,
+      "reputation" : 1,
+      "user_id" : 31437479,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cac31857f1d724ef9e0ee4e07f7a78e8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Domini",
+      "link" : "https://stackoverflow.com/users/31437479/domini"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1761489794,
+    "creation_date" : 1761489794,
+    "answer_id" : 79800115,
+    "question_id" : 64659317,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Dokka doesn't automatically create a source set for <code>androidTest</code>, and custom <code>DokkaTask</code>s require explicit configuration to change their output format from the default (HTML).</p>\n<p>In your library module's <code>build.gradle</code> file, add the following configuration. This assumes you are using the Groovy DSL.</p>\n<pre><code>import org.jetbrains.dokka.gradle.DokkaTask\nimport org.jetbrains.dokka.base.DokkaBase\n\napply plugin: 'org.jetbrains.dokka'\n\n\n// 1. Configure the default task for the main library Javadoc\ntasks.named('dokkaJavadoc', DokkaTask) {\n    outputDirectory.set(file(&quot;$buildDir/docs/javadoc/library&quot;))\n    dokkaSourceSets {\n        named(&quot;main&quot;) {\n            includes.from(files(&quot;dokka_modules_main.md&quot;)) \n        }\n    }\n}\n\n// 2. Register a new, separate task for the androidTest Javadoc\ntasks.register('dokkaJavadocTest', DokkaTask) {\n    description = &quot;Generates Javadoc for the Android test source set.&quot;\n    \n    pluginConfiguration(DokkaBase) {\n        format = &quot;javadoc&quot;\n    }\n\n    outputDirectory.set(file(&quot;$buildDir/docs/javadoc/androidTest&quot;))\n\n    dokkaSourceSets {\n        create(&quot;androidTest&quot;) {\n            def variant = android.libraryVariants.find { it.name == 'debug' }\n            if (variant == null) {\n                throw new GradleException(&quot;Cannot find 'debug' variant to configure Dokka for tests.&quot;)\n            }\n\n\n            sourceRoots.from(android.sourceSets.main.java.srcDirs)\n            sourceRoots.from(android.sourceSets.androidTest.java.srcDirs)\n            \n            // sourceRoots.from(android.sourceSets.main.kotlin.srcDirs)\n            // sourceRoots.from(android.sourceSets.androidTest.kotlin.srcDirs)\n\n            classpath.from(variant.getAndroidTestCompileClasspath())\n            classpath.from(variant.javaCompileProvider.get().destinationDir)\n\n            includes.from(files(&quot;dokka_modules_test.md&quot;)) \n            noAndroidSdkLink.set(false)\n            includeNonPublic.set(false)\n            skipEmptyPackages.set(true)\n            reportUndocumented.set(false) \n            skipDeprecated.set(false)\n        }\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 225608,
+    "reputation" : 838,
+    "user_id" : 486178,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/48b9b8ec59a8c91e180804b706ef91ac?s=256&d=identicon&r=PG",
+    "display_name" : "Harri",
+    "link" : "https://stackoverflow.com/users/486178/harri"
+  },
+  "is_answered" : false,
+  "view_count" : 1999,
+  "answer_count" : 1,
+  "score" : 8,
+  "last_activity_date" : 1761489794,
+  "creation_date" : 1604392627,
+  "last_edit_date" : 1604483679,
+  "question_id" : 64659317,
+  "link" : "https://stackoverflow.com/questions/64659317/how-can-i-generate-javadoc-for-my-android-library-with-dokka-for-both-the-main-a",
+  "title" : "How can I generate Javadoc for my Android library with Dokka for both the main and the androidTest source sets?",
+  "body" : "<p>I am slowly moving my library project from Java to Kotlin. I have a requirement that I also need to provide Javadoc for both the library and the Android instrumentation tests in has. I can't use Javadoc anymore as it dies when it sees a *.kt file. So I turned to Dokka.</p>\n<p>My issue is that I can easily generate Javadoc with Dokka, but only for the main source set. But I can't get it to generate docus for my instrumentation tests.</p>\n<p>I have the following configuration in the library build gradle:</p>\n<pre><code>apply plugin: 'org.jetbrains.dokka'\n...\ndokkaJavadoc.configure {\n    dokkaSourceSets {\n        named(&quot;main&quot;) {\n            // Main source set conf\n            outputDirectory = file(&quot;dokkadoc/service-doc&quot;)\n            includes.from(files(&quot;dokka_modules_test.md&quot;))\n            sourceRoots.from(file(&quot;src/main/java&quot;))\n        }\n        named(&quot;androidTest&quot;) {\n            // Test source set conf\n            outputDirectory = file(&quot;dokkadoc/service-test-doc&quot;)\n            includes.from(files(&quot;dokka_modules_test.md&quot;))\n            sourceRoots.from(file(&quot;src/androidTest/java&quot;))\n        }\n        configureEach {\n            // Shared conf for all source sets\n            noAndroidSdkLink.set(false)\n            includeNonPublic.set(false)\n            skipEmptyPackages.set(true)\n            reportUndocumented.set(true)\n            skipDeprecated.set(false)\n        }\n\n    }\n}\n</code></pre>\n<p>In the root build.grade I import:</p>\n<pre><code>buildscript {\n    ..\n    ext.dokka_version = '1.4.10.2'\n    repositories {\n        ..\n    }\n    dependencies {\n        classpath &quot;org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version&quot;\n    }\n}\n</code></pre>\n<p>What am I doing wrong? Or did I misunderstood and I can't generate sepatate Javadocs this way? Do I have to generate extension tasks for all build variants, a la:</p>\n<pre><code>libraryVariants.all { variant -&gt;\n\n..\n\ndef variantDokkadoc = task(&quot;dokkadoc${variant.name.capitalize()}&quot;, type: org.jetbrains.dokka.gradle.DokkaTask) {\n...\n}\n</code></pre>\n<p>EDIT:\nSeems when I create a separate task for the tests part like this then it does it:</p>\n<pre><code>// Dokka task for Service tests\ntask dokkaJavadocTests(type: org.jetbrains.dokka.gradle.DokkaTask) {\n    dokkaSourceSets {\n        named(&quot;main&quot;) {\n            outputDirectory.set(file(&quot;dokkadoc/service-test-doc&quot;))\n            includes.from(files(&quot;dokka_modules_test.md&quot;))\n            sourceRoots.setFrom(file(&quot;src/main/java&quot;))\n            sourceRoots.from(file(&quot;src/androidTest/java&quot;))\n\n            noAndroidSdkLink.set(false)\n            includeNonPublic.set(false)\n            skipEmptyPackages.set(true)\n            reportUndocumented.set(true)\n            skipDeprecated.set(false)\n        }\n    }\n}\n</code></pre>\n<p>For some reason, I have to go with</p>\n<pre><code>named(&quot;main&quot;)\n</code></pre>\n<p>otherwise it ignores the test classes.</p>\n<p>Also, I am still unable to generate the Javadoc version, it generates the HTML one.\nIf I add</p>\n<pre><code>outputFormat = &quot;javadoc&quot;\n</code></pre>\n<p>then it just ignores  it</p>\n<p>EDIT 2:</p>\n<p>For now, I solved this by making a second task for tests and keeping both of them in HTML format. Eg:</p>\n<pre><code>// Main dokka task for the library\ndokkaHtml.configure {\n    dokkaSourceSets {\n        named(&quot;main&quot;) {\n            // Main source set conf\n            outputDirectory.set(file(&quot;dokkadoc/${project.ext.versionNameDokkaDoc}&quot;))\n            includes.from(files(&quot;dokka_modules_main.md&quot;))\n\n            noAndroidSdkLink.set(false)\n            includeNonPublic.set(false)\n            skipEmptyPackages.set(true)\n            reportUndocumented.set(true)\n            skipDeprecated.set(false)\n        }\n    }\n}\n\n// Dokka task for the library tests\ntask dokkaHtmlTests(type: org.jetbrains.dokka.gradle.DokkaTask) {\n    dokkaSourceSets {\n        named(&quot;main&quot;) {\n            outputDirectory.set(file(&quot;dokkadoc/${project.ext.versionNameDokkaDocTests}&quot;))\n            includes.from(files(&quot;dokka_modules_test.md&quot;))\n            sourceRoots.setFrom(file(&quot;src/main/java&quot;))\n            sourceRoots.from(file(&quot;src/androidTest/java&quot;))\n\n            noAndroidSdkLink.set(false)\n            includeNonPublic.set(false)\n            skipEmptyPackages.set(true)\n            reportUndocumented.set(true)\n            skipDeprecated.set(false)\n        }\n    }\n}\n\n</code></pre>\n"
+}

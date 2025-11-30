@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "junit", "mockito" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4563475,
+      "reputation" : 28138,
+      "user_id" : 3705127,
+      "user_type" : "registered",
+      "accept_rate" : 52,
+      "profile_image" : "https://www.gravatar.com/avatar/6d5de8fcdc3ec1c56813e77b06ce0fe9?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "sprinter",
+      "link" : "https://stackoverflow.com/users/3705127/sprinter"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1528101227,
+    "creation_date" : 1528101227,
+    "answer_id" : 50676394,
+    "question_id" : 50652516,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>your problem here is that you are calling <code>when</code> with something that isn't a mock. You are passing it an <code>Optional</code>. </p>\n\n<p>If I understand what you are trying to do here, the clientHelper is passed to the object with the <code>doSomething</code> method and you want to mock it for testing purposes. If that's the case it'd more typically look like this:</p>\n\n<pre><code>interface ClientHelper {\n    Client get(String place) throws Ex;\n}\n\nclass ClassUnderTest {\n    private final ClientHelper clientHelper;\n\n    public ClassUnderTest(ClientHelper helper) {\n        this.clientHelper = helper;\n    }\n\n    public Optional&lt;String&gt; doSomething(String place) {\n        try {\n            return Optional.ofNullable(clientHelper.get(place).getPlaceDetails(place));\n        } catch (Ex ex) {\n            log.warn(\"Exception: \" + ex);\n            return Optional.empty();\n        }\n    }\n}\n\n@Test\nvoid testFullHelper() {\n    Client client = mock(Client.class);\n    when(client.getPlaceDetails(\"IN\")).thenReturn(\"Details\");\n    ClientHelper helper = mock(ClientHelper.class);\n    when(helper.get(\"IN\")).thenReturn(client);\n    ClassUnderTest obj = new ClassUnderTest(helper);\n    assertEquals(\"Details\", obj.doSomething(\"IN\"));\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2861608,
+    "reputation" : 95,
+    "user_id" : 2456752,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/8166ee7823f4adb555e3d75a177f4016?s=256&d=identicon&r=PG",
+    "display_name" : "user2456752",
+    "link" : "https://stackoverflow.com/users/2456752/user2456752"
+  },
+  "is_answered" : false,
+  "view_count" : 12569,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1759312960,
+  "creation_date" : 1527900004,
+  "question_id" : 50652516,
+  "link" : "https://stackoverflow.com/questions/50652516/unit-test-java-optional-with-mockito",
+  "title" : "Unit test java Optional with mockito",
+  "body" : "<p>I want to test a method which returns an Optional client in it.</p>\n\n<p>I want to test the scenario when client is empty.This is not a working code but overall it looks like this</p>\n\n<pre><code>public Optional&lt;String&gt; doSomething(String place) {\n    Optional&lt;Client&gt; client = Optional.empty();\n    try {\n        client = Optional.ofNullable(clientHelper.get(place));\n    } catch (Ex ex) {\n        log.warn(\"Exception occured:\", ex);\n    }\n    return client.isPresent() ? Optional.ofNullable(client.get().getPlaceDetails(place)) : Optional.empty();\n}\n</code></pre>\n\n<p>I have a helper class clientHelper which returns a client based on place if exists, if not it throws exception.\nFor test, this is what I came up with</p>\n\n<pre><code>  @Test\npublic void testClientHelper(){\n    ClientHelper clientHelper =  Mockito.mock(ClientHelper.class);\n    Optional&lt;Client&gt; client = Optional.empty();\n    Mockito.when(Optional.ofNullable(clientHelper.get(\"IN\"))).thenReturn(client);\n    assertEquals( doSomething(\"IN\"), Optional.empty())\n}\n</code></pre>\n\n<p>But it returns exception - </p>\n\n<pre><code>org.mockito.exceptions.misusing.WrongTypeOfReturnValue: \nOptional cannot be returned by get()\nget() should return Client\n</code></pre>\n\n<p>I have been following this link <a href=\"https://stackoverflow.com/questions/30946167/mockito-error-with-method-that-returns-optionalt?utm_medium=organic&amp;utm_source=google_rich_qa&amp;utm_campaign=google_rich_qa\">Mockito error with method that returns Optional&lt;T&gt;</a></p>\n"
+}

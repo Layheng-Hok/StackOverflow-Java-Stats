@@ -1,0 +1,431 @@
+{
+  "tags" : [ "java", "algorithm", "sparse-matrix", "sparse-array" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 13446,
+      "reputation" : 45516,
+      "user_id" : 27020,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/197d4eb61f9bf11d070e085e025e1973?s=256&d=identicon&r=PG",
+      "display_name" : "Marc Novakowski",
+      "link" : "https://stackoverflow.com/users/27020/marc-novakowski"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1230070187,
+    "post_id" : 390181,
+    "comment_id" : 92984280,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "Here is a paper you may be interested in which talks about data structures for matrix computations, including sparse arrays: <a href=\"http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.13.7544\" rel=\"nofollow noreferrer\">http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.13.7&zwnj;&#8203;544</a> You can download the paper as PDF or PS. It includes source code, too."
+  }, {
+    "owner" : {
+      "account_id" : 19570,
+      "reputation" : 3102,
+      "user_id" : 132162,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/7e05ab5ffe3b7b0bc5a9f4aeaa847564?s=256&d=identicon&r=PG",
+      "display_name" : "raupach",
+      "link" : "https://stackoverflow.com/users/132162/raupach"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1230245105,
+    "post_id" : 390181,
+    "comment_id" : 92984273,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "Maybe <a href=\"http://acs.lbl.gov/~hoschek/colt/\" rel=\"nofollow noreferrer\">Colt</a> is of help. It provides a sparse matrix implementation."
+  }, {
+    "owner" : {
+      "account_id" : 598920,
+      "reputation" : 1791,
+      "user_id" : 299421,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/79f8bfcec348c19f793a62a0c9c120eb?s=256&d=identicon&r=PG",
+      "display_name" : "Federico",
+      "link" : "https://stackoverflow.com/users/299421/federico"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1269293986,
+    "post_id" : 390181,
+    "comment_id" : 92984272,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "I&#39;ve just used <a href=\"http://trove4j.sourceforge.net/\" rel=\"nofollow noreferrer\">Trove</a> which provided much better performance than Colt while using the int-&gt;int map (used to implement a sparse matrix)."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 12863,
+      "reputation" : 5736,
+      "user_id" : 25544,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://www.gravatar.com/avatar/3e9f7000eaa6414cbe7f5cc800e7aba2?s=256&d=identicon&r=PG",
+      "display_name" : "Osama Al-Maadeed",
+      "link" : "https://stackoverflow.com/users/25544/osama-al-maadeed"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1230112018,
+    "creation_date" : 1230112018,
+    "answer_id" : 391121,
+    "question_id" : 390181,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>This seems to be simple.</p>\n\n<p>You could use a binary tree of the data using row*maxcolums+column as an index.</p>\n\n<p>To find item, you simply calculate row*maxcolums+column and binary search the tree looking for it, if it's not there, you can return null (it's О(log n) where n is the number of cells which contain an object).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14630,
+      "reputation" : 17077,
+      "user_id" : 30316,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/01d79f038deccf8820e98fb2e3b08f9b?s=256&d=identicon&r=PG",
+      "display_name" : "eljenso",
+      "link" : "https://stackoverflow.com/users/30316/eljenso"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1230115919,
+    "creation_date" : 1230115919,
+    "answer_id" : 391235,
+    "question_id" : 390181,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Not the fastest runtime solution probably, but the fastest I could come up with that seems to work. Create an Index class and use it as a key for a SortedMap, like:</p>\n\n<pre><code>    SortedMap&lt;Index, Object&gt; entries = new TreeMap&lt;Index, Object&gt;();\n    entries.put(new Index(1, 4), \"1-4\");\n    entries.put(new Index(5555555555l, 767777777777l), \"5555555555l-767777777777l\");\n    System.out.println(entries.size());\n    System.out.println(entries.get(new Index(1, 4)));\n    System.out.println(entries.get(new Index(5555555555l, 767777777777l)));\n</code></pre>\n\n<p>My Index class looks like this (with some help from Eclipse code generator).</p>\n\n<pre><code>public static class Index implements Comparable&lt;Index&gt;\n{\n    private long x;\n    private long y;\n\n    public Index(long x, long y)\n    {\n        super();\n        this.x = x;\n        this.y = y;\n    }\n\n    public int compareTo(Index index)\n    {\n        long ix = index.x;\n        if (ix == x)\n        {\n            long iy = index.y;\n            if (iy == y)\n            {\n                return 0;\n            }\n            else if (iy &lt; y)\n            {\n                return -1;\n            }\n            else\n            {\n                return 1;\n            }\n        }\n        else if (ix &lt; x)\n        {\n            return -1;\n        }\n        else\n        {\n            return 1;\n        }\n    }\n\n    public int hashCode()\n    {\n        final int PRIME = 31;\n        int result = 1;\n        result = PRIME * result + (int) (x ^ (x &gt;&gt;&gt; 32));\n        result = PRIME * result + (int) (y ^ (y &gt;&gt;&gt; 32));\n        return result;\n    }\n\n    public boolean equals(Object obj)\n    {\n        if (this == obj)\n            return true;\n        if (obj == null)\n            return false;\n        if (getClass() != obj.getClass())\n            return false;\n        final Index other = (Index) obj;\n        if (x != other.x)\n            return false;\n        if (y != other.y)\n            return false;\n        return true;\n    }\n\n    public long getX()\n    {\n        return x;\n    }\n\n    public long getY()\n    {\n        return y;\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 14630,
+        "reputation" : 17077,
+        "user_id" : 30316,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/01d79f038deccf8820e98fb2e3b08f9b?s=256&d=identicon&r=PG",
+        "display_name" : "eljenso",
+        "link" : "https://stackoverflow.com/users/30316/eljenso"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1230320985,
+      "post_id" : 391357,
+      "comment_id" : 221061,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Prefer long iso int for range &quot;in the billions&quot;. Nesting Maps when &quot;there will be several hundred thousand cells which contain an object&quot; is a lot of overhead. Storing the coordinates in Tupple is redundant and increases maintenance for operations. No abstraction for index: not flexible/extensible."
+    }, {
+      "owner" : {
+        "account_id" : 268860,
+        "reputation" : 1896,
+        "user_id" : 557869,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://www.gravatar.com/avatar/dd75fa8d754b882a16dbddb5bb1cad9f?s=256&d=identicon&r=PG",
+        "display_name" : "Pinser",
+        "link" : "https://stackoverflow.com/users/557869/pinser"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1359195585,
+      "post_id" : 391357,
+      "comment_id" : 20272177,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The above is the most simple non extensible solution, for very limited no of elements but nevertheless this shouldn&#39;t be a -1."
+    } ],
+    "owner" : {
+      "account_id" : 8495,
+      "reputation" : 12976,
+      "user_id" : 15355,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/1bd222e25f800a1a1150b8fe6abee382?s=256&d=identicon&r=PG",
+      "display_name" : "pvgoddijn",
+      "link" : "https://stackoverflow.com/users/15355/pvgoddijn"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1230122289,
+    "creation_date" : 1230122289,
+    "answer_id" : 391357,
+    "question_id" : 390181,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>you could just use a nested map although if you need to do matrix calculus on it that might not be the best option</p>\n\n<pre><code> Map&lt;Integer, Map&lt;integer, Object&gt;&gt; matrix;\n</code></pre>\n\n<p>maybe instead of object use some tuple for the actual data so you can work with it easier after extraction, something like:</p>\n\n<pre><code>class Tuple&lt;T extends yourDataObject&gt; {\n  public final int x;\n  public final int y;\n  public final T object;\n}\n\nclass Matrix {\n  private final Map&lt;Integer, Map&lt;interger, Tupple&gt;&gt; data = new...;\n\n void add(int x, int y, Object object) {\n     data.get(x).put(new Tupple(x,y,object);\n }\n}\n\n\n//etc\n</code></pre>\n\n<p>null check etc omitted for brevity</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user1310957"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1391258937,
+      "post_id" : 3391413,
+      "comment_id" : 32452920,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The text was useful, it&#39;s a good data structure to know about, but the code is not even close to compiling, and is &quot;clever&quot; or &quot;subtle&quot; in many places. So I&#39;m not really sure what the code is actually adding to this piece since it would be faster to implement from scratch than start from the code supplied above. Rather it detracts from the otherwise excellent discussion."
+    }, {
+      "owner" : {
+        "account_id" : 176434,
+        "reputation" : 1883,
+        "user_id" : 407132,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+        "display_name" : "verdy_p",
+        "link" : "https://stackoverflow.com/users/407132/verdy-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1392895655,
+      "post_id" : 3391413,
+      "comment_id" : 33176049,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I extracted the code from a real-world app, trying to remove things that were not related to it, but yes it does not compile directly, the code is voluntarily simplified with various todo things, but it gives the general concept used by Trie&#39;s. Notably there are hints in the text below of how it should be tuned/adapted for specific element types."
+    }, {
+      "owner" : {
+        "account_id" : 20025,
+        "reputation" : 7217,
+        "user_id" : 47450,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://www.gravatar.com/avatar/61c1dc08d050f516949a674e09819015?s=256&d=identicon&r=PG",
+        "display_name" : "DanM",
+        "link" : "https://stackoverflow.com/users/47450/danm"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1394826571,
+      "post_id" : 3391413,
+      "comment_id" : 34081808,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Finally, after years, I wound up revisiting this question for another project, and tried out the Trie structure (writing my own code).  Blazing fast, as you said it would be.  So, this is now the Correct answer."
+    }, {
+      "owner" : {
+        "account_id" : 1357161,
+        "reputation" : 891,
+        "user_id" : 1295333,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/13a79d6225a02815f7fd219fa2c03e3e?s=256&d=identicon&r=PG",
+        "display_name" : "programaths",
+        "link" : "https://stackoverflow.com/users/1295333/programaths"
+      },
+      "reply_to_user" : {
+        "account_id" : 20025,
+        "reputation" : 7217,
+        "user_id" : 47450,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://www.gravatar.com/avatar/61c1dc08d050f516949a674e09819015?s=256&d=identicon&r=PG",
+        "display_name" : "DanM",
+        "link" : "https://stackoverflow.com/users/47450/danm"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1440919844,
+      "post_id" : 3391413,
+      "comment_id" : 52465448,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@DanM I think that you are the kind of guy who did sort out sorted set ! (tried out Trie) ;-)"
+    }, {
+      "owner" : {
+        "account_id" : 176434,
+        "reputation" : 1883,
+        "user_id" : 407132,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+        "display_name" : "verdy_p",
+        "link" : "https://stackoverflow.com/users/407132/verdy-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540783054,
+      "post_id" : 3391413,
+      "comment_id" : 92976397,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note: I did not explain waht I meant by &quot;interleaving&quot; for better compression. Basically I can give an example: you can interleave a the three data segments of the same size (4) like {1,2,3,4}, {2,3,4,5}, {3,4,5,6} by storing them in the same vector {1,2,3,4,5,6}: you don&#39;t need that N different segments of size S be all stored as a vector of (N*S) elements, with separate segments: the start index of each segment of size S does not have to be a multiple of (S). Interleaving is frequently possible in very sparse matrices that have lot of segments parts identical at start or end of segments."
+    }, {
+      "owner" : {
+        "account_id" : 176434,
+        "reputation" : 1883,
+        "user_id" : 407132,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+        "display_name" : "verdy_p",
+        "link" : "https://stackoverflow.com/users/407132/verdy-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540783288,
+      "post_id" : 3391413,
+      "comment_id" : 92976445,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "So when you have the first segment {1,0,0,0} stored in the vector and you want to store the new distinct segment {0,0,1,0} you can see that its two first elements match the two last of the first one, so you can suppress them and reuse the same positions in the vector; you are not required to wait until you&#39;ll store a new identical segment {1,0,0,0} (but for another logical index position in the full matrix)."
+    }, {
+      "owner" : {
+        "account_id" : 176434,
+        "reputation" : 1883,
+        "user_id" : 407132,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+        "display_name" : "verdy_p",
+        "link" : "https://stackoverflow.com/users/407132/verdy-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540783615,
+      "post_id" : 3391413,
+      "comment_id" : 92976493,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "So you can finally have the two distinct segments [0] =  {1,0,0,0} and [1] = {0,0,1,0} stored in the &quot;interleaved&quot; vector {1,0,0,0,1,0}, instead of the longer vector {1,0,0,0,0,0,1,0} (the Trie&#39;s index will still contain the start position in the vector of each data segment segment: index[0] = 0, index[1]=2). Now if you add a third distinct data segment [2] = {0,0,0,1}, the same vector can be used, only the index changes: index[2] = 1 (not all index[] values are multiple of 4, the size of every segment)."
+    } ],
+    "owner" : {
+      "account_id" : 176434,
+      "reputation" : 1883,
+      "user_id" : 407132,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+      "display_name" : "verdy_p",
+      "link" : "https://stackoverflow.com/users/407132/verdy-p"
+    },
+    "is_accepted" : true,
+    "community_owned_date" : 1332068640,
+    "score" : 76,
+    "last_activity_date" : 1759175200,
+    "last_edit_date" : 1759175200,
+    "creation_date" : 1280780471,
+    "answer_id" : 3391413,
+    "question_id" : 390181,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Sparsed arrays built with hashmaps are very inefficient for frequently read data. The most efficient implementations uses a Trie that allows access to a single vector where segments are distributed.</p>\n<p>A Trie can compute if an element is present in the table by performing only read-only TWO array indexing to get the effective position where an element is stored, or to know if its absent from the underlying store.</p>\n<p>It can also provide a default position in the backing store for the default value of the sparsed array, so that you don't need ANY test on the returned index, because the Trie guarantees that all possible source index will map at least to the default position in the backing store (where you'll frequently store a zero, or an empty string or a null object).</p>\n<p>There exists implementations that support fast-updatable Tries, with an optional &quot;compact()&quot; operation to optimze the size of the backing store at end of multiple operations. Tries are MUCH faster than hashmaps, because they don't need any complex hashing function, and don't need to handle collisions for reads (With Hashmaps, you have collision BOTH for reading and for writing, this requires a loop to skip to the next candidate position, and a test on each of them to compare the effective source index...)</p>\n<p>In addition, Java Hashmaps can only index on Objects, and creating an Integer object for each hashed source index (this object creation will be needed for every read, not just writes) is costly in terms of memory operations, as it stresses the garbage collector.</p>\n<p>I really hoped that the JRE included an IntegerTrieMap&lt;Object&gt; as the default implementation for the slow HashMap&lt;Integer, Object&gt; or LongTrieMap&lt;Object&gt; as the default implementation for the even slower HashMap&lt;Long, Object&gt;... But this is still not the case.</p>\n<hr />\n<hr />\n<p>You may wonder what is a Trie?</p>\n<p>It's just a small array of integers (in a smaller range than the full range of coordinates for your matrix) that allows mapping the coordinates into an integer position in a vector.</p>\n<p>For example suppose you want a 1024x1024 matrix containing only a few non zero values. Instead of storing that matrix in a array containing 1024x1024 elements (more than 1 million), you may just want to split it into subranges of size 16x16, and you'll just need 64x64 such subranges.</p>\n<p>In that case, the Trie index will contain just 64x64 integers (4096), and there will be at least 16x16 data elements (containing the default zeroes, or the most common subrange found in your sparse matrix).</p>\n<p>And the vector used to store the values will contain only 1 copy for subranges that are equal with each other (most of them being full of zeroes, they will be represented by the same subrange).</p>\n<p>So instead of using a syntax like <code>matrix[i][j]</code>, you'd use a syntax like:</p>\n<pre><code>trie.values[trie.subrangePositions[(i &amp; ~15) + (j &gt;&gt; 4)] +\n            ((i &amp; 15) &lt;&lt; 4) + (j &amp; 15)]\n</code></pre>\n<p>which will be more conveniently handled using an access method for the trie object.</p>\n<p>Here is an example, built into a commented class (I hope it compiles OK, as it was simplified; signal me if there are errors to correct):</p>\n<pre><code>/**\n * Implement a sparse matrix. Currently limited to a static size\n * (&lt;code&gt;SIZE_I&lt;/code&gt;, &lt;code&gt;SIZE_I&lt;/code&gt;).\n */\npublic class DoubleTrie {\n    \n    /* Matrix logical options */        \n    public static final int SIZE_I = 1024;\n    public static final int SIZE_J = 1024;\n    public static final double DEFAULT_VALUE = 0.0;\n    \n    /* Internal splitting options */\n    private static final int SUBRANGEBITS_I = 4;\n    private static final int SUBRANGEBITS_J = 4;\n    \n    /* Internal derived splitting constants */\n    private static final int SUBRANGE_I =\n        1 &lt;&lt; SUBRANGEBITS_I;\n    private static final int SUBRANGE_J =\n        1 &lt;&lt; SUBRANGEBITS_J;\n    private static final int SUBRANGEMASK_I =\n        SUBRANGE_I - 1;\n    private static final int SUBRANGEMASK_J =\n        SUBRANGE_J - 1;\n    private static final int SUBRANGE_POSITIONS =\n        SUBRANGE_I * SUBRANGE_J;\n    \n    /* Internal derived default values for constructors */\n    private static final int SUBRANGES_I =\n        (SIZE_I + SUBRANGE_I - 1) / SUBRANGE_I;\n    private static final int SUBRANGES_J =\n        (SIZE_J + SUBRANGE_J - 1) / SUBRANGE_J;\n    private static final int SUBRANGES =\n        SUBRANGES_I * SUBRANGES_J;\n    private static final int DEFAULT_POSITIONS[] =\n        new int[SUBRANGES](0);\n    private static final double DEFAULT_VALUES[] =\n        new double[SUBRANGE_POSITIONS](DEFAULT_VALUE);\n    \n    /* Internal fast computations of the splitting subrange and offset. */\n    private static final int subrangeOf(\n            final int i, final int j) {\n        return (i &gt;&gt; SUBRANGEBITS_I) * SUBRANGE_J +\n               (j &gt;&gt; SUBRANGEBITS_J);\n    }\n    private static final int positionOffsetOf(\n            final int i, final int j) {\n        return (i &amp; SUBRANGEMASK_I) * MAX_J +\n               (j &amp; SUBRANGEMASK_J);\n    }\n    \n    /**\n     * Utility missing in java.lang.System for arrays of comparable\n     * component types, including all native types like double here.\n     */\n    public static final int arraycompare(\n            final double[] values1, final int position1,\n            final double[] values2, final int position2,\n            final int length) {\n        if (position1 &gt;= 0 &amp;&amp; position2 &gt;= 0 &amp;&amp; length &gt;= 0) {\n            while (length-- &gt; 0) {\n                double value1, value2;\n                if ((value1 = values1[position1 + length]) !=\n                    (value2 = values2[position2 + length])) {\n                    /* Note: NaN values are different from everything including\n                     * all Nan values; they are are also neigher lower than nor\n                     * greater than everything including NaN. Note that the two\n                     * infinite values, as well as denormal values, are exactly\n                     * ordered and comparable with &lt;, &lt;=, ==, &gt;=, &gt;=, !=. Note\n                     * that in comments below, infinite is considered &quot;defined&quot;.\n                     */\n                    if (value1 &lt; value2)\n                        return -1;        /* defined &lt; defined. */\n                    if (value1 &gt; value2)\n                        return 1;         /* defined &gt; defined. */\n                    if (value1 == value2)\n                        return 0;         /* defined == defined. */\n                    /* One or both are NaN. */\n                    if (value1 == value1) /* Is not a NaN? */\n                        return -1;        /* defined &lt; NaN. */\n                    if (value2 == value2) /* Is not a NaN? */\n                        return 1;         /* NaN &gt; defined. */\n                    /* Otherwise, both are NaN: check their precise bits in\n                     * range 0x7FF0000000000001L..0x7FFFFFFFFFFFFFFFL\n                     * including the canonical 0x7FF8000000000000L, or in\n                     * range 0xFFF0000000000001L..0xFFFFFFFFFFFFFFFFL.\n                     * Needed for sort stability only (NaNs are otherwise\n                     * unordered).\n                     */\n                    long raw1, raw2;\n                    if ((raw1 = Double.doubleToRawLongBits(value1)) !=\n                        (raw2 = Double.doubleToRawLongBits(value2)))\n                        return raw1 &lt; raw2 ? -1 : 1;\n                    /* Otherwise the NaN are strictly equal, continue. */\n                }\n            }\n            return 0;\n        }\n        throw new ArrayIndexOutOfBoundsException(\n                &quot;The positions and length can't be negative&quot;);\n    }\n    \n    /**\n     * Utility shortcut for comparing ranges in the same array.\n     */\n    public static final int arraycompare(\n            final double[] values,\n            final int position1, final int position2,\n            final int length) {\n        return arraycompare(values, position1, values, position2, length);\n    }\n    \n    /**\n     * Utility missing in java.lang.System for arrays of equalizable\n     * component types, including all native types like double here.\n     */ \n    public static final boolean arrayequals(\n            final double[] values1, final int position1,\n            final double[] values2, final int position2,\n            final int length) {\n        return arraycompare(values1, position1, values2, position2, length) ==\n            0;\n    }\n    \n    /**\n     * Utility shortcut for identifying ranges in the same array.\n     */\n    public static final boolean arrayequals(\n            final double[] values,\n            final int position1, final int position2,\n            final int length) {\n        return arrayequals(values, position1, values, position2, length);\n    }\n    \n    /**\n     * Utility shortcut for copying ranges in the same array.\n     */\n    public static final void arraycopy(\n            final double[] values,\n            final int srcPosition, final int dstPosition,\n            final int length) {\n        arraycopy(values, srcPosition, values, dstPosition, length);\n    }\n    \n    /**\n     * Utility shortcut for resizing an array, preserving values at start.\n     */\n    public static final double[] arraysetlength(\n            double[] values,\n            final int newLength) {\n        final int oldLength =\n            values.length &lt; newLength ? values.length : newLength;\n        System.arraycopy(values, 0, values = new double[newLength], 0,\n            oldLength);\n        return values;\n    }\n    \n    /* Internal instance members. */\n    private double values[];\n    private int subrangePositions[];\n    private bool isSharedValues;\n    private bool isSharedSubrangePositions;\n    \n    /* Internal method. */\n    private final reset(\n            final double[] values,\n            final int[] subrangePositions) {\n        this.isSharedValues =\n            (this.values = values) == DEFAULT_VALUES;\n        this.isSharedsubrangePositions =\n            (this.subrangePositions = subrangePositions) ==\n                DEFAULT_POSITIONS;\n    }\n    \n    /**\n     * Reset the matrix to fill it with the same initial value.\n     *\n     * @param initialValue  The value to set in all cell positions.\n     */\n    public reset(final double initialValue = DEFAULT_VALUE) {\n        reset(\n            (initialValue == DEFAULT_VALUE) ? DEFAULT_VALUES :\n                new double[SUBRANGE_POSITIONS](initialValue),\n            DEFAULT_POSITIONS);\n    }\n    \n    /**\n     * Default constructor, using single default value.\n     *\n     * @param initialValue  Alternate default value to initialize all\n     *                      positions in the matrix.\n     */\n    public DoubleTrie(final double initialValue = DEFAULT_VALUE) {\n        this.reset(initialValue);\n    }\n\n    /**\n     * This is a useful preinitialized instance containing the\n     * DEFAULT_VALUE in all cells.\n     */\n    public static DoubleTrie DEFAULT_INSTANCE = new DoubleTrie();\n\n    /**\n     * Copy constructor. Note that the source trie may be immutable\n     * or not; but this constructor will create a new mutable trie\n     * even if the new trie initially shares some storage with its\n     * source when that source also uses shared storage.\n     */\n    public DoubleTrie(final DoubleTrie source) {\n        this.values = (this.isSharedValues =\n            source.isSharedValues) ?\n            source.values :\n            source.values.clone();\n        this.subrangePositions = (this.isSharedSubrangePositions =\n            source.isSharedSubrangePositions) ?\n            source.subrangePositions :\n            source.subrangePositions.clone());\n    }\n    \n    /**\n     * Fast indexed getter.\n     *\n     * @param i  Row of position to set in the matrix.\n     * @param j  Column of position to set in the matrix.\n     * @return   The value stored in matrix at that position.\n     */\n    public double getAt(final int i, final int j) {\n        return values[subrangePositions[subrangeOf(i, j)] +\n                      positionOffsetOf(i, j)];\n    }\n    \n    /**\n     * Fast indexed setter.\n     *\n     * @param i      Row of position to set in the sparsed matrix.\n     * @param j      Column of position to set in the sparsed matrix.\n     * @param value  The value to set at this position.\n     * @return       The passed value.\n     * Note: this does not compact the sparsed matric after setting.\n     * @see compact(void)\n     */\n    public double setAt(final int i, final int i, final double value) {\n       final int subrange       = subrangeOf(i, j);\n       final int positionOffset = positionOffsetOf(i, j);\n       // Fast check to see if the assignment will change something.\n       int subrangePosition, valuePosition;\n       if (Double.compare(\n               values[valuePosition =\n                   (subrangePosition = subrangePositions[subrange]) +\n                   positionOffset],\n               value) != 0) {\n               /* So we'll need to perform an effective assignment in values.\n                * Check if the current subrange to assign is shared of not.\n                * Note that we also include the DEFAULT_VALUES which may be\n                * shared by several other (not tested) trie instances,\n                * including those instanciated by the copy contructor. */\n               if (isSharedValues) {\n                   values = values.clone();\n                   isSharedValues = false;\n               }\n               /* Scan all other subranges to check if the position in values\n                * to assign is shared by another subrange. */\n               for (int otherSubrange = subrangePositions.length;\n                       --otherSubrange &gt;= 0; ) {\n                   if (otherSubrange != subrange)\n                       continue; /* Ignore the target subrange. */\n                   /* Note: the following test of range is safe with future\n                    * interleaving of common subranges (TODO in compact()),\n                    * even though, for now, subranges are sharing positions\n                    * only between their common start and end position, so we\n                    * could as well only perform the simpler test &lt;code&gt;\n                    * (otherSubrangePosition == subrangePosition)&lt;/code&gt;,\n                    * instead of testing the two bounds of the positions\n                    * interval of the other subrange. */\n                   int otherSubrangePosition;\n                   if ((otherSubrangePosition =\n                           subrangePositions[otherSubrange]) &gt;=\n                           valuePosition &amp;&amp;\n                           otherSubrangePosition + SUBRANGE_POSITIONS &lt;\n                           valuePosition) {\n                       /* The target position is shared by some other\n                        * subrange, we need to make it unique by cloning the\n                        * subrange to a larger values vector, copying all the\n                        * current subrange values at end of the new vector,\n                        * before assigning the new value. This will require\n                        * changing the position of the current subrange, but\n                        * before doing that, we first need to check if the\n                        * subrangePositions array itself is also shared\n                        * between instances (including the DEFAULT_POSITIONS\n                        * that should be preserved, and possible arrays\n                        * shared by an external factory contructor whose\n                        * source trie was declared immutable in a derived\n                        * class). */\n                       if (isSharedSubrangePositions) {\n                           subrangePositions = subrangePositions.clone();\n                           isSharedSubrangePositions = false;\n                       }\n                       /* TODO: no attempt is made to allocate less than a\n                        * fully independant subrange, using possible\n                        * interleaving: this would require scanning all\n                        * other existing values to find a match for the\n                        * modified subrange of values; but this could\n                        * potentially leave positions (in the current subrange\n                        * of values) unreferenced by any subrange, after the\n                        * change of position for the current subrange. This\n                        * scanning could be prohibitively long for each\n                        * assignement, and for now it's assumed that compact()\n                        * will be used later, after those assignements. */\n                       values = setlengh(\n                           values,\n                           (subrangePositions[subrange] =\n                            subrangePositions = values.length) +\n                           SUBRANGE_POSITIONS);\n                       valuePosition = subrangePositions + positionOffset;\n                       break;\n                   }\n               }\n               /* Now perform the effective assignment of the value. */\n               values[valuePosition] = value;\n           }\n       }\n       return value;\n    }\n    \n    /**\n     * Compact the storage of common subranges.\n     * TODO: This is a simple implementation without interleaving, which\n     * would offer a better data compression. However, interleaving with its\n     * O(N²) complexity where N is the total length of values, should\n     * be attempted only after this basic compression whose complexity is\n     * O(n²) with n being SUBRANGE_POSITIIONS times smaller than N.\n     */\n    public void compact() {\n        final int oldValuesLength = values.length;\n        int newValuesLength = 0;\n        for (int oldPosition = 0;\n                 oldPosition &lt; oldValuesLength;\n                 oldPosition += SUBRANGE_POSITIONS) {\n            int oldPosition = positions[subrange];\n            bool commonSubrange = false;\n            /* Scan values for possible common subranges. */\n            for (int newPosition = newValuesLength;\n                    (newPosition -= SUBRANGE_POSITIONS) &gt;= 0; )\n                if (arrayequals(values, newPosition, oldPosition,\n                        SUBRANGE_POSITIONS)) {\n                    commonSubrange = true;\n                    /* Update the subrangePositions|] with all matching\n                     * positions from oldPosition to newPosition. There may\n                     * be several index to change, if the trie has already\n                     * been compacted() before, and later reassigned. */\n                    for (subrange = subrangePositions.length;\n                         --subrange &gt;= 0; )\n                        if (subrangePositions[subrange] == oldPosition)\n                            subrangePositions[subrange] = newPosition;\n                    break;\n                }\n            if (!commonSubrange) {\n                /* Move down the non-common values, if some previous\n                 * subranges have been compressed when they were common.\n                 */\n                if (!commonSubrange &amp;&amp; oldPosition != newValuesLength) {\n                    arraycopy(values, oldPosition, newValuesLength,\n                        SUBRANGE_POSITIONS);\n                    /* Advance compressed values to preserve these new ones. */\n                    newValuesLength += SUBRANGE_POSITIONS;\n                }\n            }\n        }\n        /* Check the number of compressed values. */\n        if (newValuesLength &lt; oldValuesLength) {\n            values = values.arraysetlength(newValuesLength);\n            isSharedValues = false;\n        }\n    }\n\n}\n</code></pre>\n<p>Note: this code is not complete because it handles a single matrix size, and its compactor is limited to detect only common subranges, without interleaving them.</p>\n<p>Also, the code does not determine where it is the best width or height to use for splitting the matrix into subranges (for x or y coordinates), according to the matrix size. It just uses the same static subrange sizes of 16 (for both coordinates), but it could be conveniently any other small power of 2 (but a non power of 2 would slow down the <code>int indexOf(int, int)</code> and <code>int offsetOf(int, int)</code> internal methods), independently for both coordinates, and up to the maximum width or height of the matrix. Ideally, the <code>compact()</code> method should be able to determine the best fitting sizes.</p>\n<p>If these splitting subranges sizes can vary, then there will be a need to add instance members for these subrange sizes instead of the static <code>SUBRANGE_POSITIONS</code>, and to make the static methods <code>int subrangeOf(int i, int j)</code> and <code>int positionOffsetOf(int i, int j)</code> into non static; and the initialization arrays <code>DEFAULT_POSITIONS</code>and <code>DEFAULT_VALUES</code> will need to be dropped or redefined differently.</p>\n<p>If you want to support interleaving, basically you'll start by dividing the existing values in two of about the same size (both being a multiple of the minimum subrange size, the first subset possibly having one more subrange than the second one), and you'll scan the larger one at all successive positions to find a matching interleaving; then you'll try to match these values. Then you'll loop recursively by dividing the subsets in halves (also a multiple of the minimum subrange size) and you'll scan again to match these subsets (this will multiply the number of subsets by 2: you have to wonder if the doubled size of the subrangePositions index is worth the value compared to the existing size of the values to see if it offers an effective compression (if not, you stop there: you have found the optimum subrange size directly from the interleaving compression process). In that case; the subrange size will be mutable, during compaction.</p>\n<p>But this code shows how you assign non-zero values and reallocate the <code>data</code> array for additional (non-zero) subranges, and then how you can optimize (with <code>compact()</code> after assignments have been performed using the <code>setAt(int i, int j, double value)</code> method) the storage of this data when there are duplicate subranges that may be unified within the data, and reindexed at the same position in the <code>subrangePositions</code> array.</p>\n<p>Anyway, all the principles of a trie are implemented there:</p>\n<ol>\n<li><p>It is always faster (and more compact in memory, meaning better locality) to represent a matrix using a single vector instead of a double-indexed array of arrays (each one allocated separately). The improvement is visible in the <code>double getAt(int, int)</code> method !</p>\n</li>\n<li><p>You save a lot of space, but when assigning values it may take time to reallocate new subranges. For this reason, the subranges should not be too small or reallocations will occur too frequently for setting up your matrix.</p>\n</li>\n<li><p>It is possible to transform an initial large matrix automatically into a more compact matrix by detecting common subranges. A typical implementation will then contain a method such as <code>compact()</code> above. However, if get() access is very fast and set() is quite fast, compact() may be very slow if there are lots of common subranges to compress (for example when subtracting a large non-sparse randomly-filled matrix with itself, or multiplying it by zero: it will be simpler and much faster in that case to reset the trie by instantiating a new one and dropping the old one).</p>\n</li>\n<li><p>Common subranges use common storage in the data, so this shared data must be read-only. If you must change a single value without changing the rest of the matrix, you must first make sure that it is referenced only one time in the <code>subrangePositions</code> index. Otherwise you'll need to allocate a new subrange anywhere (conveniently at end) of the <code>values</code> vector, and then store the position of this new subrange into the <code>subrangePositions</code> index.</p>\n</li>\n</ol>\n<hr />\n<hr />\n<p>Note that the generic Colt library, though very good as it is, is not as good when working on sparse matrix, because it uses hashing (or row-compresssed) technics which do not implement the support for tries for now, despite it is an excellent optimization, which is both space-saving <strong>and</strong> time-saving, notably for the most frequent getAt() operations.</p>\n<p>Even the setAt() operation described here for tries saves lot of time (the way is is implemented here, i.e. without automatic compaction after setting, which could still be implemented based on demand and estimated time where compaction would still save lot of storage space at the price of time): the time saving is proportional to the number of cells in subranges, and space saving is inversely proportional to the number of cells per subrange. A good compromise if then to use a subrange size such the number of cells per subrange is the square root of the total number of cells in a 2D matrix (it would be a cubic root when working with 3D matrix).</p>\n<p>Hashing technics used in Colt sparse matrix implementations have the inconvenience that they add a lot of storage overhead, and slow access time due to possible collisions. Tries can avoid all collisions, and can then warranty to save linear O(n) time to O(1) time in the worst cases, where (n) is the number of possible collisions (which, in case of sparse matrix, may be up to the number of non-default-value cells in the matrix, i.e. up to the total number of size of the matrix times a factor proportional to the hashing filling factor, for a non-sparse i.e. full matrix).</p>\n<p>The RC (row-compressed) technics used in Colt are nearer from Tries, but this is at another price, here the compression technics used, that have very slow access time for the most frequent read-only get() operations, and very slow compression for setAt() operations. In addition, the compression used is not orthogonal, unlike in this presentation of Tries where orthogonality is preserved. Tries would also be preserve this orthogonality for related viewing operations such as striding, transposition (viewed as a striding operation based on integer cyclic modular operations), subranging (and subselections in general, including with sorting views).</p>\n<p>I just hope that Colt will be updated in some future to implement another implementation using Tries (i.e. TrieSparseMatrix instead of just HashSparseMatrix and RCSparseMatrix). The ideas are in this article.</p>\n<p>The Trove implementation (based in int-&gt;int maps) are also based on hashing technics similar to the Colt's HashedSparseMatrix, i.e. they have the same inconvenience. Tries will be a lot faster, with a moderate additional space consumed (but this space can be optimized and become even better than Trove and Colt, in a deferred time, using a final compact()ion operation on the resulting matrix/trie).</p>\n<p>Note: this Trie implementation is bound to a specific native type (here double). This is voluntary, because generic implementation using boxing types have a huge space overhead (and are much slower in access time). Here it just uses native unidimensional arrays of double rather than generic Vector&lt;Double&gt;. But it is certainly possible to derive a generic implementation as well for Tries... Unfortunately, Java still does not allow writing really generic classes with all the benefits of native types, except by writing multiple implementations (for a generic Object type or for each native type), and serving all these operation via a type factory. The language should be able to automatically instantiate the native implementations and build the factory automatically (for now it is not the case even in Java 7, and this is something where .Net still maintains its advantage for really generic types that are as fast as native types).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 294510,
+      "reputation" : 159,
+      "user_id" : 598448,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/60d2d1e95313595a0009e92737884629?s=256&d=identicon&r=PG",
+      "display_name" : "Laurent Ho",
+      "link" : "https://stackoverflow.com/users/598448/laurent-ho"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1449155794,
+    "last_edit_date" : 1449155794,
+    "creation_date" : 1296810282,
+    "answer_id" : 4896207,
+    "question_id" : 390181,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Following framework to test Java Matrix Libraries, provides also a good list of these!\n<a href=\"https://lessthanoptimal.github.io/Java-Matrix-Benchmark/\" rel=\"nofollow noreferrer\">https://lessthanoptimal.github.io/Java-Matrix-Benchmark/</a></p>\n\n<p>Tested Libraries:</p>\n\n<pre><code>* Colt\n* Commons Math\n* Efficient Java Matrix Library (EJML)\n* Jama\n* jblas\n* JScience (Older benchmarks only)\n* Matrix Toolkit Java (MTJ)\n* OjAlgo\n* Parallel Colt\n* Universal Java Matrix Package (UJMP) \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 266725,
+      "reputation" : 2572,
+      "user_id" : 554460,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/RVrh3.jpg?s=256",
+      "display_name" : "Vladimir Kostyukov",
+      "link" : "https://stackoverflow.com/users/554460/vladimir-kostyukov"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1363149655,
+    "last_edit_date" : 1363149655,
+    "creation_date" : 1360300104,
+    "answer_id" : 14766055,
+    "question_id" : 390181,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You migth look at <a href=\"http://la4j.org\" rel=\"nofollow\">la4j</a> (Linear Algebra for Java) library. It supports <a href=\"http://netlib.org/utk/papers/templates/node91.html\" rel=\"nofollow\">CRS (Compressed Row Storage)</a> as well as <a href=\"http://netlib.org/utk/papers/templates/node92.html\" rel=\"nofollow\">CCS (Compressed Column Storage)</a> internal representaions for sparse matrices. So, these are the most efficient and fast internal stuctures for sparse data.</p>\n\n<p>Here is the brief example of using sparse matrices in <a href=\"http://la4j.org\" rel=\"nofollow\">la4j</a>:</p>\n\n<pre><code>Matrix a = new CRSMatrix(new double[][]{ // 'a' - CRS sparse matrix\n   { 1.0, 0.0, 3.0 },\n   { 0.0, 5.0, 0.0 },\n   { 7.0, 0.0. 9.0 }\n});\n\nMatrix b = a.transpose(); // 'b' - CRS sparse matrix\n\nMatrix c = b.multiply(a, Matrices.CCS_FACTORY); // 'c' = 'b' * 'a'; \n                                                // 'c' - CCS sparse matrix\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 176434,
+        "reputation" : 1883,
+        "user_id" : 407132,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+        "display_name" : "verdy_p",
+        "link" : "https://stackoverflow.com/users/407132/verdy-p"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1540781567,
+      "post_id" : 22409507,
+      "comment_id" : 92976169,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "As I stated in the article/reply, HashMap is not as fast as we think, because it requires hashing for every index key you want to use (for both read and write accesses) which has a cost (and is not so evident to program to minimize collisions)."
+    }, {
+      "owner" : {
+        "account_id" : 176434,
+        "reputation" : 1883,
+        "user_id" : 407132,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+        "display_name" : "verdy_p",
+        "link" : "https://stackoverflow.com/users/407132/verdy-p"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1540781718,
+      "post_id" : 22409507,
+      "comment_id" : 92976198,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "And because collisions must always be accounted for (to reduce the risk or collisions or the risk of long loops to lookup other positions) you need to increase the internal size of the hash table, keeping a minimum number of slots unused, but then you waste space. As well once you get a position in the hash index, you need to compare the effective keys (not just their hashed value). Globally it takes hundreds CPU cycles (thousands in worst cases, when there&#39;s a high level of collision as the hash table is almost full) instead of only 2 table indirects with a Trie for all reads and most writes!"
+    }, {
+      "owner" : {
+        "account_id" : 176434,
+        "reputation" : 1883,
+        "user_id" : 407132,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b0ac3d0a15ce4f96f0d6b29172fca72a?s=256&d=identicon&r=PG",
+        "display_name" : "verdy_p",
+        "link" : "https://stackoverflow.com/users/407132/verdy-p"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1540781958,
+      "post_id" : 22409507,
+      "comment_id" : 92976225,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note that in some programming languages, you have no choice: arrays are only available as hashtables (e.g. PHP, Lua), but they were optimized to compensate for cases where tables have non-sparse ranges (internally they use two separate storages: a hashtable (for very sparse parts), and a simple 1D index (sometimes a 2D Trie) for more compact areas, or only for some integer key types with smal values."
+    } ],
+    "owner" : {
+      "account_id" : 468668,
+      "reputation" : 757,
+      "user_id" : 874802,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/904f2244bfce1fd7812a92589eee2e39?s=256&d=identicon&r=PG",
+      "display_name" : "Per Lindberg",
+      "link" : "https://stackoverflow.com/users/874802/per-lindberg"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1394811455,
+    "creation_date" : 1394811455,
+    "answer_id" : 22409507,
+    "question_id" : 390181,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>HashMap rocks. Just concatenate the indexes (as strings) with a separator, say '/', using StringBuilder (not + or String.format), and use that as the key. You can't get faster and more memory-efficient than that. Sparse matrices are soo 20th century. :-)</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 20025,
+    "reputation" : 7217,
+    "user_id" : 47450,
+    "user_type" : "registered",
+    "accept_rate" : 91,
+    "profile_image" : "https://www.gravatar.com/avatar/61c1dc08d050f516949a674e09819015?s=256&d=identicon&r=PG",
+    "display_name" : "DanM",
+    "link" : "https://stackoverflow.com/users/47450/danm"
+  },
+  "is_answered" : true,
+  "view_count" : 58102,
+  "accepted_answer_id" : 3391413,
+  "answer_count" : 7,
+  "score" : 73,
+  "last_activity_date" : 1759175200,
+  "creation_date" : 1230069314,
+  "last_edit_date" : 1362075694,
+  "question_id" : 390181,
+  "link" : "https://stackoverflow.com/questions/390181/sparse-matrices-arrays-in-java",
+  "title" : "Sparse matrices / arrays in Java",
+  "body" : "<p>I'm working on a project, written in Java, which requires that I build a very large 2-D sparse array.  Very sparse, if that makes a difference.  Anyway: the most crucial aspect for this application is efficency in terms of time (assume loads of memory, though not nearly so unlimited as to allow me to use a standard 2-D array -- the key range is in the billions in both dimensions).</p>\n\n<p>Out of the kajillion cells in the array, there will be several hundred thousand cells which contain an object.  I need to be able to modify cell contents VERY quickly.</p>\n\n<p>Anyway: Does anyone know a particularly good library for this purpose?  It would have to be Berkeley, LGPL or similar license (no GPL, as the product can't be entirely open-sourced).  Or if there's just a very simple way to make a homebrew sparse array object, that'd be fine too.</p>\n\n<p>I'm considering <a href=\"http://ressim.berlios.de/\" rel=\"noreferrer\">MTJ</a>, but haven't heard any opinions on its quality.</p>\n"
+}

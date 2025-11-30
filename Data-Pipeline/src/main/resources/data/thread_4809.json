@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "spring-boot", "server", "client", "ocpp" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 25938551,
+      "reputation" : 31,
+      "user_id" : 19658403,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fca23091d739b1a17e3a79d5169f88d3?s=256&d=identicon&r=PG",
+      "display_name" : "Khushboo Mistry",
+      "link" : "https://stackoverflow.com/users/19658403/khushboo-mistry"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1719382135,
+    "creation_date" : 1719382135,
+    "answer_id" : 78670583,
+    "question_id" : 78298986,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As far as what I understood from the OCPP protocol, the endpoint in the server is like</p>\n<pre><code>ws://localhost:8080/ocppserver/services/ocpp16/{chargerName}\n</code></pre>\n<p>So the endpoint itself contains the {chargerName} which specify that the client(charger) should directly connect to the server at mentioned point .</p>\n<p>In short, client == EV Charger in respect to OCPP protocol</p>\n<p>If you want any intermediate things then you might have to got for other protocol like OCPI.</p>\n<p>Reference: <a href=\"https://i.sstatic.net/AJ0XKrH8.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/AJ0XKrH8.png\" alt=\"enter image description here\" /></a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 44159029,
+      "reputation" : 1,
+      "user_id" : 31607853,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/0def6d97a0e5a2c3b82fef7f23785385?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user31607853",
+      "link" : "https://stackoverflow.com/users/31607853/user31607853"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759309244,
+    "creation_date" : 1759309244,
+    "answer_id" : 79779842,
+    "question_id" : 78298986,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>OCPP server sample implementation based on spring-boot.</p>\n<p>All messages for all versions of OCPP are written in Java.</p>\n<p>If you want to customize a businiss logic, implement the corresponding server handler.</p>\n<p><a href=\"https://github.com/u2ware/ocpp-boot-server\" rel=\"nofollow noreferrer\">https://github.com/u2ware/ocpp-boot-server</a></p>\n<p><a href=\"https://github.com/u2ware/ocpp-boot-server\" rel=\"nofollow noreferrer\">https://github.com/u2ware/ocpp-boot-server</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 30663667,
+    "reputation" : 11,
+    "user_id" : 23507567,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocKOVswSAbJxdPbqKjF5vB_rfw_vEIVUoJiYN3eor-PC=k-s256",
+    "display_name" : "Romain Geurts",
+    "link" : "https://stackoverflow.com/users/23507567/romain-geurts"
+  },
+  "is_answered" : false,
+  "view_count" : 520,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1759339217,
+  "creation_date" : 1712671025,
+  "last_edit_date" : 1759339217,
+  "question_id" : 78298986,
+  "link" : "https://stackoverflow.com/questions/78298986/how-to-mange-ocpp-architecture-on-java-spring-boot-app",
+  "title" : "How to mange ocpp architecture on java spring boot app",
+  "body" : "<p>I don't understand how the server and client from the <a href=\"https://openchargealliance.org/\" rel=\"nofollow noreferrer\"><em>Open Charge Alliance</em></a> OCA-OCPP library for Java work with the EV Charger. I don't understand which port I have to use for requesting WebSocket and how to configure the EV Charger (Mennekes).</p>\n<p>I want to have a server that sends requests to the client, and the client sends requests to the EV charger. I don't want to have a client that has to manage two separate connections, one for the server and the other for the EV charger.</p>\n<pre><code>public class OCPPClient {\n    private IClientAPI client;\n    private ClientCoreProfile core;\n    private JSONConfiguration configuration;\n    private WssSocket wssSocket;\n\n    public void connect(String ipChargingPoint, String port) throws Exception {\n\n        // The core profile is mandatory\n        core = new ClientCoreProfile(new ClientCoreEventHandler() {})\n            \n        configuration = JSONConfiguration.get();\n        configuration.setParameter(JSONConfiguration.USERNAME_PARAMETER, &quot;operator&quot;);\n        configuration.setParameter(JSONConfiguration.PASSWORD_PARAMETER, &quot;CX1zRpdK&quot;);\n        configuration.setParameter(JSONConfiguration.TCP_NO_DELAY_PARAMETER, false);\n        configuration.setParameter(JSONConfiguration.PROXY_PARAMETER, null);\n        configuration.setParameter(JSONConfiguration.PING_INTERVAL_PARAMETER, 300);\n        configuration.setParameter(JSONConfiguration.WEBSOCKET_WORKER_COUNT, 4);\n        configuration.setParameter(JSONConfiguration.CONNECT_TIMEOUT_IN_MS_PARAMETER, 10000);\n\n        wssSocket = new WssSocket();\n        wssSocket.uri(new URI(&quot;ws://&quot; + ipChargingPoint + &quot;:&quot; + port));\n\n        client = new JSONClient(core, &quot;137640200473&quot;, wssSocket, configuration);\n\n        client.connect(&quot;ws://&quot; + ipChargingPoint + &quot;:&quot; + port, null);\n    }\n\n    public void sendBootNotification() throws Exception {\n\n        // Use the feature profile to help create event\n        Request request = core.createBootNotificationRequest(&quot;some vendor&quot;, &quot;some model&quot;);\n\n        // Client returns a promise which will be filled once it receives a confirmation.\n        client.send(request).whenComplete((s, ex) -&gt; System.out.println(s));\n    }\n\n    public IClientAPI getClient() {\n        return client;\n    }\n\n    public void disconnect() {\n        client.disconnect();\n    }\n\n}\n\n</code></pre>\n<pre><code>@Data\npublic class OCPPServer {\n\n        private JSONServer server;\n        private ServerCoreProfile core;\n        private Map&lt;String, OCPPClient&gt; clients = new HashMap&lt;&gt;();\n        private JSONConfiguration configuration;\n\n\n\n\n    public void started() throws Exception\n        {\n            if (server != null)\n                return;\n            configuration = JSONConfiguration.get();\n            configuration.setParameter(JSONConfiguration.USERNAME_PARAMETER, &quot;operator&quot;);\n            configuration.setParameter(JSONConfiguration.PASSWORD_PARAMETER, &quot;CX1zRpdK&quot;);\n            configuration.setParameter(JSONConfiguration.TCP_NO_DELAY_PARAMETER, true);\n            configuration.setParameter(JSONConfiguration.PROXY_PARAMETER, 3000);\n            configuration.setParameter(JSONConfiguration.PING_INTERVAL_PARAMETER, 300);\n            configuration.setParameter(JSONConfiguration.WEBSOCKET_WORKER_COUNT, 4);\n            configuration.setParameter(JSONConfiguration.CONNECT_TIMEOUT_IN_MS_PARAMETER, 10000);\n\n            // The core profile is mandatory\n            core = new ServerCoreProfile(new ServerCoreEventHandler() {});\n\n            server = new JSONServer(core,configuration);\n            server.open(&quot;172.28.2.83&quot;, 3000, new ServerEvents() {})\n            System.out.println(&quot;Server started and listening on 172.28.2.83:3000&quot;);\n\n        }\n\n    public void sendClearCacheRequestToClient(String idStation) throws Exception {\n        // Récupérer le client correspondant à l'ID de la station\n        OCPPClient client = clients.get(idStation);\n\n        if (client != null) {\n            // Utiliser le profil de fonctionnalité pour aider à créer l'événement\n            ClearCacheRequest request = core.createClearCacheRequest();\n\n            // Le client renvoie une promesse qui sera remplie une fois qu'il recevra une confirmation.\n            client.getClient().send(request).whenComplete((confirmation, ex) -&gt; {\n                if (ex != null) {\n                    System.out.println(&quot;Failed to send ClearCacheRequest to client: &quot; + ex.getMessage());\n                } else {\n                    //Le serveur a reçu une confirmation de la station de recharge\n                    System.out.println(&quot;ClearCacheRequest sent to client: &quot; + confirmation);\n                }\n            });\n        } else {\n            System.out.println(&quot;No client found for station ID: &quot; + idStation);\n        }\n    }\n\n    public void stop(){\n            server.close();\n    }\n\n\n    public int getActiveSessions() {\n        return clients.size();\n    }\n\n    public void createSessions(String idStation, String ipStation, String port ) {\n        OCPPClient client = new OCPPClient();\n        if(server == null){\n            try {\n                started();\n            } catch (Exception e) {\n                e.printStackTrace();\n            }\n        }\n        try {\n            client.connect(ipStation, port); // Assurez-vous que l'adresse IP de la station est correcte\n            System.out.println(&quot;Connected to ws://&quot; + ipStation + &quot; on port &quot; + port);\n            clients.put(idStation, client);\n        } catch (Exception e) {\n            throw new RuntimeException(e);\n        }\n    }\n\n    public OCPPClient getClient(String uuid) {\n        return clients.get(uuid);\n    }\n}\n</code></pre>\n<pre><code>\n\nclass OCPPConnectionTest {\n\n    @Test\n    void testClientServerConnection() throws Exception {\n        OCPPServer server = new OCPPServer();\n\n\n            // Start the server\n            server.started();\n            assertEquals(0, server.getActiveSessions());\n\n            // Connect the client and send boot notification\n            server.createSessions(&quot;1&quot;, &quot;172.28.2.57&quot;, &quot;3000&quot;);\n            server.getClient(&quot;1&quot;).sendBootNotification();\n\n            // Verify that the server has an active session\n            assertEquals(1, server.getActiveSessions());\n\n    }\n\n\n}\n</code></pre>\n"
+}

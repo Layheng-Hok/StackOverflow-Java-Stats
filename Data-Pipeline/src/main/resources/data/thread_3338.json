@@ -1,0 +1,122 @@
+{
+  "tags" : [ "java", "eclipse", "oop", "tic-tac-toe" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3403175,
+      "reputation" : 23079,
+      "user_id" : 2854908,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://i.sstatic.net/snzI5.jpg?s=256",
+      "display_name" : "libik",
+      "link" : "https://stackoverflow.com/users/2854908/libik"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1424952558,
+    "post_id" : 28742041,
+    "comment_id" : 45767164,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Do you know that <code>i*1 = i</code>, right? (analogically, <code>j*1 = j</code>)"
+  }, {
+    "owner" : {
+      "account_id" : 2011141,
+      "reputation" : 7387,
+      "user_id" : 1799530,
+      "user_type" : "registered",
+      "accept_rate" : 47,
+      "profile_image" : "https://www.gravatar.com/avatar/612d4e8177d4f54005705e21d60d3628?s=256&d=identicon&r=PG",
+      "display_name" : "SomeJavaGuy",
+      "link" : "https://stackoverflow.com/users/1799530/somejavaguy"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1424952853,
+    "post_id" : 28742041,
+    "comment_id" : 45767333,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "There are different approaches at programming AI. Some are more simple some are really complex, maybe you should check them out and validate theyr difficulty against your potentional skill in programming. Maybe you should take a look at <a href=\"http://stackoverflow.com/questions/40541/simple-ai-programming\">this</a> question."
+  }, {
+    "owner" : {
+      "account_id" : 3860107,
+      "reputation" : 1286,
+      "user_id" : 3198050,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/3ca723efd31ca56aa3f4e4d63d1554f2?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Luis Alves",
+      "link" : "https://stackoverflow.com/users/3198050/luis-alves"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1424953842,
+    "post_id" : 28742041,
+    "comment_id" : 45767929,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Note that there&#39;s already an algorithm to win or at least tie at this game. But if you want to try a simple AI algorithm you can try minimax"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1625605,
+      "reputation" : 5578,
+      "user_id" : 1501234,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://i.sstatic.net/2VLce.jpg?s=256",
+      "display_name" : "Jaroslaw Pawlak",
+      "link" : "https://stackoverflow.com/users/1501234/jaroslaw-pawlak"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1424956630,
+    "last_edit_date" : 1424956630,
+    "creation_date" : 1424953360,
+    "answer_id" : 28742362,
+    "question_id" : 28742041,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Simple defensive strategy in pseudo code:</p>\n\n<pre><code>for every line\n    if line is not full and opponent has two Xs in this line\n        place your O in the remaining space\n\nfor every pair of lines\n    if lines intersect, there is no element in the intersection and opponent has X in each line and you have no Xs in any of these two\n        place your O in the intersecton\n</code></pre>\n\n<p>You should also try to improve the readability of your code, try to write the above algorithm like this:</p>\n\n<pre><code>for (Line line : allLines()) {\n    if (line.has(2, \"X\") &amp;&amp; line.has(0, \"O\")) {\n        place(line.getEmptySpace(), \"O\");\n    }\n\nfor (PairOfLines pairOfLines : allPairsOfLines()) {\n    Line line1 = pairOfLines.getOne();\n    Line line2 = pairOfLines.getTwo();\n    if (line1.intersects(line2)\n            &amp;&amp; pairOfLines.getIntersection().isEmpty()\n            &amp;&amp; line1.has(1, \"X\")\n            &amp;&amp; line2.has(1, \"X\")\n            &amp;&amp; pairOfLines.has(0, \"O\")) {\n        place(pairofLines.getIntersection(), \"O\");\n    }\n}\n</code></pre>\n\n<p>You will need to create some helper methods to make it compile, but the code is clean and you can easily see the behavior from the code.</p>\n\n<p>Then you can do similarly for offensive strategy, e.g. find two intersecting lines where there is your one O and no opponent's Xs.</p>\n\n<p>I gave it a try and here is what I came up with. It wasn't test driven properly (there are gaps) and it needs some more refactoring:</p>\n\n<pre><code>import org.junit.Test;\n\nimport static blah.tictactoe.Cog.O;\nimport static blah.tictactoe.Cog.X;\nimport static com.shazam.shazamcrest.MatcherAssert.assertThat;\nimport static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;\nimport static org.hamcrest.CoreMatchers.is;\n\npublic class BoardTest {\n\n    @Test\n    public void blocksLineOfTwo() {\n        Board board = new Board(new Cog[][]{\n                {X,    null, null},\n                {null, X,    null},\n                {null, null, null}\n        });\n\n        board.placeOAutomatically();\n\n        assertThat(board, is(sameBeanAs(new Board(new Cog[][]{\n                {X,    null, null},\n                {null, X,    null},\n                {null, null, O   }\n        }))));\n    }\n\n    @Test\n    public void blocksIntersectionForOneCogOnEachOfLines() {\n        Board board = new Board(new Cog[][]{\n                {null, null, null},\n                {O,    O,    X   },\n                {X,    null, null}\n        });\n\n        board.placeOAutomatically();\n\n        assertThat(board, is(sameBeanAs(new Board(new Cog[][]{\n                {null, null, null},\n                {O,    O,    X   },\n                {X,    null, O   }\n        }))));\n    }\n\n    @Test\n    public void placesWinningCog() {\n        Board board = new Board(new Cog[][]{\n                {O,    O,    null},\n                {null, null, null},\n                {X,    X,    null}\n        });\n\n        board.placeOAutomatically();\n\n        assertThat(board, is(sameBeanAs(new Board(new Cog[][]{\n                {O,    O,    O   },\n                {null, null, null},\n                {X,    X,    null}\n        }))));\n    }\n\n}\n\n----\n\npublic enum Cog {\n    X, O\n}\n\n----\n\npublic class Field {\n\n    private Cog cog;\n\n    public Field(Cog cog) {\n        this.cog = cog;\n    }\n\n    public Cog getCog() {\n        return cog;\n    }\n\n    public boolean isEmpty() {\n        return cog == null;\n    }\n\n    public void setCog(Cog cog) {\n        this.cog = cog;\n    }\n\n}\n\n----\n\nimport com.google.common.collect.ImmutableSet;\nimport com.google.common.collect.Sets;\n\nimport java.util.Set;\n\npublic class Line {\n\n    private final Set&lt;Field&gt; fields;\n\n    public Line(Field fieldOne, Field fieldTwo, Field fieldThree) {\n        fields = ImmutableSet.of(fieldOne, fieldTwo, fieldThree);\n    }\n\n    public Set&lt;Field&gt; getFields() {\n        return fields;\n    }\n\n    public boolean has(int count, Cog cog) {\n        return fields.stream().map(Field::getCog).filter(c -&gt; c == cog).count() == count;\n    }\n\n    public Field getEmptySpace() {\n        long emptyFields = fields.stream().filter(Field::isEmpty).count();\n        if (emptyFields != 1) {\n            throw new IllegalStateException(\"there are \" + emptyFields + \" empty fields\");\n        }\n        return fields.stream().filter(Field::isEmpty).findFirst().get();\n    }\n\n    public boolean intersects(Line line) {\n        return !Sets.intersection(this.fields, line.fields).isEmpty();\n    }\n\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) return true;\n        if (o == null || getClass() != o.getClass()) return false;\n\n        Line line = (Line) o;\n\n        return fields.equals(line.fields);\n    }\n\n}\n\n----\n\nimport com.google.common.collect.Sets;\n\nimport java.util.HashSet;\nimport java.util.Set;\n\npublic class PairOfLines {\n\n    private final Line lineOne;\n    private final Line lineTwo;\n\n    public PairOfLines(Line lineOne, Line lineTwo) {\n        this.lineOne = lineOne;\n        this.lineTwo = lineTwo;\n    }\n\n    public Line getOne() {\n        return lineOne;\n    }\n\n    public Line getTwo() {\n        return lineTwo;\n    }\n\n    public Field getIntersection() {\n        return Sets.intersection(lineOne.getFields(), lineTwo.getFields()).iterator().next();\n    }\n\n    public boolean has(int count, Cog cog) {\n        Set&lt;Field&gt; allFields = new HashSet&lt;&gt;();\n        allFields.addAll(lineOne.getFields());\n        allFields.addAll(lineTwo.getFields());\n        return allFields.stream().map(Field::getCog).filter(c -&gt; c == cog).count() == count;\n    }\n\n}\n\n----\n\nimport com.google.common.collect.ImmutableSet;\n\nimport java.util.Set;\n\nimport static blah.tictactoe.Cog.X;\nimport static blah.tictactoe.Cog.O;\n\npublic class Board {\n\n    private final Field[][] matrix = new Field[3][3];\n\n    public Board(Cog[][] matrix) {\n        for (int i = 0; i &lt; 3; i++) {\n            for (int j = 0; j &lt; 3; j++) {\n                this.matrix[i][j] = new Field(matrix[i][j]);\n            }\n        }\n    }\n\n    public void placeOAutomatically() {\n        // winning move\n        for (Line line : allLines()) {\n            if (line.has(2, O) &amp;&amp; line.has(0, X)) {\n                line.getEmptySpace().setCog(O);\n                return;\n            }\n        }\n\n        // block line of two\n        for (Line line : allLines()) {\n            if (line.has(2, X) &amp;&amp; line.has(0, O)) {\n                line.getEmptySpace().setCog(O);\n                return;\n            }\n        }\n\n        // block intersection\n        for (PairOfLines pairOfLines : allPairsOfIntersectingLines()) {\n            if (pairOfLines.getIntersection().isEmpty()\n                    &amp;&amp; pairOfLines.getOne().has(1, X)\n                    &amp;&amp; pairOfLines.getTwo().has(1, X)\n                    &amp;&amp; pairOfLines.has(0, O)) {\n                pairOfLines.getIntersection().setCog(O);\n                return;\n            }\n        }\n    }\n\n\n    private Set&lt;Line&gt; allLines() {\n        return ImmutableSet.of(\n                new Line(matrix[0][0], matrix[0][1], matrix[0][2]),\n                new Line(matrix[1][0], matrix[1][1], matrix[1][2]),\n                new Line(matrix[2][0], matrix[2][1], matrix[2][2]),\n\n                new Line(matrix[0][0], matrix[1][0], matrix[2][0]),\n                new Line(matrix[0][1], matrix[1][1], matrix[2][1]),\n                new Line(matrix[0][2], matrix[1][2], matrix[2][2]),\n\n                new Line(matrix[0][0], matrix[1][1], matrix[2][2]),\n                new Line(matrix[0][2], matrix[1][1], matrix[2][0])\n        );\n    }\n\n    private Set&lt;PairOfLines&gt; allPairsOfIntersectingLines() {\n        ImmutableSet.Builder&lt;PairOfLines&gt; builder = new ImmutableSet.Builder&lt;&gt;();\n        for (Line lineOne : allLines()) {\n            for (Line lineTwo : allLines()) {\n                if (!lineOne.equals(lineTwo) &amp;&amp; lineOne.intersects(lineTwo)) {\n                    builder.add(new PairOfLines(lineOne, lineTwo));\n                }\n            }\n        }\n        return builder.build();\n    }\n\n}\n</code></pre>\n\n<p>A few Maven dependencies needed:</p>\n\n<pre><code>&lt;dependencies&gt;\n    &lt;!-- COMPILE --&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;com.google.collections&lt;/groupId&gt;\n        &lt;artifactId&gt;google-collections&lt;/artifactId&gt;\n        &lt;version&gt;1.0&lt;/version&gt;\n    &lt;/dependency&gt;\n\n    &lt;!-- TEST --&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;junit&lt;/groupId&gt;\n        &lt;artifactId&gt;junit-dep&lt;/artifactId&gt;\n        &lt;version&gt;4.11&lt;/version&gt;\n        &lt;scope&gt;test&lt;/scope&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;\n        &lt;artifactId&gt;hamcrest-library&lt;/artifactId&gt;\n        &lt;version&gt;1.3&lt;/version&gt;\n        &lt;scope&gt;test&lt;/scope&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;org.hamcrest&lt;/groupId&gt;\n        &lt;artifactId&gt;hamcrest-core&lt;/artifactId&gt;\n        &lt;version&gt;1.3&lt;/version&gt;\n        &lt;scope&gt;test&lt;/scope&gt;\n    &lt;/dependency&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;com.shazam&lt;/groupId&gt;\n        &lt;artifactId&gt;shazamcrest&lt;/artifactId&gt;\n        &lt;version&gt;0.9&lt;/version&gt;\n        &lt;scope&gt;test&lt;/scope&gt;\n        &lt;exclusions&gt;\n            &lt;exclusion&gt;\n                &lt;groupId&gt;com.google.guava&lt;/groupId&gt;\n                &lt;artifactId&gt;guava&lt;/artifactId&gt;\n            &lt;/exclusion&gt;\n        &lt;/exclusions&gt;\n    &lt;/dependency&gt;\n&lt;/dependencies&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5179087,
+      "reputation" : 3817,
+      "user_id" : 4145291,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/8ef6e6cbf4854c48ac06ac352b6901fc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "BarrySW19",
+      "link" : "https://stackoverflow.com/users/4145291/barrysw19"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1424954414,
+    "last_edit_date" : 1424954414,
+    "creation_date" : 1424954093,
+    "answer_id" : 28742632,
+    "question_id" : 28742041,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The easiest way to code an AI for this sort of game is the <a href=\"http://en.wikipedia.org/wiki/Minimax\" rel=\"nofollow\">Minimax algorithm</a>, which is an algorithm for 2-player games where each player is trying to make the best move available. You basically just need to code the algorithm as detailed on the wiki page and write a simple evaluation function which returns 1 for a win, 0 for a draw (or no result yet) and -1 for a loss (with more complex evaluation the algorithm can happily play chess). Tic-tac-toe is a simple enough game that you can do full depth evaluation for every move - obviously a more complex game like chess would require a cut-off.</p>\n\n<p>You could also look at the slightly more complex but also more efficient version of this algorithm known as <a href=\"http://en.wikipedia.org/wiki/Alpha-beta_pruning\" rel=\"nofollow\">Alpha-Beta pruning</a>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5625866,
+    "reputation" : 199,
+    "user_id" : 4454335,
+    "user_type" : "registered",
+    "accept_rate" : 12,
+    "profile_image" : "https://www.gravatar.com/avatar/314ffdb324a5de712980be690322c2be?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Rob Neal",
+    "link" : "https://stackoverflow.com/users/4454335/rob-neal"
+  },
+  "is_answered" : true,
+  "view_count" : 1449,
+  "closed_date" : 1762716547,
+  "answer_count" : 2,
+  "score" : -1,
+  "last_activity_date" : 1762712491,
+  "creation_date" : 1424952432,
+  "last_edit_date" : 1762712491,
+  "question_id" : 28742041,
+  "link" : "https://stackoverflow.com/questions/28742041/ai-for-tic-tac-toe",
+  "closed_reason" : "Needs more focus",
+  "title" : "AI for Tic Tac Toe",
+  "body" : "<p>I have been working on a project , the project is to create a game of Noughts and Crosses.  I have programmed the GUI , win checks e.t.c but I'm stuck on programming the AI. I have represented a 3x3 array full of JButtons . It has been very challenging.</p>\n<p>I'm looking for ideas that could help me code much more efficient and effective code.\nI think my method wasn't very efficient and I want to code the AI to make marks horizontally and vertically ( offensive and defensive strategies ).</p>\n<p>This is what I have done so far:</p>\n<pre><code>public class Computer {\n    \n     \n     \n     \n     public void AI()\n     {\n     \n         for(int i=0; i&lt;3; i++ )\n         {\n\n             \n             for (int j=0; j&lt;3; j++)\n             {\n                 // Diagonal Defensive Strategy for computerX and computerO\n                if ( Game.computerX == true &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1+2][j*1+2].setText(&quot;X&quot;);\n\n                }\n             \n             \n                else if (Game.computerX == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1][j*1].setText(&quot;X&quot;);\n                }\n                \n                \n                else if (Game.computerX == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;O&quot;))\n                {\n                    Game.Board[i*1+1][j*1+1].setText(&quot;X&quot;);\n                }\n                \n                \n                //*************************************** For computerO *******************************\n                \n                else if ( Game.computerO == true &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1+2][j*1+2].setText(&quot;O&quot;);\n\n                }\n             \n             \n                else if (Game.computerO == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1][j*1].setText(&quot;O&quot;);\n                }\n                \n                \n                else if (Game.computerO == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;X&quot;))\n                {\n                    Game.Board[i*1+1][j*1+1].setText(&quot;O&quot;);\n                }\n                \n                //*********************************************************************************************\n                \n                \n            \n                \n                \n                \n                \n                // Diagonal Offensive Strategy for computerX and computerO\n                if ( Game.computerX == true &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1+2][j*1+2].setText(&quot;X&quot;);\n                }\n             \n             \n                else if (Game.computerX == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1][j*1].setText(&quot;X&quot;);\n                }\n                \n                else if (Game.computerX == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;X&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;X&quot;))\n                {\n                    Game.Board[i*1+1][j*1+1].setText(&quot;X&quot;);\n                }\n                \n               \n                \n                //*************************************** For computerO *******************************\n                \n                else if ( Game.computerO == true &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1+2][j*1+2].setText(&quot;O&quot;);\n                }\n             \n             \n                \n                else if (Game.computerO == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;&quot;))\n                {\n                    Game.Board[i*1][j*1].setText(&quot;O&quot;);\n                }\n                \n                \n                else if (Game.computerO == true &amp;&amp; Game.Board[i*1+2][j*1+2].getText().equals(&quot;O&quot;) &amp;&amp; Game.Board[i*1+1][j*1+1].getText().equals(&quot;&quot;) &amp;&amp; Game.Board[i*1][j*1].getText().equals(&quot;O&quot;))\n                {\n                    Game.Board[i*1+1][j*1+1].setText(&quot;O&quot;);\n                }\n                \n                \n                //**************************************************************************************\n               \n                \n             \n         }\n</code></pre>\n"
+}

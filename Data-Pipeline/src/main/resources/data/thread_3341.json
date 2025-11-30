@@ -1,0 +1,38 @@
+{
+  "tags" : [ "java", "mysql", "docker" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 18121848,
+      "reputation" : 131,
+      "user_id" : 20852825,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GhSd0MalvYs6Fc7MWZZSY0uNzZSipyuPnle5EmNpg=k-s256",
+      "display_name" : "shanmukha vangaru",
+      "link" : "https://stackoverflow.com/users/20852825/shanmukha-vangaru"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1675509119,
+    "creation_date" : 1675509119,
+    "answer_id" : 75344680,
+    "question_id" : 75344232,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Is the application referring to the right database ?</p>\n<blockquote>\n<p><strong>No</strong>. Check SPRING_DATASOURCE_URL in docker-compose file, localhost in the url points to your local db. Change it to db (service name you have given in the docker-compose file for mysql).</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "user_type" : "does_not_exist",
+    "display_name" : "user20432214"
+  },
+  "is_answered" : true,
+  "view_count" : 1091,
+  "accepted_answer_id" : 75344680,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1762703716,
+  "creation_date" : 1675503934,
+  "last_edit_date" : 1762703716,
+  "question_id" : 75344232,
+  "link" : "https://stackoverflow.com/questions/75344232/run-java-application-spring-boot-mysql-by-docker-compose",
+  "title" : "Run Java application (Spring Boot + MySQL) by Docker compose",
+  "body" : "<p>I'm trying to run an application on my local machine using Docker. I also want to run the application on a remote server. Without Docker in Intelij Idea everything works fine.</p>\n<p>On the local machine I installed Docker. Created a Dockerfile and docker-compose.yml in the root folder of the project. Some errors I made in these files. I think, the communication as I understand it between database and my application is not working.</p>\n<p>Maybe something wrong with MYSQL_ROOT_PASSWORD, because i really don't know what the password from MYSQL_ROOT_PASSWORD. I just know username and password. I run mysql by MySQLWorkbanch, i create here commection named &quot;my_connection&quot;, there is user named &quot;bestuser&quot; and login &quot;bestuser&quot;.</p>\n<p>[enter image description here][1]</p>\n<p>This is my structure of project</p>\n<p>[enter image description here][2]</p>\n<p>I tried combine ports, 8080:8080, 8081:8080, 3306:3306, 3307:3306.. But nothing.</p>\n<p>MySQL image running well, but app image get alot of errors.</p>\n<p>[enter image description here][3]</p>\n<p><strong>application.properties</strong></p>\n<pre><code>spring.datasource.url=jdbc:mysql://localhost:3306/crm?useSSL=false\nspring.datasource.username=bestuser123\nspring.datasource.password=bestuser123\n#spring.datasource.password=######\nspring.sql.init.mode=always\n#spring.datasource.initialization-mode=always\n#server.port=8080\n\n\n\n\n#spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver\n#spring.jms.listener.acknowledge-mode=auto\n\n\n\n\n\ninfo.name=CRM system. Accounting for sales, merchandise, payroll\ninfo.description=CRM system. Accounting for sales, merchandise, payroll\n\n\n\n\nspring.view.prefix:/WEB-INF/\nspring.view.suffix:.jsp\nspring.view.view-names:views/*\n#spring.thymeleaf.prefix=/webapp/WEB-INF/\n#spring.thymeleaf.view-names:views/*\n\n\n\n\n\n#management.endpoints.web.exposure.include=*\n\n\n#spring.mvc.view.prefix: /WEB-INF/views/\n#spring.mvc.view.suffix: .jsp\n#spring.thymeleaf.suffix=.html\n#spring.thymeleaf.prefix=classpath:/templates/\n\n# ==============================================================\n# = Keep the connection alive if idle for a long time (needed in production)\n# ==============================================================\nspring.datasource.testWhileIdle = true\nspring.datasource.validationQuery = SELECT 1\n\n# ==============================================================\n# = Show or not log for each sql query\n# ==============================================================\n#spring.jpa.show-sql = true\n\n# ==============================================================\n# = Hibernate ddl auto (create, create-drop, update)\n# ==============================================================\nspring.jpa.hibernate.ddl-auto = update\n\n# ==============================================================\n# = The SQL dialect makes Hibernate generate better SQL for the chosen database\n# ==============================================================\nspring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect\n\nspring.main.allow-circular-references=true\n\n\n</code></pre>\n<p><strong>docker-compose.yml</strong></p>\n<pre><code>version: '3.7'\n\n# Define services\nservices:\n  # App backend service\n  app-server:\n    # Configuration for building the docker image for the backend service\n    build:\n      context: . # Use an image built from the specified dockerfile in the `springboot-app-server` directory.\n      dockerfile: Dockerfile\n    ports:\n      - &quot;8081:8080&quot; # Forward the exposed port 4000 on the container to port 4000 on the host machine\n    restart: always\n    depends_on:\n      - db # This service depends on mysql. Start that first.\n    environment: # Pass environment variables to the service\n      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/crm?useSSL=false\n      SPRING_DATASOURCE_USERNAME: bestuser123\n      SPRING_DATASOURCE_PASSWORD: bestuser123\n\n\n  # Database Service (Mysql)\n  db:\n    image: mysql:8.0\n    ports:\n      - &quot;3307:3306&quot;\n    restart: always\n    environment:\n      MYSQL_DATABASE: crm\n      MYSQL_USER: bestuser123\n      MYSQL_PASSWORD: bestuser123\n      MYSQL_ROOT_PASSWORD: bestuser123\n</code></pre>\n<p><strong>Dockerfile</strong></p>\n<pre><code># Use a Java base image\nFROM openjdk:11\n\n# Set the working directory\nWORKDIR /\n\n# Copy the application jar to the container\nCOPY target/crm-0.0.1-SNAPSHOT.war .\nEXPOSE 8080\n# Set the environment variables\nENV JAVA_OPTS=&quot;&quot;\n\n# Define the command to run the application\nCMD [&quot;java&quot;, &quot;-jar&quot;, &quot;crm-0.0.1-SNAPSHOT.war&quot;]\n</code></pre>\n<p>Please help me figure out what I did wrong, thank you in advance!</p>\n"
+}

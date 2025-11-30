@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "spring-boot", "redis", "lettuce", "redis-sentinel" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2023293,
+      "reputation" : 324,
+      "user_id" : 1808979,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/9679f96fc2fb3685e9b6aa1e923b6a17?s=256&d=identicon&r=PG",
+      "display_name" : "Dmytro Danilenkov",
+      "link" : "https://stackoverflow.com/users/1808979/dmytro-danilenkov"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1632993632,
+    "post_id" : 61941396,
+    "comment_id" : 122645238,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Did you resolve this issue?"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8905733,
+        "reputation" : 353,
+        "user_id" : 6647618,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/736283766474550/picture?type=large",
+        "display_name" : "SiuFay",
+        "link" : "https://stackoverflow.com/users/6647618/siufay"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1671373948,
+      "post_id" : 71584375,
+      "comment_id" : 132081496,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Not answering the question. The OP is using Redis Sentinel not Redis Cluster."
+    } ],
+    "owner" : {
+      "account_id" : 4951513,
+      "reputation" : 7,
+      "user_id" : 3985281,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8d8fdc2fc66ea36c35c7168a45e72db2?s=256&d=identicon&r=PG",
+      "display_name" : "Sahil Chaudhary",
+      "link" : "https://stackoverflow.com/users/3985281/sahil-chaudhary"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1648025933,
+    "creation_date" : 1648025933,
+    "answer_id" : 71584375,
+    "question_id" : 61941396,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I think you are not setting up the topology refresh config.\nYou can enable them like this -</p>\n<p><strong>Solution 1</strong>:</p>\n<p>Upgrade to SpringBoot 2.3.0 or above. And add the following configuration items</p>\n<pre><code>spring.redis.timeout=60s\nspring.redis.lettuce.cluster.refresh.period=60s\nspring.redis.lettuce.cluster.refresh.adaptive=true\n</code></pre>\n<p><strong>Solution 2</strong>:</p>\n<p>Configure LettuceConnectionFactory and set topology refresh strategy.</p>\n<pre><code>@Bean\npublic DefaultClientResources lettuceClientResources() {\n    \n    \n    return DefaultClientResources.create();\n}\n\n@Bean\npublic LettuceConnectionFactory lettuceConnectionFactory(RedisProperties redisProperties, ClientResources clientResources) {\n    \n    \n\n    ClusterTopologyRefreshOptions topologyRefreshOptions = ClusterTopologyRefreshOptions.builder()\n            .enablePeriodicRefresh(Duration.ofSeconds(30)) //按照周期刷新拓扑\n            .enableAllAdaptiveRefreshTriggers() //根据事件刷新拓扑\n            .build();\n\n    ClusterClientOptions clusterClientOptions = ClusterClientOptions.builder()\n            //redis命令超时时间,超时后才会使用新的拓扑信息重新建立连接\n            .timeoutOptions(TimeoutOptions.enabled(Duration.ofSeconds(10)))\n            .topologyRefreshOptions(topologyRefreshOptions)\n            .build();\n\n    LettuceClientConfiguration clientConfiguration = LettuceClientConfiguration.builder()\n            .clientResources(clientResources)\n            .clientOptions(clusterClientOptions)\n            .build();\n\n    RedisClusterConfiguration clusterConfig = new RedisClusterConfiguration(redisProperties.getCluster().getNodes());\n    clusterConfig.setMaxRedirects(redisProperties.getCluster().getMaxRedirects());\n    clusterConfig.setPassword(RedisPassword.of(redisProperties.getPassword()));\n\n    LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(clusterConfig, clientConfiguration);\n\n    return lettuceConnectionFactory;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5802501,
+      "reputation" : 100,
+      "user_id" : 4576256,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e8d89aa504b273fafe89fce5137d4514?s=256&d=identicon&r=PG",
+      "display_name" : "Sago78",
+      "link" : "https://stackoverflow.com/users/4576256/sago78"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1747421448,
+    "creation_date" : 1747421448,
+    "answer_id" : 79625765,
+    "question_id" : 61941396,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Redis documentation explicitly mentions to avoid a 2 nodes sentinel setup, it may be part of the problem.</p>\n<blockquote>\n<p>Note that we will never show <strong>setups where just two Sentinels are used</strong>, since Sentinels always need <strong>to talk with the majority</strong> in order to start a failover.</p>\n<p>Example 1: just two Sentinels, DON'T DO THIS</p>\n<pre><code>+----+         +----+\n| M1 |---------| R1 |\n| S1 |         | S2 |\n+----+         +----+\n\nConfiguration: quorum = 1\n</code></pre>\n</blockquote>\n<blockquote>\n<p>Note that a majority is needed in order to order different failovers, and later propagate the latest configuration to all the Sentinels. Also note that the ability to failover in a single side of the above setup, without any agreement, would be very dangerous:</p>\n</blockquote>\n<blockquote>\n<p>So please <strong>deploy at least three Sentinels in three different boxes</strong> always.</p>\n</blockquote>\n<p>link:<br />\n<a href=\"https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/\" rel=\"nofollow noreferrer\">https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4638791,
+    "reputation" : 679,
+    "user_id" : 3759227,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/01ecc68c1567f2d1af7d20c8e63c8da2?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Kuldeep",
+    "link" : "https://stackoverflow.com/users/3759227/kuldeep"
+  },
+  "is_answered" : false,
+  "view_count" : 9611,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1760439820,
+  "creation_date" : 1590085954,
+  "last_edit_date" : 1590324016,
+  "question_id" : 61941396,
+  "link" : "https://stackoverflow.com/questions/61941396/spring-data-redis-lettuce-connection-issue",
+  "title" : "Spring Data Redis Lettuce Connection Issue",
+  "body" : "<p>I have spring boot application with MYSQL DB and i am caching the data in Redis in server layer with @Cacheable Annotation</p>\n\n<pre><code>@Cacheable(value= \"employeeCache\", key= \"#customerId\")\n@Override\npublic Customer getEmployee(String customerId) {\n    Optional&lt;Customer&gt; cust = customerRepository.findById(Long.parseLong(customerId));\n    if(cust.isPresent()) {\n        return cust.get();\n    }\n    return null;\n}\n</code></pre>\n\n<p>I am using 1 Master 2 Slave and 2 sentinel node, i have deployed the application in docker containers, in AWS ec2 ubuntu instance.</p>\n\n<p>Application and Redis Master/Slave Set up works fine.</p>\n\n<p>When Redis master container goes down, one of the slave becomes master, that also works fine</p>\n\n<p>But once one of the slave becomes master, then Spring boot not able to connect to Redis, i am getting connection time out, it only work if i restart the container.</p>\n\n<p>Please check if any mistake in the configuration.</p>\n\n<p><strong>Java Logs</strong></p>\n\n<pre><code>2020-05-21 18:04:50.016 ERROR 1 --- [io-8080-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.dao.QueryTimeoutException: Redis command timed out; nested exception is io.lettuce.core.RedisCommandTimeoutException: io.lettuce.core.RedisCommandTimeoutException: Command timed out after 1 minute(s)] with root cause\n\nio.lettuce.core.RedisCommandTimeoutException: Command timed out after 1 minute(s)\n        at io.lettuce.core.ExceptionFactory.createTimeoutException(ExceptionFactory.java:51) ~[lettuce-core-5.3.0.RELEASE.jar!/:5.3.0.RELEASE]\n        at io.lettuce.core.protocol.CommandExpiryWriter.lambda$potentiallyExpire$0(CommandExpiryWriter.java:167) ~[lettuce-core-5.3.0.RELEASE.jar!/:5.3.0.RELEASE]\n        at io.netty.util.concurrent.PromiseTask.runTask(PromiseTask.java:98) ~[netty-common-4.1.49.Final.jar!/:4.1.49.Final]\n        at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:170) ~[netty-common-4.1.49.Final.jar!/:4.1.49.Final]\n        at io.netty.util.concurrent.DefaultEventExecutor.run(DefaultEventExecutor.java:66) ~[netty-common-4.1.49.Final.jar!/:4.1.49.Final]\n        at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989) ~[netty-common-4.1.49.Final.jar!/:4.1.49.Final]\n        at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) ~[netty-common-4.1.49.Final.jar!/:4.1.49.Final]\n        at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) ~[netty-common-4.1.49.Final.jar!/:4.1.49.Final]\n        at java.lang.Thread.run(Thread.java:745) [na:1.8.0_111]\n</code></pre>\n\n<p><strong>Spring Boot Files</strong></p>\n\n<p>application.yaml</p>\n\n<pre><code>spring:\n  datasource:\n    url: jdbc:mysql://docker-mysql:3306/customerdb\n    username: root\n    password: root\n\n  jpa:\n    show-sql: true\n\n    hibernate:\n      naming:\n        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl\n\n\n  cache:\n    type: redis  \n\n  redis:\n    sentinel:\n      master: mymaster\n      nodes:\n        - redis-sentinel:26379\n        - redis-sentinel-1:26380\n\nmanagement:\n  endpoints:\n    web: \n      exposure:\n        include:\n        - \"*\"\nserver:\n  port: 8080\n\nlogging:\n  file:\n    name: customer.log\n    path: ../logs\n\n</code></pre>\n\n<p><strong>Files for Redis and Spring Boot deployment</strong></p>\n\n<p>Docker-compose.yaml</p>\n\n<pre><code>version: '3.5'\n\nservices:\n\n  redis-master:\n    container_name: redis-master\n    image: redis\n    volumes:\n      - \"./data/redis-master:/data\"\n    networks:\n      - backend\n\n  redis-slave:\n    container_name: redis-slave\n    image: redis\n    command: redis-server --slaveof redis-master 6379\n    volumes:\n      - \"./data/redis-slave:/data\"\n    depends_on:\n      - redis-master\n    networks:\n      - backend\n\n  redis-slave-1:\n    container_name: redis-slave-1\n    image: redis\n    command: redis-server --slaveof redis-master 6379\n    volumes:\n      - \"./data/redis-slave:/data\"\n    depends_on:\n      - redis-master\n    networks:\n      - backend    \n\n  redis-sentinel:\n    container_name: redis-sentinel\n    ports:\n      - \"26379:26379\"\n    build: redis-sentinel\n    depends_on:\n      - redis-master\n      - redis-slave\n    networks:\n      - backend\n\n  redis-sentinel-1:\n    container_name: redis-sentinel-1\n    build: redis-sentinel\n    ports:\n      - \"26380:26379\"\n    depends_on:\n      - redis-master\n      - redis-slave\n    networks:\n      - backend\n\n  docker-mysql:\n    restart: always\n    container_name: docker-mysql\n    image: mysql:5.7\n    environment:\n      MYSQL_DATABASE: customerdb\n      MYSQL_ROOT_PASSWORD: root\n      MYSQL_ROOT_HOST: \"%\"\n    volumes:\n      - db-data-new:/var/lib/mysql\n    ports:\n      - \"3306:3306\"\n    networks:\n      - backend\n\n  customer-app:\n    container_name: java-sentinel\n    restart: on-failure\n    image: kuldeep99/customer-sentinel:v10\n    expose:\n      - \"8080\"\n    volumes:\n      - /tmp:/logs\n    ports:\n      - 8080:8080\n    depends_on:\n      - docker-mysql\n      - redis-master\n      - redis-slave\n      - redis-sentinel\n    networks:\n      - backend\n\nvolumes:\n  db-data-new:\n\nnetworks:\n  backend:\n\n</code></pre>\n\n<p>Dockerfile</p>\n\n<pre><code>FROM redis\n\nEXPOSE 26379\nENV SENTINEL_QUORUM 2\nENV SENTINEL_DOWN_AFTER 3000\nENV SENTINEL_FAILOVER 3000\nADD sentinel.conf /etc/redis/sentinel.conf\nRUN chown redis:redis /etc/redis/sentinel.conf\nADD sentinel-entrypoint.sh /usr/local/bin/\nRUN chmod +x /usr/local/bin/sentinel-entrypoint.sh\nENTRYPOINT [\"sentinel-entrypoint.sh\"]\n</code></pre>\n\n<p>sentinel-entrypoint.sh</p>\n\n<pre><code>#!/bin/sh\n\nsed -i \"s/\\$SENTINEL_QUORUM/$SENTINEL_QUORUM/g\" /etc/redis/sentinel.conf\nsed -i \"s/\\$SENTINEL_DOWN_AFTER/$SENTINEL_DOWN_AFTER/g\" /etc/redis/sentinel.conf\nsed -i \"s/\\$SENTINEL_FAILOVER/$SENTINEL_FAILOVER/g\" /etc/redis/sentinel.conf\n\nredis-server /etc/redis/sentinel.conf --sentinel\n</code></pre>\n\n<p>sentinel.conf</p>\n\n<pre><code>port 26379\nprotected-mode no\ndir /tmp\nsentinel monitor mymaster redis-master 6379 $SENTINEL_QUORUM\nsentinel down-after-milliseconds mymaster $SENTINEL_DOWN_AFTER\nsentinel parallel-syncs mymaster 1\nsentinel failover-timeout mymaster $SENTINEL_FAILOVER\n</code></pre>\n"
+}

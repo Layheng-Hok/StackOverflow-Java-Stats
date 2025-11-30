@@ -1,0 +1,672 @@
+{
+  "tags" : [ "java", "spring-data-jpa", "transactions", "isolation", "propagation" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 114848,
+        "reputation" : 138847,
+        "user_id" : 301832,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/965220a70d38e6a29466f44cdb4f804e?s=256&d=identicon&r=PG",
+        "display_name" : "Donal Fellows",
+        "link" : "https://stackoverflow.com/users/301832/donal-fellows"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1323792495,
+      "post_id" : 8490932,
+      "comment_id" : 10508208,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How does that last link relate to what you&#39;re talking about? According to the linked docs, it&#39;s the session that seems to state what the current transaction is, not the session factory."
+    }, {
+      "owner" : {
+        "account_id" : 182101,
+        "reputation" : 49402,
+        "user_id" : 416564,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/7d806e8b7ff3d12ef606bf322d72f78e?s=256&d=identicon&r=PG",
+        "display_name" : "Johan Sj&#246;berg",
+        "link" : "https://stackoverflow.com/users/416564/johan-sj%c3%b6berg"
+      },
+      "reply_to_user" : {
+        "account_id" : 114848,
+        "reputation" : 138847,
+        "user_id" : 301832,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/965220a70d38e6a29466f44cdb4f804e?s=256&d=identicon&r=PG",
+        "display_name" : "Donal Fellows",
+        "link" : "https://stackoverflow.com/users/301832/donal-fellows"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1323792731,
+      "post_id" : 8490932,
+      "comment_id" : 10508292,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Donal, oh sorry that wasn&#39;t clear. My point was, since <a href=\"http://docs.jboss.org/hibernate/core/3.5/javadoc/org/hibernate/SessionFactory.html#getCurrentSession()\" rel=\"nofollow noreferrer\"><code>sessionFactory.getCurrentTransaction()</code></a> was added there is no need to run <code>HibernateTemplate</code> anymore to manage transactions. I removed it :)"
+    }, {
+      "owner" : {
+        "account_id" : 114848,
+        "reputation" : 138847,
+        "user_id" : 301832,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/965220a70d38e6a29466f44cdb4f804e?s=256&d=identicon&r=PG",
+        "display_name" : "Donal Fellows",
+        "link" : "https://stackoverflow.com/users/301832/donal-fellows"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1323797972,
+      "post_id" : 8490932,
+      "comment_id" : 10510221,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "My question was just about where the link was pointing, really. :-)"
+    } ],
+    "owner" : {
+      "account_id" : 182101,
+      "reputation" : 49402,
+      "user_id" : 416564,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/7d806e8b7ff3d12ef606bf322d72f78e?s=256&d=identicon&r=PG",
+      "display_name" : "Johan Sj&#246;berg",
+      "link" : "https://stackoverflow.com/users/416564/johan-sj%c3%b6berg"
+    },
+    "is_accepted" : true,
+    "community_owned_date" : 1323793439,
+    "score" : 554,
+    "last_activity_date" : 1690007611,
+    "last_edit_date" : 1690007611,
+    "creation_date" : 1323786860,
+    "answer_id" : 8490932,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Good question, although not a trivial one to answer.</p>\n<h3><a href=\"http://static.springsource.org/spring/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html\" rel=\"noreferrer\">Propagation</a></h3>\n<p>Defines how transactions relate to each other. Common options:</p>\n<ul>\n<li><code>REQUIRED</code>: Code will always run in a transaction. Creates a new transaction or reuses one if available.</li>\n<li><code>REQUIRES_NEW</code>: Code will always run in a new transaction. Suspends the current transaction if one exists.</li>\n</ul>\n<p>The default value for <code>@Transactional</code> is <code>REQUIRED</code>, and this is often what you want.</p>\n<h3><a href=\"http://static.springsource.org/spring/docs/current/javadoc-api/org/springframework/transaction/TransactionDefinition.html\" rel=\"noreferrer\">Isolation</a></h3>\n<p>Defines the data contract between transactions.</p>\n<ul>\n<li><code>ISOLATION_READ_UNCOMMITTED</code>: Allows dirty reads.</li>\n<li><code>ISOLATION_READ_COMMITTED</code>: Does not allow dirty reads.</li>\n<li><code>ISOLATION_REPEATABLE_READ</code>: If a row is read twice in the same transaction, the result will always be the same.</li>\n<li><code>ISOLATION_SERIALIZABLE</code>: Performs all transactions in a sequence.</li>\n</ul>\n<p>The different levels have different performance characteristics in a multi-threaded application. I think if you understand the <em>dirty reads</em> concept you will be able to select a good option.</p>\n<p>Defaults may vary between difference databases. As an example, for <a href=\"https://mariadb.com/kb/en/mariadb-transactions-and-isolation-levels-for-sql-server-users/\" rel=\"noreferrer\">MariaDB</a> it is <code>REPEATABLE READ</code>.</p>\n<hr />\n<p>Example of when a dirty read can occur:</p>\n<pre><code>  thread 1   thread 2      \n      |         |\n    write(x)    |\n      |         |\n      |        read(x)\n      |         |\n    rollback    |\n      v         v \n           value (x) is now dirty (incorrect)\n</code></pre>\n<p>So a sane default (if such can be claimed) could be <code>ISOLATION_READ_COMMITTED</code>, which only lets you read values which have already been committed by other running transactions, in combination with a propagation level of <code>REQUIRED</code>. Then you can work from there if your application has other needs.</p>\n<hr />\n<p>A practical example of where a new transaction will always be created when entering the <code>provideService</code> routine and completed when leaving:</p>\n<pre><code>public class FooService {\n    private Repository repo1;\n    private Repository repo2;\n\n    @Transactional(propagation=Propagation.REQUIRES_NEW)\n    public void provideService() {\n        repo1.retrieveFoo();\n        repo2.retrieveFoo();\n    }\n}\n</code></pre>\n<p>Had we instead used <code>REQUIRED</code>, the transaction <a href=\"https://stackoverflow.com/questions/2754160/question-about-spring-transaction-propagation\">would remain open</a> if the transaction was already open when entering the routine.\nNote also that the result of a <code>rollback</code> could be different as several executions could take part in the same transaction.</p>\n<hr />\n<p>We can easily verify the behaviour with a test and see how results differ with propagation levels:</p>\n<pre><code>@RunWith(SpringJUnit4ClassRunner.class)\n@ContextConfiguration(locations=&quot;classpath:/fooService.xml&quot;)\npublic class FooServiceTests {\n\n    private @Autowired TransactionManager transactionManager;\n    private @Autowired FooService fooService;\n\n    @Test\n    public void testProvideService() {\n        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());\n        fooService.provideService();\n        transactionManager.rollback(status);\n        // assert repository values are unchanged ... \n}\n</code></pre>\n<p>With a propagation level of</p>\n<ul>\n<li><p><code>REQUIRES_NEW</code>: we would expect <code>fooService.provideService()</code> was <em>NOT</em> rolled back since it created its own sub-transaction.</p>\n</li>\n<li><p><code>REQUIRED</code>: we would expect everything was rolled back and the backing store was unchanged.</p>\n</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 39617,
+      "reputation" : 6239,
+      "user_id" : 114340,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/95950b5773a6ef158d7e670fd27fd86b?s=256&d=identicon&r=PG",
+      "display_name" : "AngerClown",
+      "link" : "https://stackoverflow.com/users/114340/angerclown"
+    },
+    "is_accepted" : false,
+    "score" : 26,
+    "last_activity_date" : 1323789194,
+    "creation_date" : 1323789194,
+    "answer_id" : 8491503,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You almost never want to use <code>Read Uncommited</code> since it's not really <code>ACID</code> compliant. <code>Read Commmited</code> is a good default starting place. <code>Repeatable Read</code> is probably only needed in reporting, rollup or aggregation scenarios. Note that many DBs, postgres included don't actually support Repeatable Read, you have to use <code>Serializable</code> instead. <code>Serializable</code> is useful for things that you know have to happen completely independently of anything else; think of it like <code>synchronized</code> in Java. Serializable goes hand in hand with <code>REQUIRES_NEW</code> propagation.</p>\n\n<p>I use <code>REQUIRES</code> for all functions that run UPDATE or DELETE queries as well as \"service\" level functions. For DAO level functions that only run SELECTs, I use <code>SUPPORTS</code> which will participate in a TX if one is already started (i.e. being called from a service function).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5139153,
+        "reputation" : 3441,
+        "user_id" : 4117061,
+        "user_type" : "registered",
+        "accept_rate" : 93,
+        "profile_image" : "https://www.gravatar.com/avatar/13729fd68818c5cfd318aef97d348808?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Prasanna Kumar H A",
+        "link" : "https://stackoverflow.com/users/4117061/prasanna-kumar-h-a"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1458620468,
+      "post_id" : 16151690,
+      "comment_id" : 59929804,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "how to get the changes made in current transaction-<a href=\"http://stackoverflow.com/questions/36132667/get-the-data-which-is-inserted-using-transactional-in-the-same-transaction\" title=\"get the data which is inserted using transactional in the same transaction\">stackoverflow.com/questions/36132667/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 83658,
+        "reputation" : 1460,
+        "user_id" : 234391,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://i.sstatic.net/3kCnW.jpg?s=256",
+        "display_name" : "Cornel Masson",
+        "link" : "https://stackoverflow.com/users/234391/cornel-masson"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1458720751,
+      "post_id" : 16151690,
+      "comment_id" : 59981631,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What is the interaction between <i>isolation level</i> and <i>propagation</i>? If method 1 starts a transaction with isolation level, say, READ_COMMITTED, and later calls method2 with level REPEATABLE_READ, surely method 2 has to be executed in its own , new transaction, regardless of what propagation behaviour it specifies (e.g. only REQUIRED)?"
+    }, {
+      "owner" : {
+        "account_id" : 2276671,
+        "reputation" : 251,
+        "user_id" : 2002747,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/88cbfb595ede7008a2090e8c3dd86350?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Tim Z.",
+        "link" : "https://stackoverflow.com/users/2002747/tim-z"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1537915155,
+      "post_id" : 16151690,
+      "comment_id" : 91955510,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is really late to the show, but when PROPAGATION_REQUIRES_NEW, what happens in to T1 (which is used by M1) if another new call happened to M1? (say M1.1)"
+    }, {
+      "owner" : {
+        "account_id" : 13540458,
+        "reputation" : 5367,
+        "user_id" : 9768291,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/gf9Xz.jpg?s=256",
+        "display_name" : "payne",
+        "link" : "https://stackoverflow.com/users/9768291/payne"
+      },
+      "reply_to_user" : {
+        "account_id" : 83658,
+        "reputation" : 1460,
+        "user_id" : 234391,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://i.sstatic.net/3kCnW.jpg?s=256",
+        "display_name" : "Cornel Masson",
+        "link" : "https://stackoverflow.com/users/234391/cornel-masson"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1643257147,
+      "post_id" : 16151690,
+      "comment_id" : 125293343,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@CornelMasson I believe I have a very similar question as yours in mind. I created <a href=\"https://stackoverflow.com/q/70873288/9768291\">a specific SO question</a> for it."
+    }, {
+      "owner" : {
+        "account_id" : 11726648,
+        "reputation" : 26351,
+        "user_id" : 8583692,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/joGZ9.png?s=256",
+        "display_name" : "Mahozad",
+        "link" : "https://stackoverflow.com/users/8583692/mahozad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1676017522,
+      "post_id" : 16151690,
+      "comment_id" : 133056130,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "There is another problem with concurrent transactions: I call it <b>Scenario 0: Lost update</b> which the <b>Read uncommitted</b> avoids."
+    } ],
+    "owner" : {
+      "account_id" : 1705684,
+      "reputation" : 7651,
+      "user_id" : 1564766,
+      "user_type" : "registered",
+      "accept_rate" : 15,
+      "profile_image" : "https://www.gravatar.com/avatar/b50cc435f5da9360d436d732a5c1261c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "abishkar bhattarai",
+      "link" : "https://stackoverflow.com/users/1564766/abishkar-bhattarai"
+    },
+    "is_accepted" : false,
+    "score" : 404,
+    "last_activity_date" : 1704370586,
+    "last_edit_date" : 1704370586,
+    "creation_date" : 1366647032,
+    "answer_id" : 16151690,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>PROPAGATION_REQUIRED = 0</strong>; If  DataSourceTransactionObject T1 is already started for Method M1. If for another Method M2 Transaction object is required, no new Transaction object is created. Same object T1 is used for M2.</p>\n<p><strong>PROPAGATION_MANDATORY = 2</strong>; method must run within a transaction. If no\nexisting transaction is in progress, an exception will be thrown.</p>\n<p><strong>PROPAGATION_REQUIRES_NEW = 3</strong>; If DataSourceTransactionObject T1 is already started for Method M1 and it is in progress (executing  method M1). If another method M2 start executing then T1 is suspended for the duration of method M2 with new DataSourceTransactionObject T2 for M2. M2 run within its own transaction context.</p>\n<p><strong>PROPAGATION_NOT_SUPPORTED = 4</strong>; If DataSourceTransactionObject T1 is already started for Method M1. If another method M2 is run concurrently. Then M2 should not run within transaction context. T1 is suspended till M2 is finished.</p>\n<p><strong>PROPAGATION_NEVER = 5</strong>; None of the methods  run in transaction context.</p>\n<hr />\n<p><strong>An isolation level:</strong>\nIt is about how much a transaction may be impacted by the activities of other concurrent transactions. It a supports consistency leaving the data across many tables in a consistent state. It involves locking rows and/or tables in a database.</p>\n<p><strong>The problem with multiple transaction</strong></p>\n<p><strong>Scenario 1</strong>. If T1 transaction reads data from table A1 that was written by another concurrent transaction T2. If on the way T2 is rollback, the data obtained by T1 is invalid one. E.g. a=2 is original data. If T1 read a=1 that was written by T2. If T2 rollback then a=1 will be rollback to a=2 in DB. But, now, T1 has a=1 but in DB table it is changed to a=2.</p>\n<p><strong>Scenario2</strong>. If T1 transaction reads data from table A1. If another concurrent transaction (T2) update data on table A1. Then the data that T1 has read is\ndifferent from table A1. Because T2 has updated the data on table A1. E.g. if T1 read a=1 and T2 updated a=2. Then a!=b.</p>\n<p><strong>Scenario 3</strong>. If T1 transaction reads data from table A1 with certain number of rows. If another concurrent transaction (T2) inserts more rows on table A1. The\nnumber of rows read by T1 is different from rows on table A1.</p>\n<p>Scenario 1 is called <strong>Dirty reads.</strong></p>\n<p>Scenario 2 is called <strong>Non-repeatable reads.</strong></p>\n<p>Scenario 3 is called <strong>Phantom reads.</strong></p>\n<p>So, isolation level is the extend to which <strong>Scenario 1, Scenario 2, Scenario 3</strong> can be prevented.\nYou can obtain complete isolation level by implementing locking. That is preventing concurrent reads and writes to the same data from occurring. But it affects performance. The level of isolation  depends upon application to application how much isolation is required.</p>\n<p><strong>ISOLATION_READ_UNCOMMITTED</strong>: Allows to read changes that haven’t yet been committed. It suffer from Scenario 1, Scenario 2, Scenario 3.</p>\n<p><strong>ISOLATION_READ_COMMITTED</strong>: Allows reads from concurrent transactions that have been committed. It may suffer from Scenario 2 and Scenario 3. Because other transactions may be updating the data.</p>\n<p><strong>ISOLATION_REPEATABLE_READ</strong>: Multiple reads of the same field will yield the same results untill it is changed by itself. It may suffer from Scenario 3. Because other transactions may be inserting the data.</p>\n<p><strong>ISOLATION_SERIALIZABLE</strong>: Scenario 1, Scenario 2, Scenario 3 never happen. It is complete isolation. It involves full locking. It affects performace because of locking.</p>\n<p>You can test using:</p>\n<pre><code>public class TransactionBehaviour {\n   // set is either using xml Or annotation\n    DataSourceTransactionManager manager=new DataSourceTransactionManager();\n    SimpleTransactionStatus status=new SimpleTransactionStatus();\n    \n    public void beginTransaction() {\n        DefaultTransactionDefinition Def = new DefaultTransactionDefinition();\n        // overwrite default PROPAGATION_REQUIRED and ISOLATION_DEFAULT\n        // set is either using xml Or annotation\n        manager.setPropagationBehavior(XX);\n        manager.setIsolationLevelName(XX);\n       \n        status = manager.getTransaction(Def);\n    }\n\n    public void commitTransaction() {\n       \n        if(status.isCompleted()) {\n            manager.commit(status);\n        } \n    }\n\n    public void rollbackTransaction() {\n       \n        if(!status.isCompleted()) {\n            manager.rollback(status);\n        }\n    }\n    Main method {\n        beginTransaction();\n        M1();\n        If error(){\n            rollbackTransaction();\n        }\n        commitTransaction();\n    }\n   \n}\n</code></pre>\n<p>You can debug and see the result with different values for isolation and propagation.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1283501,
+        "reputation" : 51851,
+        "user_id" : 1237040,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/bac72cf6bd20e9e3e1b7a78089fa6141?s=256&d=identicon&r=PG",
+        "display_name" : "Ravi K Thapliyal",
+        "link" : "https://stackoverflow.com/users/1237040/ravi-k-thapliyal"
+      },
+      "edited" : false,
+      "score" : 35,
+      "creation_date" : 1366999418,
+      "post_id" : 16166576,
+      "comment_id" : 23236904,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Perfect example for REQUIRES_NEW."
+    }, {
+      "owner" : {
+        "account_id" : 214662,
+        "reputation" : 11696,
+        "user_id" : 468763,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/720dc5d079497f022f07dbc6b78564f9?s=256&d=identicon&r=PG",
+        "display_name" : "Prakash K",
+        "link" : "https://stackoverflow.com/users/468763/prakash-k"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1447076309,
+      "post_id" : 16166576,
+      "comment_id" : 54995005,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Good explanation! By the way what is the default for propagation? Also would be even better if you could give an example like this for isolation as well. Thanks a lot."
+    }, {
+      "owner" : {
+        "account_id" : 1682106,
+        "reputation" : 5361,
+        "user_id" : 1546137,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/vvoaq.jpg?s=256",
+        "display_name" : "ihebiheb",
+        "link" : "https://stackoverflow.com/users/1546137/ihebiheb"
+      },
+      "reply_to_user" : {
+        "account_id" : 214662,
+        "reputation" : 11696,
+        "user_id" : 468763,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/720dc5d079497f022f07dbc6b78564f9?s=256&d=identicon&r=PG",
+        "display_name" : "Prakash K",
+        "link" : "https://stackoverflow.com/users/468763/prakash-k"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1514726305,
+      "post_id" : 16166576,
+      "comment_id" : 83056203,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@PrakashK Default is REQUIRED. (<a href=\"https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html\" rel=\"nofollow noreferrer\">docs.spring.io/spring-framework/docs/current/javadoc-api/or&zwnj;&#8203;g/&hellip;</a>)"
+    }, {
+      "owner" : {
+        "account_id" : 16655492,
+        "reputation" : 1150,
+        "user_id" : 12037019,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nS0V1.png?s=256",
+        "display_name" : "pochopsp",
+        "link" : "https://stackoverflow.com/users/12037019/pochopsp"
+      },
+      "reply_to_user" : {
+        "account_id" : 1682106,
+        "reputation" : 5361,
+        "user_id" : 1546137,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/vvoaq.jpg?s=256",
+        "display_name" : "ihebiheb",
+        "link" : "https://stackoverflow.com/users/1546137/ihebiheb"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1733352045,
+      "post_id" : 16166576,
+      "comment_id" : 139752632,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ihebiheb since ye9ane is not on stackoverflow anymore, I&#39;m asking you. Why should we even open a transaction for sending a mail? What it has to do with transactions? The only thing that comes to my mind is that we want to store some state to the DB like &quot;mail_sent = true&quot; inside a certain table, but that&#39;s just a supposition..."
+    }, {
+      "owner" : {
+        "account_id" : 16655492,
+        "reputation" : 1150,
+        "user_id" : 12037019,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nS0V1.png?s=256",
+        "display_name" : "pochopsp",
+        "link" : "https://stackoverflow.com/users/12037019/pochopsp"
+      },
+      "reply_to_user" : {
+        "account_id" : 214662,
+        "reputation" : 11696,
+        "user_id" : 468763,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/720dc5d079497f022f07dbc6b78564f9?s=256&d=identicon&r=PG",
+        "display_name" : "Prakash K",
+        "link" : "https://stackoverflow.com/users/468763/prakash-k"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1733352058,
+      "post_id" : 16166576,
+      "comment_id" : 139752634,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PrakashK since ye9ane is not on stackoverflow anymore, I&#39;m asking you. Why should we even open a transaction for sending a mail? What it has to do with transactions? The only thing that comes to my mind is that we want to store some state to the DB like &quot;mail_sent = true&quot; inside a certain table, but that&#39;s just a supposition..."
+    }, {
+      "owner" : {
+        "account_id" : 1682106,
+        "reputation" : 5361,
+        "user_id" : 1546137,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/vvoaq.jpg?s=256",
+        "display_name" : "ihebiheb",
+        "link" : "https://stackoverflow.com/users/1546137/ihebiheb"
+      },
+      "reply_to_user" : {
+        "account_id" : 16655492,
+        "reputation" : 1150,
+        "user_id" : 12037019,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nS0V1.png?s=256",
+        "display_name" : "pochopsp",
+        "link" : "https://stackoverflow.com/users/12037019/pochopsp"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1733412416,
+      "post_id" : 16166576,
+      "comment_id" : 139756695,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@pochopsp generally smtp servers does not support transactions AFAIK, so if that method will only send emails, than yes having a transaction is not really useful. But you can also send a message to a messaging system that supports JTA/XA transactions, or like you mentioned, you may have many DB operations inside the <code>sendMail</code> method"
+    }, {
+      "owner" : {
+        "account_id" : 214662,
+        "reputation" : 11696,
+        "user_id" : 468763,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/720dc5d079497f022f07dbc6b78564f9?s=256&d=identicon&r=PG",
+        "display_name" : "Prakash K",
+        "link" : "https://stackoverflow.com/users/468763/prakash-k"
+      },
+      "reply_to_user" : {
+        "account_id" : 16655492,
+        "reputation" : 1150,
+        "user_id" : 12037019,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nS0V1.png?s=256",
+        "display_name" : "pochopsp",
+        "link" : "https://stackoverflow.com/users/12037019/pochopsp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1735312082,
+      "post_id" : 16166576,
+      "comment_id" : 139858612,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@pochopsp if you read the part of the answer just below <code>sendMail</code> method you would understand that if a new Transaction is not opened and if any exception occurs in the <code>sendMail</code> method it would rollback everything that was done in the <code>signUp</code> method, which we don&#39;t want just because email could not be sent. So, in short  <code>sendMail</code> has the <code>@Transactional</code> not because it has some DB code but because it should be out of all the transactions it is called from."
+    }, {
+      "owner" : {
+        "account_id" : 16655492,
+        "reputation" : 1150,
+        "user_id" : 12037019,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nS0V1.png?s=256",
+        "display_name" : "pochopsp",
+        "link" : "https://stackoverflow.com/users/12037019/pochopsp"
+      },
+      "reply_to_user" : {
+        "account_id" : 214662,
+        "reputation" : 11696,
+        "user_id" : 468763,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://www.gravatar.com/avatar/720dc5d079497f022f07dbc6b78564f9?s=256&d=identicon&r=PG",
+        "display_name" : "Prakash K",
+        "link" : "https://stackoverflow.com/users/468763/prakash-k"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1737934128,
+      "post_id" : 16166576,
+      "comment_id" : 140004431,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PrakashK it still does not make any sense. Let me explain: since sending an email is not a DB operation, <code>sendMail</code> should not have a <code>@Transactional</code> annotation. A <b>non</b> transactional method throwing an unchecked exception doesn&#39;t cause the outer transactional method to rollback as you can see from the test case here: <a href=\"https://gist.github.com/yarosla/794fdff3a7c9448faa18d484066b4fa8#file-springtransactionrollbackspec-groovy-L63\" rel=\"nofollow noreferrer\">gist.github.com/yarosla/&hellip;</a> so that said, the correct thing to do here should have been to <i>not</i> make <code>sendMail</code> transactional"
+    } ],
+    "owner" : {
+      "account_id" : 2126212,
+      "reputation" : 2009,
+      "user_id" : 1888304,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/7bb3e4ee3bc33430deff124bed4c4aa8?s=256&d=identicon&r=PG",
+      "display_name" : "ye9ane",
+      "link" : "https://stackoverflow.com/users/1888304/ye9ane"
+    },
+    "is_accepted" : false,
+    "score" : 139,
+    "last_activity_date" : 1630448009,
+    "last_edit_date" : 1630448009,
+    "creation_date" : 1366711563,
+    "answer_id" : 16166576,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Enough explanation about each parameter is given by other answers; However, you asked for a real-world example, here is the one that clarifies the purpose of different <strong>propagation</strong> options:</P>\nSuppose you're in charge of implementing a <em>signup service</em> in which a confirmation e-mail is sent to the user. You come up with two service objects, one for <em>enrolling</em> the user and one for <em>sending</em> e-mails, which the latter is called inside the first one. For example something like this:</p>\n<pre><code>/* Sign Up service */\n@Service\n@Transactional(Propagation=REQUIRED)\nclass SignUpService{\n ...\n void SignUp(User user){\n    ...\n    emailService.sendMail(User);\n }\n}\n\n/* E-Mail Service */\n@Service\n@Transactional(Propagation=REQUIRES_NEW)\nclass EmailService{\n ...\n void sendMail(User user){\n  try{\n     ... // Trying to send the e-mail\n  }catch( Exception)\n }\n}\n</code></pre>\n<p>You may have noticed that the second service is of propagation type <strong>REQUIRES_NEW</strong> and moreover, chances are it throws an exception (SMTP server down , invalid e-mail, or other reasons). You probably don't want the whole process to roll back, like removing the user information from a database or other things; therefore you call the second service in a separate transaction.</p> Back to our example, this time you are concerned about the database security, so you define your DAO classes this way:</p>\n<pre><code>/* User DAO */\n@Transactional(Propagation=MANDATORY)\nclass UserDAO{\n // some CRUD methods\n}\n</code></pre>\n<p>Meaning that whenever a DAO object, and hence a potential access to DB, is created, we need to reassure that the call was made from inside one of our services, implying that a live transaction should exist; otherwise, an exception occurs. Therefore the propagation is of type <strong>MANDATORY</strong>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8224393,
+        "reputation" : 696,
+        "user_id" : 6187114,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2c92d385f592c4d479e6b987b5007253?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "nitinsridar",
+        "link" : "https://stackoverflow.com/users/6187114/nitinsridar"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1562590543,
+      "post_id" : 16242700,
+      "comment_id" : 100410992,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great, All info at one place, Links are very helpful, Thank you @Gladwin Burboz"
+    } ],
+    "owner" : {
+      "account_id" : 91722,
+      "reputation" : 3569,
+      "user_id" : 251708,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/8gRds.png?s=256",
+      "display_name" : "Gladwin Burboz",
+      "link" : "https://stackoverflow.com/users/251708/gladwin-burboz"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1367006954,
+    "last_edit_date" : 1367006954,
+    "creation_date" : 1366999912,
+    "answer_id" : 16242700,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Transaction Isolation and Transaction Propagation although related but are clearly two  very different concepts. In both cases defaults are customized at client boundary component either by using <a href=\"http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/transaction.html#transaction-declarative\">Declarative transaction management</a> or <a href=\"http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/transaction.html#transaction-programmatic\">Programmatic transaction management</a>. Details of each isolation levels and propagation attributes can be found in reference links below.</p>\n\n<p><a href=\"http://www.oracle.com/technetwork/issue-archive/2005/05-nov/o65asktom-082389.html\"><strong>Transaction Isolation</strong></a></p>\n\n<p>For given two or more running transactions/connections to a database, how and when are changes made by queries in one transaction impact/visible to the queries in a different transaction. It also related to what kind of database record locking will be used to isolate changes in this transaction from other transactions and vice versa. This is typically implemented by database/resource that is participating in transaction.</p>\n\n<p>.</p>\n\n<p><a href=\"http://docs.oracle.com/javaee/5/tutorial/doc/bncij.html\"><strong>Transaction Propagation</strong></a></p>\n\n<p>In an enterprise application for any given request/processing there are many components that are involved to get the job done. Some of this components mark the boundaries (start/end) of a transaction that will be used in respective component and it's sub components. For this transactional boundary of components, Transaction Propogation specifies if respective component will or will not participate in transaction and what happens if calling component already has or does not have a transaction already created/started. This is same as Java EE Transaction Attributes. This is typically implemented by the client transaction/connection manager.</p>\n\n<p><strong>Reference:</strong></p>\n\n<ul>\n<li><p><a href=\"http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/transaction.html\">Spring Transaction Management</a></p></li>\n<li><p><a href=\"http://en.wikipedia.org/wiki/Isolation_%28database_systems%29\">Wiki Transaction Isolation (database systems)</a></p></li>\n<li><p><a href=\"http://www.oracle.com/technetwork/issue-archive/2005/05-nov/o65asktom-082389.html\">Oracle on Transaction Isolation Levels</a></p></li>\n<li><p><a href=\"http://docs.oracle.com/javaee/5/tutorial/doc/bncij.html\">Java EE Transaction Attributes (propagation)</a> </p></li>\n<li><p><a href=\"http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/transaction.html#tx-propagation\">Spring Framework Transaction propagation</a></p></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1356587,
+      "reputation" : 7102,
+      "user_id" : 1294870,
+      "user_type" : "registered",
+      "accept_rate" : 36,
+      "profile_image" : "https://i.sstatic.net/ZV1HU.jpg?s=256",
+      "display_name" : "NIrav Modi",
+      "link" : "https://stackoverflow.com/users/1294870/nirav-modi"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1623995535,
+    "last_edit_date" : 1623995535,
+    "creation_date" : 1440583459,
+    "answer_id" : 32223597,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have run <code>outerMethod</code>, <code>method_1</code> and <code>method_2</code> with different propagation modes.</p>\n<p>Below is the output for different propagation modes.</p>\n<h4>Outer Method</h4>\n<pre><code>    @Transactional\n    @Override\n    public void outerMethod() {\n        customerProfileDAO.method_1();\n        iWorkflowDetailDao.method_2();\n    }\n</code></pre>\n<h4>Method_1</h4>\n<pre><code>    @Transactional(propagation=Propagation.MANDATORY)\n    public void method_1() {\n        Session session = null;\n        try {\n            session = getSession();\n            Temp entity = new Temp(0l, &quot;XXX&quot;);\n            session.save(entity);\n            System.out.println(&quot;Method - 1 Id &quot;+entity.getId());\n        } finally {\n            if (session != null &amp;&amp; session.isOpen()) {\n\n            }\n        }\n    }\n</code></pre>\n<h4>Method_2</h4>\n<pre><code>    @Transactional()\n    @Override\n    public void method_2() {\n        Session session = null;\n        try {\n            session = getSession();\n            Temp entity = new Temp(0l, &quot;CCC&quot;);\n            session.save(entity);\n            int i = 1/0;\n            System.out.println(&quot;Method - 2 Id &quot;+entity.getId());\n        } finally {\n            if (session != null &amp;&amp; session.isOpen()) {\n\n            }\n        }\n    }\n</code></pre>\n<ol>\n<li>\n<ul>\n<li>OuterMethod - Without transaction</li>\n<li>Method_1 - Propagation.MANDATORY) -</li>\n<li>Method_2 - Transaction annotation only</li>\n<li>Output: method_1 will throw exception that no existing transaction</li>\n</ul>\n</li>\n</ol>\n<hr />\n<ol start=\"2\">\n<li>\n<ul>\n<li>OuterMethod - Without transaction</li>\n<li>Method_1 - Transaction annotation only</li>\n<li>Method_2 - Propagation.MANDATORY)</li>\n<li>Output: method_2 will throw exception that no existing transaction</li>\n<li>Output: method_1 will persist record in database.</li>\n</ul>\n</li>\n</ol>\n<hr />\n<ol start=\"3\">\n<li>\n<ul>\n<li>OuterMethod - With transaction</li>\n<li>Method_1 - Transaction annotation only</li>\n<li>Method_2 - Propagation.MANDATORY)</li>\n<li>Output: method_2 will persist record in database.</li>\n<li>Output: method_1 will persist record in database.\n-- Here Main Outer existing transaction used for both method 1 and 2</li>\n</ul>\n</li>\n</ol>\n<hr />\n<ol start=\"4\">\n<li>\n<ul>\n<li>OuterMethod - With transaction</li>\n<li>Method_1 - Propagation.MANDATORY)</li>\n<li>Method_2 - Transaction annotation only and throws exception</li>\n<li>Output: no record persist in database means rollback done.</li>\n</ul>\n</li>\n</ol>\n<hr />\n<ol start=\"5\">\n<li>\n<ul>\n<li>OuterMethod - With transaction</li>\n<li>Method_1 - Propagation.REQUIRES_NEW)</li>\n<li>Method_2 - Propagation.REQUIRES_NEW) and throws 1/0 exception</li>\n<li>Output: method_2 will throws exception so method_2 record not persisted.</li>\n<li>Output: method_1 will persist record in database.</li>\n<li>Output: There is no rollback for method_1</li>\n</ul>\n</li>\n</ol>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 51513,
+        "reputation" : 1175,
+        "user_id" : 153940,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/c2a1dc36d8dc6b1ca7f9db01cde8a6f0?s=256&d=identicon&r=PG",
+        "display_name" : "Kumar Manish",
+        "link" : "https://stackoverflow.com/users/153940/kumar-manish"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1476813986,
+      "post_id" : 34080650,
+      "comment_id" : 67501660,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If you could add when to use which one, would be much more beneficial."
+    }, {
+      "owner" : {
+        "account_id" : 8224393,
+        "reputation" : 696,
+        "user_id" : 6187114,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2c92d385f592c4d479e6b987b5007253?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "nitinsridar",
+        "link" : "https://stackoverflow.com/users/6187114/nitinsridar"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1562591032,
+      "post_id" : 34080650,
+      "comment_id" : 100411265,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Give some examples, It would be very helpful for beginners"
+    }, {
+      "owner" : {
+        "account_id" : 4184400,
+        "reputation" : 1121,
+        "user_id" : 3428499,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/58b4a74d3bd66e8a6f85938b5e751ee3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "codemania23",
+        "link" : "https://stackoverflow.com/users/3428499/codemania23"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1607069469,
+      "post_id" : 34080650,
+      "comment_id" : 115161560,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Please clear this doubt, is the isolation level only concerned with db operations or all operations happening inside the service layer ? If it is connected to all operations in service layer, what does read_uncommitted mean ?"
+    } ],
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "anon"
+    },
+    "is_accepted" : false,
+    "score" : 70,
+    "last_activity_date" : 1703248124,
+    "last_edit_date" : 1703248124,
+    "creation_date" : 1449201213,
+    "answer_id" : 34080650,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Following definitions are from <a href=\"https://web.archive.org/web/20140713090849/https://www.byteslounge.com/tutorials/spring-transaction-isolation-tutorial\" rel=\"nofollow noreferrer\">byteslounge.com tutorials 1</a> <a href=\"https://web.archive.org/web/20131113063425/https://www.byteslounge.com/tutorials/spring-transaction-propagation-tutorial\" rel=\"nofollow noreferrer\">and 2</a>:</p>\n<blockquote>\n<p><strong>Isolation level</strong> defines how the changes made to some data repository by one transaction affect other simultaneous concurrent\ntransactions, and also how and when that changed data becomes\navailable to other transactions. When we define a transaction using\nthe Spring framework we are also able to configure in which isolation\nlevel that same transaction will be executed.</p>\n<pre><code>@Transactional(isolation=Isolation.READ_COMMITTED)\npublic void someTransactionalMethod(Object obj) {\n\n}\n</code></pre>\n<p>READ_UNCOMMITTED isolation level states that a transaction may read\ndata that is still uncommitted by other transactions.</p>\n<p>READ_COMMITTED isolation level states that a transaction can't read\ndata that is not yet committed by other transactions.</p>\n<p>REPEATABLE_READ isolation level states that if a transaction reads one\nrecord from the database multiple times the result of all those\nreading operations must always be the same.</p>\n<p>SERIALIZABLE isolation level is the most restrictive of all isolation\nlevels. Transactions are executed with locking at all levels (read,\nrange and write locking) so they appear as if they were executed in a\nserialized way.</p>\n<p><strong>Propagation</strong> is the ability to decide how the business methods should be encapsulated in both logical or physical transactions.</p>\n<p>Spring REQUIRED behavior means that the same transaction will be used\nif there is an already opened transaction in the current bean method\nexecution context.</p>\n<p>REQUIRES_NEW behavior means that a new physical transaction will\nalways be created by the container.</p>\n<p>The NESTED behavior makes nested Spring transactions to use the same\nphysical transaction but sets savepoints between nested invocations so\ninner transactions may also rollback independently of outer\ntransactions.</p>\n<p>The MANDATORY behavior states that an existing opened transaction must\nalready exist. If not an exception will be thrown by the container.</p>\n<p>The NEVER behavior states that an existing opened transaction must not\nalready exist. If a transaction exists an exception will be thrown by\nthe container.</p>\n<p>The NOT_SUPPORTED behavior will execute outside of the scope of any\ntransaction. If an opened transaction already exists it will be\npaused.</p>\n<p>The SUPPORTS behavior will execute in the scope of a transaction if an\nopened transaction already exists. If there isn't an already opened\ntransaction the method will execute anyway but in a non-transactional\nway.</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6132216,
+      "reputation" : 603,
+      "user_id" : 4782065,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/2754d1d0e13c8d19317307a2ef3f81fd?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ankit",
+      "link" : "https://stackoverflow.com/users/4782065/ankit"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1449410296,
+    "last_edit_date" : 1449410296,
+    "creation_date" : 1449206706,
+    "answer_id" : 34081452,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use like this:</p>\n\n<pre><code>@Transactional(propagation = Propagation.REQUIRES_NEW)\npublic EventMessage&lt;ModificaOperativitaRapporto&gt; activate(EventMessage&lt;ModificaOperativitaRapporto&gt; eventMessage) {\n//here some transaction related code\n}\n</code></pre>\n\n<p>You can use this thing also:</p>\n\n<pre><code>public interface TransactionStatus extends SavepointManager {\n    boolean isNewTransaction();\n    boolean hasSavepoint();\n    void setRollbackOnly();\n    boolean isRollbackOnly();\n    void flush();\n    boolean isCompleted();\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6132216,
+      "reputation" : 603,
+      "user_id" : 4782065,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/2754d1d0e13c8d19317307a2ef3f81fd?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ankit",
+      "link" : "https://stackoverflow.com/users/4782065/ankit"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1449410770,
+    "last_edit_date" : 1449410770,
+    "creation_date" : 1449206957,
+    "answer_id" : 34081504,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>We can add for this:</p>\n\n<pre><code>@Transactional(readOnly = true)\npublic class Banking_CustomerService implements CustomerService {\n\n    public Customer getDetail(String customername) {\n        // do something\n    }\n\n    // these settings have precedence for this method\n    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)\n    public void updateCustomer(Customer customer) {\n        // do something\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5194004,
+        "reputation" : 122,
+        "user_id" : 4155961,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/100004269424049/picture?type=large",
+        "display_name" : "Dusman",
+        "link" : "https://stackoverflow.com/users/4155961/dusman"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1601695950,
+      "post_id" : 49684694,
+      "comment_id" : 113492913,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great Post, Propagation: NOT_SUPPORTED : Execute non-transactionally, suspend the current transaction if one exists. Spring Doc: <a href=\"https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/Propagation.html#:~:text=Enum%20Constant%20Summary&amp;text=Execute%20non%2Dtransactionally%2C%20throw%20an,new%20one%20if%20none%20exists\" rel=\"nofollow noreferrer\">docs.spring.io/spring-framework/docs/current/javadoc-api/org&zwnj;&#8203;/&hellip;</a>."
+    } ],
+    "owner" : {
+      "account_id" : 1875874,
+      "reputation" : 75425,
+      "user_id" : 1697099,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/gerXo.png?s=256",
+      "display_name" : "Premraj",
+      "link" : "https://stackoverflow.com/users/1697099/premraj"
+    },
+    "is_accepted" : false,
+    "score" : 45,
+    "last_activity_date" : 1695961177,
+    "last_edit_date" : 1695961177,
+    "creation_date" : 1522984340,
+    "answer_id" : 49684694,
+    "question_id" : 8490852,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A <em>Transaction</em> represents a unit of work with a database.</p>\n<p><strong>Transaction propagation</strong>: Spring allows you to specify how transactions should propagate across method calls and nested transactions.</p>\n<p><strong>Transaction isolation</strong>: Spring allows you to specify the isolation level of your transactions, so you can ensure that they are isolated from other concurrent transactions.</p>\n<p>In spring <code>TransactionDefinition</code> interface that defines Spring-compliant transaction properties. <code>@Transactional</code> annotation describes transaction attributes on a method or class.</p>\n<pre><code>@Autowired\nprivate TestDAO testDAO;\n\n@Transactional(propagation=TransactionDefinition.PROPAGATION_REQUIRED,isolation=TransactionDefinition.ISOLATION_READ_UNCOMMITTED)\npublic void someTransactionalMethod(User user) {\n\n  // Interact with testDAO\n\n}\n</code></pre>\n<hr />\n<blockquote>\n<p><strong>Propagation (Reproduction) :</strong> is uses for inter transaction relation. (analogous to java inter thread communication)</p>\n</blockquote>\n<pre><code>+-------+---------------------------+------------------------------------------------------------------------------------------------------+\n| value |        Propagation        |                                             Description                                              |\n+-------+---------------------------+------------------------------------------------------------------------------------------------------+\n|    -1 | TIMEOUT_DEFAULT           | Use the default timeout of the underlying transaction system, or none if timeouts are not supported. |\n|     0 | PROPAGATION_REQUIRED      | Support a current transaction; create a new one if none exists.                                      |\n|     1 | PROPAGATION_SUPPORTS      | Support a current transaction; execute non-transactionally if none exists.                           |\n|     2 | PROPAGATION_MANDATORY     | Support a current transaction; throw an exception if no current transaction exists.                  |\n|     3 | PROPAGATION_REQUIRES_NEW  | Create a new transaction, suspending the current transaction if one exists.                          |\n|     4 | PROPAGATION_NOT_SUPPORTED | Do not support a current transaction; rather always execute non-transactionally.                     |\n|     5 | PROPAGATION_NEVER         | Do not support a current transaction; throw an exception if a current transaction exists.            |\n|     6 | PROPAGATION_NESTED        | Execute within a nested transaction if a current transaction exists.                                 |\n+-------+---------------------------+------------------------------------------------------------------------------------------------------+\n</code></pre>\n<hr />\n<blockquote>\n<p><strong>Isolation :</strong> Isolation is one of the ACID (Atomicity, Consistency, Isolation, Durability) properties of database transactions. Isolation determines how transaction integrity is visible to other users and systems. It uses for resource locking i.e. concurrency control, make sure that only one transaction can access the resource at a given point.</p>\n</blockquote>\n<p><strong>Locking perception:</strong> isolation level determines the duration that locks are held.</p>\n<pre><code>+---------------------------+-------------------+-------------+-------------+------------------------+\n| Isolation Level Mode      |  Read             |   Insert    |   Update    |       Lock Scope       |\n+---------------------------+-------------------+-------------+-------------+------------------------+\n| READ_UNCOMMITTED (Low)    |  uncommitted data | Allowed     | Allowed     | No Lock                |\n| READ_COMMITTED (Default)  |   committed data  | Allowed     | Allowed     | Lock on Committed data |\n| REPEATABLE_READ           |   committed data  | Allowed     | Not Allowed | Lock on block of table |\n| SERIALIZABLE (High)       |   committed data  | Not Allowed | Not Allowed | Lock on full table     |\n+---------------------------+-------------------+-------------+-------------+------------------------+\n</code></pre>\n<p><strong>Read perception:</strong> the following 3 kinds of major problems occurs:</p>\n<ul>\n<li><em>Dirty reads</em> : reads uncommitted data from another tx(transaction).</li>\n<li><em>Non-repeatable reads</em> : reads committed <code>UPDATES</code> from another tx.</li>\n<li><em>Phantom reads</em> : reads committed <code>INSERTS</code> and/or <code>DELETES</code> from another tx</li>\n</ul>\n<p>Below is a chart which shows which transaction isolation level solves which problems of concurrency:</p>\n<pre><code>+---------------------------+--------------+----------------------+----------------+\n| Isolation Level Mode      |  Dirty reads | Non-repeatable reads | Phantoms reads |\n+---------------------------+--------------+----------------------+----------------+\n| READ_UNCOMMITTED          | X            | X                    | X           |\n| READ_COMMITTED (Default)  | solves       | X                    | X           |\n| REPEATABLE_READ           | solves       | solves               | X           |\n| SERIALIZABLE              | solves       | solves               | solves      |\n+---------------------------+--------------+----------------------+----------------+\n</code></pre>\n<p><a href=\"https://www.javainuse.com/spring/boot-transaction-isolation\" rel=\"nofollow noreferrer\">for examples</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 212390,
+    "reputation" : 26920,
+    "user_id" : 465179,
+    "user_type" : "registered",
+    "accept_rate" : 99,
+    "profile_image" : "https://i.sstatic.net/CbXhsHtr.jpg?s=256",
+    "display_name" : "MatBanik",
+    "link" : "https://stackoverflow.com/users/465179/matbanik"
+  },
+  "is_answered" : true,
+  "view_count" : 421859,
+  "protected_date" : 1428236770,
+  "accepted_answer_id" : 8490932,
+  "answer_count" : 10,
+  "score" : 563,
+  "last_activity_date" : 1739956427,
+  "creation_date" : 1323786527,
+  "last_edit_date" : 1739956427,
+  "question_id" : 8490852,
+  "link" : "https://stackoverflow.com/questions/8490852/spring-transactional-isolation-propagation",
+  "title" : "Spring @Transactional - isolation, propagation",
+  "body" : "<p>Can someone explain the <strong>isolation</strong> &amp; <strong>propagation</strong> parameters in the <code>@Transactional</code> annotation via a real-world example?</p>\n<p>Basically <strong>when</strong> and <strong>why</strong> should I choose to change their default values?</p>\n"
+}

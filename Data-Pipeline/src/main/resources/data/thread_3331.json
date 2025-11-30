@@ -1,0 +1,435 @@
+{
+  "tags" : [ "java", "arrays", "string", "sorting", "object" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2835128,
+      "reputation" : 11972,
+      "user_id" : 2435872,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/Znn78.gif?s=256",
+      "display_name" : "jboi",
+      "link" : "https://stackoverflow.com/users/2435872/jboi"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1379597853,
+    "post_id" : 18895915,
+    "comment_id" : 27891508,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Implement a <code>Comparator</code> and use it for sorting."
+  }, {
+    "owner" : {
+      "account_id" : 537054,
+      "reputation" : 33059,
+      "user_id" : 905762,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://i.sstatic.net/JTgsI.jpg?s=256",
+      "display_name" : "John B",
+      "link" : "https://stackoverflow.com/users/905762/john-b"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1379598077,
+    "post_id" : 18895915,
+    "comment_id" : 27891680,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "In the <code>Comparator</code> split the string and use the first element as the name."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1383794,
+      "reputation" : 852,
+      "user_id" : 1316247,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8e6d98a338ddbe0de06b62e48fc7da7f?s=256&d=identicon&r=PG",
+      "display_name" : "zbess",
+      "link" : "https://stackoverflow.com/users/1316247/zbess"
+    },
+    "is_accepted" : false,
+    "score" : 62,
+    "last_activity_date" : 1379598187,
+    "creation_date" : 1379598187,
+    "answer_id" : 18896343,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can try something like this:</p>\n\n<pre><code>List&lt;Book&gt; books = new ArrayList&lt;Book&gt;();\n\nCollections.sort(books, new Comparator&lt;Book&gt;(){\n\n  public int compare(Book o1, Book o2)\n  {\n     return o1.name.compareTo(o2.name);\n  }\n});\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1126136,
+      "reputation" : 17635,
+      "user_id" : 1113392,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b07ea15e4af87534d2e418a2a567e392?s=256&d=identicon&r=PG",
+      "display_name" : "A4L",
+      "link" : "https://stackoverflow.com/users/1113392/a4l"
+    },
+    "is_accepted" : true,
+    "score" : 51,
+    "last_activity_date" : 1443457674,
+    "last_edit_date" : 1443457674,
+    "creation_date" : 1379598381,
+    "answer_id" : 18896422,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You have two ways to do that, both use the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html\">Arrays</a> utility class</p>\n\n<ol>\n<li>Implement a <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html\">Comparator</a> and pass your array along with the comparator to the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html#sort%28T%5B%5D,%20java.util.Comparator%29\">sort method</a> which take it as second parameter.</li>\n<li>Implement the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/Comparable.html\">Comparable</a> interface in the class your objects are from and pass your array to the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/Arrays.html#sort%28java.lang.Object%5B%5D%29\">sort method</a> which takes only one parameter.</li>\n</ol>\n\n<p><strong>Example</strong></p>\n\n<pre><code>class Book implements Comparable&lt;Book&gt; {\n    public String name, id, author, publisher;\n    public Book(String name, String id, String author, String publisher) {\n        this.name = name;\n        this.id = id;\n        this.author = author;\n        this.publisher = publisher;\n    }\n    public String toString() {\n        return (\"(\" + name + \", \" + id + \", \" + author + \", \" + publisher + \")\");\n    }\n    @Override\n    public int compareTo(Book o) {\n        // usually toString should not be used,\n        // instead one of the attributes or more in a comparator chain\n        return toString().compareTo(o.toString());\n    }\n}\n\n@Test\npublic void sortBooks() {\n    Book[] books = {\n            new Book(\"foo\", \"1\", \"author1\", \"pub1\"),\n            new Book(\"bar\", \"2\", \"author2\", \"pub2\")\n    };\n\n    // 1. sort using Comparable\n    Arrays.sort(books);\n    System.out.println(Arrays.asList(books));\n\n    // 2. sort using comparator: sort by id\n    Arrays.sort(books, new Comparator&lt;Book&gt;() {\n        @Override\n        public int compare(Book o1, Book o2) {\n            return o1.id.compareTo(o2.id);\n        }\n    });\n    System.out.println(Arrays.asList(books));\n}\n</code></pre>\n\n<p><strong>Output</strong></p>\n\n<pre><code>[(bar, 2, author2, pub2), (foo, 1, author1, pub1)]\n[(foo, 1, author1, pub1), (bar, 2, author2, pub2)]\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1185107,
+        "reputation" : 4513,
+        "user_id" : 1159244,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/6zgMk.png?s=256",
+        "display_name" : "pr0gg3r",
+        "link" : "https://stackoverflow.com/users/1159244/pr0gg3r"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1518029974,
+      "post_id" : 35271338,
+      "comment_id" : 84340682,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If you want to use lambda expressions in Android Studio, you should look at this page: <a href=\"https://developer.android.com/studio/write/java8-support.html\" rel=\"nofollow noreferrer\">developer.android.com/studio/write/java8-support.html</a>"
+    }, {
+      "owner" : {
+        "account_id" : 2366187,
+        "reputation" : 61386,
+        "user_id" : 2071828,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/R8AYO.jpg?s=256",
+        "display_name" : "Boris the Spider",
+        "link" : "https://stackoverflow.com/users/2071828/boris-the-spider"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1532102164,
+      "post_id" : 35271338,
+      "comment_id" : 89862854,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "See <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#comparing-java.util.function.Function-\" rel=\"nofollow noreferrer\"><code>Comparator.comparing</code></a>."
+    }, {
+      "owner" : {
+        "account_id" : 9038969,
+        "reputation" : 533,
+        "user_id" : 6733836,
+        "user_type" : "registered",
+        "profile_image" : "https://lh6.googleusercontent.com/-uRcr6LCnfag/AAAAAAAAAAI/AAAAAAAAACc/4nlFwaFQj7c/s256-rj/photo.jpg",
+        "display_name" : "Vyshak Puthusseri",
+        "link" : "https://stackoverflow.com/users/6733836/vyshak-puthusseri"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1601381209,
+      "post_id" : 35271338,
+      "comment_id" : 113384629,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In the above case, instead of name , if it was id, how can we do?"
+    }, {
+      "owner" : {
+        "account_id" : 9038969,
+        "reputation" : 533,
+        "user_id" : 6733836,
+        "user_type" : "registered",
+        "profile_image" : "https://lh6.googleusercontent.com/-uRcr6LCnfag/AAAAAAAAAAI/AAAAAAAAACc/4nlFwaFQj7c/s256-rj/photo.jpg",
+        "display_name" : "Vyshak Puthusseri",
+        "link" : "https://stackoverflow.com/users/6733836/vyshak-puthusseri"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1601381292,
+      "post_id" : 35271338,
+      "comment_id" : 113384684,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I try with replacing name with id, but the error was &quot;dereferencing not possible for int,) so i converted the int to string. Now there is no error, but it is not sorting?"
+    } ],
+    "owner" : {
+      "account_id" : 4812242,
+      "reputation" : 57032,
+      "user_id" : 3885376,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://i.sstatic.net/KzenF.png?s=256",
+      "display_name" : "ROMANIA_engineer",
+      "link" : "https://stackoverflow.com/users/3885376/romania-engineer"
+    },
+    "is_accepted" : false,
+    "score" : 46,
+    "last_activity_date" : 1454939615,
+    "creation_date" : 1454939615,
+    "answer_id" : 35271338,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<h2>Java 8</h2>\n\n<hr>\n\n<h3>Using <a href=\"https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html\" rel=\"noreferrer\">lambda expressions</a></h3>\n\n<pre><code>Arrays.sort(myTypes, (a,b) -&gt; a.name.compareTo(b.name));\n</code></pre>\n\n<p><strong>Test.java</strong></p>\n\n<pre><code>public class Test {\n\n    public static void main(String[] args) {\n\n        MyType[] myTypes = {\n                new MyType(\"John\", 2, \"author1\", \"publisher1\"),\n                new MyType(\"Marry\", 298, \"author2\", \"publisher2\"),\n                new MyType(\"David\", 3, \"author3\", \"publisher3\"),\n        };\n\n        System.out.println(\"--- before\");\n        System.out.println(Arrays.asList(myTypes));\n        Arrays.sort(myTypes, (a, b) -&gt; a.name.compareTo(b.name));\n        System.out.println(\"--- after\");\n        System.out.println(Arrays.asList(myTypes));\n\n    }\n\n}\n</code></pre>\n\n<p><strong>MyType.java</strong></p>\n\n<pre><code>public class MyType {\n\n    public String name;\n    public int id;\n    public String author;\n    public String publisher;\n\n    public MyType(String name, int id, String author, String publisher) {\n        this.name = name;\n        this.id = id;\n        this.author = author;\n        this.publisher = publisher;\n    }\n\n    @Override\n    public String toString() {\n        return \"MyType{\" +\n                \"name=\" + name + '\\'' +\n                \", id=\" + id +\n                \", author='\" + author + '\\'' +\n                \", publisher='\" + publisher + '\\'' +\n                '}' + System.getProperty(\"line.separator\");\n    }\n}\n</code></pre>\n\n<p><strong>Output:</strong></p>\n\n<pre><code>--- before\n[MyType{name=John', id=2, author='author1', publisher='publisher1'}\n, MyType{name=Marry', id=298, author='author2', publisher='publisher2'}\n, MyType{name=David', id=3, author='author3', publisher='publisher3'}\n]\n--- after\n[MyType{name=David', id=3, author='author3', publisher='publisher3'}\n, MyType{name=John', id=2, author='author1', publisher='publisher1'}\n, MyType{name=Marry', id=298, author='author2', publisher='publisher2'}\n]\n</code></pre>\n\n<hr>\n\n<h3>Using <a href=\"https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html\" rel=\"noreferrer\">method references</a></h3>\n\n<pre><code>Arrays.sort(myTypes, MyType::compareThem);\n</code></pre>\n\n<p>where <code>compareThem</code> has to be added in <strong>MyType.java</strong>:</p>\n\n<pre><code>public static int compareThem(MyType a, MyType b) {\n    return a.name.compareTo(b.name);\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7868701,
+      "reputation" : 3,
+      "user_id" : 9124167,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-OFVMscmzRoA/AAAAAAAAAAI/AAAAAAAAAb0/ZUoIuQEQlAA/s256-rj/photo.jpg",
+      "display_name" : "Stephen Barner",
+      "link" : "https://stackoverflow.com/users/9124167/stephen-barner"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1513797037,
+    "creation_date" : 1513797037,
+    "answer_id" : 47912876,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Sometimes you want to sort an array of objects on an arbitrary value.  Since compareTo() always uses the same information about the instance, you might want to use a different technique.  One way is to use a standard sorting algorithm.  Let's say you have an array of books and you want to sort them on their height, which is stored as an int and accessible through the method getHeight().  Here's how you could sort the books in your array. (If you don't want to change the original array, simply make a copy and sort that.)</p>\n\n<pre><code>`int tallest; // the index of tallest book found thus far\n Book temp; // used in the swap\n for(int a = 0; a &lt; booksArray.length - 1; a++) {\n   tallest = a; // reset tallest to current index\n   // start inner loop at next index\n   for(int b = a + 1; b &lt; booksArray.length; b++)\n     // check if the book at this index is taller than the\n     // tallest found thus far\n     if(booksArray[b].getHeight() &gt; booksArray[tallest].getHeight())\n       tallest = b;\n   // once inner loop is complete, swap the tallest book found with\n   // the one at the current index of the outer loop\n   temp = booksArray[a];\n   booksArray[a] = booksArray[tallest];\n   booksArray[tallest] = temp;\n }`\n</code></pre>\n\n<p>When this code is done, the array of Book object will be sorted by height in descending order--an interior designer's dream!</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2366187,
+        "reputation" : 61386,
+        "user_id" : 2071828,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/R8AYO.jpg?s=256",
+        "display_name" : "Boris the Spider",
+        "link" : "https://stackoverflow.com/users/2071828/boris-the-spider"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1532102216,
+      "post_id" : 48418903,
+      "comment_id" : 89862886,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "See <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#comparing-java.util.function.Function-\" rel=\"nofollow noreferrer\"><code>Comparator.comparing</code></a>."
+    } ],
+    "owner" : {
+      "account_id" : 6656175,
+      "reputation" : 18665,
+      "user_id" : 5136659,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/cLUPF.jpg?s=256",
+      "display_name" : "Ali Faris",
+      "link" : "https://stackoverflow.com/users/5136659/ali-faris"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1623085986,
+    "last_edit_date" : 1623085986,
+    "creation_date" : 1516786012,
+    "answer_id" : 48418903,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>With <strong>Java 8</strong>, you can use a reference method.</p>\n<p>You could add <code>compare</code> method to your <code>Book</code> class</p>\n<pre class=\"lang-java prettyprint-override\"><code>class Book {\n    public static int compare(Book a, Book b) {\n        return a.name.compareTo(b.name);\n    }\n}\n</code></pre>\n<p>And then you could do this :</p>\n<pre class=\"lang-java prettyprint-override\"><code>Arrays.sort(books, Book::compare);\n</code></pre>\n<p>Here is the full example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>class Book {\n    String name;\n    String author;\n\n    public Book(String name, String author) {\n        this.name = name;\n        this.author = author;\n    }\n\n    public static int compareBooks(Book a, Book b) {\n        return a.name.compareTo(b.name);\n    }\n\n    @Override\n    public String toString() {\n        return &quot;name : &quot; + name + &quot;\\t&quot; + &quot;author : &quot; + author;\n    }\n\n    public static void main(String[] args) {\n        Book[] books = {\n                new Book(&quot;Book 3&quot;, &quot;Author 1&quot;),\n                new Book(&quot;Book 2&quot;, &quot;Author 2&quot;),\n                new Book(&quot;Book 1&quot;, &quot;Author 3&quot;),\n                new Book(&quot;Book 4&quot;, &quot;Author 4&quot;)\n        };\n        Arrays.sort(books, Book::compareBooks);\n        Arrays.asList(books).forEach(System.out::println);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6277349,
+        "reputation" : 307,
+        "user_id" : 4879651,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/eiYnH.jpg?s=256",
+        "display_name" : "Manash Ranjan Dakua",
+        "link" : "https://stackoverflow.com/users/4879651/manash-ranjan-dakua"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1531381331,
+      "post_id" : 51299919,
+      "comment_id" : 89576600,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "adding sort check in Test class in below application"
+    } ],
+    "owner" : {
+      "account_id" : 6277349,
+      "reputation" : 307,
+      "user_id" : 4879651,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/eiYnH.jpg?s=256",
+      "display_name" : "Manash Ranjan Dakua",
+      "link" : "https://stackoverflow.com/users/4879651/manash-ranjan-dakua"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1533483501,
+    "last_edit_date" : 1533483501,
+    "creation_date" : 1531381272,
+    "answer_id" : 51299919,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>public class Student implements Comparable&lt;Student&gt; {\n\n    private int sid;\n    private String sname;\n\n    public Student(int sid, String sname) {\n        super();\n        this.sid = sid;\n        this.sname = sname;\n    }\n\n    public int getSid() {\n        return sid;\n    }\n\n    public void setSid(int sid) {\n        this.sid = sid;\n    }\n\n    public String getSname() {\n        return sname;\n    }\n\n    public void setSname(String sname) {\n        this.sname = sname;\n    }\n\n    @Override\n    public String toString() {\n        return \"Student [sid=\" + sid + \", sname=\" + sname + \"]\";\n    }\n\n    public int compareTo(Student o) {\n        if (this.getSname().compareTo(o.getSname()) &gt; 1) {\n            return toString().compareTo(o.getSname());\n        } else if (this.getSname().compareTo(o.getSname()) &lt; 1) {\n            return toString().compareTo(o.getSname());\n        }\n        return 0;\n    }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6277349,
+      "reputation" : 307,
+      "user_id" : 4879651,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/eiYnH.jpg?s=256",
+      "display_name" : "Manash Ranjan Dakua",
+      "link" : "https://stackoverflow.com/users/4879651/manash-ranjan-dakua"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1623050729,
+    "last_edit_date" : 1623050729,
+    "creation_date" : 1531381400,
+    "answer_id" : 51299960,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre class=\"lang-java prettyprint-override\"><code>import java.util.Collections;\nimport java.util.List;\nimport java.util.ArrayList;\n\npublic class Test {\n    public static void main(String[] args) {\n        List&lt;Student&gt; str = new ArrayList&lt;Student&gt;();\n        str.add(new Student(101, &quot;aaa&quot;));\n        str.add(new Student(104, &quot;bbb&quot;));\n        str.add(new Student(103, &quot;ccc&quot;));\n        str.add(new Student(105, &quot;ddd&quot;));\n        str.add(new Student(104, &quot;eee&quot;));\n        str.add(new Student(102, &quot;fff&quot;));\n\n        Collections.sort(str);\n        for (Student student : str) {\n            System.out.println(student);\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7439229,
+      "reputation" : 175,
+      "user_id" : 5657520,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-XBLEwPZ2j4M/AAAAAAAAAAI/AAAAAAAAAHE/zbKSPiJ5DKM/s256-rj/photo.jpg",
+      "display_name" : "Devashish Priyadarshi",
+      "link" : "https://stackoverflow.com/users/5657520/devashish-priyadarshi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1531654924,
+    "creation_date" : 1531654924,
+    "answer_id" : 51348041,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can implement the \"Comparable\" interface on a class whose objects you want to compare.</p>\n\n<p>And also implement the \"compareTo\" method in that.</p>\n\n<p>Add the instances of the class in an ArrayList</p>\n\n<p>Then the \"java.utils.Collections.sort()\" method will do the necessary magic.</p>\n\n<p>Here's--->(<a href=\"https://deva-codes.herokuapp.com/CompareOnTwoKeys\" rel=\"nofollow noreferrer\">https://deva-codes.herokuapp.com/CompareOnTwoKeys</a>) a working example where objects are sorted based on two keys first by the id and then by name. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6067817,
+      "reputation" : 968,
+      "user_id" : 4737559,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/rKwjo.png?s=256",
+      "display_name" : "shriyog",
+      "link" : "https://stackoverflow.com/users/4737559/shriyog"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1546584625,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1546584100,
+    "answer_id" : 54034150,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Update for Java 8 constructs</h2>\n<p>Assuming a <code>Book</code> class with a <code>name</code> field getter, you can use <code>Arrays.sort</code> method by passing an additional <code>Comparator</code> specified using Java 8 constructs - <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html\" rel=\"noreferrer\">Comparator default method</a> &amp; <a href=\"https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html\" rel=\"noreferrer\">method references</a>.</p>\n<pre><code>Arrays.sort(bookArray, Comparator.comparing(Book::getName));\n</code></pre>\n<p>Also, it's possible to compare on multiple fields using <code>thenComparing</code> methods.</p>\n<pre><code>Arrays.sort(bookArray, Comparator.comparing(Book::getName)\n      .thenComparing(Book::getAuthor))\n      .thenComparingInt(Book::getId));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7148214,
+        "reputation" : 1456,
+        "user_id" : 5463213,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/TYmN2.jpg?s=256",
+        "display_name" : "Shanteshwar Inde",
+        "link" : "https://stackoverflow.com/users/5463213/shanteshwar-inde"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1557815677,
+      "post_id" : 56123999,
+      "comment_id" : 98880532,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "While this code may answer the question, providing additional context regarding how and/or why it solves the problem would improve the answer&#39;s long-term value.<a href=\"https://stackoverflow.com/help/how-to-answer\">Read this</a>."
+    } ],
+    "owner" : {
+      "account_id" : 8795718,
+      "reputation" : 363,
+      "user_id" : 6573672,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8358595ee1f87d8366d121d0c208c766?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Code wizard",
+      "link" : "https://stackoverflow.com/users/6573672/code-wizard"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1646255657,
+    "last_edit_date" : 1646255657,
+    "creation_date" : 1557814190,
+    "answer_id" : 56123999,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code> Arrays.sort(yourList,new Comparator&lt;YourObject&gt;() {\n\n    @Override\n    public int compare(YourObject o1, YourObject o2) {\n        return compare(o1.getYourColumn(), o2.getYourColumn());\n    }\n});\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11955301,
+      "reputation" : 31,
+      "user_id" : 8747827,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-O-o1GhLf5hM/AAAAAAAAAAI/AAAAAAAAABQ/RFsFYG12YKM/s256-rj/photo.jpg",
+      "display_name" : "Abdel Ali",
+      "link" : "https://stackoverflow.com/users/8747827/abdel-ali"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1623041382,
+    "last_edit_date" : 1623041382,
+    "creation_date" : 1599219537,
+    "answer_id" : 63740455,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>[Employee(name=John, age=25, salary=3000.0, mobile=9922001), \n Employee(name=Ace, age=22, salary=2000.0, mobile=5924001), \n Employee(name=Keith, age=35, salary=4000.0, mobile=3924401)]\n</code></pre>\n<pre class=\"lang-java prettyprint-override\"><code>public void whenComparing_thenSortedByName() {\n    Comparator&lt;Employee&gt; employeeNameComparator\n            = Comparator.comparing(Employee::getName);\n    Arrays.sort(employees, employeeNameComparator);\n    assertTrue(Arrays.equals(employees, sortedEmployeesByName));\n}\n</code></pre>\n<p>result</p>\n<pre><code>[Employee(name=Ace, age=22, salary=2000.0, mobile=5924001), \n Employee(name=John, age=25, salary=3000.0, mobile=9922001), \n Employee(name=Keith, age=35, salary=4000.0, mobile=3924401)]\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3000988,
+      "reputation" : 1128,
+      "user_id" : 2546511,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d5e2604329a572796196ffe9ba529ace?s=256&d=identicon&r=PG",
+      "display_name" : "Ashish Lahoti",
+      "link" : "https://stackoverflow.com/users/2546511/ashish-lahoti"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1684859031,
+    "last_edit_date" : 1684859031,
+    "creation_date" : 1684858720,
+    "answer_id" : 76316805,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Let's take an example of <code>Book</code> class and build a list of book objects:-</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class Book {\n  String name;\n  String author;\n  double rating;\n}\n\nBook book1 = new Book(&quot;book1&quot;, &quot;author1&quot;, 3.0);\nBook book2 = new Book(&quot;book2&quot;, &quot;author2&quot;, 5);\nBook book3 = new Book(&quot;book3&quot;, &quot;author1&quot;, 4.0);\nBook book4 = new Book(&quot;book4&quot;, &quot;author2&quot;, 2.5);\nBook book5 = new Book(&quot;book5&quot;, &quot;author1&quot;, 4.0);\n\nList&lt;Book&gt; library = Arrays.asList(book1, book2, book3, book4, book5);\n</code></pre>\n<p>We can sort a list of objects using <code>Comparator.comparing()</code>. We can also chain it with <code>.thenComparing()</code> to sort by multiple fields. Let's look at examples:-</p>\n<pre class=\"lang-java prettyprint-override\"><code>// Sort in ascending order\nCollections.sort(library, Comparator.comparing(Book::getAuthor));\nCollections.sort(library, Comparator.comparingDouble(Book::getRating));\n\n// Sort in descending order\nCollections.sort(library, Comparator.comparing(Book::getAuthor).reversed());\nCollections.sort(library, Comparator.comparingDouble(Book::getRating).reversed());\n\n// Sort by multiple fields in ascending order\nCollections.sort(library, Comparator.comparing(Book::getAuthor)\n            .thenComparingDouble(Book::getRating)\n            .thenComparing(Book::getName));\n\n// Sort by multiple fields in ascending then descending order\nCollections.sort(library, Comparator.comparing(Book::getAuthor)\n        .thenComparing((b1, b2) -&gt; Double.compare(b2.getRating(), b1.getRating()))\n        .thenComparing((b1, b2) -&gt; b2.getName().compareTo(b1.getName())));\n\n</code></pre>\n<blockquote>\n<p>Source: <a href=\"https://codingnconcepts.com/java/sort-array-list-of-object-in-java/\" rel=\"nofollow noreferrer\">CodingNConcepts</a></p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762744493,
+    "last_edit_date" : 1762744493,
+    "creation_date" : 1762744023,
+    "answer_id" : 79815154,
+    "question_id" : 18895915,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>tl;dr</h2>\n<p>To sort by output of <code>toString</code>:</p>\n<pre class=\"lang-java prettyprint-override\"><code>Arrays.sort( persons , Comparator.comparing( Person :: toString ) );\n</code></pre>\n<h2>Sort by <code>toString</code></h2>\n<p>Other Answers assume you have access to the class and its fields. If so, use those other approaches. But I will take your Question at face value: How to sort by <code>toString</code>.</p>\n<p>To answer your Question directly, how to sort by <code>toString</code> output, use <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Arrays.html#sort(T%5B%5D,java.util.Comparator)\" rel=\"nofollow noreferrer\"><code>Arrays.sort</code></a> with a <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Comparator.html\" rel=\"nofollow noreferrer\"><code>Comparator</code></a> based on a method reference of <code>toString</code>.</p>\n<pre class=\"lang-java prettyprint-override\"><code>Arrays.sort( persons , Comparator.comparing( Person :: toString ) );\n</code></pre>\n<p>As an example, let's define a <a href=\"https://openjdk.org/jeps/395\" rel=\"nofollow noreferrer\">record</a> class <code>Person</code>. You can define a record locally, if you want, or as a nested or separate class.</p>\n<pre class=\"lang-java prettyprint-override\"><code>record Person( String firstName , String lastName ) { }\n</code></pre>\n<p>With a record, the <code>toString</code> method override is implicitly implemented to access each and every field in the order of their definition. So in our case, <code>toString</code> produces text consisting of the first name followed by the last name.</p>\n<p>Sorting is made easier in Java 8+ by way of <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Comparator.html#comparing(java.util.function.Function)\" rel=\"nofollow noreferrer\"><code>Comparator.comparing</code></a>.</p>\n<p>Let's generate some example data to exercise this code.</p>\n<pre class=\"lang-java prettyprint-override\"><code>Person[] persons =\n        List.of(\n                        new Person( &quot;Bob&quot; , &quot;Yates&quot; ) ,\n                        new Person( &quot;Carol&quot; , &quot;Zamora&quot; ) ,\n                        new Person( &quot;Alice&quot; , &quot;Anderson&quot; ) ,\n                        new Person( &quot;Davis&quot; , &quot;Xavier&quot; ) ,\n                        new Person( &quot;Alice&quot; , &quot;Abercrombie&quot; )\n                )\n                .toArray( Person[] :: new );\n</code></pre>\n<p>Dump the array to console after sorting. Before Java 25, swap out <code>IO</code> for <code>System.out</code>.</p>\n<pre class=\"lang-java prettyprint-override\"><code>Arrays.stream( persons ).forEach( IO :: println );\n</code></pre>\n<p>When run:</p>\n<pre class=\"lang-none prettyprint-override\"><code>Person[firstName=Alice, lastName=Abercrombie]\nPerson[firstName=Alice, lastName=Anderson]\nPerson[firstName=Bob, lastName=Yates]\nPerson[firstName=Carol, lastName=Zamora]\nPerson[firstName=Davis, lastName=Xavier]\n</code></pre>\n<p>Notice how all the elements are in order by first name. In the case of a collision between first names, such as <code>Alice</code> here, the last name acts as the tie-breaker given that it is the last part of the <code>String</code> object being compared. Here we see <code>Alice Abercrombie</code> comes before <code>Alice Anderson</code>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2075020,
+    "reputation" : 5094,
+    "user_id" : 1848639,
+    "user_type" : "registered",
+    "accept_rate" : 73,
+    "profile_image" : "https://www.gravatar.com/avatar/8bda0a17f95c0c961a0db719c2c39b4f?s=256&d=identicon&r=PG",
+    "display_name" : "Tushar Monirul",
+    "link" : "https://stackoverflow.com/users/1848639/tushar-monirul"
+  },
+  "is_answered" : true,
+  "view_count" : 247385,
+  "accepted_answer_id" : 18896422,
+  "answer_count" : 13,
+  "score" : 54,
+  "last_activity_date" : 1762744493,
+  "creation_date" : 1379597138,
+  "last_edit_date" : 1379604585,
+  "question_id" : 18895915,
+  "link" : "https://stackoverflow.com/questions/18895915/how-to-sort-an-array-of-objects-in-java",
+  "title" : "How to sort an array of objects in Java?",
+  "body" : "<p>My array does not contain any string. But its contains object references. Every object reference returns name, id, author and publisher by toString method.</p>\n\n<pre><code>public String toString() {\n        return (name + \"\\n\" + id + \"\\n\" + author + \"\\n\" + publisher + \"\\n\");\n}\n</code></pre>\n\n<p>Now I need to sort that array of objects by the name. I know how to sort, but I do not know how to extract the name from the objects and sort them. </p>\n"
+}

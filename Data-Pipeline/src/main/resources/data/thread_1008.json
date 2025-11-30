@@ -1,0 +1,1380 @@
+{
+  "tags" : [ "java", "hibernate", "session", "orm", "lazy-loading" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3736418,
+        "reputation" : 3523,
+        "user_id" : 3107262,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/bec8dad94b06de94e7636289fa9e21f2?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Blerta Dhimitri",
+        "link" : "https://stackoverflow.com/users/3107262/blerta-dhimitri"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1391600397,
+      "post_id" : 21575368,
+      "comment_id" : 32591114,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thank you! I solved my problem using openSession() instead of getCurrentSession() as one of the links you gave me suggested this, but now I&#39;m affraid if it is wrong to do so"
+    }, {
+      "owner" : {
+        "account_id" : 105356,
+        "reputation" : 2089,
+        "user_id" : 281191,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/2e4f43385b9a51f157648c738b912def?s=256&d=identicon&r=PG",
+        "display_name" : "goroncy",
+        "link" : "https://stackoverflow.com/users/281191/goroncy"
+      },
+      "reply_to_user" : {
+        "account_id" : 3736418,
+        "reputation" : 3523,
+        "user_id" : 3107262,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/bec8dad94b06de94e7636289fa9e21f2?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Blerta Dhimitri",
+        "link" : "https://stackoverflow.com/users/3107262/blerta-dhimitri"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1391602128,
+      "post_id" : 21575368,
+      "comment_id" : 32592135,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "No it is probably fine. But read some more to be able to fully control your sessions and transactions. It is realy important to know the basics because all higher level technologies like Spring, Hibernate and more operate on the very same concept."
+    } ],
+    "owner" : {
+      "account_id" : 105356,
+      "reputation" : 2089,
+      "user_id" : 281191,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/2e4f43385b9a51f157648c738b912def?s=256&d=identicon&r=PG",
+      "display_name" : "goroncy",
+      "link" : "https://stackoverflow.com/users/281191/goroncy"
+    },
+    "is_accepted" : true,
+    "score" : 109,
+    "last_activity_date" : 1674029973,
+    "last_edit_date" : 1674029973,
+    "creation_date" : 1391598105,
+    "answer_id" : 21575368,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What is wrong here is that your session management configuration is set to close session when you commit transaction. Check if you have something like:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;property name=&quot;current_session_context_class&quot;&gt;thread&lt;/property&gt;\n</code></pre>\n<p>in your configuration.</p>\n<p>In order to overcome this problem you could change the configuration of session factory or open another session and only then ask for those lazy loaded objects. But what I would suggest here is to initialize this lazy collection in <code>getModelByModelGroup</code> itself and call:</p>\n<pre class=\"lang-java prettyprint-override\"><code>Hibernate.initialize(subProcessModel.getElement());\n</code></pre>\n<p>when you are still in active session.</p>\n<p>And one last thing. A friendly advice. You have something like this in your method:</p>\n<pre class=\"lang-java prettyprint-override\"><code>for (Model m : modelList) {\n    if (m.getModelType().getId() == 3) {\n        model = m;\n        break;\n    }\n}\n</code></pre>\n<p>Please insted of this code just filter those models with type id equal to 3 in the query statement just couple of lines above.</p>\n<p>Some more reading:</p>\n<p><a href=\"http://www.coderanch.com/t/428509/ORM/databases/committing-transaction-closes-session\" rel=\"noreferrer\">session factory configuration</a></p>\n<p><a href=\"http://forum.zkoss.org/question/45772/hibernate-problem-session-is-closed/\" rel=\"noreferrer\">problem with closed session</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 280941,
+        "reputation" : 4672,
+        "user_id" : 576954,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://www.gravatar.com/avatar/2e7d64675fcfb48fcaca1d9f2357fc9b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "MoienGK",
+        "link" : "https://stackoverflow.com/users/576954/moiengk"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1415274672,
+      "post_id" : 25056258,
+      "comment_id" : 42135356,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "generally adding lazy=false is not a good idea. that is why lazy is true by default"
+    }, {
+      "owner" : {
+        "account_id" : 1161408,
+        "reputation" : 8238,
+        "user_id" : 1358722,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/uk1rN.jpg?s=256",
+        "display_name" : "GingerHead",
+        "link" : "https://stackoverflow.com/users/1358722/gingerhead"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1432051741,
+      "post_id" : 25056258,
+      "comment_id" : 48756299,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The OP clearly said beforehand that he&#39;s not allowed to do that."
+    } ],
+    "owner" : {
+      "account_id" : 2084440,
+      "reputation" : 204,
+      "user_id" : 1855717,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/ce11ad12157d5dc717dab820ba90a595?s=256&d=identicon&r=PG",
+      "display_name" : "Sandeep Roniyaar",
+      "link" : "https://stackoverflow.com/users/1855717/sandeep-roniyaar"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1406801527,
+    "creation_date" : 1406801527,
+    "answer_id" : 25056258,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>you could also solved it by adding lazy=false into   into your *.hbm.xml file or you can init your object in Hibernate.init(Object) when you get object from db</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1409704,
+        "reputation" : 3070,
+        "user_id" : 1336558,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://i.sstatic.net/LKezQ.jpg?s=256",
+        "display_name" : "Mohit Kanwar",
+        "link" : "https://stackoverflow.com/users/1336558/mohit-kanwar"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1436786788,
+      "post_id" : 27303504,
+      "comment_id" : 50741778,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Can you explain its meaning as well?"
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user377628"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1443739601,
+      "post_id" : 27303504,
+      "comment_id" : 53624989,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;m also curious what this does. It did fix the issue I was having, but I&#39;d like to understand why."
+    }, {
+      "owner" : {
+        "account_id" : 1617419,
+        "reputation" : 667,
+        "user_id" : 1527456,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://www.gravatar.com/avatar/473d117280544df474fafce70c243b8e?s=256&d=identicon&r=PG",
+        "display_name" : "saimiris_devel",
+        "link" : "https://stackoverflow.com/users/1527456/saimiris-devel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1453368235,
+      "post_id" : 27303504,
+      "comment_id" : 57573443,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "After thousands of &quot;just put lazy=false in your configuration file&quot; and &quot;just initialize every object with Hibernate.initialize()&quot; finally a concrete and viable solution for me. This option should be made standard in hibernate!"
+    }, {
+      "owner" : {
+        "account_id" : 543631,
+        "reputation" : 10695,
+        "user_id" : 912829,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://www.gravatar.com/avatar/7253953e22cc6dbf31aef624f03e5cc3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "ACV",
+        "link" : "https://stackoverflow.com/users/912829/acv"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1472066154,
+      "post_id" : 27303504,
+      "comment_id" : 65608075,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "for persistence.xml: <code>&lt;property name=&quot;hibernate.enable_lazy_load_no_trans&quot; value=&quot;true&quot;&#47;&gt;</code>"
+    }, {
+      "owner" : {
+        "account_id" : 1573445,
+        "reputation" : 5151,
+        "user_id" : 1460591,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://i.sstatic.net/7ok3Y.png?s=256",
+        "display_name" : "Youans",
+        "link" : "https://stackoverflow.com/users/1460591/youans"
+      },
+      "edited" : false,
+      "score" : 26,
+      "creation_date" : 1508328571,
+      "post_id" : 27303504,
+      "comment_id" : 80566749,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "DO NOT USE THIS PROPERTY, IF SPRING MANAGES YOUR TRANSACTIONS THIS PROPERTY WILL LEAD TO TRANSACTIONS EXPLOSION, SIMPLY SPRING WILL SHUTDOWN THE APPLICATION"
+    }, {
+      "owner" : {
+        "account_id" : 303636,
+        "reputation" : 1304,
+        "user_id" : 612694,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://graph.facebook.com/602521926/picture?type=large",
+        "display_name" : "Rub&#233;n Fanjul Estrada",
+        "link" : "https://stackoverflow.com/users/612694/rub%c3%a9n-fanjul-estrada"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1577214965,
+      "post_id" : 27303504,
+      "comment_id" : 105123854,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "To doing that you will use an anti-pattern ... so better don&#39;t do that."
+    }, {
+      "owner" : {
+        "account_id" : 1125613,
+        "reputation" : 20024,
+        "user_id" : 1112963,
+        "user_type" : "registered",
+        "accept_rate" : 59,
+        "profile_image" : "https://i.sstatic.net/2quHt.jpg?s=256",
+        "display_name" : "Zon",
+        "link" : "https://stackoverflow.com/users/1112963/zon"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1624885528,
+      "post_id" : 27303504,
+      "comment_id" : 120471756,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is an anti-pattern - read here - an article by Vlad Mihalcea - <a href=\"https://vladmihalcea.com/the-hibernate-enable_lazy_load_no_trans-anti-pattern/\" rel=\"nofollow noreferrer\">vladmihalcea.com/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1824191,
+        "reputation" : 6554,
+        "user_id" : 1657465,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mmZsu.jpg?s=256",
+        "display_name" : "luiscla27",
+        "link" : "https://stackoverflow.com/users/1657465/luiscla27"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1710528761,
+      "post_id" : 27303504,
+      "comment_id" : 137809192,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "To deal with performance issues, instead of this, I would highly recommend best the <a href=\"https://stackoverflow.com/a/77326239/1657465\">dto solution</a>"
+    } ],
+    "owner" : {
+      "account_id" : 1344992,
+      "reputation" : 2404,
+      "user_id" : 1285923,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://www.gravatar.com/avatar/4ce623558bbb266169fb7f3c4bc136cc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Wilianto Indrawan",
+      "link" : "https://stackoverflow.com/users/1285923/wilianto-indrawan"
+    },
+    "is_accepted" : false,
+    "score" : 111,
+    "last_activity_date" : 1697738178,
+    "last_edit_date" : 1697738178,
+    "creation_date" : 1417725223,
+    "answer_id" : 27303504,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h5>WARNING: This solution creates a NEW TRANSACTION for every LAZY object that is fetched outside a transaction. Use at your own risk.</h5>\n<hr />\n<p>You can try to set the following in <code>hibernate.cfg.xml</code> or <code>persistence.xml</code></p>\n<pre><code>&lt;property name=&quot;hibernate.enable_lazy_load_no_trans&quot;&gt;true&lt;/property&gt;\n</code></pre>\n<p>The problem to keep in mind with this property are well explained <a href=\"https://stackoverflow.com/a/25367976/1657465\">here</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4996035,
+      "reputation" : 4381,
+      "user_id" : 4098074,
+      "user_type" : "registered",
+      "accept_rate" : 19,
+      "profile_image" : "https://lh5.googleusercontent.com/-ZGuz6bTpbqU/AAAAAAAAAAI/AAAAAAAAAhI/jvzdLnZjs50/s256-rj/photo.jpg",
+      "display_name" : "Tony Vu",
+      "link" : "https://stackoverflow.com/users/4098074/tony-vu"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1428914681,
+    "creation_date" : 1428914681,
+    "answer_id" : 29601232,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I encountered the same issue. I think another way to fix this is that you can change the query to join fetch your Element from Model as follows:</p>\n\n<pre><code>Query query = session.createQuery(\"from Model m join fetch m.element where modelGroup.id = :modelGroupId\")\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1723085,
+        "reputation" : 3878,
+        "user_id" : 1578356,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/16b7172bb346958c1b69e0229ba1ac4f?s=256&d=identicon&r=PG",
+        "display_name" : "newday",
+        "link" : "https://stackoverflow.com/users/1578356/newday"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1444855324,
+      "post_id" : 32214318,
+      "comment_id" : 54082007,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "can you please explain this?"
+    } ],
+    "owner" : {
+      "account_id" : 5907936,
+      "reputation" : 77,
+      "user_id" : 4863488,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-XwOOkTLjqZs/AAAAAAAAAAI/AAAAAAAAABg/yQSUdPEzyZo/s256-rj/photo.jpg",
+      "display_name" : "Artavazd Manukyan",
+      "link" : "https://stackoverflow.com/users/4863488/artavazd-manukyan"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1440537681,
+    "creation_date" : 1440537681,
+    "answer_id" : 32214318,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>uses session.get(*.class, id); but do not load function</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 281803,
+        "reputation" : 13545,
+        "user_id" : 578318,
+        "user_type" : "registered",
+        "accept_rate" : 59,
+        "profile_image" : "https://www.gravatar.com/avatar/aff4ba86d9c3c84a8e55204b9fc78191?s=256&d=identicon&r=PG",
+        "display_name" : "sparkyspider",
+        "link" : "https://stackoverflow.com/users/578318/sparkyspider"
+      },
+      "edited" : false,
+      "score" : 41,
+      "creation_date" : 1469809177,
+      "post_id" : 32276916,
+      "comment_id" : 64707571,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I cannot overstate the importance of this answer. I&#39;d seriously recommend trying this option first."
+    }, {
+      "owner" : {
+        "account_id" : 7109467,
+        "reputation" : 2746,
+        "user_id" : 5519485,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://i.sstatic.net/uAh5n.png?s=256",
+        "display_name" : "Erik Hofer",
+        "link" : "https://stackoverflow.com/users/5519485/erik-hofer"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1472124633,
+      "post_id" : 32276916,
+      "comment_id" : 65632153,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Also note that you have to add <code>@EnableTransactionManagement</code> to your configuration in order to enable transactions. &quot;<i>if another transactional method is called the method will have the option of joining the ongoing transaction</i>&quot; this behavior is different for the different ways transactions are implemented, i.e. interface proxy vs class proxy or AspectJ weaving. Refer to the <a href=\"http://docs.spring.io/spring-framework/docs/current/spring-framework-reference/html/transaction.html#transaction-declarative-annotations\" rel=\"nofollow noreferrer\">documentation</a>."
+    }, {
+      "owner" : {
+        "account_id" : 927996,
+        "reputation" : 12950,
+        "user_id" : 958373,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://i.sstatic.net/XmjH9.jpg?s=256",
+        "display_name" : "Stephane",
+        "link" : "https://stackoverflow.com/users/958373/stephane"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1527511434,
+      "post_id" : 32276916,
+      "comment_id" : 88143467,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Should we understand the Spring <code>Transactional</code> annotation is thus advised, not only for modifying transactions, but also for accessing only ones ?"
+    }, {
+      "owner" : {
+        "account_id" : 1754735,
+        "reputation" : 398,
+        "user_id" : 1603041,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f3bbef86d7529b5cfc67792075d734e0?s=256&d=identicon&r=PG",
+        "display_name" : "ThetaSinner",
+        "link" : "https://stackoverflow.com/users/1603041/thetasinner"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1535581044,
+      "post_id" : 32276916,
+      "comment_id" : 91123884,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note that Spring will also pick up the javax.persistence.Transactional annotation if you want to stick to JPA."
+    }, {
+      "owner" : {
+        "account_id" : 900475,
+        "reputation" : 1199,
+        "user_id" : 936752,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b37f45f2e6c54dd9baf733b9c6fa660e?s=256&d=identicon&r=PG",
+        "display_name" : "m1ld",
+        "link" : "https://stackoverflow.com/users/936752/m1ld"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1544101825,
+      "post_id" : 32276916,
+      "comment_id" : 94162498,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;d seriously recommend to use this annotation on top of class only for testing. Real code should mark each method as transaction in class separately. Unless all the methods in class will require opened connection with transaction to database."
+    }, {
+      "owner" : {
+        "account_id" : 211811,
+        "reputation" : 726,
+        "user_id" : 464219,
+        "user_type" : "registered",
+        "accept_rate" : 17,
+        "profile_image" : "https://www.gravatar.com/avatar/7fe621f719719124990e01f6c7e7679d?s=256&d=identicon&r=PG",
+        "display_name" : "Hamedz",
+        "link" : "https://stackoverflow.com/users/464219/hamedz"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1559518388,
+      "post_id" : 32276916,
+      "comment_id" : 99434919,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Isn&#39;t it safe to put @Transactional(readOnly = true) instead of just @Transactional ?"
+    }, {
+      "owner" : {
+        "account_id" : 1986559,
+        "reputation" : 9559,
+        "user_id" : 1781611,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://i.sstatic.net/rxxZf.png?s=256",
+        "display_name" : "Jay",
+        "link" : "https://stackoverflow.com/users/1781611/jay"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1565018101,
+      "post_id" : 32276916,
+      "comment_id" : 101209718,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Transactional didn&#39;t work for me on my SpringBoot integration Test case. I marked this anotation on the Entity class where the error occurs when loading child objects method on the toString()."
+    }, {
+      "owner" : {
+        "account_id" : 13822754,
+        "reputation" : 554,
+        "user_id" : 9977815,
+        "user_type" : "registered",
+        "profile_image" : "https://lh6.googleusercontent.com/-FfZ1u_7ctEc/AAAAAAAAAAI/AAAAAAAAAIA/dE2qRztukp4/s256-rj/photo.jpg",
+        "display_name" : "mnagdev",
+        "link" : "https://stackoverflow.com/users/9977815/mnagdev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1673341042,
+      "post_id" : 32276916,
+      "comment_id" : 132471209,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The @Transactional is from  org.springframework.transaction.annotation.Transactional;"
+    }, {
+      "owner" : {
+        "account_id" : 10187542,
+        "reputation" : 2667,
+        "user_id" : 20692967,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/NZSXm.jpg?s=256",
+        "display_name" : "Sergey Zolotarev",
+        "link" : "https://stackoverflow.com/users/20692967/sergey-zolotarev"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679232308,
+      "post_id" : 32276916,
+      "comment_id" : 133680618,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It&#39;s a pitty. I have <code>@Transactional</code> annotations for my service class, <code>@EnableTransactionalManagement</code> too, <code>EntityManager</code> is annotated with @PersistenceContext, but I still get <code>org.hibernate.LazyInitializationException: could not initialize proxy [app.models.User#2] - no Session</code>"
+    } ],
+    "owner" : {
+      "account_id" : 3071426,
+      "reputation" : 6863,
+      "user_id" : 2601995,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/YtZRR.png?s=256",
+      "display_name" : "user2601995",
+      "link" : "https://stackoverflow.com/users/2601995/user2601995"
+    },
+    "is_accepted" : false,
+    "score" : 311,
+    "last_activity_date" : 1717067573,
+    "last_edit_date" : 1717067573,
+    "creation_date" : 1440783937,
+    "answer_id" : 32276916,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you using Spring mark the class as <a href=\"http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/transaction/annotation/Transactional.html\" rel=\"noreferrer\">@Transactional</a>, then Spring will handle session management.</p>\n<pre><code>@Transactional\npublic class MyClass {\n    ...\n}\n</code></pre>\n<p>By using <code>@Transactional</code>, many important aspects such as transaction propagation are handled automatically. In this case if another transactional method is called the method will have the option of joining the ongoing transaction avoiding the &quot;no session&quot; exception.</p>\n<p><strong>WARNING</strong> If you do use <code>@Transactional</code>, please be aware of the resulting behavior. For example, updates to entities are persisted <em>even if</em> you don't explicitly call <code>save</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 305493,
+      "reputation" : 4203,
+      "user_id" : 615686,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/55e1037f1bfb1b67030e3a14095508c0?s=256&d=identicon&r=PG",
+      "display_name" : "Night Owl",
+      "link" : "https://stackoverflow.com/users/615686/night-owl"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1458006936,
+    "creation_date" : 1458006936,
+    "answer_id" : 36001361,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There are several good answers here that handle this error in a broad scope. I ran into a specific situation with Spring Security which had a quick, although probably not optimal, fix.</p>\n\n<p>During user authorization (immediately after logging in and passing authentication) I was testing a user entity for a specific authority in a custom class that extends SimpleUrlAuthenticationSuccessHandler.</p>\n\n<p>My user entity implements UserDetails and has a Set of lazy loaded Roles which threw the \"org.hibernate.LazyInitializationException - could not initialize proxy - no Session\" exception. Changing that Set from \"fetch=FetchType.LAZY\" to \"fetch=FetchType.EAGER\" fixed this for me.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1636378,
+      "reputation" : 3903,
+      "user_id" : 1509738,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/HyTWQ.jpg?s=256",
+      "display_name" : "ArunDhwaj IIITH",
+      "link" : "https://stackoverflow.com/users/1509738/arundhwaj-iiith"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1460161798,
+    "creation_date" : 1460161798,
+    "answer_id" : 36511384,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Do the following changes in <strong>servlet-context.xml</strong></p>\n\n<pre><code>    &lt;beans:property name=\"hibernateProperties\"&gt;\n        &lt;beans:props&gt;\n\n            &lt;beans:prop key=\"hibernate.enable_lazy_load_no_trans\"&gt;true&lt;/beans:prop&gt;\n\n        &lt;/beans:props&gt;\n    &lt;/beans:property&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 251960,
+        "reputation" : 1075,
+        "user_id" : 529674,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/vZz4i.png?s=256",
+        "display_name" : "Pere",
+        "link" : "https://stackoverflow.com/users/529674/pere"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1610417546,
+      "post_id" : 39372379,
+      "comment_id" : 116120687,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "How do you re-attach the entity to the session?"
+    }, {
+      "owner" : {
+        "account_id" : 227596,
+        "reputation" : 4229,
+        "user_id" : 489364,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://www.gravatar.com/avatar/19d75d4cb88eb1c81689cfcbfc932c03?s=256&d=identicon&r=PG",
+        "display_name" : "kommradHomer",
+        "link" : "https://stackoverflow.com/users/489364/kommradhomer"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1701648086,
+      "post_id" : 39372379,
+      "comment_id" : 136798515,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "this answer prompted me to change my getById to findById , and solved my problems"
+    } ],
+    "owner" : {
+      "account_id" : 9053796,
+      "reputation" : 538,
+      "user_id" : 6742855,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WABcw.jpg?s=256",
+      "display_name" : "R Pidugu",
+      "link" : "https://stackoverflow.com/users/6742855/r-pidugu"
+    },
+    "is_accepted" : false,
+    "score" : 11,
+    "last_activity_date" : 1473259037,
+    "last_edit_date" : 1473259037,
+    "creation_date" : 1473257844,
+    "answer_id" : 39372379,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This exception because of when you call <code>session.getEntityById()</code>, the session will be closed. So you need to re-attach the entity to the session. Or Easy solution is just configure <code>default-lazy=\"false\"</code>  to your <code>entity.hbm.xml</code> or if you are using annotations just add <code>@Proxy(lazy=false)</code> to your entity class.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4180238,
+        "reputation" : 1666,
+        "user_id" : 3425489,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://i.sstatic.net/pvkCq.jpg?s=256",
+        "display_name" : "Shantaram Tupe",
+        "link" : "https://stackoverflow.com/users/3425489/shantaram-tupe"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1511335514,
+      "post_id" : 39465150,
+      "comment_id" : 81812250,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How Can I Identify which call is having problem ? I am finding it as hard to identify the call. Is there any way ? For testing purpose I used <code>FetchType=EAGER</code>, but this is not correct solution, right ?"
+    }, {
+      "owner" : {
+        "account_id" : 1012936,
+        "reputation" : 155902,
+        "user_id" : 1025118,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+        "display_name" : "Vlad Mihalcea",
+        "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+      },
+      "reply_to_user" : {
+        "account_id" : 4180238,
+        "reputation" : 1666,
+        "user_id" : 3425489,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://i.sstatic.net/pvkCq.jpg?s=256",
+        "display_name" : "Shantaram Tupe",
+        "link" : "https://stackoverflow.com/users/3425489/shantaram-tupe"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1511351765,
+      "post_id" : 39465150,
+      "comment_id" : 81822332,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Just use logging. And EAGER is bad, yes."
+    }, {
+      "owner" : {
+        "account_id" : 1012936,
+        "reputation" : 155902,
+        "user_id" : 1025118,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+        "display_name" : "Vlad Mihalcea",
+        "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+      },
+      "reply_to_user" : {
+        "account_id" : 4180238,
+        "reputation" : 1666,
+        "user_id" : 3425489,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://i.sstatic.net/pvkCq.jpg?s=256",
+        "display_name" : "Shantaram Tupe",
+        "link" : "https://stackoverflow.com/users/3425489/shantaram-tupe"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1511353579,
+      "post_id" : 39465150,
+      "comment_id" : 81823466,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Then, you should use either DTOs or initialize all associations before leaving the <code>@Transactional</code> service."
+    }, {
+      "owner" : {
+        "account_id" : 422804,
+        "reputation" : 5910,
+        "user_id" : 801790,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/96845ef83ad5cd6109cdaf83633f7e5d?s=256&d=identicon&r=PG",
+        "display_name" : "etlds",
+        "link" : "https://stackoverflow.com/users/801790/etlds"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1519319285,
+      "post_id" : 39465150,
+      "comment_id" : 84873316,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "We should advocate the best enterprise practice but not the quick fix."
+    }, {
+      "owner" : {
+        "account_id" : 98922,
+        "reputation" : 1391,
+        "user_id" : 267476,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/95bc30964141f07bea3efe758c6637b3?s=256&d=identicon&r=PG",
+        "display_name" : "phamductri",
+        "link" : "https://stackoverflow.com/users/267476/phamductri"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1595818416,
+      "post_id" : 39465150,
+      "comment_id" : 111595547,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is the best fix"
+    }, {
+      "owner" : {
+        "account_id" : 140310,
+        "reputation" : 622,
+        "user_id" : 346534,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/ZuFWr.jpg?s=256",
+        "display_name" : "stephan f",
+        "link" : "https://stackoverflow.com/users/346534/stephan-f"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1605117010,
+      "post_id" : 39465150,
+      "comment_id" : 114555884,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why is EAGER bad? In @OneToMany too?"
+    }, {
+      "owner" : {
+        "account_id" : 1012936,
+        "reputation" : 155902,
+        "user_id" : 1025118,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+        "display_name" : "Vlad Mihalcea",
+        "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1605133982,
+      "post_id" : 39465150,
+      "comment_id" : 114562153,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<a href=\"https://vladmihalcea.com/eager-fetching-is-a-code-smell/\" rel=\"nofollow noreferrer\">Here&#39;s why</a>."
+    }, {
+      "owner" : {
+        "account_id" : 2442113,
+        "reputation" : 646,
+        "user_id" : 2130309,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/bc7c9cf9fb29102d45dcac4f64b7ba85?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "cbd",
+        "link" : "https://stackoverflow.com/users/2130309/cbd"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1678823038,
+      "post_id" : 39465150,
+      "comment_id" : 133607385,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Hi @VladMihalcea, is <code>JOIN FETCH</code> equivalent to <code>EAGER</code>?"
+    }, {
+      "owner" : {
+        "account_id" : 1012936,
+        "reputation" : 155902,
+        "user_id" : 1025118,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+        "display_name" : "Vlad Mihalcea",
+        "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1678852703,
+      "post_id" : 39465150,
+      "comment_id" : 133612169,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "JOIN FETCH means JOIN + SELECT joined table column. FetchType.EAGER means to always fetch the entity, and it can lead to secondary queries as well. So, they are not necessarily the same."
+    }, {
+      "owner" : {
+        "account_id" : 2442113,
+        "reputation" : 646,
+        "user_id" : 2130309,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/bc7c9cf9fb29102d45dcac4f64b7ba85?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "cbd",
+        "link" : "https://stackoverflow.com/users/2130309/cbd"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679045036,
+      "post_id" : 39465150,
+      "comment_id" : 133653970,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "In my understanding, JOIN FETCH will always fetch the children entities as same as  FetchType.EAGER. If the children entities are always needed, maybe it&#39;s better to use FetchType.EAGER, isn&#39;t it?"
+    }, {
+      "owner" : {
+        "account_id" : 2442113,
+        "reputation" : 646,
+        "user_id" : 2130309,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/bc7c9cf9fb29102d45dcac4f64b7ba85?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "cbd",
+        "link" : "https://stackoverflow.com/users/2130309/cbd"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679045089,
+      "post_id" : 39465150,
+      "comment_id" : 133653984,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Are the grandchildren entities also included with JOIN FETCH or do we need to add more JOIN in that query?"
+    }, {
+      "owner" : {
+        "account_id" : 1012936,
+        "reputation" : 155902,
+        "user_id" : 1025118,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+        "display_name" : "Vlad Mihalcea",
+        "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+      },
+      "reply_to_user" : {
+        "account_id" : 2442113,
+        "reputation" : 646,
+        "user_id" : 2130309,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/bc7c9cf9fb29102d45dcac4f64b7ba85?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "cbd",
+        "link" : "https://stackoverflow.com/users/2130309/cbd"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679048972,
+      "post_id" : 39465150,
+      "comment_id" : 133655010,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ĐỗC&#244;ngBằng Confusing <code>FetchType.EAGER</code> and <code>JOIN FETCH</code> so that you conclude that using <code>FetchType.EAGER</code> would be better is terrible. Once you use <code>FetchType.EAGER</code>, you will never be able to fetch that association lazily. On the other hand, if you make it <code>FetchType.LAZY</code>, you have the flexibility of not fetching it when you don&#39;t need it and fetching it with <code>JOIN FETCH</code> when you need it."
+    }, {
+      "owner" : {
+        "account_id" : 6241436,
+        "reputation" : 3273,
+        "user_id" : 4854931,
+        "user_type" : "registered",
+        "accept_rate" : 33,
+        "profile_image" : "https://www.gravatar.com/avatar/8554ce4e2c007be9ccebcc8389704470?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alex78191",
+        "link" : "https://stackoverflow.com/users/4854931/alex78191"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1745594354,
+      "post_id" : 39465150,
+      "comment_id" : 140369559,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Why not <code>@Fetch(FetchMode.SUBSELECT)</code> with FetchType.EAGER?"
+    }, {
+      "owner" : {
+        "account_id" : 1012936,
+        "reputation" : 155902,
+        "user_id" : 1025118,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+        "display_name" : "Vlad Mihalcea",
+        "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1745607505,
+      "post_id" : 39465150,
+      "comment_id" : 140370320,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If it&#39;s EAGER, it will always load the collections, even when you don&#39;t need them, which is bad for performance. The solution I provided allows you to control what is to be fetched for each business use case."
+    } ],
+    "owner" : {
+      "account_id" : 1012936,
+      "reputation" : 155902,
+      "user_id" : 1025118,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+      "display_name" : "Vlad Mihalcea",
+      "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+    },
+    "is_accepted" : false,
+    "score" : 107,
+    "last_activity_date" : 1610140044,
+    "last_edit_date" : 1610140044,
+    "creation_date" : 1473754237,
+    "answer_id" : 39465150,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The best way to handle the <code>LazyInitializationException</code> is to use the <code>JOIN FETCH</code> directive:</p>\n<pre><code>Query query = session.createQuery(&quot;&quot;&quot;\n    select m\n    from Model m\n    join fetch m.modelType\n    where modelGroup.id = :modelGroupId\n    &quot;&quot;&quot;\n);\n</code></pre>\n<p>Anyway, DO NOT use the following Anti-Patterns as suggested by some of the answers:</p>\n<ul>\n<li><a href=\"https://stackoverflow.com/a/37526397/1025118\">Open Session in View</a></li>\n<li><a href=\"https://stackoverflow.com/a/39723223/1025118\"><code>hibernate.enable_lazy_load_no_trans</code></a></li>\n</ul>\n<p>Sometimes, a DTO projection is a better choice than fetching entities, and this way, you won't get any <code>LazyInitializationException</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3598530,
+      "reputation" : 2787,
+      "user_id" : 3002465,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/753954c6a319010d0b3ea4ea9de86646?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Zeb",
+      "link" : "https://stackoverflow.com/users/3002465/zeb"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1477571884,
+    "creation_date" : 1477571884,
+    "answer_id" : 40284778,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you are using <code>Grail's</code> Framework, it's simple to resolve <em>lazy initialization exception</em> by using <code>Lazy</code> keyword on specific field in Domain Class.</p>\n\n<p>For-example: </p>\n\n<pre><code>class Book {\n    static belongsTo = [author: Author]\n    static mapping = {\n        author lazy: false\n    }\n}\n</code></pre>\n\n<p>Find further information <a href=\"http://docs.grails.org/3.1.1/ref/Database%20Mapping/lazy.html\" rel=\"nofollow\">here</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1635591,
+      "reputation" : 123,
+      "user_id" : 1509191,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4967bec4e1205400e886bb9a29afcd50?s=256&d=identicon&r=PG",
+      "display_name" : "xihui",
+      "link" : "https://stackoverflow.com/users/1509191/xihui"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1490306105,
+    "creation_date" : 1490306105,
+    "answer_id" : 42987719,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you are using JPQL, use JOIN FETCH is the easiest way:\n<a href=\"http://www.objectdb.com/java/jpa/query/jpql/from#LEFT_OUTER_INNER_JOIN_FETCH_\" rel=\"nofollow noreferrer\">http://www.objectdb.com/java/jpa/query/jpql/from#LEFT_OUTER_INNER_JOIN_FETCH_</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5912262,
+        "reputation" : 552,
+        "user_id" : 4652101,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/Aj8Gq.jpg?s=256",
+        "display_name" : "astro8891",
+        "link" : "https://stackoverflow.com/users/4652101/astro8891"
+      },
+      "edited" : false,
+      "score" : 53,
+      "creation_date" : 1528681164,
+      "post_id" : 46319489,
+      "comment_id" : 88585259,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes it may fix it but now you are loading the whole tree of data. This will have negative performance impacts in most cases"
+    }, {
+      "owner" : {
+        "account_id" : 1824191,
+        "reputation" : 6554,
+        "user_id" : 1657465,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mmZsu.jpg?s=256",
+        "display_name" : "luiscla27",
+        "link" : "https://stackoverflow.com/users/1657465/luiscla27"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1710528735,
+      "post_id" : 46319489,
+      "comment_id" : 137809186,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "To deal with performance issues, instead of this, I would highly recommend best the <a href=\"https://stackoverflow.com/a/77326239/1657465\">dto solution</a>"
+    } ],
+    "owner" : {
+      "account_id" : 186658,
+      "reputation" : 797,
+      "user_id" : 3572263,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/d8a702c2f58b3995b0c769c288cf8074?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Smruti R Tripathy",
+      "link" : "https://stackoverflow.com/users/3572263/smruti-r-tripathy"
+    },
+    "is_accepted" : false,
+    "score" : 26,
+    "last_activity_date" : 1705029351,
+    "last_edit_date" : 1705029351,
+    "creation_date" : 1505902894,
+    "answer_id" : 46319489,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h4>WARNING: This solution has performance issues as it loads the whole tree of data at once. Use it at your own risk.</h4>\n<hr />\n<p>I was getting the same error for a one to many relationships for below annotation.</p>\n<pre><code>@OneToMany(mappedBy=&quot;department&quot;, cascade = CascadeType.ALL)\n</code></pre>\n<p>Changed as below after adding fetch=FetchType.EAGER, it worked for me.</p>\n<pre><code>@OneToMany(mappedBy=&quot;department&quot;, cascade = CascadeType.ALL, fetch=FetchType.EAGER)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6329781,
+      "reputation" : 1109,
+      "user_id" : 4915001,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-usSbOfH5_ss/AAAAAAAAAAI/AAAAAAAAAQU/i_hzJcqQ0uo/s256-rj/photo.jpg",
+      "display_name" : "rex roy",
+      "link" : "https://stackoverflow.com/users/4915001/rex-roy"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1524483371,
+    "creation_date" : 1524483371,
+    "answer_id" : 49980166,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This means that the object which you are trying to access is not loaded, so write a query that makes a <strong>join fetch</strong> of the object which you are trying to access. </p>\n\n<p>Eg:</p>\n\n<p>If you are trying to get ObjectB from ObjectA where ObjectB is a foreign key in ObjectA.</p>\n\n<p>Query :</p>\n\n<pre><code>SELECT objA FROM ObjectA obj JOIN FETCH obj.objectB objB\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4803880,
+        "reputation" : 2335,
+        "user_id" : 4589003,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://i.sstatic.net/Z3ZW6.jpg?s=256",
+        "display_name" : "Sudip Bhandari",
+        "link" : "https://stackoverflow.com/users/4589003/sudip-bhandari"
+      },
+      "edited" : false,
+      "score" : 23,
+      "creation_date" : 1535109089,
+      "post_id" : 50882857,
+      "comment_id" : 90955495,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is considered as an anti-pattern. <a href=\"https://vladmihalcea.com/the-hibernate-enable_lazy_load_no_trans-anti-pattern/\" rel=\"nofollow noreferrer\">vladmihalcea.com/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 2309641,
+        "reputation" : 5060,
+        "user_id" : 2028066,
+        "user_type" : "registered",
+        "accept_rate" : 52,
+        "profile_image" : "https://i.sstatic.net/U9hAY.jpg?s=256",
+        "display_name" : "MiguelMunoz",
+        "link" : "https://stackoverflow.com/users/2028066/miguelmunoz"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1611060134,
+      "post_id" : 50882857,
+      "comment_id" : 116323186,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If it&#39;s an antipattern, could you please suggest an alternative? I&#39;m also working with Spring Data and the other answers I&#39;ve looked at don&#39;t help me."
+    }, {
+      "owner" : {
+        "account_id" : 12315202,
+        "reputation" : 358,
+        "user_id" : 8985718,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/VFhO9.jpg?s=256",
+        "display_name" : "Sayed Hussainullah Sadat",
+        "link" : "https://stackoverflow.com/users/8985718/sayed-hussainullah-sadat"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1678271294,
+      "post_id" : 50882857,
+      "comment_id" : 133499003,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It is working fine, But I don&#39;t know what is the error, and why is it happening."
+    }, {
+      "owner" : {
+        "account_id" : 1824191,
+        "reputation" : 6554,
+        "user_id" : 1657465,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mmZsu.jpg?s=256",
+        "display_name" : "luiscla27",
+        "link" : "https://stackoverflow.com/users/1657465/luiscla27"
+      },
+      "reply_to_user" : {
+        "account_id" : 12315202,
+        "reputation" : 358,
+        "user_id" : 8985718,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/VFhO9.jpg?s=256",
+        "display_name" : "Sayed Hussainullah Sadat",
+        "link" : "https://stackoverflow.com/users/8985718/sayed-hussainullah-sadat"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1705029252,
+      "post_id" : 50882857,
+      "comment_id" : 137162427,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@SayedHussainullahSadat, explanation <a href=\"https://stackoverflow.com/a/77326239/1657465\">here</a>"
+    } ],
+    "owner" : {
+      "account_id" : 4239064,
+      "reputation" : 10472,
+      "user_id" : 3469489,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://i.sstatic.net/F2Iv3.jpg?s=256",
+      "display_name" : "Shaaban Ebrahim",
+      "link" : "https://stackoverflow.com/users/3469489/shaaban-ebrahim"
+    },
+    "is_accepted" : false,
+    "score" : 32,
+    "last_activity_date" : 1529097894,
+    "creation_date" : 1529097894,
+    "answer_id" : 50882857,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>if you use spring data jpa , spring boot you can add this line in application.properties</p>\n\n<pre><code>spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6152068,
+        "reputation" : 3147,
+        "user_id" : 4796214,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/824045dd8b1d438716e0c4627772cb97?s=256&d=identicon&r=PG",
+        "display_name" : "marcel",
+        "link" : "https://stackoverflow.com/users/4796214/marcel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1661940435,
+      "post_id" : 53005977,
+      "comment_id" : 129889557,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you! I had the problem on one method, while on other similar methods it worked just fine. Thanks to you, I figured out that I simply forget to make it transactional, what fixed it for me. +1"
+    } ],
+    "owner" : {
+      "account_id" : 3286384,
+      "reputation" : 3551,
+      "user_id" : 2765792,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/QDWaYanZ.png?s=256",
+      "display_name" : "Aman Goel",
+      "link" : "https://stackoverflow.com/users/2765792/aman-goel"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1585627525,
+    "last_edit_date" : 1585627525,
+    "creation_date" : 1540547251,
+    "answer_id" : 53005977,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This means you are using JPA or hibernate in your code and performing modifying operation on DB without making the business logic transaction.\nSo simple solution for this is mark your piece of code @Transactional</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9512217,
+      "reputation" : 1176,
+      "user_id" : 7069816,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/d4cdbd8bf7d08f42a9ec391b5b190ad3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "absin",
+      "link" : "https://stackoverflow.com/users/7069816/absin"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1540908254,
+    "creation_date" : 1540908254,
+    "answer_id" : 53066107,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In my case a misplaced <code>session.clear()</code> was causing this problem. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4506248,
+      "reputation" : 1408,
+      "user_id" : 3663495,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a3ac252c359ce04702280e9867c929bf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vishal",
+      "link" : "https://stackoverflow.com/users/3663495/vishal"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1563131916,
+    "creation_date" : 1563131916,
+    "answer_id" : 57030407,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Faced the same Exception in different use case.</strong></p>\n\n<p><a href=\"https://i.sstatic.net/NuOKs.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/NuOKs.png\" alt=\"enter image description here\"></a></p>\n\n<p><strong>Use Case :</strong> Try to read data from DB with <strong>DTO projection.</strong></p>\n\n<p><strong>Solution:</strong> Use <strong>get</strong> method instead of <strong>load</strong>.</p>\n\n<p><strong>Generic Operation</strong></p>\n\n<pre><code>public class HibernateTemplate {\npublic static Object loadObject(Class&lt;?&gt; cls, Serializable s) {\n    Object o = null;\n    Transaction tx = null;\n    try {\n        Session session = HibernateUtil.getSessionFactory().openSession();\n        tx = session.beginTransaction();\n        o = session.load(cls, s); /*change load to get*/\n        tx.commit();\n        session.close();\n    } catch (Exception e) {\n        e.printStackTrace();\n    }\n    return o;\n}\n</code></pre>\n\n<p>}</p>\n\n<p><strong>Persistence Class</strong></p>\n\n<pre><code>public class Customer {\n\n@Id\n@GeneratedValue(strategy = GenerationType.IDENTITY)\n@Column(name = \"Id\")\nprivate int customerId;\n\n@Column(name = \"Name\")\nprivate String customerName;\n\n@Column(name = \"City\")\nprivate String city;\n\n//constructors , setters and getters\n\n}\n</code></pre>\n\n<p><strong>CustomerDAO interface</strong></p>\n\n<pre><code>public interface CustomerDAO \n     {\n   public CustomerTO getCustomerById(int cid);\n     }\n</code></pre>\n\n<p><strong>Entity Transfer Object Class</strong></p>\n\n<pre><code>public class CustomerTO {\n\nprivate int customerId;\n\nprivate String customerName;\n\nprivate String city;\n\n//constructors , setters and getters\n</code></pre>\n\n<p>}</p>\n\n<p><strong>Factory Class</strong></p>\n\n<pre><code>public class DAOFactory {\n\nstatic CustomerDAO customerDAO;\nstatic {\n    customerDAO = new HibernateCustomerDAO();\n}\n\npublic static CustomerDAO getCustomerDAO() {\n    return customerDAO;\n}\n</code></pre>\n\n<p>}</p>\n\n<p><strong>Entity specific DAO</strong></p>\n\n<pre><code>public class HibernateCustomerDAO implements CustomerDAO {\n\n@Override\npublic CustomerTO getCustomerById(int cid) {\n    Customer cust = (Customer) HibernateTemplate.loadObject(Customer.class, cid);\n    CustomerTO cto = new CustomerTO(cust.getCustomerId(), cust.getCustomerName(), cust.getCity());\n    return cto;\n}\n</code></pre>\n\n<p>}</p>\n\n<p><strong>Retrieving data: Test Class</strong></p>\n\n<pre><code>CustomerDAO cdao = DAOFactory.getCustomerDAO();\nCustomerTO c1 = cdao.getCustomerById(2);\nSystem.out.println(\"CustomerName -&gt; \" + c1.getCustomerName() + \" ,CustomerCity -&gt; \" + c1.getCity());\n</code></pre>\n\n<p><strong>Present Data</strong></p>\n\n<p><a href=\"https://i.sstatic.net/1afXX.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/1afXX.png\" alt=\"enter image description here\"></a></p>\n\n<p><strong>Query and output generated by Hibernate System</strong></p>\n\n<p>Hibernate: select customer0_.Id as Id1_0_0_, customer0_.City as City2_0_0_, customer0_.Name as Name3_0_0_ from CustomerLab31 customer0_ where customer0_.Id=?</p>\n\n<p>CustomerName -> Cody ,CustomerCity -> LA</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1142508,
+      "reputation" : 141,
+      "user_id" : 1126011,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7921d7ebe4f9e96394ad3edfb2d47795?s=256&d=identicon&r=PG",
+      "display_name" : "Nightfa11",
+      "link" : "https://stackoverflow.com/users/1126011/nightfa11"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1605314261,
+    "creation_date" : 1605314261,
+    "answer_id" : 64829771,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This happened to me when I was already using <code>@Transactional(value=...)</code> and was using multiple transaction managers.</p>\n<p>My forms were sending back data that already had <code>@JsonIgnore</code> on them, so the data being sent back from forms was incomplete.</p>\n<p>Originally I used the anti pattern solution, but found it was incredibly slow. I disabled this by setting it to false.</p>\n<pre><code>spring.jpa.properties.hibernate.enable_lazy_load_no_trans=false\n</code></pre>\n<p>The fix was to ensure that any objects that had lazy-loaded data that weren't loading were retrieved from the database first.</p>\n<pre><code>Optional&lt;Object&gt; objectDBOpt = objectRepository.findById(object.getId());\n\nif (objectDBOpt.isEmpty()) {\n    // Throw error\n} else {\n    Object objectFromDB = objectDBOpt.get();\n}\n</code></pre>\n<p>In short, if you've tried all of the other answers, just make sure you look back to check you're loading from the database first if you haven't provided all the <code>@JsonIgnore</code> properties and are using them in your database query.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1824191,
+        "reputation" : 6554,
+        "user_id" : 1657465,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mmZsu.jpg?s=256",
+        "display_name" : "luiscla27",
+        "link" : "https://stackoverflow.com/users/1657465/luiscla27"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1705029480,
+      "post_id" : 67970860,
+      "comment_id" : 137162437,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Do you mind explaining why this might work?? I haven&#39;t tested it, however I just don&#39;t get how this might solve the issue."
+    } ],
+    "owner" : {
+      "account_id" : 11312373,
+      "reputation" : 319,
+      "user_id" : 8295173,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-kqimRCxigoM/AAAAAAAAAAI/AAAAAAAAAOA/y-U57resFdA/s256-rj/photo.jpg",
+      "display_name" : "Mehdi Varse",
+      "link" : "https://stackoverflow.com/users/8295173/mehdi-varse"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1623676285,
+    "creation_date" : 1623676285,
+    "answer_id" : 67970860,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In Spring Application Just Add</p>\n<pre><code>@Transactional(readOnly = true)\n</code></pre>\n<p>on your Function.</p>\n<blockquote>\n<p>Remind that import spring Transactional annotation</p>\n<p>import org.springframework.transaction.annotation.Transactional;</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12969674,
+      "reputation" : 783,
+      "user_id" : 9375838,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/LXQ1d.png?s=256",
+      "display_name" : "Leena",
+      "link" : "https://stackoverflow.com/users/9375838/leena"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1634533521,
+    "creation_date" : 1634533521,
+    "answer_id" : 69611021,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use <strong>@NamedEntityGraph</strong>. Eagar fetch will deteriorate the performance. Refer <a href=\"https://thorben-janssen.com/lazyinitializationexception/\" rel=\"nofollow noreferrer\">https://thorben-janssen.com/lazyinitializationexception/</a> for in-depth explanation.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18125741,
+      "reputation" : 119,
+      "user_id" : 13181284,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Ggv7dZmg4JcOZLCRAa5ADzq1YBUHkktqcD47A1d=k-s256",
+      "display_name" : "Fabio Sartor",
+      "link" : "https://stackoverflow.com/users/13181284/fabio-sartor"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1645085260,
+    "last_edit_date" : 1645085260,
+    "creation_date" : 1645032899,
+    "answer_id" : 71146636,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>All answers about adding JOIN FETCH (or left join fetch) are correct, I want only to add this:\nif you have converter be sure the getAsObject sub uses a &quot;find&quot; than includes in the sql the Join Fetch too.\nI lost much time to fix a similar problem, and the problem was in the converter.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12514032,
+      "reputation" : 834,
+      "user_id" : 9108026,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/93976eaf2b8f79bd4963af2d75b3f5dd?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "AissaDevLab",
+      "link" : "https://stackoverflow.com/users/9108026/aissadevlab"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1650978837,
+    "creation_date" : 1650978837,
+    "answer_id" : 72014614,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<ul>\n<li>springBootVersion = '2.6.7'</li>\n<li>hibernate = 5.6.8.Final'</li>\n</ul>\n<p>For me i get the error in:</p>\n<pre><code>MyEntity myEntity = myEntityRepository.getById(id);\n</code></pre>\n<p>I change to this:</p>\n<pre><code>MyEntity myEntity = myEntityRepository.findById(id).orElse(null);\n</code></pre>\n<p>and i add <code>@ManyToOne(fetch = FetchType.EAGER)</code> in entity</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 20453332,
+      "reputation" : 324,
+      "user_id" : 15007593,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GjjixyeltsL78CwiOGxVLnNyeO5ou-aRYfsXg-A=k-s256",
+      "display_name" : "Fotis Kolytoumpas",
+      "link" : "https://stackoverflow.com/users/15007593/fotis-kolytoumpas"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1659429611,
+    "creation_date" : 1659429611,
+    "answer_id" : 73204456,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I was getting this error in my JAX-RS application when I was trying to get all the Departments. I had to add the <code>@JsonbTransient</code> Annotation to the attributes of both classes. My entities are Department and Employee, and the DB relationship is Many to Many.</p>\n<p>Employee.java</p>\n<pre><code>...\n@ManyToMany\n@JoinTable(\n        name = &quot;emp_dept&quot;,\n        joinColumns = {@JoinColumn(name = &quot;emp_id&quot;, referencedColumnName = &quot;id&quot;)},\n        inverseJoinColumns = {@JoinColumn(name = &quot;dept_id&quot;, referencedColumnName = &quot;id&quot;)}\n)\n@JsonbTransient\nprivate Set&lt;Department&gt; departments = new HashSet&lt;Department&gt;();\n...\n</code></pre>\n<p>Department.java</p>\n<pre><code>...\n@ManyToMany(mappedBy = &quot;departments&quot;)\n@JsonbTransient\nprivate Set&lt;Employee&gt; employees = new HashSet&lt;Employee&gt;();\n...\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1824191,
+      "reputation" : 6554,
+      "user_id" : 1657465,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/mmZsu.jpg?s=256",
+      "display_name" : "luiscla27",
+      "link" : "https://stackoverflow.com/users/1657465/luiscla27"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1697816236,
+    "last_edit_date" : 1697816236,
+    "creation_date" : 1697739923,
+    "answer_id" : 77326239,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h5>TLDR: Always serialize <a href=\"https://medium.com/javarevisited/not-so-obvious-tips-to-write-better-dtos-in-java-c6116895b180\" rel=\"nofollow noreferrer\">DTO's</a>, avoid returning entities.</h5>\n<hr />\n<p>The reason for the issue is that when retrieving lazily-loaded data, first step is populate the main object, and second to retrieve the data within its proxies. For this, an open Session in Hibernate is needed.</p>\n<p>The problem arises when the second step happens after the transaction has closed, which leads to a <code>LazyInitializationException</code>.</p>\n<p>I'm going to summarize some solutions here while adding mine:</p>\n<pre><code>1. Avoid entity serialization, **instead serialize a dto**\n2. Add `@JsonIgnore` to your `LAZY` attributes\n3. Change `FetchType` to `EAGER`\n4. Set `hibernate.enable_lazy_load_no_trans=true` \n</code></pre>\n<p>Only points 1 and 2 are recommended, the other 2 aren't meant to be used at serialization phase. As they have a HUGE performance cost there, they both make a hit to the database to retrieve extra data. <strong>Option 4, actually creates a new transaction for every lazy object so please <a href=\"https://www.baeldung.com/hibernate-lazy-loading-workaround#4-lazy-loading-with-automatic-transaction\" rel=\"nofollow noreferrer\">AVOID!</a></strong>.</p>\n<p>My grain of sand in this question is to highly recommend to explicitly use ONLY options 1 and 2, and also <code>FetchType.EAGER</code> only for business logic, not as a solution for this issue.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16297526,
+      "reputation" : 524,
+      "user_id" : 11769408,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Snogr.png?s=256",
+      "display_name" : "Geoffrey",
+      "link" : "https://stackoverflow.com/users/11769408/geoffrey"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1737448776,
+    "creation_date" : 1737448776,
+    "answer_id" : 79373695,
+    "question_id" : 21574236,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Often the error</p>\n<pre><code>org.hibernate.LazyInitializationException: \nfailed to lazily initialize a collection of role: \ncould not initialize proxy - no Session\n    at org.hibernate.collection.spi.AbstractPersistentCollection.throwLazyInitializationException\n</code></pre>\n<p>is simply because no transaction was open when a manipulation is done over an entity. So ensure that you are inside a transaction before questioning the whole entities:</p>\n<ul>\n<li><p>Check if your <code>@Service</code> is <code>@Transactionnal</code>, ensure that you are using the <code>jakarta</code> and not the <code>javax</code> annotation (if spring boot &gt; 3.x), some auto import tools will use the wrong one.</p>\n</li>\n<li><p>If you don't use the annotation ensure that you are inside a <code>TransactionTemplate</code> (that you can autowired) body like <code>transactionTemplate.execute { myRepo.save(myEntity) }</code></p>\n</li>\n<li><p>Check that you are truly inside a transaction with this spring boot utils near your problematic code:\n<code>TransactionSynchronizationManager.isActualTransactionActive()</code></p>\n</li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3736418,
+    "reputation" : 3523,
+    "user_id" : 3107262,
+    "user_type" : "registered",
+    "accept_rate" : 55,
+    "profile_image" : "https://www.gravatar.com/avatar/bec8dad94b06de94e7636289fa9e21f2?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Blerta Dhimitri",
+    "link" : "https://stackoverflow.com/users/3107262/blerta-dhimitri"
+  },
+  "is_answered" : true,
+  "view_count" : 746625,
+  "accepted_answer_id" : 21575368,
+  "answer_count" : 26,
+  "score" : 306,
+  "last_activity_date" : 1737448776,
+  "creation_date" : 1391595141,
+  "last_edit_date" : 1559641534,
+  "question_id" : 21574236,
+  "link" : "https://stackoverflow.com/questions/21574236/how-to-fix-org-hibernate-lazyinitializationexception-could-not-initialize-prox",
+  "title" : "How to fix org.hibernate.LazyInitializationException - could not initialize proxy - no Session",
+  "body" : "<p>I get the following exception:</p>\n\n<pre class=\"lang-none prettyprint-override\"><code>Exception in thread \"main\" org.hibernate.LazyInitializationException: could not initialize proxy - no Session\n    at org.hibernate.proxy.AbstractLazyInitializer.initialize(AbstractLazyInitializer.java:167)\n    at org.hibernate.proxy.AbstractLazyInitializer.getImplementation(AbstractLazyInitializer.java:215)\n    at org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer.invoke(JavassistLazyInitializer.java:190)\n    at sei.persistence.wf.entities.Element_$$_jvstc68_47.getNote(Element_$$_jvstc68_47.java)\n    at JSON_to_XML.createBpmnRepresantation(JSON_to_XML.java:139)\n    at JSON_to_XML.main(JSON_to_XML.java:84)\n</code></pre>\n\n<p>when I try to call from main the following lines:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>Model subProcessModel = getModelByModelGroup(1112);\nSystem.out.println(subProcessModel.getElement().getNote());\n</code></pre>\n\n<p>I implemented the <code>getModelByModelGroup(int modelgroupid)</code> method firstly like this :</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public static Model getModelByModelGroup(int modelGroupId, boolean openTransaction) {\n\n    Session session = SessionFactoryHelper.getSessionFactory().getCurrentSession();     \n    Transaction tx = null;\n\n    if (openTransaction) {\n        tx = session.getTransaction();\n    }\n\n    String responseMessage = \"\";\n\n    try {\n        if (openTransaction) {\n            tx.begin();\n        }\n        Query query = session.createQuery(\"from Model where modelGroup.id = :modelGroupId\");\n        query.setParameter(\"modelGroupId\", modelGroupId);\n\n        List&lt;Model&gt; modelList = (List&lt;Model&gt;)query.list(); \n        Model model = null;\n\n        for (Model m : modelList) {\n            if (m.getModelType().getId() == 3) {\n                model = m;\n                break;\n            }\n        }\n\n        if (model == null) {\n            Object[] arrModels = modelList.toArray();\n            if (arrModels.length == 0) {\n                throw new Exception(\"Non esiste \");\n            }\n\n            model = (Model)arrModels[0];\n        }\n\n        if (openTransaction) {\n            tx.commit();\n        }\n\n        return model;\n\n   } catch(Exception ex) {\n       if (openTransaction) {\n           tx.rollback();\n       }\n       ex.printStackTrace();\n       if (responseMessage.compareTo(\"\") == 0) {\n           responseMessage = \"Error\" + ex.getMessage();\n       }\n       return null;\n    }\n}\n</code></pre>\n\n<p>and got the exception. Then a friend suggested me to always test the session and get the current session to avoid this error. So I did this:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public static Model getModelByModelGroup(int modelGroupId) {\n    Session session = null;\n    boolean openSession = session == null;\n    Transaction tx = null;\n    if (openSession) {\n        session = SessionFactoryHelper.getSessionFactory().getCurrentSession(); \n        tx = session.getTransaction();\n    }\n    String responseMessage = \"\";\n\n    try {\n        if (openSession) {\n            tx.begin();\n        }\n        Query query = session.createQuery(\"from Model where modelGroup.id = :modelGroupId\");\n        query.setParameter(\"modelGroupId\", modelGroupId);\n\n        List&lt;Model&gt; modelList = (List&lt;Model&gt;)query.list(); \n        Model model = null;\n\n        for (Model m : modelList) {\n            if (m.getModelType().getId() == 3) {\n                model = m;\n                break;\n            }\n        }\n\n        if (model == null) {\n            Object[] arrModels = modelList.toArray();\n            if (arrModels.length == 0) {\n                throw new RuntimeException(\"Non esiste\");\n            }\n\n            model = (Model)arrModels[0];\n\n            if (openSession) {\n                tx.commit();\n            }\n            return model;\n        } catch(RuntimeException ex) {\n            if (openSession) {\n                tx.rollback();\n            }\n            ex.printStackTrace();\n            if (responseMessage.compareTo(\"\") == 0) {\n                responseMessage = \"Error\" + ex.getMessage();\n            }\n            return null;        \n        }\n    }\n}\n</code></pre>\n\n<p>but still, get the same error. \nI have been reading a lot for this error and found some possible solutions. One of them was to set lazyLoad to false but I am not allowed to do this that's why I was suggested to control the session</p>\n"
+}

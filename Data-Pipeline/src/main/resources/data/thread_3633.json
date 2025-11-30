@@ -1,0 +1,63 @@
+{
+  "tags" : [ "java", "spring-boot", "asynchronous", "micrometer", "micrometer-tracing" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3005685,
+      "reputation" : 1417,
+      "user_id" : 2550273,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/607ff56a973fc9ddf8933d9d47cf74f9?s=256&d=identicon&r=PG",
+      "display_name" : "Rustam",
+      "link" : "https://stackoverflow.com/users/2550273/rustam"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1728385335,
+    "creation_date" : 1728385335,
+    "answer_id" : 79065653,
+    "question_id" : 78257248,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Set management.observations.annotations.enabled to true, and NewSpan annotation will be processed.</p>\n<p><a href=\"https://docs.spring.io/spring-boot/reference/actuator/observability.html#actuator.observability.annotations\" rel=\"nofollow noreferrer\">https://docs.spring.io/spring-boot/reference/actuator/observability.html#actuator.observability.annotations</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10320634,
+      "reputation" : 3398,
+      "user_id" : 7613649,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/c95137fce225c304ac42743da3816d6c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Geba",
+      "link" : "https://stackoverflow.com/users/7613649/geba"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761823791,
+    "creation_date" : 1761823791,
+    "answer_id" : 79804705,
+    "question_id" : 78257248,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I could suggest few options how to create a new span.</p>\n<p>I personally prefer the 1st one because it separates configuration from business logic the most and applies globally.<br />\nBut it is less flexible than the 2nd, also 2nd does require to change your configs a lot.</p>\n<h4>1) Configure <code>Executor</code> bean so it creates a new span</h4>\n<p>Instead of <code>ContextExecutorService.wrap</code> use <code>TaskDecorator</code>.<br />\nAnd instead of <code>Executors.newCachedThreadPool()</code> use <code>ThreadPoolTaskExecutor()</code> in order to set <code>TaskDecorator</code>.<br />\nSo you need to change yours config to something like:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Configuration\n@EnableAsync\npublic class MicrometerConfig implements AsyncConfigurer {\n\n    private final Tracer tracer;\n\n    public MicrometerConfig(Tracer tracer) {\n        this.tracer = tracer;\n    }\n\n    private TaskDecorator taskDecorator() {\n        return runnable -&gt; ContextSnapshotFactory\n            .builder()\n            .build()\n            .captureAll()\n            .wrap(wrapInNewSpan(runnable, tracer));\n    }\n\n    private Runnable wrapInNewSpan(Runnable runnable, Tracer tracer) {\n        return () -&gt; {\n            Span span = tracer.nextSpan().name(&quot;new-span&quot;).start();\n            try (Tracer.SpanInScope scope = tracer.withSpan(span)) {\n                runnable.run();\n            } finally {\n                span.end();\n            }\n        };\n    }\n\n    @Override\n    public Executor getAsyncExecutor() {\n        return ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutorBuilder()\n            .taskDecorator(taskDecorator())\n            .build();\n        executor.initialize();\n        return executor;\n    }\n}\n</code></pre>\n<h4>2) Use annotation <code>@NewSpan</code></h4>\n<ul>\n<li>Mark the <code>@Async</code> methods with <code>@NewSpan</code></li>\n<li>Add config <code>management.observations.annotations.enabled=true</code> to <code>application.yaml</code></li>\n<li>Add dependency <code>org.springframework.boot:spring-boot-starter-aop</code></li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5477283,
+    "reputation" : 4995,
+    "user_id" : 4354956,
+    "user_type" : "registered",
+    "accept_rate" : 38,
+    "profile_image" : "https://lh3.googleusercontent.com/-dGnI8MKmUL4/AAAAAAAAAAI/AAAAAAAAABE/s48lzQAiCKk/s256-rj/photo.jpg",
+    "display_name" : "Joseph K. Strauss",
+    "link" : "https://stackoverflow.com/users/4354956/joseph-k-strauss"
+  },
+  "is_answered" : true,
+  "view_count" : 586,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1761997886,
+  "creation_date" : 1711997695,
+  "last_edit_date" : 1761997886,
+  "question_id" : 78257248,
+  "link" : "https://stackoverflow.com/questions/78257248/configuring-micrometer-to-automatically-create-new-span-on-async",
+  "title" : "Configuring Micrometer to Automatically Create New Span on Async",
+  "body" : "<p>I am trying to get Spring Boot 3.2 to work with trace/span ids in a similar fashion to the way Spring Cloud Sleuth works in Spring Boot 2.</p>\n<p>I have come up with the following configuration class:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Configuration\nclass MicrometerConfig implements AsyncConfigurer {\n    public static Executor executor() {\n        return ContextExecutorService.wrap(ForkJoinPool.commonPool(), contextSnapshotFactory::captureAll);\n    }\n\n    private static final ContextSnapshotFactory contextSnapshotFactory = ContextSnapshotFactory.builder()\n        .build();\n\n    @Override\n    public Executor getAsyncExecutor() {\n        return ContextExecutorService.wrap(Executors.newCachedThreadPool(), contextSnapshotFactory::captureAll);\n    }\n}\n</code></pre>\n<p>This is working for <code>@Async</code> methods, but does not create new spans for new threads. I tried putting a <code>@NewSpan</code> annotation on my <code>@Async</code> method, but this causes my method to not run asynchronously anymore.</p>\n<p>I also tried putting a manual new span in form my async executor</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Override\npublic Executor getAsyncExecutor() {\n    Span span = tracer.nextSpan();\n    span.start();\n    try (Tracer.SpanInScope ignored = tracer.withSpan(span)) {\n        log.info(&quot;NEWSPAN&quot;);\n        return ContextExecutorService.wrap(Executors.newCachedThreadPool(), contextSnapshotFactory::captureAll);\n    }\n}\n</code></pre>\n<p>While the <code>log.info(&quot;NEWSPAN&quot;)</code> does produce a new span in the log, the actual method is still producing the outside span id. What am I missing?</p>\n"
+}

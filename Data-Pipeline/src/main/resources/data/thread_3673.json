@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "oracle-database", "hadoop", "sqoop" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 442573,
+      "reputation" : 594,
+      "user_id" : 833245,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/186242ccdaebd50eb13ad37fea02d9ff?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "abhijitcaps",
+      "link" : "https://stackoverflow.com/users/833245/abhijitcaps"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1496294912,
+    "post_id" : 34993550,
+    "comment_id" : 75603706,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "This sometimes happen when the table, which sqoop tries to import, contains reserve keywords as column name.  So, check your Oracle table &quot;dmt_sim.dim_product&quot;."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 2090117,
+      "reputation" : 374,
+      "user_id" : 1860147,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/4LLpY.jpg?s=256",
+      "display_name" : "Kiran teja Avvaru",
+      "link" : "https://stackoverflow.com/users/1860147/kiran-teja-avvaru"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1453980789,
+    "creation_date" : 1453980789,
+    "answer_id" : 35060379,
+    "question_id" : 34993550,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>SQLException in nextKeyValue\nWhich means in your source KEY column does not carry the last-value '1', by the time you execute.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3579176,
+      "reputation" : 4570,
+      "user_id" : 2987780,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://i.sstatic.net/pK6EQ.jpg?s=256",
+      "display_name" : "Indrajeet Gour",
+      "link" : "https://stackoverflow.com/users/2987780/indrajeet-gour"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1472038003,
+    "creation_date" : 1472038003,
+    "answer_id" : 39122052,
+    "question_id" : 34993550,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>Check for all the possible column's values as null and specially check for date column that may have date as '0000-00-00' and you were using in select clause of dmt_sim.dim_product.</strong></p>\n\n<blockquote>\n  <p>Identify the columns and apply if condition in select to replace null\n  or date with something else(that you would able to recognized).</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8009382,
+      "reputation" : 230,
+      "user_id" : 6041685,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/JYVk4.jpg?s=256",
+      "display_name" : "Carlos Gomez",
+      "link" : "https://stackoverflow.com/users/6041685/carlos-gomez"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1561583546,
+    "creation_date" : 1561583546,
+    "answer_id" : 56780960,
+    "question_id" : 34993550,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It´s because the column used to split is not a numeric (\"PRODUCT_TITLE\"). </p>\n\n<p>When Sqoop translate the query fails at give the intervals \"PRODUCT_TITLE\" >= xx &lt;= yy</p>\n\n<p><strong>trait with a numeric field.</strong></p>\n\n<p>When execute the sentences include --verbose 2> file_log.log (it´s to see if the split sentences are correct)</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2449079,
+    "reputation" : 1334,
+    "user_id" : 2135762,
+    "user_type" : "registered",
+    "accept_rate" : 60,
+    "profile_image" : "https://i.sstatic.net/lrNKS.jpg?s=256",
+    "display_name" : "Kaushik",
+    "link" : "https://stackoverflow.com/users/2135762/kaushik"
+  },
+  "is_answered" : false,
+  "view_count" : 13070,
+  "answer_count" : 3,
+  "score" : 1,
+  "last_activity_date" : 1761894320,
+  "creation_date" : 1453727626,
+  "question_id" : 34993550,
+  "link" : "https://stackoverflow.com/questions/34993550/sqoop-import-error-error-java-io-ioexception-sqlexception-in-nextkeyvalue",
+  "title" : "Sqoop import error Error: java.io.IOException: SQLException in nextKeyValue",
+  "body" : "<p>I have written a script to perform an incremental import of data from oracle table to HDFS directory. I use the following sqoop command to do the import :</p>\n\n<pre><code>    sqoop -- import \\\n   --connect $JDBCconnectionString  \\\n   --username $dbUserName \\\n   --password-file $passwordLocal \\\n   --query 'select * from dmt_sim.dim_product WHERE $CONDITIONS' \\\n   --split-by \"PRODUCT_TITLE\" \\\n   --incremental append \\\n   --check-column \"KEY\" \\\n   --last-value \"1\" \\\n   --append \\\n   --fields-terminated-by '\\t' \\\n   --target-dir /user/ksrinivasan/dmn_product\n</code></pre>\n\n<p>The values for the variables $JDBCconnectionString,$dbUserName, $passwordLocal is substituted during run so the connection to the oracle database and getting the boundary values all succeeds but when the job is started it throws an error.</p>\n\n<pre><code>16/01/25 06:19:29 INFO mapreduce.Job: Job job_1452256584707_106782 running in uber mode : false\n06:19:36            16/01/25 06:19:29 INFO mapreduce.Job:  map 0% reduce 0%\n06:20:07            16/01/25 06:20:00 INFO mapreduce.Job: Task Id : attempt_1452256584707_106782_m_000000_0, Status : FAILED\n06:20:07            Error: java.io.IOException: SQLException in nextKeyValue\n06:20:07                at org.apache.sqoop.mapreduce.db.DBRecordReader.nextKeyValue(DBRecordReader.java:277)\n06:20:07                at org.apache.hadoop.mapred.MapTask$NewTrackingRecordReader.nextKeyValue(MapTask.java:553)\n06:20:07                at org.apache.hadoop.mapreduce.task.MapContextImpl.nextKeyValue(MapContextImpl.java:80)\n06:20:07                at org.apache.hadoop.mapreduce.lib.map.WrappedMapper$Context.nextKeyValue(WrappedMapper.java:91)\n06:20:07                at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:144)\n06:20:07                at org.apache.sqoop.mapreduce.AutoProgressMapper.run(AutoProgressMapper.java:64)\n06:20:07                at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:784)\n06:20:07                at org.apache.hadoop.mapred.MapTask.run(MapTask.java:341)\n06:20:07                at org.apache.hadoop.mapred.YarnChild$2.run(YarnChild.java:163)\n06:20:07                at java.security.AccessController.doPrivileged(Native Method)\n06:20:07                at javax.security.auth.Subject.doAs(Subject.java:415)\n06:20:07                at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1628)\n06:20:07                at org.apache.hadoop.mapred.YarnChild.main(YarnChild.java:158)\n06:20:07            Caused by: java.sql.SQLSyntaxErrorException: ORA-00907: missing right parenthesis\n06:20:07            \n06:20:07                at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:445)\n06:20:07                at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:396)\n06:20:07                at oracle.jdbc.driver.T4C8Oall.processError(T4C8Oall.java:879)\n06:20:07                at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:450)\n06:20:07                at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:192)\n06:20:07                at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:531)\n06:20:07                at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPreparedStatement.java:207)\n06:20:07                at oracle.jdbc.driver.T4CPreparedStatement.executeForDescribe(T4CPreparedStatement.java:884)\n06:20:07                at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:1167)\n06:20:07                at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1289)\n06:20:07                at oracle.jdbc.driver.OraclePreparedStatement.executeInternal(OraclePreparedStatement.java:3584)\n06:20:07                at oracle.jdbc.driver.OraclePreparedStatement.executeQuery(OraclePreparedStatement.java:3628)\n06:20:07                at oracle.jdbc.driver.OraclePreparedStatementWrapper.executeQuery(OraclePreparedStatementWrapper.java:1493)\n06:20:07                at org.apache.sqoop.mapreduce.db.DBRecordReader.executeQuery(DBRecordReader.java:111)\n06:20:07                at org.apache.sqoop.mapreduce.db.DBRecordReader.nextKeyValue(DBRecordReader.java:235)\n06:20:07                ... 12 more\n06:20:07            \n</code></pre>\n\n<p>So it nice if someone else has faced the same problem and they have some insight about how to debug this kinda issues ???</p>\n"
+}

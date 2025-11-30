@@ -1,0 +1,170 @@
+{
+  "tags" : [ "java", "swing", "jtextfield", "rounded-corners" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 44852,
+      "reputation" : 324691,
+      "user_id" : 131872,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+      "display_name" : "camickr",
+      "link" : "https://stackoverflow.com/users/131872/camickr"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1323966597,
+    "post_id" : 8515601,
+    "comment_id" : 10554015,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "-1, You asked this question a couple of weeks ago: <a href=\"http://stackoverflow.com/questions/8305460/java-swing-jtextfield-inset/8305672#8305672\" title=\"java swing jtextfield inset\">stackoverflow.com/questions/8305460/java-swing-jtextfield-in&zwnj;&#8203;set/&hellip;</a>"
+  }, {
+    "owner" : {
+      "account_id" : 70123,
+      "reputation" : 51647,
+      "user_id" : 203657,
+      "user_type" : "registered",
+      "accept_rate" : 53,
+      "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+      "display_name" : "kleopatra",
+      "link" : "https://stackoverflow.com/users/203657/kleopatra"
+    },
+    "reply_to_user" : {
+      "account_id" : 44852,
+      "reputation" : 324691,
+      "user_id" : 131872,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/a0ced8e21d2a761db718acb6362b9225?s=256&d=identicon&r=PG",
+      "display_name" : "camickr",
+      "link" : "https://stackoverflow.com/users/131872/camickr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1323968300,
+    "post_id" : 8515601,
+    "comment_id" : 10554726,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@camickr thanks, didn&#39;t recognize the duplicate - will vote to close this .."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 269622,
+      "reputation" : 59807,
+      "user_id" : 559070,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/58cd4a26cf2d5bcd36c125fe8cc8464b?s=256&d=identicon&r=PG",
+      "display_name" : "Harry Joy",
+      "link" : "https://stackoverflow.com/users/559070/harry-joy"
+    },
+    "is_accepted" : true,
+    "score" : 18,
+    "last_activity_date" : 1323928934,
+    "last_edit_date" : 1323928934,
+    "creation_date" : 1323928029,
+    "answer_id" : 8515677,
+    "question_id" : 8515601,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can override <code>JTextFiled</code> build your own Rounded corner <code>JTextField</code>. You have to override it's <code>paintComponent()</code>, <code>paintBorder()</code>, and <code>contains()</code> methods. You need to draw roundRect as the shape of text field.</p>\n\n<p>Example:</p>\n\n<pre><code>public class RoundJTextField extends JTextField {\n    private Shape shape;\n    public RoundJTextField(int size) {\n        super(size);\n        setOpaque(false); // As suggested by @AVD in comment.\n    }\n    protected void paintComponent(Graphics g) {\n         g.setColor(getBackground());\n         g.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);\n         super.paintComponent(g);\n    }\n    protected void paintBorder(Graphics g) {\n         g.setColor(getForeground());\n         g.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);\n    }\n    public boolean contains(int x, int y) {\n         if (shape == null || !shape.getBounds().equals(getBounds())) {\n             shape = new RoundRectangle2D.Float(0, 0, getWidth()-1, getHeight()-1, 15, 15);\n         }\n         return shape.contains(x, y);\n    }\n}\n</code></pre>\n\n<p>To see this in effect:</p>\n\n<pre><code>    JFrame frame = new JFrame(\"Rounded corner text filed demo\");\n    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n    frame.setSize(400, 400);\n    frame.setLayout(new FlowLayout());\n    JTextField field = new RoundJTextField(15);\n    frame.add(field);\n    frame.setVisible(true);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 70123,
+      "reputation" : 51647,
+      "user_id" : 203657,
+      "user_type" : "registered",
+      "accept_rate" : 53,
+      "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+      "display_name" : "kleopatra",
+      "link" : "https://stackoverflow.com/users/203657/kleopatra"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1323950564,
+    "last_edit_date" : 1495541988,
+    "creation_date" : 1323950564,
+    "answer_id" : 8519820,
+    "question_id" : 8515601,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Very similar to @Harry Joy's answer - just going the full distance, as <a href=\"https://stackoverflow.com/questions/8416295/component-painting-outside-custom-border\">outlined in a recent answer</a></p>\n\n<ul>\n<li>define a border type which exposes a shape</li>\n<li>make the component aware of a possibly shaped border</li>\n<li>if it detects the shaped border, take over the background painting in paintComponent inside the shape (no need to touch paintBorder)</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 170337,
+      "reputation" : 1932,
+      "user_id" : 1792216,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/62d01de78b544df032b7975b1ee1dce1?s=256&d=identicon&r=PG",
+      "display_name" : "Emiliano Schiano",
+      "link" : "https://stackoverflow.com/users/1792216/emiliano-schiano"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1363579986,
+    "creation_date" : 1363579986,
+    "answer_id" : 15469632,
+    "question_id" : 8515601,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There is a simple example here:\n<a href=\"http://java-swing-tips.blogspot.com.ar/2012/03/rounded-border-for-jtextfield.html\" rel=\"nofollow\">http://java-swing-tips.blogspot.com.ar/2012/03/rounded-border-for-jtextfield.html</a></p>\n\n<p>Regards!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7605211,
+      "reputation" : 1602,
+      "user_id" : 5768269,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://graph.facebook.com/1043660518990589/picture?type=large",
+      "display_name" : "Wesos de Queso",
+      "link" : "https://stackoverflow.com/users/5768269/wesos-de-queso"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1499968294,
+    "creation_date" : 1499968294,
+    "answer_id" : 45087809,
+    "question_id" : 8515601,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This will modify any JTextField that you create in the entire application</p>\n\n<p>Drop it just at the beginning of your very first window, it will affect every JTextField.</p>\n\n<pre><code>    UIManager.put(\"TextField.background\", Color.WHITE);\n    UIManager.put(\"TextField.border\", BorderFactory.createCompoundBorder(\n            new CustomeBorder(), \n            new EmptyBorder(new Insets(4,4,4,4))));\n</code></pre>\n\n<p>The custom border</p>\n\n<pre><code>@SuppressWarnings(\"serial\")\npublic static class CustomeBorder extends AbstractBorder{\n    @Override\n    public void paintBorder(Component c, Graphics g, int x, int y,\n            int width, int height) {\n        super.paintBorder(c, g, x, y, width, height);\n        Graphics2D g2d = (Graphics2D)g;\n        g2d.setPaint(COLOR_BORDE_SIMPLE);\n        Shape shape = new RoundRectangle2D.Float(0, 0, c.getWidth()-1, c.getHeight()-1,9, 9);\n        g2d.draw(shape);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 44767527,
+      "reputation" : 1,
+      "user_id" : 31926005,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/221c1bbbc2e56f932d485418a07850e3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Syntax.31",
+      "link" : "https://stackoverflow.com/users/31926005/syntax-31"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763810208,
+    "last_edit_date" : 1763810208,
+    "creation_date" : 1763805540,
+    "answer_id" : 79827236,
+    "question_id" : 8515601,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is a simple solution: just paint a JTextField component using transparency.</p>\n<p>Extend the JTextField class (or any JTextArea for instance) and override paintComponent() method to draw:</p>\n<ol>\n<li>the result shape you want: a white rounded rectangle in my sample.</li>\n<li>the parent component, made transparent, in order to have characters and caret managed.</li>\n</ol>\n<p>As its background is transparent (opacity 0%), only your shape is visible, without white or grey corners remaining, whatever the parent panel color.<br />\nIf you want to add a border to highlight the rounded shape, just draw it in the optional paintBorder() method of the same class.</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class RoundedTextField extends JTextField {\n    private final int arc = 25;\n\n    public RoundedTextField() {\n        super();\n        setBorder(null);\n        // background set transparent in order to avoid remaining corners when super.paintComponent() called\n        setBackground(new Color(0, 0, 0, 0));\n    }\n\n    @Override\n    protected void paintComponent(Graphics g) {\n        ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);\n        // White rounded background shape\n        g.setColor(Color.WHITE);\n        g.fillRoundRect(0, 0, getWidth()-1, getHeight()-1, arc, arc);\n        // before painting transparent super (to get caret and characters managed)\n        super.paintComponent(g);\n    }\n\n    @Override\n    public Insets getInsets() {\n        // Optional, to let space before caret because border is rounded\n        return new Insets(0, 8, 0, 8);\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 996505,
+    "reputation" : 2861,
+    "user_id" : 1012297,
+    "user_type" : "registered",
+    "accept_rate" : 61,
+    "profile_image" : "https://i.sstatic.net/BC3li.jpg?s=256",
+    "display_name" : "Vincent Roye",
+    "link" : "https://stackoverflow.com/users/1012297/vincent-roye"
+  },
+  "is_answered" : true,
+  "view_count" : 36324,
+  "accepted_answer_id" : 8515677,
+  "answer_count" : 5,
+  "score" : 8,
+  "last_activity_date" : 1763810208,
+  "creation_date" : 1323927275,
+  "last_edit_date" : 1343443795,
+  "question_id" : 8515601,
+  "link" : "https://stackoverflow.com/questions/8515601/java-swing-rounded-border-for-jtextfield",
+  "title" : "Java Swing rounded border for Jtextfield",
+  "body" : "<p>When I do :</p>\n\n<pre><code>LineBorder lineBorder =new LineBorder(Color.white, 8, true);\njTextField2.setBorder(lineBorder );\n</code></pre>\n\n<p>I get this result like:</p>\n\n<p><img src=\"https://i.sstatic.net/7wWkU.png\" alt=\"enter image description here\"></p>\n\n<p>How can I have rounded borders without the squared corners visible and the text half cut ?</p>\n\n<p>Thank you very much.</p>\n\n<p>Best regards</p>\n"
+}

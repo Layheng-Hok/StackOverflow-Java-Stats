@@ -1,0 +1,94 @@
+{
+  "tags" : [ "java", "mysql", "multithreading" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3792873,
+      "reputation" : 1244,
+      "user_id" : 3148880,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uaJQS.gif?s=256",
+      "display_name" : "Aris2World",
+      "link" : "https://stackoverflow.com/users/3148880/aris2world"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1470922645,
+    "post_id" : 38897766,
+    "comment_id" : 65154775,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "It seems that the query and the insert are not in the same transaction. I see that you are using a dao framework. Are you sure that all operations are using the same transaction? If you remove the for update from the query?"
+  }, {
+    "owner" : {
+      "account_id" : 3792873,
+      "reputation" : 1244,
+      "user_id" : 3148880,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uaJQS.gif?s=256",
+      "display_name" : "Aris2World",
+      "link" : "https://stackoverflow.com/users/3148880/aris2world"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1470925133,
+    "post_id" : 38897766,
+    "comment_id" : 65156697,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Can you retrieve more information about deadlock with one of the method explained here <a href=\"http://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html\" rel=\"nofollow noreferrer\">dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html</a>?"
+  }, {
+    "owner" : {
+      "account_id" : 3792873,
+      "reputation" : 1244,
+      "user_id" : 3148880,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uaJQS.gif?s=256",
+      "display_name" : "Aris2World",
+      "link" : "https://stackoverflow.com/users/3148880/aris2world"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1470925451,
+    "post_id" : 38897766,
+    "comment_id" : 65156957,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Here there&#39;s an interesting explanation about having unexpected deadlock during a simple insert. The problem seems related to the presence of a primary key with autoincrement and a unique ley like your table: <a href=\"http://dba.stackexchange.com/questions/86878/mysql-innodb-deadlock-for-2-simple-insert-queries\" title=\"mysql innodb deadlock for 2 simple insert queries\">dba.stackexchange.com/questions/86878/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1338138,
+      "reputation" : 184,
+      "user_id" : 1280385,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f22b3a551d645d80513a78eff0cc235b?s=256&d=identicon&r=PG",
+      "display_name" : "Jorge",
+      "link" : "https://stackoverflow.com/users/1280385/jorge"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1563879009,
+    "creation_date" : 1563879009,
+    "answer_id" : 57162435,
+    "question_id" : 38897766,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is an old question, but maybe somebody finds it useful.</p>\n\n<p>The cause might be that MySQL's InnoDB uses insert intention locks which lock a set of rows when inserting or updating.</p>\n\n<p>Check <a href=\"https://dev.mysql.com/doc/refman/5.6/en/innodb-locking.html\" rel=\"nofollow noreferrer\">this link</a> for more information about the different types of locks that InnoDB uses.</p>\n\n<p><a href=\"https://dev.mysql.com/doc/refman/8.0/en/innodb-deadlocks.html\" rel=\"nofollow noreferrer\">This link</a> explains a bit about the deadlocks.</p>\n\n<p>Sometimes it will be almost impossible to prevent these deadlocks. The most common solutions are:</p>\n\n<ol>\n<li>The first option is always operate in the tables in the same order</li>\n<li>Reduce the scope (duration) of the transaction to the minimum</li>\n<li>If necessary, lock in advance (already done automatically for your case)</li>\n<li>Retry the transaction</li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1250681,
+    "reputation" : 1935,
+    "user_id" : 1211152,
+    "user_type" : "registered",
+    "accept_rate" : 77,
+    "profile_image" : "https://www.gravatar.com/avatar/389caa0e5b2403e7f262f97d70517f1c?s=256&d=identicon&r=PG",
+    "display_name" : "XiaJun",
+    "link" : "https://stackoverflow.com/users/1211152/xiajun"
+  },
+  "is_answered" : false,
+  "view_count" : 8449,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1763381210,
+  "creation_date" : 1470922148,
+  "question_id" : 38897766,
+  "link" : "https://stackoverflow.com/questions/38897766/mysqltransactionrollbackexception-deadlock-found-when-trying-to-get-lock",
+  "title" : "MySQLTransactionRollbackException: Deadlock found when trying to get lock;",
+  "body" : "<p>I have a table trade_order:</p>\n\n<pre><code> CREATE TABLE `trade_order` IF NOT EXISTS `buyer_order` (\n `id` int(10) unsigned NOT NULL AUTO_INCREMENT,\n `order_no` varchar(30) NOT NULL DEFAULT '',\n `name` int(11) unsigned NOT NULL DEFAULT '0',\n PRIMARY KEY (`id`),\n UNIQUE KEY `order_no` (`order_no`),\n )\n</code></pre>\n\n<p>Now I want to insert data into table trade_order. I do it like this:</p>\n\n<pre><code>transaction begin.\n===\nresult = select * from order_table where order_no = #{orderNo} for update \nif(result is null){\n    insert into trade_order (order_no,name) values (orderNo,name)\n}\nelse{\n    update trade_order set name = #{name} where order_no = #{orderNo}\n}\n===\ntransaction end.\n</code></pre>\n\n<p>But I got deadLock exeption:</p>\n\n<pre><code> org.springframework.dao.DeadlockLoserDataAccessException: \n ### Error updating database.  Cause:      com.mysql.jdbc.exceptions.jdbc4.MySQLTransactionRollbackException: Deadlock      found when trying to get lock; try restarting transaction\n ### The error may involve      com.youzan.trade.process.datasync.dal.dao.OrderDAO.insert-Inline\n ### The error occurred while setting parameters\n ### SQL: insert into trade_order ( order_no, name )  values ( ?,         ?,  )\n ### Cause: com.mysql.jdbc.exceptions.jdbc4.MySQLTransactionRollbackException: Deadlock found when trying to get lock; try restarting transaction\n ; SQL []; Deadlock found when trying to get lock; try restarting transaction; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLTransactionRollbackException: Deadlock found when trying to get lock; try restarting transaction\n</code></pre>\n\n<p>Maybe the same two data would be deal with by two threads at the same time,and the two threads both do insert action.</p>\n\n<p>But will it be result in deadLock?I wonder why.</p>\n\n<p>(The mysql transaction isolate level is RR, InnoDB engine)</p>\n"
+}

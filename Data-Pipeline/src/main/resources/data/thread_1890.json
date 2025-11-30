@@ -1,0 +1,739 @@
+{
+  "tags" : [ "java", "spring", "rest", "exception", "spring-boot" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 219684,
+      "reputation" : 39264,
+      "user_id" : 476716,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/4e325890903afc8269eb2c1aa57587b3?s=256&d=identicon&r=PG",
+      "display_name" : "OrangeDog",
+      "link" : "https://stackoverflow.com/users/476716/orangedog"
+    },
+    "edited" : false,
+    "score" : 8,
+    "creation_date" : 1456323186,
+    "post_id" : 28902374,
+    "comment_id" : 58893490,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "The client is never actually sent a redirect. The redirect is handled internally by the servlet container (e.g. Tomcat)."
+  }, {
+    "owner" : {
+      "account_id" : 2355308,
+      "reputation" : 784,
+      "user_id" : 2063238,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6dZwE.jpg?s=256",
+      "display_name" : "pmorken",
+      "link" : "https://stackoverflow.com/users/2063238/pmorken"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1490883364,
+    "post_id" : 28902374,
+    "comment_id" : 73320073,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Removing the @ResponseStatus annotations on my exception handlers was what I needed; see <a href=\"http://stackoverflow.com/questions/35563968/spring-boot-override-default-rest-exception-handler\" title=\"spring boot override default rest exception handler\">stackoverflow.com/questions/35563968/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 210903,
+        "reputation" : 4021,
+        "user_id" : 462771,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/afca67df1d070bcdd1556bd5d38a566a?s=256&d=identicon&r=PG",
+        "display_name" : "astrien",
+        "link" : "https://stackoverflow.com/users/462771/astrien"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1425909599,
+      "post_id" : 28903217,
+      "comment_id" : 46141746,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I have seen this code before, and after implementing it, the class did catch exceptions raised in controller requestmapping methods.  This still does not catch 404 errors, which are getting handled in the ResourceHttpRequestHandler.handleRequest method, or, if the @EnableWebMvc annotation is used, in DispatcherServlet.noHandlerFound.   We want to handle any error, including 404s, but the latest version of Spring Boot seem to be incredibly obtuse on how to do that."
+    }, {
+      "owner" : {
+        "account_id" : 3508394,
+        "reputation" : 2097,
+        "user_id" : 2933389,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/PC9xW.jpg?s=256",
+        "display_name" : "Paramesh Korrakuti",
+        "link" : "https://stackoverflow.com/users/2933389/paramesh-korrakuti"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1536943660,
+      "post_id" : 28903217,
+      "comment_id" : 91619405,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I wrote the same way to handle <code>HttpRequestMethodNotSupportedException</code> and plugin the same jar in multiple micro-services, for some business purpose we need to respond micro-service alias name in the response. is there any way we can get the underlying micro-service name / controller name ? I know <code>HandlerMethod</code> will provide the java method name from where the exception is originated. But here, none of the methods received the request, hence <code>HandlerMethod</code> won&#39;t be initialized. So is there any solution to solve this?"
+    }, {
+      "owner" : {
+        "account_id" : 5418168,
+        "reputation" : 1939,
+        "user_id" : 4312720,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/CGbRt.jpg?s=256",
+        "display_name" : "Jorge Tovar",
+        "link" : "https://stackoverflow.com/users/4312720/jorge-tovar"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1560274048,
+      "post_id" : 28903217,
+      "comment_id" : 99679600,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Controller advice is a good approach, but always remember that exceptions are not part of the flow they must occur in exceptional cases!"
+    } ],
+    "owner" : {
+      "account_id" : 2196926,
+      "reputation" : 1448,
+      "user_id" : 1942323,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/wAqfi.jpg?s=256",
+      "display_name" : "Efe Kahraman",
+      "link" : "https://stackoverflow.com/users/1942323/efe-kahraman"
+    },
+    "is_accepted" : false,
+    "score" : 29,
+    "last_activity_date" : 1425659425,
+    "creation_date" : 1425659425,
+    "answer_id" : 28903217,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think <code>ResponseEntityExceptionHandler</code> meets your requirements. A sample piece of code for HTTP 400:</p>\n\n<pre><code>@ControllerAdvice\npublic class MyExceptionHandler extends ResponseEntityExceptionHandler {\n\n  @ResponseStatus(value = HttpStatus.BAD_REQUEST)\n  @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentNotValidException.class,\n      HttpRequestMethodNotSupportedException.class})\n  public ResponseEntity&lt;Object&gt; badRequest(HttpServletRequest req, Exception exception) {\n    // ...\n  }\n}\n</code></pre>\n\n<p>You can check this <a href=\"http://springinpractice.com/2013/10/09/generating-json-error-object-responses-with-spring-web-mvc\">post</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 210903,
+        "reputation" : 4021,
+        "user_id" : 462771,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/afca67df1d070bcdd1556bd5d38a566a?s=256&d=identicon&r=PG",
+        "display_name" : "astrien",
+        "link" : "https://stackoverflow.com/users/462771/astrien"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1431609172,
+      "post_id" : 29767982,
+      "comment_id" : 48578067,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The default DispatcherServlet is hardcoded to do the redirect with MVC rather than throw an exception when a request for a non-existent mapping is received - unless you set the flag as I did in the post above."
+    }, {
+      "owner" : {
+        "account_id" : 210903,
+        "reputation" : 4021,
+        "user_id" : 462771,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/afca67df1d070bcdd1556bd5d38a566a?s=256&d=identicon&r=PG",
+        "display_name" : "astrien",
+        "link" : "https://stackoverflow.com/users/462771/astrien"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1431609427,
+      "post_id" : 29767982,
+      "comment_id" : 48578233,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Also, the reason we implemented the ResponseEntityExceptionHandler class is so we could control the format of the output and log error stack traces to a NoSQL solution and then send a client-safe error message."
+    } ],
+    "owner" : {
+      "account_id" : 3627999,
+      "reputation" : 1418,
+      "user_id" : 3025055,
+      "user_type" : "registered",
+      "accept_rate" : 48,
+      "profile_image" : "https://i.sstatic.net/PFo2K.jpg?s=256",
+      "display_name" : "PaintedRed",
+      "link" : "https://stackoverflow.com/users/3025055/paintedred"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1429608078,
+    "creation_date" : 1429608078,
+    "answer_id" : 29767982,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>By default Spring Boot gives json with error details.</p>\n\n<pre><code>curl -v localhost:8080/greet | json_pp\n[...]\n&lt; HTTP/1.1 400 Bad Request\n[...]\n{\n   \"timestamp\" : 1413313361387,\n   \"exception\" : \"org.springframework.web.bind.MissingServletRequestParameterException\",\n   \"status\" : 400,\n   \"error\" : \"Bad Request\",\n   \"path\" : \"/greet\",\n   \"message\" : \"Required String parameter 'name' is not present\"\n}\n</code></pre>\n\n<p>It also works for all kind of request mapping errors. Check this article\n<a href=\"http://www.jayway.com/2014/10/19/spring-boot-error-responses/\" rel=\"noreferrer\">http://www.jayway.com/2014/10/19/spring-boot-error-responses/</a></p>\n\n<p>If you want to create log it to NoSQL. You can create @ControllerAdvice where you would log it and then re-throw the exception. \nThere is example in documentation\n<a href=\"https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc\" rel=\"noreferrer\">https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 50234,
+        "reputation" : 3554,
+        "user_id" : 149789,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/82b64a3b9d5f6e308403b27a634eb94e?s=256&d=identicon&r=PG",
+        "display_name" : "wwadge",
+        "link" : "https://stackoverflow.com/users/149789/wwadge"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1440112530,
+      "post_id" : 30193013,
+      "comment_id" : 52150837,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "instead of creating a new dispatcher servlet bean you can flip the flag in a post processor:   YourClass implements BeanPostProcessor { ... `public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException{     if (bean instanceof DispatcherServlet) {         // otherwise we get a 404 before our exception handler kicks in         ((DispatcherServlet) bean).setThrowExceptionIfNoHandlerFound(true);     }     return bean; }      public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException { return bean; }"
+    }, {
+      "owner" : {
+        "account_id" : 33597,
+        "reputation" : 1952,
+        "user_id" : 94159,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/cfb6c407093058862d80948f533e6884?s=256&d=identicon&r=PG",
+        "display_name" : "Ian Gilham",
+        "link" : "https://stackoverflow.com/users/94159/ian-gilham"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1442587491,
+      "post_id" : 30193013,
+      "comment_id" : 53156213,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I have this problem but customizing the DispatcherServlet doesn&#39;t work for me. Is there any additional magic required for Boot to use this extra bean and config?"
+    }, {
+      "owner" : {
+        "account_id" : 152633,
+        "reputation" : 49621,
+        "user_id" : 367285,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/2ogTB.jpg?s=256",
+        "display_name" : "FrVaBe",
+        "link" : "https://stackoverflow.com/users/367285/frvabe"
+      },
+      "reply_to_user" : {
+        "account_id" : 33597,
+        "reputation" : 1952,
+        "user_id" : 94159,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/cfb6c407093058862d80948f533e6884?s=256&d=identicon&r=PG",
+        "display_name" : "Ian Gilham",
+        "link" : "https://stackoverflow.com/users/94159/ian-gilham"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1446104847,
+      "post_id" : 30193013,
+      "comment_id" : 54607695,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@IanGilham I too do not get this to work with Spring Boot 1.2.7. I even do not get any  <code>@ExceptionHandler</code> method called when placing it into the <code>@ControllerAdvice</code> class although they properly work if placed in the <code>@RestController</code> class. <code>@EnableWebMvc</code> is on the <code>@ControllerAdvice</code> and the <code>@Configuration</code> (I tested every combination)  class. Any idea or working example? // @Andy Wilkinson"
+    }, {
+      "owner" : {
+        "account_id" : 33597,
+        "reputation" : 1952,
+        "user_id" : 94159,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/cfb6c407093058862d80948f533e6884?s=256&d=identicon&r=PG",
+        "display_name" : "Ian Gilham",
+        "link" : "https://stackoverflow.com/users/94159/ian-gilham"
+      },
+      "reply_to_user" : {
+        "account_id" : 152633,
+        "reputation" : 49621,
+        "user_id" : 367285,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/2ogTB.jpg?s=256",
+        "display_name" : "FrVaBe",
+        "link" : "https://stackoverflow.com/users/367285/frvabe"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446105170,
+      "post_id" : 30193013,
+      "comment_id" : 54607842,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@FrVaBe it sounds like the <code>@ControllerAdvice</code> might not be picked up by the configuration auto-scan defined on the application class."
+    }, {
+      "owner" : {
+        "account_id" : 152633,
+        "reputation" : 49621,
+        "user_id" : 367285,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/2ogTB.jpg?s=256",
+        "display_name" : "FrVaBe",
+        "link" : "https://stackoverflow.com/users/367285/frvabe"
+      },
+      "reply_to_user" : {
+        "account_id" : 33597,
+        "reputation" : 1952,
+        "user_id" : 94159,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/cfb6c407093058862d80948f533e6884?s=256&d=identicon&r=PG",
+        "display_name" : "Ian Gilham",
+        "link" : "https://stackoverflow.com/users/94159/ian-gilham"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446106003,
+      "post_id" : 30193013,
+      "comment_id" : 54608272,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@IanGilham Yes, but I haven no idea why. Is there any full working simple example out there?"
+    }, {
+      "owner" : {
+        "account_id" : 33597,
+        "reputation" : 1952,
+        "user_id" : 94159,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/cfb6c407093058862d80948f533e6884?s=256&d=identicon&r=PG",
+        "display_name" : "Ian Gilham",
+        "link" : "https://stackoverflow.com/users/94159/ian-gilham"
+      },
+      "reply_to_user" : {
+        "account_id" : 152633,
+        "reputation" : 49621,
+        "user_id" : 367285,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/2ogTB.jpg?s=256",
+        "display_name" : "FrVaBe",
+        "link" : "https://stackoverflow.com/users/367285/frvabe"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446106170,
+      "post_id" : 30193013,
+      "comment_id" : 54608351,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@FrVaBe there are only limited examples in the spring boot docs. Just make sure anything using spring annotations is in the same package as the main class or a sub package with the same root."
+    }, {
+      "owner" : {
+        "account_id" : 1473276,
+        "reputation" : 117419,
+        "user_id" : 1384297,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/rmR9b.jpg?s=256",
+        "display_name" : "Andy Wilkinson",
+        "link" : "https://stackoverflow.com/users/1384297/andy-wilkinson"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446109868,
+      "post_id" : 30193013,
+      "comment_id" : 54610432,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Using <code>@EnableWebMvc</code> almost certainly isn&#39;t what you want. It turns off all of Spring Boot&#39;s auto-configuration of Spring MVC. I don&#39;t understand the concerns about redirects and forwards in the question as the client doesn&#39;t see any of that. Implementing a custom <code>ErrorController</code> is almost certainly a better way to tackle this problem."
+    }, {
+      "owner" : {
+        "account_id" : 152633,
+        "reputation" : 49621,
+        "user_id" : 367285,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/2ogTB.jpg?s=256",
+        "display_name" : "FrVaBe",
+        "link" : "https://stackoverflow.com/users/367285/frvabe"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1446111139,
+      "post_id" : 30193013,
+      "comment_id" : 54611209,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Whoever reads this question and answer should have a look at the corresponding SpringBoot Issue on <a href=\"https://github.com/spring-projects/spring-boot/issues/3980\" rel=\"nofollow noreferrer\">github</a>."
+    }, {
+      "owner" : {
+        "account_id" : 1827965,
+        "reputation" : 5770,
+        "user_id" : 1660192,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/0dkbX.jpg?s=256",
+        "display_name" : "Aman",
+        "link" : "https://stackoverflow.com/users/1660192/aman"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1449059551,
+      "post_id" : 30193013,
+      "comment_id" : 55840162,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I am using Spring boot 1.3.0.RELEASE and its only working for the exceptions which are being thrown from Controllers. Its not handling other exceptions which are thrown from outside controller. e.g. Filters etc. Any clue ? @ogradyjd"
+    }, {
+      "owner" : {
+        "account_id" : 210903,
+        "reputation" : 4021,
+        "user_id" : 462771,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/afca67df1d070bcdd1556bd5d38a566a?s=256&d=identicon&r=PG",
+        "display_name" : "astrien",
+        "link" : "https://stackoverflow.com/users/462771/astrien"
+      },
+      "reply_to_user" : {
+        "account_id" : 1827965,
+        "reputation" : 5770,
+        "user_id" : 1660192,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/0dkbX.jpg?s=256",
+        "display_name" : "Aman",
+        "link" : "https://stackoverflow.com/users/1660192/aman"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1449237765,
+      "post_id" : 30193013,
+      "comment_id" : 55932150,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Not sure @agpt.  I have an internal project that I can move up to 1.3.0 and see what the effect is on my setup and let you know what I find."
+    }, {
+      "owner" : {
+        "account_id" : 4624783,
+        "reputation" : 925,
+        "user_id" : 3748908,
+        "user_type" : "registered",
+        "accept_rate" : 52,
+        "profile_image" : "https://www.gravatar.com/avatar/f83432e7392bd7b969446502e439a085?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user3748908",
+        "link" : "https://stackoverflow.com/users/3748908/user3748908"
+      },
+      "reply_to_user" : {
+        "account_id" : 1827965,
+        "reputation" : 5770,
+        "user_id" : 1660192,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/0dkbX.jpg?s=256",
+        "display_name" : "Aman",
+        "link" : "https://stackoverflow.com/users/1660192/aman"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1450277066,
+      "post_id" : 30193013,
+      "comment_id" : 56371521,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@agpt Did you find a solution? It also doesn&#39;t work for me with 1.3.0. It still maps for instance persistence exceptions to /error"
+    }, {
+      "owner" : {
+        "account_id" : 1827965,
+        "reputation" : 5770,
+        "user_id" : 1660192,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/0dkbX.jpg?s=256",
+        "display_name" : "Aman",
+        "link" : "https://stackoverflow.com/users/1660192/aman"
+      },
+      "reply_to_user" : {
+        "account_id" : 4624783,
+        "reputation" : 925,
+        "user_id" : 3748908,
+        "user_type" : "registered",
+        "accept_rate" : 52,
+        "profile_image" : "https://www.gravatar.com/avatar/f83432e7392bd7b969446502e439a085?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user3748908",
+        "link" : "https://stackoverflow.com/users/3748908/user3748908"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1450289436,
+      "post_id" : 30193013,
+      "comment_id" : 56379907,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@user3748908 no not yet. I guess best solution would be to go for AOP based solution. writing own pointcut etc"
+    }, {
+      "owner" : {
+        "account_id" : 1789513,
+        "reputation" : 4492,
+        "user_id" : 1630244,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://i.sstatic.net/pRubH.png?s=256",
+        "display_name" : "chrisinmtown",
+        "link" : "https://stackoverflow.com/users/1630244/chrisinmtown"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1499781374,
+      "post_id" : 30193013,
+      "comment_id" : 77047164,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Please note that property setting &quot;spring.resources.add-mappings=false&quot; disables Swagger."
+    }, {
+      "owner" : {
+        "account_id" : 334117,
+        "reputation" : 16911,
+        "user_id" : 660350,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://i.sstatic.net/Z4B31wSm.jpg?s=256",
+        "display_name" : "Pascal",
+        "link" : "https://stackoverflow.com/users/660350/pascal"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679504616,
+      "post_id" : 30193013,
+      "comment_id" : 133735327,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "spring.resources.add-mappings is now deprecated. use spring.web.resources.add-mappings instead"
+    }, {
+      "owner" : {
+        "account_id" : 2099067,
+        "reputation" : 373,
+        "user_id" : 1867176,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f65fb2ab50a702932a4a11ba8eab7126?s=256&d=identicon&r=PG",
+        "display_name" : "plex4r",
+        "link" : "https://stackoverflow.com/users/1867176/plex4r"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1726159807,
+      "post_id" : 30193013,
+      "comment_id" : 139254623,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Adding @EnableWebMvc to my application is causing a lot of errors.  I understand this is because Spring Boot Autoconfigure is disabled, but I am not sure how to correct this and still get the benefit in the above solution to catch every exception thrown by Spring.  For an example error, my application fails to even load when I do a Get to &quot;/&quot;."
+    } ],
+    "owner" : {
+      "account_id" : 210903,
+      "reputation" : 4021,
+      "user_id" : 462771,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/afca67df1d070bcdd1556bd5d38a566a?s=256&d=identicon&r=PG",
+      "display_name" : "astrien",
+      "link" : "https://stackoverflow.com/users/462771/astrien"
+    },
+    "is_accepted" : true,
+    "score" : 155,
+    "last_activity_date" : 1671839402,
+    "last_edit_date" : 1671839402,
+    "creation_date" : 1431438865,
+    "answer_id" : 30193013,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>New answer (2016-04-20)</strong></p>\n<p>Using Spring Boot 1.3.1.RELEASE</p>\n<p><strong>New Step 1 -</strong> It is easy and less intrusive to add the following properties to the application.properties:</p>\n<pre><code>spring.mvc.throw-exception-if-no-handler-found=true\nspring.resources.add-mappings=false\n</code></pre>\n<blockquote>\n<p>Much easier than modifying the existing DispatcherServlet instance (as below)! - JO'</p>\n</blockquote>\n<p>If working with a full RESTful Application, it is very important to disable the automatic mapping of static resources since if you are using Spring Boot's default configuration for handling static resources then the resource handler will be handling the request (it's ordered last and mapped to /** which means that it picks up any requests that haven't been handled by any other handler in the application) so the dispatcher servlet doesn't get a chance to throw an exception.</p>\n<hr />\n<p><strong>New Answer (2015-12-04)</strong></p>\n<p>Using Spring Boot 1.2.7.RELEASE</p>\n<p><strong>New Step 1 -</strong> I found a much less intrusive way of setting the &quot;throExceptionIfNoHandlerFound&quot; flag.  Replace the DispatcherServlet replacement code below (Step 1) with this in your application initialization class:</p>\n<pre><code>@ComponentScan()\n@EnableAutoConfiguration\npublic class MyApplication extends SpringBootServletInitializer {\n    private static Logger LOG = LoggerFactory.getLogger(MyApplication.class);\n    public static void main(String[] args) {\n        ApplicationContext ctx = SpringApplication.run(MyApplication.class, args);\n        DispatcherServlet dispatcherServlet = (DispatcherServlet)ctx.getBean(&quot;dispatcherServlet&quot;);\n        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);\n    }\n</code></pre>\n<p>In this case, we're setting the flag on the existing DispatcherServlet, which preserves any auto-configuration by the Spring Boot framework.</p>\n<p>One more thing I've found - the @EnableWebMvc annotation is deadly to Spring Boot.  Yes, that annotation enables things like being able to catch all the controller exceptions as described below, but it also kills a LOT of the helpful auto-configuration that Spring Boot would normally provide.  Use that annotation with extreme caution when you use Spring Boot.</p>\n<hr />\n<p><strong>Original Answer:</strong></p>\n<p>After a lot more research and following up on the solutions posted here (thanks for the help!) and no small amount of runtime tracing into the Spring code, I finally found a configuration that will handle all Exceptions (not Errors, but read on) including 404s.</p>\n<p><strong>Step 1 -</strong> tell SpringBoot to stop using MVC for &quot;handler not found&quot; situations.  We want Spring to throw an exception instead of returning to the client a view redirect to &quot;/error&quot;.  To do this, you need to have an entry in one of your configuration classes:</p>\n<pre><code>// NEW CODE ABOVE REPLACES THIS! (2015-12-04)\n@Configuration\npublic class MyAppConfig {\n    @Bean  // Magic entry \n    public DispatcherServlet dispatcherServlet() {\n        DispatcherServlet ds = new DispatcherServlet();\n        ds.setThrowExceptionIfNoHandlerFound(true);\n        return ds;\n    }\n}\n</code></pre>\n<p>The downside of this is that it replaces the default dispatcher servlet. This hasn't been a problem for us yet, with no side effects or execution problems showing up.  If you're going to do anything else with the dispatcher servlet for other reasons, this is the place to do them.</p>\n<p><strong>Step 2 -</strong> Now that spring boot will throw an exception when no handler is found, that exception can be handled with any others in a unified exception handler:</p>\n<pre><code>@EnableWebMvc\n@ControllerAdvice\npublic class ServiceExceptionHandler extends ResponseEntityExceptionHandler {\n\n    @ExceptionHandler(Throwable.class)\n    @ResponseBody\n    ResponseEntity&lt;Object&gt; handleControllerException(HttpServletRequest req, Throwable ex) {\n        ErrorResponse errorResponse = new ErrorResponse(ex);\n        if(ex instanceof ServiceException) {\n            errorResponse.setDetails(((ServiceException)ex).getDetails());\n        }\n        if(ex instanceof ServiceHttpException) {\n            return new ResponseEntity&lt;Object&gt;(errorResponse,((ServiceHttpException)ex).getStatus());\n        } else {\n            return new ResponseEntity&lt;Object&gt;(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);\n        }\n    }\n\n    @Override\n    protected ResponseEntity&lt;Object&gt; handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {\n        Map&lt;String,String&gt; responseBody = new HashMap&lt;&gt;();\n        responseBody.put(&quot;path&quot;,request.getContextPath());\n        responseBody.put(&quot;message&quot;,&quot;The URL you have reached is not in service at this time (404).&quot;);\n        return new ResponseEntity&lt;Object&gt;(responseBody,HttpStatus.NOT_FOUND);\n    }\n    ...\n}\n</code></pre>\n<p>Keep in mind that I think the &quot;@EnableWebMvc&quot; annotation is significant here.  It seems that none of this works without it.  And that's it - your Spring boot app will now catch all exceptions, including 404s, in the above handler class and you may do with them as you please.</p>\n<p>One last point - there doesn't seem to be a way to get this to catch thrown Errors.  I have a wacky idea of using aspects to catch errors and turn them into Exceptions that the above code can then deal with, but I have not yet had time to actually try implementing that.</p>\n<p>Any comments/corrections/enhancements will be appreciated.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5107530,
+      "reputation" : 1947,
+      "user_id" : 4095194,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c626a799fa8f6a9e5261b9d688c031a9?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Dennis R",
+      "link" : "https://stackoverflow.com/users/4095194/dennis-r"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1451405913,
+    "creation_date" : 1451405913,
+    "answer_id" : 34514907,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Solution with \n<code>dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);</code> and\n<code>@EnableWebMvc\n@ControllerAdvice</code>\nworked for me with Spring Boot 1.3.1, while was not working on 1.2.7</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7545274,
+      "reputation" : 131,
+      "user_id" : 5728576,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-0_fpw3bxVXg/AAAAAAAAAAI/AAAAAAAABQ8/tetkYI164uI/s256-rj/photo.jpg",
+      "display_name" : "Ludovic Martin",
+      "link" : "https://stackoverflow.com/users/5728576/ludovic-martin"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1451426144,
+    "creation_date" : 1451426144,
+    "answer_id" : 34519712,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>What about this code ? I use a fallback request mapping to catch 404 errors.</p>\n\n<pre><code>@Controller\n@ControllerAdvice\npublic class ExceptionHandlerController {\n\n    @ExceptionHandler(Exception.class)\n    public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex) {\n        //If exception has a ResponseStatus annotation then use its response code\n        ResponseStatus responseStatusAnnotation = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);\n\n        return buildModelAndViewErrorPage(request, response, ex, responseStatusAnnotation != null ? responseStatusAnnotation.value() : HttpStatus.INTERNAL_SERVER_ERROR);\n    }\n\n    @RequestMapping(\"*\")\n    public ModelAndView fallbackHandler(HttpServletRequest request, HttpServletResponse response) throws Exception {\n        return buildModelAndViewErrorPage(request, response, null, HttpStatus.NOT_FOUND);\n    }\n\n    private ModelAndView buildModelAndViewErrorPage(HttpServletRequest request, HttpServletResponse response, Exception ex, HttpStatus httpStatus) {\n        response.setStatus(httpStatus.value());\n\n        ModelAndView mav = new ModelAndView(\"error.html\");\n        if (ex != null) {\n            mav.addObject(\"title\", ex);\n        }\n        mav.addObject(\"content\", request.getRequestURL());\n        return mav;\n    }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1413237,
+      "reputation" : 17833,
+      "user_id" : 1339429,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/d761ca550d8a1027100e162034b065ae?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "JeanValjean",
+      "link" : "https://stackoverflow.com/users/1339429/jeanvaljean"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1486283422,
+    "last_edit_date" : 1486283422,
+    "creation_date" : 1455052874,
+    "answer_id" : 35302410,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>For REST controllers, I would recommend to use <code>Zalando Problem Spring Web</code>.</p>\n\n<p><a href=\"https://github.com/zalando/problem-spring-web\" rel=\"nofollow noreferrer\">https://github.com/zalando/problem-spring-web</a></p>\n\n<p>If Spring Boot aims to embed some auto-configuration, this library does more for exception handling. You just need to add the dependency:</p>\n\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.zalando&lt;/groupId&gt;\n    &lt;artifactId&gt;problem-spring-web&lt;/artifactId&gt;\n    &lt;version&gt;LATEST&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n\n<p>And then define one or more advice traits for your exceptions (or use those provided by default)</p>\n\n<pre><code>public interface NotAcceptableAdviceTrait extends AdviceTrait {\n\n    @ExceptionHandler\n    default ResponseEntity&lt;Problem&gt; handleMediaTypeNotAcceptable(\n            final HttpMediaTypeNotAcceptableException exception,\n            final NativeWebRequest request) {\n        return Responses.create(Status.NOT_ACCEPTABLE, exception, request);\n    }\n\n}\n</code></pre>\n\n<p>Then you can defined the controller advice for exception handling as:</p>\n\n<pre><code>@ControllerAdvice\nclass ExceptionHandling implements MethodNotAllowedAdviceTrait, NotAcceptableAdviceTrait {\n\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5728153,
+        "reputation" : 892,
+        "user_id" : 4524563,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/GP6wj.jpg?s=256",
+        "display_name" : "fiskra",
+        "link" : "https://stackoverflow.com/users/4524563/fiskra"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1492520595,
+      "post_id" : 39705512,
+      "comment_id" : 74000777,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "That&#39;s really helpful, thank you. But I didn&#39;t get why we need to ` @EnableWebMvc `  with ` spring.mvc.throw-exception-if-no-handler-found=true ` . My expectation was to handle all exceptions via <code>@RestControllerAdvice</code> without additional configuration. What am I missing here?"
+    } ],
+    "owner" : {
+      "account_id" : 482529,
+      "reputation" : 5502,
+      "user_id" : 896981,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/253086bb97bfb344eef07076c103c0fb?s=256&d=identicon&r=PG",
+      "display_name" : "magiccrafter",
+      "link" : "https://stackoverflow.com/users/896981/magiccrafter"
+    },
+    "is_accepted" : false,
+    "score" : 46,
+    "last_activity_date" : 1474901175,
+    "last_edit_date" : 1474901175,
+    "creation_date" : 1474900105,
+    "answer_id" : 39705512,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>With Spring Boot 1.4+ new cool classes for easier exception handling were added that helps in removing the boilerplate code.</p>\n\n<p>A new <code>@RestControllerAdvice</code> is provided for exception handling, it is combination of <code>@ControllerAdvice</code> and <code>@ResponseBody</code>. You can remove the <code>@ResponseBody</code> on the <code>@ExceptionHandler</code> method when use this new annotation.</p>\n\n<p>i.e.  </p>\n\n<pre><code>@RestControllerAdvice\npublic class GlobalControllerExceptionHandler {\n\n    @ExceptionHandler(value = { Exception.class })\n    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)\n    public ApiErrorResponse unknownException(Exception ex, WebRequest req) {\n        return new ApiErrorResponse(...);\n    }\n}\n</code></pre>\n\n<p>For handling 404 errors adding <code>@EnableWebMvc</code> annotation and the following to application.properties was enough:<br>\n<code>spring.mvc.throw-exception-if-no-handler-found=true</code></p>\n\n<p>You can find and play with the sources here:<br>\n<a href=\"https://github.com/magiccrafter/spring-boot-exception-handling\">https://github.com/magiccrafter/spring-boot-exception-handling</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2892194,
+        "reputation" : 6324,
+        "user_id" : 2480714,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/nz3xK.png?s=256",
+        "display_name" : "PGMacDesign",
+        "link" : "https://stackoverflow.com/users/2480714/pgmacdesign"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1525196394,
+      "post_id" : 47384824,
+      "comment_id" : 87259916,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This solved the problem for me. Just to add, I was missing the @ RestControllerAdvice annotation so I added that along with the @ ControllerAdvice annotation so that it would handle all and that did the trick."
+    } ],
+    "owner" : {
+      "account_id" : 3695852,
+      "reputation" : 1115,
+      "user_id" : 3077218,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/uKX11.jpg?s=256",
+      "display_name" : "Andr&#233; Gasser",
+      "link" : "https://stackoverflow.com/users/3077218/andr%c3%a9-gasser"
+    },
+    "is_accepted" : false,
+    "score" : 28,
+    "last_activity_date" : 1519054934,
+    "last_edit_date" : 1519054934,
+    "creation_date" : 1511149811,
+    "answer_id" : 47384824,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Although this is an older question, I would like to share my thoughts on this. I hope, that it will be helpful to some of you.</p>\n\n<p>I am currently building a REST API which makes use of Spring Boot 1.5.2.RELEASE with Spring Framework 4.3.7.RELEASE. I use the Java Config approach (as opposed to XML configuration). Also, my project uses a global exception handling mechanism using the <code>@RestControllerAdvice</code> annotation (see later below).</p>\n\n<p>My project has the same requirements as yours: I want my REST API to return a <code>HTTP 404 Not Found</code> with an accompanying JSON payload in the HTTP response to the API client when it tries to send a request to an URL which does not exist. In my case, the JSON payload looks like this (which clearly differs from the Spring Boot default, btw.):</p>\n\n<pre><code>{\n    \"code\": 1000,\n    \"message\": \"No handler found for your request.\",\n    \"timestamp\": \"2017-11-20T02:40:57.628Z\"\n}\n</code></pre>\n\n<p>I finally made it work. Here are the main tasks you need to do in brief:</p>\n\n<ul>\n<li>Make sure that the <code>NoHandlerFoundException</code> is thrown if API clients\ncall URLS for which no handler method exists (see Step 1 below).</li>\n<li>Create a custom error class (in my case <code>ApiError</code>) which contains all the data that should be returned to the API client (see step 2).</li>\n<li>Create an exception handler which reacts on the <code>NoHandlerFoundException</code>\nand returns a proper error message to the API client (see step 3).</li>\n<li>Write a test for it and make sure, it works (see step 4).</li>\n</ul>\n\n<p>Ok, now on to the details:</p>\n\n<p><strong>Step 1: Configure application.properties</strong></p>\n\n<p>I had to add the following two configuration settings to the project's <code>application.properties</code> file:</p>\n\n<pre><code>spring.mvc.throw-exception-if-no-handler-found=true\nspring.resources.add-mappings=false\n</code></pre>\n\n<p>This makes sure, the <code>NoHandlerFoundException</code> is thrown in cases where a client tries to access an URL for which no controller method exists which would be able to handle the request.</p>\n\n<p><strong>Step 2: Create a Class for API Errors</strong></p>\n\n<p>I made a class similar to the one suggested in <a href=\"http://www.baeldung.com/global-error-handler-in-a-spring-rest-api\" rel=\"noreferrer\">this article</a> on Eugen Paraschiv's blog. This class represents an API error. This information is \nsent to the client in the HTTP response body in case of an error.</p>\n\n<pre><code>public class ApiError {\n\n    private int code;\n    private String message;\n    private Instant timestamp;\n\n    public ApiError(int code, String message) {\n        this.code = code;\n        this.message = message;\n        this.timestamp = Instant.now();\n    }\n\n    public ApiError(int code, String message, Instant timestamp) {\n        this.code = code;\n        this.message = message;\n        this.timestamp = timestamp;\n    }\n\n    // Getters and setters here...\n}\n</code></pre>\n\n<p><strong>Step 3: Create / Configure a Global Exception Handler</strong></p>\n\n<p>I use the following class to handle exceptions (for simplicity, I have removed import statements, logging code and some other, non-relevant pieces of code):</p>\n\n<pre><code>@RestControllerAdvice\npublic class GlobalExceptionHandler {\n\n    @ExceptionHandler(NoHandlerFoundException.class)\n    @ResponseStatus(HttpStatus.NOT_FOUND)\n    public ApiError noHandlerFoundException(\n            NoHandlerFoundException ex) {\n\n        int code = 1000;\n        String message = \"No handler found for your request.\";\n        return new ApiError(code, message);\n    }\n\n    // More exception handlers here ...\n}\n</code></pre>\n\n<p><strong>Step 4: Write a test</strong></p>\n\n<p>I want to make sure, the API always returns the correct error messages to the calling client, even in the case of failure. Thus, I wrote a test like this:</p>\n\n<pre><code>@RunWith(SpringRunner.class)\n@SpringBootTest(webEnvironment = SprintBootTest.WebEnvironment.RANDOM_PORT)\n@AutoConfigureMockMvc\n@ActiveProfiles(\"dev\")\npublic class GlobalExceptionHandlerIntegrationTest {\n\n    public static final String ISO8601_DATE_REGEX =\n        \"^\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}\\\\.\\\\d{3}Z$\";\n\n    @Autowired\n    private MockMvc mockMvc;\n\n    @Test\n    @WithMockUser(roles = \"DEVICE_SCAN_HOSTS\")\n    public void invalidUrl_returnsHttp404() throws Exception {\n        RequestBuilder requestBuilder = getGetRequestBuilder(\"/does-not-exist\");\n        mockMvc.perform(requestBuilder)\n            .andExpect(status().isNotFound())\n            .andExpect(jsonPath(\"$.code\", is(1000)))\n            .andExpect(jsonPath(\"$.message\", is(\"No handler found for your request.\")))\n            .andExpect(jsonPath(\"$.timestamp\", RegexMatcher.matchesRegex(ISO8601_DATE_REGEX)));\n    }\n\n    private RequestBuilder getGetRequestBuilder(String url) {\n        return MockMvcRequestBuilders\n            .get(url)\n            .accept(MediaType.APPLICATION_JSON);\n    }\n</code></pre>\n\n<p>The <code>@ActiveProfiles(\"dev\")</code> annotation can be left away. I use it only as I work with different profiles. The <code>RegexMatcher</code> is a custom <a href=\"http://hamcrest.org/JavaHamcrest/\" rel=\"noreferrer\">Hamcrest matcher</a> I use to better handle timestamp fields. Here's the code (I found it <a href=\"http://www.vogella.com/tutorials/Hamcrest/article.html\" rel=\"noreferrer\">here</a>):</p>\n\n<pre><code>public class RegexMatcher extends TypeSafeMatcher&lt;String&gt; {\n\n    private final String regex;\n\n    public RegexMatcher(final String regex) {\n        this.regex = regex;\n    }\n\n    @Override\n    public void describeTo(final Description description) {\n        description.appendText(\"matches regular expression=`\" + regex + \"`\");\n    }\n\n    @Override\n    public boolean matchesSafely(final String string) {\n        return string.matches(regex);\n    }\n\n    // Matcher method you can call on this matcher class\n    public static RegexMatcher matchesRegex(final String string) {\n        return new RegexMatcher(regex);\n    }\n}\n</code></pre>\n\n<p><strong>Some further notes from my side:</strong></p>\n\n<ul>\n<li>In many other posts on StackOverflow, people suggested setting the <code>@EnableWebMvc</code> annotation. This was not necessary in my case.</li>\n<li>This approach works well with MockMvc (see test above).</li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6174988,
+      "reputation" : 11519,
+      "user_id" : 4812170,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://i.sstatic.net/6oHM1.jpg?s=256",
+      "display_name" : "vaquar khan",
+      "link" : "https://stackoverflow.com/users/4812170/vaquar-khan"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1528475273,
+    "last_edit_date" : 1528475273,
+    "creation_date" : 1528474907,
+    "answer_id" : 50764781,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>@RestControllerAdvice is a new feature of Spring Framework 4.3 to handle Exception with RestfulApi by a cross-cutting concern solution:</p>\n\n<pre><code> package com.khan.vaquar.exception;\n\nimport javax.servlet.http.HttpServletRequest;\n\nimport org.owasp.esapi.errors.IntrusionException;\nimport org.owasp.esapi.errors.ValidationException;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\nimport org.springframework.http.HttpStatus;\nimport org.springframework.web.bind.MissingServletRequestParameterException;\nimport org.springframework.web.bind.annotation.ExceptionHandler;\nimport org.springframework.web.bind.annotation.ResponseStatus;\nimport org.springframework.web.bind.annotation.RestControllerAdvice;\nimport org.springframework.web.servlet.NoHandlerFoundException;\n\nimport com.fasterxml.jackson.core.JsonProcessingException;\nimport com.khan.vaquar.domain.ErrorResponse;\n\n/**\n * Handles exceptions raised through requests to spring controllers.\n **/\n@RestControllerAdvice\npublic class RestExceptionHandler {\n\n    private static final String TOKEN_ID = \"tokenId\";\n\n    private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);\n\n    /**\n     * Handles InstructionExceptions from the rest controller.\n     * \n     * @param e IntrusionException\n     * @return error response POJO\n     */\n    @ResponseStatus(HttpStatus.BAD_REQUEST)\n    @ExceptionHandler(value = IntrusionException.class)\n    public ErrorResponse handleIntrusionException(HttpServletRequest request, IntrusionException e) {       \n        log.warn(e.getLogMessage(), e);\n        return this.handleValidationException(request, new ValidationException(e.getUserMessage(), e.getLogMessage()));\n    }\n\n    /**\n     * Handles ValidationExceptions from the rest controller.\n     * \n     * @param e ValidationException\n     * @return error response POJO\n     */\n    @ResponseStatus(HttpStatus.BAD_REQUEST)\n    @ExceptionHandler(value = ValidationException.class)\n    public ErrorResponse handleValidationException(HttpServletRequest request, ValidationException e) {     \n        String tokenId = request.getParameter(TOKEN_ID);\n        log.info(e.getMessage(), e);\n\n        if (e.getUserMessage().contains(\"Token ID\")) {\n            tokenId = \"&lt;OMITTED&gt;\";\n        }\n\n        return new ErrorResponse(   tokenId,\n                                    HttpStatus.BAD_REQUEST.value(), \n                                    e.getClass().getSimpleName(),\n                                    e.getUserMessage());\n    }\n\n    /**\n     * Handles JsonProcessingExceptions from the rest controller.\n     * \n     * @param e JsonProcessingException\n     * @return error response POJO\n     */\n    @ResponseStatus(HttpStatus.BAD_REQUEST)\n    @ExceptionHandler(value = JsonProcessingException.class)\n    public ErrorResponse handleJsonProcessingException(HttpServletRequest request, JsonProcessingException e) {     \n        String tokenId = request.getParameter(TOKEN_ID);\n        log.info(e.getMessage(), e);\n        return new ErrorResponse(   tokenId,\n                                    HttpStatus.BAD_REQUEST.value(), \n                                    e.getClass().getSimpleName(),\n                                    e.getOriginalMessage());\n    }\n\n    /**\n     * Handles IllegalArgumentExceptions from the rest controller.\n     * \n     * @param e IllegalArgumentException\n     * @return error response POJO\n     */\n    @ResponseStatus(HttpStatus.BAD_REQUEST)\n    @ExceptionHandler(value = IllegalArgumentException.class)\n    public ErrorResponse handleIllegalArgumentException(HttpServletRequest request, IllegalArgumentException e) {\n        String tokenId = request.getParameter(TOKEN_ID);\n        log.info(e.getMessage(), e);\n        return new ErrorResponse(   tokenId,\n                                    HttpStatus.BAD_REQUEST.value(), \n                                    e.getClass().getSimpleName(), \n                                    e.getMessage());\n    }\n\n    @ResponseStatus(HttpStatus.BAD_REQUEST)\n    @ExceptionHandler(value = UnsupportedOperationException.class)\n    public ErrorResponse handleUnsupportedOperationException(HttpServletRequest request, UnsupportedOperationException e) {\n        String tokenId = request.getParameter(TOKEN_ID);\n        log.info(e.getMessage(), e);\n        return new ErrorResponse(   tokenId,\n                                    HttpStatus.BAD_REQUEST.value(), \n                                    e.getClass().getSimpleName(), \n                                    e.getMessage());\n    }\n\n    /**\n     * Handles MissingServletRequestParameterExceptions from the rest controller.\n     * \n     * @param e MissingServletRequestParameterException\n     * @return error response POJO\n     */\n    @ResponseStatus(HttpStatus.BAD_REQUEST)\n    @ExceptionHandler(value = MissingServletRequestParameterException.class)\n    public ErrorResponse handleMissingServletRequestParameterException( HttpServletRequest request, \n                                                                        MissingServletRequestParameterException e) {\n        String tokenId = request.getParameter(TOKEN_ID);\n        log.info(e.getMessage(), e);\n        return new ErrorResponse(   tokenId,\n                                    HttpStatus.BAD_REQUEST.value(), \n                                    e.getClass().getSimpleName(), \n                                    e.getMessage());\n    }\n\n    /**\n     * Handles NoHandlerFoundExceptions from the rest controller.\n     * \n     * @param e NoHandlerFoundException\n     * @return error response POJO\n     */\n    @ResponseStatus(HttpStatus.NOT_FOUND)\n    @ExceptionHandler(value = NoHandlerFoundException.class)\n    public ErrorResponse handleNoHandlerFoundException(HttpServletRequest request, NoHandlerFoundException e) {\n        String tokenId = request.getParameter(TOKEN_ID);\n        log.info(e.getMessage(), e);\n        return new ErrorResponse(   tokenId,\n                                    HttpStatus.NOT_FOUND.value(), \n                                    e.getClass().getSimpleName(), \n                                    \"The resource \" + e.getRequestURL() + \" is unavailable\");\n    }\n\n    /**\n     * Handles all remaining exceptions from the rest controller.\n     * \n     * This acts as a catch-all for any exceptions not handled by previous exception handlers.\n     * \n     * @param e Exception\n     * @return error response POJO\n     */\n    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)\n    @ExceptionHandler(value = Exception.class)\n    public ErrorResponse handleException(HttpServletRequest request, Exception e) {\n        String tokenId = request.getParameter(TOKEN_ID);\n        log.error(e.getMessage(), e);\n        return new ErrorResponse(   tokenId,\n                                    HttpStatus.INTERNAL_SERVER_ERROR.value(), \n                                    e.getClass().getSimpleName(), \n                                    \"An internal error occurred\");\n    }   \n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6783160,
+      "reputation" : 1011,
+      "user_id" : 5222747,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/1193036ce512354db8b0349586c3ff7d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Lym Zoy",
+      "link" : "https://stackoverflow.com/users/5222747/lym-zoy"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1547639986,
+    "creation_date" : 1547639986,
+    "answer_id" : 54216634,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For people that want to response according to http status code, you can use the <code>ErrorController</code> way:</p>\n\n<pre><code>@Controller\npublic class CustomErrorController extends BasicErrorController {\n\n    public CustomErrorController(ServerProperties serverProperties) {\n        super(new DefaultErrorAttributes(), serverProperties.getError());\n    }\n\n    @Override\n    public ResponseEntity error(HttpServletRequest request) {\n        HttpStatus status = getStatus(request);\n        if (status.equals(HttpStatus.INTERNAL_SERVER_ERROR)){\n            return ResponseEntity.status(status).body(ResponseBean.SERVER_ERROR);\n        }else if (status.equals(HttpStatus.BAD_REQUEST)){\n            return ResponseEntity.status(status).body(ResponseBean.BAD_REQUEST);\n        }\n        return super.error(request);\n    }\n}\n</code></pre>\n\n<p>The <code>ResponseBean</code> here is my custom pojo for response.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16659495,
+      "reputation" : 404,
+      "user_id" : 12039826,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/XHml3.png?s=256",
+      "display_name" : "ajesh",
+      "link" : "https://stackoverflow.com/users/12039826/ajesh"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1655097529,
+    "creation_date" : 1655097529,
+    "answer_id" : 72598061,
+    "question_id" : 28902374,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>Simple exception controller class with RestController Annotation will take care the exception handling at controller level.</strong></p>\n<pre><code>    @RestControllerAdvice\n    public class ExceptionController\n    {\n        // Mention the exception here..\n        @ExceptionHandler(value = MethodArgumentNotValidException.class)\n        public ResponseEntity&lt;?&gt; exceptionHandler(MethodArgumentNotValidException e)\n        {\n            var errors = e.getBindingResult().getAllErrors().stream()\n                          .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());\n            var response = new ResponseBuilder()\n                .withHttpStatus(HttpStatus.BAD_REQUEST.value())\n                .withMessage(CustomStatus.FAILED.getMessage())\n                .withErrorCode(CustomStatus.FAILED.getValue())\n                .withErrorDescription(errors)\n                .build();\n            return new ResponseEntity&lt;&gt;(response, HttpStatus.BAD_REQUEST);\n        }\n    }\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 210903,
+    "reputation" : 4021,
+    "user_id" : 462771,
+    "user_type" : "registered",
+    "accept_rate" : 73,
+    "profile_image" : "https://www.gravatar.com/avatar/afca67df1d070bcdd1556bd5d38a566a?s=256&d=identicon&r=PG",
+    "display_name" : "astrien",
+    "link" : "https://stackoverflow.com/users/462771/astrien"
+  },
+  "is_answered" : true,
+  "view_count" : 383956,
+  "accepted_answer_id" : 30193013,
+  "answer_count" : 11,
+  "score" : 203,
+  "last_activity_date" : 1671839402,
+  "creation_date" : 1425656788,
+  "last_edit_date" : 1519060165,
+  "question_id" : 28902374,
+  "link" : "https://stackoverflow.com/questions/28902374/spring-boot-rest-service-exception-handling",
+  "title" : "Spring Boot REST service exception handling",
+  "body" : "<p>I am trying to set up a large-scale REST services server.  We're using Spring Boot 1.2.1 Spring 4.1.5, and Java 8.  Our controllers are implementing @RestController and the standard @RequestMapping annotations.</p>\n\n<p>My problem is that Spring Boot sets up a default redirect for controller exceptions to <code>/error</code>.  From the docs:</p>\n\n<blockquote>\n  <p>Spring Boot provides an /error mapping by default that handles all errors in a sensible way, and it is registered as a ‘global’ error page in the servlet container. </p>\n</blockquote>\n\n<p>Coming from years writing REST applications with Node.js, this is, to me, anything but sensible.  Any exception a service endpoint generates should return in the response.  I can't understand why you'd send a redirect to what is most likely an Angular or JQuery SPA consumer which is only looking for an answer and can't or won't take any action on a redirect.</p>\n\n<p>What I want to do is set up a global error handler that can take any exception - either purposefully thrown from a request mapping method or auto-generated by Spring (404 if no handler method is found for the request path signature), and return a standard formatted error response (400, 500, 503, 404) to the client without any MVC redirects.  Specifically, we are going to take the error, log it to NoSQL with a UUID, then return to the client the right HTTP error code with the UUID of the log entry in the JSON body.</p>\n\n<p>The docs have been vague on how to do this.  It seems to me that you have to either create your own <a href=\"http://docs.spring.io/spring-boot/docs/1.2.2.RELEASE/api/org/springframework/boot/autoconfigure/web/ErrorController.html\" rel=\"noreferrer\">ErrorController</a> implementation or use <a href=\"http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html\" rel=\"noreferrer\">ControllerAdvice</a> in some fashion, but all the examples I've seen still include forwarding the response to some kind of error mapping, which doesn't help.  Other examples suggest that you'd have to list every Exception type you want to handle instead of just listing \"Throwable\" and getting everything.</p>\n\n<p>Can anyone tell me what I missed, or point me in the right direction on how to do this without suggesting up the chain that Node.js would be easier to deal with?  </p>\n"
+}

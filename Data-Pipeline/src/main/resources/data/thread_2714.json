@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "amazon-s3" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 5695434,
+      "reputation" : 540,
+      "user_id" : 4505013,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8c705ee8ea37208f170f19cdd470c45d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "mhbrooks",
+      "link" : "https://stackoverflow.com/users/4505013/mhbrooks"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1443520505,
+    "post_id" : 32822475,
+    "comment_id" : 53516404,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Are you behind any sort of company network/web proxy or just a standard internet connection?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 11957844,
+      "reputation" : 476,
+      "user_id" : 8749662,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-oyMzbAEbxFw/AAAAAAAAAAI/AAAAAAAAABI/JT743_BwUgg/s256-rj/photo.jpg",
+      "display_name" : "Niravdas",
+      "link" : "https://stackoverflow.com/users/8749662/niravdas"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1554970558,
+    "creation_date" : 1554970558,
+    "answer_id" : 55627765,
+    "question_id" : 32822475,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You have to determine</p>\n\n<ul>\n<li>SECRET_KEY</li>\n<li>ACCESS_KEY</li>\n<li>END_POINT_URL</li>\n</ul>\n\n<p>for authentication purpose.\nand use:</p>\n\n<pre><code>    AmazonS3 s3;\n    AWSCredentials credentials = new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY);\n    s3 = new AmazonS3Client(credentials);\n    s3.setEndpoint(END_POINT_URL);\n</code></pre>\n\n<p>now you can upload image using <code>s3</code> object.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7027679,
+    "reputation" : 21,
+    "user_id" : 5384561,
+    "user_type" : "registered",
+    "profile_image" : "https://graph.facebook.com/951679351563879/picture?type=large",
+    "display_name" : "Kuldeep Kumar Sharma",
+    "link" : "https://stackoverflow.com/users/5384561/kuldeep-kumar-sharma"
+  },
+  "is_answered" : false,
+  "view_count" : 9284,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1764061585,
+  "creation_date" : 1443441654,
+  "last_edit_date" : 1677520669,
+  "question_id" : 32822475,
+  "link" : "https://stackoverflow.com/questions/32822475/com-amazonaws-amazonclientexception-unable-to-execute-http-request-peer-not-au",
+  "title" : "com.amazonaws.AmazonClientException: Unable to execute HTTP request: peer not authenticated",
+  "body" : "<p>I created a new account on amazon aws to use s3 bucket and I've written this code to upload one image file to s3 bucket but it gives me this exception: >Unable to execute HTTP request: peer not authenticated.</p>\n\n<p>This is my main method:</p>\n\n<pre><code>public class Main2 {\n\n    public static void main(String[] args) throws IOException {\n        File file=new File(\"C:\\\\Users\\\\KDSss\\\\OneDrive\\\\Pictures\\\\my photo 001.jpg\");\n        try {\n            InputStream targetStream = new FileInputStream(file);\n            S3Upload.uploadImage(targetStream, \"Discussion\", \"jpg\");\n        } catch (FileNotFoundException e) {\n            e.printStackTrace();\n        }\n    }\n}\n</code></pre>\n\n<p>And this is my S3Upload.java</p>\n\n<pre><code>public class S3Upload \n{\n\n     public static void uploadImage(InputStream path, String imageName, String imageType) throws IOException\n     {\n          String existingBucketName = \"housejoy/hjcustomerimage/\";\n          String keyName = imageName+\".png\";\n          AmazonS3 s3Client = new AmazonS3Client(new PropertiesCredentials(UploadFile.class.getResourceAsStream(\"AwsCredentials.properties\")));\n          ObjectMetadata objectMetadata = new ObjectMetadata();\n          objectMetadata.setContentType(imageType);\n          PutObjectRequest putObjectRequest = new PutObjectRequest(existingBucketName, keyName, path, objectMetadata);\n          putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);\n          PutObjectResult result = s3Client.putObject(putObjectRequest);\n          System.out.println(\"Etag:\" + result.getETag() + \"--&gt;\" + result);\n         }\n}\n</code></pre>\n\n<p>After running, I'm getting this exception:</p>\n\n<pre><code>com.amazonaws.AmazonClientException: Unable to execute HTTP request: peer not authenticated\n    at com.amazonaws.http.AmazonHttpClient.executeHelper(AmazonHttpClient.java:328)\n    at com.amazonaws.http.AmazonHttpClient.execute(AmazonHttpClient.java:165)\n    at com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:2906)\n    at com.amazonaws.services.s3.AmazonS3Client.putObject(AmazonS3Client.java:1123)\n    at com.housejoy.ce.jaxb.S3Upload.uploadImage(S3Upload.java:32)......\nCaused by: javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated\n    at sun.security.ssl.SSLSessionImpl.getPeerCertificates(SSLSessionImpl.java:421)\n    at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:128)\n    at org.apache.http.conn.ssl.SSLSocketFactory.connectSocket(SSLSocketFactory.java:572)\n    at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180)\n    at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:151)........com.amazonaws.AmazonClientException: Unable to execute HTTP request: peer not authenticated\n    at com.amazonaws.http.AmazonHttpClient.executeHelper(AmazonHttpClient.java:328)\n    at com.amazonaws.http.AmazonHttpClient.execute(AmazonHttpClient.java:165)\n    at com.amazonaws.services.s3.AmazonS3Client.invoke(AmazonS3Client.java:2906)\n    at com.amazonaws.services.s3.AmazonS3Client.putObject(AmazonS3Client.java:1123)\n    at com.housejoy.ce.jaxb.S3Upload.uploadImage(S3Upload.java:32)\n    at com.housejoy.ce.service.UploadImageService.uploadImage(UploadImageService.java:171.................Caused by: javax.net.ssl.SSLPeerUnverifiedException: peer not authenticated\n    at sun.security.ssl.SSLSessionImpl.getPeerCertificates(SSLSessionImpl.java:421)\n    at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:128)\n    at org.apache.http.conn.ssl.SSLSocketFactory.connectSocket(SSLSocketFactory.java:572)\n    at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180)\n</code></pre>\n"
+}

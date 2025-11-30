@@ -1,0 +1,103 @@
+{
+  "tags" : [ "java", "mysql", "sql", "spring", "hibernate" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 4470050,
+      "reputation" : 69587,
+      "user_id" : 3636601,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/e46b43f329f0228186fb75d496316d33?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jens",
+      "link" : "https://stackoverflow.com/users/3636601/jens"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1434706130,
+    "post_id" : 30934501,
+    "comment_id" : 49904211,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I think you miss the group by statement."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6456641,
+        "reputation" : 49,
+        "user_id" : 5001800,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/666bb3d900b81a47ffd52b4dbb231110?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Shruthi",
+        "link" : "https://stackoverflow.com/users/5001800/shruthi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1434715480,
+      "post_id" : 30937446,
+      "comment_id" : 49910131,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The same answer . Problem in iterating in java itseems??."
+    } ],
+    "owner" : {
+      "account_id" : 1012936,
+      "reputation" : 155902,
+      "user_id" : 1025118,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/D9ELN.jpg?s=256",
+      "display_name" : "Vlad Mihalcea",
+      "link" : "https://stackoverflow.com/users/1025118/vlad-mihalcea"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1434716727,
+    "last_edit_date" : 1434716727,
+    "creation_date" : 1434714627,
+    "answer_id" : 30937446,
+    "question_id" : 30934501,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You should always use GROUP BY, because traditionally, <a href=\"https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html\" rel=\"nofollow\">MySQL has been the only RDBMS allowing optional GROUP BY predicates</a>.</p>\n\n<p>Use this query:</p>\n\n<pre><code>String sql=\"SELECT GROUP_CONCAT(module_id) AS module_id\n         FROM sox_customer_partner_modules \"\n      + \"WHERE customer_id= :customer_id\n         AND partner_id= :partner_id\n         AND STATUS='1' \n         GROUP BY customer_id, partner_id\";\n</code></pre>\n\n<p>Of course you should know better which columns should identify a group.</p>\n\n<p>Also change this line:</p>\n\n<pre><code>query.addScalar(\"module_id\", Hibernate.INTEGER);\n</code></pre>\n\n<p>to:</p>\n\n<pre><code>query.addScalar(\"module_id\", Hibernate.STRING);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 449256,
+      "reputation" : 2153,
+      "user_id" : 843943,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/1V5SP.jpg?s=256",
+      "display_name" : "Grim",
+      "link" : "https://stackoverflow.com/users/843943/grim"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760875771,
+    "creation_date" : 1760875771,
+    "answer_id" : 79794258,
+    "question_id" : 30934501,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using HQL you could use\n<code> ARRAY_AGG(module_id) WITHIN GROUP (ORDER BY module_id) AS module_id</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6456641,
+    "reputation" : 49,
+    "user_id" : 5001800,
+    "user_type" : "registered",
+    "accept_rate" : 80,
+    "profile_image" : "https://www.gravatar.com/avatar/666bb3d900b81a47ffd52b4dbb231110?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Shruthi",
+    "link" : "https://stackoverflow.com/users/5001800/shruthi"
+  },
+  "is_answered" : true,
+  "view_count" : 8023,
+  "accepted_answer_id" : 30937446,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1760875771,
+  "creation_date" : 1434705813,
+  "last_edit_date" : 1434716484,
+  "question_id" : 30934501,
+  "link" : "https://stackoverflow.com/questions/30934501/fetching-group-concat-comma-separated-values-using-hibernate",
+  "title" : "Fetching GROUP_CONCAT comma separated values using Hibernate",
+  "body" : "<p>This is my query to iterate module_id. \nEx: 1,2,3,4,5   (Using GROUP CONCAT).</p>\n\n<pre><code> String sql=\"SELECT GROUP_CONCAT(module_id) AS module_id\n             FROM sox_customer_partner_modules \"\n          + \"WHERE customer_id= :customer_id\n             AND partner_id= :partner_id\n             AND STATUS='1'\";\n</code></pre>\n\n<p>My query is executing fine and it's returning result as 1,2,3,4,5. But when I'm iterating in java , it fetch only the first value i.e, 1</p>\n\n<p>Using hibernate I'm fetching the records.</p>\n\n<p>Problem is I can able to fetch only first record. Ex: 1</p>\n\n<p>But I want to fetch like 1,2,3,4,5 as a String.</p>\n\n<p>My java code is :</p>\n\n<pre><code>Session session = sessionFactory.getCurrentSession();\nSQLQuery query = session.createSQLQuery(sql);\nquery.addScalar(\"module_id\", Hibernate.INTEGER);\nquery.setParameter(\"customer_id\", customer_id);\nquery.setParameter(\"partner_id\", partner_id);\n\nInteger module_id=0;\nList&lt;Object&gt; CustModList = query.list();\n\nreturn CustModList.toString(); //Which returns 1.. But I want 1,2,3,4,5\n</code></pre>\n\n<p>Please help needed . Thanks in advance</p>\n"
+}

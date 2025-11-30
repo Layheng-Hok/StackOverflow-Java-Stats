@@ -1,0 +1,42 @@
+{
+  "tags" : [ "java", "owasp", "veracode" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1979094,
+      "reputation" : 4148,
+      "user_id" : 1776132,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/UpWqp.png?s=256",
+      "display_name" : "Smile",
+      "link" : "https://stackoverflow.com/users/1776132/smile"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1595827616,
+    "creation_date" : 1595827616,
+    "answer_id" : 63109153,
+    "question_id" : 63108987,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can read about <code>Encode</code> class in <a href=\"https://owasp.org/owasp-java-encoder/encoder/apidocs/org/owasp/encoder/Encode.html\" rel=\"nofollow noreferrer\">docs</a></p>\n<blockquote>\n<p>Encode -- fluent interface for contextual encoding.</p>\n<p>There are two versions of each contextual encoding method. The first takes a String argument and returns the encoded version as a String. The second version writes the encoded version directly to a Writer.</p>\n<p>Please make sure to read and understand the context that the method encodes for. Encoding for the incorrect context will likely lead to exposing a cross-site scripting vulnerability.</p>\n</blockquote>\n<p>And <a href=\"https://owasp.org/www-community/vulnerabilities/CRLF_Injection\" rel=\"nofollow noreferrer\">CRLF Injection</a></p>\n<blockquote>\n<p>The term CRLF refers to Carriage Return (ASCII 13, \\r) Line Feed (ASCII 10, \\n). They’re used to note the termination of a line, however, dealt with differently in today’s popular Operating Systems. For example: in Windows both a CR and LF are required to note the end of a line, whereas in Linux/UNIX a LF is only required. In the HTTP protocol, the CR-LF sequence is always used to terminate a line.</p>\n<p>A CRLF Injection attack occurs when a user manages to submit a CRLF into an application. This is most commonly done by modifying an HTTP parameter or URL.</p>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 16849766,
+    "reputation" : 27,
+    "user_id" : 13211771,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/20a959c3e0c8358a41c1cf92ec53b104?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Rajat Ambastha",
+    "link" : "https://stackoverflow.com/users/13211771/rajat-ambastha"
+  },
+  "is_answered" : false,
+  "view_count" : 11244,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1758999695,
+  "creation_date" : 1595826271,
+  "last_edit_date" : 1595835784,
+  "question_id" : 63108987,
+  "link" : "https://stackoverflow.com/questions/63108987/how-to-use-org-owasp-encoder-encode-in-java",
+  "title" : "How to use org.owasp.encoder.Encode in Java?",
+  "body" : "<pre><code>public static void sendEmail(String to, String cc, String subject, String content) throws IOException {\n    LOG.info(ESAPIValidation.sanitizeParam((String.format(&quot;EmailUtil.sendEMail() \\n To: %s\\n Subjet: %s \\n  Content: %s&quot;, to, subject, content))));\n    String host = ApplicationUtil.getProperty(ApplicationConstants.AL_WS_MAIL_HOST);\n    String port = ApplicationUtil.getProperty(ApplicationConstants.AL_WS_MAIL_PORT);\n    String from = ApplicationUtil.getProperty(ApplicationConstants.AL_WS_MAIL_FROM);\n    String defaultToAdd = ApplicationUtil.getProperty(ApplicationConstants.AL_WS_DEFAULT_MAIL);\n    String emailSystemPrefix = ApplicationUtil.getProperty(ApplicationConstants.EMAIL_PREFIX);\n\n    if (StringUtil.isNullOrEmpty(emailSystemPrefix)) {\n        emailSystemPrefix = &quot;&quot;;\n    } else {\n        emailSystemPrefix =  emailSystemPrefix  + &quot; - &quot;; \n    }\n\n    Properties properties = System.getProperties();\n    properties.setProperty(&quot;mail.smtp.host&quot;, host);\n    properties.setProperty(&quot;mail.smtp.port&quot;, port);\n    Session session = Session.getDefaultInstance(properties);\n\n    try {\n        MimeMessage message = new MimeMessage(session);\n        message.setFrom(new InternetAddress(from));\n\n        addToList(message, to);\n        \n        addCCList(message, cc);\n        if(cc == null || (cc != null &amp;&amp; !cc.equals(defaultToAdd)))\n        addCCList(message, defaultToAdd);\n\n        content = addFooter(content);\n        message.setSubject(emailSystemPrefix + subject);\n        message.setContent(content.replace(&quot;textarea&quot;, &quot;div&quot;), &quot;text/html; charset=utf-8&quot;);\n        Transport.send(message);\n\n    } catch (AddressException addressException) {\n        LOG.warn(&quot;EmailUtil.triggerDBFailureMail() AddressException &quot;, addressException);\n    } catch (MessagingException messageException) {\n        LOG.warn(&quot;EmailUtil.triggerDBFailureMail() MessagingException &quot;, messageException);\n    }\n}\n</code></pre>\n<p>Here in this code, I'm getting Veracode issue:</p>\n<blockquote>\n<p>Improper Neutralization of CRLF Sequences('CRLF Injection')(CWE ID 93)</p>\n</blockquote>\n<p>on</p>\n<pre><code>message.setSubject(emailSystemPrefix + subject);\n</code></pre>\n<p>I'm trying to use <code>org.owasp.encoder.Encode</code> to resolve the same, but I do not know the usage of <code>Encode</code> class. Can anybody please brief about implementation of <code>Encode</code> class, where is it used, what is resolved with it?</p>\n"
+}

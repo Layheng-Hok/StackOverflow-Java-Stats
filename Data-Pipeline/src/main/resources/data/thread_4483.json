@@ -1,0 +1,122 @@
+{
+  "tags" : [ "java", "apache-poi", "saxon", "xalan" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 964210,
+      "reputation" : 1076,
+      "user_id" : 987959,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a51610eaffa3f4e8022a07bcd070ab3c?s=256&d=identicon&r=PG",
+      "display_name" : "PJ Fanning",
+      "link" : "https://stackoverflow.com/users/987959/pj-fanning"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1629829530,
+    "post_id" : 68909627,
+    "comment_id" : 121788663,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "can you fix the apparent typo? xlsx is what you probably mean not xslt? also, the answer would be more useful if you provide the code that demonstrated the issue"
+  }, {
+    "owner" : {
+      "account_id" : 22553626,
+      "reputation" : 21,
+      "user_id" : 16742378,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fe26b08b593de83a630a5b4cc995458f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jen_H",
+      "link" : "https://stackoverflow.com/users/16742378/jen-h"
+    },
+    "reply_to_user" : {
+      "account_id" : 964210,
+      "reputation" : 1076,
+      "user_id" : 987959,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a51610eaffa3f4e8022a07bcd070ab3c?s=256&d=identicon&r=PG",
+      "display_name" : "PJ Fanning",
+      "link" : "https://stackoverflow.com/users/987959/pj-fanning"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1629921518,
+    "post_id" : 68909627,
+    "comment_id" : 121818319,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Thanks for the feedback, I have edited my typo. The error occurs when invoking the write(FileOutputStream) method on the Workbook object. I haven&#39;t included the code as it was embedded in a wider solution, and I did not require changes to the code as it was an issues with versions of jars on the classpath. I will endeavour to include code example in future, but will need to check with company I work for as it is propriety software."
+  }, {
+    "owner" : {
+      "account_id" : 6905216,
+      "reputation" : 99,
+      "user_id" : 5303373,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e33c0d07948f62dcbef3358ce952259d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Eva",
+      "link" : "https://stackoverflow.com/users/5303373/eva"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1680091993,
+    "post_id" : 68909627,
+    "comment_id" : 133837708,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "In my case it was due to an HTTP timeout of my request, which closes the output stream. It took me a little to find out because my HTTP request went through a <b>proxy,</b> which was the one that timed out.  A possible solution is to avoid sending synchronous requests for big file exports, but instead use a websocket which tells the frontend when the export is done and ready to be requested for download."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 22553626,
+      "reputation" : 21,
+      "user_id" : 16742378,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fe26b08b593de83a630a5b4cc995458f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jen_H",
+      "link" : "https://stackoverflow.com/users/16742378/jen-h"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1629821116,
+    "last_edit_date" : 1629821116,
+    "creation_date" : 1629818677,
+    "answer_id" : 68910018,
+    "question_id" : 68909627,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Investigation</h2>\n<p>After digging into the POI code I noticed that POI does not re throw the exception in class <a href=\"https://poi.apache.org/apidocs/dev/org/apache/poi/openxml4j/opc/StreamHelper.html\" rel=\"nofollow noreferrer\">StreamHelper</a> when it attempts to write the org.w3c.dom.Document object to the OutputStream using <a href=\"https://docs.oracle.com/javase/7/docs/api/javax/xml/transform/Transformer.html#transform(javax.xml.transform.Source,%20javax.xml.transform.Result)\" rel=\"nofollow noreferrer\">transform(Source,Result)</a>\nA TransformerException is being thrown by the Transformer implementation.</p>\n<pre><code>When a DOMSource is used, saxon9-dom.jar must be on the classpath\n</code></pre>\n<p>This is resulting in a <em>False</em> being returned from the the saveXmlInStream method resulting in the OpenXML4JRuntimeException being thrown.\nI also noted that the unit test was using the JRE 7 Xalan implementation of the Transformer while the system test required Saxon 9.\nWhen we introduced the saxon9.jar to the Test case we were able to replicate the error.</p>\n<h2>Solution</h2>\n<p>We were able to identify the route cause as the 9.1.0.8 implementation of Saxon did not include an implementation for DOMSource. an additional jar saxon9-dom-9.1.0.8.jar was required.</p>\n<hr />\n<p>Alternatively use saxon9He.jar (9.3 or Higher) which does have an implement for DOMSource</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2397230,
+      "reputation" : 11,
+      "user_id" : 2095815,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2540064b2d4c44220b8b5063d52cbefb?s=256&d=identicon&r=PG",
+      "display_name" : "JET",
+      "link" : "https://stackoverflow.com/users/2095815/jet"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760103829,
+    "creation_date" : 1760103829,
+    "answer_id" : 79787402,
+    "question_id" : 68909627,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I received the same error and nothing suggested resolved my issue. My usage may differ from yours but I was creating an HTTP response using ResponseBuilder. While my code may not match your exact use, it may apply in a similar fashion.</p>\n<p>Note: I did walk a bit of the POI code and observed a Marshaller (assumed for the response writing the actual excel file) selected, based on the Content Type. Perhaps POI's choice here was interfering with the file writing...</p>\n<p>My solution was to change the Content-type</p>\n<p><strong><code>from</code></strong><code> &quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</code></p>\n<p><strong><code>to</code></strong><code> &quot;MediaType.APPLICATION_OCTET_STREAM&quot;</code></p>\n<p>The Code:</p>\n<pre><code>String fileName = &quot;very_important_excel_download.xlsx&quot;;\n\n// Annoying comments retained to show the before and after, \n// This was reordered, since we need the response object before we can set headers.\n//response.header(&quot;Content-Disposition&quot;,    &quot;attachment; filename=&quot;+fileName);\n//response.header(&quot;Set-Cookie&quot;, &quot;fileDownload=true; path=/&quot;);\n//response.header(&quot;Content-type&quot;, &quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;);\n\n\nResponseBuilder response = Response.ok(stream, MediaType.APPLICATION_OCTET_STREAM).header(&quot;Content-Disposition&quot;, &quot;attachment; filename=\\&quot;&quot; + fileName + &quot;\\&quot;&quot;);\nreturn response.build();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22553626,
+    "reputation" : 21,
+    "user_id" : 16742378,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/fe26b08b593de83a630a5b4cc995458f?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Jen_H",
+    "link" : "https://stackoverflow.com/users/16742378/jen-h"
+  },
+  "is_answered" : true,
+  "view_count" : 6300,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1760103829,
+  "creation_date" : 1629817246,
+  "last_edit_date" : 1629920281,
+  "question_id" : 68909627,
+  "link" : "https://stackoverflow.com/questions/68909627/java-poi-3-17-exception-org-apache-poi-openxml4j-exceptions-openxml4jruntimeexce",
+  "title" : "Java POI 3.17 Exception org.apache.poi.openxml4j.exceptions.OpenXML4JRuntimeException. The part /docProps/core.xml failed to be saved in the stream",
+  "body" : "<p>A colleague was struggling with the following error when attempting to write to a new xlsx file using Java POI 3.17 APIs</p>\n<pre><code>org.apache.poi.openxml4j.exceptions.OpenXML4JRuntimeException: Fail to save: an error occurs while saving the package : The part /docProps/core.xml failed to be saved in the stream with marshaller org.apache.poi.openxml4j.opc.internal.marshallers.ZipPackagePropertiesMarshaller@4ae061e\nat org.apache.poi.openxml4j.opc.ZipPackage.saveImpl(ZipPackage.java:595)\nat org.apache.poi.openxml4j.opc.OPCPackage.save(OPCPackage.java:1539)\nat org.apache.poi.POIXMLDocument.write(POIXMLDocument.java:227)\n</code></pre>\n<p>The code was able to pass unit tests but failed as part of system tests.\nI thought I would share my results here</p>\n"
+}

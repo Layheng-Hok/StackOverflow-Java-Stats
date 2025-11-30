@@ -1,0 +1,125 @@
+{
+  "tags" : [ "java", "db2", "cobol", "db2-zos" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 429767,
+      "reputation" : 13166,
+      "user_id" : 812837,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/2l9uC.jpg?s=256",
+      "display_name" : "Clockwork-Muse",
+      "link" : "https://stackoverflow.com/users/812837/clockwork-muse"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1500324119,
+    "post_id" : 45135934,
+    "comment_id" : 77275675,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : ".... okay, <i>why</i> do you want this?  What business problem are you trying to solve?  Note that any &#39;monitoring and decision&#39; you attempt to make will be subject to severe race conditions.  Note too that attempting to make a decision and do something else after either <code>ROLLBACK</code> or <code>COMMIT</code> is issued is liable to cause massive headaches.  Both of these statements nearly always succeed instantly, but if you want to do some extra work (like adding an extra row somewhere), that goes completely out the window.  Especially in the case of <code>ROLLBACK</code>, which may be auto-called for errors..."
+  }, {
+    "owner" : {
+      "account_id" : 11344498,
+      "reputation" : 11,
+      "user_id" : 8317388,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/51e4201d70ebc588a6e8abcea63ee8e0?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Cee",
+      "link" : "https://stackoverflow.com/users/8317388/cee"
+    },
+    "reply_to_user" : {
+      "account_id" : 429767,
+      "reputation" : 13166,
+      "user_id" : 812837,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/2l9uC.jpg?s=256",
+      "display_name" : "Clockwork-Muse",
+      "link" : "https://stackoverflow.com/users/812837/clockwork-muse"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1500360830,
+    "post_id" : 45135934,
+    "comment_id" : 77287355,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@Clockwork-Muse I totally agree, this approach is liable to cause headache. To make it simpler, if the main program issues an exec SQL commit, the controller program also has to issue a RRS Commit (SRRCMIT), on the other hand if the main program issues SQL rollback, the controller also has to issue RRS Rollback (SRRBACK). We opted for this approach as we cannot update the existing main programs. Disclaimer: This approach is still on design, as we are testing different approach and will choose the most effective one later.  Thanks!"
+  }, {
+    "owner" : {
+      "account_id" : 429767,
+      "reputation" : 13166,
+      "user_id" : 812837,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/2l9uC.jpg?s=256",
+      "display_name" : "Clockwork-Muse",
+      "link" : "https://stackoverflow.com/users/812837/clockwork-muse"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1500395842,
+    "post_id" : 45135934,
+    "comment_id" : 77313117,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I&#39;ve never used this feature (so can&#39;t speak to everything), but I feel this approach is doomed.  If your &quot;Main&quot; program is down for any reason, things aren&#39;t going to be committed like you want.  From the little I&#39;m reading, it looks like you want to call either <code>COMMIT</code> or <code>SRRCMIT</code>, but not both, and I&#39;m not sure what effect issuing the command would have (using that command implies you&#39;re doing some extra processing - but where?).  It sounds like what you want isn&#39;t a monitoring program, but some sort of interpretation/wrapper layer, but I&#39;m doubting you can replace <code>COMMIT</code>..."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 11344498,
+        "reputation" : 11,
+        "user_id" : 8317388,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/51e4201d70ebc588a6e8abcea63ee8e0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Cee",
+        "link" : "https://stackoverflow.com/users/8317388/cee"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1500373511,
+      "post_id" : 45148713,
+      "comment_id" : 77295960,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes I already scoured IBM Knowledge Center for DB2.  I&#39;m planning to explore your idea since we already have checkpoint table and it&#39;s existing on main programs. I can capture before and after image of the table and determine if there is a field value change. With that being said, If there is a change in commit interval, the main program issued a commit. For rollback, initial record will be inserted to checkpoint table as rollback identifier. Once the record is not found, the main program issued explicit Rollback, we&#39;ve built LE handlers for unexpected error in the call chain."
+    } ],
+    "owner" : {
+      "account_id" : 311089,
+      "reputation" : 10950,
+      "user_id" : 624463,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/995rN.png?s=256",
+      "display_name" : "cschneid",
+      "link" : "https://stackoverflow.com/users/624463/cschneid"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764281070,
+    "last_edit_date" : 1764281070,
+    "creation_date" : 1500307146,
+    "answer_id" : 45148713,
+    "question_id" : 45135934,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A quick look in the <a href=\"https://www.ibm.com/docs/en/db2-for-zos\" rel=\"nofollow noreferrer\">IBM Documentation for DB2</a> seems to indicate &quot;no.&quot;</p>\n<p>However, while not an exact match for your situation, here's what we used to do...</p>\n<p>Create a table, call it <code>APP_RESTART_DATA</code> with columns to uniquely identify an execution of your process.  We used <code>PROC_NAME</code> and <code>STEP_NAME</code> as we were confined to batch jobs.  Also have a <code>KEY</code> column and any other metadata you might find helpful in a restart situation.  Some people stored the record number instead of the actual key value.</p>\n<p>In your controller program, begin by doing a <code>SELECT</code> with your unique identifier(s) to determine if you're in restart mode.  If you get an <code>SQLCODE</code> of 0 then you are in restart mode and will have retrieved the last KEY for which a <code>COMMIT</code> was successfully executed.  Under these circumstances you must locate that key in your input data and then begin normal processing with the data immediately subsequent.  If you got an <code>SQLCODE</code> of 100 then you are not in restart mode; under these circumstances you can just begin normal processing at the start of your input data.</p>\n<p>As you process the input data and reach a <code>COMMIT</code> point, also <code>UPDATE</code> your <code>APP_RESTART_DATA</code> table with the new KEY.  Then <code>COMMIT</code>.  Our <code>COMMIT</code> points were also dictated by a parameter indicating how many logical units of work to process between <code>COMMITs</code>.  We could decrease this parameter if it became necessary to run batch processes during prime shift that were normally run off-shift.</p>\n<p>When you complete processing of your input data, <code>DELETE</code> the row for your process in the <code>APP_RESTART_DATA</code> table.</p>\n<p>Catching <code>ROLLBACK</code> might be tricky.  You could flag your row in <code>APP_RESTART_DATA</code> as having performed a <code>ROLLBACK</code> when done in the code, but if done implicitly in an abend situation you may find yourself registering a condition handler via the Language Environment <a href=\"https://www.ibm.com/docs/en/zos/3.2.0?topic=services-ceehdlrregister-user-written-condition-handler\" rel=\"nofollow noreferrer\">CEEHDLR</a> callable service so you get control and can indicate a <code>ROLLBACK</code> occurred.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 11344498,
+    "reputation" : 11,
+    "user_id" : 8317388,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/51e4201d70ebc588a6e8abcea63ee8e0?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Cee",
+    "link" : "https://stackoverflow.com/users/8317388/cee"
+  },
+  "is_answered" : false,
+  "view_count" : 1338,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1764281070,
+  "creation_date" : 1500265208,
+  "last_edit_date" : 1500290345,
+  "question_id" : 45135934,
+  "link" : "https://stackoverflow.com/questions/45135934/db2-system-runtime-table-to-retrieve-last-executed-sql-statement",
+  "title" : "DB2 System Runtime Table to retrieve last executed SQL Statement",
+  "body" : "<p>Is there a DB2 System Table - Batch Runtime log in Mainframe? In DB2 for i Series, there is a table function <code>QSYS2.GET_JOB_INFO()</code> that returns Job Information during runtime including the Status (Active /Complete) and most importantly <code>V_SQL_STATEMENT_TEXT</code> - Statement of the last SQL run.</p>\n\n<p>Scenario:\nI want to retrieve the last executed SQL Statement during runtime in Cobol Batch Job. The main purpose of this is to determine if a COMMIT or ROLLBACK has been issued, while the job is running. The aim is to create small program, let's call it \"controller\", to monitor DB2 when Commit or Commit interval is issued, or even Rollback. To be more specific - this \"controller\" will act as mini OS and will have the capacity to trigger the Main Programs.</p>\n\n<p>For instance, if the Main program issues a ROLLBACK the \"controller program\" can issue specific business logic and can control the updates. Updates can be done in both T1 and T2 Type of DB2 Connection. By that means, updates are done in batch client side or Java side running in EXCI (EXCI using RRS recovery).</p>\n"
+}

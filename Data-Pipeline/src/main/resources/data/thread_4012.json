@@ -1,0 +1,55 @@
+{
+  "tags" : [ "java", "gwt", "datagrid", "datastore", "gwt-rpc" ],
+  "comments" : [ {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user1443317"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1395878330,
+    "post_id" : 21252695,
+    "comment_id" : 34543805,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Be more specific. Getting some errors ?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1958719,
+      "reputation" : 198,
+      "user_id" : 1760997,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/3uOqq.jpg?s=256",
+      "display_name" : "Ankit Singla",
+      "link" : "https://stackoverflow.com/users/1760997/ankit-singla"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1397823007,
+    "creation_date" : 1397823007,
+    "answer_id" : 23153837,
+    "question_id" : 21252695,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In success method of your rpc call you are creating new local list and adding data to that local list named values which is never passed to your data grid.</p>\n\n<p>There are two solutions to this</p>\n\n<p>1) either use</p>\n\n<pre><code> dataGrid.setRowData(values); \n dataGrid.redraw(); \n</code></pre>\n\n<p>in success method.</p>\n\n<p>2) or use ListDataProvider.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3714306,
+    "reputation" : 11,
+    "user_id" : 3090888,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/3f0ddb44a05d3ffdb228c12953093307?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "TABET",
+    "link" : "https://stackoverflow.com/users/3090888/tabet"
+  },
+  "is_answered" : false,
+  "view_count" : 146,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761141158,
+  "creation_date" : 1390292546,
+  "last_edit_date" : 1761141158,
+  "question_id" : 21252695,
+  "link" : "https://stackoverflow.com/questions/21252695/gwt-datagrid-datastore-datagrid-not-viewed",
+  "title" : "gwt datagrid datastore , datagrid not viewed",
+  "body" : "<p>I try to display data in a <code>DataGrid</code>, but it does not work.</p>\n\n<p>Below is a snippet of my code:</p>\n\n<pre><code>public DataGridAffiche2() {        \n    super(true);\n\n    AbsolutePanel absolutePanel = new AbsolutePanel();\n    setWidget(absolutePanel);\n    absolutePanel.setSize(\"1002px\", \"404px\");\n    Label lblJaiAjoutAu = new Label(\"j'ai ajoutÃ© au dessous de cette ligne\");\n    absolutePanel.add(lblJaiAjoutAu, 10, 20);\n    System.out.println(\"ttt\");\n    final DataGrid&lt;Employe&gt; grid=new DataGrid&lt;Employe&gt;();\n    System.out.println(\"ttt1\");\n    final List&lt;Employe&gt; values=new ArrayList&lt;Employe&gt;();\n\n    System.out.println(\"ttt2\");\n\n    Employe p=new Employe();\n    System.out.println(\"ttt3\");    \n\n    rpc.afficheEmploye(new AsyncCallback&lt;List&lt;Employe&gt;&gt;() {\n        @Override\n        public void onSuccess(List&lt;Employe&gt; result) {\n            System.out.println(\"ttt4\");\n            List&lt;Employe&gt; values=new ArrayList&lt;Employe&gt;();\n            System.out.println(\"ttt5\");\n            System.out.println(\"datagridaffich2 avant values\");\n            System.out.print(values);\n            System.out.println(\"ttt6\");\n\n            for(Employe p:result ){\n                System.out.println(\"ttt7\");\n                values.add(p);\n                System.out.println(\"values hadek est \"+p);\n                System.out.println(\"firstName du client est \");\n                System.out.println(\"firstName du client est \"+values);\n                System.out.println(\"hada howa p \"+result);\n            }                  \n        }\n\n        @Override\n        public void onFailure(Throwable caught) {\n            System.out.println(\"ttt8\");\n        }\n    });\n\n    System.out.println(\"ttt9\");\n    grid.setAutoHeaderRefreshDisabled(true);\n    grid.setAutoFooterRefreshDisabled(true);\n    ListHandler&lt;Employe&gt; sortHandler = new ListHandler&lt;Employe&gt;(values);\n    grid.addColumnSortHandler(sortHandler);\n    grid.setRowData(values);\n    grid.setVisible(true);\n    grid.setSize(\"839px\", \"323px\");\n\n    grid.setEmptyTableWidget(new Label(\"Message afficher test\"));\n    System.out.println(\"ttt10\");\n    Column&lt;Employe, String&gt; nameColumn = new Column&lt;Employe, String&gt;(new EditTextCell()) {\n        @Override\n        public String getValue(Employe object) {\n            return object.getFirstname();\n        }\n    };\n\n    abstract class PendingChange&lt;T&gt; {\n        private final Employe Employe;\n        private final T value;\n\n        public PendingChange(Employe Employe, T value) {\n            this.Employe = Employe;\n            this.value = value;\n        }\n\n        public void commit() {\n            doCommit(Employe, value);\n        }\n\n        protected abstract void doCommit(Employe Employe, T value);\n    }\n\n\n    final String[] FirstNameData = new String[] {\n        \"Hollie\", \"Emerson\", \"Healy\", \"Brigitte\", \"Elba\", \"Claudio\",\n        \"Dena\", \"Christina\", \"Gail\", \"Orville\", \"Rae\", \"Mildred\",\n        \"Candice\", \"Louise\", \"Emilio\", \"Geneva\", \"Heriberto\", \"Bulrush\", \n        \"Abigail\", \"Chad\", \"Terry\", \"Bell\"\n    };\n\n    class BirthdayChange extends PendingChange&lt;Date&gt; {\n        public BirthdayChange(Employe Employe, Date value) {\n            super(Employe, value);\n        }\n\n        protected void doCommit(Employe Employe, Date value) {\n            Employe e=new Employe();\n            e.setDate_nais(value);\n        }\n    }\n\n    Column&lt;Employe, Date&gt; datepeckercolumn1 = new Column&lt;Employe, Date&gt;(new DatePickerCell()) {\n        @Override\n        public Date getValue(Employe object) {\n            return object.getDate_nais();\n        }\n    };\n\n    datepeckercolumn1.setSortable(true);\n    grid.addColumn(datepeckercolumn1, \"datepeckerDJ\");\n\n    List&lt;Employe&gt; items = grid.getVisibleItems();\n    if (items.size() != 0) {\n        int totalAge = 0;\n        for (Employe item : items) {\n            totalAge ++;\n        }\n        countnom=\"nombre d'Employe : \" + totalAge;\n    }\n    grid.addColumn(nameColumn,\"Nom\",countnom);\n\n    Column&lt;Employe, String&gt; prenomColumn = new Column&lt;Employe, String&gt;(new EditTextCell()) {\n        @Override\n        public String getValue(Employe object) {\n            return object.getLastname();\n        }\n    };\n\n    prenomColumn.setSortable(true);\n    sortHandler.setComparator(prenomColumn, new Comparator&lt;Employe&gt;() {\n        @Override\n        public int compare(Employe o1, Employe o2) {\n            return o1.getLastname().compareTo(o2.getLastname());\n        }\n    });\n\n    grid.addColumn(prenomColumn,\"Prenom\");\n    Column&lt;Employe, String&gt; adresseColumn = new Column&lt;Employe, String&gt;(new EditTextCell()) {\n        @Override\n        public String getValue(Employe object) {\n            return object.getEmailaddress();\n        }\n    };        \n\n    grid.addColumn(adresseColumn,\"Adresse\");\n\n    absolutePanel.add(grid, 10, 50);\n\n    Column&lt;Employe, Date&gt; datepeckercolumn = new Column&lt;Employe, Date&gt;(new DatePickerCell()) {\n        @Override\n        public Date getValue(Employe object) {\n            return (Date) null;\n        }\n    };\n\n    datepeckercolumn.setSortable(true);\n    grid.addColumn(datepeckercolumn, \"datepeckerDJ\");\n\n    Column&lt;Employe, String&gt; btn = new Column&lt;Employe, String&gt;(new ButtonCell()) {\n        @Override\n        public String getValue(Employe object) {\n            return (String) null;\n        }\n    };\n\n\n    grid.addColumn(btn, \"Buttun\");\n\n    ListBox lb = new ListBox();\n    lb.addItem(\"foo\");\n    lb.addItem(\"bar\");\n    lb.addItem(\"baz\");\n    lb.addItem(\"toto\");\n    lb.addItem(\"tintin\");\n\n\n    lb.setVisibleItemCount(5);\n    Column&lt;Employe, String&gt; Combobox = new Column&lt;Employe, String &gt;(new SelectionCell(new ArrayList&lt;String&gt;())) {\n        @Override\n        public String getValue(Employe object) {\n            return (String) null;\n        }\n    };\n\n    grid.addColumn(Combobox, \"ComboBox\");\n\n    Button btnQuiter = new Button(\"Quiter\");\n    btnQuiter.addClickHandler(new ClickHandler() {\n        public void onClick(ClickEvent event) {\n            DataGridAffiche2.this.hide();\n        }\n    });\n\n    CellBrowser cellBrowser = new CellBrowser(\n        new TreeViewModel() {\n            final AbstractDataProvider&lt;String&gt; dataProvider = new ListDataProvider&lt;String&gt;();\n            final AbstractSelectionModel&lt;String&gt; selectionModel = new NoSelectionModel&lt;String&gt;();\n            @Override\n            public &lt;T&gt; NodeInfo&lt;?&gt; getNodeInfo(T value) {\n                return new DefaultNodeInfo&lt;String&gt;(dataProvider, new TextCell(), selectionModel, null);\n            }\n            @Override\n            public boolean isLeaf(Object value) {\n                return true;\n            }\n        }, null);\n    absolutePanel.add(cellBrowser);\n    absolutePanel.add(btnQuiter, 919, 316);\n\n    Button btnAfficheDatagrid = new Button(\"Affiche datagrid\");\n    btnAfficheDatagrid.addClickHandler(new ClickHandler() {\n        public void onClick(ClickEvent event) {\n\n        }\n    });\n    absolutePanel.add(btnAfficheDatagrid, 863, 267);\n}\n\npublic List&lt;Employe&gt; afficheEmploye() {\n    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();\n\n    List&lt;Employe&gt; lp = new ArrayList&lt;Employe&gt;();\n\n    Query q = new Query(\"Employe\");\n\n    List&lt;Entity&gt; results = datastore.prepare(q).asList(FetchOptions.Builder.withDefaults());\n    for(Entity employe :results ){\n        Employe p = new Employe();\n        datastore.put(employe);\n        PreparedQuery pq = datastore.prepare(q);\n\n        for (Entity result : pq.asIterable()) {\n            String firstName = (String) result.getProperty(\"firstName\");\n            String lastName = (String) result.getProperty(\"lastName\");\n            System.out.println(firstName + \" \" + lastName + \",  inches tall  jdid\");\n        }\n        lp.add(p);\n    }\n    return lp;\n}\n</code></pre>\n"
+}

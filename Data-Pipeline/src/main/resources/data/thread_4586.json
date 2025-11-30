@@ -1,0 +1,101 @@
+{
+  "tags" : [ "java", "stack", "java-threads" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3569330,
+      "reputation" : 461,
+      "user_id" : 2980077,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6bvA1.jpg?s=256",
+      "display_name" : "Arian Kiehr",
+      "link" : "https://stackoverflow.com/users/2980077/arian-kiehr"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1431741161,
+    "last_edit_date" : 1431741161,
+    "creation_date" : 1431737228,
+    "answer_id" : 30270680,
+    "question_id" : 30270646,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Each thread has its own stack that holds a frame for each method executing on that thread as you can see <a href=\"http://blog.jamesdbloom.com/JVMInternals.html\" rel=\"nofollow\">here</a> in the section \"Per Thread\".</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3452279,
+      "reputation" : 37985,
+      "user_id" : 2891664,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/f4e5e5b29cd5c7b59e176d8e3bee3bd4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Radiodef",
+      "link" : "https://stackoverflow.com/users/2891664/radiodef"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1431737568,
+    "creation_date" : 1431737568,
+    "answer_id" : 30270711,
+    "question_id" : 30270646,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p>Or does the JRE allocate separate stacks for each threads?</p>\n</blockquote>\n\n<p>Yes.<a href=\"http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5.2\" rel=\"nofollow\"> The JVM is specified to do so</a>:</p>\n\n<blockquote>\n  <p><strong>Each Java Virtual Machine thread has a private <em>Java Virtual Machine stack</em>, created at the same time as the thread.</strong> A Java Virtual Machine stack stores frames. [...] Because the Java Virtual Machine stack is never manipulated directly except to push and pop frames, frames may be heap allocated.</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 47283,
+      "reputation" : 723399,
+      "user_id" : 139985,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://www.gravatar.com/avatar/147c5a9cc1feec049c50da791ac7d144?s=256&d=identicon&r=PG",
+      "display_name" : "Stephen C",
+      "link" : "https://stackoverflow.com/users/139985/stephen-c"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1759909840,
+    "last_edit_date" : 1759909840,
+    "creation_date" : 1431739185,
+    "answer_id" : 30270849,
+    "question_id" : 30270646,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<p>Or does the JRE allocate separate stacks for each threads?</p>\n</blockquote>\n<p>Conceptually yes.  (See this <a href=\"http://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5.2\" rel=\"nofollow noreferrer\">JVM spec link</a>, for example.)</p>\n<p>How the spec's conceptualization gets implemented in a particular JVM is ... implementation specific.  However, current generation (e.g. Hotspot) JVMs allocate each thread stack in a separate block of memory requested from the OS; e.g. using a <code>mmap</code> syscall<sup>1</sup>.</p>\n<p>There is certainly no wholesale copying of stack content when a thread switch occurs.  However thread context switching does entail saving and loading registers, and (indirectly) to extra load on memory cache and TLB entries.  This can be significant ... which is why excessive thread context switches (e.g. caused by lock contention or excessive wait/notify) can be bad for performance.</p>\n<hr />\n<p>With Java 21 and later, we also have to consider virtual threads; see <a href=\"https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html\" rel=\"nofollow noreferrer\">this</a> and <a href=\"https://openjdk.org/jeps/444\" rel=\"nofollow noreferrer\">this</a>:</p>\n<ul>\n<li>When a virtual thread is mounted on a carrier thread (i.e. it running), the virtual thread's stack is held in the carrier thread's stack area.</li>\n<li>When a virtual thread is dismounted, its stack state is transferred to a heap data structure so that another virtual thread can be mounted.</li>\n</ul>\n<p>Note that the above should also be considered to be an implementation detail.</p>\n<hr />\n<p><sup>1 - Some JVMs include a read-only &quot;red-zone&quot; page at the end of each stack segment.  (This means that thread stack overflow triggers a memory fault, and the JVM doesn't need to explicitly check for stack overflow on each method call, which would be a significant performance hit.) Anyhow, my understanding is that the &quot;red-zone&quot; page requires the thread stacks to be requested using mmap. </sup></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2779425,
+      "reputation" : 1637,
+      "user_id" : 2392258,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/R4fZg.jpg?s=256",
+      "display_name" : "Nitin Dandriyal",
+      "link" : "https://stackoverflow.com/users/2392258/nitin-dandriyal"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1431740171,
+    "creation_date" : 1431740171,
+    "answer_id" : 30270940,
+    "question_id" : 30270646,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Java threads are represented by thread objects, each thread is assigned a separate thread stack used for storing runtime data. The thread stack has a specific size (Can be set using VM option <code>java -Xss1m Application</code>). </p>\n\n<p>If during runtime, the Thread tries to store more date than the stack size allows, a stack overflow error occurs.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3210091,
+    "reputation" : 6133,
+    "user_id" : 2710256,
+    "user_type" : "registered",
+    "accept_rate" : 46,
+    "profile_image" : "https://i.sstatic.net/5JtMn.jpg?s=256",
+    "display_name" : "breakline",
+    "link" : "https://stackoverflow.com/users/2710256/breakline"
+  },
+  "is_answered" : true,
+  "view_count" : 7451,
+  "answer_count" : 4,
+  "score" : 13,
+  "last_activity_date" : 1759909840,
+  "creation_date" : 1431736806,
+  "last_edit_date" : 1431741049,
+  "question_id" : 30270646,
+  "link" : "https://stackoverflow.com/questions/30270646/is-there-a-stack-space-for-every-thread",
+  "title" : "Is there a stack space for every thread?",
+  "body" : "<p>If I understand correctly the stack is for local primities and references to the objects in the heap. So what happens if you have more than one threads? </p>\n\n<p>Do they share the same stack space at the same time (but different areas) or does the JRE switch contexts and load-deload the stack content when switching between threads? </p>\n\n<p>Or does the JRE allocate separate stacks for each threads?</p>\n"
+}

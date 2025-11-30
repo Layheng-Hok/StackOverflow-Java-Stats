@@ -1,0 +1,83 @@
+{
+  "tags" : [ "java", "generics" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9431776,
+        "reputation" : 597,
+        "user_id" : 7015077,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/6eebb39bd080a6f25470c535ab024e49?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Mher Arsh",
+        "link" : "https://stackoverflow.com/users/7015077/mher-arsh"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1681061355,
+      "post_id" : 75970731,
+      "comment_id" : 133994873,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "you are absolutely right, I know that you can not return undefined types, I figured out what the problem is, unfortunately the option you proposed does not work because I have a different type <code>ExceptionHandlerPair</code> from the type <code>ErrorMessageBuilder</code>, for example <code>ExceptionHandlerPair &lt;NullPointerExceprion&gt;</code> and <code>ErrorMessageBuilder&lt;RuntimeException&gt;</code> which you can see in my example, the point is that I want to have one Builder for different types of exceptions"
+    } ],
+    "owner" : {
+      "account_id" : 19094773,
+      "reputation" : 79,
+      "user_id" : 13944304,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-JvEDzYnSfBg/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuckcjGX5kr2Ib-AbBIZE3gkfQl3WsA/s256-rj/photo.jpg",
+      "display_name" : "tamouz hmidan",
+      "link" : "https://stackoverflow.com/users/13944304/tamouz-hmidan"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1759434524,
+    "last_edit_date" : 1759434524,
+    "creation_date" : 1681046016,
+    "answer_id" : 75970731,
+    "question_id" : 75970137,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What is causing this error is that you are using wild cards as return types in the following method <code>ExceptionHandlerPair.getBuilder()</code> and this is not recommended as it causes ambiguity for the compiler you can check the below discussions for more details on why this is not recommended <a href=\"https://stackoverflow.com/questions/22815023/generic-wildcard-types-should-not-be-used-in-return-parameters\">Generic wildcard types should not be used in return parameters</a></p>\n<p><a href=\"https://rules.sonarsource.com/java/RSPEC-1452\" rel=\"nofollow noreferrer\">https://rules.sonarsource.com/java/RSPEC-1452</a></p>\n<blockquote>\n<p>It is highly recommended not to use wildcard types as return types.\nBecause the type inference rules are fairly complex it is unlikely the\nuser of that API will know how to use it correctly. Let’s take the\nexample of method returning a &quot;List&lt;? extends Animal&gt;&quot;. Is it possible\non this list to add a Dog, a Cat, …​ we simply don’t know. And neither\ndoes the compiler, which is why it will not allow such a direct use.\nThe use of wildcard types should be limited to method parameters. This\nrule raises an issue when a method returns a wildcard type.</p>\n</blockquote>\n<p>Instead you can simply change the return type of getBuilder() to <code>ErrorMessageBuilder&lt;T&gt;</code></p>\n<pre><code>public class ExceptionHandlerPair&lt;T extends Exception&gt; {\n\n//~ ----------------------------------------------------------------------------------------------------------------\n//~ Instance fields \n//~ ----------------------------------------------------------------------------------------------------------------\n\npublic final Class&lt;T&gt; clazz;\nprivate final ErrorMessageBuilder&lt;T&gt; builder;\n\n//~ ----------------------------------------------------------------------------------------------------------------\n//~ Constructors \n//~ ----------------------------------------------------------------------------------------------------------------\n\npublic ExceptionHandlerPair(Class&lt;T&gt; clazz, ErrorMessageBuilder&lt;T&gt; builder) {\n    if (!builder.canHandle(clazz)) {\n        throw new IllegalArgumentException(&quot;Handler can't handle this exception&quot;);\n    }\n\n    this.clazz = clazz;\n    this.builder = builder;\n}\n\n//~ ----------------------------------------------------------------------------------------------------------------\n//~ Methods \n//~ ----------------------------------------------------------------------------------------------------------------\n\npublic boolean canHandle(Class&lt;? extends Exception&gt; clazz) {\n    return this.clazz.isAssignableFrom(clazz);\n}\n\npublic ErrorMessageBuilder&lt;T&gt; getBuilder() {\n    return builder;\n}\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 20338,
+      "reputation" : 65322,
+      "user_id" : 48503,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/672f798341250dd228b286738e8d6309?s=256&d=identicon&r=PG",
+      "display_name" : "Luke Woodward",
+      "link" : "https://stackoverflow.com/users/48503/luke-woodward"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1681069231,
+    "last_edit_date" : 1681069231,
+    "creation_date" : 1681047363,
+    "answer_id" : 75970848,
+    "question_id" : 75970137,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As I see it, the fix is to introduce another generic type variable into your <code>ExceptionHandlerPair</code> class. In the code below, the type variable <code>T</code> is the type of exception that the <code>ErrorMessageBuilder</code> handles, and <code>U</code> is the type of exception that the <code>canHandle</code> method will return <code>true</code> for:</p>\n<pre class=\"lang-java prettyprint-override\"><code>class ExceptionHandlerPair&lt;T extends Exception, U extends T&gt;{\n    private final Class&lt;U&gt; clazz;\n    private final ErrorMessageBuilder&lt;T&gt; builder;\n\n    public ExceptionHandlerPair(Class&lt;U&gt; clazz, ErrorMessageBuilder&lt;T&gt; builder) {\n        if(!builder.canHandle(clazz)){\n            throw new IllegalArgumentException(&quot;Handler can't handle this exception&quot;);\n        }\n\n        this.clazz = clazz;\n        this.builder = builder;\n    }\n\n    public boolean canHandle(Class&lt;? extends Exception&gt; clazz) {\n        return this.clazz.isAssignableFrom(clazz);\n    }\n\n    public ErrorMessageBuilder&lt;T&gt; getBuilder() {\n        return builder;\n    }\n}\n</code></pre>\n<p>I made this change to your code and your <code>SomeClass</code> class compiled.</p>\n<p>The problem with using a wildcard (the <code>?</code>) is that you are throwing away the information on what type of exception the builder handles. In your code, <code>pair.getBuilder()</code> will always return <code>ErrorMessageBuilder&lt;? extends Exception&gt;</code>, no matter how your <code>pair</code> was constructed. The type of exception handled by this builder will be some arbitrary subclass of <code>Exception</code>, but you don't know what. It could be an <code>ErrorMessageBuilder&lt;Exception&gt;</code>, or a <code>ErrorMessageBuilder&lt;RuntimeException&gt;</code>, and if this was the case, you could pass a <code>NullPointerException</code> to the <code>.getBuilder()</code> method. However, the unbounded wildcard also allows the <code>getBuilder()</code> method to return an <code>ErrorMessageBuilder&lt;NegativeArraySizeException&gt;</code>, for example, and you can't pass a <code>NullPointerException</code> to the <code>buildMessage()</code> method of that.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 9431776,
+    "reputation" : 597,
+    "user_id" : 7015077,
+    "user_type" : "registered",
+    "accept_rate" : 100,
+    "profile_image" : "https://www.gravatar.com/avatar/6eebb39bd080a6f25470c535ab024e49?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Mher Arsh",
+    "link" : "https://stackoverflow.com/users/7015077/mher-arsh"
+  },
+  "is_answered" : true,
+  "view_count" : 105,
+  "accepted_answer_id" : 75970848,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1759434524,
+  "creation_date" : 1681038325,
+  "question_id" : 75970137,
+  "link" : "https://stackoverflow.com/questions/75970137/java-generic-ambiguity-whats-the-issue",
+  "title" : "Java generic ambiguity, whats the issue?",
+  "body" : "<p>The problem is as follows:</p>\n<p>There is an ErrorMessageBuilder, instances of the class that implements this interface can generate messages based on exceptions that are passed to them, in addition, there is an option to check if the class can handle the passed exception or not.</p>\n<pre><code>interface ErrorMessageBuilder&lt;T extends Exception&gt; {\n    String buildMessage(T exception);\n    boolean canHandle(Class&lt;? extends Exception&gt; clazz);\n}\n</code></pre>\n<p>Next, there is the class ExceptionHandlerPair which is used to create pairs (Exception+Handler)</p>\n<pre><code>class ExceptionHandlerPair&lt;T extends Exception&gt;{\n    private final Class&lt;T&gt; clazz;\n    private final ErrorMessageBuilder&lt;? extends Exception&gt; builder;\n\n    public ExceptionHandlerPair(Class&lt;T&gt; clazz, ErrorMessageBuilder&lt;? extends Exception&gt; builder) {\n        if(!builder.canHandle(clazz)){\n            throw new IllegalArgumentException(&quot;Handler can't handle this exception&quot;);\n        }\n\n        this.clazz = clazz;\n        this.builder = builder;\n    }\n\n    public boolean canHandle(Class&lt;? extends Exception&gt; clazz) {\n        return this.clazz.isAssignableFrom(clazz);\n    }\n\n    public ErrorMessageBuilder&lt;? extends Exception&gt; getBuilder() {\n        return builder;\n    }\n}\n</code></pre>\n<p>After that I try to create a Bilder and create pairs.\nFor example I create a RuntimeExceptionErrorMessageBuilder which can handle any RuntimeException:</p>\n<pre><code>class RuntimeExceptionErrorMessageBuilder implements ErrorMessageBuilder&lt;RuntimeException&gt; {\n    public String buildMessage(RuntimeException exception) {\n        return &quot;Some runtime exception&quot;;\n    }\n\n    @Override\n    public boolean canHandle(Class&lt;? extends Exception&gt; clazz) {\n        return RuntimeException.class.isAssignableFrom(clazz);\n    }\n}\n</code></pre>\n<pre><code>public class SomeClass {\n    public static void main(String[] args) {\n        var builder = new RuntimeExceptionErrorMessageBuilder();\n\n//        builder.canHandle(NullPointerException.class); // ? -&gt; true\n//        builder.canHandle(IllegalArgumentException.class); // ? -&gt; true\n//        builder.canHandle(Exception.class); // ? -&gt; false\n\n        var pair = new ExceptionHandlerPair&lt;&gt;(NullPointerException.class, builder);\n\n        if(pair.canHandle(NullPointerException.class)){ // ? -&gt; true\n            var message = pair.getBuilder().buildMessage(new NullPointerException()); // &lt;- error Required type: capture of ? extends Exception,  Provided: IllegalArgumentException\n            System.out.println(message);\n        }\n\n        if(pair.canHandle(IllegalArgumentException.class)){ // ? -&gt; true\n            var message = pair.getBuilder().buildMessage(new IllegalArgumentException()); // &lt;- error Required type: capture of ? extends Exception,  Provided: IllegalArgumentException\n            System.out.println(message);\n        }\n    }\n}\n</code></pre>\n<p>We get an error that the buildMessage(x) parameter gives an error that the x parameter should be a descendant of Exception, but IllegalArgumentException is a descendant, what is the problem?</p>\n<p>Okay, I thought that if this restriction applies to parameters, then let's add an ExceptionWrapper like this:</p>\n<pre><code>class ErrorWrapper&lt;T extends Exception&gt;{\n    private final T exception;\n\n    public ErrorWrapper(T exception) {\n        this.exception = exception;\n    }\n\n    public T getException() {\n        return exception;\n    }\n}\n</code></pre>\n<p>After that modify ErrorMessageBuilder and RuntimeExceptionErrorMessageBuilder with ErrorWrapper in mind:</p>\n<pre><code>interface ErrorMessageBuilder&lt;T extends Exception&gt; {\n    String buildMessage(ErrorWrapper&lt;T&gt; exception);\n    boolean canHandle(Class&lt;? extends Exception&gt; clazz);\n}\n\nclass RuntimeExceptionErrorMessageBuilder implements ErrorMessageBuilder&lt;RuntimeException&gt; {\n    public String buildMessage(ErrorWrapper&lt;RuntimeException&gt; exception) {\n        return &quot;Some runtime exception&quot;;\n    }\n\n    @Override\n    public boolean canHandle(Class&lt;? extends Exception&gt; clazz) {\n        return RuntimeException.class.isAssignableFrom(clazz);\n    }\n}\n</code></pre>\n<p>Then change the main and try to create messages with the changes, but it does not work even if I try to fool java I get: error Required type: ErrorWrapper &lt;capture of ? extends Exception&gt;, Provided: ErrorWrapper &lt;capture of ? extends Exception&gt;</p>\n<pre><code>public class SomeClassWrapper {\n    public static void main(String[] args) {\n        var builder = new RuntimeExceptionErrorMessageBuilder();\n\n        ExceptionHandlerPair&lt;NullPointerException&gt; pair = new ExceptionHandlerPair&lt;&gt;(NullPointerException.class, builder);\n\n        if(pair.canHandle(NullPointerException.class)){ // ? -&gt; true\n            ErrorWrapper&lt;NullPointerException&gt; npeWrapper = new ErrorWrapper&lt;&gt;(new NullPointerException());\n\n            var message = pair.getBuilder().buildMessage(npeWrapper); // &lt;- error Required type: ErrorWrapper &lt;capture of ? extends Exception&gt;,  Provided: ErrorWrapper&lt;NullPointerException\n            System.out.println(message);\n        }\n\n        // \n        if(pair.canHandle(NullPointerException.class)){ // ? -&gt; true\n            // and here we'll try to swoon over Java!!! :)\n            ErrorWrapper&lt;? extends Exception&gt; npeWrapper = new ErrorWrapper&lt;&gt;(new NullPointerException());\n\n            var message = pair.getBuilder().buildMessage(npeWrapper); // &lt;- error Required type: ErrorWrapper &lt;capture of ? extends Exception&gt;,  Provided: ErrorWrapper &lt;capture of ? extends Exception&gt;\n            System.out.println(message);\n        }\n    }\n}\n</code></pre>\n<p>I would be grateful if someone could explain this behavior!!!\nThanks in advance!</p>\n"
+}

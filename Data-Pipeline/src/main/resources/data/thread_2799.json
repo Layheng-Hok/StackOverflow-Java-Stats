@@ -1,0 +1,99 @@
+{
+  "tags" : [ "java", "tree", "swt" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1558798,
+      "reputation" : 37004,
+      "user_id" : 1449199,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://www.gravatar.com/avatar/b12ab7a72d6d5062ccfd3a18f950f57d?s=256&d=identicon&r=PG",
+      "display_name" : "Baz",
+      "link" : "https://stackoverflow.com/users/1449199/baz"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1521803926,
+    "post_id" : 49447669,
+    "comment_id" : 85898633,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Can you provide a link to the &quot;solution&quot; you found when googling? I assume it uses a mouse listener and prevents the event."
+  }, {
+    "owner" : {
+      "account_id" : 2079767,
+      "reputation" : 6582,
+      "user_id" : 1852033,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/89b9541e85fd0534e3871ad790e651f1?s=256&d=identicon&r=PG",
+      "display_name" : "Leo Ufimtsev",
+      "link" : "https://stackoverflow.com/users/1852033/leo-ufimtsev"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1521822534,
+    "post_id" : 49447669,
+    "comment_id" : 85911581,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Haven&#39;t tried, but you could try to add selection/click listeners and then do event.doit = false. That usually blocks events from happening."
+  }, {
+    "owner" : {
+      "account_id" : 2851226,
+      "reputation" : 2769,
+      "user_id" : 2448399,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/9a796fbc90a598bf0a3c22f1489430bb?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "JimmyD",
+      "link" : "https://stackoverflow.com/users/2448399/jimmyd"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1522054317,
+    "post_id" : 49447669,
+    "comment_id" : 85977402,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "event.doit = false does not work. My doubleclick handler is called later then the event for collapsing/expanding."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4651914,
+      "reputation" : 23,
+      "user_id" : 3768575,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/ALm5wu06G2_vx-tKPL53fHkvRJCygPMnzPLezWRQAg8C=k-s256",
+      "display_name" : "Daniel Vaughn",
+      "link" : "https://stackoverflow.com/users/3768575/daniel-vaughn"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763859839,
+    "last_edit_date" : 1763859839,
+    "creation_date" : 1763855442,
+    "answer_id" : 79827617,
+    "question_id" : 49447669,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>// Prevent double-click expand/collapse\ntree.addListener(SWT.DefaultSelection, event -&gt; {\n    event.doit = false;\n});\n</code></pre>\n<p>This prevents the default double-click behavior entirely. You can still expand/collapse with the arrow or single-click if needed.</p>\n<p>If you want double-click to do something else (like open an item), add that logic after <code>event.doit = false;</code> or you can create/add more listeners.</p>\n<p>You must remove this listener in order for it to stop preventing the event. I use a mouse listener for my double-click logic.</p>\n<p>This will set the expand/collapse to what it was before clicking:</p>\n<pre><code>tree.addMouseListener(new MouseAdapter() {\n    @Override\n    public void mouseDoubleClick(MouseEvent e) {\n    // if not using previous listener - user can see this happen\n    TreeItem item = tree.getSelection()[0];\n    item.setExpanded(!item.getExpanded()); // &quot;undo&quot; expand/collapse\n    // your double-click logic.\n    }\n});\n</code></pre>\n<p>Use the default selection listener, then only your logic in a mouse listener.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2851226,
+    "reputation" : 2769,
+    "user_id" : 2448399,
+    "user_type" : "registered",
+    "accept_rate" : 86,
+    "profile_image" : "https://www.gravatar.com/avatar/9a796fbc90a598bf0a3c22f1489430bb?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "JimmyD",
+    "link" : "https://stackoverflow.com/users/2448399/jimmyd"
+  },
+  "is_answered" : false,
+  "view_count" : 149,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1763859839,
+  "creation_date" : 1521801297,
+  "last_edit_date" : 1522054280,
+  "question_id" : 49447669,
+  "link" : "https://stackoverflow.com/questions/49447669/disable-expand-on-tree-after-doubleclick",
+  "title" : "Disable expand on tree after doubleclick",
+  "body" : "<p>I'm using SWT for our gui. We are using Tree to get a tree menu. Now we want following behavior:\n- When double clicked on the parent -> open screen, no expand/collapse of the tree\n- When using the arrow (on the left of the parent item) -> expand/collapse the tree</p>\n\n<p>Currently when doubleclicking on the parent item will open the screen and expand the tree. After some Googling I found some solutions but when I implement those I can open the screen without expanding the tree. But cannot expand the tree in another way.</p>\n\n<p>For opening the screen from the parent I use this handler:</p>\n\n<pre><code>operationMenu.addListener(SWT.MouseDoubleClick, new Listener() {\n\n        @Override\n        public void handleEvent(Event event) {\n        }\n};\n</code></pre>\n\n<p>How can we implement this in SWT?</p>\n\n<p>Urls that I have use:\n<a href=\"https://stackoverflow.com/questions/15006888/swt-prevent-tree-from-expanding-by-doubleclick\">SWT: prevent Tree from expanding by doubleclick?</a></p>\n"
+}

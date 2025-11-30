@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "oop", "instance-variables" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 15494779,
+      "reputation" : 1407,
+      "user_id" : 12824504,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AAuE7mAOothLOP4GljRNL3sAyDfb4N6AeHrvVJsvApFE=k-s256",
+      "display_name" : "haoyu wang",
+      "link" : "https://stackoverflow.com/users/12824504/haoyu-wang"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1603595483,
+    "post_id" : 64519778,
+    "comment_id" : 114085430,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Are you sure it&#39;s <code>p[1]</code> not <code>p[0]</code> ?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 15494779,
+      "reputation" : 1407,
+      "user_id" : 12824504,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AAuE7mAOothLOP4GljRNL3sAyDfb4N6AeHrvVJsvApFE=k-s256",
+      "display_name" : "haoyu wang",
+      "link" : "https://stackoverflow.com/users/12824504/haoyu-wang"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1763679820,
+    "last_edit_date" : 1763679820,
+    "creation_date" : 1603595910,
+    "answer_id" : 64520017,
+    "question_id" : 64519778,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>Variable shadowing</h2>\n<p><strong>First</strong>, you should not have a <code>_color</code> and <code>_paper</code> instance variable in the subclass because parent class <code>Print</code> has already defined these variables. See <a href=\"https://en.wikipedia.org/wiki/Variable_shadowing\" rel=\"nofollow noreferrer\">Variable Shadowing</a> in Wikipedia.</p>\n<h2>Affecting local variable rather than field</h2>\n<p><strong>Second</strong>, look at these two lines:</p>\n<pre><code>temp = super.getPaper();   \ntemp -= paper;\n</code></pre>\n<p>You are subtracting the value of a local variable <code>temp</code>, it has nothing to do with the <code>_print</code> variable in super class. You shoud call <code>super.setPaper(temp)</code> to set the value of <code>_print</code>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 16818817,
+        "reputation" : 504,
+        "user_id" : 12159823,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/aFNvp.jpg?s=256",
+        "display_name" : "frankiie",
+        "link" : "https://stackoverflow.com/users/12159823/frankiie"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1603688914,
+      "post_id" : 64520529,
+      "comment_id" : 114105247,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yeah, I&#39;ve forgotten using setPaper(paper) to update the instance value. Thank you!"
+    } ],
+    "owner" : {
+      "account_id" : 3146381,
+      "reputation" : 1782,
+      "user_id" : 2660789,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/870192094726c6beb3128ef24b06f01d?s=256&d=identicon&r=PG",
+      "display_name" : "Aman",
+      "link" : "https://stackoverflow.com/users/2660789/aman"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1603602241,
+    "creation_date" : 1603602241,
+    "answer_id" : 64520529,
+    "question_id" : 64519778,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The parent class is ok, but there are some issues with the child and the main function.</p>\n<ol>\n<li>It is a bad practice to declare child class variables similar to the parent, since it creates confusion. But, it is still legal since parent variables are hidden from child class.\nSo, it is better to remove:</li>\n</ol>\n<pre><code>private String _color; //not used in child class\nprivate int _paper; //not used in child class\n</code></pre>\n<ol start=\"2\">\n<li>The <code>runPrint</code> method</li>\n</ol>\n<pre><code>@override\npublic void runPrint(int paper) {\n    if(paper &gt; super.getPaper()) {\n        int requiredPapers = paper - super.getPaper());\n        System.out.println(super.getColor() + &quot; paper needs &quot; + requiredPapers + &quot; more!&quot;);\n    } else { \n        System.out.println(super.getColor() + &quot; &quot; + super.getPaper() + &quot; is printed.&quot;);\n        super.setPaper(super.getPaper() - paper); // HERE use setter/mutator method\n        System.out.println(super.getColor() + &quot; is remains for &quot; + super.getPaper());\n    }\n}\n</code></pre>\n<ol start=\"3\">\n<li>And since you are dealing with an array of <code>Print</code>, loops are convinient.</li>\n</ol>\n<pre><code>public static void main(String[] args) {\n    Print[] p = { new ColorPrint(100, &quot;Color&quot;) };\n    \n    for(int i = 0; i &lt; p.length; i++) { \n        // print out the available 100 papers\n        // after printed the current paper now is zero. \n        p[i].runPrint(100); \n        \n        // then I add 50 papers \n        // the current paper now must be 50.\n        // But it prints out 150. I'm stuck on this.\n        p[i].addPaper(50);\n    }\n    \n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 16818817,
+    "reputation" : 504,
+    "user_id" : 12159823,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/aFNvp.jpg?s=256",
+    "display_name" : "frankiie",
+    "link" : "https://stackoverflow.com/users/12159823/frankiie"
+  },
+  "is_answered" : true,
+  "view_count" : 825,
+  "accepted_answer_id" : 64520529,
+  "answer_count" : 2,
+  "score" : -1,
+  "last_activity_date" : 1763679820,
+  "creation_date" : 1603593073,
+  "question_id" : 64519778,
+  "link" : "https://stackoverflow.com/questions/64519778/how-to-update-value-of-instance-variable-java",
+  "title" : "how to update value of instance variable JAVA",
+  "body" : "<p>I'm new to JAVA and OOP, I'm trying to do some OOP exercises but stuck on updating the value of the instance variable of supper class.</p>\n<p>I have a super-class called Print</p>\n<pre><code>public class Print {\n    private String _color;\n    private int _paper;\n    \n    public Print(int paper, String color) {\n        this._color = color;\n        this._paper = paper;\n    }\n    \n    // getter \n    public String getColor() {\n        return this._color;\n    }\n    \n    public int getPaper() {\n        return this._paper;\n    }\n    \n    // getter\n    public void setColor(String color) {\n        this._color = color;\n    }\n    \n    public void setPaper(int paper) {\n        this._paper = paper;\n        System.out.println(&quot;current amount of paper: &quot; + this._paper);\n    }\n    \n    // runPrint\n    public void runPrint(int paper) {\n        System.out.println(&quot;this is demo!&quot;);\n        return;\n    }\n        \n    // addPaper\n    public void addPaper(int paper) {\n        System.out.println(&quot;this is demo!&quot;);\n    }\n}\n\n</code></pre>\n<p>and a child class ColorPrint</p>\n<pre><code>public class ColorPrint extends Print {\n    private String _color;\n    private int _paper;\n    \n    public ColorPrint(int paper, String color) {\n        super(paper, color);\n    }\n    \n    // runPrint\n    @Override\n    public void runPrint(int paper) {\n        int temp = 0;\n        if(super.getPaper() - paper &lt; 0) {\n            paper -= super.getPaper();\n            System.out.println(super.getColor() + &quot; paper needs &quot; + paper + &quot; more!&quot;);\n        } else { \n            System.out.println(super.getColor() + &quot; &quot; + super.getPaper() + &quot; is printed.&quot;);\n            temp = super.getPaper();\n            temp -= paper;\n            System.out.println(super.getColor() + &quot; is remains for &quot; + temp);\n        }\n        return;\n    }\n    \n    // addPaper\n    @Override\n    public void addPaper(int paper) {\n        System.out.println(paper + &quot; is added.&quot;);\n        int currPaper = super.getPaper() + paper;\n        super.setPaper(currPaper);\n    }\n    \n    @Override \n    public String toString() {\n        return super.getColor() + &quot;: &quot; + &quot;current paper is &quot; + super.getPaper();  \n    }\n}\n</code></pre>\n<p>and the main function</p>\n<pre><code>public static void main(String[] args) {\n        Print[] p = {\n                        new ColorPrint(100, &quot;Color&quot;)\n                    };\n        \n        \n        // print out the available 100 papers\n        // after printed the current paper now is zero. \n        p[1].runPrint(100); \n        // then I add 50 papers \n        // the current paper now must be 50.\n        // But it prints out 150. I'm stuck on this.\n        p[1].addPaper(50);\n        \n    }\n\n</code></pre>\n<p>My question is how can I update the value of instance variable paper in the supper class after subtracted and added?</p>\n<p>Thank you.</p>\n"
+}

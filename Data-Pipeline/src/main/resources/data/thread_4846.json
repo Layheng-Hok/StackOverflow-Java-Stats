@@ -1,0 +1,84 @@
+{
+  "tags" : [ "java", "arrays", "recursion" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 66969,
+      "reputation" : 22516,
+      "user_id" : 196211,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/2a25b405968b6e5c2f1d45602365308e?s=256&d=identicon&r=PG",
+      "display_name" : "Eyal Schneider",
+      "link" : "https://stackoverflow.com/users/196211/eyal-schneider"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1271963813,
+    "creation_date" : 1271963813,
+    "answer_id" : 2693745,
+    "question_id" : 2693552,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>One way of doing it is with the CSP (Constraint Satisfaction Problem) approach: </p>\n\n<p>Consider every cell in the grid to be a variable, with 4 possible values (indicating the part of the domino it takes). Some assignments are obviously illegal. Legal assignments assign values to a \"neighboring variable\" as well. Your goal is to assign all the 3xN variables with legal values.</p>\n\n<p>The recursion here can help you cover the state space easily. On each invocation, you try to assign a value to the next unasigned cell, by trying all the 4 options. After each successfull assignment, you can call the same method recursively, and then undo your last assignment (this way you don't have to clone anything - one copy of the grid data is enough).</p>\n\n<p>--EDIT--\nIf you want to do it efficiently so that it works for large values on N in reasonable time, you will also have to think about optimizations, in order to discard some assignment attempts.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 95151,
+      "reputation" : 14534,
+      "user_id" : 259310,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/fbf2421aadfca785f0c591afe75197f1?s=256&d=identicon&r=PG",
+      "display_name" : "Kilian Foth",
+      "link" : "https://stackoverflow.com/users/259310/kilian-foth"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1271963974,
+    "creation_date" : 1271963974,
+    "answer_id" : 2693762,
+    "question_id" : 2693552,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Here are some hints:</p>\n\n<p>With a fixed-size board you can precompute the exact number of steps that each solution takes, so the termination criterion is trivial: you just check the nesting level.</p>\n\n<p>Starting from one corner is a good idea, because it means that you can always find a field that can only be covered in two different ways (vertically or horizontally). </p>\n\n<p>That means that you have a branching factor of only 2, and a recursion depth of 3*N/2, which is probably small enough that you can just clone the sstate of the board for each call (ordinarily you would construct new states incrementally from existing states to save space, but that is a bit harder to program).</p>\n\n<p>In many states here will be more than one field that allows only two possibilities; with a clever strategy for choosing the next field, you can ensure that you will never find the same solution via two different paths, so you don't even have to check the solutions for duplicates.</p>\n\n<p>The state of the board must record which fields are free and which fields are occupied, but also which fields are occupied by the same domino, so an array of <code>int</code> could do the trick.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 102991,
+      "reputation" : 385162,
+      "user_id" : 276101,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/30fe97e726af0ea4ff8b756fbf2e6d15?s=256&d=identicon&r=PG",
+      "display_name" : "polygenelubricants",
+      "link" : "https://stackoverflow.com/users/276101/polygenelubricants"
+    },
+    "is_accepted" : true,
+    "score" : 3,
+    "last_activity_date" : 1759280305,
+    "last_edit_date" : 1759280305,
+    "creation_date" : 1271987071,
+    "answer_id" : 2695676,
+    "question_id" : 2693552,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This recursive solution actually <em>generates</em> all the possible tiling of a general <em>MxN</em> board. It's more general than what your program requires, and therefore not optimized to just <em>count</em> the number of tiling of a <em>3xN</em> board.</p>\n<p>If you just want to <em>count</em> how many there are, you can use <a href=\"https://en.wikipedia.org/wiki/Dynamic_programming\" rel=\"nofollow noreferrer\">dynamic programming techniques</a> and do this <em>much faster</em>. Also, having the number of rows fixed at 3 actually makes the problem <em>considerably easier</em>. Nonetheless, this general generative solution should be instructive.</p>\n<pre><code>public class Domino {\n    final int N;\n    final int M;\n    final char[][] board;\n    int count;\n\n    static final char EMPTY = 0;\n    \n    Domino(int M, int N) {\n        this.M = M;\n        this.N = N;\n        board = new char[M][N]; // all EMPTY\n        this.count = 0;\n        generate(0, 0);\n        System.out.println(count);\n    }\n    \n    void printBoard() {\n        String result = &quot;&quot;;\n        for (char[] row : board) {\n            result += new String(row) + &quot;\\n&quot;;\n        }\n        System.out.println(result);     \n    }\n    \n    void generate(int r, int c) {\n       //... see next code block\n    }\n    public static void main(String[] args) {\n        new Domino(6, 6);\n    }\n}\n</code></pre>\n<p>So here's the meat and potatoes:</p>\n<pre><code>    void generate(int r, int c) {\n        // find next empty spot in column-major order\n        while (c &lt; N &amp;&amp; board[r][c] != EMPTY) {\n            if (++r == M) {\n                r = 0;\n                c++;\n            }\n        }\n        if (c == N) { // we're done!\n            count++;\n            printBoard();\n            return;\n        }\n        if (c &lt; N - 1) {\n            board[r][c] = '&lt;';\n            board[r][c+1] = '&gt;';\n            generate(r, c);\n            board[r][c] = EMPTY;\n            board[r][c+1] = EMPTY;\n        }\n        if (r &lt; M - 1 &amp;&amp; board[r+1][c] == EMPTY) {\n            board[r][c] = 'A';\n            board[r+1][c] = 'V';\n            generate(r, c);\n            board[r][c] = EMPTY;\n            board[r+1][c] = EMPTY;\n        }\n    }\n</code></pre>\n<p>This excerpt from the last few lines of the output gives an example of a generated board, and the final count.</p>\n<pre><code>//... omitted\n\nAA&lt;&gt;&lt;&gt;\nVVAA&lt;&gt;\nAAVV&lt;&gt;\nVVAA&lt;&gt;\n&lt;&gt;VVAA\n&lt;&gt;&lt;&gt;VV\n\n//... omitted\n\n6728\n</code></pre>\n<p>Note that 6728 checks out with <a href=\"https://oeis.org/A004003\" rel=\"nofollow noreferrer\">OEIS A004003</a>.</p>\n<p>A few things that you need to learn from this solutions are:</p>\n<ul>\n<li><strong>Clean-up after yourself!</strong> This is a very common pattern in recursive solution that modifies a mutable shared data. Feel free to do <em>your</em> thing, but then <em>leave things as you found them</em>, so others can do <em>their</em> thing.</li>\n<li><strong>Figure out a systematic way to explore the search space.</strong> In this case, dominoes are placed in <a href=\"https://en.wikipedia.org/wiki/Row-_and_column-major_order\" rel=\"nofollow noreferrer\">column-major order</a>, with its top-left corner as the reference point.</li>\n</ul>\n<p>So hopefully you can learn something from this and adapt the techniques for your homework. Good luck!</p>\n<hr />\n<p>Tip: if you comment out the <code>printBoard</code> line, you can generate all ~13 million boards for 8x8 in reasonable time. It'll definitely be much faster to just compute the number without having to generate and count them one by one, though.</p>\n<hr />\n<h3>Update!</h3>\n<p>Here's a recursive generator for 3xN boards. It doesn't use a shared mutable array, it just uses immutable strings instead. It makes the logic simpler (no clean up since you didn't make a mess!) and the code more readable (where and how the pieces are placed is visible!).</p>\n<p>Since we're fixed at 3 rows, the logic is more explicit if we just have <em>3 mutually recursive functions</em>.</p>\n<pre><code>public class Domino3xN {\n   static int count = 0;\n   \n   public static void main(String[] args) {\n      addRow1(8, &quot;&quot;, &quot;&quot;, &quot;&quot;);\n      System.out.println(count);\n   }\n\n   static void addRow1(int N, String row1, String row2, String row3) {\n      if (row1.length() == N &amp;&amp; row2.length() == N &amp;&amp; row3.length() == N) {\n         count++; // found one!\n         System.out.format(&quot;%s%n%s%n%s%n%n&quot;, row1, row2, row3);\n         return;\n      }\n      if (row1.length() &gt; row2.length()) { // not my turn!\n         addRow2(N, row1, row2, row3);\n         return;\n      }\n      if (row1.length() &lt; N - 1)\n         addRow2(N, row1 + &quot;&lt;&gt;&quot;,\n                    row2,\n                    row3);\n      if (row2.length() == row1.length())\n         addRow3(N, row1 + &quot;A&quot;,\n                    row2 + &quot;V&quot;,\n                    row3);\n   }\n   static void addRow2(int N, String row1, String row2, String row3) {\n      if (row2.length() &gt; row3.length()) { // not my turn!\n         addRow3(N, row1, row2, row3);\n         return;\n      }\n      if (row2.length() &lt; N - 1)\n         addRow3(N, row1,\n                    row2 + &quot;&lt;&gt;&quot;,\n                    row3);\n      if (row3.length() == row2.length())\n         addRow1(N, row1,\n                    row2 + &quot;A&quot;,\n                    row3 + &quot;V&quot;);\n   }\n   static void addRow3(int N, String row1, String row2, String row3) {\n      if (row3.length() == row2.length()) { // not my turn!\n         addRow1(N, row1, row2, row3);\n         return;\n      }\n      if (row3.length() &lt; N - 1)\n         addRow1(N, row1,\n                    row2,\n                    row3 + &quot;&lt;&gt;&quot;);\n   }\n}\n</code></pre>\n<p>You don't often see 3 mutually recursive functions like this, so this should be educational.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 26634,
+    "reputation" : 27769,
+    "user_id" : 69514,
+    "user_type" : "registered",
+    "accept_rate" : 70,
+    "profile_image" : "https://www.gravatar.com/avatar/cfdf373f964f3a565faf5a8e1a82c8ae?s=256&d=identicon&r=PG",
+    "display_name" : "user69514",
+    "link" : "https://stackoverflow.com/users/69514/user69514"
+  },
+  "is_answered" : true,
+  "view_count" : 3775,
+  "accepted_answer_id" : 2695676,
+  "answer_count" : 3,
+  "score" : 3,
+  "last_activity_date" : 1759280305,
+  "creation_date" : 1271962138,
+  "last_edit_date" : 1271991309,
+  "question_id" : 2693552,
+  "link" : "https://stackoverflow.com/questions/2693552/java-recursion-on-array",
+  "title" : "java recursion on array",
+  "body" : "<p>I have to create a program that finds all the possible ways of filling a square of size x by y. You place a block which takes up 2 spaces to completely fill. </p>\n\n<p>The problem is I don't know how to code it to the point where you can remember the placements of each square. I can get it to where it fills the board completely once and maybe twice, but nothing past that. I also know that I'm supposed to use recursion to figure this out . Here is the code I started on so far. There is also a main method and I have the initial even/odd check working fine. This is the part I have no idea on.</p>\n\n<pre><code>    public void recurDomino(int row, int column) {\n            if (Board[2][x - 1] != false) {\n\n            } else if(Board[1][x-1]!=false)\n            {\n\n            }\n            else {\n                for (int n=0; n &lt; x - 1; n++) {\n                    Board[row][column] = true;\n                    Board[row][column+1] = true;\n                    column++;\n                    counter++;\n                } \n                recurDomino(1, 0);\n                recurDomino(2, 0);\n\n            }\n        }\n\nThank you for any help you guys can give me. \n\n\n******************* EDIT ****************************************\n</code></pre>\n\n<p>I am a little confused still. I came up with this algorithm but I always get 2 for any value greater or equal to 2.</p>\n\n<pre><code>public boolean tryHorizontal(int row , int col){\n        if( row &lt; 0 || row &gt;= array[0].length-1)\n            return false;\n        else\n            return true;\n    }\n\n    public boolean tryVertical(int row, int col){\n        if( col &lt; 0 || col &gt;= 2 )\n            return false;\n        else\n            return true;\n    }\n\n    public boolean tryRowCol(int row, int col){\n        if(this.tryHorizontal(row, col) &amp;&amp; this.tryVertical(row, col)){\n            return true;\n        }\n        else\n            return false;\n    }\n\n    public int findWays(int row, int col){\n        int n = 0;\n        if( !this.tryRowCol(row, col))\n            return 0;\n        else\n            n =+ 1 + this.findWays(row+1, col+1);\n\n        return n;\n    }\n</code></pre>\n"
+}

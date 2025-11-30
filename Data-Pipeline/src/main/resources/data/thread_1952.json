@@ -1,0 +1,412 @@
+{
+  "tags" : [ "java", "classloader" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 266478,
+      "reputation" : 2028,
+      "user_id" : 554068,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://www.gravatar.com/avatar/32350a76e6a69d81d0507a360ceca6ae?s=256&d=identicon&r=PG",
+      "display_name" : "hetaoblog",
+      "link" : "https://stackoverflow.com/users/554068/hetaoblog"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1313138218,
+    "post_id" : 148681,
+    "comment_id" : 9463833,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Do you have a classloader for each jar? How does OSGI containers archives to unload classloader? It looks there&#39;s no unload API in the classloader class?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3416,
+      "reputation" : 83489,
+      "user_id" : 4926,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/3f9f1c5628ed19b0e70fd4e8b8a1d0b9?s=256&d=identicon&r=PG",
+      "display_name" : "Jason Cohen",
+      "link" : "https://stackoverflow.com/users/4926/jason-cohen"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1222695879,
+    "creation_date" : 1222695879,
+    "answer_id" : 148697,
+    "question_id" : 148681,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You can unload a ClassLoader but you cannot unload specific classes.  More specifically you cannot unload classes created in a ClassLoader that's not under your control.</p>\n\n<p>If possible, I suggest using your own ClassLoader so you can unload.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7072,
+      "reputation" : 2499,
+      "user_id" : 12092,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/29200267/picture?type=large",
+      "display_name" : "Steve g",
+      "link" : "https://stackoverflow.com/users/12092/steve-g"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1222695973,
+    "creation_date" : 1222695973,
+    "answer_id" : 148703,
+    "question_id" : 148681,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Classloaders can be a tricky problem.  You can especially run into problems if you're using multiple classloaders and don't have their interactions clearly and rigorously defined.  I think in order to actually be able to unload a class youlre going go have to remove all references to any classes(and their instances) you're trying to unload.</p>\n\n<p>Most people needing to do this type of thing end up using <a href=\"http://en.wikipedia.org/wiki/OSGi\" rel=\"noreferrer\">OSGi</a>.  OSGi is really powerful and surprisingly lightweight and easy to use,</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user21037"
+      },
+      "edited" : false,
+      "score" : 35,
+      "creation_date" : 1266493840,
+      "post_id" : 148707,
+      "comment_id" : 2252323,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Note also that according to <a href=\"http://java.sun.com/docs/books/jls/second_edition/html/execution.doc.html\" rel=\"nofollow noreferrer\">java.sun.com/docs/books/jls/second_edition/html/&hellip;</a> unloading of classes is an optimization and, depending on the JVM implementation, may or may not actually occur."
+    }, {
+      "owner" : {
+        "account_id" : 49078,
+        "reputation" : 47221,
+        "user_id" : 145989,
+        "user_type" : "registered",
+        "accept_rate" : 59,
+        "profile_image" : "https://www.gravatar.com/avatar/d0edf9d0f312ec47d27046845580ba4f?s=256&d=identicon&r=PG",
+        "display_name" : "Ondra Žižka",
+        "link" : "https://stackoverflow.com/users/145989/ondra-%c5%bdi%c5%beka"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1372271754,
+      "post_id" : 148707,
+      "comment_id" : 25135383,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "As an easier and lightweight alternative to OSGi, try <a href=\"https://docs.jboss.org/author/display/MODULES/Home\" rel=\"nofollow noreferrer\">JBoss Modules</a> - modularized classloading with classloader per module (a group of jars)."
+    } ],
+    "owner" : {
+      "account_id" : 1710,
+      "reputation" : 18910,
+      "user_id" : 2309,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://i.sstatic.net/LoLKZ.jpg?s=256",
+      "display_name" : "Mario Orteg&#243;n",
+      "link" : "https://stackoverflow.com/users/2309/mario-orteg%c3%b3n"
+    },
+    "is_accepted" : true,
+    "score" : 211,
+    "last_activity_date" : 1441026309,
+    "last_edit_date" : 1441026309,
+    "creation_date" : 1222696012,
+    "answer_id" : 148707,
+    "question_id" : 148681,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The only way that a Class can be unloaded is if the Classloader used is garbage collected.  This means, references to every single class and to the classloader itself need to go the way of the dodo.</p>\n\n<p>One possible solution to your problem is to have a Classloader for every jar file, and a Classloader for each of the AppServers that delegates the actual loading of classes to specific Jar classloaders.  That way, you can point to different versions of the jar file for every App server.</p>\n\n<p>This is not trivial, though.  The OSGi platform strives to do just this, as each bundle has a different classloader and dependencies are resolved by the platform.  Maybe  a good solution would be to take a look at it.</p>\n\n<p>If you don't want to use OSGI, one possible implementation could be to use one instance of <a href=\"https://docs.oracle.com/javase/tutorial/deployment/jar/jarclassloader.html\" rel=\"noreferrer\">JarClassloader</a> class for every JAR file.</p>\n\n<p>And create a new, MultiClassloader class that extends Classloader.  This class internally would have an array (or List) of JarClassloaders, and in the defineClass() method would iterate through all the internal classloaders until a definition can be found, or a NoClassDefFoundException is thrown.  A couple of accessor methods can be provided to add new JarClassloaders to the class. There is several possible implementations on the net for a MultiClassLoader, so you might not even need to write your own.</p>\n\n<p>If you instanciate a MultiClassloader for every connection to the server, in principle it is possible that every server uses a different version of the same class.</p>\n\n<p>I've used the MultiClassloader idea in a project, where classes that contained user-defined scripts had to be loaded and unloaded from memory and it worked quite well.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 98784,
+        "reputation" : 10707,
+        "user_id" : 267197,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://www.gravatar.com/avatar/9e8f0978ff9aefa02e1633c3f77dc1ba?s=256&d=identicon&r=PG",
+        "display_name" : "dma_k",
+        "link" : "https://stackoverflow.com/users/267197/dma-k"
+      },
+      "reply_to_user" : {
+        "account_id" : 7579,
+        "reputation" : 4409,
+        "user_id" : 13209,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/17a97e09a1b23bc733ae22880a961b59?s=256&d=identicon&r=PG",
+        "display_name" : "Georgi",
+        "link" : "https://stackoverflow.com/users/13209/georgi"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1295482986,
+      "post_id" : 148762,
+      "comment_id" : 5242628,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I don&#39;t understand people, who ticked -1 for this answer without leaving a comment. For me looks good. Perhaps having one <code>ClassLoader</code> per class is a bit too much, one <code>ClassLoader</code> per JAR makes sense. Could be be more specific about how to force class upload in proposed schema? E.g. how can I guarantee, that instances of classes loaded by ClassLoaderA are not referred by instances loaded by ClassLoaderB?"
+    }, {
+      "owner" : {
+        "account_id" : 53933,
+        "reputation" : 5725,
+        "user_id" : 161289,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/KUaQL.jpg?s=256",
+        "display_name" : "zinking",
+        "link" : "https://stackoverflow.com/users/161289/zinking"
+      },
+      "reply_to_user" : {
+        "account_id" : 98784,
+        "reputation" : 10707,
+        "user_id" : 267197,
+        "user_type" : "registered",
+        "accept_rate" : 68,
+        "profile_image" : "https://www.gravatar.com/avatar/9e8f0978ff9aefa02e1633c3f77dc1ba?s=256&d=identicon&r=PG",
+        "display_name" : "dma_k",
+        "link" : "https://stackoverflow.com/users/267197/dma-k"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1382349818,
+      "post_id" : 148762,
+      "comment_id" : 28910103,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@dma_k exactly, the answer is good, but it is not touching the key points you mentioned."
+    }, {
+      "owner" : {
+        "account_id" : 92937,
+        "reputation" : 19167,
+        "user_id" : 254477,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/a5f7ff911c368f70c10417b8de5c8c2c?s=256&d=identicon&r=PG",
+        "display_name" : "Sled",
+        "link" : "https://stackoverflow.com/users/254477/sled"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1501683649,
+      "post_id" : 148762,
+      "comment_id" : 77887545,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Georgi is there an existing implementation we can instaniate/reuse for this?"
+    }, {
+      "owner" : {
+        "account_id" : 4482535,
+        "reputation" : 520,
+        "user_id" : 5161634,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://lh6.googleusercontent.com/-6eqWSw3Vh5s/AAAAAAAAAAI/AAAAAAAAAD8/kclIkVVUVM8/s256-rj/photo.jpg",
+        "display_name" : "Sriharsha g.r.v",
+        "link" : "https://stackoverflow.com/users/5161634/sriharsha-g-r-v"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1513173558,
+      "post_id" : 148762,
+      "comment_id" : 82550486,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It would be very very  helpful,if you could provide the sample java code.To be precise,i am looking for How to unload classes using CustomClassLoader but had no luck."
+    }, {
+      "owner" : {
+        "account_id" : 6429844,
+        "reputation" : 3792,
+        "user_id" : 4983501,
+        "user_type" : "registered",
+        "accept_rate" : 41,
+        "profile_image" : "https://www.gravatar.com/avatar/f5cdc7c4047cd9f40817402664946417?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "niaomingjian",
+        "link" : "https://stackoverflow.com/users/4983501/niaomingjian"
+      },
+      "reply_to_user" : {
+        "account_id" : 4482535,
+        "reputation" : 520,
+        "user_id" : 5161634,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://lh6.googleusercontent.com/-6eqWSw3Vh5s/AAAAAAAAAAI/AAAAAAAAAD8/kclIkVVUVM8/s256-rj/photo.jpg",
+        "display_name" : "Sriharsha g.r.v",
+        "link" : "https://stackoverflow.com/users/5161634/sriharsha-g-r-v"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1519955871,
+      "post_id" : 148762,
+      "comment_id" : 85128345,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Sriharshag.r.v Have you tried this and implemented a sample?"
+    } ],
+    "owner" : {
+      "account_id" : 7579,
+      "reputation" : 4409,
+      "user_id" : 13209,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/17a97e09a1b23bc733ae22880a961b59?s=256&d=identicon&r=PG",
+      "display_name" : "Georgi",
+      "link" : "https://stackoverflow.com/users/13209/georgi"
+    },
+    "is_accepted" : false,
+    "score" : 49,
+    "last_activity_date" : 1501682096,
+    "last_edit_date" : 1501682096,
+    "creation_date" : 1222696775,
+    "answer_id" : 148762,
+    "question_id" : 148681,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Yes there are ways to load classes and to \"unload\" them later on. The trick is to implement your own classloader which resides between high level class loader (the System class loader) and the class loaders of the app server(s), and to hope that the app server's class loaders do delegate the classloading to the upper loaders.</p>\n\n<p>A class is defined by its package, its name, and the class loader it originally loaded. Program a \"proxy\" classloader which is the first that is loaded when starting the JVM. Workflow:</p>\n\n<ul>\n<li>The program starts and the real \"main\"-class is loaded by this proxy classloader.</li>\n<li>Every class that then is normally loaded (i.e. not through another classloader implementation which could break the hierarchy) will be delegated to this class loader.</li>\n<li>The proxy classloader delegates <code>java.x</code> and <code>sun.x</code> to the system classloader (these <em>must not</em> be loaded through any other classloader than the system classloader).</li>\n<li>For every class that is replaceable, instantiate a classloader (which really loads the class and does not delegate it to the parent classloader) and load it through this.</li>\n<li>Store the package/name of the classes as keys and the classloader as values in a data structure (i.e. Hashmap).</li>\n<li>Every time the proxy classloader gets a request for a class that was loaded before, it returns the class from the class loader stored before.</li>\n<li>It should be enough to locate the byte array of a class by your class loader (or to \"delete\" the key/value pair from your data structure) and reload the class in case you want to change it.</li>\n</ul>\n\n<p>Done right there should not come a <a href=\"https://docs.oracle.com/javase/7/docs/api/java/lang/ClassCastException.html\" rel=\"noreferrer\">ClassCastException</a> or <a href=\"https://docs.oracle.com/javase/7/docs/api/java/lang/LinkageError.html\" rel=\"noreferrer\">LinkageError</a> etc.</p>\n\n<p>For more informations about class loader hierarchies (yes, that's exactly what you are implementing here ;- ) look at <a href=\"http://www.manning.com/neward3/\" rel=\"noreferrer\">\"Server-Based Java Programming\" by Ted Neward</a> - that book helped me implementing something very similar to what you want.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3282,
+      "reputation" : 147614,
+      "user_id" : 4725,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+      "display_name" : "Tom Hawtin - tackline",
+      "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1222701571,
+    "creation_date" : 1222701571,
+    "answer_id" : 149135,
+    "question_id" : 148681,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Classes have an implicit strong reference to their ClassLoader instance, and vice versa. They are garbage collected as with Java objects. Without hitting the tools interface or similar, you can't remove individual classes.</p>\n\n<p>As ever you can get memory leaks. Any strong reference to one of your classes or class loader will leak the whole thing. This occurs with the Sun implementations of ThreadLocal, java.sql.DriverManager and java.beans, for instance.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3306015,
+        "reputation" : 669,
+        "user_id" : 2780808,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/5e05dc46f3178295cea60153dd664a4e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Ercksen",
+        "link" : "https://stackoverflow.com/users/2780808/ercksen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1444736110,
+      "post_id" : 3187747,
+      "comment_id" : 54017944,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Works like a charm :). Is there any method to unload all class files of a jar file?"
+    }, {
+      "owner" : {
+        "account_id" : 238932,
+        "reputation" : 839,
+        "user_id" : 508178,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/47776be4f459744a68c33abc032b307c?s=256&d=identicon&r=PG",
+        "display_name" : "Kamran",
+        "link" : "https://stackoverflow.com/users/508178/kamran"
+      },
+      "reply_to_user" : {
+        "account_id" : 3306015,
+        "reputation" : 669,
+        "user_id" : 2780808,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/5e05dc46f3178295cea60153dd664a4e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Ercksen",
+        "link" : "https://stackoverflow.com/users/2780808/ercksen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1448905342,
+      "post_id" : 3187747,
+      "comment_id" : 55765028,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Unfortunately not at the moment. But will look into to it. May be in the future releases."
+    }, {
+      "owner" : {
+        "account_id" : 3306015,
+        "reputation" : 669,
+        "user_id" : 2780808,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/5e05dc46f3178295cea60153dd664a4e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Ercksen",
+        "link" : "https://stackoverflow.com/users/2780808/ercksen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1448906086,
+      "post_id" : 3187747,
+      "comment_id" : 55765468,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "By the way, I found a little workaround. If you have one <code>JarClassLoader</code> for every jar file you loaded, you can call <code>getLoadedClasses()</code> on it, then iterate over each and unload it."
+    } ],
+    "owner" : {
+      "account_id" : 238932,
+      "reputation" : 839,
+      "user_id" : 508178,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/47776be4f459744a68c33abc032b307c?s=256&d=identicon&r=PG",
+      "display_name" : "Kamran",
+      "link" : "https://stackoverflow.com/users/508178/kamran"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1278430402,
+    "creation_date" : 1278430402,
+    "answer_id" : 3187747,
+    "question_id" : 148681,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I wrote a custom classloader, from which it is possible to unload individual classes without GCing the classloader. <a href=\"http://jcloader.sourceforge.net\" rel=\"noreferrer\">Jar Class Loader</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1245419,
+        "reputation" : 15839,
+        "user_id" : 1206998,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/z3jRS.jpg?s=256",
+        "display_name" : "Juh_",
+        "link" : "https://stackoverflow.com/users/1206998/juh"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1515745388,
+      "post_id" : 46758814,
+      "comment_id" : 83425595,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Careful: System.gc() don&#39;t necessary call GC. It only asks the jvm to start it, but it doesn&#39;t enforce it. And IME it often don&#39;t start the GC :-\\"
+    } ],
+    "owner" : {
+      "account_id" : 10086412,
+      "reputation" : 11,
+      "user_id" : 7454847,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ljMri.jpg?s=256",
+      "display_name" : "Aleksander Drozd",
+      "link" : "https://stackoverflow.com/users/7454847/aleksander-drozd"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1508093793,
+    "creation_date" : 1508093793,
+    "answer_id" : 46758814,
+    "question_id" : 148681,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you're live watching if unloading class worked in <a href=\"http://docs.oracle.com/javase/7/docs/technotes/guides/management/jconsole.html\" rel=\"nofollow noreferrer\">JConsole</a> or something, try also adding  <code>java.lang.System.gc()</code> at the end of your class unloading logic. It explicitly triggers Garbage Collector.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7716,
+    "reputation" : 3188,
+    "user_id" : 13469,
+    "user_type" : "registered",
+    "accept_rate" : 25,
+    "profile_image" : "https://www.gravatar.com/avatar/a8b3783c29083071f4ac13db9c83c777?s=256&d=identicon&r=PG",
+    "display_name" : "el_eduardo",
+    "link" : "https://stackoverflow.com/users/13469/el-eduardo"
+  },
+  "is_answered" : true,
+  "view_count" : 164257,
+  "accepted_answer_id" : 148707,
+  "answer_count" : 7,
+  "score" : 199,
+  "last_activity_date" : 1508093793,
+  "creation_date" : 1222695659,
+  "last_edit_date" : 1222697874,
+  "question_id" : 148681,
+  "link" : "https://stackoverflow.com/questions/148681/unloading-classes-in-java",
+  "title" : "Unloading classes in java?",
+  "body" : "<p>I have a custom class loader so that a desktop application can dynamically start loading classes from an AppServer I need to talk to. We did this since the amount of jars that are required to do this are ridiculous (if we wanted to ship them). We also have version problems if we don't load the classes dynamically at run time from the AppServer library.</p>\n\n<p>Now, I just hit a problem where I need to talk to two different AppServers and found that depending on whose classes I load first I might break badly... Is there any way to force the unloading of the class without actually killing the JVM?</p>\n\n<p>Hope this makes sense</p>\n"
+}

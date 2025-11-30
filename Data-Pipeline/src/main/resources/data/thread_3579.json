@@ -1,0 +1,112 @@
+{
+  "tags" : [ "java", "apache-poi", "doc" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 930576,
+        "reputation" : 1665,
+        "user_id" : 960525,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/wp59v.jpg?s=256",
+        "display_name" : "Jalal Sordo",
+        "link" : "https://stackoverflow.com/users/960525/jalal-sordo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1386930523,
+      "post_id" : 13816302,
+      "comment_id" : 30756996,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Alexey, would you please provide some details on how you worked out this issue, any useful links ?"
+    } ],
+    "owner" : {
+      "account_id" : 350017,
+      "reputation" : 48546,
+      "user_id" : 685641,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/598aa6e391b96b1ec24f1c34b58edcd9?s=256&d=identicon&r=PG",
+      "display_name" : "Gagravarr",
+      "link" : "https://stackoverflow.com/users/685641/gagravarr"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1355214537,
+    "creation_date" : 1355214537,
+    "answer_id" : 13816302,
+    "question_id" : 13815119,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your best bet in this case is to use <a href=\"http://tika.apache.org/\" rel=\"nofollow\">Apache Tika</a>, and let it wrap Apache POI for you. Apache Tika will generate HTML for your document (or plain text, but you want the HTML for your case). Along with that, it'll put in placeholders for embedded resources, img tags for embedded images, and provide you with a way to get at the contents of the embedded resources and images.</p>\n\n<p>There's a very good example of doing this included in Alfresco, <a href=\"http://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/HEAD/root/projects/repository/source/java/org/alfresco/repo/rendition/executer/HTMLRenderingEngine.java\" rel=\"nofollow\">HTMLRenderingEngine</a>. You'll likely want to review the code there, then write your own to do something very similar. The code there includes a custom ContentHandler which allows editing of the img tags, to re-write the src attributes, you may or may not need that depending on where you're going to write out the images to.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3053378,
+        "reputation" : 404,
+        "user_id" : 2587521,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ac40d4b68ca9638bf27728cab49156cb?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "raok1997",
+        "link" : "https://stackoverflow.com/users/2587521/raok1997"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1427189120,
+      "post_id" : 29228920,
+      "comment_id" : 46664447,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This supports including image as inline base64 content only. To create links, you need different approach."
+    } ],
+    "owner" : {
+      "account_id" : 3053378,
+      "reputation" : 404,
+      "user_id" : 2587521,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ac40d4b68ca9638bf27728cab49156cb?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "raok1997",
+      "link" : "https://stackoverflow.com/users/2587521/raok1997"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1762166609,
+    "last_edit_date" : 1762166609,
+    "creation_date" : 1427189024,
+    "answer_id" : 29228920,
+    "question_id" : 13815119,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Extend <code>WordToHtmlConverter</code> and override <code>processImageWithoutPicturesManager</code>:</p>\n<pre><code>import java.util.Base64;\n\nimport org.apache.poi.hwpf.converter.WordToHtmlConverter;\nimport org.apache.poi.hwpf.usermodel.Picture;\nimport org.w3c.dom.Document;\nimport org.w3c.dom.Element;\npublic class InlineImageWordToHtmlConverter extends WordToHtmlConverter {\n\n    public InlineImageWordToHtmlConverter(Document document) {\n        super(document);\n    }\n    \n    @Override\n    protected void processImageWithoutPicturesManager(Element currentBlock,\n        boolean inlined, Picture picture)\n    {\n        Element imgNode = currentBlock.getOwnerDocument().createElement(&quot;img&quot;);\n        StringBuilder sb = new StringBuilder();\n        sb.append(Base64.getMimeEncoder().encodeToString(picture.getRawContent()));\n        sb.insert(0, &quot;data:&quot;+picture.getMimeType()+&quot;;base64,&quot;);\n        imgNode.setAttribute(&quot;src&quot;, sb.toString());\n        currentBlock.appendChild(imgNode);\n    }\n    \n}\n</code></pre>\n<p>Use the new class while parsing document as shown below:</p>\n<pre><code>HWPFDocumentCore wordDocument = WordToHtmlUtils.loadDoc(new FileInputStream(&quot;D:/temp/Temp.doc&quot;));    \nWordToHtmlConverter wordToHtmlConverter = new InlineImageWordToHtmlConverter(\n        DocumentBuilderFactory.newInstance().newDocumentBuilder()\n                .newDocument());\nwordToHtmlConverter.processDocument(wordDocument);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12671791,
+      "reputation" : 730,
+      "user_id" : 9209083,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/f5ZOd.png?s=256",
+      "display_name" : "Anton",
+      "link" : "https://stackoverflow.com/users/9209083/anton"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762166027,
+    "creation_date" : 1762166027,
+    "answer_id" : 79807756,
+    "question_id" : 13815119,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In version 5.4.1, for me, overriding methods didn't help. Instead I used picture manager.</p>\n<p>Example showed below:</p>\n<pre><code>var wordDocument = WordToHtmlUtils.loadDoc(new FileInputStream(&quot;D:/temp/Temp.doc&quot;));\nvar doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();\nvar converter = new WordToHtmlConverter(doc);\nconverter.setPicturesManager((content, pictureType, suggestedName, widthInches, heightInches) -&gt; {\n    // some logic here\n    // for ex: save byte stream to s3\n\n    // return src path to s3\n    return &quot;s3://myImg.jpg&quot;\n    // in document it will be like that: &lt;img src=&quot;s3://myImg.jpg&quot;&gt;\n});\nconverter.processDocument(wordDocument);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "user_type" : "does_not_exist",
+    "display_name" : "user1134181"
+  },
+  "is_answered" : true,
+  "view_count" : 12893,
+  "accepted_answer_id" : 13816302,
+  "answer_count" : 3,
+  "score" : 4,
+  "last_activity_date" : 1762166609,
+  "creation_date" : 1355208960,
+  "last_edit_date" : 1762166561,
+  "question_id" : 13815119,
+  "link" : "https://stackoverflow.com/questions/13815119/how-can-i-convert-a-word-document-to-html-with-images",
+  "title" : "How can I convert a Word document to HTML with images",
+  "body" : "<p>There is a Word document (.doc) file that contains some image. How can I convert it to HTML with image?</p>\n<p>I tried to use this example:\n<a href=\"https://stackoverflow.com/questions/227236/convert-word-doc-to-html-programmatically-in-java\">Convert Word doc to HTML programmatically in Java</a></p>\n<pre><code>public class Converter {\n    ...\n    \n    private File docFile, htmlFile;\n    \n    try {\n        FileInputStream fos = new FileInputStream(docFile.getAbsolutePath()); \n        HWPFDocument doc = new HWPFDocument(fos);       \n        Document newDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();\n        \n        WordToHtmlConverter wordToHtmlConverter = new WordToHtmlConverter(newDoc) ;\n        wordToHtmlConverter.processDocument(doc);\n\n        StringWriter stringWriter = new StringWriter();\n        \n        Transformer transformer = TransformerFactory.newInstance().newTransformer();        \n        transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);\n        transformer.setOutputProperty(OutputKeys.ENCODING, &quot;utf-8&quot;);\n        transformer.setOutputProperty(OutputKeys.METHOD, &quot;html&quot;);\n        transformer.transform(\n                    new DOMSource(wordToHtmlConverter.getDocument()),\n                    new StreamResult(stringWriter)\n        );\n\n        String html = stringWriter.toString();\n       \n        try {\n            BufferedWriter out = new BufferedWriter(\n                new OutputStreamWriter(new FileOutputStream(htmlFile), &quot;UTF-8&quot;)\n            );     \n            out.write(html);\n            out.close();\n       } catch (IOException e) {\n           e.printStackTrace();\n       }\n    \n       JEditorPane jEditorPane = new JEditorPane();\n       jEditorPane.setContentType(&quot;text/html&quot;);\n       jEditorPane.setEditable(false);\n       jEditorPane.setPage(htmlFile.toURI().toURL());\n\n       JScrollPane jScrollPane = new JScrollPane(jEditorPane);\n       \n       JFrame jFrame = new JFrame(&quot;display html file&quot;);\n       jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n       jFrame.getContentPane().add(jScrollPane);\n       jFrame.setSize(512, 342);\n       jFrame.setVisible(true);\n       \n    } catch(Exception e) {\n        e.printStackTrace();\n    }\n    ...\n}\n</code></pre>\n<p>But the image is lost.</p>\n<p>The <a href=\"http://poi.apache.org/apidocs/org/apache/poi/hwpf/converter/WordToHtmlConverter.html\" rel=\"nofollow noreferrer\">documentation</a> for the <code>WordToHtmlConverter</code> class says the following:</p>\n<blockquote>\n<p>...this implementation doesn't create images or links to them. This\ncan be changed by overriding\n<code>AbstractWordConverter.processImage(Element, boolean, Picture)</code>\nmethod.</p>\n</blockquote>\n<p>How to convert DOC to HTML with images?</p>\n"
+}

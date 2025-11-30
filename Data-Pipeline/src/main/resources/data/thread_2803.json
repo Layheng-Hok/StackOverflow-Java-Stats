@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "windows", "swt" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 36735,
+      "reputation" : 10590,
+      "user_id" : 104894,
+      "user_type" : "registered",
+      "accept_rate" : 45,
+      "profile_image" : "https://www.gravatar.com/avatar/92f57a467c2594d4b1f38c7d96a0ff45?s=256&d=identicon&r=PG",
+      "display_name" : "L&#243;r&#225;nt Pint&#233;r",
+      "link" : "https://stackoverflow.com/users/104894/l%c3%b3r%c3%a1nt-pint%c3%a9r"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1276181093,
+    "creation_date" : 1276181093,
+    "answer_id" : 3015475,
+    "question_id" : 3014688,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I got this far -- maybe it helps someone:</p>\n\n<pre><code>import org.eclipse.swt.SWT;\nimport org.eclipse.swt.events.*;\nimport org.eclipse.swt.layout.*;\nimport org.eclipse.swt.widgets.*;\n\npublic class SWTInfiniteTree {\n    private boolean expanding;\n\n    public SWTInfiniteTree() {\n        Display display = new Display();\n        Shell shell = new Shell(display);\n        shell.setLayout(new GridLayout());\n\n        Tree tree = new Tree(shell, SWT.BORDER);\n        tree.setLayoutData(new GridData(GridData.FILL_BOTH));\n\n        createItem(tree, \"ITEM1\");\n        createItem(tree, \"ITEM2\");\n        createItem(tree, \"ITEM3\");\n\n        tree.addTreeListener(new TreeListener() {\n            @Override\n            public void treeExpanded(TreeEvent e) {\n                TreeItem parent = (TreeItem) e.item;\n                if (expanding) {\n                    e.doit = false;\n                } else {\n                    expanding = true;\n                    parent.removeAll();\n                    createItem(parent, \".1\");\n                    createItem(parent, \".2\");\n                    createItem(parent, \".3\");\n                }\n            }\n\n            @Override\n            public void treeCollapsed(TreeEvent e) {\n            }\n        });\n        tree.addKeyListener(new KeyListener() {\n            @Override\n            public void keyReleased(KeyEvent e) {\n                expanding = false;\n            }\n\n            @Override\n            public void keyPressed(KeyEvent e) {\n            }\n        });\n        tree.addMouseListener(new MouseListener() {\n            @Override\n            public void mouseUp(MouseEvent e) {\n                expanding = false;\n            }\n\n            @Override\n            public void mouseDown(MouseEvent e) {\n            }\n\n            @Override\n            public void mouseDoubleClick(MouseEvent e) {\n                expanding = false;\n            }\n        });\n\n        shell.setSize(300, 200);\n        shell.open();\n        while (!shell.isDisposed()) {\n            if (!display.readAndDispatch()) {\n                display.sleep();\n            }\n        }\n        display.dispose();\n    }\n\n    private TreeItem createItem(Widget parent, String text) {\n        TreeItem item;\n        if (parent instanceof Tree) {\n            item = new TreeItem((Tree) parent, SWT.NULL);\n            item.setText(text);\n        } else {\n            item = new TreeItem((TreeItem) parent, SWT.NULL);\n            item.setText(((TreeItem) parent).getText() + text);\n        }\n        // So that we have a [+] icon\n        item.setItemCount(1);\n        return item;\n    }\n\n    public static void main(String[] args) {\n        new SWTInfiniteTree();\n    }\n}\n</code></pre>\n\n<p>What it does is it expands the first element, and then goes into \"won't expand more\" mode, which is lifted whenever a key or the mouse button is released. However, for some reason it will expand my freshly generated items.</p>\n\n<p>I hope someone has a better solution.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 36735,
+    "reputation" : 10590,
+    "user_id" : 104894,
+    "user_type" : "registered",
+    "accept_rate" : 45,
+    "profile_image" : "https://www.gravatar.com/avatar/92f57a467c2594d4b1f38c7d96a0ff45?s=256&d=identicon&r=PG",
+    "display_name" : "L&#243;r&#225;nt Pint&#233;r",
+    "link" : "https://stackoverflow.com/users/104894/l%c3%b3r%c3%a1nt-pint%c3%a9r"
+  },
+  "is_answered" : true,
+  "view_count" : 804,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1763852529,
+  "creation_date" : 1276175953,
+  "question_id" : 3014688,
+  "link" : "https://stackoverflow.com/questions/3014688/how-to-stop-expanding-an-infinite-swt-tree-upon-pressing",
+  "title" : "How to stop expanding an infinite SWT Tree upon pressing &quot;*&quot;",
+  "body" : "<p>I have an SWT Tree in my application that contains an infinite data structure. Upon expanding an item, I generate its children. On Windows though, users can press \"*\", triggering an \"expand all descendants\" action, and my application hangs.</p>\n\n<p>There are two acceptable behaviors for me when the user presses \"*\":</p>\n\n<ol>\n<li>Expand all children of the selected element, but only to the next level</li>\n<li>Do nothing</li>\n</ol>\n\n<p>In either case, I will still need to be able to expand items as deep as required (by clicking on the [+] icon, or by pressing \"+\"), so limiting the tree depth is not a solution. Is there another way that I can achieve either of the above without modifying SWT classes?</p>\n"
+}

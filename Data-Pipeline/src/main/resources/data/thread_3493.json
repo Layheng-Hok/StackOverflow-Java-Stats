@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "hibernate" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3150418,
+      "reputation" : 9330,
+      "user_id" : 2663985,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/a9e7060046321c69b3fc120a40ba643d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Mysterion",
+      "link" : "https://stackoverflow.com/users/2663985/mysterion"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1396175949,
+    "post_id" : 22742807,
+    "comment_id" : 34664550,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What did you ask actually? You just post code and exception message"
+  }, {
+    "owner" : {
+      "account_id" : 1223835,
+      "reputation" : 77459,
+      "user_id" : 1189885,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://i.sstatic.net/DLHqU.png?s=256",
+      "display_name" : "chrylis -cautiouslyoptimistic-",
+      "link" : "https://stackoverflow.com/users/1189885/chrylis-cautiouslyoptimistic"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1396176931,
+    "post_id" : 22742807,
+    "comment_id" : 34664802,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I&#39;m going to bet the subcategory isn&#39;t in the database."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 34247,
+      "reputation" : 1984,
+      "user_id" : 96617,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/afb634f3f86c091ffb1c82001b2aff74?s=256&d=identicon&r=PG",
+      "display_name" : "Lluis Martinez",
+      "link" : "https://stackoverflow.com/users/96617/lluis-martinez"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1508409087,
+    "creation_date" : 1508409087,
+    "answer_id" : 46827875,
+    "question_id" : 22742807,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This line probably yields a null:\nSubCategory subcategory=(SubCategory)session.get(SubCategory.class,id);</p>\n\n<p>This giving the exception when deleting:\nsession.delete(subcategory);</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4250328,
+    "reputation" : 11,
+    "user_id" : 3477612,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/4559fe9401fc01534569e75b2b2aabb2?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "sdj",
+    "link" : "https://stackoverflow.com/users/3477612/sdj"
+  },
+  "is_answered" : false,
+  "view_count" : 8639,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762344350,
+  "creation_date" : 1396174888,
+  "last_edit_date" : 1396197858,
+  "question_id" : 22742807,
+  "link" : "https://stackoverflow.com/questions/22742807/java-lang-illegalargumentexception-attempt-to-create-delete-event-with-null-ent",
+  "title" : "java.lang.IllegalArgumentException: attempt to create delete event with null entity",
+  "body" : "<p>Cann't delete/update items from database.This exception is coming when try to delete item\nAnd this form get a combo box value from MainCategory class and having a foreign key of MainCtegory.Is that the reason that not allow to delete/update.</p>\n\n<p>package com.auction management.entity;</p>\n\n<pre><code>import javax.persistence.Column;\n\nimport javax.persistence.Entity;\n\nimport javax.persistence.FetchType;\n\nimport javax.persistence.GeneratedValue;\n\nimport javax.persistence.GenerationType;\n\nimport javax.persistence.Id;\n\nimport javax.persistence.JoinColumn;\n\nimport javax.persistence.ManyToOne;\n\nimport javax.persistence.Table;\n\n@Entity\n\n@Table(name = \"SubCategory\")\n\npublic class SubCategory {\n\n    @Id\n    @Column(name = \"usbId\",nullable = false,unique = true)\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    private int subid;\n\n    @Column(name = \"subName\")\n    private String subName;\n\n\n    @ManyToOne(fetch = FetchType.LAZY)\n    @JoinColumn(name = \"id\",nullable = false)\n   private MainCategory mainCategory;\n\n    public MainCategory getMainCategory() {\n        return mainCategory;\n    }\n\n    public void setMainCategory(MainCategory mainCategory) {\n        this.mainCategory = mainCategory;\n    }\n\n\n\n    public SubCategory() {\n    }\n\n    public int getSubid() {\n        return subid;\n    }\n\n    public void setSubid(int subid) {\n        this.subid = subid;\n    }\n\n    public String getSubName() {\n        return subName;\n    }\n\n    public void setSubName(String subName) {\n        this.subName = subName;\n    }\n\n\n}\n\n\n\n\n public static boolean deleteSubCategory(int id){\n\n        boolean status=false;\n        Session session=HibernateUtil.getSessionFactory().openSession();\n        Transaction transaction=null;\n\n        try {\n            transaction=session.beginTransaction();\n          SubCategory subcategory=(SubCategory)session.get(SubCategory.class,id);\n            session.delete(subcategory);\n            transaction.commit();\n            status=true;\n\n        } catch (Exception e) {\n            e.printStackTrace();\n            transaction.rollback();\n            status=false;\n        }\n        finally{\n            session.close();\n        }\n        return  status;\n    }\n\n\n\n\n\n private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) \n{ \n\n   boolean b=SubCategoryDao.deleteSubCategory(id);\n\n        if(b)\n        {\n            JOptionPane.showMessageDialog(this,\"Type Deleted Successfully\");\n               Category=SubCategoryDao.getAllCategories();\n               fillTable();\n               clear();\n        }else\n        {\n            JOptionPane.showMessageDialog(this,\"Not Delete\");\n        }\n}\n\n\n\n\nprivate void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {                                          \n        String name=txtSubCategory.getText();\n\n        SubCategory scategory=new SubCategory();\n\n        scategory.setSubName(name);\n        scategory.setSubid(id);\n\n        SubCategoryDao.updateSubCategory(scategory);\n        Category=SubCategoryDao.getAllCategories();\n        fillTable();\n        clear();\n    }  \n</code></pre>\n"
+}

@@ -1,0 +1,147 @@
+{
+  "tags" : [ "java", "spring", "dependency-injection", "service", "spotbugs" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user1034461"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1666202196,
+      "post_id" : 74127413,
+      "comment_id" : 130882175,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "UserSessionService has 4 other services as parameters that are private inside UserSessionService. If I understand what you&#39;re sayin, that means I should expose those private fields to be able to use them with getters in order to create temp service? If that&#39;s the case, wouldn&#39;t it make more mess having all those properties accesible from outside?"
+    }, {
+      "owner" : {
+        "account_id" : 23057660,
+        "reputation" : 487,
+        "user_id" : 17173476,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1aaa5855454816ab14de633b892ab5b9?s=256&d=identicon&r=PG",
+        "display_name" : "Vinz",
+        "link" : "https://stackoverflow.com/users/17173476/vinz"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1666203296,
+      "post_id" : 74127413,
+      "comment_id" : 130882504,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Assuming you need all of those 4 Services for this class and cannot just provide a constructor for <code>UserSessionService</code> that omits them, then yes, you would have to access them with a getter as well to pursue the copy approach. The Last time I came accros the &#39;EI_EXPOSE_REP2&#39; warning (same as you here I am assuming), I ultimately decided that it is worth doing so, as there in fact was the risk of this object being mutated outside of what I felt comfortable with. In your case, you may arrive at a different conclusion and deem the 4 extra getters to big a cost."
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user1034461"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1666335317,
+      "post_id" : 74127413,
+      "comment_id" : 130916820,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks! It&#39;s a large project, there are at least 20 service each of them having from 2 to 6 injections which mean all my services should have expose their inner properties which is silly in my case. Especially because they are services implemening their interfaces and designed to be injected and no option t9 be mutated or at least I think so haha"
+    }, {
+      "owner" : {
+        "account_id" : 306540,
+        "reputation" : 3186,
+        "user_id" : 2695990,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/EVYyd.jpg?s=256",
+        "display_name" : "fascynacja",
+        "link" : "https://stackoverflow.com/users/2695990/fascynacja"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1708097586,
+      "post_id" : 74127413,
+      "comment_id" : 137524630,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@horvoje how did you finaly solve your issue?"
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user1034461"
+      },
+      "reply_to_user" : {
+        "account_id" : 306540,
+        "reputation" : 3186,
+        "user_id" : 2695990,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/EVYyd.jpg?s=256",
+        "display_name" : "fascynacja",
+        "link" : "https://stackoverflow.com/users/2695990/fascynacja"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1709322400,
+      "post_id" : 74127413,
+      "comment_id" : 137668706,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@fascynacja sorry for late answer! I did not, I just added a comment <code>&#47;&#47;NOSONAR</code> to suppress a warning because I&#39;m not afraid of object being mutated because I have it under control."
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user1034461"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1709322506,
+      "post_id" : 74127413,
+      "comment_id" : 137668726,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Vinz Hi! I know it&#39;s been a long time, but I&#39;m interested in what you meant by &quot;object being mutated&quot; and please if you can give an example meaning the scenrario when this can happen."
+    } ],
+    "owner" : {
+      "account_id" : 23057660,
+      "reputation" : 487,
+      "user_id" : 17173476,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1aaa5855454816ab14de633b892ab5b9?s=256&d=identicon&r=PG",
+      "display_name" : "Vinz",
+      "link" : "https://stackoverflow.com/users/17173476/vinz"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1666191133,
+    "last_edit_date" : 1666191133,
+    "creation_date" : 1666190764,
+    "answer_id" : 74127413,
+    "question_id" : 74127307,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Like SpotBugs suggests, you can simply create a copy (as a new Object) of your <code>userSessionService</code> parameter and then assign this one instead of the parameter directly:</p>\n<pre><code>\npublic CountryServiceImpl(final UserSessionService userSessionService) {\n       UserSessionService tempUserSessionService = new UserSessionService(userSessionService.getFirst(),\n                userSessionService.getSecond() [...])\n       this.userSessionService = tempUserSessionService; \n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15372463,
+      "reputation" : 1,
+      "user_id" : 11090127,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8ae50f9ea4692a7dfde5a24a8eafa89e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "lgcallejask",
+      "link" : "https://stackoverflow.com/users/11090127/lgcallejask"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763152101,
+    "creation_date" : 1763152101,
+    "answer_id" : 79820423,
+    "question_id" : 74127307,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Removing the public access modifier from the constructor worked for me.</p>\n"
+  } ],
+  "owner" : {
+    "user_type" : "does_not_exist",
+    "display_name" : "user1034461"
+  },
+  "is_answered" : false,
+  "view_count" : 700,
+  "answer_count" : 2,
+  "score" : 3,
+  "last_activity_date" : 1763152101,
+  "creation_date" : 1666190376,
+  "question_id" : 74127307,
+  "link" : "https://stackoverflow.com/questions/74127307/spring-dependency-injection-marked-unsafe-by-spotbugs",
+  "title" : "Spring dependency injection marked unsafe by SpotBugs",
+  "body" : "<p>Is there any way to do injections better way?</p>\n<pre><code>@Service\npublic class CountryServiceImpl implements CountryService {\n\n    private final UserSessionService userSessionService;\n\n    public CountryServiceImpl(final UserSessionService userSessionService) {\n        this.userSessionService = userSessionService; // SpotBugs warning\n    }\n\n}\n</code></pre>\n<p>SpotBugs gives me a warning on marked the line:</p>\n<blockquote>\n<p>This code stores a reference to an externally mutable object into\nthe internal representation of the object. If instances are accessed by\nuntrusted code, and unchecked changes to the mutable object would\ncompromise security or other important properties, you will need to do\nsomething different. Storing a copy of the object is better approach in\nmany situations.</p>\n</blockquote>\n<p><code>@Autowired</code> should be the last option beacause it removes ability to inject mock beans during integration test.</p>\n"
+}

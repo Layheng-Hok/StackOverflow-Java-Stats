@@ -1,0 +1,131 @@
+{
+  "tags" : [ "java", "cdi" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3488362,
+        "reputation" : 483,
+        "user_id" : 2918640,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/d627fa30c46ec61ee9f60360392c1e4d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user2918640",
+        "link" : "https://stackoverflow.com/users/2918640/user2918640"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1459443278,
+      "post_id" : 36318927,
+      "comment_id" : 60300634,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "On a side note, could you please answer this: In case of producer, does CDI container already know that injected object would be of specific scope type? In the background, how injection through producer is different from &#39;simple injection (Case 1 of my original question)&#39;?"
+    }, {
+      "owner" : {
+        "account_id" : 3619169,
+        "reputation" : 9715,
+        "user_id" : 3018377,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/rJMUw.png?s=256",
+        "display_name" : "LHA",
+        "link" : "https://stackoverflow.com/users/3018377/lha"
+      },
+      "reply_to_user" : {
+        "account_id" : 3488362,
+        "reputation" : 483,
+        "user_id" : 2918640,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/d627fa30c46ec61ee9f60360392c1e4d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user2918640",
+        "link" : "https://stackoverflow.com/users/2918640/user2918640"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1459448742,
+      "post_id" : 36318927,
+      "comment_id" : 60303847,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes. CDI know what scope used for the bean. The scope is used is the scope defined when you define Produces. You cannot change scope of the bean by defining scope when you Inject."
+    } ],
+    "owner" : {
+      "account_id" : 3619169,
+      "reputation" : 9715,
+      "user_id" : 3018377,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://i.sstatic.net/rJMUw.png?s=256",
+      "display_name" : "LHA",
+      "link" : "https://stackoverflow.com/users/3018377/lha"
+    },
+    "is_accepted" : true,
+    "score" : 7,
+    "last_activity_date" : 1601660465,
+    "last_edit_date" : 1601660465,
+    "creation_date" : 1459369155,
+    "answer_id" : 36318927,
+    "question_id" : 36314431,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>1. Object without scope defined - @Dependent used</strong></p>\n<p>CDI will treat Object wihout scope as <a href=\"https://docs.jboss.org/weld/reference/latest/en-US/html/scopescontexts.html#_the_dependent_pseudo_scope\" rel=\"nofollow noreferrer\">@Dependent scope</a>.</p>\n<blockquote>\n<p>An instance of a dependent bean is never shared between different\nclients or different injection points. It is strictly a dependent\nobject of some other object. It is instantiated when the object it\nbelongs to is created, and destroyed when the object it belongs to is\ndestroyed.</p>\n<p>Beans with scope @Dependent don’t need a proxy object. The client\nholds a direct reference to its instance.</p>\n</blockquote>\n<p><strong>Spring IoC dev</strong>: CDI @Dependent scope is similar to Spring IoC Prototype scope.</p>\n<p><strong>2. No @Produces &amp; just use @Inject</strong></p>\n<p>CDI will create new instance of UserDetails for each injection (@Dependent scope). No sharing data here! You can't define scope as you did (when inject).</p>\n<p><strong>3. Use @Produces &amp; use @Inject</strong></p>\n<p>You can control the scope of UserDetails object (ApplicationScoped, SessionScoped, or RequestScoped)</p>\n<pre><code>public class Producers {\n\n     @Produces @ApplicationScoped\n     public UserDetails createUserDetails() {\n         // Initialize UserDetails\n     }\n\n     public void release(@Disposes UserDetails userDetails) {\n         // Release userDetails if you have to\n     }\n}\n</code></pre>\n<p><strong>4. Another way: Extend UserDetails if possible</strong></p>\n<pre><code>    @ApplicationScoped // Or @SessionScoped, @RequestScoped\n    public class UserDetailsImpl extends UserDetails {\n        //\n    } \n</code></pre>\n<p><strong>If you want ApplicationScoped for UserDetails. Way 3 or way 4 can be used.</strong></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 135620,
+      "reputation" : 12977,
+      "user_id" : 338614,
+      "user_type" : "registered",
+      "accept_rate" : 22,
+      "profile_image" : "https://www.gravatar.com/avatar/76fa9e029701c45b2bfe4403cc10e290?s=256&d=identicon&r=PG",
+      "display_name" : "Harald Wellmann",
+      "link" : "https://stackoverflow.com/users/338614/harald-wellmann"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1459370510,
+    "creation_date" : 1459370510,
+    "answer_id" : 36319296,
+    "question_id" : 36314431,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The scope is always defined on the bean, not on the injection point. </p>\n\n<p>An injection point cannot change the scope of the injected bean.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9744600,
+      "reputation" : 1,
+      "user_id" : 7224986,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/10211489120089528/picture?type=large",
+      "display_name" : "Antonio Alliegro",
+      "link" : "https://stackoverflow.com/users/7224986/antonio-alliegro"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1480422988,
+    "last_edit_date" : 1480422988,
+    "creation_date" : 1480417621,
+    "answer_id" : 40864349,
+    "question_id" : 36314431,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think you can inject an <code>@ApplicationScoped</code> bean as a <code>@Dependent</code> bean by specifying the <code>@New</code> annotation near the injection point, but you can't do the opposite.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3488362,
+    "reputation" : 483,
+    "user_id" : 2918640,
+    "user_type" : "registered",
+    "accept_rate" : 46,
+    "profile_image" : "https://www.gravatar.com/avatar/d627fa30c46ec61ee9f60360392c1e4d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user2918640",
+    "link" : "https://stackoverflow.com/users/2918640/user2918640"
+  },
+  "is_answered" : true,
+  "view_count" : 2963,
+  "accepted_answer_id" : 36318927,
+  "answer_count" : 3,
+  "score" : 4,
+  "last_activity_date" : 1760899843,
+  "creation_date" : 1459354853,
+  "last_edit_date" : 1760899843,
+  "question_id" : 36314431,
+  "link" : "https://stackoverflow.com/questions/36314431/in-cdi-how-to-give-scope-to-a-bean-at-the-point-of-injection",
+  "title" : "In CDI, how to give scope to a bean at the point of injection?",
+  "body" : "<p>In CDI, I am able to inject a bean with a particular scope, the scope with which the bean class was defined. But what if I create the bean class without any scope and I give scope to that bean at the point of injection. My requirement is to make injection-time-scoping possible in the latter case. Problem is that injection is happening with <code>dependent scope</code> instead of the desired annotated scope unless I use a <code>producer</code>.</p>\n\n<p><strong>For Example:</strong></p>\n\n<p><strong>CASE 1:</strong></p>\n\n<p>When I declare scope of a bean in its class declaration like this:</p>\n\n<pre><code>@ApplicationScoped\nclass UserDetails {\n...\n}\n</code></pre>\n\n<p>And injected like this:</p>\n\n<pre><code>@ViewScoped\nclass UserView {\n\n    @Inject\n    UserDetails userDetails;\n    .\n    .\n}\n</code></pre>\n\n<p>It works as expected. The bean injected in application scope is available throughout the application in all other beans.</p>\n\n<hr>\n\n<p><strong>CASE 2:</strong></p>\n\n<p>But when I give no scope in class declaration:</p>\n\n<pre><code>class UserDetails {\n...\n}\n</code></pre>\n\n<p>And injected like this (giving scope at the point of injection):</p>\n\n<pre><code>@ViewScoped\nclass UserView {\n\n    @Inject @ApplicationScoped\n    UserDetails userDetails;\n    .\n    .\n}\n</code></pre>\n\n<p>This failed!.. The injected bean did not inject in <code>application scope</code> but got <code>dependent scope</code> instead (<code>View Scope</code> in my case).</p>\n\n<p>I had to create a <code>Producer</code> &amp; a <code>Qualifier</code> where <code>@Produces</code> method is providing the bean in desired <code>application scope</code>. I feel this producer/qualifier extension turns out to be an overhead if I have to inject bean class <strong>UserDetails</strong> in <code>application scope</code> in this case.</p>\n\n<p>Thing is, <strong>UserDetails</strong> class is part of a third party jar. This class does not have any scope declared and is a POJO. I can not change its source code. </p>\n\n<p>Based on the above discussion, I have two questions:</p>\n\n<ol>\n<li><p>Why someone would create bean classes defined with no scope when they know that the beans are to be injected under a particular scope? Would this practice do any good in terms of design?</p></li>\n<li><p>As I do not have control over the source code of the bean classes and as they  are not associated with any scope, Is producer/qualifier  extension the only good way to inject such beans in the desired scope? </p></li>\n</ol>\n"
+}

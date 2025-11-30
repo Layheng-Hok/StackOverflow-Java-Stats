@@ -1,0 +1,124 @@
+{
+  "tags" : [ "java", "spring", "spring-webflux" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1606892109,
+    "post_id" : 65103254,
+    "comment_id" : 115097179,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You are using Spring Boot. Remove <code>@EnableWebFlux</code> and remove your custom Jackson configuration."
+  }, {
+    "owner" : {
+      "account_id" : 1755304,
+      "reputation" : 3825,
+      "user_id" : 1603511,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/b2b31de3ac22dbab053abae1b40a6b27?s=256&d=identicon&r=PG",
+      "display_name" : "p.streef",
+      "link" : "https://stackoverflow.com/users/1603511/p-streef"
+    },
+    "reply_to_user" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1606898503,
+    "post_id" : 65103254,
+    "comment_id" : 115099296,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Oh wow, that&#39;s just silly. If you can put that in an answer I&#39;ll accept. If you can add the why that would be great!"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "is_accepted" : true,
+    "score" : 10,
+    "last_activity_date" : 1606898922,
+    "creation_date" : 1606898922,
+    "answer_id" : 65104782,
+    "question_id" : 65103254,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You are disabling the auto-configuration of Jackson and WebFlux due to having added <code>@EnableWebFlux</code>. With this Spring Boot will back-off in configuring things, one of those things is a fully pre-configured Jackson.</p>\n<p>So try not to outsmart the defaults in this case.</p>\n<p>Remove the <code>@EnableWebFlux</code> and also remove the specific formatting for Jackson. You could actually remove the <code>implements WebFluxConfigurer</code> and remove the overridden methods.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9055940,
+      "reputation" : 111,
+      "user_id" : 6744304,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-DHjdxnScmgo/AAAAAAAAAAI/AAAAAAAAGFY/1rplcU2bXyY/s256-rj/photo.jpg",
+      "display_name" : "Roger Frauca Cordoba",
+      "link" : "https://stackoverflow.com/users/6744304/roger-frauca-cordoba"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1639567895,
+    "creation_date" : 1639567895,
+    "answer_id" : 70362936,
+    "question_id" : 65103254,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I do have the same problem as Streef.</p>\n<p>In my case implementing the WebFluxConfigurer and using the configureHttpMessageCodecs is what solve the problem.</p>\n<pre><code>@Configuration\npublic class JacksonConfiguration implements WebFluxConfigurer {\n\n  private final ObjectMapper mapper;\n\n  public JacksonConfiguration(ObjectMapper mapper) {\n    this.mapper = mapper;\n  }\n\n  @Override\n  public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {\n    configurer.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(mapper));\n    configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(mapper));\n    WebFluxConfigurer.super.configureHttpMessageCodecs(configurer);\n  }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2713220,
+      "reputation" : 112,
+      "user_id" : 2341150,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1c33f1e68e2d9a9d1bd5fec412d5fb82?s=256&d=identicon&r=PG",
+      "display_name" : "Mr Weasel",
+      "link" : "https://stackoverflow.com/users/2341150/mr-weasel"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761079512,
+    "creation_date" : 1761079512,
+    "answer_id" : 79796222,
+    "question_id" : 65103254,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Another option is to use <code>@JsonSerialize</code> annotation on that specific field (e.g. if you don't want to affect the config/other requests).</p>\n<pre class=\"lang-java prettyprint-override\"><code>import com.fasterxml.jackson.databind.annotation.JsonSerialize;\nimport nz.co.transpower.dsm.model.JsonSerializerInstant;\n\n// --- 8&lt; ---\n\n    public class Resource {\n        String id = &quot;id&quot;;\n        @JsonSerialize(using = JsonSerializerInstant.class)\n        Instant timestamp = Instant.now();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1755304,
+    "reputation" : 3825,
+    "user_id" : 1603511,
+    "user_type" : "registered",
+    "accept_rate" : 86,
+    "profile_image" : "https://www.gravatar.com/avatar/b2b31de3ac22dbab053abae1b40a6b27?s=256&d=identicon&r=PG",
+    "display_name" : "p.streef",
+    "link" : "https://stackoverflow.com/users/1603511/p-streef"
+  },
+  "is_answered" : true,
+  "view_count" : 2560,
+  "accepted_answer_id" : 65104782,
+  "answer_count" : 3,
+  "score" : 4,
+  "last_activity_date" : 1761079512,
+  "creation_date" : 1606890596,
+  "question_id" : 65103254,
+  "link" : "https://stackoverflow.com/questions/65103254/how-to-serialize-java-time-instant-as-iso-string-in-spring-webflux",
+  "title" : "How to serialize java.time.Instant as ISO string in Spring Webflux",
+  "body" : "<p>How can I configure webflux to serialize java.time (specifically Instant) as a ISO date string?</p>\n<p>With below code I get:</p>\n<p><code>{&quot;id&quot;:&quot;id&quot;,&quot;timestamp&quot;:1606890022.131813600}</code></p>\n<p>I would like to get</p>\n<p><code>{&quot;id&quot;:&quot;id&quot;,&quot;timestamp&quot;:&quot;2020-12-02T07:20:16.553Z&quot;}</code></p>\n<pre><code>@EnableWebFlux\n@SpringBootApplication\npublic class WebfluxJavaTimeSerializationApplication {\n\n    public static void main(String[] args) {\n        SpringApplication.run(WebfluxJavaTimeSerializationApplication.class, args);\n    }\n   \n    @Bean\n    public RouterFunction&lt;?&gt; routerFunction() {\n        return route().GET(&quot;/resource&quot;, request -&gt; ServerResponse.ok().body(Mono.just(new Resource()),Resource.class)).build();\n    }\n\n    public class Resource {\n        String id = &quot;id&quot;;\n        Instant timestamp = Instant.now();\n\n        public String getId() {\n            return id;\n        }\n\n        public Instant getTimestamp() {\n            return timestamp;\n        }\n    }\n}\n</code></pre>\n<p>I've tried configurations like:</p>\n<pre><code>@Configuration\n@EnableWebFlux\npublic class WebConfig implements WebFluxConfigurer {\n    //moved from application class\n    @Bean\n    public RouterFunction&lt;?&gt; routerFunction() {\n        return route().GET(&quot;/resource&quot;, request -&gt; ServerResponse.ok().body(Mono.just(new Resource()), Resource.class)).build();\n    }\n\n\n    @Override\n    public void addFormatters(FormatterRegistry registry) {\n        DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();\n        registrar.setUseIsoFormat(true);\n        registrar.registerFormatters(registry);\n    }\n\n    @Override\n    public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {\n        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());\n        configurer.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));\n        configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));\n    }\n\n}\n</code></pre>\n<p>but it does not change the response. I believe formatters are only used for deserialization and codecs for the WebClient (but might be mistaken).</p>\n"
+}

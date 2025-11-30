@@ -1,0 +1,78 @@
+{
+  "tags" : [ "java", "websocket", "ocpp" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 3488925,
+      "reputation" : 238,
+      "user_id" : 2919078,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/iqA00.jpg?s=256",
+      "display_name" : "Gautam",
+      "link" : "https://stackoverflow.com/users/2919078/gautam"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1666167850,
+    "creation_date" : 1666167850,
+    "answer_id" : 74122113,
+    "question_id" : 73855216,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to do plenty of things to send command from your side to station.</p>\n<ol>\n<li>When station connect to your server, you need to keep that session\nin a Map with chargepointId probably.</li>\n<li>If you would like to send\ncommand then use that session then use websocket instance to send\ncommand to station.</li>\n<li>To initiate Step-2, you need to have service or\nAPI to initiate it.</li>\n</ol>\n<p>Should you need information, follow this URL: <a href=\"https://github.com/ChargeTimeEU/Java-OCA-OCPP\" rel=\"nofollow noreferrer\">https://github.com/ChargeTimeEU/Java-OCA-OCPP</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760682767,
+      "post_id" : 79792805,
+      "comment_id" : 140801131,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "As it’s currently written, your answer is unclear. Please <a href=\"https://stackoverflow.com/posts/79792805/edit\">edit</a> to add additional details that will help others understand how this addresses the question asked. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    } ],
+    "owner" : {
+      "account_id" : 44343797,
+      "reputation" : 1,
+      "user_id" : 31704748,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/b04ba53833b1666363bc1c803afc5767?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user31704748",
+      "link" : "https://stackoverflow.com/users/31704748/user31704748"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1760682252,
+    "creation_date" : 1760682252,
+    "answer_id" : 79792805,
+    "question_id" : 73855216,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>OCPP server sample implementation based on spring-boot.</p>\n<p>All messages for all versions of OCPP are written in Java.</p>\n<p>If you want to customize a businiss logic, implement the corresponding server handler.</p>\n<p><a href=\"https://github.com/u2ware/ocpp-boot-server\" rel=\"nofollow noreferrer\">https://github.com/u2ware/ocpp-boot-server</a></p>\n<p><a href=\"https://github.com/u2ware/ocpp-boot-server\" rel=\"nofollow noreferrer\">https://github.com/u2ware/ocpp-boot-server</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 25465021,
+    "reputation" : 29,
+    "user_id" : 19264203,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GhLebICNcWPmP5IWMfgFdjmx93jL_fgNHabgNeGvg=k-s256",
+    "display_name" : "Lucas silva",
+    "link" : "https://stackoverflow.com/users/19264203/lucas-silva"
+  },
+  "is_answered" : false,
+  "view_count" : 784,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1760682252,
+  "creation_date" : 1664200429,
+  "question_id" : 73855216,
+  "link" : "https://stackoverflow.com/questions/73855216/how-can-enter-in-a-open-session-using-spring-websocket-handler",
+  "title" : "How can enter in a open session using Spring Websocket Handler?",
+  "body" : "<p>I'm testing a Ocpp Server comunication using Spring Websocket. The handshake works well, I can interact with the client when a station send a message (BootNotification,StatusNotification...). But sometimes I need to send things with the server (request remote transaction, get informations, etc), without the station send first.\nHow can I access a open session (example: ws:localhost:8080/central/station01) with another service?</p>\n<p>My Wesocket config:</p>\n<pre><code>@Configuration\n@EnableWebSocket\npublic class WebSocketConfig implements WebSocketConfigurer {\n    @Bean\n    public WebSocketHandler myHandler() {\n        return new MyHandler();\n    }\n    \n    @Override\n    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {\n        registry.addHandler(myHandler(), &quot;/central/**&quot;)\n        .addInterceptors(new HttpSessionHandshakeInterceptor());\n        \n    }   \n}\n</code></pre>\n<p>My WebSocket Handler:</p>\n<pre><code>public class MyHandler extends TextWebSocketHandler implements SubProtocolCapable {\n    \n    \n\n    private final String[] subProtocols = {&quot;ocpp1.6&quot;, &quot;ocpp2.0&quot;};\n    \n    @Autowired\n    private ClientRepository clientRepo;\n    \n    @Override\n    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {\n        Global.id=&quot;&quot;;\n        Global.session=&quot;&quot;;\n        Global.client=&quot;Close&quot;;\n        System.out.print(&quot;\\n Connection Close \\n&quot;+&quot;Session: &quot;+session.getId()+&quot;\\n&quot;);\n        session.getHandshakeHeaders();\n        System.out.print(&quot;session enabled&quot;+session);\n        \n    }\n    @Override\n    public void afterConnectionEstablished(WebSocketSession session)\n            throws Exception{\n        Global.id=session.getId();\n        Global.session=session.getUri().toString();\n        Global.client=&quot;ok&quot;;\n        \n        \n        Client aa= new Client(null,session.getId(),session.getUri().toString(),&quot;ok&quot;,&quot;&quot;);\n        System.out.print(&quot;\\n Connected \\n&quot;+&quot;Session: &quot;+session.getId()+&quot;\\n&quot;);\n        \n        System.out.print(session.getUri());\n        \n    }\n\n    @Override\n    public void handleMessage(WebSocketSession session,WebSocketMessage&lt;?&gt; message)  throws Exception {\n        //WebSocketHttpHeaders expectedHeaders = new WebSocketHttpHeaders();\n        System.out.print(&quot;\\n &quot;+message.getPayload());\n        Integer id=0;\n        Global.ocpp=Global.ocpp+&quot; \\n &quot;+message.getPayload().toString();\n        \n        ZonedDateTime data = ZonedDateTime.now();\n        BootNotificationResponse stat=new BootNotificationResponse(&quot;Accepted&quot;,data.toString().substring(0,data.toString().length()-&quot;[America/Sao_Paulo]&quot;.length()),300);\n        JSONArray mm=new JSONArray((message.getPayload()).toString());\n        id=(int )mm.get(0)+1;\n//      session.sendMessage(new TextMessage(message.getPayload().toString()));\n//      System.out.print(&quot;\\n Remote: &quot;+session.getRemoteAddress()+&quot;\\n&quot;);\n        JSONObject ss=new JSONObject(stat);\n        System.out.print(session.getHandshakeHeaders());\n        JSONArray ja = new JSONArray();\n        \n        ja.put(3);\n        ja.put(mm.get(1));\n        //\n        ja.put(ss);\n//      System.out.print(&quot;\\n&quot;+message.getPayload()+&quot;\\n&quot;);\n//      System.out.print(mm.get(2)+&quot;\\n&quot;);\n        Client dados=new Client(null,Global.id,Global.session,Global.client,message.getPayload().toString());\n        clientRepo.save(dados);\n        if(mm.get(2).equals(&quot;Authorize&quot;)) {\n            \n            JSONArray nob = new JSONArray();\n            JSONObject iii=new JSONObject(new Auth(new AuthorizeResponse(&quot;1233434&quot;,&quot;ddfd&quot;,&quot;Accepted&quot;)));\n            nob.put(3);\n            nob.put(mm.get(1));\n            nob.put(iii);\n            System.out.print(nob);\n            //[2,&quot;4&quot;,&quot;Authorize&quot;,{&quot;idToken&quot;:{&quot;idToken&quot;:&quot;111111&quot;,&quot;type&quot;:&quot;ISO14443&quot;},&quot;evseId&quot;:[1]}]\n            session.sendMessage(new TextMessage(nob.toString()));\n        }\n        if(mm.get(2).equals(&quot;BootNotification&quot;)) {\n            System.out.print(&quot;Boot \\n&quot;);\n            \n            session.sendMessage(new TextMessage(ja.toString()));\n        }\n        \n        \n    }\n    \n    \n    @Override\n    public List&lt;String&gt; getSubProtocols() {\n        System.out.print(Arrays.asList(subProtocols));\n        return Arrays.asList(subProtocols);\n    }\n    \n    \n\n}\n</code></pre>\n"
+}

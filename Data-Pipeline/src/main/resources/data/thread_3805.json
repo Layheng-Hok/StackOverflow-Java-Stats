@@ -1,0 +1,77 @@
+{
+  "tags" : [ "java", "android", "react-native", "gradle" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 7639534,
+      "reputation" : 320,
+      "user_id" : 5792077,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1aad948bcdeecc748f5bf253c6c04e9e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Gerardo",
+      "link" : "https://stackoverflow.com/users/5792077/gerardo"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1667430646,
+    "post_id" : 68636126,
+    "comment_id" : 131168519,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Hi, how did you solved this issue?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 20517487,
+      "reputation" : 191,
+      "user_id" : 15057809,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/eaf4910cfa9950912ff039ecada69a88?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "squid233",
+      "link" : "https://stackoverflow.com/users/15057809/squid233"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1642142447,
+    "creation_date" : 1642142447,
+    "answer_id" : 70706877,
+    "question_id" : 68636126,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You should use the code this below:</p>\n<pre><code>classpath += files(configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) })\n</code></pre>\n<p>That may helpful for you.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6495279,
+      "reputation" : 1672,
+      "user_id" : 5028085,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/5m0fK.jpg?s=256",
+      "display_name" : "AndroidEngineX",
+      "link" : "https://stackoverflow.com/users/5028085/androidenginex"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761631363,
+    "creation_date" : 1761631363,
+    "answer_id" : 79802468,
+    "question_id" : 68636126,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are three types of <code>configurations</code>(here <code>implementation</code> is configuration defined in Java gradle plugin) in Gradle(see <a href=\"https://docs.gradle.org/current/userguide/declaring_configurations.html#sec:resolvable-consumable-configs\" rel=\"nofollow noreferrer\">here</a>) defined as below</p>\n<ol>\n<li><p>One for categorising your dependencies</p>\n</li>\n<li><p>For resolving the dependency graph and then creating the artefacts(<code>runtimeClasspath</code> is one of those)</p>\n</li>\n<li><p>And one for exposing the artefacts to other consumers</p>\n</li>\n</ol>\n<p>Since you were using <code>implementation</code> which can just be used to categorise the dependencies but to resolve those dependencies to create the <code>classes</code> artefacts here, that's why you were getting this error</p>\n<p>in the code mentioned by @squid233</p>\n<pre class=\"lang-kotlin prettyprint-override\"><code>classpath += files(configurations.runtimeClasspath.findAll { it.name.endsWith(&quot;jar&quot;) }.collect { zipTree(it) })\n</code></pre>\n<p>from you configurations container from your Gradle project you are referring to the resolvable configuration and then using the artefacts from that</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 20098829,
+    "reputation" : 223,
+    "user_id" : 14737757,
+    "user_type" : "registered",
+    "profile_image" : "https://graph.facebook.com/992788471216648/picture?type=large",
+    "display_name" : "Ishaq Kamran",
+    "link" : "https://stackoverflow.com/users/14737757/ishaq-kamran"
+  },
+  "is_answered" : true,
+  "view_count" : 7919,
+  "answer_count" : 2,
+  "score" : 13,
+  "last_activity_date" : 1761631363,
+  "creation_date" : 1627993986,
+  "question_id" : 68636126,
+  "link" : "https://stackoverflow.com/questions/68636126/resolving-dependency-configuration-implementation-is-not-allowed-as-it-is-defi",
+  "title" : "Resolving dependency configuration &#39;implementation&#39; is not allowed as it is defined as &#39;canBeResolved=false&#39;",
+  "body" : "<p>I am trying to run a react native project but its gradle is not working correctly. This is the error.</p>\n<pre><code>org.gradle.api.ProjectConfigurationException: A problem occurred configuring project ':babylonjs_react-native'.\nCaused by: java.lang.IllegalStateException: Resolving dependency configuration 'implementation' is not allowed as it is defined as 'canBeResolved=false'.\nInstead, a resolvable ('canBeResolved=true') dependency configuration that extends 'implementation' should be resolved.\n    at build_8wyks54mb6cye9xs3jcg9t1xg$_run_closure4$_closure12.doCall(G:\\Workspace\\New Folder (2)\\node_modules\\@babylonjs\\react-native\\android\\build.gradle:117)\n    at build_8wyks54mb6cye9xs3jcg9t1xg$_run_closure4.doCall(G:\\Workspace\\New Folder (2)\\node_modules\\@babylonjs\\react-native\\android\\build.gradle:114)\n</code></pre>\n<p>Here is where the problem occurs</p>\n<pre><code>afterEvaluate { project -&gt;\n    // some Gradle build hooks ref:\n    // https://www.oreilly.com/library/view/gradle-beyond-the/9781449373801/ch03.html\n    task androidJavadoc(type: Javadoc) {\n        source = android.sourceSets.main.java.srcDirs\n        classpath += files(android.bootClasspath)\n        classpath += files(project.getConfigurations().getByName('implementation').asList())\n        include '**/*.java'\n    }\n</code></pre>\n<p>Kindly Somebody tells me why is the error showing\nI dont have any idea what is going on. Somebody please help me I will be very thankful.</p>\n"
+}

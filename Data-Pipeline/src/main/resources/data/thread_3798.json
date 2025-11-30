@@ -1,0 +1,44 @@
+{
+  "tags" : [ "java", "maven", "avro", "avsc" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 2671330,
+      "reputation" : 192964,
+      "user_id" : 2308683,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/fb8f5877d244f223b4b6d29e0afb3a4e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "OneCricketeer",
+      "link" : "https://stackoverflow.com/users/2308683/onecricketeer"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1761655763,
+    "last_edit_date" : 1761655763,
+    "creation_date" : 1629992834,
+    "answer_id" : 68941650,
+    "question_id" : 68936322,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to add <code>avro-maven-plugin</code> mentioned in a <code>&lt;plugin&gt;</code> section</p>\n<p><a href=\"https://avro.apache.org/docs/++version++/getting-started-java/\" rel=\"nofollow noreferrer\">https://avro.apache.org/docs/++version++/getting-started-java/</a></p>\n<blockquote>\n<p>Alternatively, if you are using Maven, add the following dependency to\nyour POM:</p>\n<pre><code> &lt;dependency&gt;   \n    &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;  \n    &lt;artifactId&gt;avro&lt;/artifactId&gt;   \n    &lt;version&gt;1.10.2&lt;/version&gt;\n&lt;/dependency&gt;\n</code></pre>\n<p><strong>As well as</strong> the Avro Maven plugin...</p>\n</blockquote>\n<pre><code>&lt;plugin&gt;\n  &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;\n  &lt;artifactId&gt;avro-maven-plugin&lt;/artifactId&gt;\n  &lt;version&gt;1.10.2&lt;/version&gt;\n  &lt;executions&gt;\n    &lt;execution&gt;\n      &lt;phase&gt;generate-sources&lt;/phase&gt;\n      &lt;goals&gt;\n        &lt;goal&gt;schema&lt;/goal&gt;\n      &lt;/goals&gt;\n      &lt;configuration&gt;\n        &lt;sourceDirectory&gt;${project.basedir}/src/main/avro/&lt;/sourceDirectory&gt;\n        &lt;outputDirectory&gt;${project.basedir}/src/main/java/&lt;/outputDirectory&gt;\n      &lt;/configuration&gt;\n    &lt;/execution&gt;\n  &lt;/executions&gt;\n&lt;/plugin&gt;\n&lt;plugin&gt;\n  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n  &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;\n  &lt;configuration&gt;\n    &lt;source&gt;1.8&lt;/source&gt;\n    &lt;target&gt;1.8&lt;/target&gt;\n  &lt;/configuration&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>You don't need <code>avro-compiler</code> as a dependency in your own code if you only want to convert schema resource files into classes</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22170215,
+    "reputation" : 3,
+    "user_id" : 16415766,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f6a1f7efb8dcbfc17fec9c45531ae258?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Paweł Bocian",
+    "link" : "https://stackoverflow.com/users/16415766/pawe%c5%82-bocian"
+  },
+  "is_answered" : true,
+  "view_count" : 4120,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761655763,
+  "creation_date" : 1629971588,
+  "last_edit_date" : 1629992706,
+  "question_id" : 68936322,
+  "link" : "https://stackoverflow.com/questions/68936322/cannot-generate-class-from-avsc-file-using-maven",
+  "title" : "Cannot generate class from avsc file using maven",
+  "body" : "<p>I have a problem with generating classes from avsc files. In the pom.xml I added the appropriate dependencies:</p>\n<pre><code>&lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;\n            &lt;artifactId&gt;avro&lt;/artifactId&gt;\n            &lt;version&gt;1.10.2&lt;/version&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.apache.avro&lt;/groupId&gt;\n            &lt;artifactId&gt;avro-compiler&lt;/artifactId&gt;\n            &lt;version&gt;1.10.2&lt;/version&gt;\n        &lt;/dependency&gt;\n    &lt;/dependencies&gt;\n</code></pre>\n<p>In the repository package I created an avro folder where I placed the class schema with the extension .avsc.</p>\n<pre><code>{&quot;type&quot;:&quot;record&quot;,\n&quot;name&quot;:&quot;Customer&quot;,\n&quot;namespace&quot;:&quot;com.avroGenerator&quot;,\n&quot;fields&quot;:[\n {&quot;name&quot;:&quot;name&quot;,&quot;type&quot;:&quot;string&quot;},\n {&quot;name&quot;:&quot;age&quot;,&quot;type&quot;:&quot;int&quot;},\n {&quot;name&quot;:&quot;isOfAge&quot;,&quot;type&quot;:&quot;boolean&quot;},\n {&quot;name&quot;:&quot;currencies&quot;,&quot;type&quot;:\n  {&quot;type&quot;:&quot;array&quot;,&quot;items&quot;:{\n    &quot;type&quot;:&quot;record&quot;,\n    &quot;name&quot;:&quot;Currency&quot;,\n    &quot;namespace&quot;:&quot;com.avroGenerator&quot;,\n    &quot;fields&quot;:[\n     {&quot;name&quot;:&quot;name&quot;,&quot;type&quot;:&quot;string&quot;},\n     {&quot;name&quot;:&quot;shortcut&quot;,&quot;type&quot;:&quot;string&quot;}]}},\n  &quot;default&quot;:[]}]}\n</code></pre>\n<p>It's a customer class including array of currencies witch are also generated from avsc.</p>\n<p>When calling Maven-&gt; Package in target-generated-sources, I should see my class, but it doesn't. Has anyone had a similar problem?</p>\n"
+}

@@ -1,0 +1,44 @@
+{
+  "tags" : [ "java", "spring", "security" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5089420,
+      "reputation" : 1007,
+      "user_id" : 4082946,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://lh5.googleusercontent.com/-Y03vUvrdCnY/AAAAAAAAAAI/AAAAAAAAAB0/FSImi3V6N-0/s256-rj/photo.jpg",
+      "display_name" : "Anirudh Jadhav",
+      "link" : "https://stackoverflow.com/users/4082946/anirudh-jadhav"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1550058760,
+    "creation_date" : 1550058760,
+    "answer_id" : 54669566,
+    "question_id" : 47217762,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Programmatic solution for certificate solution<br>\nPlease look into following imports :-</p>\n\n<pre><code>import java.security.SecureRandom;\nimport java.security.cert.X509Certificate;\n\nimport javax.net.ssl.HttpsURLConnection;\nimport javax.net.ssl.SSLContext;\nimport javax.net.ssl.TrustManager;\nimport javax.net.ssl.X509TrustManager;\nimport javax.ws.rs.client.Client;\nimport javax.ws.rs.client.ClientBuilder;\n</code></pre>\n\n<p>Now the function</p>\n\n<pre><code>ClientConfig clientConfig = getClientConfig();\n\nTrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {\npublic X509Certificate[] getAcceptedIssuers() {\n    return null;\n}\n\npublic void checkClientTrusted(X509Certificate[] certs, String authType) {\n}\n\npublic void checkServerTrusted(X509Certificate[] certs, String authType) {\n}\n} };\nSSLContext sc = null;\ntry {\n    sc = SSLContext.getInstance(\"TLS\");\n    sc.init(null, trustAllCerts, new SecureRandom());\n    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());\n    } catch (Exception e) {\n    // do nothing\n    }\n\n    Client client = ClientBuilder.newBuilder().withConfig(clientConfig).sslContext(sc).hostnameVerifier((s1, s2) -&gt; true)\n    .build();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1217487,
+    "reputation" : 206,
+    "user_id" : 1184787,
+    "user_type" : "registered",
+    "accept_rate" : 9,
+    "profile_image" : "https://www.gravatar.com/avatar/656c280fbd729df25326e3033aefac30?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Prashant Aggarwal",
+    "link" : "https://stackoverflow.com/users/1184787/prashant-aggarwal"
+  },
+  "is_answered" : true,
+  "view_count" : 3677,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1764063931,
+  "creation_date" : 1510299171,
+  "last_edit_date" : 1510299297,
+  "question_id" : 47217762,
+  "link" : "https://stackoverflow.com/questions/47217762/unable-to-find-valid-certification-path-to-requested-target-pkix-path-building-f",
+  "title" : "unable to find valid certification path to requested target PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException",
+  "body" : "<p>I have create a custom keystore file xyz.jsk, When I tried to using this file I am getting exception </p>\n\n<blockquote>\n  <p>org.springframework.web.client.ResourceAccessException: I/O error on\n  POST request for : sun.security.validator.ValidatorException: PKIX\n  path building failed:\n  sun.security.provider.certpath.SunCertPathBuilderException: unable to\n  find valid certification path to requested target; nested exception is\n  javax.net.ssl.SSLHandshakeException:\n  sun.security.validator.ValidatorException: PKIX path building failed:\n  sun.security.provider.certpath.SunCertPathBuilderException: unable to\n  find valid certification path to requested target</p>\n</blockquote>\n\n<pre><code>   String keyStorePassword = \"NEWPASSWORD\";\n     KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());\n     ClassLoader classLoader = getClass().getClassLoader();\n    //  File file = new \n   File(classLoader.getResource(keyStoreFile).getFile());\n\n     File file = new File(dir, \"xyz.jks\");;\n\n\n    keyStore.load(new FileInputStream(file), \n    keyStorePassword.toCharArray());\n\n    SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(\n            new SSLContextBuilder()\n                    .loadTrustMaterial(null, new TrustSelfSignedStrategy())\n                    .loadKeyMaterial(keyStore, keyStorePassword.toCharArray())\n                    .build(),\n            NoopHostnameVerifier.INSTANCE);\n\n    HttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();\n\n        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);\n        restTemplate.setRequestFactory(httpRequestFactory);\n\n    ((HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory())\n            .setConnectTimeout(Integer.parseInt(strTimeOut));\n    ResponseEntity&lt;String&gt; responseEntity = restTemplate.exchange(urlPath, HttpMethod.POST, entity, clazz);\n</code></pre>\n"
+}

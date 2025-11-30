@@ -1,0 +1,41 @@
+{
+  "tags" : [ "java", "maven", "maven-3" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 43365398,
+      "reputation" : 31,
+      "user_id" : 31209962,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a763e54e14030a0262daa2d2c63ed1a6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "eyesoflight",
+      "link" : "https://stackoverflow.com/users/31209962/eyesoflight"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759421244,
+    "creation_date" : 1759421244,
+    "answer_id" : 79781120,
+    "question_id" : 76241743,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Maven 3.9+'s Remote Repository Filtering (RRF) incorrectly falling back to Maven Central for artifacts <em>known</em> to belong to your personal repository. This happens because RRF requires explicit repository-to-artifact mapping – and your <code>personal</code> repo isn't properly declared with a filter for your <code>com.personal.space</code> group ID.</p>\n<p>Try to add this to your <code>~/.m2/settings.xml </code>：</p>\n<pre><code>&lt;settings&gt;\n  &lt;profiles&gt;\n    &lt;profile&gt;\n      &lt;id&gt;custom-repos&lt;/id&gt;\n      &lt;repositories&gt;\n        &lt;repository&gt;\n          &lt;id&gt;personal&lt;/id&gt;\n          &lt;url&gt;https://your-personal-repo-url&lt;/url&gt;\n          &lt;filter&gt;\n            &lt;includes&gt;\n              &lt;include&gt;com.personal.space&lt;/include&gt;\n            &lt;/includes&gt;\n          &lt;/filter&gt;\n        &lt;/repository&gt;\n      &lt;/repositories&gt;\n    &lt;/profile&gt;\n  &lt;/profiles&gt;\n  &lt;activeProfiles&gt;\n    &lt;activeProfile&gt;custom-repos&lt;/activeProfile&gt;\n  &lt;/activeProfiles&gt;\n&lt;/settings&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3461609,
+    "reputation" : 600,
+    "user_id" : 2898535,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/c4d5c18e7809be01b23705b30158e987?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "McFlurriez",
+    "link" : "https://stackoverflow.com/users/2898535/mcflurriez"
+  },
+  "is_answered" : false,
+  "view_count" : 890,
+  "answer_count" : 1,
+  "score" : 8,
+  "last_activity_date" : 1759421244,
+  "creation_date" : 1683965816,
+  "question_id" : 76241743,
+  "link" : "https://stackoverflow.com/questions/76241743/disabling-maven-3-9-x-remote-repository-filtering",
+  "title" : "Disabling Maven 3.9.X Remote Repository Filtering",
+  "body" : "<p>In 3.9.0, Maven introduced <a href=\"https://maven.apache.org/resolver/remote-repository-filtering.html\" rel=\"noreferrer\">Remote Repository Filtering</a>.</p>\n<p>In theory, it sounds great:</p>\n<blockquote>\n<p>Imagine you can instruct Maven which repository can contain what artifact? Instead of “ordered loop” searching for artifacts in remote repositories, Maven could be instructed in controlled way to directly reach only the needed remote repository.</p>\n</blockquote>\n<p>Until you get to the fine print:</p>\n<blockquote>\n<p>Maven Central (MC) repository is special in this respect, as Maven will always try to get things from here, as your build, plugins, plugin dependencies, extension, etc. will most often come from here. While you CAN filter MC, filtering MC is most often a bad idea (filtering, as in “limiting what can come from it”). On other hand, MC itself offers help to prevent request leakage to it (see “prefixes” filter).</p>\n</blockquote>\n<blockquote>\n<p>So, most often limiting “what can be fetched” from MC is a bad idea, it can be done but in very, very cautious way, as otherwise you put your build at risk. RRF does not distinguish the “context” of an artifact, it merely filters them out by (artifact, remoteRepository) pair, and by limiting MC you can easily get into state where you break your build (as plugin depends on filtered artifact).</p>\n</blockquote>\n<p>I have a bunch of jars in a personal repository. Even though they are clearly marked as such inside my ~/.m2:</p>\n<pre><code>#NOTE: This is a Maven Resolver internal implementation file, its format can be \nchanged without prior notice.\n#Fri May 12 21:15:32 PDT 2023\nmy-commons-2.1.0.pom&gt;personal=\nmy-commons-2.1.0.jar&gt;personal=\n</code></pre>\n<p>Once I updated to 3.9.X, maven continually tries to get it from central:</p>\n<pre><code>[INFO] Artifact com.personal.space:my-commons:pom:2.1.0 is \npresent in the local repository, but cached from a remote repository ID that is \nunavailable in current build context, verifying that is downloadable from [central. \n(https://repo.maven.apache.org/maven2, default, releases)]\n</code></pre>\n<p>How exactly do I turn this off for my own personal repository? There's talks of filtering and what not on their docs, but I've fiddled and got nothing working.</p>\n"
+}

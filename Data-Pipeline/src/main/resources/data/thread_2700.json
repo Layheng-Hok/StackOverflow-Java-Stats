@@ -1,0 +1,128 @@
+{
+  "tags" : [ "java", "spring", "redis", "spring-boot" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 373120,
+        "reputation" : 1141,
+        "user_id" : 722556,
+        "user_type" : "registered",
+        "accept_rate" : 46,
+        "profile_image" : "https://www.gravatar.com/avatar/3471b78cbffe86437c8c86509d7dc3d6?s=256&d=identicon&r=PG",
+        "display_name" : "Chetan",
+        "link" : "https://stackoverflow.com/users/722556/chetan"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1458738118,
+      "post_id" : 31115229,
+      "comment_id" : 59992951,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Karthik : I am also getting the same exception : <a href=\"http://stackoverflow.com/questions/36177688/embedded-redis-cant-start\" title=\"embedded redis cant start\">stackoverflow.com/questions/36177688/embedded-redis-cant-sta&zwnj;&#8203;rt</a>"
+    } ],
+    "owner" : {
+      "account_id" : 1099357,
+      "reputation" : 50459,
+      "user_id" : 3160475,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bd8989da0a2c491338617b07df53e60c?s=256&d=identicon&r=PG",
+      "display_name" : "Itamar Haber",
+      "link" : "https://stackoverflow.com/users/3160475/itamar-haber"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1435603059,
+    "last_edit_date" : 1435603059,
+    "creation_date" : 1435579453,
+    "answer_id" : 31115229,
+    "question_id" : 31114110,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can read about Redis keyspace notifications at: <a href=\"http://redis.io/topics/notifications\" rel=\"nofollow\">http://redis.io/topics/notifications</a></p>\n\n<p>Regardless of what they actually are, it appears that your Redis server doesn't support them (e.g. &lt; v2.8).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 199087,
+        "reputation" : 1347,
+        "user_id" : 444158,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/EztQR.jpg?s=256",
+        "display_name" : "Prabhakaran",
+        "link" : "https://stackoverflow.com/users/444158/prabhakaran"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1699339277,
+      "post_id" : 77355647,
+      "comment_id" : 136515821,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Have you posted your sample code (project) any where? I am struck on a implementation same as this logic."
+    }, {
+      "owner" : {
+        "account_id" : 23933455,
+        "reputation" : 1,
+        "user_id" : 17927568,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a77969954861bd304c7748c05e5cf574?s=256&d=identicon&r=PG",
+        "display_name" : "wbrco01",
+        "link" : "https://stackoverflow.com/users/17927568/wbrco01"
+      },
+      "reply_to_user" : {
+        "account_id" : 199087,
+        "reputation" : 1347,
+        "user_id" : 444158,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/EztQR.jpg?s=256",
+        "display_name" : "Prabhakaran",
+        "link" : "https://stackoverflow.com/users/444158/prabhakaran"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1699495511,
+      "post_id" : 77355647,
+      "comment_id" : 136540468,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Example code that I used and the feature request to allow the selection of which type of events to receive: <a href=\"https://github.com/spring-projects/spring-data-redis/issues/2757\" rel=\"nofollow noreferrer\">github.com/spring-projects/spring-data-redis/issues/2757</a>"
+    } ],
+    "owner" : {
+      "account_id" : 23933455,
+      "reputation" : 1,
+      "user_id" : 17927568,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a77969954861bd304c7748c05e5cf574?s=256&d=identicon&r=PG",
+      "display_name" : "wbrco01",
+      "link" : "https://stackoverflow.com/users/17927568/wbrco01"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1698546275,
+    "last_edit_date" : 1698546275,
+    "creation_date" : 1698185128,
+    "answer_id" : 77355647,
+    "question_id" : 31114110,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Depending on your implementation, you can turn notify-keyspace-events on in either your template or when you instantiate your listener:</p>\n<p>In your template:</p>\n<pre><code>@Bean(&quot;basicKeyspaceTemplate&quot;)\npublic RedisTemplate&lt;String, String&gt; basicKeyspaceTemplate(RedisConnectionFactory connectionFactory) {\n    \n    RedisTemplate&lt;String, String&gt; template = new RedisTemplate&lt;&gt;();\n\n    // Turn on Keyspace notifications\n    RedisServerCommands cmd = connectionFactory.getConnection();\n    cmd.setConfig(&quot;notify-keyspace-events&quot;, &quot;KEA&quot;);\n\n    template.setConnectionFactory(connectionFactory);\n    template.afterPropertiesSet();\n\n    return template;\n}\n</code></pre>\n<p>Or when you create your listener:</p>\n<pre><code>    class RedisKeyspaceListener extends KeyspaceEventMessageListener{\n\n    private KeyspaceEventMessageListener _listener;\n    private String _key;\n\n    public RedisKeyspaceListener(String key, RedisMessageListenerContainer _basicListenerContainer) {\n        super(_basicListenerContainer);\n        this._listener = this;\n        _listener.setKeyspaceNotificationsConfigParameter(&quot;KEA&quot;);\n        _listener.init();\n        _log.info(String.format(&quot;Keyspace listener established for key %s&quot;, key));\n    }\n\n    @Override\n    protected void doHandleMessage(Message message) {\n        // TODO! Build filter and determine way to get key value(s) to sendTextMessage;\n        _log.info(String.format(&quot;Keyspace event message from key %s -&gt; message %s&quot;, _key, message.toString() ));\n        MsgHandler.this.sendTextMessage(message.toString());\n    }\n}\n</code></pre>\n<p>For additional reference, my RedisListenerContainer:</p>\n<pre><code>@Component    \npublic class RedisListenerContainer {\n        \n    private static RedisMessageListenerContainer _basicListenerContainer;\n    \n        @Bean(&quot;basicListenerContainer&quot;)\n        RedisMessageListenerContainer basicListenerContainer(RedisConnectionFactory connectionFactory) throws Error {\n            RedisMessageListenerContainer container = new RedisMessageListenerContainer();\n            container.setConnectionFactory(connectionFactory);\n            _basicListenerContainer = container;\n            return container;\n        }\n    \n        public static RedisMessageListenerContainer get_basicListenerContainer() {\n            return _basicListenerContainer;\n        }\n    }\n</code></pre>\n<p>Unfortunately, Spring (and other sites) do not give a good example of implementing a basic keyspace notification.</p>\n<p>What I found the hard way is that setKeyspaceNotificationsConfigParameters is the settings for the notifications, not a &quot;filter&quot; for keys or event types.</p>\n<p>So, if you re-use your listener container, as you add keys, you will get a notification from <strong>Every key</strong> even though you only acted on a single key.</p>\n<p>In other words, it's really not implemented like what Redis describes at <a href=\"https://redis.io/docs/manual/keyspace-notifications/\" rel=\"nofollow noreferrer\">https://redis.io/docs/manual/keyspace-notifications/</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1183793,
+    "reputation" : 61,
+    "user_id" : 1158156,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/6323849227fb8086bda9962730d18ce0?s=256&d=identicon&r=PG",
+    "display_name" : "Karthik",
+    "link" : "https://stackoverflow.com/users/1158156/karthik"
+  },
+  "is_answered" : false,
+  "view_count" : 9950,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1764076195,
+  "creation_date" : 1435576102,
+  "last_edit_date" : 1576283234,
+  "question_id" : 31114110,
+  "link" : "https://stackoverflow.com/questions/31114110/what-are-the-notify-keyspace-events-in-redis",
+  "title" : "What are the notify-keyspace-events in Redis",
+  "body" : "<p>I started to setup spring project by following this <a href=\"https://spring.io/blog/2015/05/13/modularizing-the-client-angular-js-and-spring-security-part-vii\" rel=\"nofollow noreferrer\">spring-boot article</a>. But suddenly application could not start successfully, instead I am getting the following stack trace:</p>\n\n<pre><code>Exception in thread \"main\" org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'enableRedisKeyspaceNotificationsInitializer' defined in class org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration: Invocation of init method failed; nested exception is org.springframework.dao.InvalidDataAccessApiUsageException: ERR Unsupported CONFIG parameter: notify-keyspace-events; nested exception is redis.clients.jedis.exceptions.JedisDataException: ERR Unsupported CONFIG parameter: notify-keyspace-events\n    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1566)\n    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:539)\n    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)\n    at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)\n    at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)\n    at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)\n    at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)\n    at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:755)\n    at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)\n    at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)\n    at org.springframework.boot.context.embedded.EmbeddedWebApplicationContext.refresh(EmbeddedWebApplicationContext.java:118)\n    at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:686)\n    at org.springframework.boot.SpringApplication.run(SpringApplication.java:320)\n    at org.springframework.boot.SpringApplication.run(SpringApplication.java:957)\n    at org.springframework.boot.SpringApplication.run(SpringApplication.java:946)\n    at demo.UiApplication.main(UiApplication.java:29)\nCaused by: org.springframework.dao.InvalidDataAccessApiUsageException: ERR Unsupported CONFIG parameter: notify-keyspace-events; nested exception is redis.clients.jedis.exceptions.JedisDataException: ERR Unsupported CONFIG parameter: notify-keyspace-events\n    at org.springframework.data.redis.connection.jedis.JedisExceptionConverter.convert(JedisExceptionConverter.java:44)\n    at org.springframework.data.redis.connection.jedis.JedisExceptionConverter.convert(JedisExceptionConverter.java:36)\n    at org.springframework.data.redis.PassThroughExceptionTranslationStrategy.translate(PassThroughExceptionTranslationStrategy.java:37)\n    at org.springframework.data.redis.FallbackExceptionTranslationStrategy.translate(FallbackExceptionTranslationStrategy.java:37)\n    at org.springframework.data.redis.connection.jedis.JedisConnection.convertJedisAccessException(JedisConnection.java:195)\n    at org.springframework.data.redis.connection.jedis.JedisConnection.setConfig(JedisConnection.java:618)\n    at org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration$EnableRedisKeyspaceNotificationsInitializer.afterPropertiesSet(RedisHttpSessionConfiguration.java:170)\n    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1625)\n    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1562)\n    ... 15 more\nCaused by: redis.clients.jedis.exceptions.JedisDataException: ERR Unsupported CONFIG parameter: notify-keyspace-events\n    at redis.clients.jedis.Protocol.processError(Protocol.java:113)\n    at redis.clients.jedis.Protocol.process(Protocol.java:131)\n    at redis.clients.jedis.Protocol.read(Protocol.java:200)\n    at redis.clients.jedis.Connection.readProtocolWithCheckingBroken(Connection.java:285)\n    at redis.clients.jedis.Connection.getStatusCodeReply(Connection.java:184)\n    at redis.clients.jedis.Jedis.configSet(Jedis.java:2797)\n    at org.springframework.data.redis.connection.jedis.JedisConnection.setConfig(JedisConnection.java:616)\n    ... 18 more\n</code></pre>\n\n<p>The main message is: <code>ERR Unsupported CONFIG parameter: notify-keyspace-events</code>. </p>\n\n<p>What does it mean and how to fix it?</p>\n"
+}

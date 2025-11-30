@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "json", "xml", "magento", "soap" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4546681,
+      "reputation" : 1329,
+      "user_id" : 3693074,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/72306348a51fb2634425c75d242293e1?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vladimir Samsonov",
+      "link" : "https://stackoverflow.com/users/3693074/vladimir-samsonov"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1657181397,
+    "last_edit_date" : 1657181397,
+    "creation_date" : 1510313863,
+    "answer_id" : 47221959,
+    "question_id" : 47221134,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>you may use this lib <a href=\"https://github.com/stleary/JSON-java/blob/master/src/main/java/org/json/XML.java\" rel=\"nofollow noreferrer\">https://github.com/stleary/JSON-java/blob/master/src/main/java/org/json/XML.java</a></p>\n<p>then parse parts of SOAP Response to get json data this way:</p>\n<pre><code>import org.json.JSONObject;\nimport org.json.XML;\n\npublic class Main {\n\n    public static void main(String[] args) {\n        try {\n\n            JSONObject jsonObj = XML.toJSONObject(XML_STRING);\n\n        } catch (JSONException e) {\n            System.out.println(e.toString());\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1955570,
+      "reputation" : 1610,
+      "user_id" : 1758634,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://www.gravatar.com/avatar/943f886688032f3aaa78bef2bea61310?s=256&d=identicon&r=PG",
+      "display_name" : "tomaj",
+      "link" : "https://stackoverflow.com/users/1758634/tomaj"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1510838476,
+    "creation_date" : 1510838476,
+    "answer_id" : 47330778,
+    "question_id" : 47221134,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you are using <strong>Java 8</strong> or later, you should check out my open source library: <a href=\"https://github.com/tajakobsen/unxml\" rel=\"nofollow noreferrer\">unXml</a>. unXml basically maps from Xpaths to Json-attributes.</p>\n\n<p>It's available on <a href=\"http://search.maven.org/#search%7Cga%7C1%7Cunxml\" rel=\"nofollow noreferrer\">Maven Central</a>.</p>\n\n<p><em>Example</em></p>\n\n<pre><code>import com.fasterxml.jackson.databind.node.ObjectNode;\nimport com.nerdforge.unxml.factory.ParsingFactory;\nimport com.nerdforge.unxml.parsers.Parser;\nimport org.w3c.dom.Document;\n\npublic class Parser {\n  public ObjectNode parseXml(String xml){\n    Parsing parsing = ParsingFactory.getInstance().create();\n    Document document = parsing.xml().document(xml);\n\n    Parser&lt;ObjectNode&gt; parser = parsing.obj()\n      .attribute(\"store_id\", \"//item[key/text() = 'store_id']/value\")\n      .attribute(\"created_at\", \"//item[key/text() = 'created_at']/value\")\n      .attribute(\"updated_at\", \"//item[key/text() = 'updated_at']/value\")\n      .attribute(\"shipping_address\", parsing.obj(\"//item[key/text() = 'shipping_address']\")\n          .attribute(\"address_id\", \"value/item[key/text() = 'address_id']/value\")\n          .attribute(\"created_at\", \"value/item[key/text() = 'created_at']/value\")\n          .attribute(\"updated_at\", \"value/item[key/text() = 'updated_at']/value\")\n      )\n      .build();\n\n    ObjectNode result = parser.apply(document);\n    return result;\n  }\n}\n</code></pre>\n\n<p>It will return a <a href=\"http://wiki.fasterxml.com/JacksonHome\" rel=\"nofollow noreferrer\">Jackson</a> <code>ObjectNode</code>, with the following json:</p>\n\n<pre><code>{\n  \"created_at\": \"2013-03-05 05:56:35\",\n  \"shipping_address\": {\n    \"created_at\": \"2013-01-31 11:37:38\",\n    \"address_id\": \"1\",\n    \"updated_at\": \"2017-11-09 15:37:05\"\n  },\n  \"store_id\": \"1\",\n  \"updated_at\": \"2017-11-09 15:37:05\"\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5664149,
+      "reputation" : 1,
+      "user_id" : 4480798,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8833e14edc08e34a20a8bc296e9abf9b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "DD Men",
+      "link" : "https://stackoverflow.com/users/4480798/dd-men"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1657181280,
+    "last_edit_date" : 1657181280,
+    "creation_date" : 1627358294,
+    "answer_id" : 68538779,
+    "question_id" : 47221134,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>   \n    public static JSONObject readToJSONObject(String xmlBody) {\n        SAXReader saxReader = new SAXReader();\n        try {\n            Document document = saxReader.read(new ByteArrayInputStream(xmlBody.getBytes()));\n            Element rootElement = document.getRootElement();\n\n            JSONObject jsonObject = new JSONObject();\n\n            doParse(jsonObject, rootElement);\n\n            return jsonObject;\n        } catch (DocumentException e) {\n            e.printStackTrace();\n            return null;\n        }\n    }\n\n    public static void doParse(JSONObject jsonObject, Element element) {\n        String elementName = element.getName();\n        List&lt;Element&gt; elements = element.elements();\n        if (CollectionUtils.isEmpty(elements)) {\n            jsonObject.put(elementName, element.getText());\n        } else {\n            JSONObject itemJsonObject = new JSONObject();\n            for (Element itemElement : elements) {\n                doParse(itemJsonObject, itemElement);\n            }\n            jsonObject.put(elementNmae, itemJsonObject);\n        }\n    }\n</code></pre>\n<p>use</p>\n<pre><code>readToJSONObject(xmlBody)\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12219496,
+    "reputation" : 41,
+    "user_id" : 8918946,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/6b68e46afd3bfc3bc9abd51b6ed47251?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Paolo Juve",
+    "link" : "https://stackoverflow.com/users/8918946/paolo-juve"
+  },
+  "is_answered" : true,
+  "view_count" : 8687,
+  "answer_count" : 3,
+  "score" : 1,
+  "last_activity_date" : 1763665400,
+  "creation_date" : 1510311195,
+  "question_id" : 47221134,
+  "link" : "https://stackoverflow.com/questions/47221134/need-parser-in-java-from-xmlsoap-to-json",
+  "title" : "Need parser in Java from XML(SOAP) to JSON",
+  "body" : "<p>i'm looking for a parser or SOAP client in Java to convert XML(WSDL) from Magento SOAP v1 API to JSON Object. </p>\n\n<p>Magento SOAP v1 API returns a XML which looks like this:    </p>\n\n<p><div class=\"snippet\" data-lang=\"js\" data-hide=\"false\" data-console=\"true\" data-babel=\"false\">\r\n<div class=\"snippet-code\">\r\n<pre class=\"snippet-code-html lang-html prettyprint-override\"><code>&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"urn:Magento\"\r\n                   xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\r\n                   xmlns:ns2=\"http://xml.apache.org/xml-soap\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\"\r\n                   SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"&gt;\r\n&lt;SOAP-ENV:Body&gt;\r\n    &lt;ns1:callResponse&gt;\r\n        &lt;callReturn xsi:type=\"ns2:Map\"&gt;\r\n            &lt;item&gt;\r\n                &lt;key xsi:type=\"xsd:string\"&gt;store_id&lt;/key&gt;\r\n                &lt;value xsi:type=\"xsd:string\"&gt;1&lt;/value&gt;\r\n            &lt;/item&gt;\r\n            &lt;item&gt;\r\n                &lt;key xsi:type=\"xsd:string\"&gt;created_at&lt;/key&gt;\r\n                &lt;value xsi:type=\"xsd:string\"&gt;2013-03-05 05:56:35&lt;/value&gt;\r\n            &lt;/item&gt;\r\n            &lt;item&gt;\r\n                &lt;key xsi:type=\"xsd:string\"&gt;updated_at&lt;/key&gt;\r\n                &lt;value xsi:type=\"xsd:string\"&gt;2017-11-09 15:37:05&lt;/value&gt;\r\n            &lt;/item&gt;\r\n            &lt;item&gt;\r\n                    &lt;key xsi:type=\"xsd:string\"&gt;shipping_address&lt;/key&gt;\r\n                    &lt;value xsi:type=\"ns2:Map\"&gt;\r\n                        &lt;item&gt;\r\n                            &lt;key xsi:type=\"xsd:string\"&gt;address_id&lt;/key&gt;\r\n                            &lt;value xsi:type=\"xsd:string\"&gt;1&lt;/value&gt;\r\n                        &lt;/item&gt;\r\n                        &lt;item&gt;\r\n                            &lt;key xsi:type=\"xsd:string\"&gt;created_at&lt;/key&gt;\r\n                            &lt;value xsi:type=\"xsd:string\"&gt;2013-01-31 11:37:38&lt;/value&gt;\r\n                        &lt;/item&gt;\r\n                        &lt;item&gt;\r\n                            &lt;key xsi:type=\"xsd:string\"&gt;updated_at&lt;/key&gt;\r\n                            &lt;value xsi:type=\"xsd:string\"&gt;2017-11-09 15:37:05&lt;/value&gt;\r\n                        &lt;/item&gt;\r\n                    &lt;/value&gt;\r\n           &lt;/item&gt;\r\n        &lt;/callReturn&gt;\r\n    &lt;/ns1:callResponse&gt;\r\n&lt;/SOAP-ENV:Body&gt;\r\n&lt;/SOAP-ENV:Envelope&gt;</code></pre>\r\n</div>\r\n</div>\r\n</p>\n\n<p>and i would like to received a simple JSON Object like this:</p>\n\n<p><div class=\"snippet\" data-lang=\"js\" data-hide=\"false\" data-console=\"true\" data-babel=\"false\">\r\n<div class=\"snippet-code\">\r\n<pre class=\"snippet-code-html lang-html prettyprint-override\"><code>{\r\n  \"store_id\": \"1\",\r\n  \"created_at\": \"2013-03-05 05:56:35\",\r\n  \"updated_at\": \"2017-11-09 15:37:05\",\r\n  \"shipping_address\": {\r\n    \"address_id\": \"1\",\r\n    \"created_at\": \"2013-01-31 11:37:38\",\r\n    \"updated_at\": \"2017-11-09 15:37:05\"\r\n  }\r\n}</code></pre>\r\n</div>\r\n</div>\r\n</p>\n"
+}

@@ -1,0 +1,298 @@
+{
+  "tags" : [ "java", "algorithm" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 84127,
+      "reputation" : 52017,
+      "user_id" : 235354,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/097d761861529df52a6800744f1074d2?s=256&d=identicon&r=PG",
+      "display_name" : "jspcal",
+      "link" : "https://stackoverflow.com/users/235354/jspcal"
+    },
+    "is_accepted" : false,
+    "community_owned_date" : 1264396438,
+    "score" : 1,
+    "last_activity_date" : 1759484715,
+    "last_edit_date" : 1759484715,
+    "creation_date" : 1264384944,
+    "answer_id" : 2129807,
+    "question_id" : 2129805,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>this would be the number of <a href=\"https://en.wikipedia.org/wiki/Integer_partition\" rel=\"nofollow noreferrer\">partitions</a> of n which contain only integers from the set [3,7]</p>\n<p>similar to the regular partition problem (where the elements can be any positive integer):</p>\n<p><a href=\"https://oeis.org/A000041\" rel=\"nofollow noreferrer\">A000041</a></p>\n<p>i don't see an existing number sequence that matches this constraint exactly, but you can count the groups like so (in python). this can take an arbitrary range ([3,7] in this case) and count all the a,b,c,d,e (3<em>a + 4</em>b + 5<em>c + 6</em>d + 7*e) sequences that sum to n.</p>\n<pre><code>import sys\n\n# All partitions for a particular n:\n\ndef groups(n, base, minBase, sum, sets, group = []):\n  c = 0; i = (n - sum) / base\n  while i &gt;= 0:\n    s = sum + base * i\n    if s == n:\n      sets.append(group + [i]);\n      c = c + 1\n    elif s &lt; n and base &gt; minBase:\n      c = c + groups(n, base - 1, minBase, s, sets, (group + [i]))\n    i = i - 1\n  return c\n\n# Partitions for each n in [1,maxNum]\n\ndef run(maxNum):\n  for i in xrange(1, maxNum + 1):\n    sets = []; maxBase = 7; minBase = 3\n    n = groups(i, maxBase, minBase, 0, sets)\n    print '    %d has %d groups:\\n' % (i, n)\n    for g in sets:\n      x = len(g) - 1\n      sys.stdout.write('      ')\n      while x &gt;= 0:\n        if g[x] &gt; 0:\n          if x &lt; len(g) - 1: sys.stdout.write(' + ')\n          sys.stdout.write('(%d * %d)' % (maxBase - x, g[x]))\n        x = x - 1\n      print ''\n    if len(sets): print ''\n\nrun(40)\n</code></pre>\n<p>you'd have:</p>\n<pre><code>1 has 0 groups:\n\n2 has 0 groups:\n\n3 has 1 groups:\n\n  (3 * 1)\n\n4 has 1 groups:\n\n  (4 * 1)\n\n5 has 1 groups:\n\n  (5 * 1)\n\n6 has 2 groups:\n\n  (6 * 1)\n  (3 * 2)\n\n7 has 2 groups:\n\n  (7 * 1)\n  (3 * 1) + (4 * 1)\n\n8 has 2 groups:\n\n  (3 * 1) + (5 * 1)\n  (4 * 2)\n\n9 has 3 groups:\n\n  (3 * 1) + (6 * 1)\n  (4 * 1) + (5 * 1)\n  (3 * 3)\n\n10 has 4 groups:\n\n  (3 * 1) + (7 * 1)\n  (4 * 1) + (6 * 1)\n  (5 * 2)\n  (3 * 2) + (4 * 1)\n\n11 has 4 groups:\n\n  (4 * 1) + (7 * 1)\n  (5 * 1) + (6 * 1)\n  (3 * 2) + (5 * 1)\n  (3 * 1) + (4 * 2)\n\n12 has 6 groups:\n\n  (5 * 1) + (7 * 1)\n  (6 * 2)\n  (3 * 2) + (6 * 1)\n  (3 * 1) + (4 * 1) + (5 * 1)\n  (4 * 3)\n  (3 * 4)\n\n13 has 6 groups:\n\n  (6 * 1) + (7 * 1)\n  (3 * 2) + (7 * 1)\n  (3 * 1) + (4 * 1) + (6 * 1)\n  (3 * 1) + (5 * 2)\n  (4 * 2) + (5 * 1)\n  (3 * 3) + (4 * 1)\n\n14 has 7 groups:\n\n  (7 * 2)\n  (3 * 1) + (4 * 1) + (7 * 1)\n  (3 * 1) + (5 * 1) + (6 * 1)\n  (4 * 2) + (6 * 1)\n  (4 * 1) + (5 * 2)\n  (3 * 3) + (5 * 1)\n  (3 * 2) + (4 * 2)\n\n15 has 9 groups:\n\n  (3 * 1) + (5 * 1) + (7 * 1)\n  (4 * 2) + (7 * 1)\n  (3 * 1) + (6 * 2)\n  (4 * 1) + (5 * 1) + (6 * 1)\n  (3 * 3) + (6 * 1)\n  (5 * 3)\n  (3 * 2) + (4 * 1) + (5 * 1)\n  (3 * 1) + (4 * 3)\n  (3 * 5)\n</code></pre>\n<p>or @Cletus's excellent solution</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 51681,
+        "reputation" : 13494,
+        "user_id" : 154461,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://www.gravatar.com/avatar/6583c6b201d2e2456e2060c91a82250f?s=256&d=identicon&r=PG",
+        "display_name" : "harschware",
+        "link" : "https://stackoverflow.com/users/154461/harschware"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264386249,
+      "post_id" : 2129848,
+      "comment_id" : 2068909,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "JUNG [<a href=\"http://jung.sourceforge.net/doc/api/edu/uci/ics/jung/graph/Tree.html]\" rel=\"nofollow noreferrer\">jung.sourceforge.net/doc/api/edu/uci/ics/jung/graph/Tree.ht&zwnj;&#8203;ml]</a> has a Tree implementation that may help."
+    }, {
+      "owner" : {
+        "account_id" : 26232,
+        "reputation" : 13519,
+        "user_id" : 68051,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/8a1aabc40d859fcb786eb4d28b95d299?s=256&d=identicon&r=PG",
+        "display_name" : "Tim Perry",
+        "link" : "https://stackoverflow.com/users/68051/tim-perry"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264386332,
+      "post_id" : 2129848,
+      "comment_id" : 2068920,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I think I understand this, but where are the 2 groups of 6 and 6 represented in this data structure? Should the 6 branch go 6 to 6 and also 6 to 3 to 3, or am I misunderstanding it?"
+    }, {
+      "owner" : {
+        "account_id" : 26232,
+        "reputation" : 13519,
+        "user_id" : 68051,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/8a1aabc40d859fcb786eb4d28b95d299?s=256&d=identicon&r=PG",
+        "display_name" : "Tim Perry",
+        "link" : "https://stackoverflow.com/users/68051/tim-perry"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264386406,
+      "post_id" : 2129848,
+      "comment_id" : 2068927,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Also, harschware&#39;s JUNG url has a trailing ], looks like it should be <a href=\"http://jung.sourceforge.net/doc/api/edu/uci/ics/jung/graph/Tree.html\" rel=\"nofollow noreferrer\">jung.sourceforge.net/doc/api/edu/uci/ics/jung/graph/Tree.htm&zwnj;&#8203;l</a>"
+    }, {
+      "owner" : {
+        "account_id" : 77634,
+        "reputation" : 194,
+        "user_id" : 221448,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/2512fef2adb1b2e9fe11a35c2ba2e50c?s=256&d=identicon&r=PG",
+        "display_name" : "miguelrios",
+        "link" : "https://stackoverflow.com/users/221448/miguelrios"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264389618,
+      "post_id" : 2129848,
+      "comment_id" : 2069126,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks! Yes, I need the combinations themselves, not the number. I am trying this. Thanks."
+    }, {
+      "owner" : {
+        "account_id" : 77634,
+        "reputation" : 194,
+        "user_id" : 221448,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/2512fef2adb1b2e9fe11a35c2ba2e50c?s=256&d=identicon&r=PG",
+        "display_name" : "miguelrios",
+        "link" : "https://stackoverflow.com/users/221448/miguelrios"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264398783,
+      "post_id" : 2129848,
+      "comment_id" : 2069618,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I think I am missing something in your pseudocode. Where do I jump from 12 to 9 in the first iteration?"
+    }, {
+      "owner" : {
+        "account_id" : 9867,
+        "reputation" : 626888,
+        "user_id" : 18393,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/2f364c2e36b52bc80296cbf23da8b231?s=256&d=identicon&r=PG",
+        "display_name" : "cletus",
+        "link" : "https://stackoverflow.com/users/18393/cletus"
+      },
+      "reply_to_user" : {
+        "account_id" : 77634,
+        "reputation" : 194,
+        "user_id" : 221448,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/2512fef2adb1b2e9fe11a35c2ba2e50c?s=256&d=identicon&r=PG",
+        "display_name" : "miguelrios",
+        "link" : "https://stackoverflow.com/users/221448/miguelrios"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264404412,
+      "post_id" : 2129848,
+      "comment_id" : 2069983,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@miguelrios: you jump from 12 to 9 because at 11, you call the function again with a size of 1, which is below minimum size so it generates no tree. It&#39;s the part of the algorithm that goes from minSize to <code>i</code>."
+    } ],
+    "owner" : {
+      "account_id" : 9867,
+      "reputation" : 626888,
+      "user_id" : 18393,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/2f364c2e36b52bc80296cbf23da8b231?s=256&d=identicon&r=PG",
+      "display_name" : "cletus",
+      "link" : "https://stackoverflow.com/users/18393/cletus"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1264386877,
+    "last_edit_date" : 1264386877,
+    "creation_date" : 1264385816,
+    "answer_id" : 2129848,
+    "question_id" : 2129805,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>It can be done with recursion. You don't say if you just want the number of possibilities or the actual possibilities.</p>\n\n<p>One thing you want to do is avoid repetition meaning don't count 4 and 3 also as 3 and 4. One way to do that is to create sequences of non-descending group sizes.</p>\n\n<p>Probably the best data structure for this is a tree:</p>\n\n<pre><code>root\n+- 12\n+- 9\n|  +- 3\n+- 8\n|  +- 4\n+- 7\n|  +- 5\n+- 6\n|  +- 6\n|  +- 3\n|     +- 3\n+- 5\n|  +- 4\n|     +- 3\n+- 4\n|  +- 4\n|     +- 4\n+- 3\n   +- 3\n      +- 3\n         +- 3\n</code></pre>\n\n<p>Then to find the number of combinations you simply count the leaf nodes. To find the actual combinations you just walk the tree.</p>\n\n<p>The algorithm for building such a tree goes something like this:</p>\n\n<ul>\n<li>Function buildTree(int size, int minSize, Tree root)</li>\n<li>Count <code>i</code> from <code>size</code> down to <code>minSize</code>;</li>\n<li>Create a child of the current node with value <code>i</code>;</li>\n<li>For each <code>j</code> from <code>minSize</code> to <code>i</code> that is less than or equal to <code>i</code>\n\n<ul>\n<li>Create a new child of value <code>j</code></li>\n<li>Call `buildTree(j, minSize, new node)</li>\n</ul></li>\n</ul>\n\n<p>or something very close to that.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 558,
+      "reputation" : 7012,
+      "user_id" : 723,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/7b62dca909c54e9e152df0590dcdb256?s=256&d=identicon&r=PG",
+      "display_name" : "Neal",
+      "link" : "https://stackoverflow.com/users/723/neal"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1264389370,
+    "last_edit_date" : 1264389370,
+    "creation_date" : 1264388910,
+    "answer_id" : 2129989,
+    "question_id" : 2129805,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>A tree is the best way to think about it I think, but you can use recursion to build one without explicitly making a tree. You can think of the root as your total. Using groups of size 3-7, you need to find some combination of groups that sums up to your total.</p>\n\n<p>You can use 0 groups of 7, 1 group of 7, 2 groups of 7, etc. For each of those values, you can use 0 groups of 6, 1 group of 6, etc. The first level of your tree will represent how many 7's were used. The second level is how many 6's were used, etc. When you use x 7's, then you need to figure out how many combinations of 6's, 5's, 4's, and 3's you can use to sum up to (sum-x*7), and so on for each lower level (recursive call).</p>\n\n<p>Your tree will always have 5 levels. </p>\n\n<p>Using recursion to build the tree, here is a small Python code sample (with no attempt to prune the tree, it will explore the entire thing). </p>\n\n<pre><code>MIN = 3\nMAX = 7\n\ndef findComb(remaining, start, path):\n   times = remaining/start\n\n   if start == MIN:\n       if remaining % MIN == 0:\n           print \"%s, %d %d's\" % (path[1:], times, start)\n       return\n\n   for i in range(0, times+1):\n       findComb(remaining- (i*start), start-1, \"%s, %d %d's\" % (path, i, start))\n\n\nfindComb(12, MAX, \"\")\n</code></pre>\n\n<p>This outputs:</p>\n\n<pre><code>0 7's, 0 6's, 0 5's, 0 4's, 4 3's\n0 7's, 0 6's, 0 5's, 3 4's, 0 3's\n0 7's, 0 6's, 1 5's, 1 4's, 1 3's\n0 7's, 1 6's, 0 5's, 0 4's, 2 3's\n0 7's, 2 6's, 0 5's, 0 4's, 0 3's\n1 7's, 0 6's, 1 5's, 0 4's, 0 3's\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 77634,
+        "reputation" : 194,
+        "user_id" : 221448,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/2512fef2adb1b2e9fe11a35c2ba2e50c?s=256&d=identicon&r=PG",
+        "display_name" : "miguelrios",
+        "link" : "https://stackoverflow.com/users/221448/miguelrios"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264402865,
+      "post_id" : 2130547,
+      "comment_id" : 2069898,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "This is very close to what I am looking. I am trying to convert it to Java to see how it works. Thanks."
+    } ],
+    "owner" : {
+      "account_id" : 51354,
+      "reputation" : 45425,
+      "user_id" : 153430,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a446e1fd338fb334fa68b3f7470cd65b?s=256&d=identicon&r=PG",
+      "display_name" : "Jim Lewis",
+      "link" : "https://stackoverflow.com/users/153430/jim-lewis"
+    },
+    "is_accepted" : true,
+    "score" : 4,
+    "last_activity_date" : 1264400187,
+    "creation_date" : 1264400187,
+    "answer_id" : 2130547,
+    "question_id" : 2129805,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Here's an algorithm (expressed in C++) to solve a more general version of the problem,\nwith arbitrary upper and lower bounds on the addends that may appear in each partition:</p>\n\n<pre><code>#include &lt;iostream&gt;\n#include &lt;vector&gt;\n\nusing namespace std;\n\ntypedef vector&lt;int&gt; Partition;\ntypedef vector&lt;Partition&gt; Partition_list;\n\n// Count and return all partitions of an integer N using only \n// addends between min and max inclusive.\n\nint p(int min, int max, int n, Partition_list &amp;v)\n{\n   if (min &gt; max) return 0;\n   if (min &gt; n) return 0;     \n   if (min == n) {\n      Partition vtemp(1,min);\n      v.push_back(vtemp);\n      return 1;\n   }\n   else {\n     Partition_list part1,part2;\n     int p1 = p(min+1,max,n,part1);\n     int p2 = p(min,max,n-min,part2);\n     v.insert(v.end(),part1.begin(),part1.end());\n     for(int i=0; i &lt; p2; i++)\n     {\n        part2[i].push_back(min);\n     }\n     v.insert(v.end(),part2.begin(),part2.end());\n     return p1+p2;\n   }\n}\n\nvoid print_partition(Partition &amp;p)\n{\n   for(int i=0; i &lt; p.size(); i++) {\n      cout &lt;&lt; p[i] &lt;&lt; ' ';\n   }\n   cout &lt;&lt; \"\\n\";\n}\n\nvoid print_partition_list(Partition_list &amp;pl)\n{\n   for(int i = 0; i &lt; pl.size(); i++) {\n      print_partition(pl[i]);\n   }\n}\n\nint main(int argc, char **argv)\n{\n   Partition_list v_master;\n\n   int n = atoi(argv[1]);\n   int min = atoi(argv[2]);\n   int max = atoi(argv[3]);\n   int count = p(min,max,n,v_master);\n   cout &lt;&lt; count &lt;&lt; \" partitions of \" &lt;&lt; n &lt;&lt; \" with min \" &lt;&lt; min  ;\n   cout &lt;&lt; \" and max \" &lt;&lt; max &lt;&lt; \":\\n\" ;\n   print_partition_list(v_master);\n}\n</code></pre>\n\n<p>And some sample output:</p>\n\n<pre><code>$ ./partitions 12 3 7              \n6 partitions of 12 with min 3 and max 7:\n6 6 \n7 5 \n4 4 4 \n5 4 3 \n6 3 3 \n3 3 3 3 \n$ ./partitions 50 10 20            \n38 partitions of 50 with min 10 and max 20:\n17 17 16 \n18 16 16 \n18 17 15 \n19 16 15 \n20 15 15 \n18 18 14 \n19 17 14 \n20 16 14 \n19 18 13 \n20 17 13 \n19 19 12 \n20 18 12 \n13 13 12 12 \n14 12 12 12 \n20 19 11 \n13 13 13 11 \n14 13 12 11 \n15 12 12 11 \n14 14 11 11 \n15 13 11 11 \n16 12 11 11 \n17 11 11 11 \n20 20 10 \n14 13 13 10 \n14 14 12 10 \n15 13 12 10 \n16 12 12 10 \n15 14 11 10 \n16 13 11 10 \n17 12 11 10 \n18 11 11 10 \n15 15 10 10 \n16 14 10 10 \n17 13 10 10 \n18 12 10 10 \n19 11 10 10 \n20 10 10 10 \n10 10 10 10 10 \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 584629,
+      "reputation" : 1022,
+      "user_id" : 258244,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/328eaf28f099f64fd6e4001c7f48d695?s=256&d=identicon&r=PG",
+      "display_name" : "Michael",
+      "link" : "https://stackoverflow.com/users/258244/michael"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1264406554,
+    "creation_date" : 1264406554,
+    "answer_id" : 2130917,
+    "question_id" : 2129805,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>In pseudocode:</p>\n\n<pre><code>List&lt;String&gt; results;\n\nvoid YourAnswer(int n) {\n    GeneratePossiblities(\"\", [3, 4, 5, 6, 7], n);\n}\n\nvoid GeneratePossibilities(String partialResult, List&lt;int&gt; buildingBlocks, int n) {\n    if (n == 0) {\n        // We have a solution\n        results.Add(partialResult);\n    } else if (buildingBlocks.IsEmpty()) {\n        // Dead-end: there is no solution that starts with the partial result we have and contains only the remaining building blocks\n        return;\n    } else {\n        int first = buildingBlocks.First();\n        buildingBlocks.PopFirst();\n        for (int i = 0, i &lt; n/first; i++) {\n          GeneratePossibilities(partialResult + \" \" + i + \"groups of \" + first,\n                                buildingBlocks, \n                                n - i * first);\n        }\n    }\n}\n</code></pre>\n\n<p>The first two cases are pretty straight-forward.  The third one, you figure out (for example) how many groups of size 3 there are - that can be any number between 0 and n/3, and then recursively the function with [4, 5, 6, 7], etc.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 77634,
+        "reputation" : 194,
+        "user_id" : 221448,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/2512fef2adb1b2e9fe11a35c2ba2e50c?s=256&d=identicon&r=PG",
+        "display_name" : "miguelrios",
+        "link" : "https://stackoverflow.com/users/221448/miguelrios"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1264542870,
+      "post_id" : 2141489,
+      "comment_id" : 2084235,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "This one will give me only the number of partitions. I also need the partitions themselves. Thanks!"
+    } ],
+    "owner" : {
+      "account_id" : 85546,
+      "reputation" : 86163,
+      "user_id" : 238419,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://i.sstatic.net/SINHF.png?s=256",
+      "display_name" : "BlueRaja - Danny Pflughoeft",
+      "link" : "https://stackoverflow.com/users/238419/blueraja-danny-pflughoeft"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1264529187,
+    "last_edit_date" : 1264529187,
+    "creation_date" : 1264528876,
+    "answer_id" : 2141489,
+    "question_id" : 2129805,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>What you are describing is a less general version of the <a href=\"http://en.wikipedia.org/wiki/Partition_(number_theory)#Intermediate_function\" rel=\"nofollow noreferrer\">partition function</a>.</p>\n\n<p>The algorithms already given are ridiculously complicated, here is a simpler one (in pseudo-code, I will leave it up to you to translate to Java <code>:)</code> )</p>\n\n<pre><code>p(min, n):\n    if min &gt; n: return 0\n    if min = n: return 1\n    return p(min+1, n) + p(min, n-min)\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 77634,
+    "reputation" : 194,
+    "user_id" : 221448,
+    "user_type" : "registered",
+    "accept_rate" : 100,
+    "profile_image" : "https://www.gravatar.com/avatar/2512fef2adb1b2e9fe11a35c2ba2e50c?s=256&d=identicon&r=PG",
+    "display_name" : "miguelrios",
+    "link" : "https://stackoverflow.com/users/221448/miguelrios"
+  },
+  "is_answered" : true,
+  "view_count" : 2287,
+  "accepted_answer_id" : 2130547,
+  "answer_count" : 6,
+  "score" : 9,
+  "last_activity_date" : 1759484715,
+  "creation_date" : 1264384888,
+  "question_id" : 2129805,
+  "link" : "https://stackoverflow.com/questions/2129805/algorithm-to-determine-possible-groups-of-items",
+  "title" : "Algorithm to determine possible groups of items",
+  "body" : "<p>I am scratching my head trying to do this and it's eating me up. I know it is not THAT complex. I have a number of items, this number can be equal or greater than three. Then I need to determine the possible combination of group of items that will complete the total. The only restriction it's that the groups should have three or more items, not exceeding (but including) seven items.</p>\n\n<p>For example: </p>\n\n<p>If I have 7 items, then I could have these possible groups:</p>\n\n<ul>\n<li>1 group of 7 items.</li>\n<li>1 group of 4 items and 1 group of 3 items.</li>\n</ul>\n\n<p>If I have 12 items, I could have these possible groups:</p>\n\n<ul>\n<li>4 groups of 3 items.</li>\n<li>3 groups of 4 items.</li>\n<li>2 groups of 6 items.</li>\n<li>1 group of 7 items + 1 group of 5 items.</li>\n<li>2 groups of 3 and 1 group of 6 items.</li>\n<li>1 group of 3, 1 group of 4 and 1 group of five items.</li>\n<li>...</li>\n</ul>\n\n<p>I thought about recursion and started implementing the algorithm. It's obviously not working. I suck at recursion. A lot. </p>\n\n<pre><code>//Instance Fields\npublic List&lt;ArrayList&lt;String&gt;&gt; options;\n\n//Method that will generate the options. The different options are \n//stored in a list of \"option\". An individual option will store a list of\n//strings with the individual groups.\npublic void generateOptions(int items, ArrayList&lt;String&gt; currentOption){\n\n    //If the current option is null, then create a new option.\n    if(currentOption == null){\n        currentOption = new ArrayList&lt;String&gt;();\n    }\n    if(items &lt; 3){\n        //If the number of items is less than three then it doesn't comply with the \n        //requirements (teams should be more or equal than three. \n        currentOption.add(\"1 group of \"+items+\" items\");\n        options.add(currentOption);\n    }\n    else{\n        //I can make groups of 3,4,5,6 and 7 items.\n        for(int i = 3;i&lt;=7;i++){\n            if(items%i == 0){ \n                // If the number of items is divisible per the current number, \n                // then a possible option could be items/i groups of i items. \n                // Example: Items = 9. A possible option is 3 groups of 3 items.\n                currentOption.add(items/i +\" groups of \"+ i+\" items\");\n                options.add(currentOption);\n            }\n            else{\n                // If the number of items - the current number is equal or greater than\n                // three, then a possible option could be a group of i items\n                // and then I'll have items-i items to separate in other groups.\n                if(items - i &gt;=3){\n                    currentOption.add(\"1 group of \"+i+\" items\");\n                    generateOptions(items-i,currentOption);\n                }\n            }\n        }\n    }\n}\n</code></pre>\n\n<p>Thanks for your help!!!</p>\n"
+}

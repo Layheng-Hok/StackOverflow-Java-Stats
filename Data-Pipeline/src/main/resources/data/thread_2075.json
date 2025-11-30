@@ -1,0 +1,544 @@
+{
+  "tags" : [ "java", "try-with-resources" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 334987,
+      "reputation" : 9280,
+      "user_id" : 661797,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://www.gravatar.com/avatar/cd120539f603f11a6fcf80fcccefce85?s=256&d=identicon&r=PG",
+      "display_name" : "nullpotent",
+      "link" : "https://stackoverflow.com/users/661797/nullpotent"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1348409338,
+    "post_id" : 12552863,
+    "comment_id" : 16906360,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Your first example isn&#39;t really demonstrative. If FileWriter throws an exception, then the resource certainly isn&#39;t opened and need not to be closed."
+  }, {
+    "owner" : {
+      "account_id" : 1063749,
+      "reputation" : 14277,
+      "user_id" : 1064809,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/b1cf3eaad6d6c7bd5995351132923cac?s=256&d=identicon&r=PG",
+      "display_name" : "Natix",
+      "link" : "https://stackoverflow.com/users/1064809/natix"
+    },
+    "reply_to_user" : {
+      "account_id" : 334987,
+      "reputation" : 9280,
+      "user_id" : 661797,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://www.gravatar.com/avatar/cd120539f603f11a6fcf80fcccefce85?s=256&d=identicon&r=PG",
+      "display_name" : "nullpotent",
+      "link" : "https://stackoverflow.com/users/661797/nullpotent"
+    },
+    "edited" : false,
+    "score" : 6,
+    "creation_date" : 1348410402,
+    "post_id" : 12552863,
+    "comment_id" : 16906606,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Of course, if the underlying FileWriter&#39;s constructor throws an exception, it doesn&#39;t get even opened and everything is OK. What the 1st example is about, is what happens if the FileWriter gets created, but the BufferedWriter&#39;s constructor throws an exception."
+  }, {
+    "owner" : {
+      "account_id" : 23121,
+      "reputation" : 535127,
+      "user_id" : 57695,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Lawrey",
+      "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+    },
+    "edited" : false,
+    "score" : 8,
+    "creation_date" : 1348410561,
+    "post_id" : 12552863,
+    "comment_id" : 16906641,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Its worth noting that BufferedWriter will not throw an Exception. Is there an example you can think of where this question not pure academic."
+  }, {
+    "owner" : {
+      "account_id" : 1063749,
+      "reputation" : 14277,
+      "user_id" : 1064809,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/b1cf3eaad6d6c7bd5995351132923cac?s=256&d=identicon&r=PG",
+      "display_name" : "Natix",
+      "link" : "https://stackoverflow.com/users/1064809/natix"
+    },
+    "reply_to_user" : {
+      "account_id" : 23121,
+      "reputation" : 535127,
+      "user_id" : 57695,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Lawrey",
+      "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+    },
+    "edited" : false,
+    "score" : 12,
+    "creation_date" : 1348411215,
+    "post_id" : 12552863,
+    "comment_id" : 16906781,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@PeterLawrey Yes, your&#39;re right that the BufferedWriter&#39;s constructor  in this scenario most probably will not throw an exception, but as I&#39;ve pointed out, this question concerns any decorator-style resources. But for example <code>public BufferedWriter(Writer out, int sz)</code> can throw an <code>IllegalArgumentException</code>. Also, I can extend BufferedWriter with a class that would throw something from its constructor or create a whatever custom wrapper that I need."
+  }, {
+    "owner" : {
+      "account_id" : 3282,
+      "reputation" : 147614,
+      "user_id" : 4725,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+      "display_name" : "Tom Hawtin - tackline",
+      "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+    },
+    "edited" : false,
+    "score" : 6,
+    "creation_date" : 1348412619,
+    "post_id" : 12552863,
+    "comment_id" : 16907129,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "The <code>BufferedWriter</code> constructor can easily throw an exception. <code>OutOfMemoryError</code> is probably the most common one as it allocates a fair chunk of memory for the buffer (although may indicate you want to restart the entire process). / You need to <code>flush</code> your <code>BufferedWriter</code> if you don&#39;t close and want to keep the contents (generally <b>only</b> the non-exception case). <code>FileWriter</code> picks up whatever happens to be the &quot;default&quot; file encoding - it&#39;s better to be explicit."
+  }, {
+    "owner" : {
+      "account_id" : 1658137,
+      "reputation" : 27399,
+      "user_id" : 1527084,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/3c93245c8f90bb4256781ab91e212821?s=256&d=identicon&r=PG",
+      "display_name" : "Geek",
+      "link" : "https://stackoverflow.com/users/1527084/geek"
+    },
+    "edited" : false,
+    "score" : 12,
+    "creation_date" : 1406054233,
+    "post_id" : 12552863,
+    "comment_id" : 38672897,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@Natix I wish all question in SO are as well researched and clear as this one is. I wish I could up vote this 100 times."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 162467,
+      "reputation" : 12276,
+      "user_id" : 383936,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3906b007e5c4150115e319a01d2f4ab8?s=256&d=identicon&r=PG",
+      "display_name" : "Jeanne Boyarsky",
+      "link" : "https://stackoverflow.com/users/383936/jeanne-boyarsky"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1480096193,
+    "last_edit_date" : 1480096193,
+    "creation_date" : 1348423277,
+    "answer_id" : 12554785,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>Option 4</strong></p>\n\n<p>Change your resources to be Closeable, not AutoClosable if you can.  The fact that the constructors can be chained implies it isn't unheard of to close the resource twice.  (This was true before ARM too.)  More on this below.</p>\n\n<p><strong>Option 5</strong></p>\n\n<p>Don't use ARM and code very carefully to ensure close() isn't called twice!</p>\n\n<p><strong>Option 6</strong></p>\n\n<p>Don't use ARM and have your finally close() calls in a try/catch themselves.</p>\n\n<p><strong>Why I don't think this problem is unique to ARM</strong></p>\n\n<p>In all these examples, the finally close() calls should be in a catch block.  Left out for readability.</p>\n\n<p>No good because fw can be closed twice.  (which is fine for FileWriter but not in your hypothetial example):</p>\n\n<pre><code>FileWriter fw = null;\nBufferedWriter bw = null;\ntry {\n  fw = new FileWriter(file);\n  bw = new BufferedWriter(fw);\n  bw.write(text);\n} finally {\n  if ( fw != null ) fw.close();\n  if ( bw != null ) bw.close();\n}\n</code></pre>\n\n<p>No good because fw not closed if exception on constructing a BufferedWriter.  (again, can't happen, but in your hypothetical example):</p>\n\n<pre><code>FileWriter fw = null;\nBufferedWriter bw = null;\ntry {\n  fw = new FileWriter(file);\n  bw = new BufferedWriter(fw);\n  bw.write(text);\n} finally {\n  if ( bw != null ) bw.close();\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1063749,
+        "reputation" : 14277,
+        "user_id" : 1064809,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://www.gravatar.com/avatar/b1cf3eaad6d6c7bd5995351132923cac?s=256&d=identicon&r=PG",
+        "display_name" : "Natix",
+        "link" : "https://stackoverflow.com/users/1064809/natix"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1348674943,
+      "post_id" : 12605251,
+      "comment_id" : 16991623,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is pretty much similar to my 2nd example. If no exception occurs, the FileWriter&#39;s <code>close</code> will be called twice."
+    } ],
+    "owner" : {
+      "account_id" : 1738665,
+      "reputation" : 189,
+      "user_id" : 1590666,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4844bfe0dd785256faa6981d5d8ff186?s=256&d=identicon&r=PG",
+      "display_name" : "poison",
+      "link" : "https://stackoverflow.com/users/1590666/poison"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1348673328,
+    "creation_date" : 1348673328,
+    "answer_id" : 12605251,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Since your resources are nested, your try-with clauses should also be:</p>\n\n<pre><code>try (FileWriter fw=new FileWriter(file)) {\n    try (BufferedWriter bw=new BufferedWriter(fw)) {\n        bw.write(text);\n    } catch (IOException ex) {\n        // handle ex\n    }\n} catch (IOException ex) {\n    // handle ex\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1344625,
+      "reputation" : 3286,
+      "user_id" : 1285615,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://www.gravatar.com/avatar/5d7d472da1b59aa3ef94b16c79e7defe?s=256&d=identicon&r=PG",
+      "display_name" : "sakthisundar",
+      "link" : "https://stackoverflow.com/users/1285615/sakthisundar"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1348743518,
+    "creation_date" : 1348743518,
+    "answer_id" : 12619799,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I would say don't use ARM and go on with Closeable. Use method like,</p>\n\n<pre><code>public void close(Closeable... closeables) {\n    for (Closeable closeable: closeables) {\n       try {\n           closeable.close();\n         } catch (IOException e) {\n           // you can't much for this\n          }\n    }\n\n}\n</code></pre>\n\n<p>Also you should consider calling close of <code>BufferedWriter</code> as it is not just delegating the close to <code>FileWriter</code> , but it does some cleanup like <code>flushBuffer</code>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 364125,
+        "reputation" : 4895,
+        "user_id" : 708333,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1e98085709281054850fb6e7a3ed057f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "TimK",
+        "link" : "https://stackoverflow.com/users/708333/timk"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1395875890,
+      "post_id" : 12665271,
+      "comment_id" : 34542953,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In version 3, how do you know that bw doesn&#39;t require its close to be called?  And even if you can be sure if it, isn&#39;t that also &quot;obscure knowledge&quot; like you mention for version 1?"
+    }, {
+      "owner" : {
+        "account_id" : 218057,
+        "reputation" : 69716,
+        "user_id" : 474189,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/32b712ec4f7dcc2e8a6907b9903aa8ba?s=256&d=identicon&r=PG",
+        "display_name" : "Duncan Jones",
+        "link" : "https://stackoverflow.com/users/474189/duncan-jones"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1409038254,
+      "post_id" : 12665271,
+      "comment_id" : 39803597,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;<i>software development reasons make 2 the better choice</i>&quot; Can you explain this statement in more detail?"
+    }, {
+      "owner" : {
+        "account_id" : 2046019,
+        "reputation" : 700,
+        "user_id" : 1826075,
+        "user_type" : "registered",
+        "accept_rate" : 47,
+        "profile_image" : "https://www.gravatar.com/avatar/9fcdd95af7d5f5b8f549b7d8fb1ec8eb?s=256&d=identicon&r=PG",
+        "display_name" : "Markus",
+        "link" : "https://stackoverflow.com/users/1826075/markus"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1432720721,
+      "post_id" : 12665271,
+      "comment_id" : 49037156,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Can you give an example of the &quot;Execute Around idiom with closures&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 492994,
+        "reputation" : 3969,
+        "user_id" : 1271412,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/ghZEr.jpg?s=256",
+        "display_name" : "petertc",
+        "link" : "https://stackoverflow.com/users/1271412/petertc"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1441085196,
+      "post_id" : 12665271,
+      "comment_id" : 52522745,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Can you explain what&#39;s &quot;clearer syntax with closures in Java SE 8&quot;?"
+    }, {
+      "owner" : {
+        "account_id" : 94872,
+        "reputation" : 19421,
+        "user_id" : 258772,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/65e43f9d887c6cd56dcece012f8f165b?s=256&d=identicon&r=PG",
+        "display_name" : "mrts",
+        "link" : "https://stackoverflow.com/users/258772/mrts"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1488035829,
+      "post_id" : 12665271,
+      "comment_id" : 72058109,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Example of &quot;Execute Around idiom&quot; is here: <a href=\"http://stackoverflow.com/a/342016/258772\">stackoverflow.com/a/342016/258772</a>"
+    } ],
+    "owner" : {
+      "account_id" : 3282,
+      "reputation" : 147614,
+      "user_id" : 4725,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+      "display_name" : "Tom Hawtin - tackline",
+      "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+    },
+    "is_accepted" : false,
+    "score" : 82,
+    "last_activity_date" : 1695227005,
+    "last_edit_date" : 1695227005,
+    "creation_date" : 1349040478,
+    "answer_id" : 12665271,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here's my take on the alternatives:</p>\n<h2>1)</h2>\n<pre><code>try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {\n    bw.write(text);\n}\n</code></pre>\n<p>For me, the best thing coming to Java from traditional C++ 15 years ago was that you could trust your program. Even if things are in the muck and going wrong, which they often do, I want the rest of the code to be on best behaviour and smelling of roses. Indeed, the <code>BufferedWriter</code> might throw an exception here. Running out of memory wouldn't be unusual, for instance. For other decorators, do you know which of the <code>java.io</code> wrapper classes throw a checked exception from their constructors? I don't. Doesn't do code understandability much good if you rely upon that sort of obscure knowledge.</p>\n<p>Also there's the &quot;destruction&quot;. If there is an error condition, then you probably don't want to be flushing rubbish to a file that needs deleting (code for that not shown). Although, of course, deleting the file is also another interesting operation to do as error handling.</p>\n<p>Generally you want <code>finally</code> blocks to be as short and reliable as possible. Adding flushes does not help this goal. For many releases some of the buffering classes in the JDK had a bug where an exception from <code>flush</code> within <code>close</code> caused <code>close</code> on the decorated object not be called. Whilst that has been fixed for some time, expect it from other implementations.</p>\n<h2>2)</h2>\n<pre><code>try (\n    FileWriter fw = new FileWriter(file);\n    BufferedWriter bw = new BufferedWriter(fw)\n) {\n    bw.write(text);\n}\n</code></pre>\n<p>We're still flushing in the implicit finally block (now with repeated <code>close</code> - this gets worse as you add more decorators), but the construction is safe and we have two implicit finally blocks so even a failed <code>flush</code> doesn't prevent resource release.</p>\n<h2>3)</h2>\n<pre><code>try (FileWriter fw = new FileWriter(file)) {\n    BufferedWriter bw = new BufferedWriter(fw);\n    bw.write(text);\n}\n</code></pre>\n<p>There's a bug here. Should be:</p>\n<pre><code>try (FileWriter fw = new FileWriter(file)) {\n    BufferedWriter bw = new BufferedWriter(fw);\n    bw.write(text);\n    bw.flush();\n}\n</code></pre>\n<p>Some poorly implemented decorators are in fact resource and will need to be closed reliably. Also some streams may need to be closed in a particular way (perhaps they are doing compression and need to write bits to finish off, and can't just flush everything.</p>\n<h2>Verdict</h2>\n<p>Although 3 is a technically superior solution, software development reasons make 2 the better choice. However, try-with-resource is still an inadequate fix and you should stick with the <a href=\"https://stackoverflow.com/questions/341971/what-is-the-execute-around-idiom\">Execute Around idiom</a>, which should have a clearer syntax with closures in Java SE 8.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 968413,
+        "reputation" : 4012,
+        "user_id" : 991432,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7cf763b984a72e18c8b383ce3258e2f4?s=256&d=identicon&r=PG",
+        "display_name" : "rxg",
+        "link" : "https://stackoverflow.com/users/991432/rxg"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1370953622,
+      "post_id" : 12665318,
+      "comment_id" : 24640063,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If both your <code>try</code> and <code>finally</code> blocks throw exceptions, this construct will lose the first (and potentially more useful) one."
+    } ],
+    "owner" : {
+      "account_id" : 1892791,
+      "reputation" : 101,
+      "user_id" : 1710421,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/369296a25d79fd304497310a4b6c3f27?s=256&d=identicon&r=PG",
+      "display_name" : "AmyGamy",
+      "link" : "https://stackoverflow.com/users/1710421/amygamy"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1349040800,
+    "creation_date" : 1349040800,
+    "answer_id" : 12665318,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I just wanted to build on Jeanne Boyarsky's suggestion of not using ARM but making sure the FileWriter is always closed exactly once. Don't think there are any problems here...</p>\n\n<pre><code>FileWriter fw = null;\nBufferedWriter bw = null;\ntry {\n    fw = new FileWriter(file);\n    bw = new BufferedWriter(fw);\n    bw.write(text);\n} finally {\n    if (bw != null) bw.close();\n    else if (fw != null) fw.close();\n}\n</code></pre>\n\n<p>I guess since ARM is just syntactic sugar, we can't always use it to replace finally blocks. Just like we can't always use a for-each loop to do something that is possible with iterators.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1328773,
+        "reputation" : 38522,
+        "user_id" : 1273080,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/4cf74649b70fc946650115e0d5067ebe?s=256&d=identicon&r=PG",
+        "display_name" : "Petr Janeček",
+        "link" : "https://stackoverflow.com/users/1273080/petr-jane%c4%8dek"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1386070784,
+      "post_id" : 16229988,
+      "comment_id" : 30376661,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The warning has its meaning: Can we be sure here that the <code>bw</code> will actually write tha data out? It <i>is</i> buffered afterall, so it only has to write to disk sometimes (when the buffer is full and/or on <code>flush()</code> and <code>close()</code> methods). I guess the <code>flush()</code> method should be called. But then there&#39;s no need to use the buffered writer, anyway, when we&#39;re writing it out immediatelly in one batch. And if you don&#39;t fix the code, you could end up with data written to the file in a wrong order, or even not written to the file at all."
+    }, {
+      "owner" : {
+        "account_id" : 429244,
+        "reputation" : 10606,
+        "user_id" : 812034,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://www.gravatar.com/avatar/b646bea073b6f95ee97064322877a87a?s=256&d=identicon&r=PG",
+        "display_name" : "Earth Engine",
+        "link" : "https://stackoverflow.com/users/812034/earth-engine"
+      },
+      "reply_to_user" : {
+        "account_id" : 1328773,
+        "reputation" : 38522,
+        "user_id" : 1273080,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/4cf74649b70fc946650115e0d5067ebe?s=256&d=identicon&r=PG",
+        "display_name" : "Petr Janeček",
+        "link" : "https://stackoverflow.com/users/1273080/petr-jane%c4%8dek"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1386207366,
+      "post_id" : 16229988,
+      "comment_id" : 30445558,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If <code>flush()</code> is required to be called, it shall happen whenever before the caller decided to close the <code>FileWriter</code>. So this should happen in <code>printToFile</code> right before any <code>return</code>s in the try block. This shall not be a part of <code>writeFileWriter</code> and thus the warning is not about anything inside that function, but the caller of that function. If we have an annotation <code>@LiftWarningToCaller(&quot;wanrningXXX&quot;)</code> it will help this case and similar."
+    } ],
+    "owner" : {
+      "account_id" : 429244,
+      "reputation" : 10606,
+      "user_id" : 812034,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://www.gravatar.com/avatar/b646bea073b6f95ee97064322877a87a?s=256&d=identicon&r=PG",
+      "display_name" : "Earth Engine",
+      "link" : "https://stackoverflow.com/users/812034/earth-engine"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1386209877,
+    "last_edit_date" : 1386209877,
+    "creation_date" : 1366957383,
+    "answer_id" : 16229988,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>My solution is to do a \"extract method\" refactoring, as following:</p>\n\n<pre><code>static AutoCloseable writeFileWriter(FileWriter fw, String txt) throws IOException{\n    final BufferedWriter bw  = new BufferedWriter(fw);\n    bw.write(txt);\n    return new AutoCloseable(){\n\n        @Override\n        public void close() throws IOException {\n            bw.flush();\n        }\n\n    };\n}\n</code></pre>\n\n<p><code>printToFile</code> can be written either</p>\n\n<pre><code>static void printToFile(String text, File file) {\n    try (FileWriter fw = new FileWriter(file)) {\n        AutoCloseable w = writeFileWriter(fw, text);\n        w.close();\n    } catch (Exception ex) {\n        // handle ex\n    }\n}\n</code></pre>\n\n<p>or</p>\n\n<pre><code>static void printToFile(String text, File file) {\n    try (FileWriter fw = new FileWriter(file);\n        AutoCloseable w = writeFileWriter(fw, text)){\n\n    } catch (Exception ex) {\n        // handle ex\n    }\n}\n</code></pre>\n\n<p>For class lib designers, I will suggest them extend the <code>AutoClosable</code> interface with an additional method to suppress the close. In this case we can then manually control the close behavior.</p>\n\n<p>For language designers, the lesson is that adding a new feature could mean adding a lot others. In this Java case, obviously ARM feature will work better with a resource ownership transfer mechanism. </p>\n\n<p><strong>UPDATE</strong></p>\n\n<p>Originally the code above requires <code>@SuppressWarning</code> since the <code>BufferedWriter</code> inside the function requires <code>close()</code>.</p>\n\n<p>As suggested by a comment, if <code>flush()</code> to be called before close the writer, we need to do so before any <code>return</code> (implicit or explicit) statements inside the try block. There is currently no way to ensure the caller doing this I think, so this must be documented for <code>writeFileWriter</code>.</p>\n\n<p><strong>UPDATE AGAIN</strong></p>\n\n<p>The above update makes <code>@SuppressWarning</code> unnecessary since it require the function to return the resource to the caller, so itself does not necessary being closed. Unfortunately, this pull us back to the beginning of the situation: the warning is now moved back to the caller side.</p>\n\n<p>So to properly solve this, we need a customised <code>AutoClosable</code> that whenever it closes, the underline <code>BufferedWriter</code> shall be <code>flush()</code>ed. Actually, this shows us another way to bypass the warning, since the <code>BufferWriter</code> is never closed in either way.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1691630,
+        "reputation" : 51047,
+        "user_id" : 1553851,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/ad333c218c8f2fb917cf506919fc95f4?s=256&d=identicon&r=PG",
+        "display_name" : "shmosel",
+        "link" : "https://stackoverflow.com/users/1553851/shmosel"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1521350679,
+      "post_id" : 18496449,
+      "comment_id" : 85689572,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It&#39;s also the recommended approach in the 3rd edition of Effective Java."
+    } ],
+    "owner" : {
+      "account_id" : 21713,
+      "reputation" : 297798,
+      "user_id" : 53013,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/6d43da5df0e52fc31c55e6a227bb23f4?s=256&d=identicon&r=PG",
+      "display_name" : "Daniel C. Sobral",
+      "link" : "https://stackoverflow.com/users/53013/daniel-c-sobral"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1377717512,
+    "creation_date" : 1377717512,
+    "answer_id" : 18496449,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The first style is the one <a href=\"http://docs.oracle.com/javase/7/docs/technotes/guides/language/try-with-resources.html\">suggested by Oracle</a>. <code>BufferedWriter</code> doesn't throw checked exceptions, so if any exception is thrown, the program is not expected to recover from it, making resource recover mostly moot.</p>\n\n<p>Mostly because it could happen in a thread, with the thread dieing but the program still continuing -- say, there was a temporary memory outage that wasn't long enough to seriously impair the rest of the program. It's a rather corner case, though, and if it happens often enough to make resource leak a problem, the try-with-resources is the least of your problems.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 23089,
+        "reputation" : 50652,
+        "user_id" : 57611,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/fbIWO.jpg?s=256",
+        "display_name" : "ErikE",
+        "link" : "https://stackoverflow.com/users/57611/erike"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1511071835,
+      "post_id" : 32302353,
+      "comment_id" : 81700936,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Am I gathering correctly that one still needs to use try-with-resource, as in <code>try (BufferedWriter writer = &lt;BufferedWriter, FileWriter&gt;createChainedResource(file)) { &#47;* work with writer *&#47; }</code>?"
+    }, {
+      "owner" : {
+        "account_id" : 2306167,
+        "reputation" : 3519,
+        "user_id" : 2025416,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b4a6b7d8be70845520d14289115733dc?s=256&d=identicon&r=PG",
+        "display_name" : "Nils von Barth",
+        "link" : "https://stackoverflow.com/users/2025416/nils-von-barth"
+      },
+      "reply_to_user" : {
+        "account_id" : 23089,
+        "reputation" : 50652,
+        "user_id" : 57611,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/fbIWO.jpg?s=256",
+        "display_name" : "ErikE",
+        "link" : "https://stackoverflow.com/users/57611/erike"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1511583912,
+      "post_id" : 32302353,
+      "comment_id" : 81920015,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@ErikE Yes, you would still need to use try-with-resources, but you would only need to use a single function for the chained resource: the factory function <i>encapsulates</i> the chaining. I&#39;ve added an example of use; thanks!"
+    } ],
+    "owner" : {
+      "account_id" : 2306167,
+      "reputation" : 3519,
+      "user_id" : 2025416,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b4a6b7d8be70845520d14289115733dc?s=256&d=identicon&r=PG",
+      "display_name" : "Nils von Barth",
+      "link" : "https://stackoverflow.com/users/2025416/nils-von-barth"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1511583852,
+    "last_edit_date" : 1511583852,
+    "creation_date" : 1440979068,
+    "answer_id" : 32302353,
+    "question_id" : 12552863,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To concur with earlier comments: simplest is <strong>(2)</strong> to use <code>Closeable</code> resources and declare them in order in the try-with-resources clause. If you only have <code>AutoCloseable</code>, you can wrap them in another (nested) class that just checks that <code>close</code> is only called once (Facade Pattern), e.g. by having <code>private bool isClosed;</code>. In practice even Oracle just <strong>(1)</strong> chains the constructors and doesn't correctly handle exceptions partway through the chain.</p>\n\n<p>Alternatively, you can manually create a chained resource, using a static factory method; this encapsulates the chain, and handle cleanup if it fails part-way:</p>\n\n<pre><code>static BufferedWriter createBufferedWriterFromFile(File file)\n  throws IOException {\n  // If constructor throws an exception, no resource acquired, so no release required.\n  FileWriter fileWriter = new FileWriter(file);\n  try {\n    return new BufferedWriter(fileWriter);  \n  } catch (IOException newBufferedWriterException) {\n    try {\n      fileWriter.close();\n    } catch (IOException closeException) {\n      // Exceptions in cleanup code are secondary to exceptions in primary code (body of try),\n      // as in try-with-resources.\n      newBufferedWriterException.addSuppressed(closeException);\n    }\n    throw newBufferedWriterException;\n  }\n}\n</code></pre>\n\n<p>You can then use it as a single resource in a try-with-resources clause:</p>\n\n<pre><code>try (BufferedWriter writer = createBufferedWriterFromFile(file)) {\n  // Work with writer.\n}\n</code></pre>\n\n<p>The complexity comes from handling multiple exceptions; otherwise it's just \"close resources that you've acquired so far\". A common practice seems to be to first initialize the variable that holds the object that holds the resource to <code>null</code> (here <code>fileWriter</code>), and then include a null check in the cleanup, but that seems unnecessary: if the constructor fails, there's nothing to clean up, so we can just let that exception propagate, which simplifies the code a little.</p>\n\n<p>You could probably do this generically:</p>\n\n<pre><code>static &lt;T extends AutoCloseable, U extends AutoCloseable, V&gt;\n    T createChainedResource(V v) throws Exception {\n  // If constructor throws an exception, no resource acquired, so no release required.\n  U u = new U(v);\n  try {\n    return new T(u);  \n  } catch (Exception newTException) {\n    try {\n      u.close();\n    } catch (Exception closeException) {\n      // Exceptions in cleanup code are secondary to exceptions in primary code (body of try),\n      // as in try-with-resources.\n      newTException.addSuppressed(closeException);\n    }\n    throw newTException;\n  }\n}\n</code></pre>\n\n<p>Similarly, you can chain three resources, etc.</p>\n\n<p>As a mathematical aside, you could even chain three times by chaining two resources at a time, and it would be associative, meaning you would get the same object on success (because the constructors are associative), and same exceptions if there were a failure in any of the constructors. Assuming you added an <em>S</em> to the above chain (so you start with a <em>V</em> and end with an <em>S</em>, by applying <em>U</em>, <em>T</em>, and <em>S</em> in turn), you get the same either if you first chain <em>S</em> and <em>T</em>, then <em>U</em>, corresponding to <em>(ST)U</em>, or if you first chained <em>T</em> and <em>U</em>, then <em>S</em>, corresponding to <em>S(TU)</em>. However, it would be clearer to just write out an explicit three-fold chain in a single factory function.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1063749,
+    "reputation" : 14277,
+    "user_id" : 1064809,
+    "user_type" : "registered",
+    "accept_rate" : 70,
+    "profile_image" : "https://www.gravatar.com/avatar/b1cf3eaad6d6c7bd5995351132923cac?s=256&d=identicon&r=PG",
+    "display_name" : "Natix",
+    "link" : "https://stackoverflow.com/users/1064809/natix"
+  },
+  "is_answered" : true,
+  "view_count" : 39514,
+  "answer_count" : 8,
+  "score" : 191,
+  "last_activity_date" : 1695227005,
+  "creation_date" : 1348408029,
+  "last_edit_date" : 1511712561,
+  "question_id" : 12552863,
+  "link" : "https://stackoverflow.com/questions/12552863/correct-idiom-for-managing-multiple-chained-resources-in-try-with-resources-bloc",
+  "title" : "Correct idiom for managing multiple chained resources in try-with-resources block?",
+  "body" : "<p>The Java 7 <em>try-with-resources</em> syntax (also known as ARM block (<em>Automatic Resource Management</em>)) is nice, short and straightforward when using only one <code>AutoCloseable</code> resource. However, I am not sure what is the correct idiom when I need to declare multiple resources that are dependent on each other, for example a <code>FileWriter</code> and a <code>BufferedWriter</code> that wraps it. Of course, this question concerns any case when some <code>AutoCloseable</code> resources are wrapped, not only these two specific classes.</p>\n\n<p>I came up with the three following alternatives:</p>\n\n<h2>1)</h2>\n\n<p>The naive idiom I have seen is to declare only the top-level wrapper in the ARM-managed variable:</p>\n\n<pre><code>static void printToFile1(String text, File file) {\n    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {\n        bw.write(text);\n    } catch (IOException ex) {\n        // handle ex\n    }\n}\n</code></pre>\n\n<p>This is nice and short, but it is broken. Because the underlying <code>FileWriter</code> is not declared in a variable, it will never be closed directly in the generated <code>finally</code> block. It will be closed only through the <code>close</code> method of the wrapping <code>BufferedWriter</code>. The problem is, that if an exception is thrown from the <code>bw</code>'s constructor, its <code>close</code> will not be called and therefore the underlying <code>FileWriter</code> <strong>will not be closed</strong>.</p>\n\n<h2>2)</h2>\n\n<pre><code>static void printToFile2(String text, File file) {\n    try (FileWriter fw = new FileWriter(file);\n            BufferedWriter bw = new BufferedWriter(fw)) {\n        bw.write(text);\n    } catch (IOException ex) {\n        // handle ex\n    }\n}\n</code></pre>\n\n<p>Here, both the underlying and the wrapping resource are declared in the ARM-managed variables, so both of them will certainly be closed, but the underlying <code>fw.close()</code> <strong>will be called twice</strong>: not only directly, but also through the wrapping <code>bw.close()</code>.</p>\n\n<p>This should not be a problem for these two specific classes that both implement <code>Closeable</code> (which is a subtype of <code>AutoCloseable</code>), whose contract states that multiple calls to <code>close</code> are permitted:</p>\n\n<blockquote>\n  <p>Closes this stream and releases any system resources associated with it. If the stream is already closed then invoking this method has no effect.</p>\n</blockquote>\n\n<p>However, in a general case, I can have resources that implement only <code>AutoCloseable</code> (and not <code>Closeable</code>), which doesn't guarantee that <code>close</code> can be called multiple times:</p>\n\n<blockquote>\n  <p>Note that unlike the close method of java.io.Closeable, this close method is not required to be idempotent. In other words, calling this close method more than once may have some visible side effect, unlike Closeable.close which is required to have no effect if called more than once. However, implementers of this interface are strongly encouraged to make their close methods idempotent.</p>\n</blockquote>\n\n<h2>3)</h2>\n\n<pre><code>static void printToFile3(String text, File file) {\n    try (FileWriter fw = new FileWriter(file)) {\n        BufferedWriter bw = new BufferedWriter(fw);\n        bw.write(text);\n    } catch (IOException ex) {\n        // handle ex\n    }\n}\n</code></pre>\n\n<p>This version should be theoretically correct, because only the <code>fw</code> represents a real resource that needs to be cleaned up. The <code>bw</code> doesn't itself hold any resource, it only delegates to the <code>fw</code>, so it should be sufficient to only close the underlying <code>fw</code>.</p>\n\n<p>On the other hand, the syntax is a bit irregular and also, Eclipse issues a warning, which I believe is a false alarm, but it is still a warning that one has to deal with:</p>\n\n<blockquote>\n  <p>Resource leak: 'bw' is never closed</p>\n</blockquote>\n\n<hr>\n\n<p>So, which approach to go for? Or have I missed some other idiom that is <em>the correct</em> one?</p>\n"
+}

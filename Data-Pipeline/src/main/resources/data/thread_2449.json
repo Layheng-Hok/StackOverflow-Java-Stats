@@ -1,0 +1,458 @@
+{
+  "tags" : [ "java", "interface", "java-8", "default-method" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1056871,
+      "reputation" : 121815,
+      "user_id" : 1059372,
+      "user_type" : "registered",
+      "accept_rate" : 97,
+      "profile_image" : "https://i.sstatic.net/W6OMC.png?s=256",
+      "display_name" : "Eugene",
+      "link" : "https://stackoverflow.com/users/1059372/eugene"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1532544931,
+    "post_id" : 24016962,
+    "comment_id" : 90020442,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I feel so good about myself now, upvoting this for 100 times and thus a gold badge. good question!"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 60494,
+      "reputation" : 34401,
+      "user_id" : 180659,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://www.gravatar.com/avatar/b6d7101c81f4f799f3154d91b977848c?s=256&d=identicon&r=PG",
+      "display_name" : "jarnbjo",
+      "link" : "https://stackoverflow.com/users/180659/jarnbjo"
+    },
+    "is_accepted" : false,
+    "score" : 34,
+    "last_activity_date" : 1401804591,
+    "last_edit_date" : 1401804591,
+    "creation_date" : 1401804271,
+    "answer_id" : 24017280,
+    "question_id" : 24016962,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It is forbidden to define default methods in interfaces for methods in <code>java.lang.Object</code>, since the default methods would never be \"reachable\".</p>\n\n<p>Default interface methods can be overwritten in classes implementing the interface and the class implementation of the method has a higher precedence than the interface implementation, even if the method is implemented in a superclass. Since all classes inherit from <code>java.lang.Object</code>, the methods in <code>java.lang.Object</code> would have precedence over the default method in the interface and be invoked instead.</p>\n\n<p>Brian Goetz from Oracle provides a few more details on the design decision in this <a href=\"http://mail.openjdk.java.net/pipermail/lambda-dev/2013-March/008435.html\">mailing list post</a>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1674439,
+        "reputation" : 2772,
+        "user_id" : 1540271,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/PZeK2.jpg?s=256",
+        "display_name" : "Marwin",
+        "link" : "https://stackoverflow.com/users/1540271/marwin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1401805504,
+      "post_id" : 24017637,
+      "comment_id" : 37019565,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I didn&#39;t notice the second paragraph of gexicide&#39;s answer when posting mine. It contains a link that explains the issue in more detail."
+    } ],
+    "owner" : {
+      "account_id" : 1674439,
+      "reputation" : 2772,
+      "user_id" : 1540271,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/PZeK2.jpg?s=256",
+      "display_name" : "Marwin",
+      "link" : "https://stackoverflow.com/users/1540271/marwin"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1401805202,
+    "creation_date" : 1401805202,
+    "answer_id" : 24017637,
+    "question_id" : 24016962,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I do not see into the head of Java language authors, so we may only guess. But I see many reasons and agree with them absolutely in this issue.</p>\n\n<p>The main reason for introducing default methods is to be able to add new methods to interfaces without breaking the backward compatibility of older implementations. The default methods may also be used to provide \"convenience\" methods without the necessity to define them in each of the implementing classes.</p>\n\n<p>None of these applies to toString and other methods of Object. Simply put, default methods were designed to provide the <strong>default</strong> behavior where there is no other definition. Not to provide implementations that will \"compete\" with other existing implementations.</p>\n\n<p>The \"base class always wins\" rule has its solid reasons, too. It is supposed that classes define <em>real</em> implementations, while interfaces define <em>default</em> implementations, which are somewhat weaker.</p>\n\n<p>Also, introducing ANY exceptions to general rules cause unnecessary complexity and raise other questions. Object is (more or less) a class as any other, so why should it have different behaviour?</p>\n\n<p>All and all, the solution you propose would probably bring more cons than pros.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1283505,
+        "reputation" : 2427,
+        "user_id" : 1237044,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/93133547f1ac1200436204663e13f89a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Brandon",
+        "link" : "https://stackoverflow.com/users/1237044/brandon"
+      },
+      "edited" : false,
+      "score" : 16,
+      "creation_date" : 1402438026,
+      "post_id" : 24026292,
+      "comment_id" : 37271368,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I am glad you took the time to explain this, and I appreciate all of the factors that were considered. I agree that this would be dangerous for <code>hashCode</code> and <code>equals</code>, but I think it would be very useful for <code>toString</code>. For example, some <code>Displayable</code> interface might define a <code>String display()</code> method, and it would save a ton of boilerplate to be able to define <code>default String toString() { return display(); }</code> in <code>Displayable</code>, instead of requiring every single <code>Displayable</code> to implement <code>toString()</code> or extend a <code>DisplayableToString</code> base class."
+    }, {
+      "owner" : {
+        "account_id" : 1416522,
+        "reputation" : 96341,
+        "user_id" : 3553087,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+        "display_name" : "Brian Goetz",
+        "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+      },
+      "reply_to_user" : {
+        "account_id" : 1283505,
+        "reputation" : 2427,
+        "user_id" : 1237044,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/93133547f1ac1200436204663e13f89a?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Brandon",
+        "link" : "https://stackoverflow.com/users/1237044/brandon"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1402452536,
+      "post_id" : 24026292,
+      "comment_id" : 37274955,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Brandon You&#39;re correct that allowing inheriting toString() would not be <i>dangerous</i> in the same way as it would be for equals() and hashCode().  On the other hand, now the feature would be even more irregular -- and you&#39;d still incur all the same additional complexity about inheritance rules, for the sake of this one method...seems better to draw the line cleanly where we did."
+    }, {
+      "owner" : {
+        "account_id" : 47948,
+        "reputation" : 8211,
+        "user_id" : 142239,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/aff0365957ec55e4e4cb904f20ce2a14?s=256&d=identicon&r=PG",
+        "display_name" : "Siu Ching Pong -Asuka Kenji-",
+        "link" : "https://stackoverflow.com/users/142239/siu-ching-pong-asuka-kenji"
+      },
+      "reply_to_user" : {
+        "account_id" : 1505025,
+        "reputation" : 40438,
+        "user_id" : 1408611,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://i.sstatic.net/dNQZM.jpg?s=256",
+        "display_name" : "gexicide",
+        "link" : "https://stackoverflow.com/users/1408611/gexicide"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1420876771,
+      "post_id" : 24026292,
+      "comment_id" : 44150118,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@gexicide If <code>toString()</code> is based on only the interface methods, you could simply add something like <code>default String toStringImpl()</code> to the interface, and override <code>toString()</code> in each subclass to call the interface implementation - a bit ugly, but works, and better than nothing. :) Another way to do it is to make something like <code>Objects.hash()</code>, <code>Arrays.deepEquals()</code> and <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#deepToString-java.lang.Object:A-\" rel=\"nofollow noreferrer\"><code>Arrays.deepToString()</code></a>. +1&#39;d for @BrianGoetz&#39;s answer!"
+    }, {
+      "owner" : {
+        "account_id" : 1372373,
+        "reputation" : 3258,
+        "user_id" : 1307108,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/a3597ff7f20fe726589d2dbf56e3fb66?s=256&d=identicon&r=PG",
+        "display_name" : "Groostav",
+        "link" : "https://stackoverflow.com/users/1307108/groostav"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1448405144,
+      "post_id" : 24026292,
+      "comment_id" : 55573259,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The default behaviour of a lambda&#39;s toString() is really obnoxious. I know the lambda factory is designed to be very simple and fast, but spitting out a derrived classname really isn&#39;t helpful. Having a <code>default toString()</code> override in a functional interface would allow us to --at least-- do something like spit out the signature of the function and the parent class of the implementer. Even better, if we could bring some recursive toString strategies to bear we could walk through the closure to get a really good description of the lambda, and thus improve the lambda learning curve drastically."
+    }, {
+      "owner" : {
+        "account_id" : 931121,
+        "reputation" : 22567,
+        "user_id" : 961018,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://i.sstatic.net/X5fDY.jpg?s=256",
+        "display_name" : "mjs",
+        "link" : "https://stackoverflow.com/users/961018/mjs"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1503094541,
+      "post_id" : 24026292,
+      "comment_id" : 78489924,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Any change to toString in any class, subclass, instance member could have that effect on implementing classes or users of a class. Furthermore, any change to any of the default methods would also likely affect all the implementing classes.  So what&#39;s so special with toString, hashCode when it comes to someone altering the behaviour of an interface? If a class extends another class they could alter than too. Or if they are using the delegation pattern. Someone using Java 8 interfaces will have to do so by upgrading. A warning/error that can be suppressed on the subclass could&#39;ve been provided."
+    }, {
+      "owner" : {
+        "account_id" : 5645,
+        "reputation" : 171603,
+        "user_id" : 9204,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/c79937a093ff9e963c563e22cd385f30?s=256&d=identicon&r=PG",
+        "display_name" : "Alexey Romanov",
+        "link" : "https://stackoverflow.com/users/9204/alexey-romanov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582958722,
+      "post_id" : 24026292,
+      "comment_id" : 106963182,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Surely the last point applies exactly as much is <code>Bar</code> is a class rather than an interface."
+    }, {
+      "owner" : {
+        "account_id" : 5786048,
+        "reputation" : 1989,
+        "user_id" : 4565235,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-E_QTH5wOUVk/AAAAAAAAAAI/AAAAAAAAAEw/ubd2R6D8dI4/s256-rj/photo.jpg",
+        "display_name" : "David Lilljegren",
+        "link" : "https://stackoverflow.com/users/4565235/david-lilljegren"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1591371173,
+      "post_id" : 24026292,
+      "comment_id" : 110039986,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If you use log4j2, one workaround for the <code>toString</code> problem is to let the interface extend <code>log4j.util.StringBuilderFormattable</code> and implement <code>formatTo</code> as a default method"
+    }, {
+      "owner" : {
+        "account_id" : 4899899,
+        "reputation" : 4390,
+        "user_id" : 3948862,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://i.sstatic.net/AQKF8.png?s=256",
+        "display_name" : "D&#225;vid Horv&#225;th",
+        "link" : "https://stackoverflow.com/users/3948862/d%c3%a1vid-horv%c3%a1th"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1611396104,
+      "post_id" : 24026292,
+      "comment_id" : 116441186,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "IMO, <code>Object</code> is not really a class, but a mix of the basic implementation stuff, <i>and</i> fallback methods. Maybe these fallback methods (like <code>toString()</code>) should be overridable by interfaces. My biggest &quot;personal pain&quot; is the impossibility of this type of templating: <code>public default toString() { return toString(Locale.getDefault()); }</code>."
+    }, {
+      "owner" : {
+        "account_id" : 1845234,
+        "reputation" : 1276,
+        "user_id" : 1673705,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/abe6098dc122d57b2c7b1aa8f074723a?s=256&d=identicon&r=PG",
+        "display_name" : "barneypitt",
+        "link" : "https://stackoverflow.com/users/1673705/barneypitt"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1657797259,
+      "post_id" : 24026292,
+      "comment_id" : 128898309,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This all goes to show what a mess Java interfaces are. They were a terrible idea from the start.  The &quot;problem&quot; they were supposed to solve is that multiple inheritance can cause ambiguity in the event that there is diamond inheritance. In practice it&#39;s actually just fine (it&#39;s just occasionally necessary to qualify otherwise ambiguous access - just as we do when there are multiple default implementations of interface methods!). Now Java inches towards multiple inheritance by another name with successive &quot;enhancements&quot;. But still interfaces are hobbled compared to abstract classes."
+    }, {
+      "owner" : {
+        "account_id" : 1416522,
+        "reputation" : 96341,
+        "user_id" : 3553087,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+        "display_name" : "Brian Goetz",
+        "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+      },
+      "reply_to_user" : {
+        "account_id" : 1845234,
+        "reputation" : 1276,
+        "user_id" : 1673705,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/abe6098dc122d57b2c7b1aa8f074723a?s=256&d=identicon&r=PG",
+        "display_name" : "barneypitt",
+        "link" : "https://stackoverflow.com/users/1673705/barneypitt"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1668360984,
+      "post_id" : 24026292,
+      "comment_id" : 131381057,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@barneypitt It is a common mistake to lump all kinds of &quot;multiple inheritance&quot; in the same bucket, and naively tar them all with the brush of &quot;but it worked so badly in C++.&quot;  Java always had multiple inheritance of <i>types</i>, which was not problematic.  Default methods add multiple inheritance of <i>behavior</i>, which is similarly non-problematic; while you can construct &quot;diamonds&quot;, they are not a problem as the compiler detects them and has you resolve them explicitly.  It is multiple inheritance of <i>state</i> that is actually problematic, but neither interfaces nor abstract classes let you do this."
+    }, {
+      "owner" : {
+        "account_id" : 1845234,
+        "reputation" : 1276,
+        "user_id" : 1673705,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/abe6098dc122d57b2c7b1aa8f074723a?s=256&d=identicon&r=PG",
+        "display_name" : "barneypitt",
+        "link" : "https://stackoverflow.com/users/1673705/barneypitt"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1668450702,
+      "post_id" : 24026292,
+      "comment_id" : 131403050,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@BrianGoetz I perhaps didn&#39;t make myself clear... I&#39;m <i>fine</i> with multiple inheritance (including that of state) and I wasn&#39;t trying to tar it with any brush! I just wish Java would let me do it properly. Why I think interfaces are a mess, and were a bad idea to start with, is that they are getting closer and closer to C++-style multiple inheritance, but in a completely cock-a-maimy way which forces you to into bad practices. [Long comment continues...]"
+    }, {
+      "owner" : {
+        "account_id" : 1845234,
+        "reputation" : 1276,
+        "user_id" : 1673705,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/abe6098dc122d57b2c7b1aa8f074723a?s=256&d=identicon&r=PG",
+        "display_name" : "barneypitt",
+        "link" : "https://stackoverflow.com/users/1673705/barneypitt"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1668450717,
+      "post_id" : 24026292,
+      "comment_id" : 131403054,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "So, for example, I can define default methods, but I can&#39;t make them final (as they generally should be). I can let the default methods call abstract (interface) methods which subclasses have to implement (fundamental principal of OO design). But I have to make those abstract methods public, not protected as they almost always should be. Developers can declare static data fields <i>without</i> the static keyword (though I never would!). How arbitrary and confusing is that? They&#39;re just a mess."
+    }, {
+      "owner" : {
+        "account_id" : 1845234,
+        "reputation" : 1276,
+        "user_id" : 1673705,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/abe6098dc122d57b2c7b1aa8f074723a?s=256&d=identicon&r=PG",
+        "display_name" : "barneypitt",
+        "link" : "https://stackoverflow.com/users/1673705/barneypitt"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1668452996,
+      "post_id" : 24026292,
+      "comment_id" : 131403779,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Re default implementations of equals() and hashCode() vs toString(), I think it&#39;s the other way round. There are many ways you might want to implement toString(), but there&#39;s really only one implementation of hashCode() and of equals() which anyone ever wants (now written as boilerplate every time). A &quot;HasIdentity&quot; interface could implement hashCode() and equals() using garden-variety comparison/hashing on a list of &quot;identity&quot; properties supplied by a method getIdentityProperties() which returns a List&lt;Supplier&lt;Object&gt;&gt;. And you never have to write an equals() or hashCode() method ever again."
+    } ],
+    "owner" : {
+      "account_id" : 1416522,
+      "reputation" : 96341,
+      "user_id" : 3553087,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+      "display_name" : "Brian Goetz",
+      "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+    },
+    "is_accepted" : true,
+    "score" : 222,
+    "last_activity_date" : 1401918766,
+    "last_edit_date" : 1401918766,
+    "creation_date" : 1401836031,
+    "answer_id" : 24026292,
+    "question_id" : 24016962,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This is yet another of those language design issues that seems \"obviously a good idea\" until you start digging and you realize that its actually a bad idea.  </p>\n\n<p><a href=\"http://mail.openjdk.java.net/pipermail/lambda-dev/2013-March/008435.html\" rel=\"noreferrer\">This mail</a> has a lot on the subject (and on other subjects too.)  There were several  design forces that converged to bring us to the current design: </p>\n\n<ul>\n<li>The desire to keep the inheritance model simple;</li>\n<li>The fact that once you look past the obvious examples (e.g., turning <code>AbstractList</code> into an interface), you realize that inheriting equals/hashCode/toString is strongly tied to single inheritance and state, and interfaces are multiply inherited and stateless;</li>\n<li>That it potentially opened the door to some surprising behaviors.  </li>\n</ul>\n\n<p>You've already touched on the \"keep it simple\" goal; the inheritance and conflict-resolution rules are designed to be very simple (classes win over interfaces, derived interfaces win over superinterfaces, and any other conflicts are resolved by the implementing class.)  Of course these rules could be tweaked to make an exception, but I think you'll find when you start pulling on that string, that the incremental complexity is not as small as you might think.  </p>\n\n<p>Of course, there's some degree of benefit that would justify more complexity, but in this case it's not there.  The methods we're talking about here are equals, hashCode, and toString.  These methods are all intrinsically about object state, and it is the class that owns the state, not the interface, who is in the best position to determine what equality means for that class (especially as the contract for equality is quite strong; see Effective Java for some surprising consequences); interface writers are just too far removed.  </p>\n\n<p>It's easy to pull out the <code>AbstractList</code> example; it would be lovely if we could get rid of <code>AbstractList</code> and put the behavior into the <code>List</code> interface.  But once you move beyond this obvious example, there are not many other good examples to be found.  At root, <code>AbstractList</code> is designed for single inheritance.  But interfaces must be designed for multiple inheritance.  </p>\n\n<p>Further, imagine you are writing this class:</p>\n\n<pre><code>class Foo implements com.libraryA.Bar, com.libraryB.Moo { \n    // Implementation of Foo, that does NOT override equals\n}\n</code></pre>\n\n<p>The <code>Foo</code> writer looks at the supertypes, sees no implementation of equals, and concludes that to get reference equality, all he need do is inherit equals from <code>Object</code>.  Then, next week, the library maintainer for Bar \"helpfully\" adds a default <code>equals</code> implementation.  Ooops!  Now the semantics of <code>Foo</code> have been broken by an interface in another maintenance domain \"helpfully\" adding a default for a common method.  </p>\n\n<p>Defaults are supposed to be defaults.  Adding a default to an interface where there was none (anywhere in the hierarchy) should not affect the semantics of concrete implementing classes.  But if defaults could \"override\" Object methods, that wouldn't be true.  </p>\n\n<p>So, while it seems like a harmless feature, it is in fact quite harmful: it adds a lot of complexity for little incremental expressivity, and it makes it far too easy for well-intentioned, harmless-looking changes to separately compiled interfaces to undermine the intended semantics of implementing classes.  </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2987511,
+      "reputation" : 3134,
+      "user_id" : 5772982,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-jcxAvzZMsq0/AAAAAAAAAAI/AAAAAAAABqY/LRC_NwbnHgM/s256-rj/photo.jpg",
+      "display_name" : "Kumar Abhishek",
+      "link" : "https://stackoverflow.com/users/5772982/kumar-abhishek"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1460708377,
+    "creation_date" : 1460708377,
+    "answer_id" : 36641849,
+    "question_id" : 24016962,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The reasoning is very simple, it is because Object is the base class for all the Java classes. So even if we have Object's method defined as default method in some interface, it will be useless because Object's method will always be used. That is why to avoid confusion, we cannot have default methods that are overriding Object class methods.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6769665,
+        "reputation" : 1592,
+        "user_id" : 5213405,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-L1vR_b4nitg/AAAAAAAAAAI/AAAAAAAAMhU/Krafh55mIHQ/s256-rj/photo.jpg",
+        "display_name" : "pro_cheats",
+        "link" : "https://stackoverflow.com/users/5213405/pro-cheats"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1504320554,
+      "post_id" : 46009669,
+      "comment_id" : 78980702,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : ".Whats the point? You still didn&#39;t answer the WHY part - &quot;So, what is the reason why Java designers decided to not allow default methods overriding methods from Object?&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 1661507,
+        "reputation" : 10743,
+        "user_id" : 1529709,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/3tKqC.jpg?s=256",
+        "display_name" : "zb226",
+        "link" : "https://stackoverflow.com/users/1529709/zb226"
+      },
+      "reply_to_user" : {
+        "account_id" : 6769665,
+        "reputation" : 1592,
+        "user_id" : 5213405,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-L1vR_b4nitg/AAAAAAAAAAI/AAAAAAAAMhU/Krafh55mIHQ/s256-rj/photo.jpg",
+        "display_name" : "pro_cheats",
+        "link" : "https://stackoverflow.com/users/5213405/pro-cheats"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1642554406,
+      "post_id" : 46009669,
+      "comment_id" : 125100206,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@pro_cheats His point is, as clearly stated, to be very pedantic. The answer adds some bits of info to the excellent accepted one, which already covered the WHY part."
+    } ],
+    "owner" : {
+      "account_id" : 1455702,
+      "reputation" : 17394,
+      "user_id" : 1371329,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://i.sstatic.net/oqbUC.png?s=256",
+      "display_name" : "jaco0646",
+      "link" : "https://stackoverflow.com/users/1371329/jaco0646"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1504315528,
+    "creation_date" : 1504315528,
+    "answer_id" : 46009669,
+    "question_id" : 24016962,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To give a very pedantic answer, it is only forbidden to define a <code>default</code> method for a <strong><em>public</em></strong> method from <code>java.lang.Object</code>. There are 11 methods to consider, which can be categorized in three ways to answer this question.</p>\n\n<ol>\n<li>Six of the <code>Object</code> methods cannot have <code>default</code> methods because they are <code>final</code> and cannot be overridden at all: <code>getClass()</code>, <code>notify()</code>, <code>notifyAll()</code>, <code>wait()</code>, <code>wait(long)</code>, and <code>wait(long, int)</code>.</li>\n<li>Three of the <code>Object</code> methods cannot have <code>default</code> methods for the reasons given above by Brian Goetz: <code>equals(Object)</code>, <code>hashCode()</code>, and <code>toString()</code>.</li>\n<li><p>Two of the <code>Object</code> methods <em>can</em> have <code>default</code> methods, though the value of such defaults is questionable at best: <code>clone()</code> and <code>finalize()</code>.</p>\n\n<pre><code>public class Main {\n    public static void main(String... args) {\n        new FOO().clone();\n        new FOO().finalize();\n    }\n\n    interface ClonerFinalizer {\n        default Object clone() {System.out.println(\"default clone\"); return this;}\n        default void finalize() {System.out.println(\"default finalize\");}\n    }\n\n    static class FOO implements ClonerFinalizer {\n        @Override\n        public Object clone() {\n            return ClonerFinalizer.super.clone();\n        }\n        @Override\n        public void finalize() {\n            ClonerFinalizer.super.finalize();\n        }\n    }\n}\n</code></pre></li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1505025,
+    "reputation" : 40438,
+    "user_id" : 1408611,
+    "user_type" : "registered",
+    "accept_rate" : 73,
+    "profile_image" : "https://i.sstatic.net/dNQZM.jpg?s=256",
+    "display_name" : "gexicide",
+    "link" : "https://stackoverflow.com/users/1408611/gexicide"
+  },
+  "is_answered" : true,
+  "view_count" : 27581,
+  "accepted_answer_id" : 24026292,
+  "answer_count" : 5,
+  "score" : 171,
+  "last_activity_date" : 1504315528,
+  "creation_date" : 1401803437,
+  "question_id" : 24016962,
+  "link" : "https://stackoverflow.com/questions/24016962/java8-why-is-it-forbidden-to-define-a-default-method-for-a-method-from-java-lan",
+  "title" : "Java8: Why is it forbidden to define a default method for a method from java.lang.Object",
+  "body" : "<p>Default methods are a nice new tool in our Java toolbox. However, I tried to write an interface that defines a <code>default</code> version of the <code>toString</code> method. Java tells me that this is forbidden, since methods declared in <code>java.lang.Object</code> may not be <code>default</code>ed. Why is this the case?</p>\n\n<p>I know that there is the \"base class always wins\" rule, so by default (pun ;), any <code>default</code> implementation of an <code>Object</code> method would be overwritten by the method from <code>Object</code> anyway. However, I see no reason why there shouldn't be an exception for methods from <code>Object</code> in the spec. Especially for <code>toString</code> it might be very useful to have a default implementation.</p>\n\n<p>So, what is the reason why Java designers decided to not allow <code>default</code> methods overriding methods from <code>Object</code>?</p>\n"
+}

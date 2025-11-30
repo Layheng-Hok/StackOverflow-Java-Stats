@@ -1,0 +1,45 @@
+{
+  "tags" : [ "java", "sql", "postgresql", "jooq", "hstore" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 247217,
+      "reputation" : 223472,
+      "user_id" : 521799,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/eb96efa7a5664ba1c4ebf586abd4121f?s=256&d=identicon&r=PG",
+      "display_name" : "Lukas Eder",
+      "link" : "https://stackoverflow.com/users/521799/lukas-eder"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1420881667,
+    "last_edit_date" : 1495541349,
+    "creation_date" : 1420881667,
+    "answer_id" : 27874658,
+    "question_id" : 27864026,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It's quite possible, but not yet supported out-of-the box. In order to implement your own HSTORE support, you will need to:</p>\n\n<h3>1. Implement an <a href=\"http://www.jooq.org/javadoc/latest/org/jooq/Binding.html\" rel=\"nofollow noreferrer\"><code>org.jooq.Binding</code></a></h3>\n\n<p>This binding will be used for all HSTORE columns in your database. It will take care of handling the interaction of your user type <code>&lt;U&gt;</code> (e.g. <code>Map&lt;String, String&gt;</code>) with JDBC, in order to produce a database type <code>&lt;T&gt;</code> (e.g. <code>String</code>, or <code>PGobject</code>).</p>\n\n<p>An example of how to do this with the <code>JSON</code> type can be seen here:</p>\n\n<ul>\n<li><a href=\"https://stackoverflow.com/q/27044702/521799\">How to insert a updatable record with JSON column in PostgreSQL using JOOQ?</a></li>\n<li><a href=\"http://www.jooq.org/doc/latest/manual/code-generation/custom-data-type-bindings/\" rel=\"nofollow noreferrer\">http://www.jooq.org/doc/latest/manual/code-generation/custom-data-type-bindings/</a></li>\n</ul>\n\n<p>The <code>HSTORE</code> type will work roughly the same way</p>\n\n<h3>2. Implement your own operators via plain SQL</h3>\n\n<p>PostgreSQL has a lot of vendor-specific operators that go with the vendor-specific data types. These operators will need to be implemented via plain SQL. For instance:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>public class DSLExtensions {\n    public static Field&lt;String&gt; get(\n            Field&lt;Map&lt;String, String&gt;&gt; hstore, String key) {\n        return DSL.field(\"{0} -&gt; {1}\", String.class, hstore, DSL.val(key));\n    }\n\n    public static Field&lt;String[]&gt; get(\n            Field&lt;Map&lt;String, String&gt;&gt; hstore, String[] keys) {\n        return DSL.field(\"{0} -&gt; {1}\", String[].class, hstore, DSL.val(keys));\n    }\n\n    public static Field&lt;Map&lt;String, String&gt;&gt; concat(\n            Field&lt;Map&lt;String, String&gt;&gt; f1,\n            Field&lt;Map&lt;String, String&gt;&gt; f2) {\n        return DSL.field(\"{0} || {1}\", f1.getDataType(), f1, f2);\n    }\n\n    // etc...\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1695481,
+    "reputation" : 353,
+    "user_id" : 1556935,
+    "user_type" : "registered",
+    "accept_rate" : 36,
+    "profile_image" : "https://www.gravatar.com/avatar/2f8c37ba38afca5ce2261af7e184e435?s=256&d=identicon&r=PG",
+    "display_name" : "Dmytro Kryvenko",
+    "link" : "https://stackoverflow.com/users/1556935/dmytro-kryvenko"
+  },
+  "is_answered" : true,
+  "view_count" : 1270,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1761655048,
+  "creation_date" : 1420817744,
+  "last_edit_date" : 1420881747,
+  "question_id" : 27864026,
+  "link" : "https://stackoverflow.com/questions/27864026/update-hstore-fields-using-jooq",
+  "title" : "Update hstore fields using jooq",
+  "body" : "<p>Does anybody know is it possible to update value by key in <strong>hstore</strong> using JOOQ, except executing plain sql.\nFor example, I have table <strong>products</strong></p>\n\n<pre><code> id |                                  characs                                   |         name         \n----+----------------------------------------------------------------------------+--------------\n  1 | \"key\"=&gt;\"value\", \"key3\"=&gt;\"test2\"                                            | test1    \n  2 | \"key\"=&gt;\"value\"                                                             | test3               \n  3 | \"keyNew\"=&gt;\"valueNew\"                                                       | test3               \n  4 | \"keyNew\"=&gt;\"valueNew\"                                                       | test4               \n  5 | \"date\"=&gt;\"Dec 2012\", \"price\"=&gt;\"500\", \"author\"=&gt;\"Dave\", \"currency\"=&gt;\"dollar\" | test5\n</code></pre>\n\n<p>And I want to update value by key <strong>key3</strong>. For that I can execute plain sql:</p>\n\n<pre><code>UPDATE products SET name='test1New', characs=characs || '\"key3\"=&gt;\"value3\"'::hstore where id=1\n</code></pre>\n\n<p>Is it possible to do using JOOQ's <strong>DSL</strong>?</p>\n"
+}

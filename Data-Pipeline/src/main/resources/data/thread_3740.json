@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "android", "android-recyclerview" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 29593861,
+        "reputation" : 11,
+        "user_id" : 22680768,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocL3rdL6jJfZH3eG79lY4NEqG0A4hkxm1Vgs_O83mqrW=k-s256",
+        "display_name" : "MyLaptop Friday",
+        "link" : "https://stackoverflow.com/users/22680768/mylaptop-friday"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1696695362,
+      "post_id" : 77248828,
+      "comment_id" : 136187671,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Still No change"
+    } ],
+    "owner" : {
+      "account_id" : 13692468,
+      "reputation" : 91,
+      "user_id" : 9879923,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2479f93bda31b6af6f8b01148563d754?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "storytellerF",
+      "link" : "https://stackoverflow.com/users/9879923/storytellerf"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1696663985,
+    "creation_date" : 1696663985,
+    "answer_id" : 77248828,
+    "question_id" : 77248725,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>need reattach adapter</p>\n<pre><code>recycleView.adapter = null\nrecycleView.adapter = adapter\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 29593861,
+    "reputation" : 11,
+    "user_id" : 22680768,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocL3rdL6jJfZH3eG79lY4NEqG0A4hkxm1Vgs_O83mqrW=k-s256",
+    "display_name" : "MyLaptop Friday",
+    "link" : "https://stackoverflow.com/users/22680768/mylaptop-friday"
+  },
+  "is_answered" : false,
+  "view_count" : 42,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761773453,
+  "creation_date" : 1696661867,
+  "last_edit_date" : 1761773453,
+  "question_id" : 77248725,
+  "link" : "https://stackoverflow.com/questions/77248725/how-to-add-dividers-or-spacers-with-text-to-a-recylerview-which-dynamically-adap",
+  "title" : "How to add dividers or spacers with text to a recylerview which dynamically adapts to status attribute",
+  "body" : "<p>I've got a RecylerView that is displaying a list of data. I need to add dividers or spacers that I need to add two Dividers or spacers too that I can add text [Present and Invited] the header should dynamically adapt to status of the item present in the list. As the person joins the party they should move from invite to present</p>\n<p><strong>Note</strong>: invites can are size can increase or decrease as well as Present with respect to status of the item.</p>\n<p>I have achieved the following but the alignment wont fit for dynamic changes. Please refer to the screenshot for clarity:</p>\n<p><a href=\"https://i.sstatic.net/mssFl.gif\" rel=\"nofollow noreferrer\">https://i.sstatic.net/mssFl.gif</a></p>\n<p><code>SeparationDecorator</code> class :</p>\n<pre><code>public class SeparationDecorator extends RecyclerView.ItemDecoration \n{\n    private int textSize = 50;\n    private int groupSpacing = 100;\n\n    private static int printPresentAt;\n    private static int printInviteAt;\n\n    private Paint paint = new Paint();\n    {\n        paint.setTextSize(textSize);\n    }\n\n    @Override\n    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) \n    {\n        // TODO : Alignment Problem\n\n        for (int i = 0; i &lt; parent.getChildCount(); i++) \n        {\n            View view = parent.getChildAt(i);\n            int position = parent.getChildAdapterPosition(view);\n\n            int present = MyGlobal.getPresentCount();\n            int invited = MyGlobal.getInviteCount();\n\n            if (present == 0 &amp;&amp; invited &gt; 0) \n            {\n                SeparationDecorator.printPresentAt = invited;\n                SeparationDecorator.printInviteAt = 0;\n            }\n            else if (present &gt; 0 &amp;&amp; invited &gt; 0) \n            {\n                SeparationDecorator. printPresentAt = 0;\n                SeparationDecorator.printInviteAt = present;\n            } \n            else if (present &gt; 0 &amp;&amp; invited == 0) \n            {\n                SeparationDecorator.printPresentAt = 0;\n                SeparationDecorator.printInviteAt = present;\n            }\n\n            if (position == SeparationDecorator.printPresentAt) \n            {\n                c.drawText(&quot;Present&quot;, view.getLeft(),\n                        view.getTop() - groupSpacing + textSize, paint);\n            } \n            else \n            {\n                if (position == SeparationDecorator.printInviteAt) \n                {\n                    c.drawText(&quot;Invited&quot;, view.getLeft(),\n                            view.getTop() - groupSpacing + textSize, paint);\n                }\n            }\n        }\n    }\n\n    @Override\n    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {\n        if (parent.getChildAdapterPosition(view) == SeparationDecorator.printInviteAt\n                ||parent.getChildAdapterPosition(view) == SeparationDecorator.printPresentAt) {\n            outRect.set(0, groupSpacing, 0, 0);\n        }\n    }\n}\n</code></pre>\n<p><code>MyGlobal.getPresentCount()</code> is the count of present members .</p>\n<p><code>MyGlobal.getInviteCount()</code> is the count of invited members.</p>\n<p>They will change dynamically.</p>\n<p>Item class :</p>\n<pre><code>public class FriendsModel \n{\n    String userName;\n    String handleName;\n    int status;\n\n    /*\n    *   0 - Invited\n    *   1 - Accepted\n    *\n    * */\n    String fcm;\n\n    String uid;\n\n    public FriendsModel(String userName, String handleName, int status, String fcm, String uid) \n    {\n        this.userName = userName;\n        this.handleName = handleName;\n        this.status = status;\n        this.fcm = fcm;\n        this.uid = uid;\n    }\n\n    public FriendsModel() \n    { }\n\n    @Override\n    public boolean equals(Object obj) {\n\n        FriendsModel model = (FriendsModel) obj;\n\n        if (this.uid.equals(model.uid))\n            return true;\n\n        return false;\n    }\n\n    /* All getters and setters */\n}\n</code></pre>\n"
+}

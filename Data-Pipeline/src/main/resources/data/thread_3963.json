@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1334069,
+      "reputation" : 4423,
+      "user_id" : 1277259,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/FQ3JN.png?s=256",
+      "display_name" : "KevinO",
+      "link" : "https://stackoverflow.com/users/1277259/kevino"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1609985445,
+    "post_id" : 65605735,
+    "comment_id" : 115993618,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I seem to recall -- and this could be outdated -- that several of the libraries decided to be &quot;helpful&quot; and use the system defined line ending. It might be possible to set the <code>DefaultIndenter</code> to a specific line feed. See, perhaps, <a href=\"https://github.com/FasterXML/jackson-databind/issues/585\" rel=\"nofollow noreferrer\">Configure line endings</a>."
+  }, {
+    "owner" : {
+      "account_id" : 1790714,
+      "reputation" : 94737,
+      "user_id" : 1631193,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://www.gravatar.com/avatar/ac9dfee58394495fa69f12f58a928be3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Gabe Sechan",
+      "link" : "https://stackoverflow.com/users/1631193/gabe-sechan"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1609985448,
+    "post_id" : 65605735,
+    "comment_id" : 115993619,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "call setDefaultPrettyPrinter with an instance of PrettyPrinter that does what you want."
+  }, {
+    "owner" : {
+      "account_id" : 440158,
+      "reputation" : 330010,
+      "user_id" : 829571,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://i.sstatic.net/zflGZ.png?s=256",
+      "display_name" : "assylias",
+      "link" : "https://stackoverflow.com/users/829571/assylias"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1609991347,
+    "post_id" : 65605735,
+    "comment_id" : 115994646,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<a href=\"https://stackoverflow.com/a/14938984/829571\">stackoverflow.com/a/14938984/829571</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 21851467,
+      "reputation" : 974,
+      "user_id" : 16143492,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/PMrGU.png?s=256",
+      "display_name" : "nineninesevenfour",
+      "link" : "https://stackoverflow.com/users/16143492/nineninesevenfour"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761250775,
+    "creation_date" : 1761250775,
+    "answer_id" : 79798173,
+    "question_id" : 65605735,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Your example uses <code>ObjectMapper.readTree()</code>, which returns an instance of <code>JsonNode</code> and its method <code>JsonNode.toPrettyString()</code> is not configurable.</p>\n<p>To configure line endings you can serialize with <code>ObjectMapper</code>, which is configurable. You could do something like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>var prettyPrinter = new DefaultPrettyPrinter()\n    .withObjectIndenter(new DefaultIndenter().withLinefeed(&quot;\\n&quot;));\nvar objectMapper = new ObjectMapper()\n    .setDefaultPrettyPrinter(prettyPrinter)\n    .enable(SerializationFeature.INDENT_OUTPUT);\nvar jsonNode = objectMapper.readTree(&quot;{\\&quot;key\\&quot;:\\&quot;value\\&quot;}&quot;);\n\nreturn objectMapper.writeValueAsString(jsonNode);\n</code></pre>\n<p>Or alternatively with <code>ObjectMapper.writerWithDefaultPrettyPrinter()</code> (still needing an instance of <code>Indenter</code> to configure line endings):</p>\n<pre class=\"lang-java prettyprint-override\"><code>var prettyPrinter = new DefaultPrettyPrinter()\n    .withObjectIndenter(new DefaultIndenter().withLinefeed(&quot;\\n&quot;));\nvar objectMapper = new ObjectMapper()\n    .setDefaultPrettyPrinter(prettyPrinter);\nvar jsonNode = objectMapper.readTree(&quot;{\\&quot;key\\&quot;:\\&quot;value\\&quot;}&quot;);\n\nreturn objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);\n</code></pre>\n<p>You could also potentially solve your issue with <code>System.setProperty(&quot;line.separator&quot;, &quot;\\n&quot;);</code>, but it would have to happen before <code>ObjectMapper</code> and connected classes are loaded from class path. I wouldn't consider this a recommended approach, but given your simple example it could work:</p>\n<pre class=\"lang-java prettyprint-override\"><code>System.setProperty(&quot;line.separator&quot;, &quot;\\n&quot;);\nvar objectMapper = new ObjectMapper();\nreturn objectMapper.readTree(&quot;{\\&quot;key\\&quot;:\\&quot;value\\&quot;}&quot;).toPrettyString();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 312938,
+    "reputation" : 2282,
+    "user_id" : 627307,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/d3df9dbd89e2b09ac0d31294673175ae?s=256&d=identicon&r=PG",
+    "display_name" : "M4rk",
+    "link" : "https://stackoverflow.com/users/627307/m4rk"
+  },
+  "is_answered" : false,
+  "view_count" : 1965,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761250775,
+  "creation_date" : 1609985256,
+  "question_id" : 65605735,
+  "link" : "https://stackoverflow.com/questions/65605735/fasterxml-jackson-objectmappers-prettyprint-uses-r-n-instead-of-n",
+  "title" : "fasterxml.jackson ObjectMapper&#39;s prettyPrint uses \\r\\n instead of \\n",
+  "body" : "<p>When running on windows I always get &quot;\\r\\n&quot; in the output, but I was trying to just return &quot;\\n&quot;</p>\n<pre><code>    ObjectMapper objectMapper = new ObjectMapper();\nreturn objectMapper.readTree(&quot;{\\&quot;key\\&quot;:\\&quot;value\\&quot;}&quot;)\n    .toPrettyString();\n</code></pre>\n<p>Is there a easy way to achieve this?</p>\n"
+}

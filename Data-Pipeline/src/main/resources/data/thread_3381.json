@@ -1,0 +1,98 @@
+{
+  "tags" : [ "java", "maven", "github-actions", "semantic-versioning" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 14869803,
+      "reputation" : 1871,
+      "user_id" : 10737626,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uybd1.png?s=256",
+      "display_name" : "Nick the Community Scientist",
+      "link" : "https://stackoverflow.com/users/10737626/nick-the-community-scientist"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1642844203,
+    "post_id" : 70810498,
+    "comment_id" : 125183985,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You might be interested in this stack overflow post: <a href=\"https://stackoverflow.com/questions/57141912/maven-automate-versioning-and-changelog-generation\" title=\"maven automate versioning and changelog generation\">stackoverflow.com/questions/57141912/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1685307,
+        "reputation" : 1717,
+        "user_id" : 1548776,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/zD3sy.jpg?s=256",
+        "display_name" : "ᴠɪɴᴄᴇɴᴛ",
+        "link" : "https://stackoverflow.com/users/1548776/%e1%b4%a0%c9%aa%c9%b4%e1%b4%84%e1%b4%87%c9%b4%e1%b4%9b"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1763055227,
+      "post_id" : 70813659,
+      "comment_id" : 140852917,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That blog post has now moved to <a href=\"https://blog.soebes.io/posts/2021/04/2021-04-05-maven-plugin-configuration/\" rel=\"nofollow noreferrer\">blog.soebes.io/posts/2021/04/&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 112317,
+      "reputation" : 98405,
+      "user_id" : 296328,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/DSpH6.jpg?s=256",
+      "display_name" : "khmarbaise",
+      "link" : "https://stackoverflow.com/users/296328/khmarbaise"
+    },
+    "is_accepted" : true,
+    "score" : 8,
+    "last_activity_date" : 1642860767,
+    "creation_date" : 1642860767,
+    "answer_id" : 70813659,
+    "question_id" : 70810498,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>My first approach is to use the command line but you have to configuration the following in your pom file before. You can of course directly <a href=\"https://www.mojohaus.org/build-helper-maven-plugin/parse-version-mojo.html\" rel=\"noreferrer\">use the command line and put everything on the plain command without this setup</a> but it's very inconvenient</p>\n\n<pre><code>  &lt;pluginManagement&gt;\n      &lt;plugins&gt;\n        &lt;plugin&gt;\n          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n          &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;\n          &lt;version&gt;3.2.0&lt;/version&gt;\n        &lt;/plugin&gt;\n        &lt;plugin&gt;\n          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n          &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;\n          &lt;version&gt;3.2.0&lt;/version&gt;\n        &lt;/plugin&gt;\n        &lt;plugin&gt;\n          &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n          &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;\n          &lt;version&gt;3.2.0&lt;/version&gt;\n        &lt;/plugin&gt;\n        &lt;plugin&gt;\n          &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n          &lt;artifactId&gt;versions-maven-plugin&lt;/artifactId&gt;\n          &lt;version&gt;2.9.0&lt;/version&gt;\n        &lt;/plugin&gt;\n        &lt;plugin&gt;\n          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n          &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;\n          &lt;version&gt;3.0.0-M5&lt;/version&gt;\n        &lt;/plugin&gt;\n        &lt;plugin&gt;\n          &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n          &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;\n          &lt;version&gt;3.9.0&lt;/version&gt;\n        &lt;/plugin&gt;\n      &lt;/plugins&gt;\n    &lt;/pluginManagement&gt;\n    &lt;plugins&gt;\n      &lt;plugin&gt;\n        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n        &lt;artifactId&gt;versions-maven-plugin&lt;/artifactId&gt;\n        &lt;executions&gt;\n          &lt;execution&gt;\n            &lt;id&gt;major&lt;/id&gt;\n            &lt;goals&gt;\n              &lt;goal&gt;set&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n              &lt;generateBackupPoms&gt;false&lt;/generateBackupPoms&gt;\n              &lt;newVersion&gt;${parsedVersion.nextMajorVersion}.0.0-SNAPSHOT&lt;/newVersion&gt;\n            &lt;/configuration&gt;\n          &lt;/execution&gt;\n          &lt;execution&gt;\n            &lt;id&gt;minor&lt;/id&gt;\n            &lt;goals&gt;\n              &lt;goal&gt;set&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n              &lt;generateBackupPoms&gt;false&lt;/generateBackupPoms&gt;\n              &lt;newVersion&gt;${parsedVersion.majorVersion}.${parsedVersion.nextMinorVersion}.0-SNAPSHOT&lt;/newVersion&gt;\n            &lt;/configuration&gt;\n          &lt;/execution&gt;\n          &lt;execution&gt;\n            &lt;id&gt;patch&lt;/id&gt;\n            &lt;goals&gt;\n              &lt;goal&gt;set&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n              &lt;generateBackupPoms&gt;false&lt;/generateBackupPoms&gt;\n              &lt;newVersion&gt;${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT&lt;/newVersion&gt;\n            &lt;/configuration&gt;\n          &lt;/execution&gt;\n        &lt;/executions&gt;\n      &lt;/plugin&gt;\n      &lt;plugin&gt;\n        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n        &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;\n        &lt;executions&gt;\n          &lt;execution&gt;\n            &lt;id&gt;default-cli&lt;/id&gt;\n            &lt;goals&gt;\n              &lt;goal&gt;parse-version&lt;/goal&gt;\n            &lt;/goals&gt;\n          &lt;/execution&gt;\n        &lt;/executions&gt;\n      &lt;/plugin&gt;\n\n    &lt;/plugins&gt;\n  &lt;/build&gt;\n</code></pre>\n<p>By using the above configuration you can change/update the version of your project like this:</p>\n<pre><code>mvn build-helper:parse-version versions:set@major\n</code></pre>\n<p>This will increment the major version and set minor and patch version to <code>0</code>.</p>\n<pre><code>mvn build-helper:parse-version versions:set@minor\n</code></pre>\n<p>This will increment the minor version and set patch version to zero.</p>\n<pre><code>mvn build-helper:parse-version versions:set@patch\n</code></pre>\n<p>this will increment the patch version. Afterwards you have to commit your changed back into your version control system (for example git).</p>\n<p>I recommend to define this kind of setup into a parent pom and reuse it for multiple projects. A detail explanation why and how this works can be found here <a href=\"https://blog.soebes.de/blog/2021/04/05/maven-plugin-configuration/\" rel=\"noreferrer\">https://blog.soebes.de/blog/2021/04/05/maven-plugin-configuration/</a></p>\n<p>Using the maven-release-plugin is also an option. It will make also the tags in your version control.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13964222,
+      "reputation" : 858,
+      "user_id" : 10084505,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7d1cf77a5c15cd178875d5220fec8157?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Walnussb&#228;r",
+      "link" : "https://stackoverflow.com/users/10084505/walnussb%c3%a4r"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1728639388,
+    "creation_date" : 1728639388,
+    "answer_id" : 79077644,
+    "question_id" : 70810498,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I combined the approach of @khmarbaise with the usage of the <strong>maven-release-plugin</strong>.</p>\n<p>This is what I did:</p>\n<ul>\n<li>bound <code>parse-versions</code> goal of <strong>build-helper-maven</strong> plugin to the <code>initialize</code> phase</li>\n<li>defined an pre-configured execution of the <code>release:prepare</code> goal of the <strong>maven-release-plugin</strong> with a specific ID for each possible next version (next major, next minor, next patch)</li>\n<li>now I can call one of the following maven commands from the CLI to automatically build and tag the current version and prepare the next development iteration:\n<ul>\n<li><code>mvn initialize release:prepare@prepare-next-major release:perform</code></li>\n<li><code>mvn initialize release:prepare@prepare-next-minor release:perform</code></li>\n<li><code>mvn initialize release:prepare@prepare-next-patch release:perform</code></li>\n</ul>\n</li>\n</ul>\n<p>In my pom.xml</p>\n<pre><code>[...]\n&lt;plugins&gt;\n    &lt;plugin&gt;\n        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n        &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;\n        &lt;executions&gt;\n            &lt;execution&gt;\n                &lt;id&gt;prepare-version-properties&lt;/id&gt;\n                &lt;goals&gt;\n                   &lt;goal&gt;parse-version&lt;/goal&gt;\n                &lt;/goals&gt;\n                &lt;phase&gt;initialize&lt;/phase&gt;\n            &lt;/executions&gt;\n    &lt;plugin&gt;\n\n    &lt;plugin&gt;\n        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n        &lt;artifactId&gt;maven-release-plugin&lt;/artifactId&gt;\n        &lt;executions&gt;\n            &lt;!-- Attention: the prepare goal is not bound to a maven lifecycle phase,\n                so the specific executions must be called from CLI like this: mvn release:prepare@prepare-next-major --&gt;\n            &lt;execution&gt;\n                &lt;id&gt;prepare-next-major&lt;/id&gt;\n                &lt;goals&gt;\n                    &lt;goal&gt;prepare&lt;/goal&gt;\n                &lt;/goals&gt;\n                &lt;configuration&gt;\n                &lt;!-- the following properties are set via the build-helper-maven-plugin during the maven build --&gt;\n                    &lt;!--suppress UnresolvedMavenProperty --&gt;\n                    &lt;developmentVersion&gt;${parsedVersion.nextMajorVersion}.0.0-SNAPSHOT&lt;/developmentVersion&gt;\n                &lt;/configuration&gt;\n            &lt;/execution&gt;\n        &lt;/executions&gt;\n    &lt;/plugin&gt;\n\n    &lt;!-- 2 more executions with the appropriate IDs for minor and patch bump, like the one above but with appropriate value for the developmentVersion config property --&gt;\n\n&lt;/plugins&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 23135493,
+    "reputation" : 337,
+    "user_id" : 17239785,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/8937139f499b7f00a88eea83ace36378?s=256&d=identicon&r=PG",
+    "display_name" : "Mani",
+    "link" : "https://stackoverflow.com/users/17239785/mani"
+  },
+  "is_answered" : true,
+  "view_count" : 8671,
+  "accepted_answer_id" : 70813659,
+  "answer_count" : 2,
+  "score" : 8,
+  "last_activity_date" : 1762560035,
+  "creation_date" : 1642832734,
+  "last_edit_date" : 1762560035,
+  "question_id" : 70810498,
+  "link" : "https://stackoverflow.com/questions/70810498/how-to-apply-semantic-versioning-to-the-java-maven-project-to-automatically-incr",
+  "title" : "How to apply semantic versioning to the Java Maven project to automatically increment the version inside pom.xml",
+  "body" : "<p>Can anyone please tell me how to apply the semver to the Java Maven project? I tried many ways, but I didn't find any useful resources to automatically increase the version when I push the code to the branch.</p>\n<p>I'm using GitHub action workflow to deploy the project into GitHub.</p>\n<p>Thank you.</p>\n"
+}

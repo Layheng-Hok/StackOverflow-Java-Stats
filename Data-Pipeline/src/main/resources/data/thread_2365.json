@@ -1,0 +1,543 @@
+{
+  "tags" : [ "java", "jpa", "jpa-annotations" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 107907,
+      "reputation" : 42534,
+      "user_id" : 286685,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/9c8897ea40c61eeab099efd60ffa7466?s=256&d=identicon&r=PG",
+      "display_name" : "Stijn de Witt",
+      "link" : "https://stackoverflow.com/users/286685/stijn-de-witt"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1488878413,
+    "post_id" : 2572566,
+    "comment_id" : 72415639,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "All it does is check/update the version in every update query: <code>UPDATE myentity SET mycolumn = &#39;new value&#39;, version = version + 1 WHERE version = [old.version]</code>. If someone updated the record, <code>old.version</code> will no longer match the one in the DB and the where clause will prevent the update from happening. The &#39;rows updated&#39; will be <code>0</code>, which JPA can detect to conclude that a concurrent modification happened."
+  }, {
+    "owner" : {
+      "account_id" : 248860,
+      "reputation" : 2816,
+      "user_id" : 524504,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/6d715d98c43cfab37541a28d1c60360e?s=256&d=identicon&r=PG",
+      "display_name" : "masterxilo",
+      "link" : "https://stackoverflow.com/users/524504/masterxilo"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1683332549,
+    "post_id" : 2572566,
+    "comment_id" : 134355875,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Side note: If all your database queries happen within transactions and you use serializable isolation level you don&#39;t need this type of optimistic locking. Furthermore, @Version will not protect you from lost updates in case the modification spans multiple session/transactions as would be the case for a GET followed by PUT for some entity in HTTP REST. You should consider implementing ETag and If-Match for that."
+  }, {
+    "owner" : {
+      "account_id" : 2287381,
+      "reputation" : 828,
+      "user_id" : 2011091,
+      "user_type" : "registered",
+      "accept_rate" : 29,
+      "profile_image" : "https://i.sstatic.net/GPMhWCmQ.jpg?s=256",
+      "display_name" : "Francisco Souza",
+      "link" : "https://stackoverflow.com/users/2011091/francisco-souza"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1706786375,
+    "post_id" : 2572566,
+    "comment_id" : 137368859,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "In my case it is duplicating the database entry, creating a new one with a different ID, which is terrible, I am not sure what to do to solve this, I need this working."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 556948,
+        "reputation" : 1791,
+        "user_id" : 919248,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/C6Frv.jpg?s=256",
+        "display_name" : "Pedro Borges",
+        "link" : "https://stackoverflow.com/users/919248/pedro-borges"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1493315070,
+      "post_id" : 2572628,
+      "comment_id" : 74376220,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Not via JPAUpdateQuery it doesn&#39;t. So &quot;Every operation that updates the entity in the database will have appended WHERE version = VERSION_THAT_WAS_LOADED_FROM_DATABASE to its query&quot; is not true."
+    } ],
+    "owner" : {
+      "account_id" : 98343,
+      "reputation" : 10422,
+      "user_id" : 266268,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/2664410174bb967e639badd9be1dbdd6?s=256&d=identicon&r=PG",
+      "display_name" : "stefanglase",
+      "link" : "https://stackoverflow.com/users/266268/stefanglase"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1270327809,
+    "creation_date" : 1270327809,
+    "answer_id" : 2572628,
+    "question_id" : 2572566,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Every time an entity is updated in the database the version field will be increased by one. Every operation that updates the entity in the database will have appended <code>WHERE version = VERSION_THAT_WAS_LOADED_FROM_DATABASE</code> to its query.</p>\n\n<p>In checking affected rows of your operation the jpa framework can make sure there was no concurrent modification between loading and persisting your entity because the query would not find your entity in the database when it's version number has been increased between load and persist.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 107907,
+        "reputation" : 42534,
+        "user_id" : 286685,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/9c8897ea40c61eeab099efd60ffa7466?s=256&d=identicon&r=PG",
+        "display_name" : "Stijn de Witt",
+        "link" : "https://stackoverflow.com/users/286685/stijn-de-witt"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1445263241,
+      "post_id" : 2572633,
+      "comment_id" : 54236798,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Don&#39;t rely on auto-unboxing it to <code>long</code> or just calling <code>longValue()</code> on it. You need explicit <code>null</code> checks. Explicitly initializing it yourself I would not do as this field is supposed to be managed by the ORM provider. I think it gets set to <code>0L</code> on first insert into the DB, so if it&#39;s set to <code>null</code> this tells you this record has not been persisted yet."
+    }, {
+      "owner" : {
+        "account_id" : 1038483,
+        "reputation" : 3645,
+        "user_id" : 1045050,
+        "user_type" : "registered",
+        "accept_rate" : 30,
+        "profile_image" : "https://www.gravatar.com/avatar/445cf1ded45ba21494d1bc01e58d8d1a?s=256&d=identicon&r=PG",
+        "display_name" : "Manu",
+        "link" : "https://stackoverflow.com/users/1045050/manu"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1453184905,
+      "post_id" : 2572633,
+      "comment_id" : 57478439,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Will this prevent creating an entity being (tried to) created more than once? I mean suppose a JMS topic message triggers creation of an entity and there are multiple instances of an application listens to the message. I just want to avoid the unique constraint violation error.."
+    }, {
+      "owner" : {
+        "account_id" : 2082498,
+        "reputation" : 457,
+        "user_id" : 1854211,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/d3fa3a9b68ba461e79a3ad82a1046dba?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Shawn Eion Smith",
+        "link" : "https://stackoverflow.com/users/1854211/shawn-eion-smith"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1453248851,
+      "post_id" : 2572633,
+      "comment_id" : 57517054,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Sorry, I realize that this is an old thread, but does @Version also take into consideration dirty cache in clustered environments?"
+    }, {
+      "owner" : {
+        "account_id" : 107907,
+        "reputation" : 42534,
+        "user_id" : 286685,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/9c8897ea40c61eeab099efd60ffa7466?s=256&d=identicon&r=PG",
+        "display_name" : "Stijn de Witt",
+        "link" : "https://stackoverflow.com/users/286685/stijn-de-witt"
+      },
+      "reply_to_user" : {
+        "account_id" : 2082498,
+        "reputation" : 457,
+        "user_id" : 1854211,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/d3fa3a9b68ba461e79a3ad82a1046dba?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Shawn Eion Smith",
+        "link" : "https://stackoverflow.com/users/1854211/shawn-eion-smith"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1487578847,
+      "post_id" : 2572633,
+      "comment_id" : 71831193,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@ussmith That&#39;s a very good question! Never thought about it. I assume if the cache is part of/managed by the JPA provider (.e.g. Hibernate L1/L2 cache) that yes, it should take it into account. But I have no evidence to back this up."
+    }, {
+      "owner" : {
+        "account_id" : 3365746,
+        "reputation" : 401,
+        "user_id" : 2826414,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/Agn8r.jpg?s=256",
+        "display_name" : "Man Shen",
+        "link" : "https://stackoverflow.com/users/2826414/man-shen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1541309417,
+      "post_id" : 2572633,
+      "comment_id" : 93168661,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "So a public getVersion() is necessary so that the (version = ?) in WHERE clause can get a value?"
+    }, {
+      "owner" : {
+        "account_id" : 6725074,
+        "reputation" : 155,
+        "user_id" : 7646476,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/c42d62883b8a79ac0d1010dddb1a0fdc?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "basamoahjnr",
+        "link" : "https://stackoverflow.com/users/7646476/basamoahjnr"
+      },
+      "reply_to_user" : {
+        "account_id" : 3365746,
+        "reputation" : 401,
+        "user_id" : 2826414,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/Agn8r.jpg?s=256",
+        "display_name" : "Man Shen",
+        "link" : "https://stackoverflow.com/users/2826414/man-shen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1553067604,
+      "post_id" : 2572633,
+      "comment_id" : 97243042,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ManShen Judging by the answer and comments, calling the getter method should be done when you need the value for some logic, as the value itself is updated by the container (you are not required to set or update it). From Markus answer, i believe your are supposed to explicitly initialize it to avoid the null pointer exception, thus if the container doesn&#39;t do that for you."
+    }, {
+      "owner" : {
+        "account_id" : 344172,
+        "reputation" : 356,
+        "user_id" : 676337,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c86b9ca4664017387e2b6dd7e4c70367?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "rdguam",
+        "link" : "https://stackoverflow.com/users/676337/rdguam"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1563937293,
+      "post_id" : 2572633,
+      "comment_id" : 100861651,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "If using Spring Data JPA, it may be better to use a wrapper <code>Long</code> rather than a primitive <code>long</code> for the <code>@Version</code> field, because <code>SimpleJpaRepository.save(entity)</code> will likely treat a null version field as an indicator that the entity is new.  If the entity is new (as indicated by version being null), Spring will call <code>em.persist(entity)</code>.  But if version has a value, then it will call <code>em.merge(entity)</code>.  This is also why a version field that&#39;s declared as a wrapper type should be left uninitialized."
+    }, {
+      "owner" : {
+        "account_id" : 5178132,
+        "reputation" : 3439,
+        "user_id" : 4144572,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/DX6gI.jpg?s=256",
+        "display_name" : "Prakash Palnati",
+        "link" : "https://stackoverflow.com/users/4144572/prakash-palnati"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1622612455,
+      "post_id" : 2572633,
+      "comment_id" : 119838186,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Hi, I have a situation where I introduced @Version on an existing field and there were null values in that field (old records). So, if an old record is modified and the annotation is trying to increment. As my column type is Integer, it is trying to get .intValue() and gets a null-pointer. Please advise, TIA. –"
+    } ],
+    "owner" : {
+      "account_id" : 26957,
+      "reputation" : 571927,
+      "user_id" : 70604,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/dc1a5b5fdba36ae9cdcf6e267f1a86ca?s=256&d=identicon&r=PG",
+      "display_name" : "Pascal Thivent",
+      "link" : "https://stackoverflow.com/users/70604/pascal-thivent"
+    },
+    "is_accepted" : true,
+    "score" : 251,
+    "last_activity_date" : 1270327845,
+    "creation_date" : 1270327845,
+    "answer_id" : 2572633,
+    "question_id" : 2572566,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<blockquote>\n  <p>But still I am not sure how it works?</p>\n</blockquote>\n\n<p>Let's say an entity <code>MyEntity</code> has an annotated <code>version</code> property:</p>\n\n<pre><code>@Entity\npublic class MyEntity implements Serializable {    \n\n    @Id\n    @GeneratedValue\n    private Long id;\n\n    private String name;\n\n    @Version\n    private Long version;\n\n    //...\n}\n</code></pre>\n\n<p>On update, the field annotated with <code>@Version</code> will be incremented and added to the <code>WHERE</code> clause, something like this:</p>\n\n<pre><code>UPDATE MYENTITY SET ..., VERSION = VERSION + 1 WHERE ((ID = ?) AND (VERSION = ?))\n</code></pre>\n\n<p>If the <code>WHERE</code> clause fails to match a record (because the same entity has already been updated by another thread), then the persistence provider will throw an <code>OptimisticLockException</code>.</p>\n\n<blockquote>\n  <p>Does it mean that we should declare our version field as final</p>\n</blockquote>\n\n<p>No but you could consider making the setter protected as you're not supposed to call it. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 40090,
+      "reputation" : 129,
+      "user_id" : 115997,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3b21271f61facbe5981d641eeb69943f?s=256&d=identicon&r=PG",
+      "display_name" : "uudashr",
+      "link" : "https://stackoverflow.com/users/115997/uudashr"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1313993268,
+    "creation_date" : 1313993268,
+    "answer_id" : 7143717,
+    "question_id" : 2572566,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Version used to ensure that only one update in a time. JPA provider will check the version, if the expected version already increase then someone else already update the entity so an exception will be thrown.</p>\n\n<p>So updating entity value would be more secure, more optimist.</p>\n\n<p>If the value changes frequent, then you might consider not to use version field. For an example \"an entity that has counter field, that will increased everytime a web page accessed\"</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2161934,
+        "reputation" : 4833,
+        "user_id" : 1915920,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/6be77f4bfa373c33055ada8f3414ae09?s=256&d=identicon&r=PG",
+        "display_name" : "Andreas Covidiot",
+        "link" : "https://stackoverflow.com/users/1915920/andreas-covidiot"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1440497169,
+      "post_id" : 26731878,
+      "comment_id" : 52286535,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I call it <b><code>u_lmod</code></b> (user last modified) where <b>user can be a human or defined (automated) process/entity/app</b> (so storing additionally <code>u_lmod_id</code> could make sense as well). (It is in my view a very basic business-meta-attribute). It is typically storing its value as DATE(TIME) (meaning infos about year...millis) in UTC (if the timezone &quot;location&quot; of the editor is important to store then with timezone). additionally very useful for DWH sync scenarios."
+    }, {
+      "owner" : {
+        "account_id" : 4650988,
+        "reputation" : 340,
+        "user_id" : 3767897,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/FS7Uy.jpg?s=256",
+        "display_name" : "Dmitry",
+        "link" : "https://stackoverflow.com/users/3767897/dmitry"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1485968595,
+      "post_id" : 26731878,
+      "comment_id" : 71148645,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I think bigint instead of an integer should be used in db type to match a long java type."
+    }, {
+      "owner" : {
+        "account_id" : 1028549,
+        "reputation" : 10666,
+        "user_id" : 1037316,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/LnLkH.png?s=256",
+        "display_name" : "G. Demecki",
+        "link" : "https://stackoverflow.com/users/1037316/g-demecki"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486026403,
+      "post_id" : 26731878,
+      "comment_id" : 71172601,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Good point Dmitry, thanks, although when it comes to versioning IMHO it doesn&#39;t really matter."
+    }, {
+      "owner" : {
+        "account_id" : 5178132,
+        "reputation" : 3439,
+        "user_id" : 4144572,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/DX6gI.jpg?s=256",
+        "display_name" : "Prakash Palnati",
+        "link" : "https://stackoverflow.com/users/4144572/prakash-palnati"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1622612383,
+      "post_id" : 26731878,
+      "comment_id" : 119838172,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Hi, I have a situation where I introduced @Version on an existing field and there were null values in that field (old records). So, if an old record is modified and the annotation is trying to increment. As my column type is Integer, it is trying to get .intValue() and gets null pointer. Please advise, TIA."
+    }, {
+      "owner" : {
+        "account_id" : 48638,
+        "reputation" : 6429,
+        "user_id" : 144578,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/87af410c7986beb8583c1015265b64d1?s=256&d=identicon&r=PG",
+        "display_name" : "Sebastiaan van den Broek",
+        "link" : "https://stackoverflow.com/users/144578/sebastiaan-van-den-broek"
+      },
+      "reply_to_user" : {
+        "account_id" : 5178132,
+        "reputation" : 3439,
+        "user_id" : 4144572,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/DX6gI.jpg?s=256",
+        "display_name" : "Prakash Palnati",
+        "link" : "https://stackoverflow.com/users/4144572/prakash-palnati"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1629091740,
+      "post_id" : 26731878,
+      "comment_id" : 121584970,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PrakashPalnati just update your database to set version = 0 where version is null?"
+    }, {
+      "owner" : {
+        "account_id" : 5178132,
+        "reputation" : 3439,
+        "user_id" : 4144572,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/DX6gI.jpg?s=256",
+        "display_name" : "Prakash Palnati",
+        "link" : "https://stackoverflow.com/users/4144572/prakash-palnati"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1641742671,
+      "post_id" : 26731878,
+      "comment_id" : 124880095,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Nope, that doesn’t work in JPA"
+    }, {
+      "owner" : {
+        "account_id" : 2287381,
+        "reputation" : 828,
+        "user_id" : 2011091,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://i.sstatic.net/GPMhWCmQ.jpg?s=256",
+        "display_name" : "Francisco Souza",
+        "link" : "https://stackoverflow.com/users/2011091/francisco-souza"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1706786970,
+      "post_id" : 26731878,
+      "comment_id" : 137368936,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great answer, it worked perfectly for my situation here. Thanks a lot."
+    } ],
+    "owner" : {
+      "account_id" : 1028549,
+      "reputation" : 10666,
+      "user_id" : 1037316,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/LnLkH.png?s=256",
+      "display_name" : "G. Demecki",
+      "link" : "https://stackoverflow.com/users/1037316/g-demecki"
+    },
+    "is_accepted" : false,
+    "score" : 51,
+    "last_activity_date" : 1741955550,
+    "last_edit_date" : 1741955550,
+    "creation_date" : 1415093989,
+    "answer_id" : 26731878,
+    "question_id" : 2572566,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Although @Pascal answer is perfectly valid, from my experience I find the code below helpful to accomplish optimistic locking:</p>\n<pre><code>@Entity\npublic class MyEntity implements Serializable {    \n    // ...\n\n    @Version\n    @Column(name = &quot;optlock&quot;, columnDefinition = &quot;integer DEFAULT 0&quot;, nullable = false)\n    private long version;\n\n    // ...\n}\n</code></pre>\n<p>Why? Because:</p>\n<ol>\n<li>Optimistic locking <strong>won't work</strong> if field annotated with <code>@Version</code> is accidentally set to <code>null</code>.</li>\n<li>As this special field isn't necessarily a business version of the object, to avoid a misleading, I prefer to name such field to something like <code>optlock</code> rather than <code>version</code>.</li>\n</ol>\n<p>First point doesn't matter if application uses <strong>only</strong> JPA for inserting data into the database, as JPA vendor will enforce <code>0</code> for <code>@version</code> field at creation time. But almost always plain SQL statements are also in use (at least during unit and integration testing).</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2007569,
+        "reputation" : 8854,
+        "user_id" : 1797006,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/b1a413ea490f70dc5d27f3d7eba6b4f6?s=256&d=identicon&r=PG",
+        "display_name" : "Kalle Richter",
+        "link" : "https://stackoverflow.com/users/1797006/kalle-richter"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1497389915,
+      "post_id" : 43664677,
+      "comment_id" : 76055674,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "What is <code>JPAUpdateClause</code>?"
+    }, {
+      "owner" : {
+        "account_id" : 556948,
+        "reputation" : 1791,
+        "user_id" : 919248,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/C6Frv.jpg?s=256",
+        "display_name" : "Pedro Borges",
+        "link" : "https://stackoverflow.com/users/919248/pedro-borges"
+      },
+      "reply_to_user" : {
+        "account_id" : 2007569,
+        "reputation" : 8854,
+        "user_id" : 1797006,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/b1a413ea490f70dc5d27f3d7eba6b4f6?s=256&d=identicon&r=PG",
+        "display_name" : "Kalle Richter",
+        "link" : "https://stackoverflow.com/users/1797006/kalle-richter"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1584390243,
+      "post_id" : 43664677,
+      "comment_id" : 107417874,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Good question, simple answer is: bad example :) JPAUpdateClause is QueryDSL specific, think running an update with JPQL as opposed to simply affecting an entity&#39;s state in code."
+    } ],
+    "owner" : {
+      "account_id" : 556948,
+      "reputation" : 1791,
+      "user_id" : 919248,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/C6Frv.jpg?s=256",
+      "display_name" : "Pedro Borges",
+      "link" : "https://stackoverflow.com/users/919248/pedro-borges"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1724854516,
+    "last_edit_date" : 1724854516,
+    "creation_date" : 1493315269,
+    "answer_id" : 43664677,
+    "question_id" : 2572566,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Just adding a little more info.</p>\n<p>JPA manages the version under the hood for you, however it doesn't do so when you update your record via <code>JPAUpdateClause</code>, in such cases you need to manually add the version increment to the query, and implement optimistic lock manually in the query.</p>\n<p>Same can be said about updating via JPQL, i.e. not a simple change to the entity, but an update command to the database even if that is done by hibernate</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 52535,
+    "reputation" : 35007,
+    "user_id" : 157027,
+    "user_type" : "registered",
+    "accept_rate" : 67,
+    "profile_image" : "https://www.gravatar.com/avatar/80fe5f3f4cf7ede386bc5df518678972?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Amit",
+    "link" : "https://stackoverflow.com/users/157027/amit"
+  },
+  "is_answered" : true,
+  "view_count" : 206022,
+  "accepted_answer_id" : 2572633,
+  "answer_count" : 5,
+  "score" : 175,
+  "last_activity_date" : 1741955550,
+  "creation_date" : 1270326483,
+  "last_edit_date" : 1452672438,
+  "question_id" : 2572566,
+  "link" : "https://stackoverflow.com/questions/2572566/java-jpa-version-annotation",
+  "title" : "Java - JPA - @Version annotation",
+  "body" : "<p>How does <code>@Version</code> annotation work in JPA?</p>\n\n<p>I found various answers whose extract is as follows:</p>\n\n<blockquote>\n  <p>JPA uses a version field in your entities to detect concurrent modifications to the same datastore record. When the JPA runtime detects an attempt to concurrently modify the same record, it throws an exception to the transaction attempting to commit last.</p>\n</blockquote>\n\n<p>But I am still not sure how it works.</p>\n\n<hr>\n\n<p>Also as from the following lines:</p>\n\n<blockquote>\n  <p>You should consider version fields immutable. Changing the field value has undefined results. </p>\n</blockquote>\n\n<p>Does it mean that we should declare our version field as <code>final</code>?</p>\n"
+}

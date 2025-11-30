@@ -1,0 +1,42 @@
+{
+  "tags" : [ "java", "deserialization", "jackson-databind" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 20867359,
+      "reputation" : 131,
+      "user_id" : 15328090,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Ghbb7W0aZd0J-WvUig4X9bkd6t3lxM7lVIkvgJ-uQ=k-s256",
+      "display_name" : "Igor",
+      "link" : "https://stackoverflow.com/users/15328090/igor"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1693567347,
+    "creation_date" : 1693567347,
+    "answer_id" : 77022685,
+    "question_id" : 77022398,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You are right about the library not being able to deserialize object into String. You could solve the issue in the following ways:</p>\n<ul>\n<li><p>If you expect an arbitrary object in <code>propertiesJson</code> property you\ncould make it of type <code>Map&lt;String, Object&gt;</code> in your\n<code>ConfigurationProperties</code> class.</p>\n</li>\n<li><p>If <code>propertiesJson</code> can be of any type(like number, string, array,\nobject) you could make it of type <code>Object</code>. In such case\n<code>ObjectMapper</code> would deserialize the value into an object of the json\ntype's respective counterpart in Java.</p>\n</li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 13651172,
+    "reputation" : 914,
+    "user_id" : 9849018,
+    "user_type" : "registered",
+    "profile_image" : "https://lh6.googleusercontent.com/-DMQ9cua2IMk/AAAAAAAAAAI/AAAAAAAADY4/CvtkcOYdVls/s256-rj/photo.jpg",
+    "display_name" : "Shivanshu",
+    "link" : "https://stackoverflow.com/users/9849018/shivanshu"
+  },
+  "is_answered" : false,
+  "view_count" : 10352,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760954775,
+  "creation_date" : 1693564583,
+  "last_edit_date" : 1693591606,
+  "question_id" : 77022398,
+  "link" : "https://stackoverflow.com/questions/77022398/cannot-deserialize-value-of-type-java-lang-string-from-object-value-token-js",
+  "title" : "Cannot deserialize value of type `java.lang.String` from Object value (token `JsonToken.START_OBJECT`)",
+  "body" : "<p>I have one class called <code>Configurations</code></p>\n<pre><code>public class Configurations {\n\nprivate List&lt;Configuration&gt; configurations; \n}\n\npublic class Configuration {\n    private String configurationClass;\n    private ConfigurationProperties configurationProperties;\n}\n\npublic class ConfigurationProperties {\n    private String propertiesClass;\n    private String propertiesJson;\n}\n\npublic class SchoolProperties {\n    @JsonProperty(&quot;serviceName&quot;)\n    String serviceName;\n\n    @JsonProperty(&quot;operationName&quot;)\n    String operationName;\n\n    @JsonProperty(&quot;latency&quot;)\n    Long latency;\n\n    @JsonProperty(&quot;permittedTransactionsPerSecond&quot;)\n    int permittedTransactionsPerSecond;\n\n    Class&lt;? extends Throwable&gt;[] possibleExceptions;\n}\n</code></pre>\n<p>there is one more class called ConfigurationProperties like below :-</p>\n<p>Now i'm passing a Json-Object like below:-</p>\n<pre><code>  input =   &quot;{\n        &quot;configurations&quot;: [{\n            &quot;configurationClass&quot;: &quot;src.myProject.OperationHandler&quot;,\n            &quot;configurationProperties&quot;: {\n                &quot;propertiesClass&quot;: &quot;src.myProjects.schoolProperties&quot;,\n                &quot;propertiesJson&quot;: {\n                    &quot;serviceName&quot;: &quot;SchoolAdministerService&quot;,\n                    &quot;operationName&quot;: &quot;handleAdmission&quot;,\n                    &quot;latency&quot;: &quot;25&quot;,\n                    &quot;permittedTransactionsPerSecond&quot;: &quot;50&quot;,\n                    &quot;possibleExceptions&quot;: [&quot;java.io.IOException&quot;, &quot;java.net.SocketException&quot;, &quot;java.net.SocketTimeoutException&quot;]\n                }\n            }\n        }]\n    }&quot;;\n\n  type = &quot;Configurations.class&quot;;\n</code></pre>\n<p>When i'm trying to deserialize it with below way, it's getting failed:-</p>\n<pre><code>ObjectMapper objectMapper = new ObjectMapper();\n\nobjectMapper.readValue(input, type);\n</code></pre>\n<p>After running this de-serialization logic, this is getting failed with below-error:-</p>\n<pre><code>    Caused by: com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize value of type `java.lang.String` from Object value (token `JsonToken.START_OBJECT`)\nat [Source: (String)&quot;{&quot;configurations&quot;:[{&quot;configurationClass&quot;:&quot;src.myProject.OperationHandler&quot;,&quot;configurationProperties&quot;:{&quot;propertiesClass&quot;:&quot;src.myProjects.schoolProperties&quot;,&quot;propertiesJson&quot;:{\n                &quot;serviceName&quot;: &quot;SchoolAdministerService&quot;,\n                &quot;operationName&quot;: &quot;handleAdmission&quot;,\n                &quot;latency&quot;: &quot;25&quot;,\n                &quot;permittedTransactionsPerSecond&quot;: &quot;50&quot;,\n                &quot;possibleExceptions&quot;: [&quot;java.io.IOException&quot;, &quot;java.net.SocketException&quot;, &quot;java.net.SocketTimeoutException&quot;]\n            } (through reference chain: Configurations[&quot;configurations&quot;]-&gt;java.util.ArrayList[0]-&gt;Configuration[&quot;configurationProperties&quot;]-&gt;ConfigurationProperties[&quot;propertiesJson&quot;])\n</code></pre>\n<p>I think the issue is because it's trying to capture propertiesJson as String, but this is not given as string, this is a object. Can someone help, how we should de-serialize it.</p>\n<p>Thanks !</p>\n"
+}

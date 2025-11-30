@@ -1,0 +1,59 @@
+{
+  "tags" : [ "java", "spring-cloud-stream", "spring-rabbit" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3353466,
+        "reputation" : 23,
+        "user_id" : 2816980,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1017e350117a4311e649f1c286a67fc9?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "curious_george",
+        "link" : "https://stackoverflow.com/users/2816980/curious-george"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1558988332,
+      "post_id" : 56316685,
+      "comment_id" : 99270724,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks Gary, I figured that the issue was creating a local direct channel inside my main. I moved the code over to another class annotated with component, created the channel through autowiring, and had a small method to send the message.. Later used the bean from the application context and published the message. thanks for the prompt reponse."
+    } ],
+    "owner" : {
+      "account_id" : 1288095,
+      "reputation" : 175832,
+      "user_id" : 1240763,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/OMgXO.png?s=256",
+      "display_name" : "Gary Russell",
+      "link" : "https://stackoverflow.com/users/1240763/gary-russell"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1558898649,
+    "creation_date" : 1558898649,
+    "answer_id" : 56316685,
+    "question_id" : 56314978,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to get channel 'output' from the application context returned by the run() method instead of creating your own DirectChannel.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3353466,
+    "reputation" : 23,
+    "user_id" : 2816980,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/1017e350117a4311e649f1c286a67fc9?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "curious_george",
+    "link" : "https://stackoverflow.com/users/2816980/curious-george"
+  },
+  "is_answered" : false,
+  "view_count" : 10314,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761076060,
+  "creation_date" : 1558885300,
+  "question_id" : 56314978,
+  "link" : "https://stackoverflow.com/questions/56314978/dispatcher-has-no-subscribers-for-channel-unknown-channel-name",
+  "title" : "Dispatcher has no subscribers for channel &#39;unknown.channel.name",
+  "body" : "<p>I am trying to run the publisher and subscriber, using spring binding.</p>\n\n<p>made sure the destination(exchange) is created locally on the rabbit-mq.</p>\n\n<p>publisher (app.yml)</p>\n\n<pre><code>spring:\n  cloud:\n    stream:\n      bindings:\n        output:\n          destination: HelloDestination\n  rabbitmq:\n    addresses: xxx.xxx.xx.xxx\n</code></pre>\n\n<p>Subscriber(app.yml)</p>\n\n<pre><code>spring:\n  cloud:\n    stream:\n      bindings:\n        input:\n          destination: HelloDestination\n  rabbitmq:\n    addresses: xxx.xxx.xx.xxx\nserver:\n  port: 8081\n</code></pre>\n\n<p>publisher (pom.yml)</p>\n\n<pre><code>    &lt;dependencies&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;\n            &lt;version&gt;2.1.1.RELEASE&lt;/version&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-starter-integration&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n</code></pre>\n\n<p>Subscriber (pom.yml)</p>\n\n<pre><code>        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;\n            &lt;version&gt;2.1.1.RELEASE&lt;/version&gt;\n        &lt;/dependency&gt;\n        &lt;dependency&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-starter-integration&lt;/artifactId&gt;\n        &lt;/dependency&gt;\n</code></pre>\n\n<p>publisher (source java file)</p>\n\n<pre><code>@SpringBootApplication\n@EnableBinding(Source.class)\npublic class Demo1Application {\n\n    //@Autowired\n    //private static MessageChannel output;\n\n    public static void main(String[] args) {\n        SpringApplication.run(Demo1Application.class, args);\n\n        String sampleMessage = \"Hello\";\n        Message&lt;String&gt; message =\n                MessageBuilder.withPayload(\"Hello World\").build();\n\n        MessageChannel output = new DirectChannel();\n\n        output.send(message);   \n\n    }\n\n}\n</code></pre>\n\n<p>//consumer (source file)</p>\n\n<pre><code>@SpringBootApplication\n@EnableBinding(Sink.class)\npublic class Demo2Application {\n\n    public static void main(String[] args) {\n        SpringApplication.run(Demo2Application.class, args);\n    }\n\n    @StreamListener(Sink.INPUT)\n    public void listenerMethod(Message&lt;String&gt; message)\n    {\n        System.out.println(\"The Message is :\"+message);\n    }\n}\n</code></pre>\n\n<p>//----</p>\n\n<p>After doing all, I see the exchange created and also the message on exchange. The consumer starts up just fine. but the producer chokes when trying to send the message with the error message</p>\n\n<pre><code>Exception in thread \"main\" org.springframework.messaging.MessageDeliveryException: Dispatcher has no subscribers for channel 'unknown.channel.name'.; nested exception is org.springframework.integration.MessageDispatchingException: Dispatcher has no subscribers, failedMessage=GenericMessage [payload=Hello World, headers={id=ccf86001-5dba-6c64-bc76-e1f58782de42, timestamp=1558883876384}], failedMessage=GenericMessage [payload=Hello World, headers={id=ccf86001-5dba-6c64-bc76-e1f58782de42, timestamp=1558883876384}]\n    at org.springframework.integration.channel.AbstractSubscribableChannel.doSend(AbstractSubscribableChannel.java:77)\n    at org.springframework.integration.channel.AbstractMessageChannel.send(AbstractMessageChannel.java:461)\n    at org.springframework.integration.channel.AbstractMessageChannel.send(AbstractMessageChannel.java:401)\n    at com.example.demo.Demo1Application.main(Demo1Application.java:29)\nCaused by: org.springframework.integration.MessageDispatchingException: Dispatcher has no subscribers, failedMessage=GenericMessage [payload=Hello World, headers={id=ccf86001-5dba-6c64-bc76-e1f58782de42, timestamp=1558883876384}]\n    at org.springframework.integration.dispatcher.UnicastingDispatcher.doDispatch(UnicastingDispatcher.java:138)\n    at org.springframework.integration.dispatcher.UnicastingDispatcher.dispatch(UnicastingDispatcher.java:105)\n    at org.springframework.integration.channel.AbstractSubscribableChannel.doSend(AbstractSubscri\n</code></pre>\n\n<p>I expected the message to be read.</p>\n"
+}

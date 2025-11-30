@@ -1,0 +1,77 @@
+{
+  "tags" : [ "java", "android", "in-app-update" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 12359904,
+      "reputation" : 232,
+      "user_id" : 9014504,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-8fLwCiZzbas/AAAAAAAAAAI/AAAAAAAAIEc/0WdbLYbfm1g/s256-rj/photo.jpg",
+      "display_name" : "Asif A. Sohan",
+      "link" : "https://stackoverflow.com/users/9014504/asif-a-sohan"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1616437448,
+    "creation_date" : 1616437448,
+    "answer_id" : 66751800,
+    "question_id" : 66549229,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As mentioned in the <a href=\"https://developer.android.com/reference/com/google/android/play/core/appupdate/AppUpdateManager\" rel=\"nofollow noreferrer\">Documentation</a>, there are different flow to trigger Google App Update API from different components in app. We need to trigger correct flow according to our requirements.</p>\n<pre><code>startUpdateFlow(AppUpdateInfo appUpdateInfo, Activity activity, AppUpdateOptions options)\nStarts the desired update flow asynchronously.\n\nstartUpdateFlowForResult(AppUpdateInfo appUpdateInfo, int appUpdateType, IntentSenderForResultStarter starter, int requestCode)\nStarts the desired update flow.\n\nstartUpdateFlowForResult(AppUpdateInfo appUpdateInfo, Activity activity, AppUpdateOptions options, int requestCode)\nStarts the desired update flow.\n\nstartUpdateFlowForResult(AppUpdateInfo appUpdateInfo, int appUpdateType, Activity activity, int requestCode)\nStarts the desired update flow.\n\nstartUpdateFlowForResult(AppUpdateInfo appUpdateInfo, IntentSenderForResultStarter starter, AppUpdateOptions options, int requestCod\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9260104,
+      "reputation" : 3652,
+      "user_id" : 6877502,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/hwH7n.jpg?s=256",
+      "display_name" : "Aliaksei",
+      "link" : "https://stackoverflow.com/users/6877502/aliaksei"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1683754971,
+    "creation_date" : 1683754971,
+    "answer_id" : 76222737,
+    "question_id" : 66549229,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>According to <a href=\"https://developer.android.com/reference/com/google/android/play/core/appupdate/AppUpdateManager#startUpdateFlowForResult(com.google.android.play.core.appupdate.AppUpdateInfo,%20android.app.Activity,%20com.google.android.play.core.appupdate.AppUpdateOptions,%20int)\" rel=\"nofollow noreferrer\">documentation</a> of <code>startUpdateFlowForResult()</code></p>\n<blockquote>\n<p>Each <code>AppUpdateInfo</code> instance can be used <strong>only in a single</strong> call to this method. If you need to call it multiple times - for instance, when retrying to start a flow in case of failure - you need to get a fresh <code>AppUpdateInfo</code> from <code>getAppUpdateInfo()</code>.</p>\n</blockquote>\n<p>So, we should renew our <code>appUpdateInfoTask</code> for every calling of <code>startUpdateFlowForResult()</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 43829089,
+      "reputation" : 1,
+      "user_id" : 31437479,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cac31857f1d724ef9e0ee4e07f7a78e8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Domini",
+      "link" : "https://stackoverflow.com/users/31437479/domini"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759645105,
+    "creation_date" : 1759645105,
+    "answer_id" : 79782817,
+    "question_id" : 66549229,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The <code>AppUpdateInfo</code> object you get contains a one-time use token (<code>PendingIntent</code>) to launch the update screen. Once you call <code>startUpdateFlowForResult</code>, that token is consumed.</p>\n<p>In your code, you call <code>appUpdateManager.getAppUpdateInfo()</code> only once in <code>init()</code> and store the resulting <code>Task</code>. Every subsequent call to <code>checkAppUpdate()</code> reuses that same completed task, which gives you the same stale <code>AppUpdateInfo</code> object with its used token. Trying to use it again causes the <code>SendIntentException</code>.</p>\n<p>You can request a <strong>new</strong> <code>AppUpdateInfo</code> object every single time you want to check for an update. Don't cache the <code>appUpdateInfoTask</code>.</p>\n<pre><code>import android.app.Activity;\nimport android.util.Log;\nimport com.google.android.play.core.appupdate.AppUpdateInfo;\nimport com.google.android.play.core.appupdate.AppUpdateManager;\nimport com.google.android.play.core.appupdate.AppUpdateManagerFactory;\nimport com.google.android.play.core.install.model.AppUpdateType;\nimport com.google.android.play.core.install.model.UpdateAvailability;\nimport com.google.android.play.core.tasks.Task;\nimport android.content.IntentSender;\n\npublic class InAppUpdateHandler {\n\n    private static final String TAG = &quot;InAppUpdateHandler&quot;;\n    public static final int UPDATE_REQUEST_CODE = 123;\n\n    private final AppUpdateManager appUpdateManager;\n    private final Activity activity;\n\n    public InAppUpdateHandler(Activity activity) {\n        this.activity = activity;\n        this.appUpdateManager = AppUpdateManagerFactory.create(activity);\n    }\n\n\n    public void checkForUpdate() {\n        Task&lt;AppUpdateInfo&gt; appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();\n\n        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -&gt; {\n            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE\n                    &amp;&amp; appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) { \n                \n                Log.d(TAG, &quot;Update available. Starting update flow.&quot;);\n                startUpdateFlow(appUpdateInfo, AppUpdateType.FLEXIBLE);\n\n            } else {\n                Log.d(TAG, &quot;No update available or type not allowed.&quot;);\n            }\n        }).addOnFailureListener(e -&gt; {\n            Log.e(TAG, &quot;Failed to check for update.&quot;, e);\n        });\n    }\n\n    private void startUpdateFlow(AppUpdateInfo appUpdateInfo, int appUpdateType) {\n        try {\n            appUpdateManager.startUpdateFlowForResult(\n                    appUpdateInfo,\n                    appUpdateType,\n                    activity,\n                    UPDATE_REQUEST_CODE);\n        } catch (IntentSender.SendIntentException e) {\n            Log.e(TAG, &quot;Error starting update flow.&quot;, e);\n        }\n    }\n}\n</code></pre>\n<p>You can create an instance of this handler in your <code>Activity</code> or <code>Fragment</code> and call <code>checkForUpdate()</code> whenever you need to trigger the flow.</p>\n<pre><code>InAppUpdateHandler updateHandler = new InAppUpdateHandler(this.getActivity());\n\n// Call this when the user opens the app for the first time\nupdateHandler.checkForUpdate();\n\n// Or call this\nbutton.setOnClickListener(v -&gt; {\n    updateHandler.checkForUpdate();\n});\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12359904,
+    "reputation" : 232,
+    "user_id" : 9014504,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/-8fLwCiZzbas/AAAAAAAAAAI/AAAAAAAAIEc/0WdbLYbfm1g/s256-rj/photo.jpg",
+    "display_name" : "Asif A. Sohan",
+    "link" : "https://stackoverflow.com/users/9014504/asif-a-sohan"
+  },
+  "is_answered" : false,
+  "view_count" : 2198,
+  "answer_count" : 3,
+  "score" : 12,
+  "last_activity_date" : 1759645105,
+  "creation_date" : 1615301608,
+  "question_id" : 66549229,
+  "link" : "https://stackoverflow.com/questions/66549229/appupdatemanager-startupdateflowforresult-causing-intentsendersendintentexcepti",
+  "title" : "AppUpdateManager.startUpdateFlowForResult causing IntentSender$SendIntentException",
+  "body" : "<p>In-app update is available multiple times in my app. User can cancel the update first time while opening the app and choose to trigger in-app Update from another fragment manually.</p>\n<p>As per Google documentation, I have created new instances each time to trigger the update but it is only working for the first. Next time, it's causing <strong>AppUpdateManager.startUpdateFlowForResult causing IntentSender$SendIntentException</strong></p>\n<pre><code>private void init() {\n        appUpdateManager = AppUpdateManagerFactory.create(mContext);\n        appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();\n\n    }\n\n public void checkAppUpdate() {\n            appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -&gt; {\n                .....................................\n                .....................................\n                startAppUpdate(appUpdateInfo);\n   \n        }\n\nprivate void startAppUpdate(AppUpdateInfo appUpdateInfo) {\n        Log.d(TAG, &quot;startAppUpdate: starting app update&quot;);\n        appUpdateManager.startUpdateFlowForResult(\n                appUpdateInfo,\n                appUpdateType,\n                mActivityReference,\n                mRequestCode);\n    }\n</code></pre>\n"
+}

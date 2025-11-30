@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "mongodb", "geospatial" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1102285,
+      "reputation" : 211,
+      "user_id" : 1094428,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/66bc46c5543381535d33d917a8b02dc4?s=256&d=identicon&r=PG",
+      "display_name" : "Patrick Sauts",
+      "link" : "https://stackoverflow.com/users/1094428/patrick-sauts"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1457396708,
+    "last_edit_date" : 1457396708,
+    "creation_date" : 1457393937,
+    "answer_id" : 35856304,
+    "question_id" : 34052372,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In your settings you need to specify the codec registry, you're currently missing <code>GeoJsonCodecProvider()</code> using <code>com.mongodb.MongoClient.getDefaultCodecRegistry()</code> should do fine</p>\n\n<p>For the async driver</p>\n\n<pre><code>MongoClientSettings settings = MongoClientSettings.builder().readPreference(readPreference)\n    .codecRegistry(com.mongodb.MongoClient.getDefaultCodecRegistry()).socketSettings(sockSettings)\n    .connectionPoolSettings(connPoolSettings).credentialList(credentials))\n    .clusterSettings(clusterSettings).build();\nLOG.info(\"MongoClientSettings: {}, {}, {}, {}\", sockSettings, connPoolSettings, clusterSettings, credentials);\nMongoClient mgc = MongoClients.create(settings);\n</code></pre>\n\n<p>for the normal driver </p>\n\n<pre><code>MongoClientOptions settings = MongoClientOptions.builder().readPreference(readPreference)\n    .codecRegistry(com.mongodb.MongoClient.getDefaultCodecRegistry()).build();\nMongoClient mgc= new MongoClient(servers,credentials,settings);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7276759,
+    "reputation" : 61,
+    "user_id" : 5547941,
+    "user_type" : "registered",
+    "profile_image" : "https://graph.facebook.com/10153388139299332/picture?type=large",
+    "display_name" : "Riju Pahwa",
+    "link" : "https://stackoverflow.com/users/5547941/riju-pahwa"
+  },
+  "is_answered" : false,
+  "view_count" : 9695,
+  "answer_count" : 1,
+  "score" : 6,
+  "last_activity_date" : 1764328160,
+  "creation_date" : 1449088121,
+  "last_edit_date" : 1449091022,
+  "question_id" : 34052372,
+  "link" : "https://stackoverflow.com/questions/34052372/why-do-i-get-the-following-error-cant-find-a-codec-for-class-com-mongodb-clie",
+  "title" : "Why do I get the following error : Can&#39;t find a codec for class com.mongodb.client.model.geojson.Polygon",
+  "body" : "<p>I am trying to do a geospatial query using MongoDB's <code>com.mongodb.client.model.geojson.Polygon</code> class and <code>com.mongodb.client.model.geojson.Position</code> class. The client code populates the four double corners in its own boundingBox object.</p>\n\n<p>Here is the code snippet:</p>\n\n<pre><code>Polygon polygon = new Polygon(Arrays.asList(new Position(boundingBox.getRightLongitude(),boundingBox.getTopLatitude()), \n                new Position(boundingBox.getLeftLongitude(), boundingBox.getTopLatitude()), \n                new Position(boundingBox.getLeftLongitude(), boundingBox.getBottomLatitude()), \n                new Position(boundingBox.getRightLongitude(), boundingBox.getBottomLatitude()),\n                new Position(boundingBox.getRightLongitude(), boundingBox.getTopLatitude())));\n        //Document filter = new Document(\"coordinates\",geoWithin(\"coordinates\", polygon));\n\n\n    Block&lt;Document&gt; printBlock = new Block&lt;Document&gt;() {\n         @Override\n         public void apply(final Document document) {\n             System.out.println(document.toJson());\n         }\n    };\n    database.getCollection(\"roads\").find(geoWithin(\"coordinates\",polygon)).forEach(printBlock);\n</code></pre>\n\n<p>And here is the error:</p>\n\n<pre><code>Exception in thread \"main\" org.bson.codecs.configuration.CodecConfigurationException: Can't find a codec for class com.mongodb.client.model.geojson.Polygon.\n</code></pre>\n"
+}

@@ -1,0 +1,95 @@
+{
+  "tags" : [ "java", "servlets", "redis" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6181607,
+        "reputation" : 966,
+        "user_id" : 4816922,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-J9V8-VjZWpU/AAAAAAAAAAI/AAAAAAAAAD8/jBZ_2-AjAzo/s256-rj/photo.jpg",
+        "display_name" : "Yu Chia Wu",
+        "link" : "https://stackoverflow.com/users/4816922/yu-chia-wu"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1608313093,
+      "post_id" : 64860221,
+      "comment_id" : 115554171,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Can you provide more details on how you are handling the error? I don&#39;t think wrapping it in try catch block without handling it will do much."
+    } ],
+    "owner" : {
+      "account_id" : 14287445,
+      "reputation" : 161,
+      "user_id" : 10320435,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2698287696839c3cb4738972084ffe30?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Rahul Pandey",
+      "link" : "https://stackoverflow.com/users/10320435/rahul-pandey"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1605538316,
+    "creation_date" : 1605538316,
+    "answer_id" : 64860221,
+    "question_id" : 64859757,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The solution was to create Jedis instance as below:</p>\n<pre><code> try (Jedis jedis = jedisPool.getResource()) { \n     // do get here\n  }\n</code></pre>\n<p>This worked for me!\nThings I tried and can come in handy for others based on what I found:</p>\n<ol>\n<li>Try changing the Redis jar version.</li>\n<li>Check the logs and if you see some error related to <em>protected mode</em> you may want to switch it off.</li>\n<li>Check if your Redis cluster/instance is up and running.</li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6356252,
+      "reputation" : 909,
+      "user_id" : 4933415,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cd4f85c5f6b4b692dcecf33953cbf491?s=256&d=identicon&r=PG",
+      "display_name" : "iAmcR",
+      "link" : "https://stackoverflow.com/users/4933415/iamcr"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1635785315,
+    "creation_date" : 1635785315,
+    "answer_id" : 69800063,
+    "question_id" : 64859757,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This sort of error might occur when the (JedisPool) resource becomes exhausted.</p>\n<p>Try to wrap in a try-catch-finally block and in the finally block return the jedis resource to the pool.</p>\n<p>Example illustrating relevant block:</p>\n<pre><code>try {\n  \n  jedis = jedisPool.getResource();\n  String value = jedis.get(key);\n  //do something with value\n\n} catch (Throwable e) {\n\n  //handle exception\n\n} finally {\n  \n  if (jedis != null) {\n    //free the jedis resource\n    jedisPool.returnResource(jedis);\n  }\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 19336919,
+      "reputation" : 1,
+      "user_id" : 14137326,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3948f95f200a5a4c0a24079373ae73fe?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Aditya",
+      "link" : "https://stackoverflow.com/users/14137326/aditya"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1655894218,
+    "creation_date" : 1655894218,
+    "answer_id" : 72713967,
+    "question_id" : 64859757,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Check whether your Redis server is online. And to prevent exhaustion, always close() you jedis instances collected from JedisPool.</p>\n<p>Also check whether you need more than 200 (DEFAULT MAX TOTAL Connections)</p>\n<pre><code>    try {\n            JedisPoolConfig config = new JedisPoolConfig();\n            config.setMaxTotal(1000); // set max here\n            jedisPool = new JedisPool(config, redisHost, redisPort, 10000);     \n        }catch(Exception e){\n            System.out.println(&quot;have error while creating jedisPool &quot; + e);\n        }\n</code></pre>\n<p>and when you use jedis, use it as follows :</p>\n<pre><code>func(){\n       Jedis userTemplate = null;\n        try {\n            jedis = jedisPool.getResource();\n            // do stuff here\n            // jedis.get(&quot;hi-there&quot;);\n        }catch(Exception e) {\n            System.out.println(&quot;error in getting resource &quot; + e);\n        }finally {\n            if(userTemplate != null) {\n                userTemplate.close();\n            }\n        }\n    }\n\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 14287445,
+    "reputation" : 161,
+    "user_id" : 10320435,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/2698287696839c3cb4738972084ffe30?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Rahul Pandey",
+    "link" : "https://stackoverflow.com/users/10320435/rahul-pandey"
+  },
+  "is_answered" : false,
+  "view_count" : 10432,
+  "answer_count" : 3,
+  "score" : 2,
+  "last_activity_date" : 1759993750,
+  "creation_date" : 1605536581,
+  "question_id" : 64859757,
+  "link" : "https://stackoverflow.com/questions/64859757/redis-clients-jedis-exceptions-jedisconnectionexception-java-net-socketexceptio",
+  "title" : "redis.clients.jedis.exceptions.JedisConnectionException: java.net.SocketException: Broken pipe (Write failed)",
+  "body" : "<p>While trying to use Jedis.get(key) while accessing the Redis using Jedis I'm getting this error.</p>\n<pre><code>redis.clients.jedis.exceptions.JedisConnectionException: java.net.SocketException: Broken pipe (Write failed)\n</code></pre>\n<p>The code to access the Redis looks like below:</p>\n<pre><code> private static JedisPoolConfig buildPoolConfig() {\n    final JedisPoolConfig poolConfig = new JedisPoolConfig();\n    poolConfig.setMaxTotal(128);\n    poolConfig.setMaxIdle(128);\n    poolConfig.setMinIdle(16);\n    poolConfig.setTestOnBorrow(true);\n    poolConfig.setTestOnReturn(true);\n    poolConfig.setTestWhileIdle(true);\n    poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());\n    poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());\n    poolConfig.setNumTestsPerEvictionRun(3);\n    poolConfig.setBlockWhenExhausted(true);\n    return poolConfig;\n  }\n\nthis.jedisPool = new JedisPool(poolConfig, &quot;localhost&quot;, 6379, 4000);\nthis.jedis = jedisPool.getResource();\n\n\n//Now using this jedis connection to retrieve values for key\njedis.get(key)  // error occurs\n</code></pre>\n"
+}

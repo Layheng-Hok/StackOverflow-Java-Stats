@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "web-services", "wsdl", "jax-ws" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 9613671,
+      "reputation" : 563,
+      "user_id" : 7137209,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Njmi9.jpg?s=256",
+      "display_name" : "Taurai Nyamakura",
+      "link" : "https://stackoverflow.com/users/7137209/taurai-nyamakura"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1760942451,
+    "last_edit_date" : 1760942451,
+    "creation_date" : 1478786270,
+    "answer_id" : 40529397,
+    "question_id" : 40507027,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use attribute <strong>name</strong> of the @WebParam. For example, in your case, your method signature might look like:</p>\n<pre><code>public String addRequest(@WebParam(name = &quot;firstName&quot;) String firstName,\n        @WebParam(name = &quot;lastName&quot;) String lastName, @WebParam(name = &quot;jmbg&quot;) long jmbg,\n        @WebParam(name = &quot;dateTime&quot;) Date dateTime)\n</code></pre>\n<p>Only use <code>partName</code> when your web service operation is RPC style or Document style and the parameter style is BARE. For the default parameter style which is WRAPPED, this partName attribute (which translates to <code>wsdl:part</code> name) shouldn't be used. By default, if partName is not specified, it's default value is @WebParam.name</p>\n<p><strong>Recommendation:</strong> It's best to use only a POJO containing all the attributes, <em>unless the WSDL was shared already</em>, so as to minimize the number of arguments to your method so as to enhance clean code, and 'XML Marshalling and Unmarshalling' will be much faster.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 9551339,
+    "reputation" : 101,
+    "user_id" : 7095399,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/a963c39c5acf12e40aa0eca098000921?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Ena Jovicic",
+    "link" : "https://stackoverflow.com/users/7095399/ena-jovicic"
+  },
+  "is_answered" : true,
+  "view_count" : 2439,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1760942451,
+  "creation_date" : 1478694462,
+  "last_edit_date" : 1579076163,
+  "question_id" : 40507027,
+  "link" : "https://stackoverflow.com/questions/40507027/using-webparampartname-annotation-in-jax-ws-web-service-is-not-working",
+  "title" : "Using @WebParam(partName) annotation in JAX-WS web service is not working",
+  "body" : "<p>Here is my java code that generates the wsdl:</p>\n\n<pre><code>@WebMethod(action = \"sendRequest\")\n@WebResult(partName= \"message\")\npublic String addRequest(@WebParam(partName = \"firstName\") String firstName,\n        @WebParam(partName = \"lastName\") String lastName, @WebParam(partName = \"jmbg\") long jmbg,\n        @WebParam(partName = \"dateTime\") Date dateTime) {\n    try {\n        appointmentManager.getAppointmentRequest().add(new AppointmentRequest(firstName, lastName, jmbg, dateTime));\n        return \"Central office is closed due to the reconstruction. It will reopen on Monday.\";\n    } catch (Exception e) {\n        return \"Wrong format\";\n    }\n}`\n</code></pre>\n\n<p>And here is the resulting complex type in my generated wsdl: ` </p>\n\n<pre><code>&lt;xs:complexType name=\"addRequest\"&gt;\n   &lt;xs:sequence&gt;\n     &lt;xs:element minOccurs=\"0\" name=\"arg0\" type=\"xs:string\"/&gt;\n     &lt;xs:element minOccurs=\"0\" name=\"arg1\" type=\"xs:string\"/&gt;\n     &lt;xs:element name=\"arg2\" type=\"xs:long\"/&gt;\n     &lt;xs:element minOccurs=\"0\" name=\"arg3\" type=\"xs:dateTime\"/&gt;\n   &lt;/xs:sequence&gt;\n&lt;/xs:complexType&gt;`\n</code></pre>\n\n<p>As you can see. the input args are called arg0, arg1, arg2, arg3 instead of the names I specified in the annotations.</p>\n"
+}

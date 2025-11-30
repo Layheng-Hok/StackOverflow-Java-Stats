@@ -1,0 +1,175 @@
+{
+  "tags" : [ "java", "spring-boot", "logging" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1544079,
+        "reputation" : 6128,
+        "user_id" : 1438038,
+        "user_type" : "registered",
+        "accept_rate" : 51,
+        "profile_image" : "https://i.sstatic.net/2N2JQ.png?s=256",
+        "display_name" : "user1438038",
+        "link" : "https://stackoverflow.com/users/1438038/user1438038"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1709117433,
+      "post_id" : 77575153,
+      "comment_id" : 137637993,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Neither <code>runtime</code> nor <code>runtimeOnly</code> worked for me. I had to use <code>all</code> or <code>configureEach</code>."
+    } ],
+    "owner" : {
+      "account_id" : 1522872,
+      "reputation" : 6631,
+      "user_id" : 1422070,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://i.sstatic.net/oQua9.png?s=256",
+      "display_name" : "edwardmp",
+      "link" : "https://stackoverflow.com/users/1422070/edwardmp"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1701302491,
+    "creation_date" : 1701302491,
+    "answer_id" : 77575153,
+    "question_id" : 76706612,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I was too lazy to exclude this dependency manually one by one, so this is how I fixed this using Gradle in a more efficient way. Just put below in your Gradle config to exclude this transitive dependency (so that only <code>spring-jcl</code> is used at runtime).</p>\n<p>For <code>build.gradle.kts</code>:</p>\n<pre class=\"lang-kotlin prettyprint-override\"><code>configurations {\n    runtimeOnly {\n        exclude(group = &quot;commons-logging&quot;, module = &quot;commons-logging&quot;)\n    }\n}\n</code></pre>\n<p>Or, if you use <code>build.gradle</code> / groovy syntax:</p>\n<pre><code>configurations {\n    runtime {\n        exclude(group = &quot;org.slf4j&quot;, module = &quot;slf4j-log4j12&quot;)\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1544079,
+        "reputation" : 6128,
+        "user_id" : 1438038,
+        "user_type" : "registered",
+        "accept_rate" : 51,
+        "profile_image" : "https://i.sstatic.net/2N2JQ.png?s=256",
+        "display_name" : "user1438038",
+        "link" : "https://stackoverflow.com/users/1438038/user1438038"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1709117874,
+      "post_id" : 77605594,
+      "comment_id" : 137638073,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I would use <code>configureEach</code> instead of <code>all</code> in Gradle (new Tasks API)."
+    } ],
+    "owner" : {
+      "account_id" : 11639624,
+      "reputation" : 2484,
+      "user_id" : 8524584,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/98c6d2c81245b1af1c209bbf4019d2e7?s=256&d=identicon&r=PG",
+      "display_name" : "bezbos.",
+      "link" : "https://stackoverflow.com/users/8524584/bezbos"
+    },
+    "is_accepted" : true,
+    "score" : 35,
+    "last_activity_date" : 1702030653,
+    "last_edit_date" : 1702030653,
+    "creation_date" : 1701773326,
+    "answer_id" : 77605594,
+    "question_id" : 76706612,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In your case <code>unirest-java</code> has a transitive dependency on <code>org.apache.httpcomponents</code>, which further has a transitive dependency on <code>commons-logging</code>. Spring JCL probably scans the classpath, finds <code>commons-logging</code> and that's why it warns you about potential conflicts with Spring Boot's pre-configured loggers.</p>\n<p>You can list all the dependencies and transitive dependencies in your Maven project by running <code>mvn dependency:tree</code>. For Gradle projects you can run <code>gradle dependencies</code>.</p>\n<p>To exclude <code>commons-logging</code> in a Maven project, add this to your <code>pom.xml</code> configuration file:</p>\n<pre><code>&lt;dependencies&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;com.mashape.unirest&lt;/groupId&gt;\n        &lt;artifactId&gt;unirest-java&lt;/artifactId&gt;\n        &lt;version&gt;1.4.9&lt;/version&gt;\n        &lt;exclusions&gt;\n            &lt;exclusion&gt;\n                &lt;groupId&gt;commons-logging&lt;/groupId&gt;\n                &lt;artifactId&gt;commons-logging&lt;/artifactId&gt;\n            &lt;/exclusion&gt;\n        &lt;/exclusions&gt;\n    &lt;/dependency&gt;\n&lt;/dependencies&gt;\n</code></pre>\n<p>If you're using Gradle, add this to your <code>build.gradle</code> file:</p>\n<pre><code>implementation('com.mashape.unirest:unirest-java:1.4.9') {\n        exclude group: 'commons-logging', module: 'commons-logging'\n    }\n</code></pre>\n<p>You may also exclude dependencies globally from your project:</p>\n<pre><code>configurations {\n    compileOnly {\n        extendsFrom annotationProcessor\n    }\n    all {\n        exclude group: 'commons-logging', module: 'commons-logging'\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 12227444,
+        "reputation" : 339,
+        "user_id" : 8924587,
+        "user_type" : "registered",
+        "profile_image" : "https://lh4.googleusercontent.com/-y2BmzBDwwU0/AAAAAAAAAAI/AAAAAAAAAC4/ePva-0CF89U/s256-rj/photo.jpg",
+        "display_name" : "Hein Gertenbach",
+        "link" : "https://stackoverflow.com/users/8924587/hein-gertenbach"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1745573692,
+      "post_id" : 78461858,
+      "comment_id" : 140368493,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "OP&#39;s post states that they are using spring boot which is part of the problem. So adding a spring boot dependency is pointless as it is already there."
+    } ],
+    "owner" : {
+      "account_id" : 29655115,
+      "reputation" : 56,
+      "user_id" : 22728029,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/ACg8ocLqJUcP98W-TdadEuO4TK_MsgMqUnsun1qm-P7X_YBPFA=k-s256",
+      "display_name" : "Max",
+      "link" : "https://stackoverflow.com/users/22728029/max"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1716019912,
+    "last_edit_date" : 1716019912,
+    "creation_date" : 1715364026,
+    "answer_id" : 78461858,
+    "question_id" : 76706612,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>For the same problem, inside the pom i solved it like this :</strong></p>\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;.\n    &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;\n&lt;/dependency&gt;\n</code></pre>\n<p><em><strong>Let me know if it works for you too, thank you.</strong></em></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 32408588,
+      "reputation" : 11,
+      "user_id" : 25174566,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8ec24138b1ac27f9135e6d430c56e26f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "An&#237;bal H. Flores",
+      "link" : "https://stackoverflow.com/users/25174566/an%c3%adbal-h-flores"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1716322543,
+    "creation_date" : 1716322543,
+    "answer_id" : 78514177,
+    "question_id" : 76706612,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For the same problem with eureka updated to spring boot 3.2.5\nI solved excluding commons-logging in pom.xml in this dependency</p>\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;\n    &lt;exclusions&gt;\n        &lt;exclusion&gt;\n            &lt;groupId&gt;commons-logging&lt;/groupId&gt;\n            &lt;artifactId&gt;commons-logging&lt;/artifactId&gt;\n        &lt;/exclusion&gt;\n    &lt;/exclusions&gt;\n&lt;/dependency&gt;\n</code></pre>\n<p>after doing in terminal</p>\n<pre><code> mvn dependency:tree \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25583936,
+      "reputation" : 979,
+      "user_id" : 19361968,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1d19c6d51232c67af617cf944af5a30c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Murat K.",
+      "link" : "https://stackoverflow.com/users/19361968/murat-k"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1716800631,
+    "creation_date" : 1716800631,
+    "answer_id" : 78538132,
+    "question_id" : 76706612,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For Gradle I solved it with:</p>\n<pre><code>configurations.implementation {\n    exclude group: 'commons-logging', module: 'commons-logging'\n}\n</code></pre>\n<p>in build.gradle file.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5619788,
+    "reputation" : 1602,
+    "user_id" : 4450024,
+    "user_type" : "registered",
+    "accept_rate" : 99,
+    "profile_image" : "https://i.sstatic.net/WMErl.jpg?s=256",
+    "display_name" : "Nunyet Cal&#231;ada",
+    "link" : "https://stackoverflow.com/users/4450024/nunyet-cal%c3%a7ada"
+  },
+  "is_answered" : true,
+  "view_count" : 102896,
+  "accepted_answer_id" : 77605594,
+  "answer_count" : 5,
+  "score" : 55,
+  "last_activity_date" : 1762850535,
+  "creation_date" : 1689612941,
+  "last_edit_date" : 1762850535,
+  "question_id" : 76706612,
+  "link" : "https://stackoverflow.com/questions/76706612/standard-commons-logging-discovery-in-action-with-spring-jcl",
+  "title" : "Standard Commons Logging discovery in action with spring-jcl",
+  "body" : "<p>I have a springBoot all with these dependencies:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;dependencies&gt;\n  &lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;\n  &lt;/dependency&gt;\n  \n  &lt;!-- https://mvnrepository.com/artifact/org.projectlombok/lombok --&gt;\n  &lt;dependency&gt;\n    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;\n    &lt;artifactId&gt;lombok&lt;/artifactId&gt;\n    &lt;version&gt;1.18.28&lt;/version&gt;\n    &lt;scope&gt;provided&lt;/scope&gt;\n  &lt;/dependency&gt;\n  \n  &lt;!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java --&gt;\n  &lt;dependency&gt;\n    &lt;groupId&gt;com.mashape.unirest&lt;/groupId&gt;\n    &lt;artifactId&gt;unirest-java&lt;/artifactId&gt;\n    &lt;version&gt;1.4.9&lt;/version&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;com.mysql&lt;/groupId&gt;\n    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;\n    &lt;scope&gt;runtime&lt;/scope&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;\n    &lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;\n    &lt;version&gt;0.11.5&lt;/version&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;\n    &lt;artifactId&gt;jjwt-impl&lt;/artifactId&gt;\n    &lt;version&gt;0.11.5&lt;/version&gt;\n    &lt;scope&gt;runtime&lt;/scope&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;\n    &lt;artifactId&gt;jjwt-jackson&lt;/artifactId&gt;\n    &lt;version&gt;0.11.5&lt;/version&gt;\n    &lt;scope&gt;runtime&lt;/scope&gt;\n  &lt;/dependency&gt;\n  \n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;\n    &lt;scope&gt;test&lt;/scope&gt;\n  &lt;/dependency&gt;\n  \n  &lt;dependency&gt;\n    &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-security-test&lt;/artifactId&gt;\n    &lt;scope&gt;test&lt;/scope&gt;\n  &lt;/dependency&gt;\n&lt;/dependencies&gt;\n</code></pre>\n<p>but I have this message on the console:</p>\n<pre class=\"lang-none prettyprint-override\"><code>Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts\n</code></pre>\n<p>Here the mvn dependency:tree :</p>\n<pre class=\"lang-none prettyprint-override\"><code>[INFO] Scanning for projects...\n[INFO] \n[INFO] ----------------&lt; com.planets:com.planets &gt;-----------------\n[INFO] Building planets 0.0.1-SNAPSHOT\n[INFO]   from pom.xml\n[INFO] --------------------------------[ jar ]---------------------------------\n[INFO] \n[INFO] --- dependency:3.5.0:tree (default-cli) @ com.planets ---\n[INFO] com.planets:com.planets:jar:0.0.1-SNAPSHOT\n[INFO] +- org.springframework.boot:spring-boot-starter-data-jpa:jar:3.1.1:compile\n[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:3.1.1:compile\n[INFO] |  |  \\- org.aspectj:aspectjweaver:jar:1.9.19:compile\n[INFO] |  +- org.springframework.boot:spring-boot-starter-jdbc:jar:3.1.1:compile\n[INFO] |  |  +- com.zaxxer:HikariCP:jar:5.0.1:compile\n[INFO] |  |  \\- org.springframework:spring-jdbc:jar:6.0.10:compile\n[INFO] |  +- org.hibernate.orm:hibernate-core:jar:6.2.5.Final:compile\n[INFO] |  |  +- jakarta.persistence:jakarta.persistence-api:jar:3.1.0:compile\n[INFO] |  |  +- jakarta.transaction:jakarta.transaction-api:jar:2.0.1:compile\n[INFO] |  |  +- org.jboss.logging:jboss-logging:jar:3.5.1.Final:compile\n[INFO] |  |  +- org.hibernate.common:hibernate-commons-annotations:jar:6.0.6.Final:runtime\n[INFO] |  |  +- io.smallrye:jandex:jar:3.0.5:runtime\n[INFO] |  |  +- com.fasterxml:classmate:jar:1.5.1:compile\n[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.14.5:runtime\n[INFO] |  |  +- org.glassfish.jaxb:jaxb-runtime:jar:4.0.3:runtime\n[INFO] |  |  |  \\- org.glassfish.jaxb:jaxb-core:jar:4.0.3:runtime\n[INFO] |  |  |     +- org.eclipse.angus:angus-activation:jar:2.0.1:runtime\n[INFO] |  |  |     +- org.glassfish.jaxb:txw2:jar:4.0.3:runtime\n[INFO] |  |  |     \\- com.sun.istack:istack-commons-runtime:jar:4.1.2:runtime\n[INFO] |  |  +- jakarta.inject:jakarta.inject-api:jar:2.0.1:runtime\n[INFO] |  |  \\- org.antlr:antlr4-runtime:jar:4.10.1:compile\n[INFO] |  +- org.springframework.data:spring-data-jpa:jar:3.1.1:compile\n[INFO] |  |  +- org.springframework.data:spring-data-commons:jar:3.1.1:compile\n[INFO] |  |  +- org.springframework:spring-orm:jar:6.0.10:compile\n[INFO] |  |  +- org.springframework:spring-context:jar:6.0.10:compile\n[INFO] |  |  +- org.springframework:spring-tx:jar:6.0.10:compile\n[INFO] |  |  +- org.springframework:spring-beans:jar:6.0.10:compile\n[INFO] |  |  +- jakarta.annotation:jakarta.annotation-api:jar:2.1.1:compile\n[INFO] |  |  \\- org.slf4j:slf4j-api:jar:2.0.7:compile\n[INFO] |  \\- org.springframework:spring-aspects:jar:6.0.10:compile\n[INFO] +- org.springframework.boot:spring-boot-starter-security:jar:3.1.1:compile\n[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:3.1.1:compile\n[INFO] |  |  +- org.springframework.boot:spring-boot:jar:3.1.1:compile\n[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:3.1.1:compile\n[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:3.1.1:compile\n[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.4.8:compile\n[INFO] |  |  |  |  \\- ch.qos.logback:logback-core:jar:1.4.8:compile\n[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.20.0:compile\n[INFO] |  |  |  |  \\- org.apache.logging.log4j:log4j-api:jar:2.20.0:compile\n[INFO] |  |  |  \\- org.slf4j:jul-to-slf4j:jar:2.0.7:compile\n[INFO] |  |  \\- org.yaml:snakeyaml:jar:1.33:compile\n[INFO] |  +- org.springframework:spring-aop:jar:6.0.10:compile\n[INFO] |  +- org.springframework.security:spring-security-config:jar:6.1.1:compile\n[INFO] |  \\- org.springframework.security:spring-security-web:jar:6.1.1:compile\n[INFO] |     \\- org.springframework:spring-expression:jar:6.0.10:compile\n[INFO] +- org.springframework.boot:spring-boot-starter-validation:jar:3.1.1:compile\n[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:10.1.10:compile\n[INFO] |  \\- org.hibernate.validator:hibernate-validator:jar:8.0.0.Final:compile\n[INFO] |     \\- jakarta.validation:jakarta.validation-api:jar:3.0.2:compile\n[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:3.1.1:compile\n[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:3.1.1:compile\n[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.15.2:compile\n[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.15.2:compile\n[INFO] |  |  \\- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.15.2:compile\n[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:3.1.1:compile\n[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:10.1.10:compile\n[INFO] |  |  \\- org.apache.tomcat.embed:tomcat-embed-websocket:jar:10.1.10:compile\n[INFO] |  +- org.springframework:spring-web:jar:6.0.10:compile\n[INFO] |  |  \\- io.micrometer:micrometer-observation:jar:1.11.1:compile\n[INFO] |  |     \\- io.micrometer:micrometer-commons:jar:1.11.1:compile\n[INFO] |  \\- org.springframework:spring-webmvc:jar:6.0.10:compile\n[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.15.2:compile\n[INFO] +- org.projectlombok:lombok:jar:1.18.28:provided\n[INFO] +- com.mashape.unirest:unirest-java:jar:1.4.9:compile\n[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.5.2:compile\n[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.16:compile\n[INFO] |  |  +- commons-logging:commons-logging:jar:1.2:compile\n[INFO] |  |  \\- commons-codec:commons-codec:jar:1.15:compile\n[INFO] |  +- org.apache.httpcomponents:httpasyncclient:jar:4.1.5:compile\n[INFO] |  |  \\- org.apache.httpcomponents:httpcore-nio:jar:4.4.16:compile\n[INFO] |  +- org.apache.httpcomponents:httpmime:jar:4.5.2:compile\n[INFO] |  \\- org.json:json:jar:20160212:compile\n[INFO] +- com.itextpdf:itextpdf:jar:5.5.13.3:compile\n[INFO] +- com.mysql:mysql-connector-j:jar:8.0.33:runtime\n[INFO] +- io.jsonwebtoken:jjwt-api:jar:0.11.5:compile\n[INFO] +- io.jsonwebtoken:jjwt-impl:jar:0.11.5:runtime\n[INFO] +- io.jsonwebtoken:jjwt-jackson:jar:0.11.5:runtime\n[INFO] |  \\- com.fasterxml.jackson.core:jackson-databind:jar:2.15.2:compile\n[INFO] |     \\- com.fasterxml.jackson.core:jackson-core:jar:2.15.2:compile\n[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:3.1.1:test\n[INFO] |  +- org.springframework.boot:spring-boot-test:jar:3.1.1:test\n[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:3.1.1:test\n[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.8.0:test\n[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:4.0.0:runtime\n[INFO] |  |  \\- jakarta.activation:jakarta.activation-api:jar:2.1.2:runtime\n[INFO] |  +- net.minidev:json-smart:jar:2.4.11:test\n[INFO] |  |  \\- net.minidev:accessors-smart:jar:2.4.11:test\n[INFO] |  |     \\- org.ow2.asm:asm:jar:9.3:test\n[INFO] |  +- org.assertj:assertj-core:jar:3.24.2:test\n[INFO] |  +- org.hamcrest:hamcrest:jar:2.2:test\n[INFO] |  +- org.junit.jupiter:junit-jupiter:jar:5.9.3:test\n[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.9.3:test\n[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test\n[INFO] |  |  |  +- org.junit.platform:junit-platform-commons:jar:1.9.3:test\n[INFO] |  |  |  \\- org.apiguardian:apiguardian-api:jar:1.1.2:test\n[INFO] |  |  +- org.junit.jupiter:junit-jupiter-params:jar:5.9.3:test\n[INFO] |  |  \\- org.junit.jupiter:junit-jupiter-engine:jar:5.9.3:test\n[INFO] |  |     \\- org.junit.platform:junit-platform-engine:jar:1.9.3:test\n[INFO] |  +- org.mockito:mockito-core:jar:5.3.1:test\n[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.14.5:test\n[INFO] |  |  \\- org.objenesis:objenesis:jar:3.3:test\n[INFO] |  +- org.mockito:mockito-junit-jupiter:jar:5.3.1:test\n[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.1:test\n[INFO] |  |  \\- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test\n[INFO] |  +- org.springframework:spring-core:jar:6.0.10:compile\n[INFO] |  |  \\- org.springframework:spring-jcl:jar:6.0.10:compile\n[INFO] |  +- org.springframework:spring-test:jar:6.0.10:test\n[INFO] |  \\- org.xmlunit:xmlunit-core:jar:2.9.1:test\n[INFO] \\- org.springframework.security:spring-security-test:jar:6.1.1:test\n[INFO]    \\- org.springframework.security:spring-security-core:jar:6.1.1:compile\n[INFO]       \\- org.springframework.security:spring-security-crypto:jar:6.1.1:compile\n[INFO] ------------------------------------------------------------------------\n[INFO] BUILD SUCCESS\n</code></pre>\n"
+}

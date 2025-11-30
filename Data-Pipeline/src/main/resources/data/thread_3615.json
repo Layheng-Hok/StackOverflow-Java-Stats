@@ -1,0 +1,82 @@
+{
+  "tags" : [ "java", "tomcat", "spring-boot", "logging", "logback" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 11175092,
+      "reputation" : 48503,
+      "user_id" : 8200937,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/5h9EI.png?s=256",
+      "display_name" : "glytching",
+      "link" : "https://stackoverflow.com/users/8200937/glytching"
+    },
+    "is_accepted" : true,
+    "score" : 14,
+    "last_activity_date" : 1509105691,
+    "last_edit_date" : 1509105691,
+    "creation_date" : 1509026133,
+    "answer_id" : 46956291,
+    "question_id" : 46954380,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>While your application is running (and Logback within your application has an open handle to the log file) if you delete the log file then Logback won't know that the the file has been deleted (since the Logback process still has an open file handle) but since the file <em>has</em> been deleted Logback cannot actually write anything to disk and this situation remains until Logback is re-initialised (and your FileAppender recreates the file). Typically, this will be done on application startup.</p>\n\n<p>There's an <a href=\"https://jira.qos.ch/browse/LOGBACK-1004\" rel=\"noreferrer\">open issue</a> against Logback requesting a change in Logback's behaviour in this situation. </p>\n\n<p>It is somewhat unusual to delete a file which an application's logging sub system (i.e Logback) is configured to write to while that application is <em>active</em>. Perhaps the issue you are trying to address by deleting the file could be addressed in some other way? If not i.e. if you <strong>must</strong> be able to delete an in-flight log file and expect Logback to create a new file then I think your options are:</p>\n\n<ul>\n<li><a href=\"https://jira.qos.ch/browse/LOGBACK-1004\" rel=\"noreferrer\">Vote for issue</a> and hope it is resolved soon</li>\n<li>Contribute a PR with a fix for that issue</li>\n<li>Fork Logback and create your own patched version</li>\n</ul>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6441295,
+        "reputation" : 313,
+        "user_id" : 4991236,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/748ebd7c344941b71de3bdbdf048bceb?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Viktor Sirotin",
+        "link" : "https://stackoverflow.com/users/4991236/viktor-sirotin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1693335497,
+      "post_id" : 57161877,
+      "comment_id" : 135746445,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Deleting of log files can be useful by unit testing of log configuration in a project."
+    } ],
+    "owner" : {
+      "account_id" : 1397096,
+      "reputation" : 639,
+      "user_id" : 1326662,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Iytd9.jpg?s=256",
+      "display_name" : "Ralf",
+      "link" : "https://stackoverflow.com/users/1326662/ralf"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1596782349,
+    "last_edit_date" : 1596782349,
+    "creation_date" : 1563877165,
+    "answer_id" : 57161877,
+    "question_id" : 46954380,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><a href=\"https://stackoverflow.com/a/46956291/1326662\">The accepted answer above</a> is perfectly correct - if you anyways have to &quot;delete&quot; a logfile for some reason another option would be recreating it yourself or just &quot;truncating&quot; it instead of deleting:</p>\n<pre><code>$truncate -s0 /var/log/audit/audit.log\n\n# or if your shell does not support `truncate` (like mine on mac) try redirecting no content to your logfile:\n$ :&gt; /var/log/audit/audit.log\n</code></pre>\n<p>At least that was perfectly ok in my situation and logback just continued logging...</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 891959,
+    "reputation" : 1824,
+    "user_id" : 930027,
+    "user_type" : "registered",
+    "accept_rate" : 62,
+    "profile_image" : "https://i.sstatic.net/6Xex1.jpg?s=256",
+    "display_name" : "Kevin Joymungol",
+    "link" : "https://stackoverflow.com/users/930027/kevin-joymungol"
+  },
+  "is_answered" : true,
+  "view_count" : 5619,
+  "accepted_answer_id" : 46956291,
+  "answer_count" : 2,
+  "score" : 8,
+  "last_activity_date" : 1762032298,
+  "creation_date" : 1509020972,
+  "last_edit_date" : 1762032298,
+  "question_id" : 46954380,
+  "link" : "https://stackoverflow.com/questions/46954380/logback-does-not-recreate-log-file-after-file-has-been-deleted",
+  "title" : "Logback does not recreate log file after file has been deleted",
+  "body" : "<p>I have a logger application that runs on a Tomcat server. I am using logback on spring boot framework. Below is my <code>logback.xml</code> file</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;configuration debug=&quot;true&quot;&gt;\n    &lt;appender name=&quot;FILE&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;\n        &lt;file&gt;/var/log/audit/audit.log&lt;/file&gt;\n        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;\n            &lt;!-- daily rollover --&gt;\n            &lt;fileNamePattern&gt;/var/log/audit/audit_%d{yyyy-MM-dd}.%i.log&lt;/fileNamePattern&gt;\n            &lt;timeBasedFileNamingAndTriggeringPolicy\n                    class=&quot;ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP&quot;&gt;\n                &lt;!-- or whenever the file size reaches 50MB --&gt;\n                &lt;maxFileSize&gt;100MB&lt;/maxFileSize&gt;\n            &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;\n            &lt;!-- keep 30 days' worth of history --&gt;\n            &lt;maxHistory&gt;30&lt;/maxHistory&gt;\n        &lt;/rollingPolicy&gt;\n        &lt;append&gt;true&lt;/append&gt;\n        &lt;encoder&gt;\n            &lt;pattern&gt;%msg%n&lt;/pattern&gt;\n        &lt;/encoder&gt;\n        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;\n            &lt;level&gt;INFO&lt;/level&gt;\n        &lt;/filter&gt;\n    &lt;/appender&gt;\n\n    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;\n        &lt;encoder&gt;\n            &lt;pattern&gt;%msg%n&lt;/pattern&gt;\n        &lt;/encoder&gt;\n    &lt;/appender&gt;\n\n    &lt;logger name=&quot;com.logger.rest&quot;&gt;\n        &lt;appender-ref ref=&quot;FILE&quot; /&gt;\n    &lt;/logger&gt;\n\n    &lt;root level=&quot;INFO&quot;&gt;\n        &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;\n    &lt;/root&gt;\n&lt;/configuration&gt;\n</code></pre>\n<p>My application logs correctly to the <code>/var/log/audit/audit.log</code>. But at some point I needed to delete the log file. After the delete I notice that no new audit.log file is created when I call the logger application. It is only when I restart the logger application that a new log file is generated.</p>\n<p>Is there any way that I can bypass the app restart so that logback automatically creates a new audit.log file (when creating logging information)  in case it has been deleted</p>\n"
+}

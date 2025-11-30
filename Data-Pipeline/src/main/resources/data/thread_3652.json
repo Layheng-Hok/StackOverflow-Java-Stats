@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "okhttp" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1274569,
+      "reputation" : 1189,
+      "user_id" : 1230075,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://i.sstatic.net/svyCO.jpg?s=256",
+      "display_name" : "franklinexpress",
+      "link" : "https://stackoverflow.com/users/1230075/franklinexpress"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1548466864,
+    "creation_date" : 1548466864,
+    "answer_id" : 54374944,
+    "question_id" : 54374564,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Gradle doesn't include the dependencies when creating the jar by default.</p>\n\n<p>You can use shadow to create a jar with all dependencies <a href=\"https://github.com/johnrengelman/shadow\" rel=\"nofollow noreferrer\">https://github.com/johnrengelman/shadow</a>\nlike this:</p>\n\n<pre><code>plugins {\n    id 'java'\n    id 'com.github.johnrengelman.shadow' version '4.0.4' . &lt;----- add shadow dependency\n}\n\nrepositories {\n    mavenCentral()\n}\n\ndependencies {\n    compile 'com.squareup.okhttp3:okhttp:3.12.1'\n}\n</code></pre>\n\n<p>when you build, shadow will add another file named {your_project}-shadow.jar in your build directory or something similar. Execute that and you should see it run.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8295034,
+    "reputation" : 63,
+    "user_id" : 6235528,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/c5df231071591e5b81a2896c0d60f060?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "LikeToLearnStuff",
+    "link" : "https://stackoverflow.com/users/6235528/liketolearnstuff"
+  },
+  "is_answered" : false,
+  "view_count" : 8680,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761926660,
+  "creation_date" : 1548462556,
+  "question_id" : 54374564,
+  "link" : "https://stackoverflow.com/questions/54374564/okhttp-noclassdeffounderror-when-running-project",
+  "title" : "okhttp NoClassDefFoundError when running project",
+  "body" : "<p>I've created the build.gradle file which looks like this:</p>\n\n<pre><code>plugins {\n    id 'java'\n}\n\nrepositories {\n    mavenCentral()\n}\n\ndependencies {\n    compile 'com.squareup.okhttp3:okhttp:3.12.1'\n}\n</code></pre>\n\n<p>then I have a simple helloWorld class which uses the sample code from the okhttp website:</p>\n\n<pre><code>import okhttp3.OkHttpClient;\nimport okhttp3.Request;\nimport okhttp3.Response;\n\npublic class helloWorld{\n    public static void main(String[] args){\n        System.out.println(\"Hello World!\");\n        OkHttpClient client = new OkHttpClient();\n\n        Request request = new Request.Builder()\n        .url(\"www.google.com\")\n        .build();\n\n        try (Response response = client.newCall(request).execute()) {\n            System.out.println(\"SUCCESSS----&gt;\"+response.body().string());\n        } catch (IOException e){\n            System.out.println(\"......error thrown\");\n        }\n    }\n}\n</code></pre>\n\n<p>When I try to run the compiled class file I get the following error:</p>\n\n<pre><code>Exception in thread \"main\" java.lang.NoClassDefFoundError: okhttp3/OkHttpClient at helloWorld.main(helloWorld.java:6)\nCaused by: java.lang.ClassNotFoundException: okhttp3.OkHttpClient at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:583)\n    at java.base/jdk.internal.loader. \nClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178)\n    at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)\n    ... 1 more\n</code></pre>\n\n<p>If I remove the lines</p>\n\n<pre><code>OkHttpClient client = new OkHttpClient(); \nRequest request = new Request.Builder()\n    .url(\"www.google.com\")\n    .build();\n\n    try (Response response = client.newCall(request).execute()) {\n        System.out.println(\"SUCCESSS----&gt;\"+response.body().string());\n    } catch (IOException e){\n        System.out.println(\"......error thrown\");\n    }\n</code></pre>\n\n<p>then the class runs correctly. So I think that maybe the jar isn't being imported correctly?</p>\n\n<p>To be clear, the project is being compiled correctly, the issue only occurs if I try to run the compiled class file.</p>\n"
+}

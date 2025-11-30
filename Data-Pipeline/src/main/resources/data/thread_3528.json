@@ -1,0 +1,121 @@
+{
+  "tags" : [ "java", "multithreading" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 75156,
+      "reputation" : 12324,
+      "user_id" : 215651,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/a558b4bc6d9297599eb5a23c3b9a2679?s=256&d=identicon&r=PG",
+      "display_name" : "lreeder",
+      "link" : "https://stackoverflow.com/users/215651/lreeder"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1377707788,
+    "last_edit_date" : 1377707788,
+    "creation_date" : 1377707471,
+    "answer_id" : 18493491,
+    "question_id" : 18493318,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You could use <code>ExecutorService.invokeAny()</code>.   You would have to wait for one thread to complete, but not all of them.   Alternatively, since you already have a list of tasks for invokeAll, you can interate over them and call <code>ExecutorService.submit</code> on each one.   A bit of extra code, but not much...</p>\n\n<pre><code>for(Callable task : myTaskCollection)\n{\n   myExecutorService.submit(task);\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3136874,
+        "reputation" : 3250,
+        "user_id" : 2653222,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/8e1982d6681fda864de3c34a35807984?s=256&d=identicon&r=PG",
+        "display_name" : "Giulio Franco",
+        "link" : "https://stackoverflow.com/users/2653222/giulio-franco"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1377708122,
+      "post_id" : 18493569,
+      "comment_id" : 27188185,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;d like to point out that, if you submit tasks with execute, you might not be able to tell if and when the submitted tasks complete, i.e. you will need the futures, or some other form of notification, in order to know when your jobs have completed."
+    } ],
+    "owner" : {
+      "account_id" : 974021,
+      "reputation" : 64063,
+      "user_id" : 995891,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/cbcf412e8fc60799c981f62a7c30e907?s=256&d=identicon&r=PG",
+      "display_name" : "zapl",
+      "link" : "https://stackoverflow.com/users/995891/zapl"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1377710397,
+    "last_edit_date" : 1377710397,
+    "creation_date" : 1377707745,
+    "answer_id" : 18493569,
+    "question_id" : 18493318,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You could use <code>submit</code> if you are interested in the <code>Future</code>s. (This works for <code>Callable</code> as well)</p>\n\n<pre><code>public static List&lt;Future&lt;?&gt;&gt; submitAll(ExecutorService executor, Collection&lt;? extends Runnable&gt; tasks) {\n    List&lt;Future&lt;?&gt;&gt; result = new ArrayList&lt;Future&lt;?&gt;&gt;(tasks.size());\n    for (Runnable task : tasks) {\n        result.add(executor.submit(task));\n    }\n    return result;\n}\n</code></pre>\n\n<p>Or <code>execute</code> if not</p>\n\n<pre><code>public static void executeAll(ExecutorService executor, Collection&lt;? extends Runnable&gt; tasks) {\n    for (Runnable task : tasks) {\n        executor.execute(task);\n    }\n}\n</code></pre>\n\n<p>Both methods just enqueue a task and it will be executed at some point in the future.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 182534,
+      "reputation" : 5903,
+      "user_id" : 417302,
+      "user_type" : "registered",
+      "accept_rate" : 64,
+      "profile_image" : "https://i.sstatic.net/P28KN.png?s=256",
+      "display_name" : "bdkosher",
+      "link" : "https://stackoverflow.com/users/417302/bdkosher"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1377708077,
+    "creation_date" : 1377708077,
+    "answer_id" : 18493650,
+    "question_id" : 18493318,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I'm actually surprised <code>invokeAll</code> behaves like this. The <code>submit</code> method doesn't block, so it's just a matter of calling that for each task:</p>\n\n<pre><code>public static &lt;T&gt; Collection&lt;Future&lt;T&gt;&gt; submitAll(ExecutorService service, Collection&lt;? extends Callable&lt;T&gt;&gt; tasks) {\n    Collection&lt;Future&lt;T&gt;&gt; futures = new ArrayList&lt;&gt;(tasks.size());\n    for (Callable&lt;T&gt; task: tasks) {\n        futures.add(service.submit(task));\n    }\n    return futures;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14399611,
+      "reputation" : 31,
+      "user_id" : 10401766,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/KNz3C.jpg?s=256",
+      "display_name" : "sergo911",
+      "link" : "https://stackoverflow.com/users/10401766/sergo911"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762285302,
+    "last_edit_date" : 1762285302,
+    "creation_date" : 1762275242,
+    "answer_id" : 79809181,
+    "question_id" : 18493318,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Just use ExecutorCompletionService and submit / take + get.</p>\n<p>Analog for <strong>invokeAll</strong>:</p>\n<pre><code>ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());\n\nList&lt;Callable&lt;Integer&gt;&gt; tasksForAll = List.of(\n  () -&gt; {\n    Thread.sleep(1000);\n    return 100;\n  },\n  () -&gt; {\n    Thread.sleep(2000);\n    return 200;\n  },\n  () -&gt; {\n    Thread.sleep(3000);\n    return 300;\n  });\n\nExecutorCompletionService&lt;Integer&gt; completionService = new ExecutorCompletionService(executorService);\nfor (Callable&lt;Integer&gt; task: tasksForAll) {\n  completionService.submit(task);\n  System.out.println(&quot;analogInvokeAllUnblockedWithOrderingResults: task was sent&quot;);\n}\n\nfor (int i = 0; i &lt;= tasksForAll.size(); i++) {\n  System.out.println(&quot;analogInvokeAllUnblockedWithOrderingResults =&gt; &quot; + completionService.take().get());\n}\n\nexecutorService.shutdown();\nexecutorService.awaitTermination(1, TimeUnit.DAYS);\n</code></pre>\n<p>Analog for <strong>invokeAny</strong>:</p>\n<pre><code>ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());\nanalogInvokeAllUnblockedWithOrderingResults(executorService);\nexecutorService.shutdown();\nexecutorService.awaitTermination(1, TimeUnit.DAYS);\n...\nprivate void analogInvokeAnyUnblocked(ExecutorService executorService) throws InterruptedException, ExecutionException {\n    List&lt;Callable&lt;Integer&gt;&gt; tasksForAny = List.of(\n      () -&gt; emulateLongTask(1), //Output: 10\n      () -&gt; emulateLongTask(2), //Output: 20\n      () -&gt; emulateLongTask(3) //Output: 30\n    );\n\n    ExecutorCompletionService&lt;Integer&gt; completionService = new ExecutorCompletionService(executorService);\n    List&lt;Future&lt;Integer&gt;&gt; futures = new ArrayList&lt;&gt; ();\n    for (Callable&lt;Integer&gt; task: tasksForAny) {\n      Future&lt;Integer&gt; future = completionService.submit(task);\n      futures.add(future);\n      System.out.println(&quot;analogInvokeAnyUnblocked: task was sent&quot;);\n    }\n\n    Future&lt;Integer&gt; fistFuture = completionService.take();\n    System.out.println(&quot;analogInvokeAnyUnblocked =&gt; &quot; + fistFuture.get());\n    for (Future&lt;Integer&gt; future: futures) {\n      if (future != fistFuture) {\n        future.cancel(true);\n      }\n    }\n  }\n  ...\n  private int emulateLongTask(int identifier) {\n    try {\n      int[] array = {1,1,1,1,1,1,1,1,1,1};\n      int res = 0;\n      for (int e: array) {\n        int randomDelay = ThreadLocalRandom.current().nextInt(100, 300);\n        Thread.sleep(randomDelay);\n        res += e;\n      }\n      System.out.println(Thread.currentThread().getName() + &quot; RESULT =&gt; &quot; + res);\n      return res * identifier;\n    } catch (InterruptedException e) {\n      System.out.println(Thread.currentThread().getName() + &quot; InterruptedException&quot;);\n    }\n    return 0;\n  }\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1969265,
+    "reputation" : 16576,
+    "user_id" : 1768690,
+    "user_type" : "registered",
+    "accept_rate" : 60,
+    "profile_image" : "https://www.gravatar.com/avatar/c98a8d5bb74424c9a217db7c0203dae7?s=256&d=identicon&r=PG",
+    "display_name" : "Default",
+    "link" : "https://stackoverflow.com/users/1768690/default"
+  },
+  "is_answered" : true,
+  "view_count" : 6474,
+  "answer_count" : 4,
+  "score" : 11,
+  "last_activity_date" : 1762285302,
+  "creation_date" : 1377706977,
+  "question_id" : 18493318,
+  "link" : "https://stackoverflow.com/questions/18493318/is-there-a-non-blocking-method-analogous-to-executorservice-invokeall",
+  "title" : "Is there a non-blocking method analogous to ExecutorService invokeAll?",
+  "body" : "<p>Java's <code>ExecutorService</code> interface defines a method called <code>invokeAll</code> which takes in a Collection of <code>Callable</code> objects to be processed concurrently. However, the <code>invokeAll</code> method itself waits for all of the tasks to finish running before returning, making it a blocking method. </p>\n\n<p>In my test environment I don't care about the return values of these tasks, I just need them to run concurrently. Now, I know I can manually create new <code>Thread</code> or <code>Runnable</code> objects and start them up myself, but it would be nice and clean if I could simply create a Collection of <code>Runnable</code> or <code>Callable</code> objects and pass them off to a method that starts executing them for me and immediately returns. </p>\n\n<p>Does anybody know of an existing library Class that has the method I am describing? I could not find one while doing some research.</p>\n"
+}

@@ -1,0 +1,212 @@
+{
+  "tags" : [ "java", "mockito" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2524596,
+        "reputation" : 561,
+        "user_id" : 2194201,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/xeA1i.png?s=256",
+        "display_name" : "haggisandchips",
+        "link" : "https://stackoverflow.com/users/2194201/haggisandchips"
+      },
+      "edited" : false,
+      "score" : 61,
+      "creation_date" : 1473779045,
+      "post_id" : 11785556,
+      "comment_id" : 66265810,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This pointed me in the right direction (thanks) for my scenario which was dealing with void methods - in that instance you need to use the alternative style ... <code>doThrow(new RuntimeException()).doNothing().when(myMock).doTheCall();</code>"
+    }, {
+      "owner" : {
+        "account_id" : 1752749,
+        "reputation" : 1158,
+        "user_id" : 1601471,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://www.gravatar.com/avatar/d033a40aa75ecb435f41947e66f44ade?s=256&d=identicon&r=PG",
+        "display_name" : "Raj",
+        "link" : "https://stackoverflow.com/users/1601471/raj"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1658343922,
+      "post_id" : 11785556,
+      "comment_id" : 129031243,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I was not aware that we can mock it this way. Thank you so much Charney! This takes care of many complex scenario that we want to test."
+    } ],
+    "owner" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "is_accepted" : true,
+    "score" : 395,
+    "last_activity_date" : 1511745691,
+    "last_edit_date" : 1511745691,
+    "creation_date" : 1343940667,
+    "answer_id" : 11785556,
+    "question_id" : 11785498,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>From <a href=\"https://static.javadoc.io/org.mockito/mockito-core/2.10.0/org/mockito/Mockito.html#stubbing_consecutive_calls\" rel=\"noreferrer\">the docs</a>:</p>\n\n<blockquote>\n  <p>Sometimes we need to stub with different return value/exception for the same method call. Typical use case could be mocking iterators. Original version of Mockito did not have this feature to promote simple mocking. For example, instead of iterators one could use Iterable or simply collections. Those offer natural ways of stubbing (e.g. using real collections). In rare scenarios stubbing consecutive calls could be useful, though:</p>\n\n<pre><code>when(mock.someMethod(\"some arg\"))\n   .thenThrow(new RuntimeException())\n  .thenReturn(\"foo\");\n\n//First call: throws runtime exception:\nmock.someMethod(\"some arg\");\n\n//Second call: prints \"foo\"\nSystem.out.println(mock.someMethod(\"some arg\"));\n</code></pre>\n</blockquote>\n\n<p>So in your case, you'd want:</p>\n\n<pre><code>when(myMock.doTheCall())\n   .thenReturn(\"You failed\")\n   .thenReturn(\"Success\");\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1085259,
+      "reputation" : 80173,
+      "user_id" : 1081110,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Fp4Pm.jpg?s=256",
+      "display_name" : "Dawood ibn Kareem",
+      "link" : "https://stackoverflow.com/users/1081110/dawood-ibn-kareem"
+    },
+    "is_accepted" : false,
+    "score" : 62,
+    "last_activity_date" : 1429691471,
+    "last_edit_date" : 1429691471,
+    "creation_date" : 1343970372,
+    "answer_id" : 11789581,
+    "question_id" : 11785498,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The shortest way to write what you want is</p>\n\n<pre><code>when(myMock.doTheCall()).thenReturn(\"Success\", \"you failed\");\n</code></pre>\n\n<p>When you supply mutiple arguments to <code>thenReturn</code> like this, each argument will be used at most once, except for the very last argument, which is used as many times as necessary.  For example, in this case, if you make the call 4 times, you'll get \"Success\", \"you failed\", \"you failed\", \"you failed\".</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1025596,
+      "reputation" : 1878,
+      "user_id" : 1034964,
+      "user_type" : "registered",
+      "accept_rate" : 76,
+      "profile_image" : "https://www.gravatar.com/avatar/6d318a26ea5483f5c0178135460b83d8?s=256&d=identicon&r=PG",
+      "display_name" : "anoneironaut",
+      "link" : "https://stackoverflow.com/users/1034964/anoneironaut"
+    },
+    "is_accepted" : false,
+    "score" : 61,
+    "last_activity_date" : 1589541532,
+    "last_edit_date" : 1589541532,
+    "creation_date" : 1482358140,
+    "answer_id" : 41272746,
+    "question_id" : 11785498,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Since the comment that relates to this is hard to read,  I'll add a formatted answer.</p>\n\n<p>If you are trying to do this with a <code>void</code> function that just throws an exception, followed by a no behavior step, then you would do something like this:</p>\n\n<pre><code>Mockito.doThrow(new Exception(\"MESSAGE\"))\n            .doNothing()\n            .when(mockService).method(eq());\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1114026,
+        "reputation" : 303,
+        "user_id" : 1103841,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c882e4b3d4931f6e1bf20b58005784e0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Mihai Morcov",
+        "link" : "https://stackoverflow.com/users/1103841/mihai-morcov"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1544024107,
+      "post_id" : 48441603,
+      "comment_id" : 94131147,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I actually didn&#39;t know about this Stubber  and found it useful, +1."
+    }, {
+      "owner" : {
+        "account_id" : 160094,
+        "reputation" : 4447,
+        "user_id" : 379906,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/d0d2b9a421355f4a5bab3658c6f6b41d?s=256&d=identicon&r=PG",
+        "display_name" : "db80",
+        "link" : "https://stackoverflow.com/users/379906/db80"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1549375971,
+      "post_id" : 48441603,
+      "comment_id" : 95874051,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This should be the right answer if you need the call a void method."
+    } ],
+    "owner" : {
+      "account_id" : 5275920,
+      "reputation" : 1677,
+      "user_id" : 4212710,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b4ee87ae42421bf3790fa347a5786fb6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "typoerrpr",
+      "link" : "https://stackoverflow.com/users/4212710/typoerrpr"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1517262874,
+    "last_edit_date" : 1517262874,
+    "creation_date" : 1516879037,
+    "answer_id" : 48441603,
+    "question_id" : 11785498,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To add on to <a href=\"https://stackoverflow.com/a/11785556/4212710\">this</a> and <a href=\"https://stackoverflow.com/a/11789581/4212710\">this</a> answer, you can also use a loop to chain the mocked calls. This is useful if you need to mock the same thing several times, or mock in some pattern.</p>\n\n<p>Eg (albeit a farfetched one):</p>\n\n<pre><code>import org.mockito.stubbing.Stubber;\n\nStubber stubber = doThrow(new Exception(\"Exception!\"));\nfor (int i=0; i&lt;10; i++) {\n    if (i%2 == 0) {\n        stubber.doNothing();\n    } else {\n        stubber.doThrow(new Exception(\"Exception\"));\n    }\n}\nstubber.when(myMockObject).someMethod(anyString());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2470791,
+      "reputation" : 1891,
+      "user_id" : 2152704,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/EFNr8.jpg?s=256",
+      "display_name" : "Mohammed Elrashidy",
+      "link" : "https://stackoverflow.com/users/2152704/mohammed-elrashidy"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1589541405,
+    "last_edit_date" : 1589541405,
+    "creation_date" : 1560907022,
+    "answer_id" : 56658863,
+    "question_id" : 11785498,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I have a different situation, I wanted to mock a <code>void</code> function for the first call and run it normally at the second call.</p>\n\n<p>This works for me:</p>\n\n<pre><code>Mockito.doThrow(new RuntimeException(\"random runtime exception\"))\n       .doCallRealMethod()\n       .when(spy).someMethod(Mockito.any());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6372325,
+      "reputation" : 19,
+      "user_id" : 4944399,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-2CHG6GL-klQ/AAAAAAAAAAI/AAAAAAAAACY/xwi-P0tsWFQ/s256-rj/photo.jpg",
+      "display_name" : "Shubham Trigunait",
+      "link" : "https://stackoverflow.com/users/4944399/shubham-trigunait"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1623606202,
+    "creation_date" : 1623606202,
+    "answer_id" : 67961085,
+    "question_id" : 11785498,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The shortest would be</p>\n<pre><code>doReturn(&quot;Fail&quot;, &quot;Success&quot;).when(myMock).doTheCall();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 40164,
+    "reputation" : 10391,
+    "user_id" : 116286,
+    "user_type" : "registered",
+    "accept_rate" : 100,
+    "profile_image" : "https://www.gravatar.com/avatar/ec678dd3ac4b2243d150d591e748182e?s=256&d=identicon&r=PG",
+    "display_name" : "jb.",
+    "link" : "https://stackoverflow.com/users/116286/jb"
+  },
+  "is_answered" : true,
+  "view_count" : 171128,
+  "accepted_answer_id" : 11785556,
+  "answer_count" : 6,
+  "score" : 229,
+  "last_activity_date" : 1623606202,
+  "creation_date" : 1343940435,
+  "question_id" : 11785498,
+  "link" : "https://stackoverflow.com/questions/11785498/simulate-first-call-fails-second-call-succeeds",
+  "title" : "Simulate first call fails, second call succeeds",
+  "body" : "<p>I want to use Mockito to test the (simplified) code below. I don't know how to tell Mockito to fail the first time, then succeed the second time.</p>\n\n<pre><code>for(int i = 1; i &lt; 3; i++) {\n  String ret = myMock.doTheCall();\n\n  if(\"Success\".equals(ret)) {\n    log.write(\"success\");\n  } else if ( i &lt; 3 ) {\n    log.write(\"failed, but I'll try again. attempt: \" + i);\n  } else {\n    throw new FailedThreeTimesException();\n  }\n}\n</code></pre>\n\n<p>I can setup the success test with:</p>\n\n<pre><code>Mockito.when(myMock).doTheCall().thenReturn(\"Success\");\n</code></pre>\n\n<p>And the failure test with:</p>\n\n<pre><code>Mockito.when(myMock).doTheCall().thenReturn(\"you failed\");\n</code></pre>\n\n<p>But how can I test that if it fails once (or twice) then succeeds, it's fine?</p>\n"
+}

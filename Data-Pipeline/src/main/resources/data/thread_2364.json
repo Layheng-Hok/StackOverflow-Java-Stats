@@ -1,0 +1,672 @@
+{
+  "tags" : [ "java", "logging" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 261142,
+      "reputation" : 49214,
+      "user_id" : 545127,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://i.sstatic.net/RJgJM.png?s=256",
+      "display_name" : "Raedwald",
+      "link" : "https://stackoverflow.com/users/545127/raedwald"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1380612103,
+    "post_id" : 15758685,
+    "comment_id" : 28256394,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "possible duplicate of <a href=\"http://stackoverflow.com/questions/6077267/java-logging-api-disable-logging-to-standard-output\">java logging API, disable logging to standard output</a>"
+  }, {
+    "owner" : {
+      "account_id" : 193604,
+      "reputation" : 1811,
+      "user_id" : 435436,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cf147eeb87170a38ef68583225da73ba?s=256&d=identicon&r=PG",
+      "display_name" : "Tim Boudreau",
+      "link" : "https://stackoverflow.com/users/435436/tim-boudreau"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1504510527,
+    "post_id" : 15758685,
+    "comment_id" : 79024483,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "A number of answers suggest using FileHandler, as you were originally trying to do.  One thing to be aware of (a lesson painfully learned):  FileHandler is <i>synchronized</i>.  Which means, in a highly multithreaded application, all you need to have a potential deadlock is to pass an object to be logged whose toString() method calls a synchronized method.  Beware of FileHandler."
+  }, {
+    "owner" : {
+      "account_id" : 7841741,
+      "reputation" : 2052,
+      "user_id" : 5932611,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/997c75ff4c8f58ebccc3d660c937116c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Tharindu Sathischandra",
+      "link" : "https://stackoverflow.com/users/5932611/tharindu-sathischandra"
+    },
+    "reply_to_user" : {
+      "account_id" : 193604,
+      "reputation" : 1811,
+      "user_id" : 435436,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cf147eeb87170a38ef68583225da73ba?s=256&d=identicon&r=PG",
+      "display_name" : "Tim Boudreau",
+      "link" : "https://stackoverflow.com/users/435436/tim-boudreau"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1600449848,
+    "post_id" : 15758685,
+    "comment_id" : 113102531,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@TimBoudreau Thanks for the very valuable info. Do you have a suggestion that will be much safer in a multithreaded application?"
+  }, {
+    "owner" : {
+      "account_id" : 193604,
+      "reputation" : 1811,
+      "user_id" : 435436,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cf147eeb87170a38ef68583225da73ba?s=256&d=identicon&r=PG",
+      "display_name" : "Tim Boudreau",
+      "link" : "https://stackoverflow.com/users/435436/tim-boudreau"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1601442473,
+    "post_id" : 15758685,
+    "comment_id" : 113405674,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I don&#39;t know of any particular handler implementation that&#39;s fabulous for this, but it&#39;s pretty easy to roll your own.  Basically:  1.  An (ideally lockless - like, linked list of atomic references) ordered collection/queue multiple threads can add log records to.  2., A thread that pulls on the queue and flushes records to a file asynchronously.  3.  A runtime shutdown hook added as early as possible so it runs last, that shuts down that thread and flushes any last pending messages.  <i>Any</i> asynchronous logging solution can lose records in the event of a JVM hard crash, FYI."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1904695,
+        "reputation" : 2085,
+        "user_id" : 1719802,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/2450eed804b5ba025134b0b1bc471351?s=256&d=identicon&r=PG",
+        "display_name" : "Pankaj",
+        "link" : "https://stackoverflow.com/users/1719802/pankaj"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1364893394,
+      "post_id" : 15758768,
+      "comment_id" : 22398958,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Could you please suggest me what to do if i want to keep all the logs. Actually from this approach my text file is being replaced if i run my application 2nd time?"
+    }, {
+      "owner" : {
+        "account_id" : 1015060,
+        "reputation" : 12021,
+        "user_id" : 1026805,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/8bbacc5c12ebacaa855340096bce5027?s=256&d=identicon&r=PG",
+        "display_name" : "Sri Harsha Chilakapati",
+        "link" : "https://stackoverflow.com/users/1026805/sri-harsha-chilakapati"
+      },
+      "reply_to_user" : {
+        "account_id" : 1904695,
+        "reputation" : 2085,
+        "user_id" : 1719802,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/2450eed804b5ba025134b0b1bc471351?s=256&d=identicon&r=PG",
+        "display_name" : "Pankaj",
+        "link" : "https://stackoverflow.com/users/1719802/pankaj"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1364894157,
+      "post_id" : 15758768,
+      "comment_id" : 22399358,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Try with different names of log files according to your number of access."
+    }, {
+      "owner" : {
+        "account_id" : 1904695,
+        "reputation" : 2085,
+        "user_id" : 1719802,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/2450eed804b5ba025134b0b1bc471351?s=256&d=identicon&r=PG",
+        "display_name" : "Pankaj",
+        "link" : "https://stackoverflow.com/users/1719802/pankaj"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1364976522,
+      "post_id" : 15758768,
+      "comment_id" : 22436990,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How to do this? i tried with %u.%g but stil getting same name in different tries..."
+    }, {
+      "owner" : {
+        "account_id" : 1015060,
+        "reputation" : 12021,
+        "user_id" : 1026805,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/8bbacc5c12ebacaa855340096bce5027?s=256&d=identicon&r=PG",
+        "display_name" : "Sri Harsha Chilakapati",
+        "link" : "https://stackoverflow.com/users/1026805/sri-harsha-chilakapati"
+      },
+      "reply_to_user" : {
+        "account_id" : 1904695,
+        "reputation" : 2085,
+        "user_id" : 1719802,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/2450eed804b5ba025134b0b1bc471351?s=256&d=identicon&r=PG",
+        "display_name" : "Pankaj",
+        "link" : "https://stackoverflow.com/users/1719802/pankaj"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1364976640,
+      "post_id" : 15758768,
+      "comment_id" : 22437048,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Use date and time in their file names. Just use strings."
+    }, {
+      "owner" : {
+        "account_id" : 1904695,
+        "reputation" : 2085,
+        "user_id" : 1719802,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/2450eed804b5ba025134b0b1bc471351?s=256&d=identicon&r=PG",
+        "display_name" : "Pankaj",
+        "link" : "https://stackoverflow.com/users/1719802/pankaj"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1364986859,
+      "post_id" : 15758768,
+      "comment_id" : 22442562,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How to do that... I google it but i found so many confusing code... Could you please help.."
+    }, {
+      "owner" : {
+        "account_id" : 160288,
+        "reputation" : 572,
+        "user_id" : 380236,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c027cd78387d58564fd51596deeb9d9e?s=256&d=identicon&r=PG",
+        "display_name" : "Anders",
+        "link" : "https://stackoverflow.com/users/380236/anders"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1385052556,
+      "post_id" : 15758768,
+      "comment_id" : 29994265,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Level.CONFIG and higher are logged by default on the console, by design.  So only use debug messages on Level.FINE and lower (and save Level.FINER and Level.FINEST to debug messages in loops)."
+    }, {
+      "owner" : {
+        "account_id" : 3937771,
+        "reputation" : 5687,
+        "user_id" : 4077513,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/zZUnP.jpg?s=256",
+        "display_name" : "Martin Erlic",
+        "link" : "https://stackoverflow.com/users/4077513/martin-erlic"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1464351093,
+      "post_id" : 15758768,
+      "comment_id" : 62462704,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How do I set it up so it doesn&#39;t create a new log file every time?"
+    }, {
+      "owner" : {
+        "account_id" : 1015060,
+        "reputation" : 12021,
+        "user_id" : 1026805,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/8bbacc5c12ebacaa855340096bce5027?s=256&d=identicon&r=PG",
+        "display_name" : "Sri Harsha Chilakapati",
+        "link" : "https://stackoverflow.com/users/1026805/sri-harsha-chilakapati"
+      },
+      "reply_to_user" : {
+        "account_id" : 3937771,
+        "reputation" : 5687,
+        "user_id" : 4077513,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/zZUnP.jpg?s=256",
+        "display_name" : "Martin Erlic",
+        "link" : "https://stackoverflow.com/users/4077513/martin-erlic"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1464453128,
+      "post_id" : 15758768,
+      "comment_id" : 62497604,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@bluemunch You can use the alternative constructor of <code>FileHandler(path, true)</code> to make the log append to existing log file."
+    }, {
+      "owner" : {
+        "account_id" : 2939509,
+        "reputation" : 7566,
+        "user_id" : 2517730,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/Xojng.jpg?s=256",
+        "display_name" : "Yar",
+        "link" : "https://stackoverflow.com/users/2517730/yar"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1466031744,
+      "post_id" : 15758768,
+      "comment_id" : 63154365,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "to make logs with different names just make an String with current time and replace it with <code>MyLogFile</code> in <code>fh = new FileHandler(&quot;C:&#47;temp&#47;test&#47;MyLogFile.log&quot;);</code>"
+    }, {
+      "owner" : {
+        "account_id" : 2879257,
+        "reputation" : 670,
+        "user_id" : 2470498,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a7f8b5dbe3f6e5d9a58fcf959be8a5e7?s=256&d=identicon&r=PG",
+        "display_name" : "Awanish Kumar",
+        "link" : "https://stackoverflow.com/users/2470498/awanish-kumar"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1485842593,
+      "post_id" : 15758768,
+      "comment_id" : 71080958,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Location of log file can be control through logging.properties file. And it can be passed as JVM parameter ex : java -Djava.util.logging.config.file=/scratch/user/config/logging&zwnj;&#8203;.properties. Details is posted below."
+    }, {
+      "owner" : {
+        "account_id" : 2464526,
+        "reputation" : 1659,
+        "user_id" : 2147927,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/61db3527d478220b5326596628ff4a8b?s=256&d=identicon&r=PG",
+        "display_name" : "Line",
+        "link" : "https://stackoverflow.com/users/2147927/line"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1567064147,
+      "post_id" : 15758768,
+      "comment_id" : 101853013,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I have several loggers in different classes. Does it mean I need to set this file handler for each of them?"
+    }, {
+      "owner" : {
+        "account_id" : 1015060,
+        "reputation" : 12021,
+        "user_id" : 1026805,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/8bbacc5c12ebacaa855340096bce5027?s=256&d=identicon&r=PG",
+        "display_name" : "Sri Harsha Chilakapati",
+        "link" : "https://stackoverflow.com/users/1026805/sri-harsha-chilakapati"
+      },
+      "reply_to_user" : {
+        "account_id" : 2464526,
+        "reputation" : 1659,
+        "user_id" : 2147927,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/61db3527d478220b5326596628ff4a8b?s=256&d=identicon&r=PG",
+        "display_name" : "Line",
+        "link" : "https://stackoverflow.com/users/2147927/line"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1567067830,
+      "post_id" : 15758768,
+      "comment_id" : 101854962,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Line Yes. For this case I usually keep a create logger utility method."
+    }, {
+      "owner" : {
+        "account_id" : 12019463,
+        "reputation" : 2081,
+        "user_id" : 8793412,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/65cda677975b95a5e78c4ee663c08b19?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Karthikeyan",
+        "link" : "https://stackoverflow.com/users/8793412/karthikeyan"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1631971336,
+      "post_id" : 15758768,
+      "comment_id" : 122370343,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@SriHarshaChilakapati - How to make that logger utility method..?"
+    }, {
+      "owner" : {
+        "account_id" : 1015060,
+        "reputation" : 12021,
+        "user_id" : 1026805,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/8bbacc5c12ebacaa855340096bce5027?s=256&d=identicon&r=PG",
+        "display_name" : "Sri Harsha Chilakapati",
+        "link" : "https://stackoverflow.com/users/1026805/sri-harsha-chilakapati"
+      },
+      "reply_to_user" : {
+        "account_id" : 12019463,
+        "reputation" : 2081,
+        "user_id" : 8793412,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/65cda677975b95a5e78c4ee663c08b19?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Karthikeyan",
+        "link" : "https://stackoverflow.com/users/8793412/karthikeyan"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1631973746,
+      "post_id" : 15758768,
+      "comment_id" : 122370789,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Karthikeyan Just create a provider method that will create the logger, configure it and return to you. Whenever you need a logger, just call this function to get the logger."
+    } ],
+    "owner" : {
+      "account_id" : 1015060,
+      "reputation" : 12021,
+      "user_id" : 1026805,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/8bbacc5c12ebacaa855340096bce5027?s=256&d=identicon&r=PG",
+      "display_name" : "Sri Harsha Chilakapati",
+      "link" : "https://stackoverflow.com/users/1026805/sri-harsha-chilakapati"
+    },
+    "is_accepted" : true,
+    "score" : 282,
+    "last_activity_date" : 1411479214,
+    "last_edit_date" : 1411479214,
+    "creation_date" : 1364888785,
+    "answer_id" : 15758768,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Try this sample. It works for me.</p>\n\n<pre><code>public static void main(String[] args) {  \n\n    Logger logger = Logger.getLogger(\"MyLog\");  \n    FileHandler fh;  \n\n    try {  \n\n        // This block configure the logger with handler and formatter  \n        fh = new FileHandler(\"C:/temp/test/MyLogFile.log\");  \n        logger.addHandler(fh);\n        SimpleFormatter formatter = new SimpleFormatter();  \n        fh.setFormatter(formatter);  \n\n        // the following statement is used to log any messages  \n        logger.info(\"My first log\");  \n\n    } catch (SecurityException e) {  \n        e.printStackTrace();  \n    } catch (IOException e) {  \n        e.printStackTrace();  \n    }  \n\n    logger.info(\"Hi How r u?\");  \n\n}\n</code></pre>\n\n<p>Produces the output at MyLogFile.log</p>\n\n<pre><code>Apr 2, 2013 9:57:08 AM testing.MyLogger main  \nINFO: My first log  \nApr 2, 2013 9:57:08 AM testing.MyLogger main  \nINFO: Hi How r u?\n</code></pre>\n\n<p><strong><em>Edit:</em></strong></p>\n\n<p>To remove the console handler, use</p>\n\n<pre><code>logger.setUseParentHandlers(false);\n</code></pre>\n\n<p>since the ConsoleHandler is registered with the parent logger from which all the loggers derive.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1976241,
+        "reputation" : 5507,
+        "user_id" : 1773972,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://i.sstatic.net/L908M.jpg?s=256",
+        "display_name" : "Pini Cheyni",
+        "link" : "https://stackoverflow.com/users/1773972/pini-cheyni"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1469704864,
+      "post_id" : 15758794,
+      "comment_id" : 64652870,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "There is already log4j2 but it has to be configured at project level"
+    } ],
+    "owner" : {
+      "account_id" : 2065950,
+      "reputation" : 26074,
+      "user_id" : 1841457,
+      "user_type" : "registered",
+      "accept_rate" : 65,
+      "profile_image" : "https://i.sstatic.net/FCMmv.png?s=256",
+      "display_name" : "Chintan Rathod",
+      "link" : "https://stackoverflow.com/users/1841457/chintan-rathod"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1369721598,
+    "last_edit_date" : 1369721598,
+    "creation_date" : 1364888859,
+    "answer_id" : 15758794,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A good library available named <a href=\"http://logging.apache.org/log4j/1.2/\" rel=\"noreferrer\">log4j for Java</a>.<br>\nThis will provide numerous feature. Go through link and you will find your solution.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1238100,
+      "reputation" : 12423,
+      "user_id" : 1201272,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/5FhzS.png?s=256",
+      "display_name" : "AurA",
+      "link" : "https://stackoverflow.com/users/1201272/aura"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1364888947,
+    "creation_date" : 1364888947,
+    "answer_id" : 15758818,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>int SIZE = \"&lt;intialize-here&gt;\"\nint ROTATIONCOUNT = \"&lt;intialize-here&gt;\"\n\nHandler handler = new FileHandler(\"test.log\", SIZE, LOG_ROTATIONCOUNT);\nlogger.addHandler(handler);     // for your code.. \n\n// you can also set logging levels\nLogger.getLogger(this.getClass().getName()).log(Level.[...]).addHandler(handler);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1269510,
+        "reputation" : 11769,
+        "user_id" : 1226150,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/6sPHN.jpg?s=256",
+        "display_name" : "SoluableNonagon",
+        "link" : "https://stackoverflow.com/users/1226150/soluablenonagon"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1383586154,
+      "post_id" : 19109637,
+      "comment_id" : 29388963,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks, this helped me out, but Log4j 2 is coming out now and I had to fish around the site to find the 1.2 version."
+    } ],
+    "owner" : {
+      "account_id" : 1998882,
+      "reputation" : 521,
+      "user_id" : 1790382,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YehfR.png?s=256",
+      "display_name" : "kanaparthikiran",
+      "link" : "https://stackoverflow.com/users/1790382/kanaparthikiran"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1385054321,
+    "last_edit_date" : 1385054321,
+    "creation_date" : 1380609752,
+    "answer_id" : 19109637,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>import java.io.IOException;\nimport org.apache.log4j.Appender;\nimport org.apache.log4j.FileAppender;\nimport org.apache.log4j.Logger;\nimport org.apache.log4j.SimpleLayout;\n\n/**\n * @author Kiran\n * \n */\npublic class MyLogger {\n\n    public MyLogger() {\n    }\n\n    public static void main(String[] args) {\n        Logger logger = Logger.getLogger(\"MyLog\");\n        Appender fh = null;\n        try {\n            fh = new FileAppender(new SimpleLayout(), \"MyLogFile.log\");\n            logger.addAppender(fh);\n            fh.setLayout(new SimpleLayout());\n            logger.info(\"My first log\");\n        } catch (SecurityException e) {\n            e.printStackTrace();\n        } catch (IOException e) {\n            e.printStackTrace();\n        }\n        logger.info(\"Hi How r u?\");\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4304436,
+      "reputation" : 404,
+      "user_id" : 3517232,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/R7bHK.png?s=256",
+      "display_name" : "Ibrabel",
+      "link" : "https://stackoverflow.com/users/3517232/ibrabel"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1397122546,
+    "creation_date" : 1397122546,
+    "answer_id" : 22984168,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Maybe <a href=\"https://sites.google.com/site/ibrabel/sscce/logtofile\" rel=\"noreferrer\">this is</a> what you need... </p>\n\n<pre><code>import java.awt.event.ActionEvent;\nimport java.awt.event.ActionListener;\nimport java.io.IOException;\nimport java.util.logging.FileHandler;\nimport java.util.logging.Level;\nimport java.util.logging.Logger;\nimport javax.swing.JButton;\nimport javax.swing.JFrame;\nimport javax.swing.JOptionPane;\nimport javax.swing.JPanel;\n\n/**\n * LogToFile class\n * This class is intended to be use with the default logging class of java\n * It save the log in an XML file  and display a friendly message to the user\n * @author Ibrabel &lt;ibrabel@gmail.com&gt;\n */\npublic class LogToFile {\n\n    protected static final Logger logger=Logger.getLogger(\"MYLOG\");\n    /**\n     * log Method \n     * enable to log all exceptions to a file and display user message on demand\n     * @param ex\n     * @param level\n     * @param msg \n     */\n    public static void log(Exception ex, String level, String msg){\n\n        FileHandler fh = null;\n        try {\n            fh = new FileHandler(\"log.xml\",true);\n            logger.addHandler(fh);\n            switch (level) {\n                case \"severe\":\n                    logger.log(Level.SEVERE, msg, ex);\n                    if(!msg.equals(\"\"))\n                        JOptionPane.showMessageDialog(null,msg,\n                            \"Error\", JOptionPane.ERROR_MESSAGE);\n                    break;\n                case \"warning\":\n                    logger.log(Level.WARNING, msg, ex);\n                    if(!msg.equals(\"\"))\n                        JOptionPane.showMessageDialog(null,msg,\n                            \"Warning\", JOptionPane.WARNING_MESSAGE);\n                    break;\n                case \"info\":\n                    logger.log(Level.INFO, msg, ex);\n                    if(!msg.equals(\"\"))\n                        JOptionPane.showMessageDialog(null,msg,\n                            \"Info\", JOptionPane.INFORMATION_MESSAGE);\n                    break;\n                case \"config\":\n                    logger.log(Level.CONFIG, msg, ex);\n                    break;\n                case \"fine\":\n                    logger.log(Level.FINE, msg, ex);\n                    break;\n                case \"finer\":\n                    logger.log(Level.FINER, msg, ex);\n                    break;\n                case \"finest\":\n                    logger.log(Level.FINEST, msg, ex);\n                    break;\n                default:\n                    logger.log(Level.CONFIG, msg, ex);\n                    break;\n            }\n        } catch (IOException | SecurityException ex1) {\n            logger.log(Level.SEVERE, null, ex1);\n        } finally{\n            if(fh!=null)fh.close();\n        }\n    }\n\n    public static void main(String[] args) {\n\n        /*\n            Create simple frame for the example\n        */\n        JFrame myFrame = new JFrame();\n        myFrame.setTitle(\"LogToFileExample\");\n        myFrame.setSize(300, 100);\n        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        myFrame.setLocationRelativeTo(null);\n        JPanel pan = new JPanel();\n        JButton severe = new JButton(\"severe\");\n        pan.add(severe);\n        JButton warning = new JButton(\"warning\");\n        pan.add(warning);\n        JButton info = new JButton(\"info\");\n        pan.add(info);\n\n        /*\n            Create an exception on click to use the LogToFile class\n        */\n        severe.addActionListener(new ActionListener(){\n\n            @Override\n            public void actionPerformed(ActionEvent ae) {\n                int j = 20, i = 0;\n                try {\n                    System.out.println(j/i);\n                } catch (ArithmeticException ex) {\n                    log(ex,\"severe\",\"You can't divide anything by zero\");\n                }\n\n            }\n\n        });\n\n        warning.addActionListener(new ActionListener(){\n\n            @Override\n            public void actionPerformed(ActionEvent ae) {\n                int j = 20, i = 0;\n                try {\n                    System.out.println(j/i);\n                } catch (ArithmeticException ex) {\n                    log(ex,\"warning\",\"You can't divide anything by zero\");\n                }\n\n            }\n\n        });\n\n        info.addActionListener(new ActionListener(){\n\n            @Override\n            public void actionPerformed(ActionEvent ae) {\n                int j = 20, i = 0;\n                try {\n                    System.out.println(j/i);\n                } catch (ArithmeticException ex) {\n                    log(ex,\"info\",\"You can't divide anything by zero\");\n                }\n\n            }\n\n        });\n\n        /*\n            Add the JPanel to the JFrame and set the JFrame visible\n        */\n        myFrame.setContentPane(pan);\n        myFrame.setVisible(true);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3308210,
+      "reputation" : 670,
+      "user_id" : 2782339,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/Z9OzD.png?s=256",
+      "display_name" : "DenisD",
+      "link" : "https://stackoverflow.com/users/2782339/denisd"
+    },
+    "is_accepted" : false,
+    "score" : 24,
+    "last_activity_date" : 1443709384,
+    "last_edit_date" : 1443709384,
+    "creation_date" : 1403542724,
+    "answer_id" : 24371368,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Firstly, where did you define your logger and from what class\\method trying to call it? There is a working example, fresh baked:</p>\n\n<pre><code>public class LoggingTester {\n    private final Logger logger = Logger.getLogger(LoggingTester.class\n            .getName());\n    private FileHandler fh = null;\n\n    public LoggingTester() {\n        //just to make our log file nicer :)\n        SimpleDateFormat format = new SimpleDateFormat(\"M-d_HHmmss\");\n        try {\n            fh = new FileHandler(\"C:/temp/test/MyLogFile_\"\n                + format.format(Calendar.getInstance().getTime()) + \".log\");\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n\n        fh.setFormatter(new SimpleFormatter());\n        logger.addHandler(fh);\n    }\n\n    public void doLogging() {\n        logger.info(\"info msg\");\n        logger.severe(\"error message\");\n        logger.fine(\"fine message\"); //won't show because to high level of logging\n    }\n}   \n</code></pre>\n\n<p>In your code you forgot to define the formatter, if you need simple one you can do it as I mentioned above, but there is another option, you can format it by yourself, there is an example (just insert it instead of this line fh.setFormatter(new SimpleFormatter()) following code):</p>\n\n<pre><code>fh.setFormatter(new Formatter() {\n            @Override\n            public String format(LogRecord record) {\n                SimpleDateFormat logTime = new SimpleDateFormat(\"MM-dd-yyyy HH:mm:ss\");\n                Calendar cal = new GregorianCalendar();\n                cal.setTimeInMillis(record.getMillis());\n                return record.getLevel()\n                        + logTime.format(cal.getTime())\n                        + \" || \"\n                        + record.getSourceClassName().substring(\n                                record.getSourceClassName().lastIndexOf(\".\")+1,\n                                record.getSourceClassName().length())\n                        + \".\"\n                        + record.getSourceMethodName()\n                        + \"() : \"\n                        + record.getMessage() + \"\\n\";\n            }\n        });\n</code></pre>\n\n<p>Or any other modification whatever you like. Hope it helps.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2464526,
+        "reputation" : 1659,
+        "user_id" : 2147927,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/61db3527d478220b5326596628ff4a8b?s=256&d=identicon&r=PG",
+        "display_name" : "Line",
+        "link" : "https://stackoverflow.com/users/2147927/line"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1567077832,
+      "post_id" : 41950347,
+      "comment_id" : 101860255,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Great answer, from what I see, the only global one. I decided to go with changing logging.properties in JDK itself (though in Java 11, they are located in conf directory from Java installation directory). Worth noting that default location of such log file will be user.home/javaX.log (where user.home is system porperty, and X is next number in order - for the first one it will be 0)."
+    } ],
+    "owner" : {
+      "account_id" : 2879257,
+      "reputation" : 670,
+      "user_id" : 2470498,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a7f8b5dbe3f6e5d9a58fcf959be8a5e7?s=256&d=identicon&r=PG",
+      "display_name" : "Awanish Kumar",
+      "link" : "https://stackoverflow.com/users/2470498/awanish-kumar"
+    },
+    "is_accepted" : false,
+    "score" : 16,
+    "last_activity_date" : 1567672727,
+    "last_edit_date" : 1567672727,
+    "creation_date" : 1485840892,
+    "answer_id" : 41950347,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Location of log file can be control through logging.properties file. And it can be passed as JVM parameter ex : <code>java -Djava.util.logging.config.file=/scratch/user/config/logging.properties</code></p>\n\n<p>Details: <a href=\"https://docs.oracle.com/cd/E23549_01/doc.1111/e14568/handler.htm\" rel=\"noreferrer\">https://docs.oracle.com/cd/E23549_01/doc.1111/e14568/handler.htm</a></p>\n\n<h2><strong>Configuring the File handler</strong></h2>\n\n<p>To send logs to a file, add FileHandler to the handlers property in the logging.properties file. This will enable file logging globally.</p>\n\n<p><code>handlers= java.util.logging.FileHandler</code> Configure the handler by setting the following properties:</p>\n\n<pre><code>java.util.logging.FileHandler.pattern=&lt;home directory&gt;/logs/oaam.log\njava.util.logging.FileHandler.limit=50000\njava.util.logging.FileHandler.count=1\njava.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter\n</code></pre>\n\n<p><strong>java.util.logging.FileHandler.pattern</strong> specifies the location and pattern of the output file. The default setting is your home directory.</p>\n\n<p><strong>java.util.logging.FileHandler.limit</strong> specifies, in bytes, the maximum amount that the logger writes to any one file.</p>\n\n<p><strong>java.util.logging.FileHandler.count</strong> specifies how many output files to cycle through.</p>\n\n<p><strong>java.util.logging.FileHandler.formatter</strong> specifies the java.util.logging formatter class that the file handler class uses to format the log messages. SimpleFormatter writes brief \"human-readable\" summaries of log records.</p>\n\n<hr>\n\n<p><strong><em>To instruct java to use this configuration file instead of $JDK_HOME/jre/lib/logging.properties:</em></strong></p>\n\n<pre><code>java -Djava.util.logging.config.file=/scratch/user/config/logging.properties\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4646767,
+      "reputation" : 19479,
+      "user_id" : 3764804,
+      "user_type" : "registered",
+      "accept_rate" : 59,
+      "profile_image" : "https://i.sstatic.net/fZQON.png?s=256",
+      "display_name" : "BullyWiiPlaza",
+      "link" : "https://stackoverflow.com/users/3764804/bullywiiplaza"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1497792824,
+    "creation_date" : 1497792824,
+    "answer_id" : 44615534,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Here is my logging class <a href=\"https://stackoverflow.com/a/15758768/3764804\">based on the accepted answer</a>:</p>\n\n<pre><code>import java.io.File;\nimport java.io.IOException;\nimport java.nio.file.Files;\nimport java.nio.file.Paths;\nimport java.text.DateFormat;\nimport java.text.SimpleDateFormat;\nimport java.util.Date;\nimport java.util.logging.*;\n\npublic class ErrorLogger\n{\n    private Logger logger;\n\n    public ErrorLogger()\n    {\n        logger = Logger.getAnonymousLogger();\n\n        configure();\n    }\n\n    private void configure()\n    {\n        try\n        {\n            String logsDirectoryFolder = \"logs\";\n            Files.createDirectories(Paths.get(logsDirectoryFolder));\n            FileHandler fileHandler = new FileHandler(logsDirectoryFolder + File.separator + getCurrentTimeString() + \".log\");\n            logger.addHandler(fileHandler);\n            SimpleFormatter formatter = new SimpleFormatter();\n            fileHandler.setFormatter(formatter);\n        } catch (IOException exception)\n        {\n            exception.printStackTrace();\n        }\n\n        addCloseHandlersShutdownHook();\n    }\n\n    private void addCloseHandlersShutdownHook()\n    {\n        Runtime.getRuntime().addShutdownHook(new Thread(() -&gt;\n        {\n            // Close all handlers to get rid of empty .LCK files\n            for (Handler handler : logger.getHandlers())\n            {\n                handler.close();\n            }\n        }));\n    }\n\n    private String getCurrentTimeString()\n    {\n        DateFormat dateFormat = new SimpleDateFormat(\"yyyy-MM-dd-HH-mm-ss\");\n        return dateFormat.format(new Date());\n    }\n\n    public void log(Exception exception)\n    {\n        logger.log(Level.SEVERE, \"\", exception);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 936138,
+        "reputation" : 438,
+        "user_id" : 965036,
+        "user_type" : "registered",
+        "accept_rate" : 17,
+        "profile_image" : "https://i.sstatic.net/UolWp.jpg?s=256",
+        "display_name" : "Mihai Raulea",
+        "link" : "https://stackoverflow.com/users/965036/mihai-raulea"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1570023305,
+      "post_id" : 53402784,
+      "comment_id" : 102783333,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "yep, lost half an hour and my wits trying to make log4j write to a freakin&#39; file. most tools are way too complicated for the problem they&#39;re solving."
+    } ],
+    "owner" : {
+      "account_id" : 10006906,
+      "reputation" : 2401,
+      "user_id" : 7401054,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/sRVSb.jpg?s=256",
+      "display_name" : "Snowbases",
+      "link" : "https://stackoverflow.com/users/7401054/snowbases"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1542754285,
+    "creation_date" : 1542754285,
+    "answer_id" : 53402784,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Hope people find this helpful</p>\n\n<pre><code>public static void writeLog(String info) {\n    String filename = \"activity.log\";\n    String FILENAME = \"C:\\\\testing\\\\\" + filename;\n    BufferedWriter bw = null;\n    FileWriter fw = null;\n    try {\n        fw = new FileWriter(FILENAME, true);\n        bw = new BufferedWriter(fw);\n        bw.write(info);\n        bw.write(\"\\n\");\n    } catch (IOException e) {\n        e.printStackTrace();\n    } finally {\n        try {\n            if (bw != null)\n                bw.close();\n            if (fw != null)\n                fw.close();\n        } catch (IOException ex) {\n            ex.printStackTrace();\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3478947,
+      "reputation" : 71,
+      "user_id" : 2997212,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cbaef2d3ac9cb538d0566e93ffb7394d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Andrew Krasny",
+      "link" : "https://stackoverflow.com/users/2997212/andrew-krasny"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1585889329,
+    "creation_date" : 1585889329,
+    "answer_id" : 61005274,
+    "question_id" : 15758685,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is an example of how to overwrite Logger configuration from the code. Does not require external configuration file ..</p>\n\n<p>FileLoggerTest.java:</p>\n\n<pre><code>import java.io.ByteArrayInputStream;\nimport java.io.IOException;\nimport java.util.logging.Level;\nimport java.util.logging.LogManager;\nimport java.util.logging.Logger;\n\npublic class FileLoggerTest {\n\n    public static void main(String[] args) {\n\n        try {\n            String h = MyLogHandler.class.getCanonicalName();\n            StringBuilder sb = new StringBuilder();\n            sb.append(\".level=ALL\\n\");\n            sb.append(\"handlers=\").append(h).append('\\n');\n            LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(sb.toString().getBytes(\"UTF-8\")));\n        } catch (IOException | SecurityException ex) {\n            // Do something about it\n        }\n\n        Logger.getGlobal().severe(\"Global SEVERE log entry\");\n        Logger.getLogger(FileLoggerTest.class.getName()).log(Level.SEVERE, \"This is a SEVERE log entry\");\n        Logger.getLogger(\"SomeName\").log(Level.WARNING, \"This is a WARNING log entry\");\n        Logger.getLogger(\"AnotherName\").log(Level.INFO, \"This is an INFO log entry\");\n        Logger.getLogger(\"SameName\").log(Level.CONFIG, \"This is an CONFIG log entry\");\n        Logger.getLogger(\"SameName\").log(Level.FINE, \"This is an FINE log entry\");\n        Logger.getLogger(\"SameName\").log(Level.FINEST, \"This is an FINEST log entry\");\n        Logger.getLogger(\"SameName\").log(Level.FINER, \"This is an FINER log entry\");\n        Logger.getLogger(\"SameName\").log(Level.ALL, \"This is an ALL log entry\");\n\n    }\n}\n</code></pre>\n\n<p>MyLogHandler.java</p>\n\n<pre><code>import java.io.IOException;\nimport java.util.logging.FileHandler;\nimport java.util.logging.Level;\nimport java.util.logging.LogRecord;\nimport java.util.logging.SimpleFormatter;\n\npublic final class MyLogHandler extends FileHandler {\n\n    public MyLogHandler() throws IOException, SecurityException {\n        super(\"/tmp/path-to-log.log\");\n        setFormatter(new SimpleFormatter());\n        setLevel(Level.ALL);\n    }\n\n    @Override\n    public void publish(LogRecord record) {\n        System.out.println(\"Some additional logic\");\n        super.publish(record);\n    }\n\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1904695,
+    "reputation" : 2085,
+    "user_id" : 1719802,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/2450eed804b5ba025134b0b1bc471351?s=256&d=identicon&r=PG",
+    "display_name" : "Pankaj",
+    "link" : "https://stackoverflow.com/users/1719802/pankaj"
+  },
+  "is_answered" : true,
+  "view_count" : 529791,
+  "accepted_answer_id" : 15758768,
+  "answer_count" : 10,
+  "score" : 175,
+  "last_activity_date" : 1585889329,
+  "creation_date" : 1364888477,
+  "last_edit_date" : 1548937159,
+  "question_id" : 15758685,
+  "link" : "https://stackoverflow.com/questions/15758685/how-to-write-logs-in-text-file-when-using-java-util-logging-logger",
+  "title" : "How to write logs in text file when using java.util.logging.Logger",
+  "body" : "<p>I have a situation in which I want to write all logs created by me into a text file.</p>\n\n<p>We are using java.util.logging.Logger API to generate the logs.</p>\n\n<p>I tried:</p>\n\n<pre><code>private static Logger logger = Logger.getLogger(className.class.getName());\nFileHandler fh;   \nfh = new FileHandler(\"C:/className.log\");   \nlogger.addHandler(fh); \n</code></pre>\n\n<p>But still getting my logs on console only.... </p>\n"
+}

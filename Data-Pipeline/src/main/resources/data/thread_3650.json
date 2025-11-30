@@ -1,0 +1,138 @@
+{
+  "tags" : [ "java", "linked-list", "copy-constructor", "deep-copy", "copying" ],
+  "comments" : [ {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user800014"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1393776128,
+    "post_id" : 22129809,
+    "comment_id" : 33576522,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "This may help you to understand the concept: <a href=\"http://stackoverflow.com/questions/6182565/java-deep-copy-shallow-copy-clone\" title=\"java deep copy shallow copy clone\">stackoverflow.com/questions/6182565/&hellip;</a>"
+  }, {
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1709514096,
+    "post_id" : 22129809,
+    "comment_id" : 137683909,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Stupid assignment. I&#39;ve never used copy construction in 27 years of Java. People really do have to stop thinking in C++."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4107458,
+        "reputation" : 21,
+        "user_id" : 3371034,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/435383bf020413250ea801def2731d62?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user3371034",
+        "link" : "https://stackoverflow.com/users/3371034/user3371034"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1393777055,
+      "post_id" : 22129902,
+      "comment_id" : 33576827,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You are right, I just did a test where I removed this statement and the while loop, and just added 3 more &quot;adding&quot; statements where i first call copy.getfirstNode.value, and in the next one copy.getFirstNode.next.value, and finally copy.getFirstNode.next.next.value and it WORKS (but i knew im testing with only a 3 element list). When i try doing it in a loop (&quot;while&quot; since i dont know the length) I cant see how NOT to use such a statement. Thanks for pointing it out!"
+    }, {
+      "owner" : {
+        "account_id" : 75156,
+        "reputation" : 12324,
+        "user_id" : 215651,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/a558b4bc6d9297599eb5a23c3b9a2679?s=256&d=identicon&r=PG",
+        "display_name" : "lreeder",
+        "link" : "https://stackoverflow.com/users/215651/lreeder"
+      },
+      "reply_to_user" : {
+        "account_id" : 4107458,
+        "reputation" : 21,
+        "user_id" : 3371034,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/435383bf020413250ea801def2731d62?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user3371034",
+        "link" : "https://stackoverflow.com/users/3371034/user3371034"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1393873859,
+      "post_id" : 22129902,
+      "comment_id" : 33621220,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Use a temp variable to store a reference to the current node in the list, and update that variable instead of your original.  See my updated answer."
+    } ],
+    "owner" : {
+      "account_id" : 75156,
+      "reputation" : 12324,
+      "user_id" : 215651,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/a558b4bc6d9297599eb5a23c3b9a2679?s=256&d=identicon&r=PG",
+      "display_name" : "lreeder",
+      "link" : "https://stackoverflow.com/users/215651/lreeder"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1393873799,
+    "last_edit_date" : 1393873799,
+    "creation_date" : 1393776065,
+    "answer_id" : 22129902,
+    "question_id" : 22129809,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It's hard to say what the problem is without seeing the source for <code>SortedLinkedSetNode</code>, but you seem to be modifying your original with this statement:</p>\n\n<p><code>copy.firstNode= copy.firstNode.next;</code></p>\n\n<p>This probably advances firstNode to the end of your original linkedset, resulting in the original having one element.  Also, confusingly the original is called \"copy\".  You may want to rename it so you can understand your code better.</p>\n\n<p>When creating a deep copy, you shouldn't modify the structure you want to copy.</p>\n\n<p>In this case, you can just use a temporary variable to store the reference to the current node you are on, without modifying your original data structure.  Try this:</p>\n\n<pre><code>this.firstNode = firstNode1;\n// so basically I am chaining elements from \"copy\" to firstNode1 and then making \"this\" = to firstNode1. \n\nSortedLinkedSetNode currentNode = copy.firstNode;\n\nwhile (currentNode.next !=null) {  \n    firstNode1.add(currentNode.next.value);\n    this.firstNode = firstNode1;\n    currentNode = currentNode.next;\n }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 960307,
+      "reputation" : 110397,
+      "user_id" : 984823,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Z2KYN.jpg?s=256",
+      "display_name" : "Joop Eggen",
+      "link" : "https://stackoverflow.com/users/984823/joop-eggen"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1644250979,
+    "creation_date" : 1644250979,
+    "answer_id" : 71021875,
+    "question_id" : 22129809,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>First the original to copy from, is called <code>copy</code>, like in do copy this one?</p>\n<p>You did have some mix-up with the correct nodes and the code was not kept simple enough.</p>\n<p>A recursive solution to simplify things seems appropriate:</p>\n<pre><code>public SortedLinkedSet(SortedLinkedSet&lt;T&gt; original) {\n    Objects.requireNotNull(original);\n    this.firstNode = copyNodes(orignal.firstNode);\n}\n\nprivate SortedLinkedSetNode copy(SortedLinkedSetNode originalNode) {\n    if (originalNode == null) {\n        return null;\n    }\n    SortedLinkedSetNode node = new SortedLinkedSetNode(originalNode.value);\n    node.next = copy(originalNode.next);\n    return node;\n}\n</code></pre>\n<p>If the node's value would need deep copying too, that could be done at one place.</p>\n<p>A loop would still be simple. One way:</p>\n<pre><code>private SortedLinkedSetNode copy(SortedLinkedSetNode originalNode) {\n    SortedLinkedSetNode firstNode = null;\n    SortedLinkedSetNode previousNode = null;\n    while (originalNode != null) {\n        SortedLinkedSetNode node = new SortedLinkedSetNode(originalNode.value);\n        if (firstNode == null) {\n            firstNode = node;\n        } else {\n            previousNode.next = node;\n        }\n        previousNode = node;\n        originalNode = originalNode.next;\n    }\n    return firstNode;\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4107458,
+    "reputation" : 21,
+    "user_id" : 3371034,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/435383bf020413250ea801def2731d62?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3371034",
+    "link" : "https://stackoverflow.com/users/3371034/user3371034"
+  },
+  "is_answered" : false,
+  "view_count" : 10772,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1761933890,
+  "creation_date" : 1393775594,
+  "last_edit_date" : 1393778676,
+  "question_id" : 22129809,
+  "link" : "https://stackoverflow.com/questions/22129809/deep-copy-constructor-for-linked-list-in-java",
+  "title" : "Deep Copy Constructor for Linked List in Java",
+  "body" : "<p>I have a HW assignment and only one small part of it is to make a copy constructor which makes a Deep Copy of the linked list which you have entered in its parameters.</p>\n\n<p>I understand that this means, that the <code>List</code> you have entered remains unchanged, and that the new linked list is isolated from the \"old\" one. My code gives me a new list which is exactly the same as the old one (the one you enter as a parameter) and this is what I want, but the old one is changed.</p>\n\n<p>Here is the constructor:</p>\n\n<pre><code>public SortedLinkedSet(SortedLinkedSet&lt;T&gt; copy) {\n    if (copy == null) {\n        this.firstNode = null;\n    } else{\n        SortedLinkedSetNode firstNode1 = new SortedLinkedSetNode(copy.getFirstNode().value);\n        this.firstNode = firstNode1;\n       // so basically I am chaining elements from \"copy\" to firstNode1 and then making \"this\" = to firstNode1. \n        while (copy.firstNode.next !=null) {  \n            firstNode1.add(copy.getFirstNode().next.value);\n            this.firstNode = firstNode1;\n            copy.firstNode = copy.firstNode.next;\n       // at the end of this loop I have a successful new linkedList with the same value, but \"copy\" has been changed\n        }\n    }      \n}\n</code></pre>\n\n<p>If for example I enter a linked list which has the values <code>(1,2,3)</code> -- with this constructor i get back a new linked list with values <code>1,2,3</code> but the old one just has 1.. If someone can help me with why this is going wrong it would be great. Thanks</p>\n\n<p>UPDATE : As  Ireeder pointed out, and with a test I did, I am almost sure that the problem is in the statement : \n    copy.firstNode = copy.firstNode.next;\ni deleted the current code, and did the following test: </p>\n\n<pre><code>SortedLinkedSetNode firstNode = new SortedLinkedSetNode(copy.getFirstNode().value);\nthis.firstNode=firstNode;\n\nfirstNode.add(copy.getFirstNode().next.value);\nthis.firstNode = firstNode;\n\nfirstNode.add(copy.getFirstNode().next.next.value);\nthis.firstNode = firstNode;\n</code></pre>\n\n<p>and this Works perfectly(but I knew in advance i'm testing with only 3 element list).How would i do it with a while loop without using such a statement as  :\n     copy.firstNode = copy.firstNode.next;\nI have to somehow move along the \"copy\" list ?</p>\n"
+}

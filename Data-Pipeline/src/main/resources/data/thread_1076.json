@@ -1,0 +1,586 @@
+{
+  "tags" : [ "java", "serialization", "serializable", "externalizable" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 401940,
+        "reputation" : 14184,
+        "user_id" : 768795,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f009ae319099dbca3f9cdd49e6d341a4?s=256&d=identicon&r=PG",
+        "display_name" : "Thomas W",
+        "link" : "https://stackoverflow.com/users/768795/thomas-w"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1377993441,
+      "post_id" : 817886,
+      "comment_id" : 27294372,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "We used Externalizable for large collections of &quot;selected IDs&quot; -- it was far more efficient externalizing as more-or-less a count &amp; an array of primitive ints, than default serialization. That&#39;s a very simple usecase, nothing &quot;special&quot; or &quot;unique&quot;."
+    } ],
+    "owner" : {
+      "account_id" : 11857,
+      "reputation" : 90109,
+      "user_id" : 23072,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/ad19b9146f4ffd608bf137323f68de0c?s=256&d=identicon&r=PG",
+      "display_name" : "Uri",
+      "link" : "https://stackoverflow.com/users/23072/uri"
+    },
+    "is_accepted" : false,
+    "score" : 23,
+    "last_activity_date" : 1241381574,
+    "creation_date" : 1241381574,
+    "answer_id" : 817886,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Serialization uses certain default behaviors to store and later recreate the object. You may specify in what order or how to handle references and complex data structures, but eventually it comes down to using the default behavior for each primitive data field.</p>\n\n<p>Externalization is used in the rare cases that you really want to store and rebuild your object in a completely different way and without using the default serialization mechanisms for data fields. For example, imagine that you had your own unique encoding and compression scheme. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 30304,
+      "reputation" : 27284,
+      "user_id" : 82559,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4dd4af25ea06b40a17397b13f4928a2a?s=256&d=identicon&r=PG",
+      "display_name" : "alphazero",
+      "link" : "https://stackoverflow.com/users/82559/alphazero"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1499105202,
+    "last_edit_date" : 1499105202,
+    "creation_date" : 1241386889,
+    "answer_id" : 818070,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><a href=\"https://docs.oracle.com/javase/8/docs/platform/serialization/spec/serialTOC.html\" rel=\"nofollow noreferrer\">https://docs.oracle.com/javase/8/docs/platform/serialization/spec/serialTOC.html</a></p>\n\n<p>Default serialization is somewhat verbose, and assumes the widest possible usage scenario of the serialized object, and accordingly the default format (Serializable) annotates the resultant stream with information about the class of the serialized object.</p>\n\n<p>Externalization give the producer of the object stream complete control over the precise class meta-data (if any) beyond the minimal required identification of the class (e.g. its name).  This is clearly desirable in certain situations, such as closed environments, where producer of the object stream and its consumer (which reifies the object from the stream) are matched, and additional metadata about the class serves no purpose and degrades performance.</p>\n\n<p>Additionally (as Uri point out) externalization also provides for complete control over the encoding of the data in the stream corresponding to Java types.  For (a contrived) example, you may wish to record boolean true as 'Y' and false as 'N'.  Externalization allows you to do that.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 58343,
+        "reputation" : 5406,
+        "user_id" : 174674,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/35c6d303820d96196cfbdc005a6b4046?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "volni",
+        "link" : "https://stackoverflow.com/users/174674/volni"
+      },
+      "edited" : false,
+      "score" : 63,
+      "creation_date" : 1292169230,
+      "post_id" : 818093,
+      "comment_id" : 4825399,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Not according to these benchmarks: [<a href=\"http://code.google.com/p/thrift-protobuf-compare/wiki/Benchmarking]\" rel=\"nofollow noreferrer\">code.google.com/p/thrift-protobuf-compare/wiki/Benchmarking&zwnj;&#8203;]</a>, manual serialization (using externizable) is much, much faster than using java&#39;s default serialization. If speed matters for your work, definitely write your own serializer."
+    }, {
+      "owner" : {
+        "account_id" : 76076,
+        "reputation" : 22004,
+        "user_id" : 218028,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://i.sstatic.net/xLpyz.jpg?s=256",
+        "display_name" : "Dave",
+        "link" : "https://stackoverflow.com/users/218028/dave"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1293121483,
+      "post_id" : 818093,
+      "comment_id" : 4950840,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "There is also sometimes a need to implement <code>Externalizable</code> in order to customize how serialization should take place.  For example:  <a href=\"http://stackoverflow.com/questions/1524326/serializing-immutable-java-classes-to-actionscript-with-lcds\" title=\"serializing immutable java classes to actionscript with lcds\">stackoverflow.com/questions/1524326/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 412271,
+        "reputation" : 1965,
+        "user_id" : 785249,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/470cd0da40b99b921674f0855476d840?s=256&d=identicon&r=PG",
+        "display_name" : "noquery",
+        "link" : "https://stackoverflow.com/users/785249/noquery"
+      },
+      "reply_to_user" : {
+        "account_id" : 58343,
+        "reputation" : 5406,
+        "user_id" : 174674,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/35c6d303820d96196cfbdc005a6b4046?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "volni",
+        "link" : "https://stackoverflow.com/users/174674/volni"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1308417520,
+      "post_id" : 818093,
+      "comment_id" : 7498832,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "updating to new link <a href=\"https://github.com/eishay/jvm-serializers/wiki/\" rel=\"nofollow noreferrer\">github.com/eishay/jvm-serializers/wiki</a> suggested by @Jack"
+    }, {
+      "owner" : {
+        "account_id" : 29773,
+        "reputation" : 14234,
+        "user_id" : 80701,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/d9391c16473dad5e699e1ca91b874663?s=256&d=identicon&r=PG",
+        "display_name" : "monksy",
+        "link" : "https://stackoverflow.com/users/80701/monksy"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1314299846,
+      "post_id" : 818093,
+      "comment_id" : 8642844,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@thirft benchmarking: <a href=\"http://vanillajava.blogspot.com/2011/08/avoiding-java-serialization-to-increase.html\" rel=\"nofollow noreferrer\">vanillajava.blogspot.com/2011/08/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 24436,
+        "reputation" : 73773,
+        "user_id" : 62130,
+        "user_type" : "registered",
+        "accept_rate" : 39,
+        "profile_image" : "https://www.gravatar.com/avatar/520c9c078b8d25980de17b8d4fe0ceba?s=256&d=identicon&r=PG",
+        "display_name" : "Esko Luontola",
+        "link" : "https://stackoverflow.com/users/62130/esko-luontola"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1337810179,
+      "post_id" : 818093,
+      "comment_id" : 13936127,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The &quot;java-manual&quot; in <a href=\"https://github.com/eishay/jvm-serializers/wiki\" rel=\"nofollow noreferrer\">github.com/eishay/jvm-serializers/wiki</a> does <i>not</i> use Externalizable, which would imply using ObjectOutputStream. See <a href=\"https://github.com/eishay/jvm-serializers/wiki/ToolBehavior\" rel=\"nofollow noreferrer\">github.com/eishay/jvm-serializers/wiki/ToolBehavior</a> for a link to the code. Instead, it is hand-written code that uses DataOutputStream, so it doesn&#39;t suffer from the things which make ObjectOutputStream slow (such as keeping track of object instances and supporting object cycles)."
+    }, {
+      "owner" : {
+        "account_id" : 228203,
+        "reputation" : 529,
+        "user_id" : 490366,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://www.gravatar.com/avatar/5b0e4ffbfbacf8585badf6bc13dbfaa3?s=256&d=identicon&r=PG",
+        "display_name" : "Kzvi ",
+        "link" : "https://stackoverflow.com/users/490366/kzvi"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1340049627,
+      "post_id" : 818093,
+      "comment_id" : 14521225,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "A few questions on Same area - Serializable vs Externalizable - <a href=\"http://www.fromdev.com/2012/06/15-java-serialization-interview.html#what-is-the-difference-between-externalizable-and-serializable-interfaces-\" rel=\"nofollow noreferrer\">fromdev.com/2012/06/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 274136,
+        "reputation" : 5871,
+        "user_id" : 1910558,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://www.gravatar.com/avatar/420f6c340192b9e0168716c9ae87f182?s=256&d=identicon&r=PG",
+        "display_name" : "Srujan Kumar Gulla",
+        "link" : "https://stackoverflow.com/users/1910558/srujan-kumar-gulla"
+      },
+      "reply_to_user" : {
+        "account_id" : 58343,
+        "reputation" : 5406,
+        "user_id" : 174674,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/35c6d303820d96196cfbdc005a6b4046?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "volni",
+        "link" : "https://stackoverflow.com/users/174674/volni"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1357339972,
+      "post_id" : 818093,
+      "comment_id" : 19627175,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "+1 for an elegant explanation @Artem Shnayder Benchmark Link isnt working any more"
+    }, {
+      "owner" : {
+        "account_id" : 193604,
+        "reputation" : 1811,
+        "user_id" : 435436,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/cf147eeb87170a38ef68583225da73ba?s=256&d=identicon&r=PG",
+        "display_name" : "Tim Boudreau",
+        "link" : "https://stackoverflow.com/users/435436/tim-boudreau"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1377726963,
+      "post_id" : 818093,
+      "comment_id" : 27197976,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Having to maintain the logic yourself is only a downside if the class never changes and you never have to read in persisted versions of old data.  If you want the freedom to change your class without having to write hellish code to deserialize old versions of it, <code>Externalizable</code> helps <i>a lot</i>."
+    }, {
+      "owner" : {
+        "account_id" : 2516131,
+        "reputation" : 3360,
+        "user_id" : 2187548,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://www.gravatar.com/avatar/32ed5b32826658f01df18fa220fa090e?s=256&d=identicon&r=PG",
+        "display_name" : "Haravikk",
+        "link" : "https://stackoverflow.com/users/2187548/haravikk"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1403969527,
+      "post_id" : 818093,
+      "comment_id" : 37868855,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I just had to write a custom collection and I have to say that <code>Externalizable</code> suits me much better, as I don&#39;t want to output arrays with empty spaces or placeholder objects, plus with the explicit interface you can handle inheritance, which means my synchronized sub-class can easily add locking around the the call to <code>writeExternal()</code>. So yeah, Externalizable is still very much relevant, certainly for large or complex objects."
+    }, {
+      "owner" : {
+        "account_id" : 1816267,
+        "reputation" : 1814,
+        "user_id" : 1651286,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://i.sstatic.net/WvZb0.jpg?s=256",
+        "display_name" : "Akhil Dad",
+        "link" : "https://stackoverflow.com/users/1651286/akhil-dad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1447742845,
+      "post_id" : 818093,
+      "comment_id" : 55269215,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I agree that modern JVM is quite fast, but if you see Dalvik VM which is a variant of JVM still operates on smaller devices, Android Provides Parcelable to provide exactly similar behaviour as externalizable and its 10 times faster than normal serializable on DVM. If deafult support for JVM 7 would be added then one can directly use externalizable in Android too. I think there may be some other platform than android which have similar thing"
+    }, {
+      "owner" : {
+        "account_id" : 3107527,
+        "reputation" : 3809,
+        "user_id" : 2630028,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/ddafbe2a8b6f8403f3d24482c9174f90?s=256&d=identicon&r=PG",
+        "display_name" : "solstice333",
+        "link" : "https://stackoverflow.com/users/2630028/solstice333"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1489013355,
+      "post_id" : 818093,
+      "comment_id" : 72490921,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The Serializable interface lets you override <code>private void writeObject(java.io.ObjectOutputStream out)      throws IOException</code> and   <code>private void readObject(java.io.ObjectInputStream in)      throws IOException, ClassNotFoundException</code> to allow &quot;complete&quot; control over the serialization logic. Is Externalizable still necessary?"
+    }, {
+      "owner" : {
+        "account_id" : 5522985,
+        "reputation" : 1037,
+        "user_id" : 4554440,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-3PC1MzbHCRY/AAAAAAAAAAI/AAAAAAAAAvY/bnVkQqvfF6I/s256-rj/photo.jpg",
+        "display_name" : "nkharche",
+        "link" : "https://stackoverflow.com/users/4554440/nkharche"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1508662677,
+      "post_id" : 818093,
+      "comment_id" : 80691640,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Externalizable is not relic and it does have significance. In case you wanted to serialize the objects of class having sensetive data &quot;Externalizable&quot; is useful. Please refer secure code guide lines <a href=\"http://www.oracle.com/technetwork/java/seccodeguide-139067.html\" rel=\"nofollow noreferrer\">link</a> <b>Guideline 8-2 / SERIAL-2: Guard sensitive data during serialization</b>"
+    } ],
+    "owner" : {
+      "account_id" : 11089,
+      "reputation" : 404575,
+      "user_id" : 21234,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://www.gravatar.com/avatar/d5f91983a9d9cfb69981b6108a63b412?s=256&d=identicon&r=PG",
+      "display_name" : "skaffman",
+      "link" : "https://stackoverflow.com/users/21234/skaffman"
+    },
+    "is_accepted" : false,
+    "score" : 284,
+    "last_activity_date" : 1311005479,
+    "last_edit_date" : 1311005479,
+    "creation_date" : 1241387460,
+    "answer_id" : 818093,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To add to the other answers, by implementating <code>java.io.Serializable</code>, you get \"automatic\" serialization capability for objects of your class. No need to implement any other logic, it'll just work. The Java runtime will use reflection to figure out how to marshal and unmarshal your objects.</p>\n\n<p>In earlier version of Java, reflection was very slow, and so serializaing large object graphs (e.g. in client-server RMI applications) was a bit of a performance problem. To handle this situation, the <code>java.io.Externalizable</code> interface was provided, which is like <code>java.io.Serializable</code> but with custom-written mechanisms to perform the marshalling and unmarshalling functions (you need to implement <code>readExternal</code> and <code>writeExternal</code> methods on your class). This gives you the means to get around the reflection performance bottleneck. </p>\n\n<p>In recent versions of Java (1.3 onwards, certainly) the performance of reflection is vastly better than it used to be, and so this is much less of a problem. I suspect you'd be hard-pressed to get a meaningful benefit from <code>Externalizable</code> with a modern JVM. </p>\n\n<p>Also, the built-in Java serialization mechanism isn't the only one, you can get third-party replacements, such as JBoss Serialization, which is considerably quicker, and is a drop-in replacement for the default.</p>\n\n<p>A big downside of <code>Externalizable</code> is that you have to maintain this logic yourself - if you add, remove or change a field in your class, you have to change your <code>writeExternal</code>/<code>readExternal</code> methods to account for it.</p>\n\n<p>In summary, <code>Externalizable</code> is a relic of the Java 1.1 days. There's really no need for it any more.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 350198,
+      "reputation" : 15782,
+      "user_id" : 685923,
+      "user_type" : "registered",
+      "accept_rate" : 70,
+      "profile_image" : "https://www.gravatar.com/avatar/9564310d03cc3b204fef145d7e86509a?s=256&d=identicon&r=PG",
+      "display_name" : "Ed Staub",
+      "link" : "https://stackoverflow.com/users/685923/ed-staub"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1319809662,
+    "creation_date" : 1319809662,
+    "answer_id" : 7930111,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When considering options for improving performance, don't forget custom serialization.  You can let Java do what it does well, or at least good enough, <em>for free</em>, and provide custom support for what it does badly.  This is usually a lot less code than full Externalizable support.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1785632,
+      "reputation" : 71,
+      "user_id" : 1627158,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/3dcba1cac1c7144a282bd5fe3cb1ff49?s=256&d=identicon&r=PG",
+      "display_name" : "Ali Joudeh",
+      "link" : "https://stackoverflow.com/users/1627158/ali-joudeh"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1346056621,
+    "creation_date" : 1346056621,
+    "answer_id" : 12138666,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The Externalizable interface was not actually provided to optimize the serialization process performance! but to provide means of implementing your own custom processing and offer complete control over the format and contents of the stream for an object and its super types!</p>\n\n<p>Examples of this is the implementation of AMF (ActionScript Message Format) remoting to transfer native action script objects over the network.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2414779,
+      "reputation" : 14346,
+      "user_id" : 2109070,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://i.sstatic.net/h9hoX.jpg?s=256",
+      "display_name" : "Trying",
+      "link" : "https://stackoverflow.com/users/2109070/trying"
+    },
+    "is_accepted" : false,
+    "score" : 41,
+    "last_activity_date" : 1619029426,
+    "last_edit_date" : 1619029426,
+    "creation_date" : 1363766568,
+    "answer_id" : 15518194,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Serialization provides default functionality to store and later recreate the object. It uses verbose format to define the whole graph of objects to be stored e.g. suppose you have a linkedList and you code like below, then the default serialization will discover all the objects which are linked and will serialize. In default serialization the object is constructed entirely from its stored bits, with no constructor calls.</p>\n<pre><code>  ObjectOutputStream oos = new ObjectOutputStream(\n      new FileOutputStream(&quot;/Users/Desktop/files/temp.txt&quot;));\n  oos.writeObject(linkedListHead); //writing head of linked list\n  oos.close();\n</code></pre>\n<p>But if you want restricted serialization or don't want some portion of your object to be serialized then use Externalizable. The Externalizable interface extends the Serializable interface and adds two methods, writeExternal() and readExternal(). These are automatically called while serialization or deserialization. While working with Externalizable we should remember that the default constructer should be public else the code will throw exception. Please follow the below code:</p>\n<pre><code>public class MyExternalizable implements Externalizable\n{\n\nprivate String userName;\nprivate String passWord;\nprivate Integer roll;\n\npublic MyExternalizable()\n{\n}\n\npublic MyExternalizable(String userName, String passWord, Integer roll)\n{\n    this.userName = userName;\n    this.passWord = passWord;\n    this.roll = roll;\n}\n\n@Override\npublic void writeExternal(ObjectOutput oo) throws IOException \n{\n    oo.writeObject(userName);\n    oo.writeObject(roll);\n}\n\n@Override\npublic void readExternal(ObjectInput oi) throws IOException, ClassNotFoundException \n{\n    userName = (String)oi.readObject();\n    roll = (Integer)oi.readObject();\n}\n\npublic String toString()\n{\n    StringBuilder b = new StringBuilder();\n    b.append(&quot;userName: &quot;);\n    b.append(userName);\n    b.append(&quot;  passWord: &quot;);\n    b.append(passWord);\n    b.append(&quot;  roll: &quot;);\n    b.append(roll);\n   \n    return b.toString();\n}\npublic static void main(String[] args)\n{\n    try\n    {\n        MyExternalizable m  = new MyExternalizable(&quot;nikki&quot;, &quot;student001&quot;, 20);\n        System.out.println(m.toString());\n        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(&quot;/Users/Desktop/files/temp1.txt&quot;));\n        oos.writeObject(m);\n        oos.close();\n        \n        System.out.println(&quot;***********************************************************************&quot;);\n        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(&quot;/Users/Desktop/files/temp1.txt&quot;));\n        MyExternalizable mm = (MyExternalizable)ois.readObject();\n        mm.toString();\n        System.out.println(mm.toString());\n    } \n    catch (ClassNotFoundException ex) \n    {\n        Logger.getLogger(MyExternalizable.class.getName()).log(Level.SEVERE, null, ex);\n    }\n    catch(IOException ex)\n    {\n        Logger.getLogger(MyExternalizable.class.getName()).log(Level.SEVERE, null, ex);\n    }\n}\n}\n</code></pre>\n<p>Here if you comment the default constructer then the code will throw below exception:</p>\n<pre><code> java.io.InvalidClassException: javaserialization.MyExternalizable;     \n javaserialization.MyExternalizable; no valid constructor.\n</code></pre>\n<p>We can observe that as password is sensitive information, so i am not serializing it in writeExternal(ObjectOutput oo) method and not setting the value of same in readExternal(ObjectInput oi). That's the flexibility that is provided by Externalizable.</p>\n<p>The output of the above code is as per below:</p>\n<pre><code>userName: nikki  passWord: student001  roll: 20\n***********************************************************************\nuserName: nikki  passWord: null  roll: 20\n</code></pre>\n<p>We can observe as we are not setting the value of passWord so it's null.</p>\n<p>The same can also be achieved by declaring the password field as transient.</p>\n<pre><code>private transient String passWord;\n</code></pre>\n<p>Hope it helps. I apologize if i made any mistakes. Thanks.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1505454690,
+      "post_id" : 36484886,
+      "comment_id" : 79428399,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "(3) is incorrect. There is a large repertoire of changes you can make to a class without breaking de-serialization of existing objects, and adding serializable members is certainly one of them. Deleting them is another. See the <i>Object Versioning</i> chapter of the <i>Java Object Serialization Specification.</i>"
+    }, {
+      "owner" : {
+        "account_id" : 6453072,
+        "reputation" : 39149,
+        "user_id" : 4999394,
+        "user_type" : "registered",
+        "accept_rate" : 98,
+        "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+        "display_name" : "Ravindra babu",
+        "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+      },
+      "reply_to_user" : {
+        "account_id" : 71739,
+        "reputation" : 311872,
+        "user_id" : 207421,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+        "display_name" : "user207421",
+        "link" : "https://stackoverflow.com/users/207421/user207421"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1505492495,
+      "post_id" : 36484886,
+      "comment_id" : 79451649,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Re-phrased sentence."
+    }, {
+      "owner" : {
+        "account_id" : 5010108,
+        "reputation" : 1951,
+        "user_id" : 4026629,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/63b65c810a1b594e7cf2db3e5a33be91?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JL_SO",
+        "link" : "https://stackoverflow.com/users/4026629/jl-so"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1566286508,
+      "post_id" : 36484886,
+      "comment_id" : 101598137,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thank you for sharing the link to the Serialization spec."
+    } ],
+    "owner" : {
+      "account_id" : 6453072,
+      "reputation" : 39149,
+      "user_id" : 4999394,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/19vKMg83.jpg?s=256",
+      "display_name" : "Ravindra babu",
+      "link" : "https://stackoverflow.com/users/4999394/ravindra-babu"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1681901749,
+    "last_edit_date" : 1681901749,
+    "creation_date" : 1460055446,
+    "answer_id" : 36484886,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Key differences between <code>Serializable</code> and <code>Externalizable</code></p>\n<ol>\n<li><strong>Marker interface</strong>: <code>Serializable</code> is marker interface without any methods. <code>Externalizable</code> interface contains two methods: <code>writeExternal()</code> and <code>readExternal()</code>.</li>\n<li><strong>Serialization process</strong>: Programmer defined  Serialization process will be kicked-in for classes implementing <code>Externalizable</code> interface.</li>\n<li><strong>Maintenance</strong>: <a href=\"https://docs.oracle.com/javase/8/docs/platform/serialization/spec/version.html\" rel=\"nofollow noreferrer\">Incompatible changes</a> may break serialisation.</li>\n</ol>\n<blockquote>\n<p>Incompatible changes to classes are those changes for which the guarantee of interoperability cannot be maintained like Deleting fields etc.</p>\n</blockquote>\n<ol start=\"4\">\n<li><strong>Backward Compatibility</strong>: If you have to support multiple versions, you can have full control with <code>Externalizable</code> interface. You can support different versions of your object.</li>\n<li><strong>public No-arg constructor</strong>:  <code>Serializable</code> uses reflection to construct object and does not require no arg constructor.  But <code>Externalizable</code> demands public no-arg constructor.</li>\n</ol>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8511198,
+        "reputation" : 754,
+        "user_id" : 6381179,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/a98ee10613a75a92ff2cc2c6b10ddd97?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Shirkam",
+        "link" : "https://stackoverflow.com/users/6381179/shirkam"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1507719417,
+      "post_id" : 46685880,
+      "comment_id" : 80320373,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Could you elaborate it more?   As I read it, I don&#39;t understand what you are trying to say. Also, if you could format the text with some paragraphs and examples, this could be a great answer."
+    } ],
+    "owner" : {
+      "account_id" : 10160262,
+      "reputation" : 680,
+      "user_id" : 7503961,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/dcb453875a9d2978d8ee2039850e5d2a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ashish Sharma",
+      "link" : "https://stackoverflow.com/users/7503961/ashish-sharma"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1507779709,
+    "last_edit_date" : 1507779709,
+    "creation_date" : 1507717661,
+    "answer_id" : 46685880,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There are so many difference exist between Serializable and Externalizable but when we compare difference between custom Serializable(overrided writeObject() &amp; readObject()) and Externalizable  then we find that custom implementation is tightly bind with ObjectOutputStream class where as in Externalizable case , we ourself provide an implementation of ObjectOutput which may be ObjectOutputStream class or it could be some other like org.apache.mina.filter.codec.serialization.ObjectSerializationOutputStream</p>\n\n<p><strong>In case of Externalizable interface</strong> </p>\n\n<pre><code>@Override\npublic void writeExternal(ObjectOutput out) throws IOException {\n    out.writeUTF(key);\n    out.writeUTF(value);\n    out.writeObject(emp);\n}\n\n@Override\npublic void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {\n    this.key = in.readUTF();\n    this.value = in.readUTF();\n    this.emp = (Employee) in.readObject();\n}\n\n\n\n\n\n**In case of Serializable interface**\n\n\n        /* \n             We can comment below two method and use default serialization process as well\n             Sequence of class attributes in read and write methods MUST BE same.\n        // below will not work it will not work . \n        // Exception = java.io.StreamCorruptedException: invalid type code: 00\\\n              private void writeObject(java.io.ObjectOutput stream) \n              */\n            private void writeObject(java.io.ObjectOutputStream Outstream)\n                    throws IOException {\n\n                System.out.println(\"from writeObject()\");\n                /*     We can define custom validation or business rules inside read/write methods.\n This way our validation methods will be automatically \n    called by JVM, immediately after default serialization \n    and deserialization process \n    happens.\n                 checkTestInfo();\n                */\n\n                stream.writeUTF(name);\n                stream.writeInt(age);\n                stream.writeObject(salary);\n                stream.writeObject(address);\n            }\n\n            private void readObject(java.io.ObjectInputStream Instream)\n                    throws IOException, ClassNotFoundException {\n                System.out.println(\"from readObject()\");\n                name = (String) stream.readUTF();\n                age = stream.readInt();\n                salary = (BigDecimal) stream.readObject();\n                address = (Address) stream.readObject();\n                // validateTestInfo();\n            }\n</code></pre>\n\n<p>I have added sample code to explain better. please check in/out object case of Externalizable. These are not bound to any implementation directly.<br>\nWhere as Outstream/Instream are tightly bind to classes. We can extends ObjectOutputStream/ObjectInputStream but it will a bit difficult to use.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6575754,
+      "reputation" : 9658,
+      "user_id" : 5081877,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://i.sstatic.net/vG3nv.png?s=256",
+      "display_name" : "Yash",
+      "link" : "https://stackoverflow.com/users/5081877/yash"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1516192500,
+    "creation_date" : 1516192500,
+    "answer_id" : 48301301,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>Object Serialization uses the Serializable and Externalizable interfaces.</strong> \n    A Java object is only serializable. if a class or any of its superclasses implements either the java.io.Serializable interface or its subinterface, java.io.Externalizable. <em>Most of the java class are serializable</em>.</p>\n\n<ul>\n<li><a href=\"https://docs.oracle.com/javase/8/docs/api/java/io/NotSerializableException.html\" rel=\"noreferrer\"><code>NotSerializableException</code></a>: <em><code>packageName.ClassName</code></em> « To participate a Class Object in serialization process, The class must implement either Serializable or Externalizable interface.</li>\n</ul>\n\n<p><a href=\"https://i.sstatic.net/wxIkL.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/wxIkL.png\" alt=\"enter image description here\"></a></p>\n\n<hr>\n\n<p><strong><a href=\"https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html\" rel=\"noreferrer\">Serializable Interface</a></strong></p>\n\n<p>Object Serialization produces a stream with information about the Java classes for the objects which are being saved. For serializable objects, sufficient information is kept to restore those objects even if a different (but compatible) version of the implementation of the class is present. The Serializable interface is defined to identify classes which implement the serializable protocol:</p>\n\n\n\n<pre class=\"lang-java prettyprint-override\"><code>package java.io;\n\npublic interface Serializable {};\n</code></pre>\n\n\n\n<ul>\n<li>The serialization interface has no methods or fields and serves only to identify the semantics of being serializable. For serializing/deserializing a class, either we can use default writeObject and readObject methods (or) we can overriding writeObject and readObject methods from a class.</li>\n<li>JVM will have complete control in serializing the object. use <em><a href=\"https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.5-200-A.1\" rel=\"noreferrer\">transient keyword</a></em> to prevent the data member from being serialized.</li>\n<li>Here serializable objects is reconstructed directly from the stream without executing </li>\n<li><a href=\"https://docs.oracle.com/javase/7/docs/api/java/io/InvalidClassException.html\" rel=\"noreferrer\"><strong><code>InvalidClassException</code></strong></a> « In deserialization process, if local class <em><a href=\"https://docs.oracle.com/javase/6/docs/platform/serialization/spec/class.html#5023\" rel=\"noreferrer\">serialVersionUID</a></em> value is different from the corresponding sender's class. then result's in conflict as \n<code>java.io.InvalidClassException: com.github.objects.User; local class incompatible: stream classdesc serialVersionUID = 5081877, local class serialVersionUID = 50818771</code></li>\n<li>The values of the non-transient and non-static fields of the class get serialized.</li>\n</ul>\n\n<p><strong><a href=\"https://docs.oracle.com/javase/8/docs/api/java/io/Externalizable.html\" rel=\"noreferrer\">Externalizable Interface</a></strong></p>\n\n<p>For Externalizable objects, only the identity of the class of the object is saved by the container; the class must save and restore the contents. The Externalizable interface is defined as follows:</p>\n\n\n\n<pre class=\"lang-java prettyprint-override\"><code>package java.io;\n\npublic interface Externalizable extends Serializable\n{\n    public void writeExternal(ObjectOutput out)\n        throws IOException;\n\n    public void readExternal(ObjectInput in)\n        throws IOException, java.lang.ClassNotFoundException;\n}\n</code></pre>\n\n\n\n<ul>\n<li>The Externalizable interface has two methods, an externalizable object must implement a writeExternal and readExternal methods to save/restore the state of an object.</li>\n<li>Programmer has to take care of which objects to be serialized. As a programmer take care of Serialization So, here transient keyword will not restrict any object in Serialization process.</li>\n<li>When an Externalizable object is reconstructed, an instance is created using the public no-arg constructor, then the readExternal method called. Serializable objects are restored by reading them from an ObjectInputStream.</li>\n<li><p><a href=\"https://docs.oracle.com/javase/7/docs/api/java/io/OptionalDataException.html\" rel=\"noreferrer\"><strong><code>OptionalDataException</code></strong></a> « The fields <em>MUST BE IN THE SAME ORDER AND TYPE</em> as we wrote them out. If there is any mismatch of type from the stream it throws OptionalDataException.</p>\n\n\n\n<pre class=\"lang-java prettyprint-override\"><code>@Override public void writeExternal(ObjectOutput out) throws IOException {\n    out.writeInt( id );\n    out.writeUTF( role );\n    out.writeObject(address);\n}\n@Override public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {\n    this.id = in.readInt();\n    this.address = (Address) in.readObject();\n    this.role = in.readUTF();\n}\n</code></pre>\n\n</li>\n<li><p>The instance fields of the class which written <em>(exposed)</em> to <code>ObjectOutput</code> get serialized.</p></li>\n</ul>\n\n<hr>\n\n<p>Example <strong>«</strong> implements Serializable</p>\n\n\n\n<pre class=\"lang-java prettyprint-override\"><code>class Role {\n    String role;\n}\nclass User extends Role implements Serializable {\n\n    private static final long serialVersionUID = 5081877L;\n    Integer id;\n    Address address;\n\n    public User() {\n        System.out.println(\"Default Constructor get executed.\");\n    }\n    public User( String role ) {\n        this.role = role;\n        System.out.println(\"Parametarised Constructor.\");\n    }\n}\n\nclass Address implements Serializable {\n\n    private static final long serialVersionUID = 5081877L;\n    String country;\n}\n</code></pre>\n\n\n\n<p>Example <em>«</em> implements Externalizable</p>\n\n\n\n<pre class=\"lang-java prettyprint-override\"><code>class User extends Role implements Externalizable {\n\n    Integer id;\n    Address address;\n    // mandatory public no-arg constructor\n    public User() {\n        System.out.println(\"Default Constructor get executed.\");\n    }\n    public User( String role ) {\n        this.role = role;\n        System.out.println(\"Parametarised Constructor.\");\n    }\n\n    @Override\n    public void writeExternal(ObjectOutput out) throws IOException {\n        out.writeInt( id );\n        out.writeUTF( role );\n        out.writeObject(address);\n    }\n    @Override\n    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {\n        this.id = in.readInt();\n        this.address = (Address) in.readObject();\n        this.role = in.readUTF();\n    }\n}\n</code></pre>\n\n\n\n<p>Example</p>\n\n\n\n<pre class=\"lang-java prettyprint-override\"><code>public class CustomClass_Serialization {\n    static String serFilename = \"D:/serializable_CustomClass.ser\";\n\n    public static void main(String[] args) throws IOException {\n        Address add = new Address();\n        add.country = \"IND\";\n\n        User obj = new User(\"SE\");\n        obj.id = 7;\n        obj.address = add;\n\n        // Serialization\n        objects_serialize(obj, serFilename);\n        objects_deserialize(obj, serFilename);\n\n        // Externalization\n        objects_WriteRead_External(obj, serFilename);\n    }\n\n    public static void objects_serialize( User obj, String serFilename ) throws IOException{\n        FileOutputStream fos = new FileOutputStream( new File( serFilename ) );\n        ObjectOutputStream objectOut = new ObjectOutputStream( fos );\n\n        // java.io.NotSerializableException: com.github.objects.Address\n        objectOut.writeObject( obj );\n        objectOut.flush();\n        objectOut.close();\n        fos.close();\n\n        System.out.println(\"Data Stored in to a file\");\n    }\n    public static void objects_deserialize( User obj, String serFilename ) throws IOException{\n        try {\n            FileInputStream fis = new FileInputStream( new File( serFilename ) );\n            ObjectInputStream ois = new ObjectInputStream( fis );\n            Object readObject;\n            readObject = ois.readObject();\n            String calssName = readObject.getClass().getName();\n            System.out.println(\"Restoring Class Name : \"+ calssName); // InvalidClassException\n\n            User user = (User) readObject;\n            System.out.format(\"Obj[Id:%d, Role:%s] \\n\", user.id, user.role);\n\n            Address add = (Address) user.address;\n            System.out.println(\"Inner Obj : \"+ add.country );\n            ois.close();\n        } catch (ClassNotFoundException e) {\n            e.printStackTrace();\n        }\n    }\n\n    public static void objects_WriteRead_External( User obj, String serFilename ) throws IOException {\n        FileOutputStream fos = new FileOutputStream(new File( serFilename ));\n        ObjectOutputStream objectOut = new ObjectOutputStream( fos );\n\n        obj.writeExternal( objectOut );\n        objectOut.flush();\n\n        fos.close();\n\n        System.out.println(\"Data Stored in to a file\");\n\n        try {\n            // create a new instance and read the assign the contents from stream.\n            User user = new User();\n\n            FileInputStream fis = new FileInputStream(new File( serFilename ));\n            ObjectInputStream ois = new ObjectInputStream( fis );\n\n            user.readExternal(ois);\n\n            System.out.format(\"Obj[Id:%d, Role:%s] \\n\", user.id, user.role);\n\n            Address add = (Address) user.address;\n            System.out.println(\"Inner Obj : \"+ add.country );\n            ois.close();\n        } catch (ClassNotFoundException e) {\n            e.printStackTrace();\n        }\n    }\n}\n</code></pre>\n\n\n\n<hr>\n\n<p>@see</p>\n\n<ul>\n<li><a href=\"https://stackoverflow.com/a/31651945/5081877\">What is Object Serialization</a></li>\n<li><a href=\"http://www.oracle.com/technetwork/java/javase/tech/serializationfaq-jsp-136699.html\" rel=\"noreferrer\">Object Serialization: Frequently Asked Questions</a></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 14381595,
+      "reputation" : 3810,
+      "user_id" : 10388629,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/g15oI.png?s=256",
+      "display_name" : "Picachieu",
+      "link" : "https://stackoverflow.com/users/10388629/picachieu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1539227918,
+    "last_edit_date" : 1539227918,
+    "creation_date" : 1539226642,
+    "answer_id" : 52751485,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Basically, <code>Serializable</code> is a marker interface that implies that a class is safe for serialization and the JVM determines how it is serialized. <code>Externalizable</code> contains 2 methods, <code>readExternal</code> and <code>writeExternal</code>. <code>Externalizable</code> allows the implementer to decide how an object is serialized, where as <code>Serializable</code> serializes objects the default way.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13876098,
+      "reputation" : 167,
+      "user_id" : 10017725,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e842c01256dc3f0ac806fe64ac600984?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Neeraj",
+      "link" : "https://stackoverflow.com/users/10017725/neeraj"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1577122122,
+    "creation_date" : 1577122122,
+    "answer_id" : 59459185,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Some differences:</p>\n\n<ol>\n<li><p>For Serialization there is no need of default constructor of that class because Object because JVM construct the same with help of Reflection API. In case of Externalization contructor with no arg is required, because the control is in hand of programmar and later on assign the deserialized data to object via setters.</p></li>\n<li><p>In serialization if user want to skip certain properties to be serialized then has to mark that properties as transient, vice versa is not required for Externalization.</p></li>\n<li><p>When backward compatiblity support is expected for any class then it is recommended to go with Externalizable. Serialization supports defaultObject persisting and if object structure is broken then it will cause issue while deserializing.</p></li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1429890,
+      "reputation" : 6699,
+      "user_id" : 1352530,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/ECK2F.jpg?s=256",
+      "display_name" : "Whimusical",
+      "link" : "https://stackoverflow.com/users/1352530/whimusical"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1678057106,
+    "last_edit_date" : 1678057106,
+    "creation_date" : 1678056741,
+    "answer_id" : 75645842,
+    "question_id" : 817853,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There is 3 reasons to use Externalizable instead of Serializable:</p>\n<ol>\n<li>It is much faster (<a href=\"https://hazelcast.com/blog/comparing-serialization-options/\" rel=\"nofollow noreferrer\">https://hazelcast.com/blog/comparing-serialization-options/</a>)</li>\n<li>It is more deterministic (I had troubles in the past with cache keys composed of boxed type fields because depending on who creates the object (Cacheable/Hibernate/Proxies/AnonymousClasses), the serialized bytearray is compatible yet distinct, I guess due to some metadata, which leads to duplications in some caches).</li>\n<li>It saves you from having to define serialVersionUid, at least according to Hazelcast <a href=\"https://docs.hazelcast.com/imdg/4.2/serialization/implementing-java-serializable#implementing-java-externalizable\" rel=\"nofollow noreferrer\">https://docs.hazelcast.com/imdg/4.2/serialization/implementing-java-serializable#implementing-java-externalizable</a></li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "user_type" : "does_not_exist",
+    "display_name" : "Sasha"
+  },
+  "is_answered" : true,
+  "view_count" : 132044,
+  "protected_date" : 1543127093,
+  "answer_count" : 12,
+  "score" : 295,
+  "last_activity_date" : 1681901749,
+  "creation_date" : 1241380699,
+  "last_edit_date" : 1543127088,
+  "question_id" : 817853,
+  "link" : "https://stackoverflow.com/questions/817853/what-is-the-difference-between-serializable-and-externalizable-in-java",
+  "title" : "What is the difference between Serializable and Externalizable in Java?",
+  "body" : "<p>What is the difference between <a href=\"http://java.sun.com/javase/6/docs/api/java/io/Serializable.html\" rel=\"noreferrer\"><code>Serializable</code></a> and <a href=\"http://java.sun.com/javase/6/docs/api/java/io/Externalizable.html\" rel=\"noreferrer\"><code>Externalizable</code></a> in Java?</p>\n"
+}

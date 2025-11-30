@@ -1,0 +1,102 @@
+{
+  "tags" : [ "java", "drools" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 31180,
+      "reputation" : 29752,
+      "user_id" : 85421,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+      "display_name" : "user85421",
+      "link" : "https://stackoverflow.com/users/85421/user85421"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1742462829,
+    "post_id" : 79520815,
+    "comment_id" : 140241850,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "why the <a href=\"https://stackoverflow.com/questions/tagged/java\">java</a> tag? How is this question about having problems using or understanding Java itself? (as <i>suggested</i> by the tag description)"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 183966,
+        "reputation" : 15278,
+        "user_id" : 419705,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+        "display_name" : "Roddy of the Frozen Peas",
+        "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1758827812,
+      "post_id" : 79522436,
+      "comment_id" : 140760336,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This won&#39;t work if everyone is named Bob."
+    } ],
+    "owner" : {
+      "account_id" : 198697,
+      "reputation" : 18491,
+      "user_id" : 443515,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://www.gravatar.com/avatar/df12f0b402df76dd587bb91c5dc178d1?s=256&d=identicon&r=PG",
+      "display_name" : "Qwerky",
+      "link" : "https://stackoverflow.com/users/443515/qwerky"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1762447507,
+    "last_edit_date" : 1762447507,
+    "creation_date" : 1742462454,
+    "answer_id" : 79522436,
+    "question_id" : 79520815,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>These rules do the job. There was a problem with my accumulation, and the losers can be found simply by choosing the inverse of the win condition.</p>\n<pre class=\"lang-none prettyprint-override\"><code>rule &quot;Bob wins&quot;\nwhen\n    $winner : Person(name == &quot;Bob&quot;)\n    $losers: Person(name != &quot;Bob&quot;)\nthen\n    $winner.setWinner(true);\n    update($winner);\n\n    $losers.setWinner(false);\n    update($losers);\nend\n\n\nrule &quot;Oldest person wins&quot;\nwhen\n    not Person(name == &quot;Bob&quot;)\n    $winner: Person($age : age)\n    not(Person(age &gt; $age, name != &quot;Bob&quot;))\n    $losers : Person(age &lt; $age)\nthen\n    $winner.setWinner(true);\n    update($winner);\n\n    $losers.setWinner(false);\n    update($losers);\nend\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 183966,
+      "reputation" : 15278,
+      "user_id" : 419705,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/cvuY8.png?s=256",
+      "display_name" : "Roddy of the Frozen Peas",
+      "link" : "https://stackoverflow.com/users/419705/roddy-of-the-frozen-peas"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1762447493,
+    "last_edit_date" : 1762447493,
+    "creation_date" : 1758828577,
+    "answer_id" : 79775240,
+    "question_id" : 79520815,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to handle your Bob wins/everyone else loses use cases separately. Otherwise given a situation where there are two Bobs in the contest, and nobody with another name, you'll need to still mark both Bobs the winner regardless of the presence (or lack thereof) of any other non-Bob contestants.</p>\n<pre class=\"lang-none prettyprint-override\"><code>rule &quot;Bob wins&quot;\nwhen\n    $winner : Person(name == &quot;Bob&quot;)\nthen\n    $winner.setWinner(true);\n    update($winner);\nend\n\nrule &quot;Bob wins - everyone else loses&quot;\nwhen\n  exists( Person(name == &quot;Bob&quot;) ) // there exists at least one Bob\n  $lost: Person(name != &quot;Bob&quot;)\nthen\n  $lost.setWinner(false);\n  update($lost)\nend\n</code></pre>\n<p>For every &quot;Bob&quot; in working memory, they are set as the winner. For every non-Bob in working memory, they are set as the loser. If you combined both criteria into a single rule like this:</p>\n<pre class=\"lang-none prettyprint-override\"><code>rule &quot;Bob wins, everyone else loses&quot;\nwhen\n  $winner: Person(name == &quot;Bob&quot;)\n  $loser: Person (name != &quot;Bob&quot;)\nthen \n  // omitted for brevity\nend\n</code></pre>\n<p>The &quot;when&quot; clause is not satisfied unless there exists <em>at least one</em> Person in working memory whose name is not Bob and at least one person whose name <em>is</em> Bob. If there are no non-Bobs, the rule doesn't fire at all, and Bob(s) won't be the winner.</p>\n<hr />\n<p>Of course, if there are a lot of people in this contest, this is hellishly inefficient because <code>update</code> makes changes to the working memory and then refires <em>all</em> rules. (It's one of the most expensive operations you can do.)</p>\n<p>To make it more efficient, one would apply strategies like defaulting the win condition to &quot;false&quot;, so you don't have to actually set losers, just the winners. Also, the &quot;Bob wins&quot; condition should ignore any Bob who is already a winner -- that way the rule doesn't re-fire and call <code>update</code> needlessly:</p>\n<pre class=\"lang-none prettyprint-override\"><code>rule &quot;Bob wins&quot;\nwhen\n  $winner: Person(name == &quot;Bob&quot;, winner == false) // only trigger if there's a Bob who is not a winner\nthen\n  $winner.setWinner(true);\n  update($winner);\nend\n</code></pre>\n<p>If the <code>winner</code> flag in Person is a boolean (not a Boolean), then it's probably already defaulted false.</p>\n<p>Your &quot;there are no Bobs&quot; rule already does the trick with <code>accumulate</code> and <code>max()</code>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 198697,
+    "reputation" : 18491,
+    "user_id" : 443515,
+    "user_type" : "registered",
+    "accept_rate" : 56,
+    "profile_image" : "https://www.gravatar.com/avatar/df12f0b402df76dd587bb91c5dc178d1?s=256&d=identicon&r=PG",
+    "display_name" : "Qwerky",
+    "link" : "https://stackoverflow.com/users/443515/qwerky"
+  },
+  "is_answered" : true,
+  "view_count" : 93,
+  "answer_count" : 2,
+  "score" : -1,
+  "last_activity_date" : 1762447507,
+  "creation_date" : 1742401563,
+  "last_edit_date" : 1762447472,
+  "question_id" : 79520815,
+  "link" : "https://stackoverflow.com/questions/79520815/drools-rule-to-update-facts-based-on-not-matching-a-condition",
+  "title" : "Drools rule to update facts based on not matching a condition",
+  "body" : "<p>I am trying to write Drools rules that identify winners. The rules are as follows;</p>\n<ol>\n<li>If anyone is named Bob they win</li>\n<li>If nobody is named Bob the oldest person wins</li>\n</ol>\n<p>Here's what I have:</p>\n<pre class=\"lang-none prettyprint-override\"><code>rule &quot;Bob wins&quot;\nwhen\n    $winner : Person(name == &quot;Bob&quot;)\nthen\n    $winner.setWinner(true);\n    update($winner);\nend\n\n\nrule &quot;Oldest person wins&quot;\nsalience -10 // Runs only if there is no Bob\nwhen\n    not Person(name == &quot;Bob&quot;)\n    $winner : Person() from accumulate(\n        Person($age : age),\n        max($age)\n    )\nthen\n    $winner.setWinner(true);\n    update($winner);\nend\n</code></pre>\n<p>How can I identify the non-winners so I can <code>setWinner(false)</code> on them?</p>\n"
+}

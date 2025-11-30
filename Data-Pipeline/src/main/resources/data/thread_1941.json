@@ -1,0 +1,616 @@
+{
+  "tags" : [ "java", "eclipse", "equals", "instanceof" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 33655,
+      "reputation" : 27055,
+      "user_id" : 94363,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/6017d97591b78ae31e34b6483ee77a33?s=256&d=identicon&r=PG",
+      "display_name" : "rds",
+      "link" : "https://stackoverflow.com/users/94363/rds"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1504694800,
+    "post_id" : 596462,
+    "comment_id" : 79106991,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "The expression <code>x instanceof SomeClass</code> is false if <code>x</code> is <code>null</code>. Hence, the second syntax doens&#39;t need the null check."
+  }, {
+    "owner" : {
+      "account_id" : 9921,
+      "reputation" : 109833,
+      "user_id" : 18511,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://www.gravatar.com/avatar/c621039e41aef415ad25054da3bf3f9a?s=256&d=identicon&r=PG",
+      "display_name" : "Kip",
+      "link" : "https://stackoverflow.com/users/18511/kip"
+    },
+    "reply_to_user" : {
+      "account_id" : 33655,
+      "reputation" : 27055,
+      "user_id" : 94363,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/6017d97591b78ae31e34b6483ee77a33?s=256&d=identicon&r=PG",
+      "display_name" : "rds",
+      "link" : "https://stackoverflow.com/users/94363/rds"
+    },
+    "edited" : false,
+    "score" : 7,
+    "creation_date" : 1504706275,
+    "post_id" : 596462,
+    "comment_id" : 79115563,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@rds Yes, the paragraph immediately after the code snippet says this as well. It is in the code snippet because that is what Eclipse generates."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 384409,
+        "reputation" : 8310,
+        "user_id" : 740904,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/e178ec2f6936d956f200070cbb9723d8?s=256&d=identicon&r=PG",
+        "display_name" : "Kevin Sitze",
+        "link" : "https://stackoverflow.com/users/740904/kevin-sitze"
+      },
+      "edited" : false,
+      "score" : 22,
+      "creation_date" : 1372202011,
+      "post_id" : 596507,
+      "comment_id" : 25103207,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The problem with the instanceof approach is that it breaks the &quot;symmetric&quot; property of Object.equals() in that it becomes possible that x.equals(y) == true but y.equals(x) == false if x.getClass() != y.getClass().  I prefer not to break this property unless absolutely necessary (i.e., overriding equals() for managed or proxy objects)."
+    }, {
+      "owner" : {
+        "account_id" : 150501,
+        "reputation" : 82021,
+        "user_id" : 363751,
+        "user_type" : "registered",
+        "accept_rate" : 35,
+        "profile_image" : "https://www.gravatar.com/avatar/135a97c4150691234931a93f3a27a52f?s=256&d=identicon&r=PG",
+        "display_name" : "supercat",
+        "link" : "https://stackoverflow.com/users/363751/supercat"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1391040852,
+      "post_id" : 596507,
+      "comment_id" : 32359840,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The instanceof approach is proper when, and only when, the base class defines what equality among subclass objects should mean.  Using <code>getClass</code> does not violate the LSP, since the LSP merely relates to what can be done with existing instances--not what kinds of instances can be constructed.  The class returned by <code>getClass</code> is an immutable property of an object instance.  The LSP does not imply that it should be possible to create a subclass where that property indicates any class other than the one which created it."
+    } ],
+    "owner" : {
+      "account_id" : 7745,
+      "reputation" : 192629,
+      "user_id" : 13531,
+      "user_type" : "moderator",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+      "display_name" : "Michael Myers",
+      "link" : "https://stackoverflow.com/users/13531/michael-myers"
+    },
+    "is_accepted" : false,
+    "score" : 195,
+    "last_activity_date" : 1235766115,
+    "last_edit_date" : 1495540937,
+    "creation_date" : 1235766115,
+    "answer_id" : 596507,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><a href=\"http://www.artima.com/intv/bloch17.html\" rel=\"noreferrer\">Josh Bloch</a> favors your approach:</p>\n\n<blockquote>\n  <p>The reason that I favor the <code>instanceof</code> approach is that when you use the <code>getClass</code> approach, you have the restriction that objects are only equal to other objects of the same class, the same run time type. If you extend a class and add a couple of innocuous methods to it, then check to see whether some object of the subclass is equal to an object of the super class, even if the objects are equal in all important aspects, you will get the surprising answer that they aren't equal. In fact, this violates a strict interpretation of the <em>Liskov substitution principle</em>, and can lead to very surprising behavior. In Java, it's particularly important because most of the collections (<code>HashTable</code>, etc.) are based on the equals method. If you put a member of the super class in a hash table as the key and then look it up using a subclass instance, you won't find it, because they are not equal.</p>\n</blockquote>\n\n<p>See also <a href=\"https://stackoverflow.com/questions/27581/overriding-equals-and-hashcode-in-java/32223#32223\">this SO answer</a>.</p>\n\n<p>Effective Java <a href=\"http://java.sun.com/developer/Books/effectivejava/Chapter3.pdf\" rel=\"noreferrer\">chapter 3</a> also covers this.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7745,
+        "reputation" : 192629,
+        "user_id" : 13531,
+        "user_type" : "moderator",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Myers",
+        "link" : "https://stackoverflow.com/users/13531/michael-myers"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1235766625,
+      "post_id" : 596524,
+      "comment_id" : 408446,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Re your second point: He already mentioned that in the question. &quot;I usually check the instanceof option, and then go in and remove the &#39;if (obj == null)&#39; check.&quot;"
+    } ],
+    "owner" : {
+      "account_id" : 25027,
+      "reputation" : 9068,
+      "user_id" : 64044,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1415fb8e157655d397bd0c2b520df5e9?s=256&d=identicon&r=PG",
+      "display_name" : "Clint",
+      "link" : "https://stackoverflow.com/users/64044/clint"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1235766288,
+    "creation_date" : 1235766288,
+    "answer_id" : 596524,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If you want to ensure only that class will match then use <code>getClass() ==</code>.  If you want to match subclasses then <code>instanceof</code> is needed.</p>\n\n<p>Also, instanceof will not match against a null but is safe to compare against a null.  So you don't have to null check it.</p>\n\n<pre><code>if ( ! (obj instanceof MyClass) ) { return false; }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 23234,
+      "reputation" : 35412,
+      "user_id" : 58082,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/61200477cf8983809ec152f484750204?s=256&d=identicon&r=PG",
+      "display_name" : "Pierre",
+      "link" : "https://stackoverflow.com/users/58082/pierre"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1235766319,
+    "creation_date" : 1235766319,
+    "answer_id" : 596530,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>It depends if you consider if a subclass of a given class is equals to its parent.</p>\n\n<pre><code>class LastName\n{\n(...)\n}\n\n\nclass FamilyName\nextends LastName\n{\n(..)\n}\n</code></pre>\n\n<p>here I would use 'instanceof', because I want a LastName to be compared to FamilyName</p>\n\n<pre><code>class Organism\n{\n}\n\nclass Gorilla extends Organism\n{\n}\n</code></pre>\n\n<p>here I would use 'getClass', because the class already says that the two instances are not equivalent.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10836,
+      "reputation" : 199951,
+      "user_id" : 20654,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/94066dfa49c2feb14706cb081848fda7?s=256&d=identicon&r=PG",
+      "display_name" : "OscarRyz",
+      "link" : "https://stackoverflow.com/users/20654/oscarryz"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1235766809,
+    "creation_date" : 1235766809,
+    "answer_id" : 596558,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p><strong>instanceof</strong> works for instences of the same class <strong>or</strong> its subclasses</p>\n\n<blockquote>\n  <p><em>You can use it to test if an object is an instance of a class, an instance of a subclass, or an instance of a class that implements a particular interface.</em></p>\n</blockquote>\n\n<p>ArryaList and RoleList are both <strong>instanceof</strong> List</p>\n\n<p>While </p>\n\n<p><strong>getClass() == o.getClass()</strong> will be  true only if both objects ( this and o ) belongs to exactly the same class.</p>\n\n<p>So depending on what you need to compare you could use one or the other. </p>\n\n<p>If your logic is: \"One objects is equals to other only if they are both the same class\" you should go for the \"equals\", which I think is most of the cases. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 16029,
+        "reputation" : 509774,
+        "user_id" : 34509,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://i.sstatic.net/7FnYg.jpg?s=256",
+        "display_name" : "Johannes Schaub - litb",
+        "link" : "https://stackoverflow.com/users/34509/johannes-schaub-litb"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1235771037,
+      "post_id" : 596707,
+      "comment_id" : 408775,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "exactly that came to my mind when i read the josh bloch quote above. +1 :)"
+    }, {
+      "owner" : {
+        "account_id" : 7257,
+        "reputation" : 30730,
+        "user_id" : 12541,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Yk2vr.jpg?s=256",
+        "display_name" : "Scott Stanchfield",
+        "link" : "https://stackoverflow.com/users/12541/scott-stanchfield"
+      },
+      "edited" : false,
+      "score" : 14,
+      "creation_date" : 1236111341,
+      "post_id" : 596707,
+      "comment_id" : 420233,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "definitely the key decision. symmetry must apply, and instanceof makes it very easy to be asymmetric accidentally"
+    }, {
+      "owner" : {
+        "account_id" : 2489808,
+        "reputation" : 3462,
+        "user_id" : 2167531,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/0QXwK.jpg?s=256",
+        "display_name" : "Shadow Man",
+        "link" : "https://stackoverflow.com/users/2167531/shadow-man"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1563236086,
+      "post_id" : 596707,
+      "comment_id" : 100624166,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;d also add that &quot;if <code>final</code> seems restrictive&quot; (on both <code>equals</code> and <code>hashCode</code>) then use <code>getClass()</code> equality instead of <code>instanceof</code> in order to preserve the symmetry and transitivity requirements of the <code>equals</code> contract."
+    } ],
+    "owner" : {
+      "account_id" : 2496,
+      "reputation" : 270515,
+      "user_id" : 3474,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/ffbf4e85b8ffbae4e9039b9c0cf07bc8?s=256&d=identicon&r=PG",
+      "display_name" : "erickson",
+      "link" : "https://stackoverflow.com/users/3474/erickson"
+    },
+    "is_accepted" : true,
+    "score" : 113,
+    "last_activity_date" : 1656342877,
+    "last_edit_date" : 1656342877,
+    "creation_date" : 1235769111,
+    "answer_id" : 596707,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you use <code>instanceof</code>, making your <code>equals</code> implementation <code>final</code> will preserve the symmetry contract of the method: <code>x.equals(y) == y.equals(x)</code>. If <code>final</code> seems restrictive, carefully examine your notion of object equivalence to make sure that your overriding implementations fully maintain the contract established by the <code>Object</code> class.</p>\n<hr />\n<p>What I'm trying to get at here is that if you believe <code>getClass()</code> is the only reliable way to preserve symmetry, you are probably using <code>equals()</code> the wrong way.</p>\n<p>Sure, it's easy to use <code>getClass()</code> to preserve the symmetry required of <code>equals()</code>, but only because <code>x.equals(y)</code> and <code>y.equals(x)</code> are always false. Liskov substitutability would encourage you to find a symmetry-preserving implementation that can yield <code>true</code> when it makes sense. If a subclass has a radically different notion of equality, is it really a subclass?</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2186921,
+        "reputation" : 8765,
+        "user_id" : 1935128,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/20023a31c0bbc7c59a1e5da488bd5f7a?s=256&d=identicon&r=PG",
+        "display_name" : "Johnride",
+        "link" : "https://stackoverflow.com/users/1935128/johnride"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1409229282,
+      "post_id" : 596766,
+      "comment_id" : 39892787,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "That&#39;s the first clear and concise answer for this question. A code sample is worth a thousand words."
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user6288471"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1466750391,
+      "post_id" : 596766,
+      "comment_id" : 63457429,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I was going through all other verbose answers util you saved the day.Simple, concise, elegant, and utterly the best answer of this question."
+    }, {
+      "owner" : {
+        "account_id" : 2489808,
+        "reputation" : 3462,
+        "user_id" : 2167531,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/0QXwK.jpg?s=256",
+        "display_name" : "Shadow Man",
+        "link" : "https://stackoverflow.com/users/2167531/shadow-man"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1563236215,
+      "post_id" : 596766,
+      "comment_id" : 100624184,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "There is the symmetry requirement as you mentioned. But there is also the &quot;transitivity&quot; requirement. If <code>a.equals(c)</code> and <code>b.equals(c)</code>, then <code>a.equals(b)</code> (the naive approach of making <code>Dog.equals</code> just <code>return super.equals(object)</code> when <code>!(object instanceof Dog)</code> but checking the extra fields when it is a Dog instance wouldn&#39;t violate symmetry but would violate transitivity)"
+    }, {
+      "owner" : {
+        "account_id" : 2489808,
+        "reputation" : 3462,
+        "user_id" : 2167531,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/0QXwK.jpg?s=256",
+        "display_name" : "Shadow Man",
+        "link" : "https://stackoverflow.com/users/2167531/shadow-man"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1563236637,
+      "post_id" : 596766,
+      "comment_id" : 100624250,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "To be safe, you could use a <code>getClass()</code> equality check, or you could use an <code>instanceof</code> check if make your <code>equals</code> and <code>hashCode</code> methods <code>final</code>."
+    } ],
+    "owner" : {
+      "account_id" : 12404,
+      "reputation" : 63291,
+      "user_id" : 24396,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/160d6580f280b5e9e5a1188b32c4ef2d?s=256&d=identicon&r=PG",
+      "display_name" : "Steve Kuo",
+      "link" : "https://stackoverflow.com/users/24396/steve-kuo"
+    },
+    "is_accepted" : false,
+    "score" : 72,
+    "last_activity_date" : 1360336837,
+    "last_edit_date" : 1360336837,
+    "creation_date" : 1235770461,
+    "answer_id" : 596766,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The reason to use <code>getClass</code> is to ensure the symmetric property of the <code>equals</code> contract. From equals' JavaDocs:</p>\n\n<blockquote>\n  <p>It is symmetric: for any non-null\n  reference values x and y, x.equals(y)\n  should return true if and only if\n  y.equals(x) returns true.</p>\n</blockquote>\n\n<p>By using instanceof, it's possible to not be symmetric. Consider the example:\nDog extends Animal.\nAnimal's <code>equals</code> does an <code>instanceof</code> check of Animal.\nDog's <code>equals</code> does an <code>instanceof</code> check of Dog.\nGive Animal <strong>a</strong> and Dog <strong>d</strong> (with other fields the same):</p>\n\n<pre><code>a.equals(d) --&gt; true\nd.equals(a) --&gt; false\n</code></pre>\n\n<p>This violates the symmetric property.</p>\n\n<p>To strictly follow equal's contract, symmetry must be ensured, and thus the class needs to be the same.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16029,
+      "reputation" : 509774,
+      "user_id" : 34509,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://i.sstatic.net/7FnYg.jpg?s=256",
+      "display_name" : "Johannes Schaub - litb",
+      "link" : "https://stackoverflow.com/users/34509/johannes-schaub-litb"
+    },
+    "is_accepted" : false,
+    "score" : 71,
+    "last_activity_date" : 1235771902,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1235771559,
+    "answer_id" : 596828,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Angelika Langers <a href=\"http://www.angelikalanger.com/Articles/JavaSolutions/SecretsOfEquals/Equals.html\" rel=\"noreferrer\"><strong>Secrets of equals</strong></a> gets into that with a long and detailed discussion for a few common and well-known examples, including by Josh Bloch and Barbara Liskov, discovering a couple of problems in most of them. She also gets into the <code>instanceof</code> vs <code>getClass</code>. Some quote from it</p>\n<blockquote>\n<p>Conclusions</p>\n<p>Having dissected the four arbitrarily chosen examples of implementations of equals() , what do we conclude?</p>\n<p>First of all: there are two substantially different ways of performing the check for type match in an implementation of equals() . A class can allow mixed-type comparison between super- and subclass objects by means of the instanceof operator, or a class can treat objects of different type as non-equal by means of the getClass() test. The examples above illustrated nicely that implementations of equals() using getClass() are generally more robust than those implementations using instanceof .</p>\n<p>The instanceof test is correct only for final classes or if at least method equals() is final in a superclass. The latter essentially implies that no subclass must extend the superclass's state, but can only add functionality or fields that are irrelevant for the object's state and behavior, such as transient or static fields.</p>\n<p>Implementations using the getClass() test on the other hand always comply to the equals() contract; they are correct and robust. They are, however, semantically very different from implementations that use the instanceof test. Implementations using getClass() do not allow comparison of sub- with superclass objects, not even when the subclass does not add any fields and would not even want to override equals() . Such a &quot;trivial&quot; class extension would for instance be the addition of a debug-print method in a subclass defined for exactly this &quot;trivial&quot; purpose. If the superclass prohibits mixed-type comparison via the getClass() check, then the trivial extension would not be comparable to its superclass. Whether or not this is a problem fully depends on the semantics of the class and the purpose of the extension.</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18062,
+      "reputation" : 2066,
+      "user_id" : 41039,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d796ba58a4582831881d9fc896de2427?s=256&d=identicon&r=PG",
+      "display_name" : "James",
+      "link" : "https://stackoverflow.com/users/41039/james"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1235772370,
+    "creation_date" : 1235772370,
+    "answer_id" : 596869,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Both methods have their problems.  </p>\n\n<p>If the subclass changes the identity, then you need to compare their actual classes.  Otherwise, you violate the symmetric property.  For instance, different types of <code>Person</code>s should not be considered equivalent, even if they have the same name.</p>\n\n<p>However, some subclasses don't change identity and these need to use <code>instanceof</code>.  For instance, if we have a bunch of immutable <code>Shape</code> objects, then a <code>Rectangle</code> with length and width of 1 should be equal to the unit <code>Square</code>.</p>\n\n<p>In practice, I think the former case is more likely to be true.  Usually, subclassing is a fundamental part of your identity and being exactly like your parent except you can do one little thing does not make you equal.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 150501,
+        "reputation" : 82021,
+        "user_id" : 363751,
+        "user_type" : "registered",
+        "accept_rate" : 35,
+        "profile_image" : "https://www.gravatar.com/avatar/135a97c4150691234931a93f3a27a52f?s=256&d=identicon&r=PG",
+        "display_name" : "supercat",
+        "link" : "https://stackoverflow.com/users/363751/supercat"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1391040387,
+      "post_id" : 596885,
+      "comment_id" : 32359648,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Nothing about using <code>getClass</code> would violate the LSP, unless the base class specifically documented a means by which it should be possible to make instances of different subclasses which compare equal.  What LSP violation do you see?"
+    }, {
+      "owner" : {
+        "account_id" : 246,
+        "reputation" : 109219,
+        "user_id" : 304,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/9061706d2661cf0fa9f2df0eee56cf9b?s=256&d=identicon&r=PG",
+        "display_name" : "McDowell",
+        "link" : "https://stackoverflow.com/users/304/mcdowell"
+      },
+      "reply_to_user" : {
+        "account_id" : 150501,
+        "reputation" : 82021,
+        "user_id" : 363751,
+        "user_type" : "registered",
+        "accept_rate" : 35,
+        "profile_image" : "https://www.gravatar.com/avatar/135a97c4150691234931a93f3a27a52f?s=256&d=identicon&r=PG",
+        "display_name" : "supercat",
+        "link" : "https://stackoverflow.com/users/363751/supercat"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1391079845,
+      "post_id" : 596885,
+      "comment_id" : 32375483,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Perhaps that should be rephrased as <i>Use getClass and you leave subtypes in danger of LSP violations.</i> Bloch has an example in Effective Java - also discussed <a href=\"https://www.artima.com/intv/bloch17.html\" rel=\"nofollow noreferrer\">here</a>. His rationale is largely that it can result in surprising behavior for developers implementing subtypes that don&#39;t add state. I take your point - documentation is key."
+    }, {
+      "owner" : {
+        "account_id" : 150501,
+        "reputation" : 82021,
+        "user_id" : 363751,
+        "user_type" : "registered",
+        "accept_rate" : 35,
+        "profile_image" : "https://www.gravatar.com/avatar/135a97c4150691234931a93f3a27a52f?s=256&d=identicon&r=PG",
+        "display_name" : "supercat",
+        "link" : "https://stackoverflow.com/users/363751/supercat"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1397666493,
+      "post_id" : 596885,
+      "comment_id" : 35336057,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The only time two instances of distinct classes should ever report themselves is equal is if they inherit from a common base class or interface which defines what equality means [a philosophy which Java applied, dubiously IMHO, to some collection interfaces].  Unless the base class contract says that <code>getClass()</code> should not be considered meaningful beyond the fact that the class in question is convertible to the base class, the return from <code>getClass()</code> should be considered like any other property which must match for instances to be equal."
+    }, {
+      "owner" : {
+        "account_id" : 3606249,
+        "reputation" : 381,
+        "user_id" : 3008363,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c764545abaf624ff2313c71af3c068ea?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "eyalzba",
+        "link" : "https://stackoverflow.com/users/3008363/eyalzba"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1421830942,
+      "post_id" : 596885,
+      "comment_id" : 44506853,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You mixed it! You meant exactly the <b>opposite</b>: Use getClass and you can never add significant members to subclasses ; Use instanceof and you violate the Liskov substitution principle."
+    }, {
+      "owner" : {
+        "account_id" : 246,
+        "reputation" : 109219,
+        "user_id" : 304,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/9061706d2661cf0fa9f2df0eee56cf9b?s=256&d=identicon&r=PG",
+        "display_name" : "McDowell",
+        "link" : "https://stackoverflow.com/users/304/mcdowell"
+      },
+      "reply_to_user" : {
+        "account_id" : 3606249,
+        "reputation" : 381,
+        "user_id" : 3008363,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c764545abaf624ff2313c71af3c068ea?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "eyalzba",
+        "link" : "https://stackoverflow.com/users/3008363/eyalzba"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1421831648,
+      "post_id" : 596885,
+      "comment_id" : 44507232,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@eyalzba Where instanceof_ is used if a subclass added members to the equals contract this would violate the <i>symmetric</i> equality  requirement. Using <i>getClass</i> subclasses can never be equal to the parent type. Not that you should be overriding equals anyway, but this is the trade-off if you do."
+    }, {
+      "owner" : {
+        "account_id" : 924287,
+        "reputation" : 313,
+        "user_id" : 955370,
+        "user_type" : "registered",
+        "accept_rate" : 38,
+        "profile_image" : "https://www.gravatar.com/avatar/210a1704bd87bc64b699d88666be624e?s=256&d=identicon&r=PG",
+        "display_name" : "TheSecretSquad",
+        "link" : "https://stackoverflow.com/users/955370/thesecretsquad"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1426562940,
+      "post_id" : 596885,
+      "comment_id" : 46413831,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;Design and document for inheritance or prohibit it&quot; I think is very important. My understanding is that the only time you should override equals is if you are creating an immutable value type, in which case the class should be declared final. Since there will be no inheritance, you are free to implement equals as needed. In the cases where you are allowing inheritance, then objects should compare by reference equality."
+    }, {
+      "owner" : {
+        "account_id" : 150501,
+        "reputation" : 82021,
+        "user_id" : 363751,
+        "user_type" : "registered",
+        "accept_rate" : 35,
+        "profile_image" : "https://www.gravatar.com/avatar/135a97c4150691234931a93f3a27a52f?s=256&d=identicon&r=PG",
+        "display_name" : "supercat",
+        "link" : "https://stackoverflow.com/users/363751/supercat"
+      },
+      "reply_to_user" : {
+        "account_id" : 924287,
+        "reputation" : 313,
+        "user_id" : 955370,
+        "user_type" : "registered",
+        "accept_rate" : 38,
+        "profile_image" : "https://www.gravatar.com/avatar/210a1704bd87bc64b699d88666be624e?s=256&d=identicon&r=PG",
+        "display_name" : "TheSecretSquad",
+        "link" : "https://stackoverflow.com/users/955370/thesecretsquad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1429135892,
+      "post_id" : 596885,
+      "comment_id" : 47463225,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@TheSecretSquad: There is nothing wrong with having an inheritable type whose inheritance contract specifies that references which report themselves equals to each other must, from the class&#39; point of view, behave interchangeably; such a contractual requirement would forbid encapsulated visible mutable state at any level of the inheritance hierarchy whether or not the class is <code>final</code>."
+    } ],
+    "owner" : {
+      "account_id" : 246,
+      "reputation" : 109219,
+      "user_id" : 304,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/9061706d2661cf0fa9f2df0eee56cf9b?s=256&d=identicon&r=PG",
+      "display_name" : "McDowell",
+      "link" : "https://stackoverflow.com/users/304/mcdowell"
+    },
+    "is_accepted" : false,
+    "score" : 29,
+    "last_activity_date" : 1429098409,
+    "last_edit_date" : 1429098409,
+    "creation_date" : 1235772914,
+    "answer_id" : 596885,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This is something of a religious debate. Both approaches have their problems.</p>\n\n<ul>\n<li>Use <em>instanceof</em> and you can never add significant members to subclasses.</li>\n<li>Use <em>getClass</em> and you violate the Liskov substitution principle.</li>\n</ul>\n\n<p><a href=\"http://en.wikipedia.org/wiki/Joshua_Bloch\" rel=\"noreferrer\">Bloch</a> has another relevant piece of advice in <a href=\"http://wayback.archive.org/web/20100827151804/http://java.sun.com/docs/books/effective/\" rel=\"noreferrer\">Effective Java Second Edition</a>:</p>\n\n<ul>\n<li><strong>Item 17: Design and document for inheritance or prohibit it</strong></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 42768,
+      "reputation" : 6335,
+      "user_id" : 124708,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/950cd0d34a9943729a4065ee4add6965?s=256&d=identicon&r=PG",
+      "display_name" : "TraderJoeChicago",
+      "link" : "https://stackoverflow.com/users/124708/traderjoechicago"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1405209721,
+    "last_edit_date" : 1405209721,
+    "creation_date" : 1319605414,
+    "answer_id" : 7898885,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Correct me if I am wrong, but getClass() will be useful when you want to make sure your instance is NOT a subclass of the class you are comparing with. If you use instanceof in that situation you can NOT know that because:</p>\n\n<pre><code>class A { }\n\nclass B extends A { }\n\nObject oA = new A();\nObject oB = new B();\n\noA instanceof A =&gt; true\noA instanceof B =&gt; false\noB instanceof A =&gt; true // &lt;================ HERE\noB instanceof B =&gt; true\n\noA.getClass().equals(A.class) =&gt; true\noA.getClass().equals(B.class) =&gt; false\noB.getClass().equals(A.class) =&gt; false // &lt;===============HERE\noB.getClass().equals(B.class) =&gt; true\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1861044,
+      "reputation" : 1965,
+      "user_id" : 1901896,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/77b2651b08f4279ec5a29169d6c40c3d?s=256&d=identicon&r=PG",
+      "display_name" : "Akash5288",
+      "link" : "https://stackoverflow.com/users/1901896/akash5288"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1448976452,
+    "creation_date" : 1448976452,
+    "answer_id" : 34021603,
+    "question_id" : 596462,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Actually instanceof check where an object belongs to some hierarchy or not. ex: Car object belongs to Vehical class. So \"new Car() instance of Vehical\" returns true. And \"new Car().getClass().equals(Vehical.class)\" return false, though Car object belongs to Vehical class but it's categorized as a separate type.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 9921,
+    "reputation" : 109833,
+    "user_id" : 18511,
+    "user_type" : "registered",
+    "accept_rate" : 92,
+    "profile_image" : "https://www.gravatar.com/avatar/c621039e41aef415ad25054da3bf3f9a?s=256&d=identicon&r=PG",
+    "display_name" : "Kip",
+    "link" : "https://stackoverflow.com/users/18511/kip"
+  },
+  "is_answered" : true,
+  "view_count" : 147481,
+  "accepted_answer_id" : 596707,
+  "answer_count" : 11,
+  "score" : 199,
+  "last_activity_date" : 1656342877,
+  "creation_date" : 1235765677,
+  "question_id" : 596462,
+  "link" : "https://stackoverflow.com/questions/596462/any-reason-to-prefer-getclass-over-instanceof-when-generating-equals",
+  "title" : "Any reason to prefer getClass() over instanceof when generating .equals()?",
+  "body" : "<p>I'm using Eclipse to generate <code>.equals()</code> and <code>.hashCode()</code>, and there is an option labeled \"Use 'instanceof' to compare types\".  The default is for this option to be unchecked and use <code>.getClass()</code> to compare types.  Is there any reason I should prefer <code>.getClass()</code> over <code>instanceof</code>?</p>\n\n<p>Without using <code>instanceof</code>:</p>\n\n<pre><code>if (obj == null)\n  return false;\nif (getClass() != obj.getClass())\n  return false;\n</code></pre>\n\n<p>Using <code>instanceof</code>:</p>\n\n<pre><code>if (obj == null)\n  return false;\nif (!(obj instanceof MyClass))\n  return false;\n</code></pre>\n\n<p>I usually check the <code>instanceof</code> option, and then go in and remove the \"<code>if (obj == null)</code>\" check. (It is redundant since null objects will always fail <code>instanceof</code>.)  Is there any reason that's a bad idea?</p>\n"
+}

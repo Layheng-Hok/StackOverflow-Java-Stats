@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "pdfbox", "ioexception", "pdfmerger" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 255529,
+      "reputation" : 19199,
+      "user_id" : 535646,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/yGyps.jpg?s=256",
+      "display_name" : "Tilman Hausherr",
+      "link" : "https://stackoverflow.com/users/535646/tilman-hausherr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1635495951,
+    "post_id" : 69763370,
+    "comment_id" : 123319006,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Is this your actual code? The <code>document</code> is never used. If there is more, then close it AFTER all merges are done. If this doesn&#39;t help, please edit your question to include the stack trace."
+  }, {
+    "owner" : {
+      "account_id" : 255529,
+      "reputation" : 19199,
+      "user_id" : 535646,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/yGyps.jpg?s=256",
+      "display_name" : "Tilman Hausherr",
+      "link" : "https://stackoverflow.com/users/535646/tilman-hausherr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1635496936,
+    "post_id" : 69763370,
+    "comment_id" : 123319355,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Also make sure you&#39;re using the latest version (2.0.24). This looks like 1.8."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1681237,
+      "reputation" : 1889,
+      "user_id" : 1545425,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/GmowT.jpg?s=256",
+      "display_name" : "Luca Tampellini",
+      "link" : "https://stackoverflow.com/users/1545425/luca-tampellini"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764176967,
+    "last_edit_date" : 1764176967,
+    "creation_date" : 1764176253,
+    "answer_id" : 79830967,
+    "question_id" : 69763370,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The cause of your issue is: <em><strong>you are re-using the same instance of PDFMergerUtility for multiple merges</strong>, but this cannot be done as the tool maintains some inner resources which are created on instantiation and closed after the first merge</em>.</p>\n<p>So, to fix your problem, i shall rewrite this method:</p>\n<pre><code>public void mergePDFFiles(File[] files, String filepath) throws COSVisitorException{\n    try {\n        PDFMergerUtility pdfmerger = new PDFMergerUtility();\n        pdfmerger.setDestinationFileName(filepath); // &lt;-- moved this out of the loop!\n        for (File file : files) {\n            // PDDocument document = PDDocument.load(file); // &lt;-- commented out as you were not using them\n            \n            pdfmerger.addSource(file);\n            // document.close(); // &lt;-- this will throw a separate exception if you dont do it after the merge\n        }\n        pdfmerger.mergeDocuments(); // &lt;-- moved this out of the loop!\n    } catch (IOException e) {\n        logger.error(&quot;Error to merge files. Error: &quot; + e.getMessage());\n    }\n}\n</code></pre>\n<p>Explanation:</p>\n<ol>\n<li>I have moved the call to <code>mergeDocuments</code> out of the loop; also, <code>setDestinationFileName</code> did not have to be called but once, yet this was no real cause of exceptions</li>\n<li>I have commented out the use of PDDocument as you dont seem to effectively need it, and calling <code>document.close()</code> before the merge could yield another problem</li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 21263798,
+    "reputation" : 9,
+    "user_id" : 15644299,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Ghqa38XETJE9l63M7Ba2wdfjpF9MnxtPVo2RPoe=k-s256",
+    "display_name" : "Alex Pandian Bala Murugan",
+    "link" : "https://stackoverflow.com/users/15644299/alex-pandian-bala-murugan"
+  },
+  "is_answered" : false,
+  "view_count" : 367,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1764176967,
+  "creation_date" : 1635478946,
+  "last_edit_date" : 1635496057,
+  "question_id" : 69763370,
+  "link" : "https://stackoverflow.com/questions/69763370/how-to-solve-stream-closed-error-in-java",
+  "title" : "how to solve &quot;stream closed error&quot; in java?",
+  "body" : "<p>I'm trying to merge multiple pdf files in java using pdfbox jar using this code. when it's trying to merge the second pdf in to first...it's getting Stream closed error. can anyone pls help me with this?</p>\n<pre><code> public static string PDFMergingForForeignModule String(folder_name) {\n      //Creating a File object for directory\n      String path = &quot;E:\\Code&quot;;\n\n      File directoryPath = new File(path);\n      File[] files = directoryPath.list();\n      \n      String mergedFileName = &quot;Merged_&quot;+folder_name+&quot;.pdf&quot;;\n      path = path + &quot;\\\\&quot;+ mergedFileName;\n      mergePDFFiles(files, path);\n      \n  \n      File mergedFile = new File(mergedFileName);\n     }\n\npublic void mergePDFFiles(File[] files, String filepath) throws COSVisitorException{\n    try {\n        PDFMergerUtility pdfmerger = new PDFMergerUtility();\n        for (File file : files) {\n            PDDocument document = PDDocument.load(file);\n            pdfmerger.setDestinationFileName(filepath);\n            pdfmerger.addSource(file);\n            pdfmerger.mergeDocuments();\n            document.close();\n        }\n    } catch (IOException e) {\n        logger.error(&quot;Error to merge files. Error: &quot; + e.getMessage());\n    }\n}\n</code></pre>\n"
+}

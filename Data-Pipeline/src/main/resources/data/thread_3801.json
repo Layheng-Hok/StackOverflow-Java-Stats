@@ -1,0 +1,127 @@
+{
+  "tags" : [ "java", "mysql", "jdbc", "google-cloud-platform", "google-cloud-dataproc" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 95442,
+      "reputation" : 1202,
+      "user_id" : 259942,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/d9064c6deafb04f30314acf718e611fb?s=256&d=identicon&r=PG",
+      "display_name" : "Axel Magnuson",
+      "link" : "https://stackoverflow.com/users/259942/axel-magnuson"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1506543033,
+    "post_id" : 46448781,
+    "comment_id" : 79868460,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Are you already including the dependencies <code>mysql-connector-java</code> and <code>mysql-socket-factory</code> in your pom as described in the linked doc?"
+  }, {
+    "owner" : {
+      "account_id" : 3092691,
+      "reputation" : 907,
+      "user_id" : 2618503,
+      "user_type" : "registered",
+      "accept_rate" : 42,
+      "profile_image" : "https://www.gravatar.com/avatar/ad53a28016efc40a5d9d7008ac1a6f3c?s=256&d=identicon&r=PG",
+      "display_name" : "Golak Sarangi",
+      "link" : "https://stackoverflow.com/users/2618503/golak-sarangi"
+    },
+    "reply_to_user" : {
+      "account_id" : 95442,
+      "reputation" : 1202,
+      "user_id" : 259942,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/d9064c6deafb04f30314acf718e611fb?s=256&d=identicon&r=PG",
+      "display_name" : "Axel Magnuson",
+      "link" : "https://stackoverflow.com/users/259942/axel-magnuson"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1506565757,
+    "post_id" : 46448781,
+    "comment_id" : 79875223,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I have not included <code>mysql-connector-java</code> because it says in doc that it is only used locally."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 95442,
+      "reputation" : 1202,
+      "user_id" : 259942,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/d9064c6deafb04f30314acf718e611fb?s=256&d=identicon&r=PG",
+      "display_name" : "Axel Magnuson",
+      "link" : "https://stackoverflow.com/users/259942/axel-magnuson"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1506629474,
+    "creation_date" : 1506629474,
+    "answer_id" : 46477510,
+    "question_id" : 46448781,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>After doing <a href=\"https://cloud.google.com/sql/docs/mysql/connect-external-app#java\" rel=\"nofollow noreferrer\">some</a> <a href=\"https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory\" rel=\"nofollow noreferrer\">reading</a>, it sounds like GoogleDriver is only available in the context of an AppEngine application.  Outside of AppEngine, the usage pattern is a little different.  From the first link:</p>\n\n<pre><code>String jdbcUrl = String.format(\n    \"jdbc:mysql://google/%s?cloudSqlInstance=%s&amp;\"\n        + \"socketFactory=com.google.cloud.sql.mysql.SocketFactory\",\n    databaseName,\n    instanceConnectionName);\n\nConnection connection = DriverManager.getConnection(jdbcUrl, username, password);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1240761,
+      "reputation" : 4465,
+      "user_id" : 3227693,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/23a08fe444828e2c598d2e63c7cef8c0?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Igor Dvorzhak",
+      "link" : "https://stackoverflow.com/users/3227693/igor-dvorzhak"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1524200461,
+    "creation_date" : 1524200461,
+    "answer_id" : 49934305,
+    "question_id" : 46448781,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To solve this problem, you need to add jar with JDBC driver to Spark Driver class-path: <a href=\"https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases\" rel=\"nofollow noreferrer\">https://spark.apache.org/docs/latest/sql-programming-guide.html#jdbc-to-other-databases</a></p>\n\n<p>To do so you need to upload this jar to GCS, specify path to it in <code>--jars</code> argument (so Dataproc will distribute it to all nodes in cluster) and add it to Spark Driver class-path using <code>--properties</code> argument when submitting Spark job through Dataproc:</p>\n\n<pre><code>$ gcloud dataproc jobs submit spark ... \\\n    --jars=gs://&lt;BUCKET&gt;/&lt;DIRECTORIES&gt;/&lt;JAR_NAME&gt; \\\n    --properties=spark.driver.extraClassPath=&lt;JAR_NAME&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5045122,
+      "reputation" : 1,
+      "user_id" : 4051387,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ac426afe20e74112cbcc268de2b105ea?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Aravind J",
+      "link" : "https://stackoverflow.com/users/4051387/aravind-j"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761652752,
+    "last_edit_date" : 1761652752,
+    "creation_date" : 1761651181,
+    "answer_id" : 79802741,
+    "question_id" : 46448781,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Important point to note here is while referring to the &lt;JARNAME&gt; path, you should not add a <code>gs://</code> prefix. Instead you should use (<code>&quot;./&quot;</code>) in the classpath, because spark tries to construct the classpath with the exact string mentioned in this variable.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3092691,
+    "reputation" : 907,
+    "user_id" : 2618503,
+    "user_type" : "registered",
+    "accept_rate" : 42,
+    "profile_image" : "https://www.gravatar.com/avatar/ad53a28016efc40a5d9d7008ac1a6f3c?s=256&d=identicon&r=PG",
+    "display_name" : "Golak Sarangi",
+    "link" : "https://stackoverflow.com/users/2618503/golak-sarangi"
+  },
+  "is_answered" : false,
+  "view_count" : 1198,
+  "answer_count" : 3,
+  "score" : 1,
+  "last_activity_date" : 1761652752,
+  "creation_date" : 1506517807,
+  "question_id" : 46448781,
+  "link" : "https://stackoverflow.com/questions/46448781/classnotfoundexception-for-google-jdbc-driver-in-google-cloud-dataproc",
+  "title" : "ClassNotFoundException for Google JDBC Driver in google cloud dataproc",
+  "body" : "<p>I am trying to connect to google cloud sql from a job running on google cloud dataproc. I have not authorized access to the cloud sql instance from external network. since my dataproc cluster is in the same project as cloud sql, I am expecting it to allow the connection. </p>\n\n<p>I have followed the docs for connecting to cloud sql (<a href=\"https://cloud.google.com/appengine/docs/standard/java/cloud-sql/\" rel=\"nofollow noreferrer\">https://cloud.google.com/appengine/docs/standard/java/cloud-sql/</a>) . But this doc is for connecting from GAE to cloud sql. Nevertheless I tried the steps. But it seems like <code>com.mysql.jdbc.GoogleDriver</code> is not available in the data proc environment. Hence I get <code>ClassNotFoundException</code> for this class.</p>\n\n<p>Where can I get this package. I will include it in the uber jar and try to run in dataproc cluster.</p>\n"
+}

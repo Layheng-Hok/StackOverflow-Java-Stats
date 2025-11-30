@@ -1,0 +1,876 @@
+{
+  "tags" : [ "java", "java-8", "java-stream", "collectors" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1396447918,
+    "post_id" : 22753755,
+    "comment_id" : 34792810,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "There is already an answer <a href=\"http://stackoverflow.com/questions/21522341/collection-to-stream-to-a-new-collection/21526973#21526973\">here</a>. Look for the item “Add to an existing <code>Collection</code>”"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 88146,
+        "reputation" : 10702,
+        "user_id" : 244009,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/bd8e93613dba2b3b39c97afd6d065279?s=256&d=identicon&r=PG",
+        "display_name" : "codefx",
+        "link" : "https://stackoverflow.com/users/244009/codefx"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1396241915,
+      "post_id" : 22753852,
+      "comment_id" : 34684543,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I meant to say how to add/collect into an existing list not just reassign."
+    }, {
+      "owner" : {
+        "account_id" : 3059307,
+        "reputation" : 3043,
+        "user_id" : 2592326,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/6RbRP.jpg?s=256",
+        "display_name" : "Aman Agnihotri",
+        "link" : "https://stackoverflow.com/users/2592326/aman-agnihotri"
+      },
+      "reply_to_user" : {
+        "account_id" : 88146,
+        "reputation" : 10702,
+        "user_id" : 244009,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/bd8e93613dba2b3b39c97afd6d065279?s=256&d=identicon&r=PG",
+        "display_name" : "codefx",
+        "link" : "https://stackoverflow.com/users/244009/codefx"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1396242097,
+      "post_id" : 22753852,
+      "comment_id" : 34684587,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Well, technically you can&#39;t do that kind of stuff in Functional Programming paradigm, which streams is all about. In Functional Programming, the state isn&#39;t modified, instead, new states are created in persistent data structures, making it safe for concurrency purposes, and more functional like. The approach I mentioned is what you can do, or you can resort to the old style object-oriented approach where you iterate over each element, and keep or remove the elements as you see fit."
+    } ],
+    "owner" : {
+      "account_id" : 3059307,
+      "reputation" : 3043,
+      "user_id" : 2592326,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6RbRP.jpg?s=256",
+      "display_name" : "Aman Agnihotri",
+      "link" : "https://stackoverflow.com/users/2592326/aman-agnihotri"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1499671343,
+    "last_edit_date" : 1499671343,
+    "creation_date" : 1396241510,
+    "answer_id" : 22753852,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "\n\n<p>You just have to refer your original list to be the one that the <code>Collectors.toList()</code> returns.</p>\n\n<p>Here's a demo:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>import java.util.Arrays;\nimport java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Reference {\n\n  public static void main(String[] args) {\n    List&lt;Integer&gt; list = Arrays.asList(1, 2, 3, 4, 5);\n    System.out.println(list);\n\n    // Just collect even numbers and start referring the new list as the original one.\n    list = list.stream()\n               .filter(n -&gt; n % 2 == 0)\n               .collect(Collectors.toList());\n    System.out.println(list);\n  }\n}\n</code></pre>\n\n<p>And here's how you can add the newly created elements to your original list in just one line.</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>List&lt;Integer&gt; list = ...;\n// add even numbers from the list to the list again.\nlist.addAll(list.stream()\n                .filter(n -&gt; n % 2 == 0)\n                .collect(Collectors.toList())\n);\n</code></pre>\n\n<p>That's what this Functional Programming Paradigm provides.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 89838,
+        "reputation" : 38455,
+        "user_id" : 247623,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/8734fffd6d63c590b832582de22265ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Erik Kaplun",
+        "link" : "https://stackoverflow.com/users/247623/erik-kaplun"
+      },
+      "reply_to_user" : {
+        "account_id" : 440158,
+        "reputation" : 330010,
+        "user_id" : 829571,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/zflGZ.png?s=256",
+        "display_name" : "assylias",
+        "link" : "https://stackoverflow.com/users/829571/assylias"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1396247376,
+      "post_id" : 22753957,
+      "comment_id" : 34686314,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@assylias: logically, it wasn&#39;t wrong because there was the <i>or</i> part; anyway, added a note."
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1396248131,
+      "post_id" : 22753957,
+      "comment_id" : 34686647,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The short answer is right. The one-liners proposed will succeed in simple cases but fail in the general case."
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1396248256,
+      "post_id" : 22753957,
+      "comment_id" : 34686707,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The longer answer is mostly right, but the design of the API is mainly about parallelism and is less about functional programming. Though of course there are many things about FP that are amenable to parallelism, so these two concepts are well aligned."
+    }, {
+      "owner" : {
+        "account_id" : 89838,
+        "reputation" : 38455,
+        "user_id" : 247623,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/8734fffd6d63c590b832582de22265ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Erik Kaplun",
+        "link" : "https://stackoverflow.com/users/247623/erik-kaplun"
+      },
+      "reply_to_user" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1396248828,
+      "post_id" : 22753957,
+      "comment_id" : 34687008,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@StuartMarks: Interesting: in which cases does the solution provided in assylias&#39; answer break down? (and good points about parallelism—I guess I got too eager to advocate FP)"
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1396251822,
+      "post_id" : 22753957,
+      "comment_id" : 34688590,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@ErikAllik I&#39;ve added an answer that covers this issue."
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1396448614,
+      "post_id" : 22753957,
+      "comment_id" : 34793418,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The entire answer is wrong, regardless of short or long. <a href=\"http://stackoverflow.com/a/22755225/2711488\">nosid</a> has given the correct one-liner. So all explanations why such a one-liner does not exist are pointless."
+    }, {
+      "owner" : {
+        "account_id" : 89838,
+        "reputation" : 38455,
+        "user_id" : 247623,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/8734fffd6d63c590b832582de22265ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Erik Kaplun",
+        "link" : "https://stackoverflow.com/users/247623/erik-kaplun"
+      },
+      "reply_to_user" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1396448801,
+      "post_id" : 22753957,
+      "comment_id" : 34793559,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Holger: feel free to downvote; I cannot unaccept it; also, the answer is not &quot;explaining why it doesn&#39;t exist&quot; but rather why one shouldn&#39;t do it; Stuart&#39;s answer explains the same thing."
+    }, {
+      "owner" : {
+        "account_id" : 1285,
+        "reputation" : 8541,
+        "user_id" : 1712,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/0f83be58c6c968f558b2cfda93183f28?s=256&d=identicon&r=PG",
+        "display_name" : "Roland Tepp",
+        "link" : "https://stackoverflow.com/users/1712/roland-tepp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1433168838,
+      "post_id" : 22753957,
+      "comment_id" : 49222181,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You can not <i>unaccept</i> this answer, but you sure can <i>accept</i> another answer if that one answers your question more appropriately."
+    }, {
+      "owner" : {
+        "account_id" : 89838,
+        "reputation" : 38455,
+        "user_id" : 247623,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/8734fffd6d63c590b832582de22265ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Erik Kaplun",
+        "link" : "https://stackoverflow.com/users/247623/erik-kaplun"
+      },
+      "reply_to_user" : {
+        "account_id" : 1285,
+        "reputation" : 8541,
+        "user_id" : 1712,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/0f83be58c6c968f558b2cfda93183f28?s=256&d=identicon&r=PG",
+        "display_name" : "Roland Tepp",
+        "link" : "https://stackoverflow.com/users/1712/roland-tepp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1433169527,
+      "post_id" : 22753957,
+      "comment_id" : 49222708,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@RolandTepp thanks for the tutorial, although if you pay enough attention, you&#39;ll see I&#39;m not the OP."
+    }, {
+      "owner" : {
+        "account_id" : 1285,
+        "reputation" : 8541,
+        "user_id" : 1712,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/0f83be58c6c968f558b2cfda93183f28?s=256&d=identicon&r=PG",
+        "display_name" : "Roland Tepp",
+        "link" : "https://stackoverflow.com/users/1712/roland-tepp"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1433175411,
+      "post_id" : 22753957,
+      "comment_id" : 49226762,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@ErikAllik, eh, missed that... :s"
+    } ],
+    "owner" : {
+      "account_id" : 89838,
+      "reputation" : 38455,
+      "user_id" : 247623,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://www.gravatar.com/avatar/8734fffd6d63c590b832582de22265ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Erik Kaplun",
+      "link" : "https://stackoverflow.com/users/247623/erik-kaplun"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1499672460,
+    "last_edit_date" : 1499672460,
+    "creation_date" : 1396242292,
+    "answer_id" : 22753957,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>The short answer</strong> is no (or should be no). <strong>EDIT:</strong> yeah, it's possible (see assylias' answer below), but keep reading. <strong>EDIT2:</strong> but see Stuart Marks' answer for yet another reason why you still shouldn't do it!</p>\n\n<p><strong>The longer answer:</strong></p>\n\n<p>The purpose of these constructs in Java 8 is to introduce some concepts of <a href=\"https://en.wikipedia.org/wiki/Functional_programming\" rel=\"noreferrer\">Functional Programming</a> to the language; in Functional Programming, data structures are not typically modified, instead, new ones are created out of old ones by means of transformations such as map, filter, fold/reduce and many others.</p>\n\n<p>If you <em>must</em> modify the old list, simply collect the mapped items into a fresh list:</p>\n\n<pre><code>final List&lt;Integer&gt; newList = list.stream()\n                                  .filter(n -&gt; n % 2 == 0)\n                                  .collect(Collectors.toList());\n</code></pre>\n\n<p>and then do <code>list.addAll(newList)</code> — again: if you really must.</p>\n\n<p>(or construct a new list concatenating the old one and the new one, and assign it back to the <code>list</code> variable—this is a <em>little bit</em> more in the spirit of FP than <code>addAll</code>)</p>\n\n<p>As to the API: even though the API allows it (again, see assylias' answer) you should try to avoid doing that regardless, at least in general. It's best not to fight the paradigm (FP) and try to learn it rather than fight it (even though Java generally isn't a FP language), and only resort to \"dirtier\" tactics if absolutely needed.</p>\n\n<p><strong>The really long answer:</strong> (i.e. if you include the effort of actually finding and reading an FP intro/book as suggested)</p>\n\n<p>To find out why modifying existing lists is in general a bad idea and leads to less maintainable code—unless you're modifying a local variable and your algorithm is short and/or trivial, which is out of the scope of the question of code maintainability—find a good introduction to Functional Programming (there are hundreds) and start reading. A \"preview\" explanation would be something like: it's more mathematically sound and easier to reason about to not modify data (in most parts of your program) and leads to higher level and less technical (as well as more human friendly, once your brain transitions away from the old-style imperative thinking) definitions of program logic.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 89838,
+        "reputation" : 38455,
+        "user_id" : 247623,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://www.gravatar.com/avatar/8734fffd6d63c590b832582de22265ed?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Erik Kaplun",
+        "link" : "https://stackoverflow.com/users/247623/erik-kaplun"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1396247241,
+      "post_id" : 22754767,
+      "comment_id" : 34686248,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "ahh, that&#39;s a shame :P"
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1396247677,
+      "post_id" : 22754767,
+      "comment_id" : 34686459,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This technique will fail horribly if the stream is run in parallel."
+    }, {
+      "owner" : {
+        "account_id" : 3964157,
+        "reputation" : 8778,
+        "user_id" : 3270595,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/cf8972edd00d0f413bdec3ae188dd98d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Balder",
+        "link" : "https://stackoverflow.com/users/3270595/balder"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1396247852,
+      "post_id" : 22754767,
+      "comment_id" : 34686525,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It would be the responsibility of the collection provider to make sure it doesn&#39;t fail - e.g. by providing a concurrent collection."
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1396247986,
+      "post_id" : 22754767,
+      "comment_id" : 34686576,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "No, this code violates the requirement of toCollection(), which is that the supplier return a new, empty collection of the appropriate type. Even if the destination is thread-safe, the merging that is done for the parallel case will give rise to incorrect results."
+    }, {
+      "owner" : {
+        "account_id" : 3964157,
+        "reputation" : 8778,
+        "user_id" : 3270595,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/cf8972edd00d0f413bdec3ae188dd98d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Balder",
+        "link" : "https://stackoverflow.com/users/3270595/balder"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1396248628,
+      "post_id" : 22754767,
+      "comment_id" : 34686901,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I see, that it violates the contract of toCollection(), but I think it would still stay in the responsibility of the caller to handle such a violation. Anyway, I would really be interested in understanding how not returning a new empty collection could rise to incorrect results - can you give a short example for such a failure?"
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1396251853,
+      "post_id" : 22754767,
+      "comment_id" : 34688604,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Balder I&#39;ve added an answer that should clarify this."
+    }, {
+      "owner" : {
+        "account_id" : 1965862,
+        "reputation" : 3785,
+        "user_id" : 1766166,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/eb10957bb63df3ecabe7e4ff94710d7e?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "zygimantus",
+        "link" : "https://stackoverflow.com/users/1766166/zygimantus"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1451937639,
+      "post_id" : 22754767,
+      "comment_id" : 56943270,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This causes <code>ConcurrentModificationException</code>."
+    }, {
+      "owner" : {
+        "account_id" : 1472916,
+        "reputation" : 1919,
+        "user_id" : 1384013,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/ceaad460ba937ce53df2927bc928006a?s=256&d=identicon&r=PG",
+        "display_name" : "Ubeogesh",
+        "link" : "https://stackoverflow.com/users/1384013/ubeogesh"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1680872109,
+      "post_id" : 22754767,
+      "comment_id" : 133973176,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "how about <code>.forEach(myExistingList::add)</code>"
+    } ],
+    "owner" : {
+      "account_id" : 3964157,
+      "reputation" : 8778,
+      "user_id" : 3270595,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/cf8972edd00d0f413bdec3ae188dd98d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Balder",
+      "link" : "https://stackoverflow.com/users/3270595/balder"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1648733979,
+    "last_edit_date" : 1648733979,
+    "creation_date" : 1396246851,
+    "answer_id" : 22754767,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><a href=\"https://stackoverflow.com/a/22753957/3270595\">Erik Kaplun</a> already gave very good reasons, why you will most likely not want to collect elements of a stream into an existing List.</p>\n<p>Anyway, you can use the following one-liner, if you really need this functionality.</p>\n<p>But as pointed out in the other answers, <strong>you should never do this, ever</strong>, in particular not if the streams might be parallel streams - use at your own risk...</p>\n<pre><code>list.stream().collect(Collectors.toCollection(() -&gt; myExistingList));\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1396448343,
+      "post_id" : 22755225,
+      "comment_id" : 34793187,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "+1 It’s funny how so many people claim that there is no possibility when there is one. Btw. I included <code>forEach(existing::add)</code> as a possibility in an <a href=\"http://stackoverflow.com/questions/21522341/collection-to-stream-to-a-new-collection/21526973#21526973\">answer two month ago</a>. I should have added <code>forEachOrdered</code> as well…"
+    }, {
+      "owner" : {
+        "account_id" : 1229539,
+        "reputation" : 87867,
+        "user_id" : 1194415,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/d3dZP.png?s=256",
+        "display_name" : "membersound",
+        "link" : "https://stackoverflow.com/users/1194415/membersound"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1427278299,
+      "post_id" : 22755225,
+      "comment_id" : 46709027,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Is there any reason you used <code>forEachOrdered</code> instead of <code>forEach</code>?"
+    }, {
+      "owner" : {
+        "account_id" : 1370027,
+        "reputation" : 50340,
+        "user_id" : 1305501,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://i.sstatic.net/qBLgl.jpg?s=256",
+        "display_name" : "nosid",
+        "link" : "https://stackoverflow.com/users/1305501/nosid"
+      },
+      "reply_to_user" : {
+        "account_id" : 1229539,
+        "reputation" : 87867,
+        "user_id" : 1194415,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/d3dZP.png?s=256",
+        "display_name" : "membersound",
+        "link" : "https://stackoverflow.com/users/1194415/membersound"
+      },
+      "edited" : false,
+      "score" : 12,
+      "creation_date" : 1427281778,
+      "post_id" : 22755225,
+      "comment_id" : 46711117,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@membersound: <code>forEachOrdered</code> works for both <i>sequential</i> and <i>parallel</i> streams. In contrast, <code>forEach</code> might execute the passed function object concurrently for parallel streams. In this case, the function object must be synchronized properly, e.g. by using a <code>Vector&lt;Integer&gt;</code>."
+    }, {
+      "owner" : {
+        "account_id" : 1370027,
+        "reputation" : 50340,
+        "user_id" : 1305501,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://i.sstatic.net/qBLgl.jpg?s=256",
+        "display_name" : "nosid",
+        "link" : "https://stackoverflow.com/users/1305501/nosid"
+      },
+      "reply_to_user" : {
+        "account_id" : 1416522,
+        "reputation" : 96341,
+        "user_id" : 3553087,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+        "display_name" : "Brian Goetz",
+        "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1437948646,
+      "post_id" : 22755225,
+      "comment_id" : 51231532,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@BrianGoetz: I have to admit, that the documentation of <a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#forEachOrdered-java.util.function.Consumer-\" rel=\"nofollow noreferrer\">Stream.forEachOrdered</a> is a bit imprecise. However, I can&#39;t see any reasonable interpretation of this <i>specification</i>, in which there is no <i>happens-before</i> relationship between any two calls of <code>target::add</code>. Regardless from which threads the method is invoked, there is no <a href=\"https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4.5\" rel=\"nofollow noreferrer\">data race</a>. I would have expected you to know that."
+    }, {
+      "owner" : {
+        "account_id" : 1448228,
+        "reputation" : 3527,
+        "user_id" : 1366016,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://i.sstatic.net/6ZjQr.jpg?s=256",
+        "display_name" : "Wheezil",
+        "link" : "https://stackoverflow.com/users/1366016/wheezil"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1524339108,
+      "post_id" : 22755225,
+      "comment_id" : 86935328,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is the most useful answer, as far as I&#39;m concerned.  It actually shows a practical way to insert items into an existing list from a stream, which is what the question asked for (despite the misleading word &quot;collect&quot;)"
+    }, {
+      "owner" : {
+        "account_id" : 8136,
+        "reputation" : 10762,
+        "user_id" : 14467,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/e74af5c5ce00edf02f1c9e1c72ffaf13?s=256&d=identicon&r=PG",
+        "display_name" : "Sam Barnum",
+        "link" : "https://stackoverflow.com/users/14467/sam-barnum"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1538150158,
+      "post_id" : 22755225,
+      "comment_id" : 92056389,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "One minor optimization: if you&#39;re using an <code>ArrayList</code>, first call <code>ensureCapacity(source.length() + target.length())</code> on the target to avoid resizing the backing array multiple times (only an issue if you are appending a lot of items)."
+    }, {
+      "owner" : {
+        "account_id" : 1540226,
+        "reputation" : 1056,
+        "user_id" : 1435079,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/35440b6e5dfde121a15cbbe655996c30?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Lawrence",
+        "link" : "https://stackoverflow.com/users/1435079/lawrence"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1583398722,
+      "post_id" : 22755225,
+      "comment_id" : 107104746,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Although I am happy with this answer, what&#39;s wrong with old fashioned  someTarget.addAll(source.stream().map(...).collect(Collector&zwnj;&#8203;s.toList()) ?"
+    } ],
+    "owner" : {
+      "account_id" : 1370027,
+      "reputation" : 50340,
+      "user_id" : 1305501,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://i.sstatic.net/qBLgl.jpg?s=256",
+      "display_name" : "nosid",
+      "link" : "https://stackoverflow.com/users/1305501/nosid"
+    },
+    "is_accepted" : false,
+    "score" : 220,
+    "last_activity_date" : 1499671297,
+    "last_edit_date" : 1499671297,
+    "creation_date" : 1396248832,
+    "answer_id" : 22755225,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>As far as I can see, all other answers so far used a collector to add elements to an existing stream. However, there's a shorter solution, and it works for both sequential and parallel streams. You can simply use the method <em>forEachOrdered</em> in combination with a method reference.</p>\n\n<pre><code>List&lt;String&gt; source = ...;\nList&lt;Integer&gt; target = ...;\n\nsource.stream()\n      .map(String::length)\n      .forEachOrdered(target::add);\n</code></pre>\n\n<p>The only restriction is, that <em>source</em> and <em>target</em> are different lists, because you are not allowed to make changes to the source of a stream as long as it is processed.</p>\n\n<p>Note that this solution works for both sequential and parallel streams. However, it does not benefit from concurrency. The method reference passed to <em>forEachOrdered</em> will always be executed sequentially.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3964157,
+        "reputation" : 8778,
+        "user_id" : 3270595,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/cf8972edd00d0f413bdec3ae188dd98d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Balder",
+        "link" : "https://stackoverflow.com/users/3270595/balder"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1396252143,
+      "post_id" : 22755993,
+      "comment_id" : 34688744,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Great explanation! - thanks for clarifying this. I&#39;ll edit my answer to recommend never doing this with possible parallel streams."
+    }, {
+      "owner" : {
+        "account_id" : 1370027,
+        "reputation" : 50340,
+        "user_id" : 1305501,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://i.sstatic.net/qBLgl.jpg?s=256",
+        "display_name" : "nosid",
+        "link" : "https://stackoverflow.com/users/1305501/nosid"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1396260024,
+      "post_id" : 22755993,
+      "comment_id" : 34693039,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If the question is, if there is a one-liner to add elements of a stream into an existing list, then the short answer is <i>yes</i>. See my answer. However, I agree with you, that using <i>Collectors.toCollection()</i> in combination with an existing list is the wrong way."
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1396277118,
+      "post_id" : 22755993,
+      "comment_id" : 34704168,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "True. I guess the rest of us were all thinking of collectors."
+    }, {
+      "owner" : {
+        "account_id" : 1996476,
+        "reputation" : 1776,
+        "user_id" : 1789356,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/1nw4e.jpg?s=256",
+        "display_name" : "zoom",
+        "link" : "https://stackoverflow.com/users/1789356/zoom"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1464173562,
+      "post_id" : 22755993,
+      "comment_id" : 62372898,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Great answer! I am very tempted to use the sequential solution even if you clearly advise against because as stated it must work well. But the fact that the javadoc requires that the supplier argument of the <code>toCollection</code> method should return a new and empty collection each time convince me not to. I really to want to break the javadoc contract of core Java classes."
+    }, {
+      "owner" : {
+        "account_id" : 2497295,
+        "reputation" : 4100,
+        "user_id" : 2173392,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/efa16d9ca3b6e9f08038d461afd57f65?s=256&d=identicon&r=PG",
+        "display_name" : "pdem",
+        "link" : "https://stackoverflow.com/users/2173392/pdem"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1467209114,
+      "post_id" : 22755993,
+      "comment_id" : 63637851,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I understand what NOT to do, which is fine, in my case, what i wanted is a &quot;flatMap&quot;. So maybe what to do (in some case) is using a <i>flatMap</i>: see <a href=\"http://stackoverflow.com/questions/25147094/turn-a-list-of-lists-into-a-list-using-lambdas\" title=\"turn a list of lists into a list using lambdas\">stackoverflow.com/questions/25147094/&hellip;</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1077571,
+        "reputation" : 126,
+        "user_id" : 1075373,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nZN3G.jpg?s=256",
+        "display_name" : "Alex",
+        "link" : "https://stackoverflow.com/users/1075373/alex"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1468853617,
+      "post_id" : 22755993,
+      "comment_id" : 64285363,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "So does this mean that one uses almost always forEachOrdered to get the result in a collection or only when the target is an non empty existing collection?"
+    }, {
+      "owner" : {
+        "account_id" : 1548079,
+        "reputation" : 133461,
+        "user_id" : 1441122,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+        "display_name" : "Stuart Marks",
+        "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+      },
+      "reply_to_user" : {
+        "account_id" : 1077571,
+        "reputation" : 126,
+        "user_id" : 1075373,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nZN3G.jpg?s=256",
+        "display_name" : "Alex",
+        "link" : "https://stackoverflow.com/users/1075373/alex"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1468876747,
+      "post_id" : 22755993,
+      "comment_id" : 64297692,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@AlexCurvers If you want the stream to have side effects, you almost certainly want to use <code>forEachOrdered</code>. Side effects include adding elements to an existing collection, regardless of whether it already has elements. If you want a stream&#39;s elements placed into a <i>new</i> collection, use <code>collect(Collectors.toList())</code> or <code>toSet()</code> or <code>toCollection()</code>."
+    } ],
+    "owner" : {
+      "account_id" : 1548079,
+      "reputation" : 133461,
+      "user_id" : 1441122,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/XM5u8.jpg?s=256",
+      "display_name" : "Stuart Marks",
+      "link" : "https://stackoverflow.com/users/1441122/stuart-marks"
+    },
+    "is_accepted" : true,
+    "score" : 260,
+    "last_activity_date" : 1454264960,
+    "last_edit_date" : 1495542884,
+    "creation_date" : 1396251623,
+    "answer_id" : 22755993,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>NOTE:</strong> <em><a href=\"https://stackoverflow.com/a/22755225/1441122\">nosid's answer</a> shows how to add to an existing collection using <code>forEachOrdered()</code>. This is a useful and effective technique for mutating existing collections. My answer addresses why you shouldn't use a <code>Collector</code> to mutate an existing collection.</em></p>\n\n<p>The short answer is <strong>no</strong>, at least, not in general, you shouldn't use a <code>Collector</code> to modify an existing collection.</p>\n\n<p>The reason is that collectors are designed to support parallelism, even over collections that aren't thread-safe. The way they do this is to have each thread operate independently on its own collection of intermediate results. The way each thread gets its own collection is to call the <code>Collector.supplier()</code> which is required to return a <strong>new</strong> collection each time.</p>\n\n<p>These collections of intermediate results are then merged, again in a thread-confined fashion, until there is a single result collection. This is the final result of the <code>collect()</code> operation.</p>\n\n<p>A couple answers from <a href=\"https://stackoverflow.com/a/22754767/1441122\">Balder</a> and <a href=\"https://stackoverflow.com/a/22754896/1441122\">assylias</a> have suggested using <code>Collectors.toCollection()</code> and then passing a supplier that returns an existing list instead of a new list. This violates the requirement on the supplier, which is that it return a new, empty collection each time.</p>\n\n<p>This will work for simple cases, as the examples in their answers demonstrate. However, it will fail, particularly if the stream is run in parallel. (A future version of the library might change in some unforeseen way that will cause it to fail, even in the sequential case.)</p>\n\n<p>Let's take a simple example:</p>\n\n<pre><code>List&lt;String&gt; destList = new ArrayList&lt;&gt;(Arrays.asList(\"foo\"));\nList&lt;String&gt; newList = Arrays.asList(\"0\", \"1\", \"2\", \"3\", \"4\", \"5\");\nnewList.parallelStream()\n       .collect(Collectors.toCollection(() -&gt; destList));\nSystem.out.println(destList);\n</code></pre>\n\n<p>When I run this program, I often get an <code>ArrayIndexOutOfBoundsException</code>. This is because multiple threads are operating on <code>ArrayList</code>, a thread-unsafe data structure. OK, let's make it synchronized:</p>\n\n<pre><code>List&lt;String&gt; destList =\n    Collections.synchronizedList(new ArrayList&lt;&gt;(Arrays.asList(\"foo\")));\n</code></pre>\n\n<p>This will no longer fail with an exception. But instead of the expected result:</p>\n\n<pre><code>[foo, 0, 1, 2, 3]\n</code></pre>\n\n<p>it gives weird results like this:</p>\n\n<pre><code>[foo, 2, 3, foo, 2, 3, 1, 0, foo, 2, 3, foo, 2, 3, 1, 0, foo, 2, 3, foo, 2, 3, 1, 0, foo, 2, 3, foo, 2, 3, 1, 0]\n</code></pre>\n\n<p>This is the result of the thread-confined accumulation/merging operations I described above. With a parallel stream, each thread calls the supplier to get its own collection for intermediate accumulation. If you pass a supplier that returns the <strong>same</strong> collection, each thread appends its results to that collection. Since there is no ordering among the threads, results will be appended in some arbitrary order.</p>\n\n<p>Then, when these intermediate collections are merged, this basically merges the list with itself. Lists are merged using <code>List.addAll()</code>, which says that the results are undefined if the source collection is modified during the operation. In this case, <code>ArrayList.addAll()</code> does an array-copy operation, so it ends up duplicating itself, which is sort-of what one would expect, I guess. (Note that other List implementations might have completely different behavior.) Anyway, this explains the weird results and duplicated elements in the destination.</p>\n\n<p>You might say, \"I'll just make sure to run my stream sequentially\" and go ahead and write code like this</p>\n\n<pre><code>stream.collect(Collectors.toCollection(() -&gt; existingList))\n</code></pre>\n\n<p>anyway. I'd recommend against doing this. If you control the stream, sure, you can guarantee that it won't run in parallel. I expect that a style of programming will emerge where streams get handed around instead of collections. If somebody hands you a stream and you use this code, it'll fail if the stream happens to be parallel. Worse, somebody might hand you a sequential stream and this code will work fine for a while, pass all tests, etc. Then, some arbitrary amount of time later, code elsewhere in the system might change to use parallel streams which will cause <strong>your</strong> code to break.</p>\n\n<p>OK, then just make sure to remember to call <code>sequential()</code> on any stream before you use this code:</p>\n\n<pre><code>stream.sequential().collect(Collectors.toCollection(() -&gt; existingList))\n</code></pre>\n\n<p>Of course, you'll remember to do this every time, right? :-) Let's say you do. Then, the performance team will be wondering why all their carefully crafted parallel implementations aren't providing any speedup. And once again they'll trace it down to <strong>your</strong> code which is forcing the entire stream to run sequentially.</p>\n\n<p>Don't do it.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4879275,
+      "reputation" : 428,
+      "user_id" : 3933512,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a84a4f322bd6576e30ee7410bbadc9e5?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "A. S. Ranjan",
+      "link" : "https://stackoverflow.com/users/3933512/a-s-ranjan"
+    },
+    "is_accepted" : false,
+    "score" : -3,
+    "last_activity_date" : 1601369211,
+    "last_edit_date" : 1601369211,
+    "creation_date" : 1568401545,
+    "answer_id" : 57929102,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><code>targetList = sourceList.stream().flatmap(List::stream).collect(Collectors.toList());</code></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1013544,
+      "reputation" : 116,
+      "user_id" : 1025626,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a7ea9fda3814bd0f3c8e8960ef54fb51?s=256&d=identicon&r=PG",
+      "display_name" : "Nikos Stais",
+      "link" : "https://stackoverflow.com/users/1025626/nikos-stais"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1590564337,
+    "creation_date" : 1590564337,
+    "answer_id" : 62037571,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I would concatenate the old list and new list as streams and save the results to destination list. Works well in parallel, too.</p>\n\n<p>I will use the example of accepted answer given by Stuart Marks:</p>\n\n<pre><code>List&lt;String&gt; destList = Arrays.asList(\"foo\");\nList&lt;String&gt; newList = Arrays.asList(\"0\", \"1\", \"2\", \"3\", \"4\", \"5\");\n\ndestList = Stream.concat(destList.stream(), newList.stream()).parallel()\n            .collect(Collectors.toList());\nSystem.out.println(destList);\n\n//output: [foo, 0, 1, 2, 3, 4, 5]\n</code></pre>\n\n<p>Hope it helps.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 19303285,
+      "reputation" : 1,
+      "user_id" : 14110696,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3bf3ac4b8a8824ec2a204d3829cd4cca?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Dheeraj Kumar",
+      "link" : "https://stackoverflow.com/users/14110696/dheeraj-kumar"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1597505837,
+    "creation_date" : 1597505837,
+    "answer_id" : 63427837,
+    "question_id" : 22753755,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Lets say we have existing list, and gonna use java 8 for this activity\n`</p>\n<pre><code>import java.util.*;\nimport java.util.stream.Collectors;\n\npublic class AddingArray {\n\n    public void addArrayInList(){\n        List&lt;Integer&gt; list = Arrays.asList(3, 7, 9);\n\n   // And we have an array of Integer type \n\n        int nums[] = {4, 6, 7};\n\n   //Now lets add them all in list\n   // converting array to a list through stream and adding that list to previous list\n        list.addAll(Arrays.stream(nums).map(num -&gt; \n                                       num).boxed().collect(Collectors.toList()));\n     }\n}\n</code></pre>\n<p>`</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 88146,
+    "reputation" : 10702,
+    "user_id" : 244009,
+    "user_type" : "registered",
+    "accept_rate" : 78,
+    "profile_image" : "https://www.gravatar.com/avatar/bd8e93613dba2b3b39c97afd6d065279?s=256&d=identicon&r=PG",
+    "display_name" : "codefx",
+    "link" : "https://stackoverflow.com/users/244009/codefx"
+  },
+  "is_answered" : true,
+  "view_count" : 348307,
+  "accepted_answer_id" : 22755993,
+  "answer_count" : 8,
+  "score" : 219,
+  "last_activity_date" : 1715048839,
+  "creation_date" : 1396240832,
+  "last_edit_date" : 1715048839,
+  "question_id" : 22753755,
+  "link" : "https://stackoverflow.com/questions/22753755/how-to-add-elements-of-a-java8-stream-into-an-existing-list",
+  "title" : "How to add elements of a Java8 stream into an existing List",
+  "body" : "<p><a href=\"https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html\" rel=\"noreferrer\">Javadoc of Collector</a> shows how to collect elements of a stream into a new List. Is there a one-liner that adds the results into an existing ArrayList?</p>\n"
+}

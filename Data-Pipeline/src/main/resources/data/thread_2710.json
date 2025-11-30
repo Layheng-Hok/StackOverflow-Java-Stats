@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "spring", "spring-boot" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1741097819,
+    "post_id" : 79483926,
+    "comment_id" : 140176201,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "That will only work if the object is send as the body so with <code>@RequestBody</code>. I don&#39;t think the <code>@ModelAttribute</code> annotation works here, but you could try but I doubt it works. Also weird to have an content-type as json but sending request parameters."
+  }, {
+    "owner" : {
+      "account_id" : 3477991,
+      "reputation" : 3462,
+      "user_id" : 2910751,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/uavZE.jpg?s=256",
+      "display_name" : "Martin Frank",
+      "link" : "https://stackoverflow.com/users/2910751/martin-frank"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1741102085,
+    "post_id" : 79483926,
+    "comment_id" : 140176564,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "there is a tutorial video that does exactly do this using <code>@ModelAttribute</code>, see <a href=\"https://www.youtube.com/watch?v=stGq8lnEFlM\" rel=\"nofollow noreferrer\">youtube.com/watch?v=stGq8lnEFlM</a> - that part starts at 6:45. it would be useful to watch the total tutorial though... i do not have any connections to the author of this video and no intention of pushing him in any way"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 8206547,
+      "reputation" : 43,
+      "user_id" : 6176096,
+      "user_type" : "registered",
+      "accept_rate" : 20,
+      "profile_image" : "https://i.sstatic.net/DVvrHh4E.jpg?s=256",
+      "display_name" : "redaclucard",
+      "link" : "https://stackoverflow.com/users/6176096/redaclucard"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1741100181,
+    "creation_date" : 1741100181,
+    "answer_id" : 79484050,
+    "question_id" : 79483926,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Spring doesn't automatically convert the <code>MyQueryParameters</code> object into query parameters for the HTTP request, you can create a custom converter :</p>\n<p><strong>Create a Custom Converter</strong> :</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Component\npublic class MyQueryParametersToStringConverter implements Converter&lt;MyQueryParameters, String&gt; {\n\n    @Override\n    public String convert(MyQueryParameters source) {\n        return &quot;id=&quot; + source.id() + &quot;&amp;name=&quot; + source.name() + &quot;&amp;age=&quot; + source.age();\n    }\n}\n</code></pre>\n<p><strong>Register the Custom Converter</strong> :</p>\n<p>Ensure that the ioc container is aware of the custom converter by registering it in your configuration :</p>\n<pre class=\"lang-java prettyprint-override\"><code>\n     @Bean\n     public Converter&lt;MyQueryParameters, String&gt; myQueryParametersToStringConverter() {\n         return new MyQueryParametersToStringConverter();\n     }\n</code></pre>\n<p>This should properly convert your MyQueryParameters object to query parameters.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16457981,
+      "reputation" : 37,
+      "user_id" : 11889735,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/28hUelM6.jpg?s=256",
+      "display_name" : "viespring",
+      "link" : "https://stackoverflow.com/users/11889735/viespring"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764062840,
+    "creation_date" : 1764062840,
+    "answer_id" : 79829504,
+    "question_id" : 79483926,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>@RequestMapping is &lt;&gt; @HttpExchange.</p>\n<p>You have to use:</p>\n<pre class=\"lang-java prettyprint-override\"><code>MultiValueMap&lt;String, String&gt; params = new LinkedMultiValueMap&lt;&gt;();\n\n@GetExchange(&quot;/api/v1.0/question&quot;)\nMono&lt;String&gt; question(@RequestParam MultiValueMap&lt;String, String&gt; params);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 14482834,
+    "reputation" : 5418,
+    "user_id" : 10461625,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/fgo5D.jpg?s=256",
+    "display_name" : "PatPanda",
+    "link" : "https://stackoverflow.com/users/10461625/patpanda"
+  },
+  "is_answered" : false,
+  "view_count" : 114,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1764062840,
+  "creation_date" : 1741097074,
+  "last_edit_date" : 1744886997,
+  "question_id" : 79483926,
+  "link" : "https://stackoverflow.com/questions/79483926/convert-converternotfoundexception-no-converter-found-capable-annotation-requ",
+  "title" : "convert.ConverterNotFoundException: No converter found capable [@annotation.RequestParam com.example.MyQueryParameters] to type [java.lang.String]",
+  "body" : "<p>I have the following HttpExchange interface:</p>\n<pre><code>@HttpExchange(accept = &quot;application/json&quot;, contentType = &quot;application/json&quot;)\npublic interface MyHttpExchange {\n\n    @GetExchange(&quot;/api/v1.0/question&quot;)\n    Mono&lt;String&gt; question(@RequestParam MyQueryParameters myQueryParameters);\n\n}\n</code></pre>\n<p>Here is the object, for simplicity here, I am leaving out three fields, but imagine much more than that.</p>\n<pre><code>public record MyQueryParameters(int id, int name, int age) {\n}\n</code></pre>\n<p>With this new HttpExchange interface, I would like to query an external rest API, which accepts request query parameters</p>\n<pre><code>https://third-party.com/api/v1.0/question?id=1&amp;name=11&amp;age=111\n</code></pre>\n<p>I would expect this to work. However, I am facing this issue:</p>\n<pre><code>org.springframework.core.convert.ConverterNotFoundException: No converter found capable of converting from type [@org.springframework.web.bind.annotation.RequestParam com.example.MyQueryParameters] to type [java.lang.String]\n    at org.springframework.core.convert.support.GenericConversionService.handleConverterNotFound(GenericConversionService.java:294) ~[spring-core-6.2.3.jar:6.2.3]\n    Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: \nError has been observed at the following site(s):\n    *__checkpoint ⇢ HTTP GET &quot;...&quot; [ExceptionHandlingWebHandler]\nOriginal Stack Trace:\n        at org.springframework.core.convert.support.GenericConversionService.handleConverterNotFound(GenericConversionService.java:294) ~[spring-core-6.2.3.jar:6.2.3]\n        at org.springframework.core.convert.support.GenericConversionService.convert(GenericConversionService.java:185) ~[spring-core-6.2.3.jar:6.2.3]\n        at org.springframework.web.service.invoker.AbstractNamedValueArgumentResolver.addSingleValue(AbstractNamedValueArgumentResolver.java:199) ~[spring-web-6.2.3.jar:6.2.3]\n        at org.springframework.web.service.invoker.AbstractNamedValueArgumentResolver.addSingleOrMultipleValues(AbstractNamedValueArgumentResolver.java:179) ~[spring-web-6.2.3.jar:6.2.3]\n        at org.springframework.web.service.invoker.AbstractNamedValueArgumentResolver.resolve(AbstractNamedValueArgumentResolver.java:97) ~[spring-web-6.2.3.jar:6.2.3]\n        at org.springframework.web.service.invoker.HttpServiceMethod.applyArguments(HttpServiceMethod.java:142) ~[spring-web-6.2.3.jar:6.2.3]\n        at org.springframework.web.service.invoker.HttpServiceMethod.invoke(HttpServiceMethod.java:132) ~[spring-web-6.2.3.jar:6.2.3]\n        at org.springframework.web.service.invoker.HttpServiceProxyFactory$HttpServiceMethodInterceptor.invoke(HttpServiceProxyFactory.java:243) ~[spring-web-6.2.3.jar:6.2.3]\n        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.3.jar:6.2.3]\n        at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.3.jar:6.2.3]\n        at jdk.proxy2/jdk.proxy2.$Proxy52.question(Unknown Source) ~[na:na]\n</code></pre>\n<p>How to properly use HttpExchange interface with an object (not the Map&lt;String, Object&gt;)?</p>\n"
+}

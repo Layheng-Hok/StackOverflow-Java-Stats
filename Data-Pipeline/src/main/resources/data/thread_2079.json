@@ -1,0 +1,348 @@
+{
+  "tags" : [ "java" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 188416,
+        "reputation" : 11519,
+        "user_id" : 427155,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/2e80ec10ce18ae74b90001a0b7afdcfe?s=256&d=identicon&r=PG",
+        "display_name" : "H2ONaCl",
+        "link" : "https://stackoverflow.com/users/427155/h2onacl"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1453000267,
+      "post_id" : 3571231,
+      "comment_id" : 57410735,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The <code>-Xmx</code> value seems to directly affect the initial <code>maxMemory()</code> value however I have seen the reported <code>maxMemory()</code> increase by a small amount, perhaps ~1%, while the program is running."
+    }, {
+      "owner" : {
+        "account_id" : 71611,
+        "reputation" : 26920,
+        "user_id" : 6998684,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/aBp1t.jpg?s=256",
+        "display_name" : "IgorGanapolsky",
+        "link" : "https://stackoverflow.com/users/6998684/igorganapolsky"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1461342199,
+      "post_id" : 3571231,
+      "comment_id" : 61171844,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How is this different from <code>Debug.getNativeHeapFreeSize()</code>?"
+    }, {
+      "owner" : {
+        "account_id" : 1028549,
+        "reputation" : 10666,
+        "user_id" : 1037316,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://i.sstatic.net/LnLkH.png?s=256",
+        "display_name" : "G. Demecki",
+        "link" : "https://stackoverflow.com/users/1037316/g-demecki"
+      },
+      "reply_to_user" : {
+        "account_id" : 188416,
+        "reputation" : 11519,
+        "user_id" : 427155,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/2e80ec10ce18ae74b90001a0b7afdcfe?s=256&d=identicon&r=PG",
+        "display_name" : "H2ONaCl",
+        "link" : "https://stackoverflow.com/users/427155/h2onacl"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1489749236,
+      "post_id" : 3571231,
+      "comment_id" : 72818089,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@H2ONaCl yes, it might slightly change, because JVM&#39;s <code>UseAdaptiveSizePolicy</code> is enabled by default. And BTW: <code>maxMemory()</code> = <code>Xmx</code> - size of a single survivor space. Why? Because at the same time, only one survivor space can be used."
+    } ],
+    "owner" : {
+      "account_id" : 36759,
+      "reputation" : 38711,
+      "user_id" : 104950,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://i.sstatic.net/1nwnJ.jpg?s=256",
+      "display_name" : "Amir Afghani",
+      "link" : "https://stackoverflow.com/users/104950/amir-afghani"
+    },
+    "is_accepted" : true,
+    "score" : 222,
+    "last_activity_date" : 1500928109,
+    "last_edit_date" : 1500928109,
+    "creation_date" : 1282782096,
+    "answer_id" : 3571231,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>According to the <a href=\"http://download.oracle.com/javase/6/docs/api/java/lang/Runtime.html\" rel=\"noreferrer\">API</a></p>\n\n<pre><code>totalMemory()\n</code></pre>\n\n<p>Returns the total amount of memory in the Java virtual machine. The value returned by this method may vary over time, depending on the host environment.\nNote that the amount of memory required to hold an object of any given type may be implementation-dependent.</p>\n\n<pre><code>maxMemory()\n</code></pre>\n\n<p>Returns the maximum amount of memory that the Java virtual machine will attempt to use. If there is no inherent limit then the value Long.MAX_VALUE will be returned.</p>\n\n<pre><code>freeMemory()\n</code></pre>\n\n<p>Returns the amount of free memory in the Java Virtual Machine. Calling the gc method may result in increasing the value returned by freeMemory.</p>\n\n<p>In reference to your question, <code>maxMemory()</code> returns the <code>-Xmx</code> value.</p>\n\n<p>You may be wondering why there is a <strong>totalMemory()</strong> AND a <strong>maxMemory()</strong>.  The answer is that the JVM allocates memory lazily.  Lets say you start your Java process as such:</p>\n\n<pre><code>java -Xms64m -Xmx1024m Foo\n</code></pre>\n\n<p>Your process starts with 64mb of memory, and if and when it needs more (up to 1024m), it will allocate memory.  <code>totalMemory()</code> corresponds to the amount of memory <em>currently</em> available to the JVM for Foo.  If the JVM needs more memory, it will lazily allocate it <em>up</em> to the maximum memory.  If you run with <code>-Xms1024m -Xmx1024m</code>, the value you get from <code>totalMemory()</code> and <code>maxMemory()</code> will be equal.</p>\n\n<p>Also, if you want to accurately calculate the amount of <em>used</em> memory, you do so with the following calculation :</p>\n\n<pre><code>final long usedMem = totalMemory() - freeMemory();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 41994,
+      "reputation" : 20468,
+      "user_id" : 122207,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/9AF1m.jpg?s=256",
+      "display_name" : "Tim Bender",
+      "link" : "https://stackoverflow.com/users/122207/tim-bender"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1282782197,
+    "creation_date" : 1282782197,
+    "answer_id" : 3571235,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p><a href=\"http://download.oracle.com/javase/6/docs/api/java/lang/Runtime.html#totalMemory()\" rel=\"noreferrer\">Runtime#totalMemory</a> - the memory that the JVM has allocated thus far. This isn't necessarily what is in use or the maximum.</p>\n\n<p><a href=\"http://download.oracle.com/javase/6/docs/api/java/lang/Runtime.html#maxMemory()\" rel=\"noreferrer\">Runtime#maxMemory</a> - the maximum amount of memory that the JVM has been configured to use. Once your process reaches this amount, the JVM will not allocate more and instead GC much more frequently.</p>\n\n<p><a href=\"http://download.oracle.com/javase/6/docs/api/java/lang/Runtime.html#freeMemory()\" rel=\"noreferrer\">Runtime#freeMemory</a> - I'm not sure if this is measured from the max or the portion of the total that is unused. I am guessing it is a measurement of the portion of total which is unused.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1509318,
+      "reputation" : 121,
+      "user_id" : 1411827,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/895eef03fe34a0f57a7a59dd99cf708c?s=256&d=identicon&r=PG",
+      "display_name" : "ALam-Kim",
+      "link" : "https://stackoverflow.com/users/1411827/alam-kim"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1350725393,
+    "last_edit_date" : 1350725393,
+    "creation_date" : 1337753525,
+    "answer_id" : 10714412,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>JVM heap size can be growable and shrinkable by the Garbage-Collection mechanism.\nBut, it can't allocate over maximum memory size: Runtime.maxMemory. This is the meaning of maximum memory. Total memory means the allocated heap size. And free memory means the available size in total memory.</p>\n\n<p>example) java -Xms20M -Xmn10M -Xmx50M ~~~.\nThis means that jvm should allocate heap 20M on start(ms). In this case, total memory is 20M. free memory is 20M-used size. If more heap is needed, JVM allocate more but can't over 50M(mx). In the case of maximum, total memory is 50M, and free size is 50M-used size. As for minumum size(mn), if heap is not used much, jvm can shrink heap size to 10M.</p>\n\n<p>This mechanism is for efficiency of memory. If small java program run on huge fixed size heap memory, so much memory may be wasteful.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 193906,
+      "reputation" : 4863,
+      "user_id" : 435912,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://www.gravatar.com/avatar/251dfe6b95f4d64be4c8ab544e267718?s=256&d=identicon&r=PG",
+      "display_name" : "Sri",
+      "link" : "https://stackoverflow.com/users/435912/sri"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1362843827,
+    "creation_date" : 1362843827,
+    "answer_id" : 15312561,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>To understand it better, run this following program (in jdk1.7.x) : </p>\n\n<blockquote>\n<pre><code>$ java -Xms1025k -Xmx1025k -XshowSettings:vm  MemoryTest\n</code></pre>\n</blockquote>\n\n<p>This will print <em>jvm</em> options and the <em>used</em>, <em>free</em>, <em>total</em> and <em>maximum</em> memory available in jvm.</p>\n\n<pre><code>public class MemoryTest {    \n    public static void main(String args[]) {\n                System.out.println(\"Used Memory   :  \" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) + \" bytes\");\n                System.out.println(\"Free Memory   : \" + Runtime.getRuntime().freeMemory() + \" bytes\");\n                System.out.println(\"Total Memory  : \" + Runtime.getRuntime().totalMemory() + \" bytes\");\n                System.out.println(\"Max Memory    : \" + Runtime.getRuntime().maxMemory() + \" bytes\");            \n        }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 71611,
+        "reputation" : 26920,
+        "user_id" : 6998684,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/aBp1t.jpg?s=256",
+        "display_name" : "IgorGanapolsky",
+        "link" : "https://stackoverflow.com/users/6998684/igorganapolsky"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1461342292,
+      "post_id" : 18375641,
+      "comment_id" : 61171894,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Is this different from <code>Debug.getMemoryInfo()</code>?"
+    }, {
+      "owner" : {
+        "account_id" : 5952031,
+        "reputation" : 2156,
+        "user_id" : 4679727,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/v7yN6.png?s=256",
+        "display_name" : "Gab是好人",
+        "link" : "https://stackoverflow.com/users/4679727/gab%e6%98%af%e5%a5%bd%e4%ba%ba"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1480601124,
+      "post_id" : 18375641,
+      "comment_id" : 69037421,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Note: <b>Used memory</b> may <b>contain no longer referenced objects</b> that will be swept away by the next GC."
+    }, {
+      "owner" : {
+        "account_id" : 17739799,
+        "reputation" : 610,
+        "user_id" : 12880432,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5bc0d3b7f42fe155d134240789cf61a7?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Maria",
+        "link" : "https://stackoverflow.com/users/12880432/maria"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1589458541,
+      "post_id" : 18375641,
+      "comment_id" : 109305926,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@cheneym, free and unlocated memory will be occupied as the java byte code instructions will be processed by processor only if &quot;Xmx - Usedmemory&quot; is avlbl in machine. Xmx is like max capacity of ballon which could fill with air geting from avlbl air in machine itself, as soon it gets air, it will be filled and will blast once exceeds Xmx limit. But total freememory wont tell the actual avbl memory in machine for JVM, but just the nmbr.Is there Any way I could find out the actual avlbl memory in machine so that I could get to know whether rqd memory is avlbl or not for JVM remaning process ?"
+    } ],
+    "owner" : {
+      "account_id" : 2889895,
+      "reputation" : 4302,
+      "user_id" : 2478930,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/oJgPP6MA.png?s=256",
+      "display_name" : "cheneym",
+      "link" : "https://stackoverflow.com/users/2478930/cheneym"
+    },
+    "is_accepted" : false,
+    "score" : 324,
+    "last_activity_date" : 1738373375,
+    "last_edit_date" : 1738373375,
+    "creation_date" : 1377161343,
+    "answer_id" : 18375641,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The names and values are confusing. If you are looking for the <em>total free memory</em> you will have to calculate this value by yourself. <strong>It is not</strong> what you get from <code>freeMemory();</code>.</p>\n<p>See the following guide:</p>\n<p><strong>Total designated memory</strong> equals the configured <em>-Xmx</em> value:</p>\n<blockquote>\n<p>Runtime.getRuntime().maxMemory();</p>\n</blockquote>\n<p><strong>Current allocated free memory</strong> is the current allocated space <em>ready</em> for new objects. <strong>Caution</strong>: this is not the total free <em>available</em> memory:</p>\n<blockquote>\n<p>Runtime.getRuntime().freeMemory();</p>\n</blockquote>\n<p><strong>Total allocated memory</strong> is the total allocated space <em>reserved</em> for the Java process:</p>\n<blockquote>\n<p>Runtime.getRuntime().totalMemory();</p>\n</blockquote>\n<p><strong>Used memory</strong> has to be calculated:</p>\n<blockquote>\n<p>usedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();</p>\n</blockquote>\n<p><strong>Total free memory</strong> has to be calculated:</p>\n<blockquote>\n<p>freeMemory = Runtime.getRuntime().maxMemory() - usedMemory;</p>\n</blockquote>\n<p><strong>A picture may help to clarify:</strong></p>\n<blockquote>\n<p><img src=\"https://i.sstatic.net/GjuwM.png\" alt=\"Java runtime memory\" /></p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 92486,
+      "reputation" : 46828,
+      "user_id" : 253468,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://i.sstatic.net/eump2.jpg?s=256",
+      "display_name" : "TWiStErRob",
+      "link" : "https://stackoverflow.com/users/253468/twisterrob"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1674991111,
+    "last_edit_date" : 1674991111,
+    "creation_date" : 1488494800,
+    "answer_id" : 42567450,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Codified version of all other answers (at the time of writing):</p>\n<pre><code>import java.io.*;\n\n/**\n * This class is based on &lt;a href=&quot;http://stackoverflow.com/users/2478930/cheneym&quot;&gt;cheneym&lt;/a&gt;'s\n * &lt;a href=&quot;http://stackoverflow.com/a/18375641/253468&quot;&gt;awesome interpretation&lt;/a&gt;\n * of the Java {@link Runtime}'s memory query methods, which reflects intuitive thinking.\n * Also includes comments and observations from others on the same question, and my own experience.\n * &lt;p&gt;\n * &lt;img src=&quot;https://i.sstatic.net/GjuwM.png&quot; alt=&quot;Runtime's memory interpretation&quot;&gt;\n * &lt;p&gt;\n * &lt;b&gt;JVM memory management crash course&lt;/b&gt;:\n * Java virtual machine process' heap size is bounded by the maximum memory allowed.\n * The startup and maximum size can be configured by JVM arguments.\n * JVMs don't allocate the maximum memory on startup as the program running may never require that.\n * This is to be a good player and not waste system resources unnecessarily.\n * Instead they allocate some memory and then grow when new allocations require it.\n * The garbage collector will be run at times to clean up unused objects to prevent this growing.\n * Many parameters of this management such as when to grow/shrink or which GC to use\n * can be tuned via advanced configuration parameters on JVM startup.\n *\n * @see &lt;a href=&quot;http://stackoverflow.com/a/42567450/253468&quot;&gt;\n *     What are Runtime.getRuntime().totalMemory() and freeMemory()?&lt;/a&gt;\n * @see &lt;a href=&quot;http://www.oracle.com/technetwork/java/javase/memorymanagement-whitepaper-150215.pdf&quot;&gt;\n *     Memory Management in the Sun Java HotSpot™ Virtual Machine&lt;/a&gt;\n * @see &lt;a href=&quot;http://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html&quot;&gt;\n *     Full VM options reference for Windows&lt;/a&gt;\n * @see &lt;a href=&quot;http://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html&quot;&gt;\n *     Full VM options reference for Linux, Mac OS X and Solaris&lt;/a&gt;\n * @see &lt;a href=&quot;http://www.oracle.com/technetwork/articles/java/vmoptions-jsp-140102.html&quot;&gt;\n *     Java HotSpot VM Options quick reference&lt;/a&gt;\n */\npublic class SystemMemory {\n\n    // can be white-box mocked for testing\n    private final Runtime runtime = Runtime.getRuntime();\n\n    /**\n     * &lt;b&gt;Total allocated memory&lt;/b&gt;: space currently reserved for the JVM heap within the process.\n     * &lt;p&gt;\n     * &lt;i&gt;Caution&lt;/i&gt;: this is not the total memory, the JVM may grow the heap for new allocations.\n     */\n    public long getAllocatedTotal() {\n        return runtime.totalMemory();\n    }\n\n    /**\n     * &lt;b&gt;Current allocated free memory&lt;/b&gt;: space immediately ready for new objects.\n     * &lt;p&gt;\n     * &lt;i&gt;Caution&lt;/i&gt;: this is not the total free available memory,\n     * the JVM may grow the heap for new allocations.\n     */\n    public long getAllocatedFree() {\n        return runtime.freeMemory();\n    }\n\n    /**\n     * &lt;b&gt;Used memory&lt;/b&gt;:\n     * Java heap currently used by instantiated objects. \n     * &lt;p&gt;\n     * &lt;i&gt;Caution&lt;/i&gt;: May include no longer referenced objects, soft references, etc.\n     * that will be swept away by the next garbage collection.\n     */\n    public long getUsed() {\n        return getAllocatedTotal() - getAllocatedFree();\n    }\n\n    /**\n     * &lt;b&gt;Maximum allocation&lt;/b&gt;: the process' allocated memory will not grow any further.\n     * &lt;p&gt;\n     * &lt;i&gt;Caution&lt;/i&gt;: This may change over time, do not cache it!\n     * There are some JVMs / garbage collectors that can shrink the allocated process memory.\n     * &lt;p&gt;\n     * &lt;i&gt;Caution&lt;/i&gt;: If this is true, the JVM will likely run GC more often.\n     */\n    public boolean isAtMaximumAllocation() {\n        return getAllocatedTotal() == getTotal();\n        // = return getUnallocated() == 0;\n    }\n\n    /**\n     * &lt;b&gt;Unallocated memory&lt;/b&gt;: amount of space the process' heap can grow.\n     */\n    public long getUnallocated() {\n        return getTotal() - getAllocatedTotal();\n    }\n    \n    /**\n     * &lt;b&gt;Total designated memory&lt;/b&gt;: this will equal the configured {@code -Xmx} value.\n     * &lt;p&gt;\n     * &lt;i&gt;Caution&lt;/i&gt;: You can never allocate more memory than this, unless you use native code.\n     */\n    public long getTotal() {\n        return runtime.maxMemory();\n    }\n\n    /**\n     * &lt;b&gt;Total free memory&lt;/b&gt;: memory available for new Objects,\n     * even at the cost of growing the allocated memory of the process.\n     */\n    public long getFree() {\n        return getTotal() - getUsed();\n        // = return getAllocatedFree() + getUnallocated();\n    }\n\n    /**\n     * &lt;b&gt;Unbounded memory&lt;/b&gt;: there is no inherent limit on free memory.\n     */\n    public boolean isBounded() {\n        return getTotal() != Long.MAX_VALUE;\n    }\n\n    /**\n     * Dump of the current state for debugging or understanding the memory divisions.\n     * &lt;p&gt;\n     * &lt;i&gt;Caution&lt;/i&gt;: Numbers may not match up exactly as state may change during the call.\n     */\n    public String getCurrentStats() {\n        StringWriter backing = new StringWriter();\n        PrintWriter out = new PrintWriter(backing, false);\n        out.printf(&quot;Total: allocated %,d (%.1f%%) out of possible %,d; %s, %s %,d%n&quot;,\n                getAllocatedTotal(),\n                (float)getAllocatedTotal() / (float)getTotal() * 100,\n                getTotal(),\n                isBounded()? &quot;bounded&quot; : &quot;unbounded&quot;,\n                isAtMaximumAllocation()? &quot;maxed out&quot; : &quot;can grow&quot;,\n                getUnallocated()\n        );\n        out.printf(&quot;Used: %,d; %.1f%% of total (%,d); %.1f%% of allocated (%,d)%n&quot;,\n                getUsed(),\n                (float)getUsed() / (float)getTotal() * 100,\n                getTotal(),\n                (float)getUsed() / (float)getAllocatedTotal() * 100,\n                getAllocatedTotal()\n        );\n        out.printf(&quot;Free: %,d (%.1f%%) out of %,d total; %,d (%.1f%%) out of %,d allocated%n&quot;,\n                getFree(),\n                (float)getFree() / (float)getTotal() * 100,\n                getTotal(),\n                getAllocatedFree(),\n                (float)getAllocatedFree() / (float)getAllocatedTotal() * 100,\n                getAllocatedTotal()\n        );\n        out.flush();\n        return backing.toString();\n    }\n\n    public static void main(String... args) {\n        SystemMemory memory = new SystemMemory();\n        System.out.println(memory.getCurrentStats());\n    }\n}\n</code></pre>\n<p>Example output:</p>\n<pre><code>Total: allocated 33,554,432 (12.5%) out of possible 268,435,456; bounded, can grow 234,881,024\nUsed: 2,392,832; 0.9% of total (268,435,456); 7.1% of allocated (33,554,432)\nFree: 266,042,624 (99.1%) out of 268,435,456 total; 31,161,600 (92.9%) out of 33,554,432 allocated\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7255085,
+      "reputation" : 87,
+      "user_id" : 5534037,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-K-NODIYUpA8/AAAAAAAAAAI/AAAAAAAAGmw/BNMqxiWl-g0/s256-rj/photo.jpg",
+      "display_name" : "GAbriel lopez",
+      "link" : "https://stackoverflow.com/users/5534037/gabriel-lopez"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1552910149,
+    "creation_date" : 1552910149,
+    "answer_id" : 55220799,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can see the results in <strong>MB format</strong>, with the division of <em>1024 x 1024</em> which is equal to <strong>1 MB</strong>.</p>\n\n<pre><code>int dataSize = 1024 * 1024;\n\nSystem.out.println(\"Used Memory   : \" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/dataSize + \" MB\");\nSystem.out.println(\"Free Memory   : \" + Runtime.getRuntime().freeMemory()/dataSize + \" MB\");\nSystem.out.println(\"Total Memory  : \" + Runtime.getRuntime().totalMemory()/dataSize + \" MB\");\nSystem.out.println(\"Max Memory    : \" + Runtime.getRuntime().maxMemory()/dataSize + \" MB\");  \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1609777,
+      "reputation" : 1264,
+      "user_id" : 1489121,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9052c887f0a62c26b6daf370192c595e?s=256&d=identicon&r=PG",
+      "display_name" : "Krzysztof Tomaszewski",
+      "link" : "https://stackoverflow.com/users/1489121/krzysztof-tomaszewski"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1740239092,
+    "creation_date" : 1740239092,
+    "answer_id" : 79459855,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Most answers is missing an information that these methods like <code>Runtime.getRuntime().totalMemory()</code> are about JVM <strong>Heap memory</strong> only. While this can be obvious for many people, the Javadoc for these methods is not clear enough about that.</p>\n<p>There is more memory used by JVM, not only for thread stacks, for example:</p>\n<ul>\n<li>native memory for direct buffers</li>\n<li>Metaspace</li>\n</ul>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1751102951,
+      "post_id" : 79682856,
+      "comment_id" : 140549133,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "1) these values are for heap memory (&quot;<i>memory currently available for current and future objects</i>&quot;), <b>not</b> process memory (e.g. on my system, process memory is about 100M greater than total memory); 2) <code>maxMemory</code> is <b>not</b> maximum allocated, but maximum allowed (option <code>-Xmx</code> when starting JVM)"
+    }, {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1751103389,
+      "post_id" : 79682856,
+      "comment_id" : 140549141,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "3) <code>usedMemory</code> cannot be <code>(maxMemory - freeMemory)</code>, as consequence of point 2 above  - even your example data <i>proves</i> that the formula is wrong (<code>192 - 3 != 5</code>)"
+    } ],
+    "owner" : {
+      "account_id" : 11268386,
+      "reputation" : 29,
+      "user_id" : 8264547,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/dfc80b12b078500171c16eb85128bddd?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Hemavathi",
+      "link" : "https://stackoverflow.com/users/8264547/hemavathi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1751100722,
+    "last_edit_date" : 1751100722,
+    "creation_date" : 1751100366,
+    "answer_id" : 79682856,
+    "question_id" : 3571203,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>maxMemory() - It is the Maximum memory allocated to the process based on the manufacturer\n\ntotalMemory() - it is the total memory retained for the process after certain usage\n\nfreeMemory() - it provides the unused memory \n\nusedMemory = (maxMemory - freeMemory) - it is the memory used by the process\n\nexample: Initial state \nMaxMemory = 192MB\nTotalMemory = 192MB\nFreeeMemory = 188MB\nUsedMemory = 4MB\n\nAfter some usage\nMaxMemory = 192MB\nTotalMemory = 8MB (System has reclaimed unused memory)\nFreeeMemory = 3MB\nUsedMemory = 5MB\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 93708,
+    "reputation" : 18127,
+    "user_id" : 256239,
+    "user_type" : "registered",
+    "accept_rate" : 61,
+    "profile_image" : "https://www.gravatar.com/avatar/10089974bda328374881a70e35c3e418?s=256&d=identicon&r=PG",
+    "display_name" : "user256239",
+    "link" : "https://stackoverflow.com/users/256239/user256239"
+  },
+  "is_answered" : true,
+  "view_count" : 144065,
+  "accepted_answer_id" : 3571231,
+  "answer_count" : 9,
+  "score" : 190,
+  "last_activity_date" : 1751100722,
+  "creation_date" : 1282781703,
+  "last_edit_date" : 1478642228,
+  "question_id" : 3571203,
+  "link" : "https://stackoverflow.com/questions/3571203/what-are-runtime-getruntime-totalmemory-and-freememory",
+  "title" : "What are Runtime.getRuntime().totalMemory() and freeMemory()?",
+  "body" : "<p>I've been wondering what the exact meaning of  <a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#totalMemory--\" rel=\"noreferrer\">Runtime.getRuntime().totalMemory()</a>, <a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#freeMemory--\" rel=\"noreferrer\">Runtime.getRuntime().freeMemory()</a>, and <a href=\"https://docs.oracle.com/javase/8/docs/api/java/lang/Runtime.html#maxMemory--\" rel=\"noreferrer\">Runtime.getRuntime().maxMemory()</a> is.</p>\n\n<p>My understanding is, <code>Runtime.getRuntime().totalMemory()</code> returns the total memory my process is using. Is that correct? </p>\n\n<p>How about <code>freeMemory()</code> and <code>maxMemory()</code>?</p>\n"
+}

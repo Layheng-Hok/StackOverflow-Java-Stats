@@ -1,0 +1,68 @@
+{
+  "tags" : [ "java", "fasterxml" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 5569841,
+      "reputation" : 8654,
+      "user_id" : 4415625,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0ea1713807527aa1cf52e40579e35ec4?s=256&d=identicon&r=PG",
+      "display_name" : "dani-vta",
+      "link" : "https://stackoverflow.com/users/4415625/dani-vta"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1760035445,
+    "post_id" : 77176010,
+    "comment_id" : 140786998,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Can you include a minimal reproducible example? As it&#39;s currently written, it is not possible to test your code, or understand what part of your input  may cause the issue."
+  }, {
+    "owner" : {
+      "account_id" : 2073393,
+      "reputation" : 3675,
+      "user_id" : 1847378,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e8990d3c34829910b2318ed16b09544d?s=256&d=identicon&r=PG",
+      "display_name" : "AndrewL",
+      "link" : "https://stackoverflow.com/users/1847378/andrewl"
+    },
+    "reply_to_user" : {
+      "account_id" : 5569841,
+      "reputation" : 8654,
+      "user_id" : 4415625,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0ea1713807527aa1cf52e40579e35ec4?s=256&d=identicon&r=PG",
+      "display_name" : "dani-vta",
+      "link" : "https://stackoverflow.com/users/4415625/dani-vta"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1760053827,
+    "post_id" : 77176010,
+    "comment_id" : 140787415,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Like @dani-vta says, there&#39;s not enough here for anyone to help you.  But as you can see from the Stack trace fragment given, this OJAI library is depending on Jackson.  What is it that OJAI does over Jackson (a very widely used and supported JSON serializer/deserializer)? can test deserializing the content using just Jackson?"
+  } ],
+  "owner" : {
+    "account_id" : 965625,
+    "reputation" : 1104,
+    "user_id" : 1103606,
+    "user_type" : "registered",
+    "accept_rate" : 51,
+    "profile_image" : "https://www.gravatar.com/avatar/0d93cc650b93939ea91066fcb5aefae0?s=256&d=identicon&r=PG",
+    "display_name" : "Peter Penzov",
+    "link" : "https://stackoverflow.com/users/1103606/peter-penzov"
+  },
+  "is_answered" : false,
+  "view_count" : 1335,
+  "answer_count" : 0,
+  "score" : 1,
+  "last_activity_date" : 1759959157,
+  "creation_date" : 1695680548,
+  "last_edit_date" : 1759959074,
+  "question_id" : 77176010,
+  "link" : "https://stackoverflow.com/questions/77176010/unexpected-character-code-35-expected-space-separating-root-level-value",
+  "title" : "Unexpected character (&#39;#&#39; (code 35)): Expected space separating root-level values",
+  "body" : "<p>I have this old code which is using OJAI library <a href=\"https://github.com/ojai/ojai\" rel=\"nofollow noreferrer\">https://github.com/ojai/ojai</a> to convert and store JSON document:</p>\n<pre><code>import org.ojai.Document;\n\npublic Object get(String documentId) {\n    final Document dto = getDocument(documentId);\n      return convert(dto);\n}\n\n…..\n\n\n   public Document getDocument(String documentId) {\n        return Json.newDocument(documentId);\n    }\n\n……….\n\n   final ObjectMapper objectMapper = new ObjectMapper();\n\n    objectMapper.setSerializationInclusion(Include.NON_NULL);\n    objectMapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);\n    objectMapper.configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);\n\n\nobjectMapper.convertValue(document, CarDto.class);\n</code></pre>\n<p>I get error:</p>\n<pre><code>org.ojai.exceptions.DecodingException: com.fasterxml.jackson.core.JsonParseException: Unexpected character ('#' (code 35)): Expected space separating root-level values\n at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 6]\n        at org.ojai.json.impl.JsonStreamDocumentReader.hasMoreTokens(JsonStreamDocumentReader.java:634) ~[ojai-3.0-mapr-1808.jar!/:3.0-mapr-1808]\n</code></pre>\n<p>I think that I have a key into the code like key like this '12345#CAR#RED' which is breaking the code.</p>\n<p>Is there a better solution to migrate the code not to use OJAI library?</p>\n"
+}

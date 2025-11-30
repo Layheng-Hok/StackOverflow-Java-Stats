@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "database", "spring", "oracle-database", "spring-mvc" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 7215228,
+      "reputation" : 1760,
+      "user_id" : 5507961,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/emPOd.jpg?s=256",
+      "display_name" : "Javier Toja",
+      "link" : "https://stackoverflow.com/users/5507961/javier-toja"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1458682615,
+    "creation_date" : 1458682615,
+    "answer_id" : 36165717,
+    "question_id" : 36133468,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use several different ways to archive your objective, for example:</p>\n\n<ul>\n<li><a href=\"http://www.oracle.com/technetwork/articles/javaee/marx-oepe-spring-095718.html\" rel=\"nofollow\">Follow this official doc and use Spring with jpa directly</a></li>\n<li><a href=\"https://springframework.guru/configuring-spring-boot-for-oracle/\" rel=\"nofollow\">This one  just adapted to spring-boot</a> in combination with <a href=\"https://github.com/spring-projects/spring-boot/tree/master/spring-boot-samples/spring-boot-sample-data-jpa\" rel=\"nofollow\">official spring jpa example</a></li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2898315,
+    "reputation" : 11,
+    "user_id" : 2485610,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f179cc0f964ffbe2446f5e83e482493a?s=256&d=identicon&r=PG",
+    "display_name" : "user2485610",
+    "link" : "https://stackoverflow.com/users/2485610/user2485610"
+  },
+  "is_answered" : false,
+  "view_count" : 11109,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1762027560,
+  "creation_date" : 1458569882,
+  "last_edit_date" : 1458577504,
+  "question_id" : 36133468,
+  "link" : "https://stackoverflow.com/questions/36133468/how-to-connect-from-stsspring-tool-suite-to-databaseoracle",
+  "title" : "How to connect from STS(spring tool suite) to database(oracle)",
+  "body" : "<p>I am new at spring. I am trying to build my first web service, and I would like to connect to a database, get data, and return it as a JSON.</p>\n\n<p>I use the spring example <a href=\"https://spring.io/guides/gs/rest-service\" rel=\"nofollow\">https://spring.io/guides/gs/rest-service</a> and I change it a bit, so I can get a war file.</p>\n\n<p>My server that war file will deploy is Wildfly 8.2.0.</p>\n\n<p>I want to connect to oracle 11g database and run SQL queries. Can you help me?</p>\n\n<p>My code is posted below.</p>\n\n<p><a href=\"https://i.sstatic.net/NZ8yQ.png\" rel=\"nofollow\">My project format in eclipse</a></p>\n\n<p>Application.java:</p>\n\n<pre><code>package hello;\nimport org.springframework.boot.SpringApplication;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.boot.builder.SpringApplicationBuilder;\nimport org.springframework.boot.context.web.SpringBootServletInitializer;\n\n@SpringBootApplication\npublic class Application extends SpringBootServletInitializer {\n\n\n@Override\nprotected SpringApplicationBuilder configure(SpringApplicationBuilder application) {\n    return application.sources(Application.class);\n}\n\n\npublic static void main(String[] args) throws Exception {\n    SpringApplication.run(Application.class, args);\n}\n\n\n}\n</code></pre>\n\n<p>Greeting.java:</p>\n\n<pre><code>package hello;\n\npublic class Greeting {\n\nprivate final long id;\nprivate final String content;\n\npublic Greeting(long id, String content) {\n    this.id = id;\n    this.content = content;\n}\n\npublic long getId() {\n    return id;\n}\n\npublic String getContent() {\n    return content;\n}\n}\n</code></pre>\n\n<p>GreetingController.java:</p>\n\n<pre><code>import org.springframework.web.bind.annotation.RequestMethod;\nimport org.springframework.web.bind.annotation.RequestParam;\nimport org.springframework.web.bind.annotation.RestController;\n\n\n@RestController\npublic class GreetingController {\n\n\nprivate static final String template = \"Hello, %s!\";\nprivate final AtomicLong counter = new AtomicLong();\n\n\n@RequestMapping(value=\"/greeting\",method=RequestMethod.GET)\npublic List&lt;Greeting&gt; greeting(@RequestParam(value=\"name\", defaultValue=\"World\") String name,\n                               @RequestParam(value=\"content\", defaultValue=\"World\") String content,HttpServletResponse response) {\n    List&lt;Greeting&gt; list_greet = new ArrayList&lt;Greeting&gt;();\n    list_greet.add(new Greeting(counter.incrementAndGet(),\n                                String.format(template, name)));\n    list_greet.add(new Greeting(counter.incrementAndGet(),\n                                String.format(template, content)));\n    list_greet.add(new Greeting(counter.incrementAndGet(),\n                                String.format(template, name)));\n    list_greet.add(new Greeting(counter.incrementAndGet(),\n                                String.format(template, name)));\n    //to have webservice work,beacause cors cut it out.\n    response.setHeader(\"Access-Control-Allow-Origin\", \"*\");\n    response.setHeader(\"Access-Control-Allow-Methods\", \"POST, GET, OPTIONS, DELETE\");\n    response.setHeader(\"Access-Control-Max-Age\", \"3600\");\n    response.setHeader(\"Access-Control-Allow-Headers\", \"x-requested-with\");\n\n\n    return list_greet;\n}\n}\n</code></pre>\n\n<p>pom.xml:</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\nxsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\"&gt;\n&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;\n\n&lt;groupId&gt;org.springframework&lt;/groupId&gt;\n&lt;artifactId&gt;gs-rest-service&lt;/artifactId&gt;\n&lt;version&gt;0.1.0&lt;/version&gt;\n&lt;packaging&gt;war&lt;/packaging&gt;\n\n&lt;parent&gt;\n    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;\n    &lt;version&gt;1.3.3.RELEASE&lt;/version&gt;\n&lt;/parent&gt;\n\n&lt;dependencies&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;\n    &lt;/dependency&gt;\n   &lt;dependency&gt;\n        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n        &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;\n        &lt;scope&gt;provided&lt;/scope&gt;\n    &lt;/dependency&gt;\n&lt;/dependencies&gt;\n\n&lt;properties&gt;\n    &lt;java.version&gt;1.8&lt;/java.version&gt;\n&lt;/properties&gt;\n\n\n&lt;build&gt;\n    &lt;plugins&gt;\n        &lt;plugin&gt;\n            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n            &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;\n        &lt;/plugin&gt;\n    &lt;/plugins&gt;\n&lt;/build&gt;\n\n&lt;repositories&gt;\n    &lt;repository&gt;\n        &lt;id&gt;spring-releases&lt;/id&gt;\n        &lt;url&gt;https://repo.spring.io/libs-release&lt;/url&gt;\n    &lt;/repository&gt;\n&lt;/repositories&gt;\n&lt;pluginRepositories&gt;\n    &lt;pluginRepository&gt;\n        &lt;id&gt;spring-releases&lt;/id&gt;\n        &lt;url&gt;https://repo.spring.io/libs-release&lt;/url&gt;\n    &lt;/pluginRepository&gt;\n&lt;/pluginRepositories&gt;\n&lt;/project&gt;\n</code></pre>\n\n<p>Thanks in advance!</p>\n"
+}

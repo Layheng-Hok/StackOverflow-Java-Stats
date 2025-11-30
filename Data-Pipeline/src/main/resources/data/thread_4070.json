@@ -1,0 +1,105 @@
+{
+  "tags" : [ "java", "spring", "spring-security", "jwt" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 22577442,
+      "reputation" : 1103,
+      "user_id" : 16775102,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/VZtyD.jpg?s=256",
+      "display_name" : "Feel free",
+      "link" : "https://stackoverflow.com/users/16775102/feel-free"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1685366569,
+    "post_id" : 76357178,
+    "comment_id" : 134646544,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Can you show your test class? Did you injectMocks to jwtService? did you use real object?"
+  }, {
+    "owner" : {
+      "account_id" : 25473671,
+      "reputation" : 25,
+      "user_id" : 19271377,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/73Rbh.jpg?s=256",
+      "display_name" : "temez",
+      "link" : "https://stackoverflow.com/users/19271377/temez"
+    },
+    "reply_to_user" : {
+      "account_id" : 22577442,
+      "reputation" : 1103,
+      "user_id" : 16775102,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/VZtyD.jpg?s=256",
+      "display_name" : "Feel free",
+      "link" : "https://stackoverflow.com/users/16775102/feel-free"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1685369681,
+    "post_id" : 76357178,
+    "comment_id" : 134647148,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@Feelfree sure, updated code. I have just implemented <code>JWTService.java</code>, using another library and it worked."
+  }, {
+    "owner" : {
+      "account_id" : 22577442,
+      "reputation" : 1103,
+      "user_id" : 16775102,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/VZtyD.jpg?s=256",
+      "display_name" : "Feel free",
+      "link" : "https://stackoverflow.com/users/16775102/feel-free"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1685371800,
+    "post_id" : 76357178,
+    "comment_id" : 134647564,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "So if it worked the question is closed?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 8505101,
+      "reputation" : 4567,
+      "user_id" : 6376955,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5d00a4db06cb0145dc784bde3bab3593?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Zeromus",
+      "link" : "https://stackoverflow.com/users/6376955/zeromus"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1760996619,
+    "last_edit_date" : 1760996619,
+    "creation_date" : 1760620289,
+    "answer_id" : 79792183,
+    "question_id" : 76357178,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The issue is in the jwt token generation</p>\n<pre><code>        return Jwts.builder()\n                .setSubject(login)\n                .setClaims(extraClaims)\n                .setIssuedAt(new Date())\n                .setExpiration(new Date(System.currentTimeMillis() + tokenValidity * 1000))\n                .signWith(key)\n                .compact();\n</code></pre>\n<p>If you look the the <code>setSubject</code> method you will find out that it's just a convenience method to set the <code>sub</code> claim if the <code>Claims</code> are not present. You are in fact filling a <code>Claims</code> object with the <code>sub</code> claim and then overriding it with your other <code>extraClaims</code>.</p>\n<p>What I simply did was switch the order:</p>\n<pre><code>return Jwts.builder()\n                  .setClaims(extraClaims)\n                  .setSubject(login)\n                  //etc\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 25473671,
+    "reputation" : 25,
+    "user_id" : 19271377,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/73Rbh.jpg?s=256",
+    "display_name" : "temez",
+    "link" : "https://stackoverflow.com/users/19271377/temez"
+  },
+  "is_answered" : true,
+  "view_count" : 909,
+  "accepted_answer_id" : 79792183,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760996619,
+  "creation_date" : 1685361644,
+  "last_edit_date" : 1685369598,
+  "question_id" : 76357178,
+  "link" : "https://stackoverflow.com/questions/76357178/getsubject-method-rerturn-null-when-trying-to-extract-from-jwt-claims",
+  "title" : "getSubject() method rerturn null when trying to extract from JWT claims",
+  "body" : "<p>When I create JWT token string and try to extract login (subject), <code>getLogin()</code> method returns <code>null</code>. <code>getLogin()</code> method just wraps <code>Claims.getSubject()</code>.</p>\n<p>JWTService.java</p>\n<pre><code>@Service\npublic class JWTService {\n\n    private static final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);\n\n    @Value(&quot;${jwt.token-validity}&quot;)\n    private Integer tokenValidity;\n\n    @Nullable\n    public String getLogin(@NotNull String token) {\n        return extractClaim(token, Claims::getSubject);\n    }\n\n    private Claims getClaims(@NotNull String token) {\n        return Jwts\n                .parserBuilder()\n                .setSigningKey(key)\n                .build()\n                .parseClaimsJws(token)\n                .getBody();\n    }\n\n    private &lt;T&gt; T extractClaim(@NotNull String token, @NotNull Function&lt;Claims, T&gt; claimsResolver) {\n        return claimsResolver.apply(getClaims(token));\n    }\n\n    public String generateToken(@NotNull String login) {\n        return generateToken(login, new HashMap&lt;&gt;());\n    }\n\n    public String generateToken(@NotNull String login, @NotNull HashMap&lt;String, Object&gt; extraClaims) {\n        return Jwts.builder()\n                .setSubject(login)\n                .setClaims(extraClaims)\n                .setIssuedAt(new Date())\n                .setExpiration(new Date(System.currentTimeMillis() + tokenValidity * 1000))\n                .signWith(key)\n                .compact();\n    }\n}\n</code></pre>\n<p>JWTServiceTest.java</p>\n<pre><code>@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)\n@FieldDefaults(level = AccessLevel.PRIVATE)\npublic class JWTServiceTest {\n\n    @Autowired\n    JWTService jwtService;\n\n    @Test\n    public void whenGivenTestLoginAndJwtGenerated_ThenExtractTestUsername(){\n        String jwt = jwtService.generateToken(&quot;test&quot;);\n        assertEquals(&quot;test&quot;, jwtService.getLogin(jwt));\n    }\n}\n</code></pre>\n<pre><code>expected: &lt;test&gt; but was: &lt;null&gt;\nExpected :test\nActual   :null\n</code></pre>\n<p>I tried to search same topics here, but don't found a solution.</p>\n"
+}

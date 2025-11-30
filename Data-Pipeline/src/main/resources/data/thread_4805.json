@@ -1,0 +1,102 @@
+{
+  "tags" : [ "java", "testing", "simulator", "server-sent-events", "wiremock" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 480584,
+        "reputation" : 9611,
+        "user_id" : 893898,
+        "user_type" : "registered",
+        "accept_rate" : 42,
+        "profile_image" : "https://www.gravatar.com/avatar/cbb75897ee67011990d4706fad19e38b?s=256&d=identicon&r=PG",
+        "display_name" : "Hantsy",
+        "link" : "https://stackoverflow.com/users/893898/hantsy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1699423254,
+      "post_id" : 66369358,
+      "comment_id" : 136528040,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I tried to use similar codes in a Quarkus test, failed, <a href=\"https://stackoverflow.com/questions/76926164/mock-sse-endpoind-with-wiremock-in-quarkus\" title=\"mock sse endpoind with wiremock in quarkus\">stackoverflow.com/questions/76926164/&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 2183532,
+      "reputation" : 476,
+      "user_id" : 1932474,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1b8d7aa26df745967cca89047535d428?s=256&d=identicon&r=PG",
+      "display_name" : "Ivan  Koryshev",
+      "link" : "https://stackoverflow.com/users/1932474/ivan-koryshev"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1614259343,
+    "creation_date" : 1614259343,
+    "answer_id" : 66369358,
+    "question_id" : 52444948,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As an option, you can construct the event stream manually and mock a response from SSE endpoint like this (I'm using wiremock-jre8-standalone:2.27.1):</p>\n<pre><code>...\nimport static com.github.tomakehurst.wiremock.client.WireMock.get;\nimport static com.github.tomakehurst.wiremock.client.WireMock.givenThat;\nimport static com.github.tomakehurst.wiremock.client.WireMock.notFound;\nimport static com.github.tomakehurst.wiremock.client.WireMock.okForContentType;\nimport static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;\n...\nString eventStream =\n            &quot;id:id1\\nevent:event1\\ndata:data1\\n\\n&quot; +\n            &quot;id:id2\\nevent:event2\\ndata:data2\\n\\n&quot; +\n            &quot;id:id3\\nevent:event3\\ndata:data3\\n\\n&quot;;\ngivenThat(get(urlPathEqualTo(&quot;/sse&quot;))\n            .willReturn(okForContentType(&quot;text/event-stream&quot;, eventStream)));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2459621,
+      "reputation" : 1101,
+      "user_id" : 2144057,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://www.gravatar.com/avatar/c8f584f5264aee507f115ac3d1808669?s=256&d=identicon&r=PG",
+      "display_name" : "Kamil Roman",
+      "link" : "https://stackoverflow.com/users/2144057/kamil-roman"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1638967688,
+    "creation_date" : 1638967688,
+    "answer_id" : 70275265,
+    "question_id" : 52444948,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You could use embedded muServer <a href=\"https://muserver.io/sse\" rel=\"nofollow noreferrer\">https://muserver.io/sse</a>. Wiremock or MockWebServer have open issues for that:<br />\n<a href=\"https://github.com/square/okhttp/issues/2894\" rel=\"nofollow noreferrer\">https://github.com/square/okhttp/issues/2894</a><br />\n<a href=\"https://github.com/wiremock/wiremock/issues/460\" rel=\"nofollow noreferrer\">https://github.com/wiremock/wiremock/issues/460</a></p>\n<p>Although Ivan's answer should be sufficient to send some one-time SSEs I believe the web server will close the connection after sending them, which is unexpected in SSE and may result in some unexpected/side-effects error behavior on the client side.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1203915,
+      "reputation" : 10731,
+      "user_id" : 1174024,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://i.sstatic.net/9zaVE.jpg?s=256",
+      "display_name" : "Nicholas DiPiazza",
+      "link" : "https://stackoverflow.com/users/1174024/nicholas-dipiazza"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759348209,
+    "last_edit_date" : 1759348209,
+    "creation_date" : 1759347701,
+    "answer_id" : 79780415,
+    "question_id" : 52444948,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There is a new thing called <a href=\"https://wiremock.org/docs/simulating-faults/\" rel=\"nofollow noreferrer\">chunkedDribbleDelay</a></p>\n<ul>\n<li>Run a wiremock server with the below stub in the mappings.\n<ul>\n<li>This is a wiremock stub like any other project. But you will set it up so the body will have carriage returns separating the text chunks.</li>\n<li>It will return response of content type <code>text/event-stream</code>.</li>\n</ul>\n</li>\n</ul>\n<p>Below is an example:</p>\n<pre><code>{\n  &quot;id&quot; : &quot;...&quot;,\n  &quot;request&quot; : {\n    &quot;urlPathPattern&quot; : &quot;/chat_session/([^/]+)/stream&quot;,\n    &quot;method&quot; : &quot;POST&quot;,\n    &quot;headers&quot; : {\n      &quot;Content-Type&quot; : {\n        &quot;equalTo&quot; : &quot;application/json&quot;\n      },\n    },\n    &quot;bodyPatterns&quot; : [ {\n      &quot;matchesJsonPath&quot; : &quot;$.message&quot;\n    } ]\n  },\n  &quot;response&quot; : {\n    &quot;status&quot; : 200,\n    &quot;body&quot; : &quot;data: {\\&quot;type\\&quot;: \\&quot;start\\&quot;, \\&quot;messageId\\&quot;: \\&quot;msg_{{randomValue length=16 type='ALPHANUMERIC'}}\\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;Hello! \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;I'm \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;your \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;TEST \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;AI \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;agent. \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;How \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;can \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;I \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;help \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;you \\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;content\\&quot;, \\&quot;content\\&quot;: \\&quot;today?\\&quot;}\\n\\ndata: {\\&quot;type\\&quot;: \\&quot;end\\&quot;, \\&quot;messageId\\&quot;: \\&quot;msg_{{randomValue length=16 type='ALPHANUMERIC'}}\\&quot;}\\n\\n&quot;,\n    &quot;headers&quot; : {\n      &quot;Content-Type&quot; : &quot;text/event-stream&quot;,\n      &quot;Cache-Control&quot; : &quot;no-cache&quot;,\n      &quot;Access-Control-Allow-Origin&quot; : &quot;*&quot;,\n      &quot;Access-Control-Allow-Headers&quot; : &quot;Content-Type, Authorization&quot;\n    },\n    &quot;chunkedDribbleDelay&quot; : {\n      &quot;numberOfChunks&quot; : 15,\n      &quot;totalDuration&quot; : 2000\n    },\n    &quot;transformers&quot; : [&quot;response-template&quot;]\n  },\n  &quot;uuid&quot; : &quot;...&quot;,\n  &quot;persistent&quot; : true\n}\n</code></pre>\n<p>Fire up a bash terminal and test it out:</p>\n<pre><code>curl -X POST http://localhost:8089/chat_session/asfdasdfasdf/stream \\\n  -H &quot;Content-Type: application/json&quot; \\\n  -H &quot;Authorization: Bearer asdf&quot; \\\n  -d '{&quot;message&quot;: &quot;blah&quot;}' \\\n  --no-buffer \\\n  -N | while IFS= read -r line; do\n    echo &quot;[$(date '+%H:%M:%S.%3N')] $line&quot;\ndone\n</code></pre>\n<p>You will see wiremock is properly simulating SSE type of response streaming as you see the chunks come in periodically over the stream instead of all at once.</p>\n<pre><code>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n100    71    0    52  100    19     21      7  0:00:02  0:00:02 --:--:--    29[05:25:40.3N] data: {&quot;type&quot;: &quot;start&quot;, &quot;messageId&quot;: &quot;msg_bd9mm56hoisd6vbm&quot;}\n[05:25:40.3N] \n100   175    0   156  100    19     36      4  0:00:04  0:00:04 --:--:--    40[05:25:41.3N] data: {&quot;type&quot;: &quot;content&quot;, &quot;content&quot;: &quot;Hello! &quot;}\n[05:25:41.3N] \n[05:25:41.3N] data: {&quot;type&quot;: &quot;content&quot;, &quot;content&quot;: &quot;I'm &quot;}\n100   175    0   156  100    19     29      3  0:00:06  0:00:05  0:00:01    30[05:25:43.3N] \n[05:25:43.3N] data: {&quot;type&quot;: &quot;content&quot;, &quot;content&quot;: &quot;your &quot;}\n[05:25:43.3N] \n100   279    0   260  100    19     36      2  0:00:09  0:00:07  0:00:02    44[05:25:44.3N] data: {&quot;type&quot;: &quot;content&quot;, &quot;content&quot;: &quot;TEST &quot;}\n[05:25:44.3N] \n100   279    0   260  100    19     31      2  0:00:09  0:00:08  0:00:01    36[05:25:46.3N] data: {&quot;type&quot;: &quot;content&quot;, &quot;content&quot;: &quot;AI &quot;}\n[05:25:46.3N] \n100   331    0   312  100    19     32      1  0:00:19  0:00:09  0:00:10    29[05:25:47.3N] data: {&quot;type&quot;: &quot;content&quot;, &quot;content&quot;: &quot;agent &quot;}\n[05:25:47.3N]\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 191336,
+    "reputation" : 525,
+    "user_id" : 431858,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/944955fd9e8219a04a7b55f12a5bb104?s=256&d=identicon&r=PG",
+    "display_name" : "pinpinokio",
+    "link" : "https://stackoverflow.com/users/431858/pinpinokio"
+  },
+  "is_answered" : true,
+  "view_count" : 3194,
+  "accepted_answer_id" : 66369358,
+  "answer_count" : 3,
+  "score" : 8,
+  "last_activity_date" : 1759348209,
+  "creation_date" : 1537536983,
+  "last_edit_date" : 1537541787,
+  "question_id" : 52444948,
+  "link" : "https://stackoverflow.com/questions/52444948/mocking-libraries-with-server-sent-events-sse-support",
+  "title" : "Mocking libraries with server sent events (SSE) support",
+  "body" : "<p>I am considering usage of \"WireMock\" utility in order to create simple simulators of HTTP based APIs for my automatic tests. My problem is that some of the tests require server sent events (SSE), which is (as far as I read in their github comments) not currently supported, at least not out of the box. Does anyone know if I can implement simple SSE simulator with the existing capabilities of WireMock library, or maybe know for some alternative library of the same type, that supports SSE?</p>\n"
+}

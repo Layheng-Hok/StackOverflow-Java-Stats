@@ -1,0 +1,591 @@
+{
+  "tags" : [ "java", "spring", "spring-mvc", "spring-security" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 452129,
+        "reputation" : 4629,
+        "user_id" : 848393,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/8b9f333851ed894ebdf458200ab142e8?s=256&d=identicon&r=PG",
+        "display_name" : "The Awnry Bear",
+        "link" : "https://stackoverflow.com/users/848393/the-awnry-bear"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1326123588,
+      "post_id" : 8765597,
+      "comment_id" : 10964845,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I was considering this approach, but I wasn&#39;t sure a) how exactly to do it the Right Way(tm) and b) if there would be any threading issues. Are you certain there would be no issues there? I&#39;m going with the annotation method posted above, but I think this is still a decent way of going about it. Thanks for posting. :)"
+    }, {
+      "owner" : {
+        "account_id" : 87204,
+        "reputation" : 22852,
+        "user_id" : 241990,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/265f1d52e6e484c9abe60b4da20fb8ee?s=256&d=identicon&r=PG",
+        "display_name" : "Shaun the Sheep",
+        "link" : "https://stackoverflow.com/users/241990/shaun-the-sheep"
+      },
+      "reply_to_user" : {
+        "account_id" : 452129,
+        "reputation" : 4629,
+        "user_id" : 848393,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/8b9f333851ed894ebdf458200ab142e8?s=256&d=identicon&r=PG",
+        "display_name" : "The Awnry Bear",
+        "link" : "https://stackoverflow.com/users/848393/the-awnry-bear"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1326133129,
+      "post_id" : 8765597,
+      "comment_id" : 10968111,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It is technically the same as accessing the SecurityContextHolder directly from your controller, so there shouldn&#39;t be any threading issues. It just keeps the call to a single place and allows you to easily inject alternatives for testing. You can also re-use the same approach in other non-web classes which need access to security information."
+    }, {
+      "owner" : {
+        "account_id" : 452129,
+        "reputation" : 4629,
+        "user_id" : 848393,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/8b9f333851ed894ebdf458200ab142e8?s=256&d=identicon&r=PG",
+        "display_name" : "The Awnry Bear",
+        "link" : "https://stackoverflow.com/users/848393/the-awnry-bear"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1326135016,
+      "post_id" : 8765597,
+      "comment_id" : 10968660,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Gotcha... that&#39;s what I was thinking. This will be a good one to come back to if I have issues unit testing with the annotation method, or if I want to decrease coupling with Spring."
+    }, {
+      "owner" : {
+        "account_id" : 174797,
+        "reputation" : 566,
+        "user_id" : 404385,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://www.gravatar.com/avatar/ce9159df04948776ec26100f26cf07de?s=256&d=identicon&r=PG",
+        "display_name" : "Cu7l4ss",
+        "link" : "https://stackoverflow.com/users/404385/cu7l4ss"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1347462716,
+      "post_id" : 8765597,
+      "comment_id" : 16648430,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@LukeTaylor can you please further explain this approach, I&#39;m a bit new  to spring and spring security, so I don&#39;t quite get how to implement this. Where do I implement this so it would be accessed? to my UserServiceImpl?"
+    } ],
+    "owner" : {
+      "account_id" : 87204,
+      "reputation" : 22852,
+      "user_id" : 241990,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/265f1d52e6e484c9abe60b4da20fb8ee?s=256&d=identicon&r=PG",
+      "display_name" : "Shaun the Sheep",
+      "link" : "https://stackoverflow.com/users/241990/shaun-the-sheep"
+    },
+    "is_accepted" : false,
+    "score" : 28,
+    "last_activity_date" : 1329420525,
+    "last_edit_date" : 1329420525,
+    "creation_date" : 1325890727,
+    "answer_id" : 8765597,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Spring Security is intended to work with other non-Spring frameworks, hence it is not tightly integrated with Spring MVC. Spring Security returns the <code>Authentication</code> object from the <code>HttpServletRequest.getUserPrincipal()</code> method by default so that's what you get as the principal. You can obtain your <code>UserDetails</code> object directly from this by using</p>\n\n<pre><code>UserDetails ud = ((Authentication)principal).getPrincipal()\n</code></pre>\n\n<p>Note also that the object types may vary depending on the authentication mechanism used (you may not get a <code>UsernamePasswordAuthenticationToken</code>, for example) and the <code>Authentication</code> doesn't strictly have to contain a <code>UserDetails</code>. It can be a string or any other type.</p>\n\n<p>If you don't want to call <code>SecurityContextHolder</code> directly, the most elegant approach (which I would follow) is to inject your own custom security context accessor interface which is customized to match your needs and user object types. Create an interface, with the relevant methods, for example:</p>\n\n<pre><code>interface MySecurityAccessor {\n\n    MyUserDetails getCurrentUser();\n\n    // Other methods\n}\n</code></pre>\n\n<p>You can then implement this by accessing the <code>SecurityContextHolder</code> in your standard implementation, thus decoupling your code from Spring Security entirely. Then inject this into the controllers which need access to security information or information on the current user.</p>\n\n<p>The other main benefit is that it is easy to make simple implementations with fixed data for testing, without having to worry about populating thread-locals and so on.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 53073,
+        "reputation" : 24087,
+        "user_id" : 158658,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/38f96f0ffe33e01a893bc84f02b50bf3?s=256&d=identicon&r=PG",
+        "display_name" : "sourcedelica",
+        "link" : "https://stackoverflow.com/users/158658/sourcedelica"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1326208069,
+      "post_id" : 8769670,
+      "comment_id" : 10986755,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Alternatively just create a bean that has a getUserDetails() method and @Autowire that into your controller."
+    }, {
+      "owner" : {
+        "account_id" : 534720,
+        "reputation" : 7696,
+        "user_id" : 904556,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/0ef157de2b90b09478dd2523fd639d31?s=256&d=identicon&r=PG",
+        "display_name" : "Jason",
+        "link" : "https://stackoverflow.com/users/904556/jason"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1345906241,
+      "post_id" : 8769670,
+      "comment_id" : 16210312,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Implementing this solution, I set a breakpoint at the top of the resolveArgument() but my app never steps into the web argument resolver. Your spring configuration in the servlet context not the root context, right?"
+    }, {
+      "owner" : {
+        "account_id" : 104911,
+        "reputation" : 121291,
+        "user_id" : 280244,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/oTmxxFgA.jpg?s=256",
+        "display_name" : "Ralph",
+        "link" : "https://stackoverflow.com/users/280244/ralph"
+      },
+      "reply_to_user" : {
+        "account_id" : 534720,
+        "reputation" : 7696,
+        "user_id" : 904556,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/0ef157de2b90b09478dd2523fd639d31?s=256&d=identicon&r=PG",
+        "display_name" : "Jason",
+        "link" : "https://stackoverflow.com/users/904556/jason"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1345964848,
+      "post_id" : 8769670,
+      "comment_id" : 16219335,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Jay: This configuration is part of the root context, not servlet context. -- it seams that I have forget to specify the id <code>(id=&quot;applicationConversionService&quot;)</code> in the example"
+    }, {
+      "owner" : {
+        "account_id" : 534720,
+        "reputation" : 7696,
+        "user_id" : 904556,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://www.gravatar.com/avatar/0ef157de2b90b09478dd2523fd639d31?s=256&d=identicon&r=PG",
+        "display_name" : "Jason",
+        "link" : "https://stackoverflow.com/users/904556/jason"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1346068849,
+      "post_id" : 8769670,
+      "comment_id" : 16242099,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It should be noted that if you&#39;re using Spring 3.1, they recommend HandlerMethodArgumentResolver over WebArgumentResolver. I got HandlerMethodArgumentResolver to work by configuringit with &lt;annotation-driven&gt; in the servlet context. Other than that, I implemented the answer as posted here and everything works great"
+    }, {
+      "owner" : {
+        "account_id" : 6241436,
+        "reputation" : 3273,
+        "user_id" : 4854931,
+        "user_type" : "registered",
+        "accept_rate" : 33,
+        "profile_image" : "https://www.gravatar.com/avatar/8554ce4e2c007be9ccebcc8389704470?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Alex78191",
+        "link" : "https://stackoverflow.com/users/4854931/alex78191"
+      },
+      "reply_to_user" : {
+        "account_id" : 53073,
+        "reputation" : 24087,
+        "user_id" : 158658,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/38f96f0ffe33e01a893bc84f02b50bf3?s=256&d=identicon&r=PG",
+        "display_name" : "sourcedelica",
+        "link" : "https://stackoverflow.com/users/158658/sourcedelica"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1495534600,
+      "post_id" : 8769670,
+      "comment_id" : 75282360,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@sourcedelica Why not just create static method?"
+    }, {
+      "owner" : {
+        "account_id" : 1728044,
+        "reputation" : 410,
+        "user_id" : 1582284,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/nVCR2.jpg?s=256",
+        "display_name" : "Igor Donin",
+        "link" : "https://stackoverflow.com/users/1582284/igor-donin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1524504908,
+      "post_id" : 8769670,
+      "comment_id" : 86990014,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "AuthenticationPrincipalArgumentResolver is now deprecated"
+    }, {
+      "owner" : {
+        "account_id" : 104911,
+        "reputation" : 121291,
+        "user_id" : 280244,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/oTmxxFgA.jpg?s=256",
+        "display_name" : "Ralph",
+        "link" : "https://stackoverflow.com/users/280244/ralph"
+      },
+      "reply_to_user" : {
+        "account_id" : 1728044,
+        "reputation" : 410,
+        "user_id" : 1582284,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/nVCR2.jpg?s=256",
+        "display_name" : "Igor Donin",
+        "link" : "https://stackoverflow.com/users/1582284/igor-donin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1524515725,
+      "post_id" : 8769670,
+      "comment_id" : 86995544,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@IgorDonin: Thanks for the hint, I added a Section for Spring &gt;4.0"
+    } ],
+    "owner" : {
+      "account_id" : 104911,
+      "reputation" : 121291,
+      "user_id" : 280244,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://i.sstatic.net/oTmxxFgA.jpg?s=256",
+      "display_name" : "Ralph",
+      "link" : "https://stackoverflow.com/users/280244/ralph"
+    },
+    "is_accepted" : true,
+    "score" : 232,
+    "last_activity_date" : 1524515668,
+    "last_edit_date" : 1524515668,
+    "creation_date" : 1325939037,
+    "answer_id" : 8769670,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><strong>Preamble:</strong> Since Spring-Security 3.2 there is a nice annotation <code>@AuthenticationPrincipal</code> described at the end of this answer. This is the best way to go when you use Spring-Security >= 3.2.</p>\n\n<p>When you:</p>\n\n<ul>\n<li>use an older version of Spring-Security,</li>\n<li>need to load your custom User Object from the Database by some information (like the login or id) stored in the principal or</li>\n<li>want to learn how a <code>HandlerMethodArgumentResolver</code> or <code>WebArgumentResolver</code> can solve this in an elegant way, or just want to an learn the background behind <code>@AuthenticationPrincipal</code> and <code>AuthenticationPrincipalArgumentResolver</code> (because it is based on a <code>HandlerMethodArgumentResolver</code>)</li>\n</ul>\n\n<p>then keep on reading — else just use <code>@AuthenticationPrincipal</code> and thank to Rob Winch (Author of <code>@AuthenticationPrincipal</code>) and <a href=\"http://stackoverflow.com/a/22857426/280244\">Lukas Schmelzeisen</a> (for his answer).</p>\n\n<p><em>(BTW: My answer is a bit older (January 2012), so it was <a href=\"http://stackoverflow.com/a/22857426/280244\">Lukas Schmelzeisen</a> that come up as the first one with the <code>@AuthenticationPrincipal</code> annotation solution base on Spring Security 3.2.)</em></p>\n\n<hr>\n\n<p>Then you can use in your controller</p>\n\n<pre><code>public ModelAndView someRequestHandler(Principal principal) {\n   User activeUser = (User) ((Authentication) principal).getPrincipal();\n   ...\n}\n</code></pre>\n\n<hr>\n\n<p>That is ok if you need it once. But if you need it several times its ugly because it pollutes your controller with infrastructure details, that normally should be hidden by the framework.</p>\n\n<p>So what you may really want is to have a controller like this:</p>\n\n<pre><code>public ModelAndView someRequestHandler(@ActiveUser User activeUser) {\n   ...\n}\n</code></pre>\n\n<p>Therefore you only need to implement a <a href=\"http://static.springsource.org/spring/docs/3.0.x/javadoc-api/\" rel=\"noreferrer\"><code>WebArgumentResolver</code></a>. It has a method</p>\n\n<pre><code>Object resolveArgument(MethodParameter methodParameter,\n                   NativeWebRequest webRequest)\n                   throws Exception\n</code></pre>\n\n<p>That gets the web request (second parameter) and must return the <code>User</code> if its feels responsible for the method argument (the first parameter).</p>\n\n<p><em>Since Spring 3.1 there is a new concept called <a href=\"http://static.springsource.org/spring/docs/3.1.x/javadoc-api/org/springframework/web/method/support/HandlerMethodArgumentResolver.html\" rel=\"noreferrer\"><code>HandlerMethodArgumentResolver</code></a>. If you use Spring 3.1+ then you should use it. (It is described in the next section of this answer))</em></p>\n\n<pre><code>public class CurrentUserWebArgumentResolver implements WebArgumentResolver{\n\n   Object resolveArgument(MethodParameter methodParameter, NativeWebRequest webRequest) {\n        if(methodParameter is for type User &amp;&amp; methodParameter is annotated with @ActiveUser) {\n           Principal principal = webRequest.getUserPrincipal();\n           return (User) ((Authentication) principal).getPrincipal();\n        } else {\n           return WebArgumentResolver.UNRESOLVED;\n        }\n   }\n}\n</code></pre>\n\n<p>You need to define the Custom Annotation -- You can skip it if every instance of User should always be taken from the security context, but is never a command object.</p>\n\n<pre><code>@Target(ElementType.PARAMETER)\n@Retention(RetentionPolicy.RUNTIME)\n@Documented\npublic @interface ActiveUser {}\n</code></pre>\n\n<p>In the configuration you only need to add this:</p>\n\n<pre><code>&lt;bean class=\"org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter\"\n    id=\"applicationConversionService\"&gt;\n    &lt;property name=\"customArgumentResolver\"&gt;\n        &lt;bean class=\"CurrentUserWebArgumentResolver\"/&gt;\n    &lt;/property&gt;\n&lt;/bean&gt;\n</code></pre>\n\n<p>@See: <a href=\"http://karthikg.wordpress.com/2009/11/08/learn-to-customize-spring-mvc-controller-method-arguments/\" rel=\"noreferrer\">Learn to customize Spring MVC @Controller method arguments</a> </p>\n\n<p><em>It should be noted that if you're using Spring 3.1, they recommend HandlerMethodArgumentResolver over WebArgumentResolver. - see comment by Jay</em></p>\n\n<hr>\n\n<h2><strong>The same with <code>HandlerMethodArgumentResolver</code> for Spring 3.1+</strong></h2>\n\n<pre><code>public class CurrentUserHandlerMethodArgumentResolver\n                               implements HandlerMethodArgumentResolver {\n\n     @Override\n     public boolean supportsParameter(MethodParameter methodParameter) {\n          return\n              methodParameter.getParameterAnnotation(ActiveUser.class) != null\n              &amp;&amp; methodParameter.getParameterType().equals(User.class);\n     }\n\n     @Override\n     public Object resolveArgument(MethodParameter methodParameter,\n                         ModelAndViewContainer mavContainer,\n                         NativeWebRequest webRequest,\n                         WebDataBinderFactory binderFactory) throws Exception {\n\n          if (this.supportsParameter(methodParameter)) {\n              Principal principal = webRequest.getUserPrincipal();\n              return (User) ((Authentication) principal).getPrincipal();\n          } else {\n              return WebArgumentResolver.UNRESOLVED;\n          }\n     }\n}\n</code></pre>\n\n<p>In the configuration, you need to add this</p>\n\n<pre><code>&lt;mvc:annotation-driven&gt;\n      &lt;mvc:argument-resolvers&gt;\n           &lt;bean class=\"CurrentUserHandlerMethodArgumentResolver\"/&gt;         \n      &lt;/mvc:argument-resolvers&gt;\n &lt;/mvc:annotation-driven&gt;\n</code></pre>\n\n<p>@See <a href=\"http://blog.42.nl/articles/leveraging-the-spring-mvc-3-1-handlermethodargumentresolver-interface/\" rel=\"noreferrer\">Leveraging the Spring MVC 3.1 HandlerMethodArgumentResolver interface</a></p>\n\n<hr>\n\n<h2><strong>Spring-Security 3.2 Solution</strong></h2>\n\n<p>Spring Security 3.2 (do not confuse with Spring 3.2) has own build in solution: <a href=\"http://docs.spring.io/spring-security/site/docs/3.2.5.RELEASE/apidocs/org/springframework/security/web/bind/annotation/AuthenticationPrincipal.html\" rel=\"noreferrer\"><code>@AuthenticationPrincipal</code></a> (<code>org.springframework.security.web.bind.annotation.AuthenticationPrincipal</code>) . This is nicely described in <a href=\"http://stackoverflow.com/a/22857426/280244\">Lukas Schmelzeisen`s answer</a></p>\n\n<p>It is just writing</p>\n\n<pre><code>ModelAndView someRequestHandler(@AuthenticationPrincipal User activeUser) {\n    ...\n }\n</code></pre>\n\n<p>To get this working you need to register the <code>AuthenticationPrincipalArgumentResolver</code> (<code>org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver</code>) : either by \"activating\"  <code>@EnableWebMvcSecurity</code> or by registering this bean within <code>mvc:argument-resolvers</code> - the same way I described it with may Spring 3.1 solution above.</p>\n\n<p>@See <a href=\"http://docs.spring.io/spring-security/site/docs/3.2.3.RELEASE/reference/htmlsingle/#mvc-authentication-principal\" rel=\"noreferrer\">Spring Security 3.2 Reference, Chapter 11.2. @AuthenticationPrincipal</a></p>\n\n<hr>\n\n<h2><strong>Spring-Security 4.0 Solution</strong></h2>\n\n<p>It works like the Spring 3.2 solution, but in Spring 4.0 the <code>@AuthenticationPrincipal</code> and <code>AuthenticationPrincipalArgumentResolver</code> was \"moved\" to an other package:</p>\n\n<ul>\n<li><a href=\"https://docs.spring.io/spring-security/site/docs/5.0.4.RELEASE/api/org/springframework/security/core/annotation/AuthenticationPrincipal.html\" rel=\"noreferrer\"><code>org.springframework.security.core.annotation.AuthenticationPrincipal</code></a></li>\n<li><a href=\"https://docs.spring.io/spring-security/site/docs/5.0.4.RELEASE/api/org/springframework/security/web/method/annotation/AuthenticationPrincipalArgumentResolver.html\" rel=\"noreferrer\"><code>org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver</code></a></li>\n</ul>\n\n<p>(But the old classes in its old packges still exists, so do not mix them!)</p>\n\n<p>It is just writing</p>\n\n<pre><code>import org.springframework.security.core.annotation.AuthenticationPrincipal;\nModelAndView someRequestHandler(@AuthenticationPrincipal User activeUser) {\n    ...\n}\n</code></pre>\n\n<p>To get this working you need to register the (<code>org.springframework.security.web.method.annotation.</code>) <code>AuthenticationPrincipalArgumentResolver</code> : either by \"activating\"  <code>@EnableWebMvcSecurity</code> or by registering this bean within <code>mvc:argument-resolvers</code> - the same way I described it with may Spring 3.1 solution above.</p>\n\n<pre><code>&lt;mvc:annotation-driven&gt;\n    &lt;mvc:argument-resolvers&gt;\n        &lt;bean class=\"org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver\" /&gt;\n    &lt;/mvc:argument-resolvers&gt;\n&lt;/mvc:annotation-driven&gt;\n</code></pre>\n\n<p>@See <a href=\"https://docs.spring.io/spring-security/site/docs/5.0.4.RELEASE/reference/htmlsingle/#mvc-authentication-principal\" rel=\"noreferrer\">Spring Security 5.0 Reference, Chapter 39.3 @AuthenticationPrincipal</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 174425,
+        "reputation" : 78,
+        "user_id" : 403780,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/652e4672d89bd9cf3281d39ad30ee9a6?s=256&d=identicon&r=PG",
+        "display_name" : "Eric",
+        "link" : "https://stackoverflow.com/users/403780/eric"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1389443090,
+      "post_id" : 8790416,
+      "comment_id" : 31671941,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks @atrain, that&#39;s useful and elegant. Also, I had to add the <code>&lt;mvc:interceptors&gt;</code> in my application configuration file."
+    }, {
+      "owner" : {
+        "account_id" : 263115,
+        "reputation" : 18300,
+        "user_id" : 548473,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/5oC31.jpg?s=256",
+        "display_name" : "Grigory Kislin",
+        "link" : "https://stackoverflow.com/users/548473/grigory-kislin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1496679953,
+      "post_id" : 8790416,
+      "comment_id" : 75747737,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "It is better get authorized user in template via <code>spring-security-taglibs</code>: <a href=\"https://stackoverflow.com/a/44373331/548473\">stackoverflow.com/a/44373331/548473</a>"
+    } ],
+    "owner" : {
+      "account_id" : 268547,
+      "reputation" : 9295,
+      "user_id" : 557363,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d6031ea4024bad94d4ee80c2731bb6a8?s=256&d=identicon&r=PG",
+      "display_name" : "atrain",
+      "link" : "https://stackoverflow.com/users/557363/atrain"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1326121725,
+    "last_edit_date" : 1326121725,
+    "creation_date" : 1326121363,
+    "answer_id" : 8790416,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Implement the <code>HandlerInterceptor</code> interface, and then inject the <code>UserDetails</code> into each request that has a Model, as follows:</p>\n\n<pre><code>@Component \npublic class UserInterceptor implements HandlerInterceptor {\n    ....other methods not shown....\n    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {\n        if(modelAndView != null){\n            modelAndView.addObject(\"user\", (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal());\n        }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 374931,
+      "reputation" : 382,
+      "user_id" : 725438,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6b5ccda496bd42c3942b1277647d78d8?s=256&d=identicon&r=PG",
+      "display_name" : "Comrade",
+      "link" : "https://stackoverflow.com/users/725438/comrade"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1392817944,
+    "creation_date" : 1392817944,
+    "answer_id" : 21882539,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>@Controller\npublic abstract class AbstractController {\n    @ModelAttribute(\"loggedUser\")\n    public User getLoggedUser() {\n        return (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1149899,
+        "reputation" : 4683,
+        "user_id" : 1131829,
+        "user_type" : "registered",
+        "accept_rate" : 60,
+        "profile_image" : "https://www.gravatar.com/avatar/f0128353dfcce0a19c122defa0d1329f?s=256&d=identicon&r=PG",
+        "display_name" : "sodik",
+        "link" : "https://stackoverflow.com/users/1131829/sodik"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1406713102,
+      "post_id" : 22857426,
+      "comment_id" : 38933027,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "for those who don&#39;t like to read provided links, this has to be enabled either by <code>@EnableWebMvcSecurity</code> or in XML: <code>&lt;mvc:annotation-driven&gt;   &lt;mvc:argument-resolvers&gt;     &lt;bean class=&quot;org.springframework.security.web.bind.support.Authent&zwnj;&#8203;icationPrincipalArgu&zwnj;&#8203;mentResolver&quot; &#47;&gt;   &lt;&#47;mvc:argument-resolvers&gt; &lt;&#47;mvc:annotation-driven&gt;</code>"
+    }, {
+      "owner" : {
+        "account_id" : 2142017,
+        "reputation" : 2373,
+        "user_id" : 1900445,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/8cbf55b468bd867a68830e5e396d7782?s=256&d=identicon&r=PG",
+        "display_name" : "Sajad",
+        "link" : "https://stackoverflow.com/users/1900445/sajad"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1454150458,
+      "post_id" : 22857426,
+      "comment_id" : 57922417,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "How to check if the <code>customUser</code> is null or not?"
+    }, {
+      "owner" : {
+        "account_id" : 410510,
+        "reputation" : 2674,
+        "user_id" : 782392,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/3b168d32bf93a073301b3d9b4dc3c313?s=256&d=identicon&r=PG",
+        "display_name" : "T3rm1",
+        "link" : "https://stackoverflow.com/users/782392/t3rm1"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1473080116,
+      "post_id" : 22857426,
+      "comment_id" : 65993635,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "<code>if (customUser != null) { ... }</code>"
+    }, {
+      "owner" : {
+        "account_id" : 15454059,
+        "reputation" : 228,
+        "user_id" : 11148688,
+        "user_type" : "registered",
+        "profile_image" : "https://lh6.googleusercontent.com/-VNRbAWwJw8g/AAAAAAAAAAI/AAAAAAAALWA/oOyfehQZacc/s256-rj/photo.jpg",
+        "display_name" : "Avinash Gupta",
+        "link" : "https://stackoverflow.com/users/11148688/avinash-gupta"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1625748998,
+      "post_id" : 22857426,
+      "comment_id" : 120713503,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "How to mock this annotated parameter using mockito?"
+    } ],
+    "owner" : {
+      "account_id" : 73406,
+      "reputation" : 3182,
+      "user_id" : 211404,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://i.sstatic.net/67SNQ.jpg?s=256",
+      "display_name" : "Lukas Schmelzeisen",
+      "link" : "https://stackoverflow.com/users/211404/lukas-schmelzeisen"
+    },
+    "is_accepted" : false,
+    "score" : 68,
+    "last_activity_date" : 1520025241,
+    "last_edit_date" : 1520025241,
+    "creation_date" : 1396600085,
+    "answer_id" : 22857426,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>While <a href=\"https://stackoverflow.com/a/8769670/211404\">Ralphs Answer</a> provides an elegant solution, with Spring Security 3.2 you no longer need to implement your own <code>ArgumentResolver</code>.</p>\n\n<p>If you have a <code>UserDetails</code> implementation <code>CustomUser</code>, you can just do this:</p>\n\n<pre><code>@RequestMapping(\"/messages/inbox\")\npublic ModelAndView findMessagesForUser(@AuthenticationPrincipal CustomUser customUser) {\n\n    // .. find messages for this User and return them...\n}\n</code></pre>\n\n<p>See <a href=\"http://docs.spring.io/spring-security/site/docs/3.2.3.RELEASE/reference/htmlsingle/#mvc-authentication-principal\" rel=\"noreferrer\">Spring Security Documentation: @AuthenticationPrincipal</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2922228,
+        "reputation" : 64844,
+        "user_id" : 2504224,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/ACuxG.png?s=256",
+        "display_name" : "geoand",
+        "link" : "https://stackoverflow.com/users/2504224/geoand"
+      },
+      "reply_to_user" : {
+        "account_id" : 4148701,
+        "reputation" : 16052,
+        "user_id" : 3924118,
+        "user_type" : "registered",
+        "accept_rate" : 35,
+        "profile_image" : "https://www.gravatar.com/avatar/e6fce047cba96a601a9dac66df4cd2e8?s=256&d=identicon&r=PG",
+        "display_name" : "nbro",
+        "link" : "https://stackoverflow.com/users/3924118/nbro"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1464360978,
+      "post_id" : 23752659,
+      "comment_id" : 62469566,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@nbro When I added the version specific solution, none of the other solutions had been updated to take into account this solution"
+    }, {
+      "owner" : {
+        "account_id" : 1728044,
+        "reputation" : 410,
+        "user_id" : 1582284,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/nVCR2.jpg?s=256",
+        "display_name" : "Igor Donin",
+        "link" : "https://stackoverflow.com/users/1582284/igor-donin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1524504954,
+      "post_id" : 23752659,
+      "comment_id" : 86990039,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "AuthenticationPrincipalArgumentResolver is now deprecated"
+    } ],
+    "owner" : {
+      "account_id" : 2922228,
+      "reputation" : 64844,
+      "user_id" : 2504224,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ACuxG.png?s=256",
+      "display_name" : "geoand",
+      "link" : "https://stackoverflow.com/users/2504224/geoand"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1435826143,
+    "last_edit_date" : 1435826143,
+    "creation_date" : 1400568153,
+    "answer_id" : 23752659,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Starting with Spring Security version 3.2, the custom functionality that has been implemented by some of the older answers, exists out of the box in the form of the <code>@AuthenticationPrincipal</code> annotation that is backed by <code>AuthenticationPrincipalArgumentResolver</code>.</p>\n\n<p>An simple example of it's use is:</p>\n\n<pre><code>@Controller\npublic class MyController {\n   @RequestMapping(\"/user/current/show\")\n   public String show(@AuthenticationPrincipal CustomUser customUser) {\n        // do something with CustomUser\n       return \"view\";\n   }\n}\n</code></pre>\n\n<p>CustomUser needs to be assignable from <code>authentication.getPrincipal()</code></p>\n\n<p>Here are the corresponding Javadocs of\n<a href=\"http://docs.spring.io/spring-security/site/docs/3.2.0.RELEASE/apidocs/org/springframework/security/web/bind/annotation/AuthenticationPrincipal.html\" rel=\"noreferrer\">AuthenticationPrincipal</a> and <a href=\"http://docs.spring.io/spring-security/site/docs/3.2.0.RELEASE/apidocs/org/springframework/security/web/bind/support/AuthenticationPrincipalArgumentResolver.html\" rel=\"noreferrer\">AuthenticationPrincipalArgumentResolver</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 263115,
+      "reputation" : 18300,
+      "user_id" : 548473,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/5oC31.jpg?s=256",
+      "display_name" : "Grigory Kislin",
+      "link" : "https://stackoverflow.com/users/548473/grigory-kislin"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1496679760,
+    "creation_date" : 1496679760,
+    "answer_id" : 44373331,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>And if you need authorized user in templates (e.g. JSP) use</p>\n\n<pre><code>&lt;%@ taglib prefix=\"sec\" uri=\"http://www.springframework.org/security/tags\" %&gt;\n&lt;sec:authentication property=\"principal.yourCustomField\"/&gt;\n</code></pre>\n\n<p>together with </p>\n\n<pre><code>    &lt;dependency&gt;\n        &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;\n        &lt;artifactId&gt;spring-security-taglibs&lt;/artifactId&gt;\n        &lt;version&gt;${spring-security.version}&lt;/version&gt;\n    &lt;/dependency&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9607087,
+      "reputation" : 1,
+      "user_id" : 7132785,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-7XvWRsxdjqc/AAAAAAAAAAI/AAAAAAAAAOE/DKcwOBuAyBU/s256-rj/photo.jpg",
+      "display_name" : "Mirza Shujathullah",
+      "link" : "https://stackoverflow.com/users/7132785/mirza-shujathullah"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1569601133,
+    "last_edit_date" : 1569601133,
+    "creation_date" : 1569530918,
+    "answer_id" : 58124575,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can try this:\nBy Using Authentication Object from Spring we can get User details from it in the controller method . Below is the example , by passing Authentication object in the controller method along with argument.Once user is authenticated the details are populated in the Authentication Object. </p>\n\n<pre><code>@GetMapping(value = \"/mappingEndPoint\") &lt;ReturnType&gt; methodName(Authentication auth) {\n   String userName = auth.getName(); \n   return &lt;ReturnType&gt;;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 23136040,
+      "reputation" : 69,
+      "user_id" : 17240268,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJzUlFCLeaF40sYmOU1fCEHkwHdColc1_lhuksYU=k-s256",
+      "display_name" : "ujjwal dixit",
+      "link" : "https://stackoverflow.com/users/17240268/ujjwal-dixit"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1635223707,
+    "last_edit_date" : 1635223707,
+    "creation_date" : 1635219514,
+    "answer_id" : 69717204,
+    "question_id" : 8764545,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To get the Active Users Details you can use <code>@AuthenticationPrincipal</code> in your controller like this:-</p>\n<pre><code>public String function(@AuthenticationPrincipal UserDetailsImpl user,\n                    Model model){   \n    model.addAttribute(&quot;username&quot;,user.getName()); //this user object \ncontains user details \n    return &quot;&quot;;\n}\n</code></pre>\n<p>UserDetailsImpl.java</p>\n<pre><code>import com.zoom.model.User;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.security.core.GrantedAuthority;\nimport org.springframework.security.core.authority.SimpleGrantedAuthority;\nimport org.springframework.security.core.userdetails.UserDetails;\n\nimport java.util.Collection;\nimport java.util.List;\npublic class UserDetailsImpl implements UserDetails {\n\n@Autowired\nprivate User user;\n\npublic UserDetailsImpl(User user) {\n    this.user = user;\n}\n\n@Override\npublic Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {\n    SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(&quot;ADMIN&quot;);\n    return List.of(simpleGrantedAuthority);\n}\n\n@Override\npublic String getPassword() {\n    return user.getPassword();\n}\n\n@Override\npublic String getUsername() {\n    return user.getEmail();\n}\n\n@Override\npublic boolean isAccountNonExpired() {\n    return true;\n}\n\n@Override\npublic boolean isAccountNonLocked() {\n    return true;\n}\n\n@Override\npublic boolean isCredentialsNonExpired() {\n    return true;\n}\n\n@Override\npublic boolean isEnabled() {\n    return true;\n}\n\npublic String getRole(){\n    return user.getRole();\n}\n\npublic String getName(){\n    return user.getUsername();\n}\n\npublic User getUser(){\n    return user;\n}\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 452129,
+    "reputation" : 4629,
+    "user_id" : 848393,
+    "user_type" : "registered",
+    "accept_rate" : 88,
+    "profile_image" : "https://www.gravatar.com/avatar/8b9f333851ed894ebdf458200ab142e8?s=256&d=identicon&r=PG",
+    "display_name" : "The Awnry Bear",
+    "link" : "https://stackoverflow.com/users/848393/the-awnry-bear"
+  },
+  "is_answered" : true,
+  "view_count" : 135655,
+  "accepted_answer_id" : 8769670,
+  "answer_count" : 9,
+  "score" : 174,
+  "last_activity_date" : 1635223707,
+  "creation_date" : 1325884064,
+  "last_edit_date" : 1570082305,
+  "question_id" : 8764545,
+  "link" : "https://stackoverflow.com/questions/8764545/how-to-get-active-users-userdetails",
+  "title" : "How to get active user&#39;s UserDetails",
+  "body" : "<p>In my controllers, when I need the active (logged in) user, I am doing the following to get my <code>UserDetails</code> implementation:</p>\n\n<pre><code>User activeUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();\nlog.debug(activeUser.getSomeCustomField());\n</code></pre>\n\n<p>It works fine, but I would think Spring could make life easier in a case like this. Is there a way to have the <code>UserDetails</code> autowired into either the controller or the method?</p>\n\n<p>For example, something like:</p>\n\n<pre><code>public ModelAndView someRequestHandler(Principal principal) { ... }\n</code></pre>\n\n<p>But instead of getting the <code>UsernamePasswordAuthenticationToken</code>, I get a <code>UserDetails</code> instead?</p>\n\n<p>I'm looking for an elegant solution. Any ideas?</p>\n"
+}

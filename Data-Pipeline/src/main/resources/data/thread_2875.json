@@ -1,0 +1,250 @@
+{
+  "tags" : [ "java", "loops", "primes" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2345668,
+      "reputation" : 13449,
+      "user_id" : 2055998,
+      "user_type" : "registered",
+      "accept_rate" : 68,
+      "profile_image" : "https://i.sstatic.net/2Vx3A.jpg?s=256",
+      "display_name" : "PM 77-1",
+      "link" : "https://stackoverflow.com/users/2055998/pm-77-1"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1612840947,
+    "post_id" : 66112449,
+    "comment_id" : 116886250,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "It looks like you need <code>break;</code> instead of <code>continue;</code>."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 17551404,
+      "reputation" : 309,
+      "user_id" : 12731743,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-bvY4xUnIZ1E/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rc-oz_ExKX3fLpP0mktneBniVx_mA/s256-rj/photo.jpg",
+      "display_name" : "Major_Ash",
+      "link" : "https://stackoverflow.com/users/12731743/major-ash"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1612841030,
+    "creation_date" : 1612841030,
+    "answer_id" : 66112544,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You need to add a flag to check the divisibility of the value <code>i</code>. It will remain true only if <code>i</code> is a prime number. Later if the flag remains true, you can return <code>i</code> else you need to continue iterating</p>\n<p>What's happening in your code is that when i=15, and the inner loop starts iterating starting from 2, 15%2!=0 so it skips the if condition and returns 15</p>\n<pre><code>for (int i = number-1; i &gt; 1; i--) {\n        if (number % i == 0) {\n            bool flag = true;\n            for (int j = 2; j &lt; i; j++) {\n                if (i % j == 0) {\n                    flag = false;\n                    break;\n                }\n            }\n            if(flag)\n                return i;\n        }\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 17619742,
+      "reputation" : 820,
+      "user_id" : 12785994,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/92c6aa688f90481426f4ada842beff40?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "javadev",
+      "link" : "https://stackoverflow.com/users/12785994/javadev"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1612841407,
+    "creation_date" : 1612841407,
+    "answer_id" : 66112582,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In short: The &quot;prime&quot; validation is wrong.</p>\n<p>In your code, in the inner loop, you expect all numbers will be factors of &quot;i&quot;, which is of course wrong.</p>\n<p>Your code will retrieve the largest factor of your input, which there is a number which is not a factor of it (i % j != 0), therefore the largest factor of it (regardless of  primality).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 20511313,
+      "reputation" : 2360,
+      "user_id" : 15102459,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ccQ9P.png?s=256",
+      "display_name" : "Thiyanesh",
+      "link" : "https://stackoverflow.com/users/15102459/thiyanesh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1612842570,
+    "creation_date" : 1612842570,
+    "answer_id" : 66112714,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<ol>\n<li>Find the prime numbers before the input number</li>\n<li>Sort the prime numbers in reverse order</li>\n<li>Iterate over the prime numbers and check whether its an exact multiple</li>\n<li>If its an exact multiple return the prime number</li>\n</ol>\n<pre class=\"lang-java prettyprint-override\"><code>import java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.List;\nimport java.util.Optional;\n\nclass PrimeFactorTest {\n\n    public static void main(String[] args) throws Exception {\n        int[] inputs = new int[]{-100, -25, -2, -1, 0, 1, 2, 3, 4, 5, 100, 1223, 2000, 874032849,\n            Integer.MAX_VALUE, Integer.MAX_VALUE};\n\n        for (final int input : inputs) {\n            Optional primeFactor = largestPrimeFactor(input);\n            if (primeFactor.isPresent()) {\n                System.out.println(&quot;Largest Prime Factor of &quot; + input + &quot; is &quot; + primeFactor.get());\n            } else {\n                System.out.println(&quot;No Prime Factor for &quot; + input);\n            }\n        }\n    }\n\n    public static Optional&lt;Integer&gt; largestPrimeFactor(final int input) {\n        if (input &lt; 0) {\n            return largestPrimeFactor(Math.abs(input));\n        }\n        final int sqrt = (int) Math.sqrt(input);\n        List&lt;Integer&gt; primes = getPrimesInDescendingOrder(sqrt);\n        if (primes.size() == 0) {\n            return Optional.empty();\n        }\n        for (final int prime : primes) {\n            if (input % prime == 0) {\n                return Optional.of(prime);\n            }\n        }\n        return Optional.of(input);\n    }\n\n    private static List&lt;Integer&gt; getPrimesInDescendingOrder(final int input) {\n        if (input &lt; 2) {\n            return new ArrayList&lt;&gt;();\n        }\n        List&lt;Integer&gt; primes = new ArrayList&lt;&gt;();\n        primes.add(2);\n        for (int current = 3; current &lt;= input; current++) {\n            boolean isPrime = true;\n            for (int prime : primes) {\n                if (current % prime == 0) {\n                    isPrime = false;\n                }\n            }\n            if (isPrime) {\n                primes.add(current);\n            }\n        }\n        primes.sort(Collections.reverseOrder());\n        return Collections.unmodifiableList(primes);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8709503,
+      "reputation" : 454,
+      "user_id" : 6516178,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/434faf42ec8e1be9d295b87767af17d6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Chris Foley",
+      "link" : "https://stackoverflow.com/users/6516178/chris-foley"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1612842908,
+    "creation_date" : 1612842908,
+    "answer_id" : 66112750,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I came up with this. If you start at 2 and work up the way, you are eliminating all the non-primes before you hit them, as they will no-longer be factors of the remainder.</p>\n<pre><code>import static org.junit.Assert.assertEquals;\n\nimport org.junit.Test;\n\npublic class LargestPrimeFactor {\n    @Test\n    public void testGetLargestPrime() {\n        assertEquals(2, getLargestPrime(2));\n        assertEquals(3, getLargestPrime(3));\n        assertEquals(2, getLargestPrime(4));\n        assertEquals(5, getLargestPrime(5));\n        assertEquals(3, getLargestPrime(6));\n        assertEquals(7, getLargestPrime(7));\n        assertEquals(2, getLargestPrime(8));\n        assertEquals(3, getLargestPrime(9));\n        \n        assertEquals(23, getLargestPrime(23*23*7*2*5*11*11));\n    }\n\n    int getLargestPrime(int number) {\n        for (int i = 2; number &gt; i; i++) {\n            while (number &gt; i &amp;&amp; number % i == 0) {\n                number = number / i;\n            }\n        }\n        return number;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2309641,
+      "reputation" : 5060,
+      "user_id" : 2028066,
+      "user_type" : "registered",
+      "accept_rate" : 52,
+      "profile_image" : "https://i.sstatic.net/U9hAY.jpg?s=256",
+      "display_name" : "MiguelMunoz",
+      "link" : "https://stackoverflow.com/users/2028066/miguelmunoz"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1612844478,
+    "creation_date" : 1612844478,
+    "answer_id" : 66112941,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It wasn't working fine until it reached 45. It failed for 4, 8, 12, 16, 18, 20, 24, 27, 28, 30, 32, 36, 40, 42, and 44. It returned -1 for every prime number, which is correct, but it also returned -1 for 4. It usually finds the largest factor, regardless of whether it's prime.</p>\n<p>Your outer loop finds factors, starting with the largest. Your inner loop doesn't make sense. It needs to have a test for primality. It looks like you meant it to quit when it finds a factor of i, but it doesn't do that. Instead, it quits when it finds a number that isn't a factor. The continue statement tells it to go to the next value of j. You probably meant for it to go on to the next value of i. To do that, you could use break. That would bail out of the inner loop. Or you could label the outer loop and use the label in the continue statement, which is probably what you had in mind:</p>\n<pre><code>candidates:\nfor (int i = number - 1; i &gt; 1; i--) {\n  if (number % i == 0) {\n    for (int j = 2; j &lt; i; j++) {\n      if (i % j == 0) {\n        continue candidates; // This continues the outer loop\n      }\n      return i;\n    }\n  }\n}\nreturn -1;\n</code></pre>\n<p>That gets you closer, but it still fails for powers of two, and for cases where it finds p^n where p is a prime number.</p>\n<p>Also, there's no point in starting the outer loop with number-1. You can skip all the numbers higher than number/2. None of them will produce a modulo of zero.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1689973,
+      "reputation" : 40196,
+      "user_id" : 1552534,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uAEcW.jpg?s=256",
+      "display_name" : "WJS",
+      "link" : "https://stackoverflow.com/users/1552534/wjs"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1612844938,
+    "creation_date" : 1612844938,
+    "answer_id" : 66112995,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I would recommend doing something like this.  First, consider <code>2*2*3*47 = 564</code>. The square root of <code>564 is &lt;= 24</code>.  So all you need to do is divide by numbers up to <code>24</code>.  First, eliminate <code>2</code>. That leaves <code>3*47</code>.  Next is <code>3</code> which leaves <code>47</code>. Since no other number from <code>4 thru 24</code> divides <code>47</code>, <code>47</code> must be a prime.  If it were composite, it's prime factors would have been factored out by one of the earlier divisors.</p>\n<p>This can be further optimized by factoring out <code>2</code> in a separate loop. Then starting with <code>3</code>, start dividing by only the odd numbers (<code>2</code> already eliminated the even factors if there were any).</p>\n<p>If the situation arises when the number is reduced to 1, then the last divisor that did the reduction must be the largest prime.</p>\n<pre><code>int[] testData = { 2, 10, 2 * 2 * 5, 2 * 3 * 47 * 5,\n        2 * 2 * 2 * 3 * 3 * 3 * 17 * 17 * 17 };\nfor (int v : testData) {\n    System.out.printf(&quot;%8s - largest prime factor = %s%n&quot;, v,\n            getLargestPrime(v));\n}\n</code></pre>\n<p>Prints</p>\n<pre><code>       2 - largest prime factor = 2\n      10 - largest prime factor = 5\n      20 - largest prime factor = 5\n    1410 - largest prime factor = 47\n 1061208 - largest prime factor = 17\n</code></pre>\n<p>The method</p>\n<pre><code>public static int getLargestPrime(int number) {\n    // no primes less than 2 exist.\n    if (number &lt; 2) {\n        return -1;\n    }\n    while (number % 2 == 0) {\n        number /= 2;\n    }\n    \n    int lastDivisor = 2;\n    for (int d = 3; d &lt;= Math.sqrt(number); d += 2) {\n        lastDivisor = d;\n        while (number % d == 0) {\n            number /= d;\n        }\n    }\n    \n    return number == 1 ? lastDivisor : number;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15947332,
+      "reputation" : 164,
+      "user_id" : 11507522,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-9u7uuRV3qrk/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rduH_5BEuEypUZHbcKLIXeI6h0n8w/mo/s256-rj/photo.jpg",
+      "display_name" : "Chrisphine",
+      "link" : "https://stackoverflow.com/users/11507522/chrisphine"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1662998307,
+    "last_edit_date" : 1662998307,
+    "creation_date" : 1662997868,
+    "answer_id" : 73691952,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This code will help you find the largest prime number.  Most online servers won't allow it to run. Just change the value of n.</p>\n<pre><code>public class PrimeExample{    \n         public static void main(String args[]){          \n          for(int n = 100;n&lt;=1000;n++){\n           int i,m=0,flag=0; \n              m=n/2;      \n              if(n==0||n==1){  \n               System.out.println(n+&quot; is not prime number&quot;);      \n              }else{  \n               for(i=2;i&lt;=m;i++){      \n                if(n%i==0){      \n                 System.out.println(n+&quot; is not prime number&quot;);      \n                 flag=1;      \n                 break;      \n                }      \n               }      \n               if(flag==0)  { System.out.println(n+&quot; is prime number&quot;); }  \n            }//end of else  \n          }\n        }    \n    }  \n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : -1,
+        "reputation" : 1,
+        "user_id" : -1,
+        "user_type" : "moderator",
+        "profile_image" : "https://www.gravatar.com/avatar/a007be5a61f6aa8f3e85ae2fc18dd66e?s=256&d=identicon&r=PG",
+        "display_name" : "Community",
+        "link" : "https://stackoverflow.com/users/-1/community"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1763669307,
+      "post_id" : 79825814,
+      "comment_id" : 140865078,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "As it’s currently written, your answer is unclear. Please <a href=\"https://stackoverflow.com/posts/79825814/edit\">edit</a> to add additional details that will help others understand how this addresses the question asked. You can find more information on how to write good answers <a href=\"/help/how-to-answer\">in the help center</a>."
+    }, {
+      "owner" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1763710652,
+      "post_id" : 79825814,
+      "comment_id" : 140865700,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<a href=\"https://stackoverflow.com\">Stack Overflow</a> is <b>not</b> a site to provide code, it is intended to be a collection of <b>questions</b> and respective <b>answers</b> -- your answer is just providing code and not answering the question (&quot;<i>I am struggling to find the bug</i>&quot;) -- btw: <a href=\"https://stackoverflow.com/users/-1/community\">Community</a> is (marked as) a <code>Bot</code>"
+    }, {
+      "owner" : {
+        "account_id" : 39153689,
+        "reputation" : 1,
+        "user_id" : 29135150,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/JpUzcsB2.jpg?s=256",
+        "display_name" : "Nurmuxammad",
+        "link" : "https://stackoverflow.com/users/29135150/nurmuxammad"
+      },
+      "reply_to_user" : {
+        "account_id" : 31180,
+        "reputation" : 29752,
+        "user_id" : 85421,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/kKvXH.gif?s=256",
+        "display_name" : "user85421",
+        "link" : "https://stackoverflow.com/users/85421/user85421"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1763719124,
+      "post_id" : 79825814,
+      "comment_id" : 140865927,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@user85421 Aha thank you it is my first time at Stack Over flow"
+    } ],
+    "owner" : {
+      "account_id" : 39153689,
+      "reputation" : 1,
+      "user_id" : 29135150,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/JpUzcsB2.jpg?s=256",
+      "display_name" : "Nurmuxammad",
+      "link" : "https://stackoverflow.com/users/29135150/nurmuxammad"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1763705475,
+    "last_edit_date" : 1763705475,
+    "creation_date" : 1763661349,
+    "answer_id" : 79825814,
+    "question_id" : 66112449,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Hi there this is my code take it and learn it</p>\n<pre><code>public class Main {\n\n    public static void main(String[] args) {\n\n        getLargestPrime(1);\n    }\n\n    public static int getLargestPrime(int number){\n\n        if (number &lt;= 1){\n            return -1;\n        }\n\n// Here first I am finding the factor numbers  of given number\n\n        int biggest = 0;\n        for (int i = 2; i &lt;= number; i ++){\n            if (number % i == 0){\n\n// Here I am finding Prime number through factors using sqrt of 7 and deviding it to 2 if answer == 0; &quot;false&quot; which means skip this part otherwise it is prime number!\n\n                int squareR = (int) Math.sqrt(i);\n                boolean isPrime = true;\n                for (int j = 2; j &lt;= squareR; j++){\n                    if (i % j == 0){\n                        isPrime = false;\n                        break;\n                    }\n                }\n                if (isPrime){\n                    biggest = i;\n                }\n            }\n        }\n        System.out.println(biggest);\n        return biggest;\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 19953689,
+    "reputation" : 43,
+    "user_id" : 14622768,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/ee149dd7b7d4a9bacb507a6e5486a26e?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Sk_Hssn",
+    "link" : "https://stackoverflow.com/users/14622768/sk-hssn"
+  },
+  "is_answered" : false,
+  "view_count" : 4706,
+  "answer_count" : 8,
+  "score" : 0,
+  "last_activity_date" : 1763705475,
+  "creation_date" : 1612840233,
+  "question_id" : 66112449,
+  "link" : "https://stackoverflow.com/questions/66112449/find-the-largest-prime-factor-of-a-given-number",
+  "title" : "Find the largest prime factor of a given number",
+  "body" : "<p>I am writing this method which should return the largest prime factor of a given number. It was working fine till 45 was entered and the output was 15, even though the output should be 5. I am struggling to find the bug. Please help.</p>\n<pre><code>public static int getLargestPrime(int number) {\n\n        if (number &lt; 0) {\n            return -1;\n        }\n\n        for (int i = number-1; i &gt; 1; i--) {\n            if (number % i == 0) {\n                for (int j = 2; j &lt; i; j++) {\n                    if (i % j == 0) {\n                        continue;\n                    }\n                    return i;\n                }\n            }\n        }\n        return -1;\n\n    }\n</code></pre>\n"
+}

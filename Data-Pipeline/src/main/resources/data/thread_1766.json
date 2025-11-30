@@ -1,0 +1,325 @@
+{
+  "tags" : [ "java", "sql", "postgresql", "jdbc" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 36002,
+        "reputation" : 30462,
+        "user_id" : 102388,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/XmP7y.jpg?s=256",
+        "display_name" : "Kuberchaun",
+        "link" : "https://stackoverflow.com/users/102388/kuberchaun"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1272890738,
+      "post_id" : 2757576,
+      "comment_id" : 2789554,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "And if you will be having more connections allowed adjust memory parameters as well to align with increased connections."
+    } ],
+    "owner" : {
+      "account_id" : 130979,
+      "reputation" : 81772,
+      "user_id" : 330644,
+      "user_type" : "registered",
+      "accept_rate" : 99,
+      "profile_image" : "https://www.gravatar.com/avatar/5d43c34ee0bce0c2ecff34e6cc134a7c?s=256&d=identicon&r=PG",
+      "display_name" : "Delan Azabani",
+      "link" : "https://stackoverflow.com/users/330644/delan-azabani"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1272884819,
+    "creation_date" : 1272884819,
+    "answer_id" : 2757576,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The offending lines are the following:</p>\n\n<pre><code>MaxConnections=90\nInitialConnections=80\n</code></pre>\n\n<p>You can increase the values to allow more connections.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 103559,
+      "reputation" : 76444,
+      "user_id" : 277304,
+      "user_type" : "registered",
+      "accept_rate" : 66,
+      "profile_image" : "https://www.gravatar.com/avatar/4c90624b2aa9623d5ba30db0e34b2000?s=256&d=identicon&r=PG",
+      "display_name" : "leonbloy",
+      "link" : "https://stackoverflow.com/users/277304/leonbloy"
+    },
+    "is_accepted" : true,
+    "score" : 66,
+    "last_activity_date" : 1272894055,
+    "creation_date" : 1272894055,
+    "answer_id" : 2758432,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>We don't know what <em>server.properties</em> file is that, we neither know what <em>SimocoPoolSize</em> means (do you?)</p>\n\n<p>Let's guess you are using some custom pool of database connections. Then, I guess the problem is that your pool is configured to open 100 or 120 connections, but you Postgresql server is configured to accept <code>MaxConnections=90</code> . These seem conflictive settings. Try increasing <code>MaxConnections=120</code>.</p>\n\n<p>But you should first understand your db layer infrastructure, know what pool are you using, if you really need so many open connections in the pool. And, specially, if you are gracefully returning the opened connections to the pool</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 900051,
+        "reputation" : 1541,
+        "user_id" : 936416,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/aa0871481cbbdc804c3aa9fc29acf111?s=256&d=identicon&r=PG",
+        "display_name" : "tine2k",
+        "link" : "https://stackoverflow.com/users/936416/tine2k"
+      },
+      "edited" : false,
+      "score" : 30,
+      "creation_date" : 1541145728,
+      "post_id" : 4896284,
+      "comment_id" : 93123871,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Always close connections in the finally block! Otherwise the connection stays open if an error occurs."
+    } ],
+    "owner" : {
+      "account_id" : 706738,
+      "reputation" : 103,
+      "user_id" : 602890,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/f5d704a15b8b31e635ca15515a8e5641?s=256&d=identicon&r=PG",
+      "display_name" : "JK Tomar",
+      "link" : "https://stackoverflow.com/users/602890/jk-tomar"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1365036280,
+    "last_edit_date" : 1365036280,
+    "creation_date" : 1296810864,
+    "answer_id" : 4896284,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>No need to increase the MaxConnections &amp; InitialConnections. Just close your connections after after doing your work.  For example if you are creating connection:</p>\n\n<pre><code>try {\n     connection = DriverManager.getConnection(\n                    \"jdbc:postgresql://127.0.0.1/\"+dbname,user,pass);\n\n   } catch (SQLException e) {\n    e.printStackTrace();\n    return;\n}\n</code></pre>\n\n<p>After doing your work close connection:</p>\n\n<pre><code>try {\n    connection.commit();\n    connection.close();\n} catch (SQLException e) {\n    e.printStackTrace();\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1913947,
+        "reputation" : 425,
+        "user_id" : 1726997,
+        "user_type" : "registered",
+        "accept_rate" : 28,
+        "profile_image" : "https://www.gravatar.com/avatar/11db8cb0b6684f74aa70be8d97394628?s=256&d=identicon&r=PG",
+        "display_name" : "codervince",
+        "link" : "https://stackoverflow.com/users/1726997/codervince"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1464055951,
+      "post_id" : 13595817,
+      "comment_id" : 62314830,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "why do some people forget the &#39;;&#39; after SQL statements?! Makes copy and paste a drag :)"
+    }, {
+      "owner" : {
+        "account_id" : 342726,
+        "reputation" : 1350,
+        "user_id" : 674033,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/c1e92e38c7eb68074d9fd226765b42db?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "AVProgrammer",
+        "link" : "https://stackoverflow.com/users/674033/avprogrammer"
+      },
+      "reply_to_user" : {
+        "account_id" : 1913947,
+        "reputation" : 425,
+        "user_id" : 1726997,
+        "user_type" : "registered",
+        "accept_rate" : 28,
+        "profile_image" : "https://www.gravatar.com/avatar/11db8cb0b6684f74aa70be8d97394628?s=256&d=identicon&r=PG",
+        "display_name" : "codervince",
+        "link" : "https://stackoverflow.com/users/1726997/codervince"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1581017409,
+      "post_id" : 13595817,
+      "comment_id" : 106299111,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@codervince You have to pay attention. I would almost go as far as to say you should transcribe the commands rather than copy+paste."
+    }, {
+      "owner" : {
+        "account_id" : 199671,
+        "reputation" : 155307,
+        "user_id" : 445131,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/2b4pE.jpg?s=256",
+        "display_name" : "Eric Leschinski",
+        "link" : "https://stackoverflow.com/users/445131/eric-leschinski"
+      },
+      "reply_to_user" : {
+        "account_id" : 342726,
+        "reputation" : 1350,
+        "user_id" : 674033,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/c1e92e38c7eb68074d9fd226765b42db?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "AVProgrammer",
+        "link" : "https://stackoverflow.com/users/674033/avprogrammer"
+      },
+      "edited" : false,
+      "score" : 17,
+      "creation_date" : 1612900764,
+      "post_id" : 13595817,
+      "comment_id" : 116909444,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@AVProgrammer In my dreams I see a future where everyone within 10 astronomical units of our star copies and pastes code from the internet, as root, and there is no fear of unintended outcomes."
+    }, {
+      "owner" : {
+        "account_id" : 10968097,
+        "reputation" : 157,
+        "user_id" : 8059259,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/6UqI7.png?s=256",
+        "display_name" : "Blarzek",
+        "link" : "https://stackoverflow.com/users/8059259/blarzek"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679577437,
+      "post_id" : 13595817,
+      "comment_id" : 133748686,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "On Windows, you have to go to Services and restart the PostgreSQL Server service."
+    }, {
+      "owner" : {
+        "account_id" : 7902935,
+        "reputation" : 6523,
+        "user_id" : 5969411,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/7e12d84a1f74d9acd8afab1d679aca89?s=256&d=identicon&r=PG",
+        "display_name" : "ManoDestra",
+        "link" : "https://stackoverflow.com/users/5969411/manodestra"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1697816197,
+      "post_id" : 13595817,
+      "comment_id" : 136331450,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It&#39;s also good to use try-with-resources blocks regarding connections. I wrote a JDBC framework that utilizes that technique to wrap calls. You just pass your consumer or function and the core code handles the connections for you. Alternatively, connection pooling, of course."
+    } ],
+    "owner" : {
+      "account_id" : 199671,
+      "reputation" : 155307,
+      "user_id" : 445131,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://i.sstatic.net/2b4pE.jpg?s=256",
+      "display_name" : "Eric Leschinski",
+      "link" : "https://stackoverflow.com/users/445131/eric-leschinski"
+    },
+    "is_accepted" : false,
+    "score" : 315,
+    "last_activity_date" : 1677864353,
+    "last_edit_date" : 1677864353,
+    "creation_date" : 1354062988,
+    "answer_id" : 13595817,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2>An explanation of the following error:</h2>\n<pre><code>org.postgresql.util.PSQLException: FATAL: sorry, too many clients already.\n</code></pre>\n<p><strong>Summary:</strong></p>\n<p>Your code opened up more than the allowed limit of connections to the postgresql database.  It ran something like this: <code>Connection conn = myconn.Open();</code> inside a loop, and forgot to run <code>conn.close();</code>.  Just because your class is destroyed and garbage collected does not release the connection to the database.  The quickest fix to this is to make sure you have the following code with whatever class that creates a connection:</p>\n<pre><code>protected void finalize() throws Throwable  \n{  \n    try { your_connection.close(); } \n    catch (SQLException e) { \n        e.printStackTrace();\n    }\n    super.finalize();  \n}  \n</code></pre>\n<p>Place that code in any class where you create a Connection.  Then when your class is garbage collected, your connection will be released.</p>\n<p><strong>Run this SQL to see postgresql max connections allowed:</strong></p>\n<pre><code>show max_connections;\n</code></pre>\n<p>The default is 100.  PostgreSQL on good hardware can support a few hundred connections at a time.  If you want to have thousands, you should consider using connection pooling software to reduce the connection overhead.</p>\n<p><strong>Take a look at exactly who/what/when/where is holding open your connections:</strong></p>\n<pre><code>SELECT * FROM pg_stat_activity;\n</code></pre>\n<p><strong>The number of connections currently used is:</strong></p>\n<pre><code>SELECT COUNT(*) from pg_stat_activity;\n</code></pre>\n<p><strong>Debugging strategy</strong></p>\n<ol>\n<li><p>You could give different usernames/passwords to the programs that might not be releasing the connections to find out which one it is, and then look in pg_stat_activity to find out which one is not cleaning up after itself.</p>\n</li>\n<li><p>Do a full exception stack trace when the connections could not be created and follow the code back up to where you create a new <code>Connection</code>, make sure every code line where you create a connection ends with a <code>connection.close();</code></p>\n</li>\n</ol>\n<p><strong>How to set the max_connections higher:</strong></p>\n<p>max_connections in the postgresql.conf sets the maximum number of concurrent connections to the database server.</p>\n<ol>\n<li>First find your postgresql.conf file</li>\n<li>If you don't know where it is, query the database with the sql: <code>SHOW config_file;</code></li>\n<li>Mine is in: <code>/var/lib/pgsql/data/postgresql.conf</code></li>\n<li>Login as root and edit that file.</li>\n<li>Search for the string: &quot;max_connections&quot;.</li>\n<li>You'll see a line that says <code>max_connections=100</code>.</li>\n<li>Set that number bigger, restart postgresql database.</li>\n</ol>\n<p><strong>What's the maximum max_connections?</strong></p>\n<p>Use this query:</p>\n<pre><code>select min_val, max_val from pg_settings where name='max_connections';\n</code></pre>\n<p>I get the value <code>8388607</code> so in theory that's the most you are allowed to have, but then a runaway process can eat up thousands of connections, and surprise, your database is unresponsive until reboot.  If you had a sensible max_connections like 100.  The offending program would be denied a new connection and the database is safu.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6522278,
+      "reputation" : 61,
+      "user_id" : 5046124,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-y3sngsxOlxQ/AAAAAAAAAAI/AAAAAAAAAao/OuHyy7VqMM4/s256-rj/photo.jpg",
+      "display_name" : "Brayan Escobedo",
+      "link" : "https://stackoverflow.com/users/5046124/brayan-escobedo"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1485215683,
+    "creation_date" : 1485215683,
+    "answer_id" : 41817781,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You need to close all your connexions for example:\nIf you make an INSERT INTO statement you need to close the statement and your connexion in this way:</p>\n\n<pre><code>statement.close();\nConnexion.close():\n</code></pre>\n\n<p>And if you make a SELECT statement you need to close the statement, the connexion and the resultset in this way:</p>\n\n<pre><code>resultset.close();\nstatement.close();\nConnexion.close();\n</code></pre>\n\n<p>I did this and it worked</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 21797838,
+      "reputation" : 361,
+      "user_id" : 16097168,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/iIbNc.jpg?s=256",
+      "display_name" : "Abbas",
+      "link" : "https://stackoverflow.com/users/16097168/abbas"
+    },
+    "is_accepted" : false,
+    "score" : 19,
+    "last_activity_date" : 1670305184,
+    "last_edit_date" : 1670305184,
+    "creation_date" : 1670304919,
+    "answer_id" : 74697708,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had postgres and other apps up in docker. I was facing this problem when more than ten apps connected to postgres database. The solution was to increase postgres max_connection count. This is 100 by default. To increase this value, either find max_connection in the /var/lib/pgsql/data/postgresql.conf file and edit it. Another way is to add and run the docker-compose.yml document as follows.</p>\n<pre><code>version: '3'\n\nservices:\n  taxi-postgresql:\n    container_name: my-postgresql\n    image: postgres:13.3\n    volumes:\n      - ./postgres-volume:/var/lib/postgresql/data\n    environment:\n      - POSTGRES_DB=taxi-postgresql\n      - POSTGRES_USER=user\n      - POSTGRES_PASSWORD=user\n      - POSTGRES_HOST_AUTH_METHOD=trust\n    command: postgres -c 'max_connections=1000'\n    ports:\n      - 127.0.0.1:5432:5432\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5032416,
+      "reputation" : 2300,
+      "user_id" : 4042213,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://www.gravatar.com/avatar/fe4439b79882aac69b38c08623b93641?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ebraheem Alrabeea",
+      "link" : "https://stackoverflow.com/users/4042213/ebraheem-alrabeea"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1679397589,
+    "last_edit_date" : 1679397589,
+    "creation_date" : 1676384227,
+    "answer_id" : 75449122,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The same error appears in our microservices deployment, and it is solved by increasing concurrent connections in the Postgresql container:</p>\n<blockquote>\n<p>num_init_children</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 39047761,
+      "reputation" : 1,
+      "user_id" : 29079882,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/5f44fada623c44f8e9fe6204dab2b29d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Mateo Barzallo",
+      "link" : "https://stackoverflow.com/users/29079882/mateo-barzallo"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1746025779,
+    "creation_date" : 1746025779,
+    "answer_id" : 79600604,
+    "question_id" : 2757549,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you want to kill all conections because you dont know whats happening you can try this</p>\n<pre><code>SELECT pg_terminate_backend(pid)\nFROM pg_stat_activity\nWHERE datname = 'any filter you want'\n  AND pid &lt;&gt; pg_backend_pid(); -- important to not kill your actual session\n</code></pre>\n<p>The last part is important cause if you dont filter by the pid you are going to kill your actual conection</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 128134,
+    "reputation" : 5039,
+    "user_id" : 2405181,
+    "user_type" : "registered",
+    "accept_rate" : 67,
+    "profile_image" : "https://www.gravatar.com/avatar/0ec43a3416ab35a1d6ff71154b78d537?s=256&d=identicon&r=PG",
+    "display_name" : "lakshmi",
+    "link" : "https://stackoverflow.com/users/2405181/lakshmi"
+  },
+  "is_answered" : true,
+  "view_count" : 495790,
+  "accepted_answer_id" : 2758432,
+  "answer_count" : 8,
+  "score" : 212,
+  "last_activity_date" : 1746025779,
+  "creation_date" : 1272884473,
+  "last_edit_date" : 1386170409,
+  "question_id" : 2757549,
+  "link" : "https://stackoverflow.com/questions/2757549/org-postgresql-util-psqlexception-fatal-sorry-too-many-clients-already",
+  "title" : "org.postgresql.util.PSQLException: FATAL: sorry, too many clients already",
+  "body" : "<p>I am trying to connect to a Postgresql database, I am getting the following Error:</p>\n\n<blockquote>\n  <p>Error:org.postgresql.util.PSQLException: FATAL: sorry, too many clients already</p>\n</blockquote>\n\n<p>What does the error mean and how do I fix it?</p>\n\n<p>My <code>server.properties</code> file is following:</p>\n\n<pre><code>serverPortData=9042\nserverPortCommand=9078\ntrackConnectionURL=jdbc:postgresql://127.0.0.1:5432/vTrack?user=postgres password=postgres\ndst=1\nDatabaseName=vTrack\nServerName=127.0.0.1\nUser=postgres\nPassword=admin\nMaxConnections=90\nInitialConnections=80\nPoolSize=100\nMaxPoolSize=100\nKeepAliveTime=100\nTrackPoolSize=120\nTrackMaxPoolSize=120\nTrackKeepAliveTime=100\nPortNumber=5432\nLogging=1\n</code></pre>\n"
+}

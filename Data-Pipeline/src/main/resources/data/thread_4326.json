@@ -1,0 +1,89 @@
+{
+  "tags" : [ "java", "spring-mvc", "jpa" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15479582,
+        "reputation" : 5,
+        "user_id" : 11167292,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/af4360a25557d07a4eea1fd77b4a8bdd?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Fatih",
+        "link" : "https://stackoverflow.com/users/11167292/fatih"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1552081856,
+      "post_id" : 55071330,
+      "comment_id" : 96890557,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "That is really makes sense but I still gives me error.  <code>&#47;home&#47;fatih&#47;Desktop&#47;spring-boot-product-system&#47;src&#47;main&#47;java&zwnj;&#8203;&#47;com&#47;fatih&#47;movie&#47;ser&zwnj;&#8203;vice&#47;MovieService.ja&zwnj;&#8203;va:[41,56] incompatible types: java.util.Set&lt;com.fatih.movie.model.Actor&gt; cannot be converted to com.fatih.movie.model.Actor [ERROR] &#47;home&#47;fatih&#47;Desktop&#47;spring-boot-product-system&#47;src&#47;main&#47;java&zwnj;&#8203;&#47;com&#47;fatih&#47;movie&#47;ser&zwnj;&#8203;vice&#47;MovieService.ja&zwnj;&#8203;va:[42,24] incompatible types: com.fatih.movie.model.Actor cannot be converted to java.util.Set&lt;com.fatih.movie.model.Actor&gt; </code>"
+    }, {
+      "owner" : {
+        "account_id" : 6528825,
+        "reputation" : 22085,
+        "user_id" : 5050667,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/3WJfP.jpg?s=256",
+        "display_name" : "Yassin Hajaj",
+        "link" : "https://stackoverflow.com/users/5050667/yassin-hajaj"
+      },
+      "reply_to_user" : {
+        "account_id" : 15479582,
+        "reputation" : 5,
+        "user_id" : 11167292,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/af4360a25557d07a4eea1fd77b4a8bdd?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Fatih",
+        "link" : "https://stackoverflow.com/users/11167292/fatih"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1552081964,
+      "post_id" : 55071330,
+      "comment_id" : 96890623,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Post your code for <code>MovieService</code>, you basically just have to adapt it there too"
+    } ],
+    "owner" : {
+      "account_id" : 6528825,
+      "reputation" : 22085,
+      "user_id" : 5050667,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/3WJfP.jpg?s=256",
+      "display_name" : "Yassin Hajaj",
+      "link" : "https://stackoverflow.com/users/5050667/yassin-hajaj"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1760454473,
+    "last_edit_date" : 1760454473,
+    "creation_date" : 1552080906,
+    "answer_id" : 55071330,
+    "question_id" : 55071228,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You're invoking <code>movie.getActor().getActorName()</code> which basically does a <code>getActorName()</code> on a <code>Set&lt;Actor&gt;</code> object.</p>\n<p>You're basically treating the relation as a <code>ManyToOne</code> instead of a <code>OneToMany</code></p>\n<p>You could use the following to fetch the first <code>Actor</code> of the <code>Set</code></p>\n<pre class=\"lang-java prettyprint-override\"><code>ActorRepository.findByActorName(\n    movie.getActors()\n         .iterator()\n         .next()\n         .getActorName()\n);\n</code></pre>\n<p>But then of course, you don't have all your <code>Actor</code>'s names</p>\n<p>What you could do is the following</p>\n<pre class=\"lang-java prettyprint-override\"><code>public interface ActorRepository extends JpaRepository&lt;Actor, Integer&gt; {\n    Set&lt;Actor&gt; findByActorNameIn(List&lt;String&gt; actorName);\n}\n</code></pre>\n<p>And invoke it that way</p>\n<pre class=\"lang-java prettyprint-override\"><code>ActorRepository.findByActorNameIn(\n    movie.getActors()\n         .stream()\n         .map(Actor::getName)\n         .collect(Collectors.toList())\n);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 15479582,
+    "reputation" : 5,
+    "user_id" : 11167292,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/af4360a25557d07a4eea1fd77b4a8bdd?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Fatih",
+    "link" : "https://stackoverflow.com/users/11167292/fatih"
+  },
+  "is_answered" : true,
+  "view_count" : 285,
+  "accepted_answer_id" : 55071330,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760454473,
+  "creation_date" : 1552080392,
+  "question_id" : 55071228,
+  "link" : "https://stackoverflow.com/questions/55071228/spring-data-jpa-many-to-many-service-repository-problem",
+  "title" : "Spring Data JPA Many to Many Service Repository Problem",
+  "body" : "<p>I am trying to add ManyToMany entity to my application. I created entity but cannot implement it. </p>\n\n<p><strong>Actor class</strong></p>\n\n<pre><code>@Entity\n@Table(name = \"actor\")\npublic class Actor {\n\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Integer id;\n\n    @Column(nullable = false, name = \"actor_name\")\n    private String actorName;\n\n    @ManyToMany(mappedBy = \"actor\", cascade = CascadeType.ALL, fetch = FetchType.LAZY)\n    private Set&lt;Movie&gt; movie = new HashSet&lt;Movie&gt;();\n\n    public Integer getId() {\n        return id;\n    }\n\n    public void setId(Integer id) {\n        this.id = id;\n    }\n\n    public String getActorName() { return actorName; }\n\n    public void setActorName(String actorName) {\n        this.actorName = actorName;\n    }\n\n    public Set&lt;Movie&gt; getMovie() {\n        return movie;\n    }\n\n    public void setMovie(Set&lt;Movie&gt; movie) {\n       this.movie = movie;\n    }\n}\n</code></pre>\n\n<p>In <strong>movie class</strong> I have</p>\n\n<pre><code>@ManyToMany(cascade = CascadeType.ALL)\n    @JoinTable(\n            name = \"movie_actor\",\n            joinColumns = {@JoinColumn(name = \"movie_id\")},\n            inverseJoinColumns = {@JoinColumn(name = \"actor_id\")}\n    )\n    Set&lt;Actor&gt; actor = new HashSet&lt;Actor&gt;();\n\n........................\n\n public Set&lt;Actor&gt; getActor () {\n        return actor;\n    }\n\n    public void setActor(Set&lt;Actor&gt; actor){\n        this.actor = actor;\n    }\n</code></pre>\n\n<p>I created my entity just like this but in <strong>MovieService</strong>;</p>\n\n<pre><code>Actor actor = ActorRepository.findByActorName(movie.getActor().getActorName());\n        movie.setActor(actor);\n</code></pre>\n\n<p>This part gives me error. movie.getActor().getActorName() method cannot find. Where do I need to look? In IDE it also says method getActorName and setActorName is never used. I am also adding my ActorRepository and ActorService to closer look to the problem.</p>\n\n<p><strong>ActorRepository</strong></p>\n\n<pre><code>public interface ActorRepository extends JpaRepository&lt;Actor, Integer&gt; {\n\n    Set&lt;Actor&gt; findByActorName(String actorName);\n}\n</code></pre>\n\n<p><strong>ActorService</strong></p>\n\n<pre><code>@Service\npublic class ActorService {\n\n    private ActorRepository actorRepository;\n\n    @Autowired\n    public ActorService(ActorRepository actorRepository) {\n        this.actorRepository = actorRepository;\n    }\n\n    public List&lt;Actor&gt; getAllActor() {\n        return actorRepository.findAll();\n    }\n}\n</code></pre>\n\n<p>After adding ManyToMany I was using is as OneToMany entity. Services is works for OneToMany. How can I use them for ManyToMany? I need to add multiple actors to my movies. I couldn't find MVC projects for ManyToMany implementation.</p>\n"
+}

@@ -1,0 +1,96 @@
+{
+  "tags" : [ "java", "spring", "exception", "streaming", "outputstream" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3192259,
+      "reputation" : 126767,
+      "user_id" : 2696260,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/qHEzx.png?s=256",
+      "display_name" : "M. Deinum",
+      "link" : "https://stackoverflow.com/users/2696260/m-deinum"
+    },
+    "edited" : false,
+    "score" : 5,
+    "creation_date" : 1609743201,
+    "post_id" : 65557527,
+    "comment_id" : 115908018,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "The <code>StreamingResponseBody</code> is handled async, and it is streaming, so the first part of the response is written quite early on, afterwards the content is actually being streamed. As the first part is already send, it cannot handle the exception."
+  }, {
+    "owner" : {
+      "account_id" : 1658807,
+      "reputation" : 32688,
+      "user_id" : 1527544,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://www.gravatar.com/avatar/6665878d41d42307eb53e9fae311a471?s=256&d=identicon&r=PG",
+      "display_name" : "Antoniossss",
+      "link" : "https://stackoverflow.com/users/1527544/antoniossss"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1609749893,
+    "post_id" : 65557527,
+    "comment_id" : 115909931,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "you cannot return ResponseEntity (which becomes full http response) because you have already pushed header of the response into the output stream (and probably you did send it over the network already) so its too late to change content of that response. StreamingResponseBody is &quot;handled&quot; when response body is beeing written into the output stream (buffered to some extent) after response headers are written. To overcome this you would have to buffer whole response - but that invalidates the purpose of streaming response body."
+  }, {
+    "owner" : {
+      "account_id" : 19135777,
+      "reputation" : 665,
+      "user_id" : 13976784,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-HMSDy8C03qo/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnS8q8Frg-lBaWNXexwAOdvRgov3w/s256-rj/photo.jpg",
+      "display_name" : "Aswath Murugan",
+      "link" : "https://stackoverflow.com/users/13976784/aswath-murugan"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1609770554,
+    "post_id" : 65557527,
+    "comment_id" : 115918529,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Is there any to change HttpStatus Code on exception?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 10320634,
+      "reputation" : 3398,
+      "user_id" : 7613649,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://www.gravatar.com/avatar/c95137fce225c304ac42743da3816d6c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Geba",
+      "link" : "https://stackoverflow.com/users/7613649/geba"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1762617811,
+    "creation_date" : 1762617811,
+    "answer_id" : 79814294,
+    "question_id" : 65557527,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h3>Why this happen</h3>\n<p>Using <code>StreamingResponseBody</code> makes Spring send data in chunks.<br />\nThis is known as Chunked Transfer Encoding (HTTP header <code>Transfer-Encoding: chunked</code>).</p>\n<p>Once the first data chunk is sent to the client, the HTTP status code <code>200</code> is already sent.<br />\nAfter that <strong>the server cannot change the HTTP status code</strong>.<br />\nSo if an exception occurs while sending the remaining data, the HTTP status will still be <code>200</code>.</p>\n<hr />\n<h3>Handling exceptions</h3>\n<p>If your endpoint returns a <code>StreamingResponseBody</code>, the client cannot rely only on the HTTP status code to determine whether the request was processed successfully or failed.</p>\n<p>The lack of standard HTTP error handling is a trade-off of using streaming responses.</p>\n<p>If possible, consider making multiple calls using pagination (<code>offset/limit</code> or <code>cursor/limit</code>).<br />\nIf streaming is required, consider one of the following approaches:</p>\n<h4>1. Abort the connection</h4>\n<p>In Chunked Transfer Encoding closing the connection before sending the final zero-length chunk (which marks the end of the message body) is interpreted by HTTP clients as an error.</p>\n<p>This would happen if you don't have any <code>@ControllerAdvice</code> or <code>@ExceptionHandler</code>.<br />\nAlso you can add a handler that re-throws the exception, that would lead to abortion of the connection.</p>\n<pre class=\"lang-java prettyprint-override\"><code>@ExceptionHandler(MyException.class)\npublic void handleMyException(MyException exception) {\n    throw exception;\n}\n</code></pre>\n<p>For example:</p>\n<ul>\n<li>A <code>RestTemplate</code> client would fail with <code>java.io.IOException: Premature EOF</code>.</li>\n<li>A <code>curl</code> would fail with <code>curl: (18) transfer closed with outstanding read data remaining</code>.</li>\n</ul>\n<p>If clients interpret this as an exceptional situation, they are informed and can handle it.</p>\n<h4>2. Use the Trailer header</h4>\n<p>Chunked Transfer Encoding defines the <code>Trailer</code> header, which allows sending metadata after the body.</p>\n<p>You can send error details in these trailers.<br />\n<a href=\"https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Trailer\" rel=\"nofollow noreferrer\">Mozilla documentation on the <code>Trailer</code> header</a></p>\n<p>Example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@GetMapping(value = &quot;/stream/add-trailer&quot;, produces = &quot;application/txt&quot;)  \npublic StreamingResponseBody streamAndAddTrailer(@RequestParam boolean fail, HttpServletResponse response) {  \n    response.setHeader(HttpHeaders.TRAILER, &quot;Fail-Reason&quot;);  \n  \n    final Map&lt;String, String&gt; trailers = new HashMap&lt;&gt;();  \n    response.setTrailerFields(() -&gt; trailers);  \n  \n    return outputStream -&gt; {  \n        for (int i = 0; i &lt; 3; i++) {  \n            outputStream.write((&quot;Line &quot; + i + &quot;.\\n&quot;).getBytes());  \n            outputStream.flush();  \n  \n            if (i == 1 &amp;&amp; fail) {  \n                trailers.put(&quot;Fail-Reason&quot;, &quot;Fail at &quot; + i);\n                // exception that is handled but is ignored by the advice  \n                throw new DoNothingException(&quot;Should not be present in resp&quot;);  \n            }  \n        }  \n    };  \n}\n</code></pre>\n<p>To see the trailer headers, use <code>curl</code> with the <code>--raw</code> flag:</p>\n<pre><code>8\nLine 0.\n\n8\nLine 1.\n\n0\nFail-Reason: Fail at 1\n</code></pre>\n<p>Not many HTTP clients support trailer headers.<br />\nFor example, <code>RestTemplate</code> does not, but <code>OkHttpClient</code> does.</p>\n<pre class=\"lang-java prettyprint-override\"><code>OkHttpClient client = new OkHttpClient();  \n  \nRequest request = new Request.Builder()  \n    .url(&quot;http://localhost:8080/stream/add-trailer?fail=true&quot;)  \n    .build();  \n  \ntry (Response resp = client.newCall(request).execute()) {  \n    System.out.println(&quot;code: &quot; + resp.code());  \n    System.out.println(&quot;body: &quot; + resp.body().string());  \n  \n    System.out.println(&quot;trailers: &quot;);  \n    resp.trailers().forEach((keyAndVal) -&gt;  \n        System.out.println(&quot;key=&quot; + keyAndVal.getFirst() + &quot;, value=&quot; + keyAndVal.getSecond()));  \n}\n</code></pre>\n<h4>3. Have a custom contract</h4>\n<p>You can define a custom contract between the client and the server, where the server sends an error message in a predefined format at the end of the stream if a failure occurs.</p>\n<p>This is similar to using the trailers, but it does not depend on whether the HTTP client supports them.</p>\n<hr />\n<p>The code I used to test the approaches is on GitHub, but it is written in Kotlin - <a href=\"https://github.com/glebArkhipov/sandbox/blob/main/spring-streaming/src/main/kotlin/SpringStreamingApp.kt\" rel=\"nofollow noreferrer\">sandbox/spring-streaming</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 19135777,
+    "reputation" : 665,
+    "user_id" : 13976784,
+    "user_type" : "registered",
+    "profile_image" : "https://lh6.googleusercontent.com/-HMSDy8C03qo/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnS8q8Frg-lBaWNXexwAOdvRgov3w/s256-rj/photo.jpg",
+    "display_name" : "Aswath Murugan",
+    "link" : "https://stackoverflow.com/users/13976784/aswath-murugan"
+  },
+  "is_answered" : true,
+  "view_count" : 3892,
+  "answer_count" : 1,
+  "score" : 13,
+  "last_activity_date" : 1762939481,
+  "creation_date" : 1609732767,
+  "last_edit_date" : 1762939481,
+  "question_id" : 65557527,
+  "link" : "https://stackoverflow.com/questions/65557527/exception-handling-in-streamingresponsebody-not-working",
+  "title" : "Exception handling in StreamingResponseBody not working",
+  "body" : "<p>I'm trying to catch an exception thrown in my implementation of <code>StreamingResponseBody</code>, I can see the exception being thrown inside the class however the thrown exception my handling seems to work, But I am not able to get my custom message and my response code is <code>200</code>.</p>\n<pre class=\"lang-java prettyprint-override\"><code>@GetMapping(path = &quot;/test&quot;, produces = &quot;application/json&quot;)\npublic StreamingResponseBody test(@RequestParam(value = &quot;var1&quot;) final String test) throws IOException{\n    return new StreamingResponseBody() {\n        @Override\n        public void writeTo(final OutputStream outputStream) throws IOException{\n            try {\n                // Some operations..\n            } catch (Exception MyExceptione e) {\n                throw new MyException(e);\n            }\n        }\n    };\n}\n\n@ExceptionHandler(MyException.class)\npublic ResponseEntity handleMyException(MyException exception) {\n    return ResponseEntity.status(exception.getHttpStatus()).body(\n            ErrorDTO.builder()\n                    .message(exception.getMessage())\n                    .description(exception.getHttpStatus().getReasonPhrase())\n                    .build());\n}\n</code></pre>\n<p>I would expect my <code>ControllerAdvice</code> to return an <code>ResponseEntity</code> with a <code>HttpStatus</code> of 500.</p>\n"
+}

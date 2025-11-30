@@ -1,0 +1,169 @@
+{
+  "tags" : [ "java", "java-8" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1463176,
+      "reputation" : 4693,
+      "user_id" : 1376885,
+      "user_type" : "registered",
+      "accept_rate" : 34,
+      "profile_image" : "https://www.gravatar.com/avatar/5a7195e0e4310753d63286dc6f958c76?s=256&d=identicon&r=PG",
+      "display_name" : "Viktor M.",
+      "link" : "https://stackoverflow.com/users/1376885/viktor-m"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1442588062,
+    "post_id" : 32654929,
+    "comment_id" : 53156624,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I need to move on next item in loop."
+  }, {
+    "owner" : {
+      "account_id" : 3562114,
+      "reputation" : 1493,
+      "user_id" : 2974766,
+      "user_type" : "registered",
+      "accept_rate" : 73,
+      "profile_image" : "https://www.gravatar.com/avatar/23c7f85a28393e1150a3088a40dc6212?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "DoubleDouble",
+      "link" : "https://stackoverflow.com/users/2974766/doubledouble"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1442588131,
+    "post_id" : 32654929,
+    "comment_id" : 53156684,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "His point is, with the code you&#39;ve shown, not having the <code>continue</code> would still move onto the next item without any functional changes anyway."
+  }, {
+    "owner" : {
+      "account_id" : 277416,
+      "reputation" : 694244,
+      "user_id" : 571407,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/2f0d9dec16bae1e06552af55ddefc11f?s=256&d=identicon&r=PG",
+      "display_name" : "JB Nizet",
+      "link" : "https://stackoverflow.com/users/571407/jb-nizet"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1442588534,
+    "post_id" : 32654929,
+    "comment_id" : 53156974,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "If the goal is to avoid executing lines coming after the call to continue, and that you&#39;re not showing us, just put all these lines in an <code>else</code> block. If there is nothing after <code>continue</code>, then drop the if block and the continue: they&#39;re useless."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 6388289,
+      "reputation" : 36793,
+      "user_id" : 4955425,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Y0RDl.jpg?s=256",
+      "display_name" : "sstan",
+      "link" : "https://stackoverflow.com/users/4955425/sstan"
+    },
+    "is_accepted" : true,
+    "score" : 477,
+    "last_activity_date" : 1510667777,
+    "last_edit_date" : 1510667777,
+    "creation_date" : 1442588103,
+    "answer_id" : 32655038,
+    "question_id" : 32654929,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Using <code>return;</code> will work just fine.  It will not prevent the full loop from completing.  It will only stop executing the current iteration of the <code>forEach</code> loop.</p>\n\n<p>Try the following little program:</p>\n\n<pre><code>public static void main(String[] args) {\n    ArrayList&lt;String&gt; stringList = new ArrayList&lt;&gt;();\n    stringList.add(\"a\");\n    stringList.add(\"b\");\n    stringList.add(\"c\");\n\n    stringList.stream().forEach(str -&gt; {\n        if (str.equals(\"b\")) return; // only skips this iteration.\n\n        System.out.println(str);\n    });\n}\n</code></pre>\n\n<p>Output:</p>\n\n<blockquote>\n  <p>a<br>\n  c</p>\n</blockquote>\n\n<p>Notice how the <code>return;</code> is executed for the <code>b</code> iteration, but <code>c</code> prints on the following iteration just fine.</p>\n\n<h2>Why does this work?</h2>\n\n<p>The reason the behavior seems unintuitive at first is because we are used to the <code>return</code> statement interrupting the execution of the whole method.  So in this case, we expect the <code>main</code> method execution as a whole to be halted.</p>\n\n<p>However, what needs to be understood is that a lambda expression, such as:</p>\n\n<pre><code>str -&gt; {\n    if (str.equals(\"b\")) return;\n\n    System.out.println(str);\n}\n</code></pre>\n\n<p>... really needs to be considered as its own distinct \"method\", completely separate from the <code>main</code> method, despite it being conveniently located within it. So really, the <code>return</code> statement only halts the execution of the lambda expression.</p>\n\n<p>The second thing that needs to be understood is that:</p>\n\n<pre><code>stringList.stream().forEach()\n</code></pre>\n\n<p>... is really just a normal loop under the covers that executes the lambda expression for every iteration.</p>\n\n<p>With these 2 points in mind, the above code can be rewritten in the following equivalent way (for educational purposes only):</p>\n\n<pre><code>public static void main(String[] args) {\n    ArrayList&lt;String&gt; stringList = new ArrayList&lt;&gt;();\n    stringList.add(\"a\");\n    stringList.add(\"b\");\n    stringList.add(\"c\");\n\n    for(String s : stringList) {\n        lambdaExpressionEquivalent(s);\n    }\n}\n\nprivate static void lambdaExpressionEquivalent(String str) {\n    if (str.equals(\"b\")) {\n        return;\n    }\n\n    System.out.println(str);\n}\n</code></pre>\n\n<p>With this \"less magic\" code equivalent, the scope of the <code>return</code> statement becomes more apparent.</p>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user377628"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1442588165,
+    "creation_date" : 1442588165,
+    "answer_id" : 32655060,
+    "question_id" : 32654929,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can use a simple <code>if</code> statement instead of continue. So instead of the way you have your code, you can try:</p>\n\n<pre><code>try(Stream&lt;String&gt; lines = Files.lines(path, StandardCharsets.ISO_8859_1)){\n            filteredLines = lines.filter(...).foreach(line -&gt; {\n           ...\n           if(!...) {\n              // Code you want to run\n           }\n           // Once the code runs, it will continue anyway\n    });\n}\n</code></pre>\n\n<p>The predicate in the if statement will just be the opposite of the predicate in your <code>if(pred) continue;</code> statement, so just use <code>!</code> (logical not).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2792262,
+      "reputation" : 190692,
+      "user_id" : 2402272,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/1182b1d5518a596d4e8cfe0567a65c4d?s=256&d=identicon&r=PG",
+      "display_name" : "John Bollinger",
+      "link" : "https://stackoverflow.com/users/2402272/john-bollinger"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1442588221,
+    "creation_date" : 1442588221,
+    "answer_id" : 32655089,
+    "question_id" : 32654929,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The lambda you are passing to <code>forEach()</code> is evaluated for each element received from the stream.  The iteration itself is not visible from within the scope of the lambda, so you cannot <code>continue</code> it as if <code>forEach()</code> were a C preprocessor macro.  Instead, you can conditionally skip the rest of the statements in it.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4634192,
+      "reputation" : 517,
+      "user_id" : 3755871,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/3MllR.jpg?s=256",
+      "display_name" : "Anarkopsykotik",
+      "link" : "https://stackoverflow.com/users/3755871/anarkopsykotik"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1499863227,
+    "creation_date" : 1499863227,
+    "answer_id" : 45057964,
+    "question_id" : 32654929,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Another solution: go through a filter with your inverted conditions :\nExample :</p>\n\n<pre><code>if(subscribtion.isOnce() &amp;&amp; subscribtion.isCalled()){\n                continue;\n}\n</code></pre>\n\n<p>can be replaced with</p>\n\n<pre><code>.filter(s -&gt; !(s.isOnce() &amp;&amp; s.isCalled()))\n</code></pre>\n\n<p>The most straightforward approach seem to be using \"return;\" though.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1682782,
+      "reputation" : 7763,
+      "user_id" : 2096986,
+      "user_type" : "registered",
+      "accept_rate" : 37,
+      "profile_image" : "https://www.gravatar.com/avatar/3a02e7c9d317839db7ad17f840320afd?s=256&d=identicon&r=PG",
+      "display_name" : "Felipe",
+      "link" : "https://stackoverflow.com/users/2096986/felipe"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1695636489,
+    "creation_date" : 1695636489,
+    "answer_id" : 77171725,
+    "question_id" : 32654929,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>you can use <code>takeWhile</code> lambda function.</p>\n<blockquote>\n<p>Returns, if this stream is ordered, a stream consisting of the longest prefix of elements taken from this stream that match the given predicate. Otherwise returns, if this stream is unordered, a stream consisting of a subset of elements taken from this stream that match the given predicate.</p>\n</blockquote>\n<pre><code>public class TestFilterLoop {\n    public static void main(String[] args) {\n        ArrayList&lt;String&gt; stringList = new ArrayList&lt;&gt;();\n        stringList.add(&quot;a&quot;);\n        stringList.add(&quot;b&quot;);\n        stringList.add(&quot;c&quot;);\n        stringList.add(&quot;d&quot;);\n\n        stringList.stream()\n                .takeWhile(str -&gt; !str.equals(&quot;c&quot;))\n                .forEach(System.out::println);\n    }\n}\n</code></pre>\n<p>prints only until the string is not <code>c</code>. So it will return and not continue the loop. Output:</p>\n<pre><code>a\nb\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1463176,
+    "reputation" : 4693,
+    "user_id" : 1376885,
+    "user_type" : "registered",
+    "accept_rate" : 34,
+    "profile_image" : "https://www.gravatar.com/avatar/5a7195e0e4310753d63286dc6f958c76?s=256&d=identicon&r=PG",
+    "display_name" : "Viktor M.",
+    "link" : "https://stackoverflow.com/users/1376885/viktor-m"
+  },
+  "is_answered" : true,
+  "view_count" : 200319,
+  "accepted_answer_id" : 32655038,
+  "answer_count" : 5,
+  "score" : 232,
+  "last_activity_date" : 1695636489,
+  "creation_date" : 1442587804,
+  "last_edit_date" : 1581008082,
+  "question_id" : 32654929,
+  "link" : "https://stackoverflow.com/questions/32654929/move-to-next-item-using-java-8-foreach-loop-in-stream",
+  "title" : "Move to next item using Java 8 foreach loop in stream",
+  "body" : "<p>I have a problem with the stream of Java 8 foreach attempting to move on next item in loop. I cannot set the command like <code>continue;</code>, only <code>return;</code> works but you will exit from the loop in this case. I need to move on next item in loop. How can I do that?</p>\n\n<p>Example(not working):</p>\n\n<pre><code>try(Stream&lt;String&gt; lines = Files.lines(path, StandardCharsets.ISO_8859_1)){\n            filteredLines = lines.filter(...).foreach(line -&gt; {\n           ...\n           if(...)\n              continue; // this command doesn't working here\n    });\n}\n</code></pre>\n\n<p>Example(working):</p>\n\n<pre><code>try(Stream&lt;String&gt; lines = Files.lines(path, StandardCharsets.ISO_8859_1)){\n    filteredLines = lines.filter(...).collect(Collectors.toList());\n}\n\nfor(String filteredLine : filteredLines){\n   ...\n   if(...)\n      continue; // it's working!\n}\n</code></pre>\n"
+}

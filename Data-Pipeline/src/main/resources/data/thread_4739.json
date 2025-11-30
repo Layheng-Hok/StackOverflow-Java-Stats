@@ -1,0 +1,72 @@
+{
+  "tags" : [ "java", "shell", "exec", "cat" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2993703,
+        "reputation" : 3181,
+        "user_id" : 2540669,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/25Jlw.jpg?s=256",
+        "display_name" : "augray",
+        "link" : "https://stackoverflow.com/users/2540669/augray"
+      },
+      "reply_to_user" : {
+        "account_id" : 5974908,
+        "reputation" : 2164,
+        "user_id" : 4696127,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/999d6b5df53462adce610ea54a6b4528?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "tubby",
+        "link" : "https://stackoverflow.com/users/4696127/tubby"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1433386813,
+      "post_id" : 30611152,
+      "comment_id" : 49333697,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@PepperBoy Okay, I adjusted my answer as well. What version of Java are you compiling against?"
+    } ],
+    "owner" : {
+      "account_id" : 2993703,
+      "reputation" : 3181,
+      "user_id" : 2540669,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/25Jlw.jpg?s=256",
+      "display_name" : "augray",
+      "link" : "https://stackoverflow.com/users/2540669/augray"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1433387889,
+    "last_edit_date" : 1495535212,
+    "creation_date" : 1433307405,
+    "answer_id" : 30611152,
+    "question_id" : 30610741,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I found a <a href=\"https://stackoverflow.com/questions/16238714/runtimes-exec-method-is-not-redirecting-the-output\">related question</a>. To summarize the useful things from a couple answers found there, file redirection requires a shell, but <code>exec</code> doesn't have a shell context. Luckily, you can execute processes with redirection using <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html\" rel=\"nofollow noreferrer\"><code>ProcessBuilder</code></a>. For your case, that would look something like:</p>\n\n<pre><code>public static void main(String[] args) \n{\n\n    try{            \n        ProcessBuilder builder = new ProcessBuilder(\"cat\", \"file1\",\"file2\");\n        File combinedFile = new File(\"combinedFile\");\n        builder.redirectOutput(combinedFile);\n        builder.redirectError(combinedFile);\n        Process p = builder.start();\n    } catch(IOException e){\n        //handle exception...\n    }\n\n}\n</code></pre>\n\n<p>Note: You may receive an error when calling <code>redirectError</code> or <code>redirectOutput</code> stating that the symbol cannot be found. This will occur if you are compiling against a version of Java before 1.7, since <a href=\"http://docs.oracle.com/javase/7/docs/api/java/lang/ProcessBuilder.html#redirectOutput(java.io.File)\" rel=\"nofollow noreferrer\">1.7 is when these methods were introduced.</a> If it is possible to upgrade your Java, doing so will eliminate this error.</p>\n\n<p>If it is <em>not</em> possible to upgrade Java, the following code will work:</p>\n\n<pre><code>public static void main(String[] args) \n{\n\n    try{            \n        ProcessBuilder builder = new ProcessBuilder(\"cat\", \"file1\",\"file2\");\n        File combinedFile = new File(\"combinedFile\");\n        Process p = builder.start();\n\n        InputStream isFromCat = p.getInputStream();\n        OutputStream osCombinedFile = new FileOutputStream(combinedFile);\n\n        byte[] buffer = new byte[1024];\n        int read = 0;\n        while((read = isFromCat.read(buffer)) != -1) {\n            osCombinedFile.write(buffer, 0, read);\n        }\n\n    } catch(IOException e){\n        //handle exception...\n    }\n\n}\n</code></pre>\n\n<p>It is also probably worthwhile to note that making a system call to <code>cat</code> is not the optimal way to combine files from Java. I have been assuming this is a toy case to represent a more complex use case for you. If all you really want to do is combine two files, you should write your code to avoid system calls and just append the files by reading both in as input streams and then writing them out to the result file. If you're having trouble figuring that out, those details definitely belong in another question.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5974908,
+    "reputation" : 2164,
+    "user_id" : 4696127,
+    "user_type" : "registered",
+    "accept_rate" : 40,
+    "profile_image" : "https://www.gravatar.com/avatar/999d6b5df53462adce610ea54a6b4528?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "tubby",
+    "link" : "https://stackoverflow.com/users/4696127/tubby"
+  },
+  "is_answered" : false,
+  "view_count" : 8537,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1759503995,
+  "creation_date" : 1433304917,
+  "last_edit_date" : 1433309632,
+  "question_id" : 30610741,
+  "link" : "https://stackoverflow.com/questions/30610741/executing-cat-command-from-java-program-does-not-work-as-expected",
+  "title" : "executing cat command from java program does not work as expected",
+  "body" : "<p>I am trying to use the cat command from within a java program to merge two files into one. The line of code which contains the cat command takes two files file1 and file2 and writes to a third file called combinedfile. However, what I observe is the instead of creating this file (combinedfile) and writing to it, my program merely displays the output on the terminal.</p>\n\n<p>How can I make sure that indeed the two files are copied to a third file.</p>\n\n<pre><code>import java.io.BufferedReader;\nimport java.io.InputStreamReader;\n\npublic class ExecuteShellCommand \n{\n\n    public static void main(String[] args) \n    {\n\n        ExecuteShellCommand obj = new ExecuteShellCommand();\n\n        String command = \"cat file1 file2 &gt; combinedfile\";\n\n        String output = obj.executeCommand(command);\n\n        System.out.println(output);\n\n    }\n\n    private String executeCommand(String command) \n    {\n\n        StringBuffer output = new StringBuffer();\n\n        Process p;\n        try \n        {\n            p = Runtime.getRuntime().exec(command);\n            p.waitFor();\n            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));\n\n            String line = \"\";           \n\n            while ((line = reader.readLine())!= null) \n            {\n                output.append(line + \"\\n\");\n            }\n\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n\n        return output.toString();\n\n    }\n\n}\n</code></pre>\n\n<p>EDIT:</p>\n\n<p>I tried out with the ProcessBuilder as suggested, but I get this error.\nCode</p>\n\n<pre><code>import java.io.BufferedReader;\nimport java.io.InputStreamReader;\nimport java.io.*;\nimport java.util.*;\n\npublic class ExecuteShellCommand\n{\n    public static void main(String[] args) \n    {\n        try\n        {            \n            ProcessBuilder builder = new ProcessBuilder(\"cat\", \"/home/PepperBoy/Desktop/file1.txt\",\"/home/PepperBoy/Desktop/file2.txt\");\n            File combinedFile = new File(\"/home/PepperBoy/Desktop/file3.txt\");\n            builder.redirectOutput(combinedFile);\n            builder.redirectError(combinedFile);\n            Process p = builder.start();\n        } \n        catch(IOException e)\n        {\n                e.printStackTrace();\n        }\n\n    }\n}\n</code></pre>\n\n<p>Error</p>\n\n<pre><code>ExecuteShellCommand.java:14: cannot find symbol\nsymbol  : method redirectOutput(java.io.File)\nlocation: class java.lang.ProcessBuilder\n            builder.redirectOutput(combinedFile);\n</code></pre>\n"
+}

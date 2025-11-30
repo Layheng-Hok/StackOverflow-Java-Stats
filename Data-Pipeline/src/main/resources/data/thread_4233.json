@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "angular", "spring-boot", "angular-ui-bootstrap" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4463542,
+      "reputation" : 3109,
+      "user_id" : 3631743,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://i.sstatic.net/Y1ASY.jpg?s=256",
+      "display_name" : "BSeitkazin",
+      "link" : "https://stackoverflow.com/users/3631743/bseitkazin"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1532026301,
+    "creation_date" : 1532026301,
+    "answer_id" : 51429937,
+    "question_id" : 41461336,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In your Controller declaration just delete <code>produces</code>, and <code>HttpServletRequest request</code>. The simple example of Controller would look like:</p>\n\n<pre><code>@RequestMapping(value = \"/export\", method = RequestMethod.POST)\npublic void export(HttpServletResponse response) {\n    List&lt;Person&gt; persons = personRepository.findAll();\n    List&lt;String&gt; headers = Arrays.asList(\"First Name\", \"Last Name\");\n    try {\n        response.addHeader(\"Content-disposition\", \"attachment; filename=People.xlsx\");\n        response.setContentType(\"application/vnd.ms-excel\");\n        new SimpleExporter().gridExport(headers, persons, \"firstName, lastName, \", response.getOutputStream());\n        response.flushBuffer();\n    } catch (IOException e) {\n        log.warn(e.getMessage(), e);\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1947911,
+    "reputation" : 939,
+    "user_id" : 1752650,
+    "user_type" : "registered",
+    "accept_rate" : 87,
+    "profile_image" : "https://www.gravatar.com/avatar/4ec5d30a36a7848c8c604f3cfd77a175?s=256&d=identicon&r=PG",
+    "display_name" : "Teekam",
+    "link" : "https://stackoverflow.com/users/1752650/teekam"
+  },
+  "is_answered" : false,
+  "view_count" : 9583,
+  "answer_count" : 1,
+  "score" : 4,
+  "last_activity_date" : 1760627270,
+  "creation_date" : 1483525040,
+  "question_id" : 41461336,
+  "link" : "https://stackoverflow.com/questions/41461336/how-to-export-a-excel-file-in-spring-boot-using-angular-2",
+  "title" : "How to export a excel file in Spring boot using Angular 2?",
+  "body" : "<p>In my project i need to export Customer data in a excel file. I am using table structure using Hybernate build.</p>\n\n<p>my controller is as:</p>\n\n<pre><code> @RequestMapping(value=\"exporttoexcel\", method= RequestMethod.GET, produces={ MediaType.APPLICATION_JSON_VALUE })\n    public void  getMyData(HttpServletRequest request, HttpServletResponse response) throws Exception {\n        List&lt;Course&gt; listCourses = new ArrayList&lt;Course&gt;();\n        listCourses.add(new Course(1, \"Polarfrosch100\", new Date()));\n        listCourses.add(new Course(2, \"Polarfrosch101\", new Date()));\n        listCourses.add(new Course(3, \"Polarfrosch102\", new Date()));\n        HashMap&lt;String, Object&gt; model = new HashMap&lt;&gt;();\n        model.put(\"courses\", listCourses);\n        new ExcelUtilsHelper().renderMergedOutputModel(model, request, response);\n    }\n</code></pre>\n\n<p>My Helper file is as:</p>\n\n<pre><code>public class ExcelUtilsHelper {\n\n\n    private static final DateFormat DATE_FORMAT = DateFormat.getDateInstance(DateFormat.SHORT);\n\n    private String contentType;\n\n    public ExcelUtilsHelper() {\n        this.setContentType(\"application/vnd.ms-excel\");\n    }\n\n    public final void renderMergedOutputModel(Map&lt;String, Object&gt; model, HttpServletRequest request, HttpServletResponse response) throws Exception {\n        Workbook workbook = this.createWorkbook(model, request);\n        this.buildExcelDocument(model, workbook, request, response);\n        response.setContentType(this.getContentType());\n        this.renderWorkbook(workbook, response);\n    }\n\n    protected Workbook createWorkbook(Map&lt;String, Object&gt; model, HttpServletRequest request) {\n        return new HSSFWorkbook();\n    }\n\n    protected void renderWorkbook(Workbook workbook, HttpServletResponse response) throws IOException {\n        ServletOutputStream out = response.getOutputStream();\n        workbook.write(out);\n    }\n\n    public void setContentType(String contentType) {\n        this.contentType = contentType;\n    }\n\n    public String getContentType() {\n        return contentType;\n    }\n\n    protected void buildExcelDocument(Map&lt;String, Object&gt; model,\n                                      Workbook workbook,\n                                      HttpServletRequest request,\n                                      HttpServletResponse response) throws Exception {\n\n        // change the file name\n        response.setHeader(\"Content-Disposition\", \"attachment; filename=\\\"my-xls-file.xls\\\"\");\n\n        @SuppressWarnings(\"unchecked\")\n        List&lt;Course&gt; courses = (List&lt;Course&gt;) model.get(\"courses\");\n\n        // create excel xls sheet\n        Sheet sheet = workbook.createSheet(\"Spring MVC AbstractXlsView\");\n\n        // create header row\n        Row header = sheet.createRow(0);\n        header.createCell(0).setCellValue(\"ID\");\n        header.createCell(1).setCellValue(\"Name\");\n        header.createCell(2).setCellValue(\"Date\");\n\n        // Create data cells\n        int rowCount = 1;\n        for (Course course : courses){\n            Row courseRow = sheet.createRow(rowCount++);\n            courseRow.createCell(0).setCellValue(course.getId());\n            courseRow.createCell(1).setCellValue(course.getName());\n            courseRow.createCell(2).setCellValue(DATE_FORMAT.format(course.getDate()));\n        }\n    }\n}\n</code></pre>\n\n<p>And Cource is as:</p>\n\n<pre><code>public class Course {\n    int Id;\n    String Name;\n    Date Date;\n// Getter and setter \n}\n</code></pre>\n\n<p>My list on UI part is as:</p>\n\n<pre><code>&lt;div class=\"panel-heading\"&gt;\n    &lt;h6 class=\"panel-title\"&gt;All Customers&lt;/h6&gt;\n    &lt;button (click)=\"addCustomer()\" class=\"btn btn-xs  bg-primary\" title=\"Add\"&gt;&lt;i class=\"glyphicon glyphicon-edit\"&gt;&lt;/i&gt;&lt;/button&gt;\n    &lt;button (click)=\"exportToExcel()\" class=\"btn btn-xs  bg-danger\" title=\"Add\"&gt;&lt;i class=\"glyphicon glyphicon-edit\"&gt;&lt;/i&gt;&lt;/button&gt;\n  &lt;/div&gt;\n</code></pre>\n\n<p>in service code is as:</p>\n\n<pre><code>  exportToExcel(){\n    console.log(\"in exportToExcel\");\n    this.customerService.getCustomersExcelData().subscribe(result =&gt; {\n        console.log(\"DataResult\");\n        console.log(result)\n      },\n      error =&gt; {\n        console.log(error);\n      });\n  }\n</code></pre>\n\n<p>and</p>\n\n<pre><code>  getCustomersExcelData(){\n    return this.http.get(ApiConfig.apiRoot+ApiConfig.excelDataCustomer)\n      .map((response: Response) =&gt; {\n        this.downloadFile(response),\n          error =&gt; console.log(\"Error downloading the file.\"),\n          () =&gt; console.info(\"OK\");\n      }).catch(this.commonMethods.handleError);\n  }\n</code></pre>\n\n<p>when i run this it gives below out put:</p>\n\n<pre><code>Response with status: 200 OK for URL: http://localhost:9966/api/customer/exporttoexcel\n</code></pre>\n\n<p>Problem is, i am unable to export the given data in excel format.  </p>\n"
+}

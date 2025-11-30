@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", ".net", "jacob" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5331947,
+      "reputation" : 125,
+      "user_id" : 4252311,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-AkDR_B24cm4/AAAAAAAAAAI/AAAAAAAAAH4/g_fBbPPuU3k/s256-rj/photo.jpg",
+      "display_name" : "Uncle Boni",
+      "link" : "https://stackoverflow.com/users/4252311/uncle-boni"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1415973195,
+    "creation_date" : 1415973195,
+    "answer_id" : 26931566,
+    "question_id" : 26929686,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Problem solved - I just had to remove the 'static' function declaration from my DLL methods thanks to this article - <a href=\"http://jumbloid.blogspot.com/2009/12/making-net-dll-com-visible.html\" rel=\"nofollow\">http://jumbloid.blogspot.com/2009/12/making-net-dll-com-visible.html</a></p>\n\n<pre><code>using System;\nusing System.Data;\nusing System.Data.SqlClient;\nusing System.IO;\n\nnamespace dllx32conn\n{\n  public class dbconn\n  {\n    public static string conn_str = \"\";\n    public static string strFilePath = \"\";\n    public static SqlConnection Conn = new SqlConnection();\n    public static DataTable tbl;\n    public static SqlDataAdapter dap;\n\n    public void pass_para(string servname, string csvpth)\n    {\n      dbconn.conn_str = \"Data Source=\" + servname + \";Initial Catalog=xxx;User Id=xxx;Password=xxx\";\n      dbconn.strFilePath = csvpth;\n    }\n  }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 220213,
+      "reputation" : 6095,
+      "user_id" : 477494,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/5S7II.jpg?s=256",
+      "display_name" : "Uncle Iroh",
+      "link" : "https://stackoverflow.com/users/477494/uncle-iroh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1428521567,
+    "creation_date" : 1428521567,
+    "answer_id" : 29523759,
+    "question_id" : 26929686,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>So I was getting this error and ultimately my problem was that I had two instances of the classes on the class-path.  I had the classes of a dependent jar unpacked as well as the jar itself on the path.  I got rid of the jar and voila it all started working beautifully.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5331947,
+    "reputation" : 125,
+    "user_id" : 4252311,
+    "user_type" : "registered",
+    "profile_image" : "https://lh6.googleusercontent.com/-AkDR_B24cm4/AAAAAAAAAAI/AAAAAAAAAH4/g_fBbPPuU3k/s256-rj/photo.jpg",
+    "display_name" : "Uncle Boni",
+    "link" : "https://stackoverflow.com/users/4252311/uncle-boni"
+  },
+  "is_answered" : false,
+  "view_count" : 9966,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1762679345,
+  "creation_date" : 1415966895,
+  "question_id" : 26929686,
+  "link" : "https://stackoverflow.com/questions/26929686/jacob-com-jacob-com-comfailexception-cant-map-name-to-dispid",
+  "title" : "Jacob com.jacob.com.ComFailException: Can&#39;t map name to dispid:",
+  "body" : "<p>I've been trying to call a dll function from Java using Jacob without any success. I have done registration of the dll with regasm as described here - <a href=\"http://www.dreamincode.net/forums/topic/114094-using-dll-library-in-java-application-using-jacob/\" rel=\"nofollow\">http://www.dreamincode.net/forums/topic/114094-using-dll-library-in-java-application-using-jacob/</a>. My code:</p>\n\n<pre><code>String serverName = \"...\", fileName = \"...\";\nDispatch dispatch = new Dispatch(\"dllx32conn.dbconn\");  \nDispatch.call(dispatch, \"pass_para\", serverName, fileName);\n</code></pre>\n\n<p>This doesn't work. It throws com.jacob.com.ComFailException: Can't map name to dispid: pass_para</p>\n\n<p>So I decided to analyze the dll functions by decompiling it using JetBrains dotPeek. Here is what I found</p>\n\n<pre><code>using System;\nusing System.Data;\nusing System.Data.SqlClient;\nusing System.IO;\n\nnamespace dllx32conn\n{\n  public class dbconn\n  {\n    public static string conn_str = \"\";\n    public static string strFilePath = \"\";\n    public static SqlConnection Conn = new SqlConnection();\n    public static DataTable tbl;\n    public static SqlDataAdapter dap;\n\n    public static void pass_para(string servname, string csvpth)\n    {\n      dbconn.conn_str = \"Data Source=\" + servname + \";Initial Catalog=Billing;User Id=Scd;Password=Smart11Siri\";\n      dbconn.strFilePath = csvpth;\n    }\n  }\n}\n</code></pre>\n\n<p>I would really appreciate some help with figuring out what's not happening here. Thanks.</p>\n"
+}

@@ -1,0 +1,120 @@
+{
+  "tags" : [ "java", "csv", "filtering", "large-files", "apache-commons-csv" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 961675,
+      "reputation" : 5072,
+      "user_id" : 985906,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/82762ea3991b3411abab1054dea063a4?s=256&d=identicon&r=PG",
+      "display_name" : "JoshDM",
+      "link" : "https://stackoverflow.com/users/985906/joshdm"
+    },
+    "is_accepted" : false,
+    "score" : 24,
+    "last_activity_date" : 1625221894,
+    "last_edit_date" : 1625221894,
+    "creation_date" : 1440095295,
+    "answer_id" : 32125707,
+    "question_id" : 32123969,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>No matter what you do, all of the data from your file is going to come over to your local machine because your system needs to parse through it to determine validity.  Whether the file arrives via a file read through the parser (so you can parse each line), or whether you just copy the entire file over for parsing purposes, it will all come over to local.  You will need to get the data local, then trim the excess.</p>\n<p>Calling <code>csvFileParser.getRecords()</code> is already a lost battle because <a href=\"https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVParser.html\" rel=\"noreferrer\">the documentation</a> explains that that method loads every row of your file into memory.  To parse the record while conserving active memory, you should instead iterate over each record; the documentation implies the following code loads one record to memory at a time:</p>\n<pre><code>CSVParser csvFileParser = CSVParser.parse(new File(&quot;filePath&quot;), StandardCharsets.UTF_8, csvFileFormat);\n\nfor (CSVRecord csvRecord : csvFileParser) {\n     ... // qualify the csvRecord; output qualified row to new file and flush as needed.\n}\n</code></pre>\n<p>Since you explained that <code>&quot;filePath&quot;</code> is not local, the above solution is prone to failure due to connectivity issues.  To eliminate connectivity issues, I recommend you copy the entire remote file over to local, ensure the file copied accurately by comparing checksums, parse the local copy to create your target file, then delete the local copy after completion.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1493724,
+        "reputation" : 1614,
+        "user_id" : 1400157,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/3976eae1564c32bd45a9f728dc6e42b3?s=256&d=identicon&r=PG",
+        "display_name" : "pmartin8",
+        "link" : "https://stackoverflow.com/users/1400157/pmartin8"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1725391175,
+      "post_id" : 48103486,
+      "comment_id" : 139193097,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Just tried it. When you do .parse() then it loads everything in memory. Your solution doesn&#39;t work."
+    } ],
+    "owner" : {
+      "account_id" : 1416546,
+      "reputation" : 861,
+      "user_id" : 1342094,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c19629a0eba4463116f923e7e2a4db81?s=256&d=identicon&r=PG",
+      "display_name" : "K Raphael",
+      "link" : "https://stackoverflow.com/users/1342094/k-raphael"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1515099527,
+    "creation_date" : 1515099527,
+    "answer_id" : 48103486,
+    "question_id" : 32123969,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This is a late response, but you CAN use a <code>BufferedReader</code> with the CSVParser:</p>\n\n<pre><code>try (BufferedReader reader = new BufferedReader(new FileReader(fileName), 1048576 * 10)) {\n    Iterable&lt;CSVRecord&gt; records = CSVFormat.RFC4180.parse(reader);\n    for (CSVRecord line: records) {\n        // Process each line here\n    }\ncatch (...) { // handle exceptions from your bufferedreader here\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 39426314,
+      "reputation" : 21,
+      "user_id" : 29269186,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/a7f9b09c4991f4766f9eb1fea07455dc?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "FriendlyBug",
+      "link" : "https://stackoverflow.com/users/29269186/friendlybug"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1737309240,
+    "last_edit_date" : 1737309240,
+    "creation_date" : 1737309092,
+    "answer_id" : 79369470,
+    "question_id" : 32123969,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use FG.CsvParser's Query method which will read your data line-by-line while you can put your own condition function to filter it real time. With that you will read only data that you need from your CSV file.</p>\n<pre><code>var filePath = &quot;path/to/your/csvfile.csv&quot;;\nusing var parser = CsvParser.OpenFile(filePath,configuration);\n\nawait foreach (var item in parser.Query&lt;MyDataClass&gt;(data =&gt; data.Column2 &gt; 100))\n{\n    Console.WriteLine(item);\n}\n</code></pre>\n<p>More information: <a href=\"https://github.com/fermanquliyev/FG.CsvParser\" rel=\"nofollow noreferrer\">https://github.com/fermanquliyev/FG.CsvParser</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1761366483,
+    "last_edit_date" : 1761366483,
+    "creation_date" : 1737435039,
+    "answer_id" : 79373226,
+    "question_id" : 32123969,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2><code>BufferedReader</code></h2>\n<p>You said:</p>\n<blockquote>\n<p>I suppose that Apache CSV ( apache.commons.csv ) can only parse whole file</p>\n</blockquote>\n<p>Incorrect. <a href=\"https://commons.apache.org/proper/commons-csv/\" rel=\"nofollow noreferrer\"><em>Apache Commons CSV</em></a> can indeed read gradually. Use an implementation of <a href=\"https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/io/BufferedReader.html\" rel=\"nofollow noreferrer\"><code>BufferedReader</code></a> to access your remote file. That interface inherits from <a href=\"https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/io/Reader.html\" rel=\"nofollow noreferrer\"><code>Reader</code></a> which is required by <em>Apache Commons CSV</em>.</p>\n<p>To quote from the Javadoc for <a href=\"https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/io/BufferedReader.html\" rel=\"nofollow noreferrer\"><code>java.io.BufferedReader</code></a>:</p>\n<blockquote>\n<p>Reads text from a character-input stream, buffering characters so as to provide for the efficient reading of characters, arrays, and lines.</p>\n<p>The buffer size may be specified, or the default size may be used. The default is large enough for most purposes.</p>\n<p>In general, each read request made of a <code>Reader</code> causes a corresponding <code>read</code> request to be made of the underlying character or byte stream. It is therefore advisable to wrap a <code>BufferedReader</code> around any <code>Reader</code> whose read() operations may be costly, such as <code>FileReader</code>s and <code>InputStreamReader</code>s.</p>\n</blockquote>\n<p>In modern Java, use NIO.2 features for convenient file access. Note especially the classes <code>Path</code> &amp; <code>File</code>, along with the plural names, <a href=\"https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/nio/file/Paths.html\" rel=\"nofollow noreferrer\"><code>Paths</code></a> &amp; <a href=\"https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/nio/file/Files.html\" rel=\"nofollow noreferrer\"><code>Files</code></a>. Obtain a <code>BufferedReader</code> by calling <a href=\"https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/nio/file/Files.html#newBufferedReader(java.nio.file.Path,java.nio.charset.Charset)\" rel=\"nofollow noreferrer\"><code>Files.newBufferedReader</code></a>.</p>\n<pre><code>BufferedReader reader = Files.newBufferedReader ( path , StandardCharsets.UTF_8 ) \n</code></pre>\n<p>You said:</p>\n<blockquote>\n<p>… so I can't use BufferedReader</p>\n</blockquote>\n<p>Yes, you can, as described in other Answers and Comments.</p>\n<p>Let's write an updated and completed version of the code mentioned by others.</p>\n<p>Obtain the <em>Apache Commons CSV</em> library at <a href=\"https://mvnrepository.com/artifact/org.apache.commons/commons-csv\" rel=\"nofollow noreferrer\">these Maven coordinates</a>.</p>\n<h2>Data</h2>\n<p>Sample data:</p>\n<pre class=\"lang-java prettyprint-override\"><code>String folder = &quot;/Users/basil_dot_work&quot;;\nString fileName = &quot;Example.csv&quot;;\nPath path = Paths.get ( folder , fileName );\nSystem.out.println ( &quot;path = &quot; + path );\n\nrecord Person( String name , int id ) { }\nSequencedCollection &lt; Person &gt; persons =\n        List.of (\n                new Person ( &quot;Alice&quot; , 1 ) ,\n                new Person ( &quot;Bob&quot; , 2 ) ,\n                new Person ( &quot;Carol&quot; , 3 ) ,\n                new Person ( &quot;Davis&quot; , 4 )\n        );\n</code></pre>\n<p>Example data:</p>\n<pre class=\"lang-none prettyprint-override\"><code>name,id\nAlice,1\nBob,2\nCarol,3\nDavis,4\n</code></pre>\n<h2><code>CSVFormat</code> &amp; <code>Builder</code></h2>\n<p>Next we set up a <a href=\"https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.html\" rel=\"nofollow noreferrer\"><code>CSVFormat</code></a> by way of <a href=\"https://commons.apache.org/proper/commons-csv/apidocs/org/apache/commons/csv/CSVFormat.Builder.html\" rel=\"nofollow noreferrer\"><code>CSVFormat.Builder</code></a>.</p>\n<pre class=\"lang-java prettyprint-override\"><code>// Prepare for CSV processing.\nCSVFormat csvFormat = CSVFormat\n        .RFC4180\n        .builder ( )\n        .setHeader ( )\n        .setSkipHeaderRecord ( true )  // Interpret first record as header row.\n        .get ( );\n</code></pre>\n<h2>Writing</h2>\n<p>Write the sample data.</p>\n<p>Notice how we use try-with-resources syntax to automatically close our open resources (the writers &amp; readers).</p>\n<pre class=\"lang-java prettyprint-override\"><code>// Write.\ntry (\n        Writer writer = Files.newBufferedWriter ( path , StandardCharsets.UTF_8 ) ;\n        CSVPrinter printer = new CSVPrinter ( writer , csvFormat )\n)\n{\n    printer.printRecord ( &quot;name&quot; , &quot;id&quot; );  // Header row.\n    for ( Person person : persons )\n    {\n        printer.printRecord ( person.name , person.id ); // Data row.\n    }\n}\ncatch ( IOException e )\n{\n    e.printStackTrace ( );\n}\n</code></pre>\n<h2>Reading</h2>\n<p>Read the data.</p>\n<p>In this example, we read each row from the CSV file via the buffered reader. From those row fields, we instantiate a <code>Person</code> object. Then we make a predicate test to filter for certain subset of <code>Person</code> objects, those with even <code>id</code> numbers ( <code>2</code> &amp; <code>4</code> in our sample data).</p>\n<pre class=\"lang-java prettyprint-override\"><code>// Read.\ntry\n        (\n                BufferedReader reader = Files.newBufferedReader ( path , StandardCharsets.UTF_8 ) ;\n                CSVParser parser = csvFormat.parse ( reader ) ;\n        )\n{\n    for ( CSVRecord csvRecord : parser )  // Buffered reader means only chunks of the file are processed, not the entire file at once.\n    {\n        String name = csvRecord.get ( &quot;name&quot; );\n        int id = Integer.parseInt ( csvRecord.get ( &quot;id&quot; ) );\n        Person person = new Person ( name , id );\n        if ( person.id % 2 == 0 ) // Predicate to filter incoming records, per mention in Question.\n        {\n            System.out.println ( &quot;person = &quot; + person );\n        }\n    }\n    System.out.println ( &quot;INFO - Demo done. &quot; + Instant.now ( ) );\n}\ncatch ( IOException e )\n{\n    throw new RuntimeException ( e );\n}\n</code></pre>\n<h2>Other info</h2>\n<p><a href=\"https://stackoverflow.com/questions/32123969/how-can-i-process-a-large-file-via-csvparser/79373226#comment139193097_48103486\">Someone commented</a> on another Answer:</p>\n<blockquote>\n<p>Just tried it. When you do .parse() then it loads everything in memory. Your solution doesn't work.</p>\n</blockquote>\n<p>What makes you say that? Give evidence. Explain what indications led you to believe the entire file is read into memory all at once.</p>\n<p>You neglected to explain the technical details behind your mention “read from a remote host”. If you meant some kind of network-based file server, perhaps your file system is reading the entire file at once. That would be an issue with your host OS and its file system. That problem would be outside the control of Java and <em>Apache Commons CSV</em>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6564657,
+    "reputation" : 181,
+    "user_id" : 5074674,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/01f661d2015ef1dd9c8b14207be151db?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Alex Orlov",
+    "link" : "https://stackoverflow.com/users/5074674/alex-orlov"
+  },
+  "is_answered" : true,
+  "view_count" : 14245,
+  "answer_count" : 4,
+  "score" : 16,
+  "last_activity_date" : 1761366483,
+  "creation_date" : 1440089500,
+  "last_edit_date" : 1485187797,
+  "question_id" : 32123969,
+  "link" : "https://stackoverflow.com/questions/32123969/how-can-i-process-a-large-file-via-csvparser",
+  "title" : "How can I process a large file via CSVParser?",
+  "body" : "<p>I have a large <code>.csv</code> file (about 300 MB), which is read from a remote host, and parsed into a target file, but I don't need to copy all the lines to the target file. While copying, I need to read each line from the source and if it passes some predicate, add the line to the target file.</p>\n\n<p>I suppose that Apache CSV ( <code>apache.commons.csv</code> ) can only parse whole file</p>\n\n<pre><code>CSVFormat csvFileFormat = CSVFormat.EXCEL.withHeader();\nCSVParser csvFileParser = new CSVParser(\"filePath\", csvFileFormat);\nList&lt;CSVRecord&gt; csvRecords = csvFileParser.getRecords();\n</code></pre>\n\n<p>so I can't use <code>BufferedReader</code>.  Based on my code, a <code>new CSVParser()</code> instance should be created for each line, which looks inefficient.</p>\n\n<p>How can I parse a single line (with known header of the table) in the case above?</p>\n"
+}

@@ -1,0 +1,713 @@
+{
+  "tags" : [ "java", "types", "endianness" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1317457221,
+    "post_id" : 7619058,
+    "comment_id" : 9248503,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "How much <i>do</i> you understand about bit shifting? It sounds like the question is really &quot;what does bit shifting do&quot; more than about the conversion to byte arrays, really - if you actually want to understand how the conversion would work."
+  }, {
+    "owner" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1317457313,
+    "post_id" : 7619058,
+    "comment_id" : 9248509,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "(Just to clarify, I&#39;m fine with either question, but it&#39;s worth making it clear <i>which</i> question you really want answered. You&#39;re likely to get an answer which is more useful to you that way.)"
+  }, {
+    "owner" : {
+      "account_id" : 320193,
+      "reputation" : 7824,
+      "user_id" : 638344,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/b335c649c5cc0f71f2eaa1927b2127fd?s=256&d=identicon&r=PG",
+      "display_name" : "Chris",
+      "link" : "https://stackoverflow.com/users/638344/chris"
+    },
+    "reply_to_user" : {
+      "account_id" : 11683,
+      "reputation" : 1520502,
+      "user_id" : 22656,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Skeet",
+      "link" : "https://stackoverflow.com/users/22656/jon-skeet"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1317558197,
+    "post_id" : 7619058,
+    "comment_id" : 9259378,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Okay i got your point! Thanks for the remark. I know what bit shifting does i just didn&#39;t understand what its used for in converting byte arrays yet."
+  }, {
+    "owner" : {
+      "account_id" : 320193,
+      "reputation" : 7824,
+      "user_id" : 638344,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/b335c649c5cc0f71f2eaa1927b2127fd?s=256&d=identicon&r=PG",
+      "display_name" : "Chris",
+      "link" : "https://stackoverflow.com/users/638344/chris"
+    },
+    "reply_to_user" : {
+      "account_id" : 487205,
+      "reputation" : 348,
+      "user_id" : 973041,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/92f1bdf5f7f139a3512da8b655abc80e?s=256&d=identicon&r=PG",
+      "display_name" : "prekageo",
+      "link" : "https://stackoverflow.com/users/973041/prekageo"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1317558510,
+    "post_id" : 7619058,
+    "comment_id" : 9259433,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@prekageo and Jeff Mercado Thanks for your two answers. prekageo gave a good explanation of how this is done, nice link! That makes it a lot clearer to me. And Jeff Mercados solution solved the problem i had."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 487205,
+      "reputation" : 348,
+      "user_id" : 973041,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/92f1bdf5f7f139a3512da8b655abc80e?s=256&d=identicon&r=PG",
+      "display_name" : "prekageo",
+      "link" : "https://stackoverflow.com/users/973041/prekageo"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1317457500,
+    "creation_date" : 1317457500,
+    "answer_id" : 7619093,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>A basic implementation would be something like this:</p>\n\n<pre><code>public class Test {\n    public static void main(String[] args) {\n        int[] input = new int[] { 0x1234, 0x5678, 0x9abc };\n        byte[] output = new byte[input.length * 2];\n\n        for (int i = 0, j = 0; i &lt; input.length; i++, j+=2) {\n            output[j] = (byte)(input[i] &amp; 0xff);\n            output[j+1] = (byte)((input[i] &gt;&gt; 8) &amp; 0xff);\n        }\n\n        for (int i = 0; i &lt; output.length; i++)\n            System.out.format(\"%02x\\n\",output[i]);\n    }\n}\n</code></pre>\n\n<p>In order to understand things you can read this WP article: <a href=\"http://en.wikipedia.org/wiki/Endianness\" rel=\"noreferrer\">http://en.wikipedia.org/wiki/Endianness</a></p>\n\n<p>The above source code will output <code>34 12 78 56 bc 9a</code>. The first 2 bytes (<code>34 12</code>) represent the first integer, etc. The above source code encodes integers in little endian format.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13004715,
+        "reputation" : 1075,
+        "user_id" : 9399618,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-Kbh-VJsQoKU/AAAAAAAAAAI/AAAAAAAAAPQ/coY8yzTeYwo/s256-rj/photo.jpg",
+        "display_name" : "Meow Cat 2012",
+        "link" : "https://stackoverflow.com/users/9399618/meow-cat-2012"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1551495691,
+      "post_id" : 7619111,
+      "comment_id" : 96672058,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Is it too expensive if the byte array contains only 1 or 2 integer? Not sure about the cost constructing a <code>ByteBuffer</code>."
+    }, {
+      "owner" : {
+        "account_id" : 166270,
+        "reputation" : 135551,
+        "user_id" : 390278,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/84715fec547362389d02f5be0ed12814?s=256&d=identicon&r=PG",
+        "display_name" : "Jeff Mercado",
+        "link" : "https://stackoverflow.com/users/390278/jeff-mercado"
+      },
+      "reply_to_user" : {
+        "account_id" : 13004715,
+        "reputation" : 1075,
+        "user_id" : 9399618,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-Kbh-VJsQoKU/AAAAAAAAAAI/AAAAAAAAAPQ/coY8yzTeYwo/s256-rj/photo.jpg",
+        "display_name" : "Meow Cat 2012",
+        "link" : "https://stackoverflow.com/users/9399618/meow-cat-2012"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1557721569,
+      "post_id" : 7619111,
+      "comment_id" : 98845320,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "How often are you working with binary data in 2-4 byte chunks? Really? A sane implementation would either work with it in BUFSIZ chunks (typically 4kb) or use other IO libraries that hides this detail. There&#39;s an entire library within the framework that&#39;s dedicated to help you work on buffers of data. You do a disservice to yourself and other maintainers of your code when you implement common operations without good reason (be it perf or other critical operation). These buffers are merely wrappers that operates on arrays, nothing more."
+    }, {
+      "owner" : {
+        "user_type" : "does_not_exist",
+        "display_name" : "user9599745"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1564614827,
+      "post_id" : 7619111,
+      "comment_id" : 101093541,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "How come you can instantiate an abstract class?"
+    }, {
+      "owner" : {
+        "account_id" : 1114067,
+        "reputation" : 201056,
+        "user_id" : 1103872,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://i.sstatic.net/LR4iW.jpg?s=256",
+        "display_name" : "Marko Topolnik",
+        "link" : "https://stackoverflow.com/users/1103872/marko-topolnik"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1576674198,
+      "post_id" : 7619111,
+      "comment_id" : 104974870,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@JaveneCPPMcGowan There is no direct instantiation present in this answer. If  you mean the factory methods <code>wrap</code> and <code>allocate</code>, they don&#39;t return an instance of the abstract class <code>ByteBuffer</code>."
+    }, {
+      "owner" : {
+        "account_id" : 463429,
+        "reputation" : 6796,
+        "user_id" : 866333,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/4b2cf4a4b91ef887b17691a87d4bc0e1?s=256&d=identicon&r=PG",
+        "display_name" : "John",
+        "link" : "https://stackoverflow.com/users/866333/john"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1592033490,
+      "post_id" : 7619111,
+      "comment_id" : 110283795,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Not a solution for 3 byte stride. We can get <code>Char</code>, <code>Short</code>, <code>Int</code>. I suppose I could pad to 4 bytes and discard the 4th each time, but I would rather not."
+    }, {
+      "owner" : {
+        "account_id" : 166270,
+        "reputation" : 135551,
+        "user_id" : 390278,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/84715fec547362389d02f5be0ed12814?s=256&d=identicon&r=PG",
+        "display_name" : "Jeff Mercado",
+        "link" : "https://stackoverflow.com/users/390278/jeff-mercado"
+      },
+      "reply_to_user" : {
+        "account_id" : 463429,
+        "reputation" : 6796,
+        "user_id" : 866333,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/4b2cf4a4b91ef887b17691a87d4bc0e1?s=256&d=identicon&r=PG",
+        "display_name" : "John",
+        "link" : "https://stackoverflow.com/users/866333/john"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1592033877,
+      "post_id" : 7619111,
+      "comment_id" : 110283886,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@John: Well you can only really work with builtin types using this approach. A 3-byte integral type is definitely non-standard. But you can still work with it this way like you can any mainstream language. You just need to read smaller portions of the data and bit-manipulate it to your desired value."
+    } ],
+    "owner" : {
+      "account_id" : 166270,
+      "reputation" : 135551,
+      "user_id" : 390278,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/84715fec547362389d02f5be0ed12814?s=256&d=identicon&r=PG",
+      "display_name" : "Jeff Mercado",
+      "link" : "https://stackoverflow.com/users/390278/jeff-mercado"
+    },
+    "is_accepted" : true,
+    "score" : 268,
+    "last_activity_date" : 1317458191,
+    "last_edit_date" : 1317458191,
+    "creation_date" : 1317457753,
+    "answer_id" : 7619111,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Use the classes found in the <a href=\"http://download.oracle.com/javase/6/docs/api/java/nio/package-frame.html\" rel=\"noreferrer\"><code>java.nio</code></a> namespace, in particular, the <a href=\"http://download.oracle.com/javase/6/docs/api/java/nio/ByteBuffer.html\" rel=\"noreferrer\"><code>ByteBuffer</code></a>.  It can do all the work for you.</p>\n\n<pre><code>byte[] arr = { 0x00, 0x01 };\nByteBuffer wrapped = ByteBuffer.wrap(arr); // big-endian by default\nshort num = wrapped.getShort(); // 1\n\nByteBuffer dbuf = ByteBuffer.allocate(2);\ndbuf.putShort(num);\nbyte[] bytes = dbuf.array(); // { 0, 1 }\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 32915,
+        "reputation" : 10722,
+        "user_id" : 1038182,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/0lPeX.jpg?s=256",
+        "display_name" : "Ori Popowski",
+        "link" : "https://stackoverflow.com/users/1038182/ori-popowski"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1394396404,
+      "post_id" : 7619315,
+      "comment_id" : 33860078,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I think the <code>&amp; 0xFF</code>s are unnecessary."
+    }, {
+      "owner" : {
+        "account_id" : 284283,
+        "reputation" : 1564,
+        "user_id" : 582298,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://i.sstatic.net/OBkU2.png?s=256",
+        "display_name" : "coderforlife",
+        "link" : "https://stackoverflow.com/users/582298/coderforlife"
+      },
+      "reply_to_user" : {
+        "account_id" : 32915,
+        "reputation" : 10722,
+        "user_id" : 1038182,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/0lPeX.jpg?s=256",
+        "display_name" : "Ori Popowski",
+        "link" : "https://stackoverflow.com/users/1038182/ori-popowski"
+      },
+      "edited" : false,
+      "score" : 14,
+      "creation_date" : 1406659443,
+      "post_id" : 7619315,
+      "comment_id" : 38913471,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@LeifEricson I believe the <code>&amp; 0xFF</code>s are necessary as it tells the JVM to convert the signed byte into an integer with just those bits set. Otherwise the byte -1 (0xFF) will turn into the int -1 (0xFFFFFFFF). I could be wrong and even if I am it doesn&#39;t hurt and makes things clearer."
+    }, {
+      "owner" : {
+        "account_id" : 1560590,
+        "reputation" : 2246,
+        "user_id" : 1450537,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/8fd0ff464e47ae5507b844f6b0bedd11?s=256&d=identicon&r=PG",
+        "display_name" : "HBN",
+        "link" : "https://stackoverflow.com/users/1450537/hbn"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1417888486,
+      "post_id" : 7619315,
+      "comment_id" : 43126243,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&amp; 0xFF is mandatory indeed.   <code>byte b = 0;   b |= 0x88;   System.out.println(Integer.toString(b, 16)); &#47;&#47;Output: -78   System.out.println(Integer.toString(b &amp; 0xFF, 16)); &#47;&#47;Output: 88</code>"
+    }, {
+      "owner" : {
+        "account_id" : 3921336,
+        "reputation" : 794,
+        "user_id" : 3243365,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/d15877b3ac2751bb7ff010e3ccb73c68?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "ptntialunrlsd",
+        "link" : "https://stackoverflow.com/users/3243365/ptntialunrlsd"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446531736,
+      "post_id" : 7619315,
+      "comment_id" : 54769503,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Is it that, <code>&amp; 0xFF</code>s are converting the signed byte to the unsigned byte?"
+    }, {
+      "owner" : {
+        "account_id" : 4317888,
+        "reputation" : 658,
+        "user_id" : 3527156,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/c73d43fde218db87456888f4ed8f043e?s=256&d=identicon&r=PG",
+        "display_name" : "Nier",
+        "link" : "https://stackoverflow.com/users/3527156/nier"
+      },
+      "reply_to_user" : {
+        "account_id" : 3921336,
+        "reputation" : 794,
+        "user_id" : 3243365,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/d15877b3ac2751bb7ff010e3ccb73c68?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "ptntialunrlsd",
+        "link" : "https://stackoverflow.com/users/3243365/ptntialunrlsd"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1458790505,
+      "post_id" : 7619315,
+      "comment_id" : 60020141,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@ptntialunrlsd Not actually. Before you performing <b>&amp;</b> operation on <code>byte</code> with 0xFF (<code>int</code>), JVM will cast the <code>byte</code> to <code>int</code> with <b>1 extended</b> or <b>0 extended</b> according the the leading bit first. There&#39;s no <b>unsigned byte</b> in Java, <code>byte</code>s are always signed."
+    }, {
+      "owner" : {
+        "account_id" : 2041853,
+        "reputation" : 1000,
+        "user_id" : 1822803,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/5e518d6fbf39907532ece559a931df6f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Bin",
+        "link" : "https://stackoverflow.com/users/1822803/bin"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1493966774,
+      "post_id" : 7619315,
+      "comment_id" : 74636539,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "When parse int from byte array, pay attention to the size of the byte array, if it&#39;s greater than 4 bytes, according to the doc of <code>ByteBuffer.getInt()</code> : <code>Reads the next four bytes at this buffer&#39;s current position</code> ,  only the first 4 bytes will be parsed, which should not be what you want."
+    }, {
+      "owner" : {
+        "account_id" : 1816354,
+        "reputation" : 647,
+        "user_id" : 1651361,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a1b933ade78a3db95c560fdf309daf56?s=256&d=identicon&r=PG",
+        "display_name" : "GreenhouseVeg",
+        "link" : "https://stackoverflow.com/users/1651361/greenhouseveg"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1531227408,
+      "post_id" : 7619315,
+      "comment_id" : 89509581,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "To complement <a href=\"https://stackoverflow.com/questions/7619058/convert-a-byte-array-to-integer-in-java-and-vice-versa/7619111#comment74636539_7619315\">Bin&#39;s comment</a> - if the bytes array has less than 2 bytes, adjust the code accordingly, i.e. make sure to allocate enough capacity and fill buffer&#39;s left-most positions with zeroes. For source array <code>byte[] int257 = {1,1};</code> running <code>ByteBuffer bb = ByteBuffer.allocate(4); bb.put(int257); bb.getInt(0)</code> will gives you 16842752 while <code>ByteBuffer bb = ByteBuffer.allocate(4); bb.put((byte)0); bb.put((byte)0); bb.put(int257); bb.getInt(0)</code> gives 257."
+    } ],
+    "owner" : {
+      "account_id" : 111215,
+      "reputation" : 4432,
+      "user_id" : 293933,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fbbdf6219c20970aec1525ead4432f70?s=256&d=identicon&r=PG",
+      "display_name" : "Jarek Przyg&#243;dzki",
+      "link" : "https://stackoverflow.com/users/293933/jarek-przyg%c3%b3dzki"
+    },
+    "is_accepted" : false,
+    "score" : 157,
+    "last_activity_date" : 1561156864,
+    "last_edit_date" : 1561156864,
+    "creation_date" : 1317460719,
+    "answer_id" : 7619315,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>byte[] toByteArray(int value) {\n     return  ByteBuffer.allocate(4).putInt(value).array();\n}\n\nbyte[] toByteArray(int value) {\n    return new byte[] { \n        (byte)(value &gt;&gt; 24),\n        (byte)(value &gt;&gt; 16),\n        (byte)(value &gt;&gt; 8),\n        (byte)value };\n}\n\nint fromByteArray(byte[] bytes) {\n     return ByteBuffer.wrap(bytes).getInt();\n}\n// packing an array of 4 bytes to an int, big endian, minimal parentheses\n// operator precedence: &lt;&lt;, &amp;, | \n// when operators of equal precedence (here bitwise OR) appear in the same expression, they are evaluated from left to right\nint fromByteArray(byte[] bytes) {\n     return bytes[0] &lt;&lt; 24 | (bytes[1] &amp; 0xFF) &lt;&lt; 16 | (bytes[2] &amp; 0xFF) &lt;&lt; 8 | (bytes[3] &amp; 0xFF);\n}\n\n// packing an array of 4 bytes to an int, big endian, clean code\nint fromByteArray(byte[] bytes) {\n     return ((bytes[0] &amp; 0xFF) &lt;&lt; 24) | \n            ((bytes[1] &amp; 0xFF) &lt;&lt; 16) | \n            ((bytes[2] &amp; 0xFF) &lt;&lt; 8 ) | \n            ((bytes[3] &amp; 0xFF) &lt;&lt; 0 );\n}\n</code></pre>\n\n<p>When packing signed bytes into an int, each byte needs to be masked off because it is sign-extended to 32 bits (rather than zero-extended) due to the arithmetic promotion rule (described in JLS, Conversions and Promotions).</p>\n\n<p>There's an interesting puzzle related to this described in Java Puzzlers (\"A Big Delight in Every Byte\") by Joshua Bloch and Neal Gafter . When comparing a byte value to an int value, the byte is sign-extended to an int and then this value is compared to the other int</p>\n\n<pre><code>byte[] bytes = (…)\nif (bytes[0] == 0xFF) {\n   // dead code, bytes[0] is in the range [-128,127] and thus never equal to 255\n}\n</code></pre>\n\n<p>Note that all numeric types are signed in Java with exception to char being a 16-bit unsigned integer type.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 446597,
+        "reputation" : 25249,
+        "user_id" : 839733,
+        "user_type" : "registered",
+        "accept_rate" : 69,
+        "profile_image" : "https://i.sstatic.net/2s6lO.jpg?s=256",
+        "display_name" : "Abhijit Sarkar",
+        "link" : "https://stackoverflow.com/users/839733/abhijit-sarkar"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1595723667,
+      "post_id" : 17981098,
+      "comment_id" : 111573155,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Note that since 1.8, it&#39;s <code>intValueExact</code>, not <code>intValue</code>"
+    } ],
+    "owner" : {
+      "account_id" : 1741376,
+      "reputation" : 4585,
+      "user_id" : 1592679,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/699172feade134107db516a54a4e0548?s=256&d=identicon&r=PG",
+      "display_name" : "Jamel Toms",
+      "link" : "https://stackoverflow.com/users/1592679/jamel-toms"
+    },
+    "is_accepted" : false,
+    "score" : 75,
+    "last_activity_date" : 1675958697,
+    "last_edit_date" : 1675958697,
+    "creation_date" : 1375305216,
+    "answer_id" : 17981098,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can also use BigInteger for variable length bytes. You can convert it to long, int or short, whichever suits your needs.</p>\n<pre><code>new BigInteger(bytes).intValue();\n</code></pre>\n<p>or to denote polarity:</p>\n<pre><code>new BigInteger(1, bytes).intValue();\n</code></pre>\n<p>To get bytes back just:</p>\n<pre><code>new BigInteger(bytes).toByteArray()\n</code></pre>\n<p>Although simple, I just wanted to point out that if you run this many times in a loop, this could lead to a lot of garbage collection. This may be a concern depending on your use case.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1337360,
+        "reputation" : 1636,
+        "user_id" : 1279761,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/3c4c76c213676ad42742b3965d35ce99?s=256&d=identicon&r=PG",
+        "display_name" : "disklosr",
+        "link" : "https://stackoverflow.com/users/1279761/disklosr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1399625598,
+      "post_id" : 23203438,
+      "comment_id" : 36151536,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is wrong. Consider the byte 0x01. Your method will output 129 which is wrong. 0x01 should output the integer 1. You should only add 128 if the integer that you get from parseInt is negative."
+    }, {
+      "owner" : {
+        "account_id" : 1337360,
+        "reputation" : 1636,
+        "user_id" : 1279761,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://www.gravatar.com/avatar/3c4c76c213676ad42742b3965d35ce99?s=256&d=identicon&r=PG",
+        "display_name" : "disklosr",
+        "link" : "https://stackoverflow.com/users/1279761/disklosr"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1399626099,
+      "post_id" : 23203438,
+      "comment_id" : 36151812,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I meant you should add 256 not 128. Couldn&#39;t edit it afterwards."
+    }, {
+      "owner" : {
+        "account_id" : 3714051,
+        "reputation" : 3074,
+        "user_id" : 3090678,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/ff4fefd9053a37895f5f4eebc115cd0d?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Anthony",
+        "link" : "https://stackoverflow.com/users/3090678/anthony"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1424082106,
+      "post_id" : 23203438,
+      "comment_id" : 45392283,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "changed post to add the 256 as it may be useful to others!"
+    }, {
+      "owner" : {
+        "account_id" : 269227,
+        "reputation" : 18302,
+        "user_id" : 558433,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://i.sstatic.net/XZg0R.jpg?s=256",
+        "display_name" : "Marcos Vasconcelos",
+        "link" : "https://stackoverflow.com/users/558433/marcos-vasconcelos"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1443732544,
+      "post_id" : 23203438,
+      "comment_id" : 53622520,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This does a lot of casting and create new objects (think doing this on for loops) that can degrade the performance, please check the Integer.toString() method for hints about how to parse numbers."
+    }, {
+      "owner" : {
+        "account_id" : 404649,
+        "reputation" : 63024,
+        "user_id" : 773113,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://i.sstatic.net/FKKLW.jpg?s=256",
+        "display_name" : "Mike Nakis",
+        "link" : "https://stackoverflow.com/users/773113/mike-nakis"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1577705121,
+      "post_id" : 23203438,
+      "comment_id" : 105229602,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "also, when posting code on stackoverflow the point is to post code that easily makes sense. Code that easily makes sense must have <i>understandable</i> identifiers. And on stackoverflow, <i>understandable</i> necessarily means <i>in English</i>."
+    } ],
+    "owner" : {
+      "account_id" : 3378082,
+      "reputation" : 91,
+      "user_id" : 2835819,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/1013439915/picture?type=large",
+      "display_name" : "Angel Salvador Ayala Ochoa",
+      "link" : "https://stackoverflow.com/users/2835819/angel-salvador-ayala-ochoa"
+    },
+    "is_accepted" : false,
+    "score" : -7,
+    "last_activity_date" : 1424084897,
+    "last_edit_date" : 1424084897,
+    "creation_date" : 1398104923,
+    "answer_id" : 23203438,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>i think this is a best mode to cast to int</p>\n\n<pre><code>   public int ByteToint(Byte B){\n        String comb;\n        int out=0;\n        comb=B+\"\";\n        salida= Integer.parseInt(comb);\n        out=out+128;\n        return out;\n    }\n</code></pre>\n\n<p>first comvert byte to String </p>\n\n<pre><code>comb=B+\"\";\n</code></pre>\n\n<p>next step is comvert to a int</p>\n\n<pre><code>out= Integer.parseInt(comb);\n</code></pre>\n\n<p>but byte is in rage of -128 to 127 for this reasone, i think is better use rage 0 to 255 and you only need to do this:</p>\n\n<pre><code>out=out+256;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6779285,
+      "reputation" : 51,
+      "user_id" : 5220182,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/908e9e4b5ee8dbf22df92afd21f24bad?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Dhaval Rami",
+      "link" : "https://stackoverflow.com/users/5220182/dhaval-rami"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1443732110,
+    "creation_date" : 1443732110,
+    "answer_id" : 32896502,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>/** length should be less than 4 (for int) **/\npublic long byteToInt(byte[] bytes, int length) {\n        int val = 0;\n        if(length&gt;4) throw new RuntimeException(\"Too big to fit in int\");\n        for (int i = 0; i &lt; length; i++) {\n            val=val&lt;&lt;8;\n            val=val|(bytes[i] &amp; 0xFF);\n        }\n        return val;\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2459420,
+      "reputation" : 16858,
+      "user_id" : 2704032,
+      "user_type" : "registered",
+      "accept_rate" : 48,
+      "profile_image" : "https://i.sstatic.net/hNtqX.png?s=256",
+      "display_name" : "Vishrant",
+      "link" : "https://stackoverflow.com/users/2704032/vishrant"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1531934491,
+    "creation_date" : 1531934491,
+    "answer_id" : 51407737,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Someone with a requirement where they have to read from bits, lets say you have to read from only 3 bits but you need signed integer then use following:</p>\n\n<pre><code>data is of type: java.util.BitSet\n\nnew BigInteger(data.toByteArray).intValue() &lt;&lt; 32 - 3 &gt;&gt; 32 - 3\n</code></pre>\n\n<p>The magic number <code>3</code> can be replaced with the number of <strong>bits (not bytes)</strong> you are using.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 966469,
+      "reputation" : 1141,
+      "user_id" : 989827,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://www.gravatar.com/avatar/2dc4984b386fa22692c93300cfcdb394?s=256&d=identicon&r=PG",
+      "display_name" : "jeremie",
+      "link" : "https://stackoverflow.com/users/989827/jeremie"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1590093970,
+    "creation_date" : 1590093970,
+    "answer_id" : 61943568,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>As often, <strong>guava</strong> has what you need. </p>\n\n<p>To go from byte array to int: <code>Ints.fromBytesArray</code>, doc <a href=\"https://guava.dev/releases/19.0/api/docs/com/google/common/primitives/Ints.html#fromByteArray(byte[])\" rel=\"noreferrer\">here</a> </p>\n\n<p>To go from int to byte array: <code>Ints.toByteArray</code>, doc <a href=\"https://guava.dev/releases/19.0/api/docs/com/google/common/primitives/Ints.html#toByteArray(int)\" rel=\"noreferrer\">here</a> </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 320193,
+        "reputation" : 7824,
+        "user_id" : 638344,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/b335c649c5cc0f71f2eaa1927b2127fd?s=256&d=identicon&r=PG",
+        "display_name" : "Chris",
+        "link" : "https://stackoverflow.com/users/638344/chris"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1707292530,
+      "post_id" : 77516857,
+      "comment_id" : 137427002,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "One of the main points of my question (back in the days) was storing an integer in a byte array so that it will take up only two bytes if the value is low enough. I didn&#39;t try it but looking at this solution intuitively i would say that readInt and writeInt are fixed to integer length."
+    }, {
+      "owner" : {
+        "account_id" : 262968,
+        "reputation" : 790339,
+        "user_id" : 548225,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://i.sstatic.net/iVKcbRoj.jpg?s=256",
+        "display_name" : "anubhava",
+        "link" : "https://stackoverflow.com/users/548225/anubhava"
+      },
+      "reply_to_user" : {
+        "account_id" : 320193,
+        "reputation" : 7824,
+        "user_id" : 638344,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/b335c649c5cc0f71f2eaa1927b2127fd?s=256&d=identicon&r=PG",
+        "display_name" : "Chris",
+        "link" : "https://stackoverflow.com/users/638344/chris"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1707318838,
+      "post_id" : 77516857,
+      "comment_id" : 137431762,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Chris: There is a <code>writeShort</code> method available as well if you know that your numbers is small enough to be fit in 2 bytes only. Please see updated answer as well."
+    } ],
+    "owner" : {
+      "account_id" : 262968,
+      "reputation" : 790339,
+      "user_id" : 548225,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/iVKcbRoj.jpg?s=256",
+      "display_name" : "anubhava",
+      "link" : "https://stackoverflow.com/users/548225/anubhava"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1707318957,
+    "last_edit_date" : 1707318957,
+    "creation_date" : 1700492148,
+    "answer_id" : 77516857,
+    "question_id" : 7619058,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Without using any external or obscure library or applying bitwise magic (bit difficult to read), you can use <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/ByteArrayOutputStream.html\" rel=\"nofollow noreferrer\"><code>ByteArrayOutputStream</code></a> combined with <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/DataOutputStream.html\" rel=\"nofollow noreferrer\"><code>DataOutputStream</code></a> to write an <code>int</code> into the stream like this using it's <code>writeInt(int)</code> method:</p>\n<pre><code>// assuming num is of type int that we want to convert into byte[]\nByteArrayOutputStream bos = new ByteArrayOutputStream();\nDataOutputStream dos = new DataOutputStream(bos);\ndos.writeInt(num);\nbyte[] intBytes = bos.toByteArray();\nbos.close();\n</code></pre>\n<p>Similarly use <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/ByteArrayInputStream.html\" rel=\"nofollow noreferrer\"><code>ByteArrayInputStream</code></a> combined with <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/DataInputStream.html\" rel=\"nofollow noreferrer\"><code>DataInputStream</code></a> to read an int from the stream like this using it's <code>int readInt()</code> method:</p>\n<pre><code>// assuming byteArr is of type byte[] that contains a number we need to read\nByteArrayInputStream bis = new ByteArrayInputStream(byteArr);\nDataInputStream dis = new DataInputStream(bis);\nint num = dis.readInt();\nbis.close();\n</code></pre>\n<hr />\n<p><strong>Update:</strong> If integer number is small enough to be fit into 2 bytes only then use <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/DataOutputStream.html#writeShort(int)\" rel=\"nofollow noreferrer\">writeShort</a> and <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/DataInputStream.html#readShort()\" rel=\"nofollow noreferrer\">readShort</a> methods instead of <code>writeInt</code> and <code>readInt</code> methods.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 320193,
+    "reputation" : 7824,
+    "user_id" : 638344,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/b335c649c5cc0f71f2eaa1927b2127fd?s=256&d=identicon&r=PG",
+    "display_name" : "Chris",
+    "link" : "https://stackoverflow.com/users/638344/chris"
+  },
+  "is_answered" : true,
+  "view_count" : 406172,
+  "accepted_answer_id" : 7619111,
+  "answer_count" : 9,
+  "score" : 179,
+  "last_activity_date" : 1707318957,
+  "creation_date" : 1317456930,
+  "last_edit_date" : 1517831617,
+  "question_id" : 7619058,
+  "link" : "https://stackoverflow.com/questions/7619058/convert-a-byte-array-to-integer-in-java-and-vice-versa",
+  "title" : "Convert a byte array to integer in Java and vice versa",
+  "body" : "<p>I want to store some data into byte arrays in Java. Basically just numbers which can take up to 2 Bytes per number.</p>\n\n<p>I'd like to know how I can convert an integer into a 2 byte long byte array and vice versa. I found a lot of solutions googling but most of them don't explain what happens in the code. There's a lot of shifting stuff I don't really understand so I would appreciate a basic explanation.</p>\n"
+}

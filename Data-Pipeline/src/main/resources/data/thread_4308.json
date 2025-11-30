@@ -1,0 +1,131 @@
+{
+  "tags" : [ "java", "arrays" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3159138,
+      "reputation" : 34216,
+      "user_id" : 2670792,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/Jjhe7.jpg?s=256",
+      "display_name" : "Christian Tapia",
+      "link" : "https://stackoverflow.com/users/2670792/christian-tapia"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1390760144,
+    "post_id" : 21367252,
+    "comment_id" : 32220320,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Is not very clear, what line is 37? Because there are two constructor, one without parameters and one with 5."
+  }, {
+    "owner" : {
+      "account_id" : 3701688,
+      "reputation" : 3456,
+      "user_id" : 3081206,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YaKOY.jpg?s=256",
+      "display_name" : "takendarkk",
+      "link" : "https://stackoverflow.com/users/3081206/takendarkk"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1390760190,
+    "post_id" : 21367252,
+    "comment_id" : 32220332,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "He has used an <a href=\"http://docs.oracle.com/javase/tutorial/java/javaOO/methods.html\" rel=\"nofollow noreferrer\">overloaded</a> constructor. You can call <code>Student()</code> and enter values manually OR call <code>Student(int, int, int, String, String)</code> and set them inside the constructor in one stroke. Even when you use the second example, your code should still have setters/getters."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "anon"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1390760613,
+    "last_edit_date" : 1390760613,
+    "creation_date" : 1390760250,
+    "answer_id" : 21367324,
+    "question_id" : 21367252,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Typically, you'll want to encapsulate your fields as much as possible. This means make these </p>\n\n<pre><code>int test1, test2, test3;\ndouble average;\nString grade, firstName, lastName;\n</code></pre>\n\n<p>things private. You'll then need getters and setters to access them from outside the class. That's a good thing. However, from inside the class, you can use them without getters or setters no problem. </p>\n\n<p>Does this answer your question? I have no idea what is on line 37, as you didn't provide numbering. :)</p>\n\n<p>Edit: In case you don't know, constructors can be overloaded. You have two different constructors, one with parameters, one without. You can choose which one you want to use to construct the class, you probably want to be using the second one. </p>\n\n<p>If you have need for both constructors, one complete one and another one that uses default values, you might want to contemplate referencing the second constructor from inside the first, to avoid duplication of code. Like so:</p>\n\n<pre><code>public Student() {\n    this(0,0,0);\n}\n\npublic Student(int test1, int test2, int test3, String firstName, String lastName) {\n    this.test1 = test1;\n    this.test2 = test2;\n    this.test3 = test3;\n    this.average = 0;\n    this.firstName = firstName;\n    this.lastName = lastName;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 16878,
+      "reputation" : 309574,
+      "user_id" : 37213,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://www.gravatar.com/avatar/eeec80237213c91e5bab56b77ac5b8ca?s=256&d=identicon&r=PG",
+      "display_name" : "duffymo",
+      "link" : "https://stackoverflow.com/users/37213/duffymo"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1390760557,
+    "creation_date" : 1390760557,
+    "answer_id" : 21367387,
+    "question_id" : 21367252,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your Person class is wrong.  It has no attributes or methods.  There's no reason to extend it, because it brings nothing to the party.</p>\n\n<p>You don't need getters or setters if the attribute is visible to the public, but that doesn't mean it's a good idea.</p>\n\n<p>Try thinking more like this: </p>\n\n<pre><code>public class Person {\n    protected String firstName;\n    protected String lastName;\n\n    public Person(String f, String l) {\n        this.firstName = f;\n        this.lastName = l;\n    }\n\n    public String getFirstName() { return this.firstName; }\n    public String getLastName() { return this.lastName; }\n}\n\npublic class Student extends Person {\n    public static final int MAX_GRADES = 3;\n    private int numGrades = 0;\n    private int maxGrades;\n    private int [] grades;\n\n    public Student(String f, String l) {\n        this(f, l, MAX_GRADES);\n    }\n\n    public Student(String f, String l, int maxGrades) {\n        super(f, l);\n        this.maxGrades = (maxGrades &gt; 0) ? maxGrades : MAX_GRADES;\n        this.grades = new int[this.maxGrades];   \n    }\n\n    public void addGrade(int grade) {\n        if (this.numGrades &lt; this.maxGrades) {\n            this.grades[numGrades++] = grade;\n        }\n    }\n\n    public double getAverageGrade() { \n        double average = 0.0;\n        if (this.numGrades &gt; 0) {\n            for (int i = 0; i &lt; this.numGrades; ++i) {\n                average += grade[i];\n            }\n            average /= this.numGrades;\n        }\n        return average;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3159138,
+      "reputation" : 34216,
+      "user_id" : 2670792,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/Jjhe7.jpg?s=256",
+      "display_name" : "Christian Tapia",
+      "link" : "https://stackoverflow.com/users/2670792/christian-tapia"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1390760580,
+    "creation_date" : 1390760580,
+    "answer_id" : 21367397,
+    "question_id" : 21367252,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There are <em>two constructors</em> in <code>Student</code>class:</p>\n\n<ul>\n<li>Constructor without parameters</li>\n<li>Constructor with paramers (<code>int</code>,<code>int</code>,<code>int</code>,<code>String</code>,<code>String</code>)</li>\n</ul>\n\n<p>This is called method/function overloading. You can declare many method with the <em>same name</em>, but the signature has to change. In other words, it has to have different parameters (so the compiler will know which version of the method to use).</p>\n\n<p>So you have one constructor without parameters, that just set <code>test1</code>, <code>test2</code>, <code>test3</code> and <code>average</code> to 0. And you have this constructor:</p>\n\n<pre><code>public Student(int test1, int test2, int test3, String firstName, String lastName) \n{\n    this.test1 = test1;\n    this.test2 = test2;\n    this.test3 = test3;\n    ...\n}\n</code></pre>\n\n<p>that receives <code>4</code> parameters and assigns them to the respective fields.</p>\n\n<p><strong>Note</strong> that you should initialize <code>average</code> in the constructor too, as well as set <code>firstName</code> and <code>lastName</code>:</p>\n\n<pre><code>this.average = 0; // Or maybe 'this.average = computeAverage();'\nthis.firstName = firstName;\nthis.lastName = lastName;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2989543,
+      "reputation" : 166,
+      "user_id" : 2537423,
+      "user_type" : "registered",
+      "accept_rate" : 25,
+      "profile_image" : "https://i.sstatic.net/Nzb3N.jpg?s=256",
+      "display_name" : "A Parikh",
+      "link" : "https://stackoverflow.com/users/2537423/a-parikh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1390760733,
+    "creation_date" : 1390760733,
+    "answer_id" : 21367429,
+    "question_id" : 21367252,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>His instance variables (the variables declared at the beginning of Student) were <code>public</code>, which allowed him to access and change them directly without the use of setters and getters. Normally, these variables are private, requiring methods to access/change them.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3913507,
+    "reputation" : 747,
+    "user_id" : 3238079,
+    "user_type" : "registered",
+    "accept_rate" : 60,
+    "profile_image" : "https://graph.facebook.com/1327100774/picture?type=large",
+    "display_name" : "JP Hochbaum",
+    "link" : "https://stackoverflow.com/users/3238079/jp-hochbaum"
+  },
+  "is_answered" : false,
+  "view_count" : 27939,
+  "answer_count" : 4,
+  "score" : 1,
+  "last_activity_date" : 1760511780,
+  "creation_date" : 1390759927,
+  "question_id" : 21367252,
+  "link" : "https://stackoverflow.com/questions/21367252/array-of-student-objects-java",
+  "title" : "Array of Student objects java",
+  "body" : "<p>Just to give a run down of what I am trying to do, here is the HW my professor gave me:</p>\n\n<ol>\n<li>Define a class Student which extends Person. It adds the attributes </li>\n</ol>\n\n<p>Int Test1, test2, test3\nDouble average\nString grade</p>\n\n<p>It has methods computeaverage() and calculategrade(). The grades are based on the average, with above 90 an A, 80 to 90 a B, 70 to 80 a C etc. All other attributes have a set and a get.</p>\n\n<ol>\n<li>Write an application that uses an array of type student of size 20. The program prompts the user for how many students are in the class and then allows them to enter the students and their test scores, then calculates their grades and prints out the list of students and their grades.</li>\n</ol>\n\n<p>That being said...</p>\n\n<p>On Thursday I saw a classmates code that he got from the teacher and he had something that I haven't seen before in my student class on line 37 (Student Constructor). Instead of having getters and setters he had code similar to what I have at line 37. But I have no idea what he did and the correct coding. So I was hoping someone here could tell me what I am doing wrong and how this code can get away without using getter and setter methods???</p>\n\n<pre><code>public class Person {\n\n    /**\n     * @param args the command line arguments\n     */\n    public static void main(String[] args) \n    {\n\n\n\n        Scanner kbd = new Scanner(System.in);\n        Student newStudent = new Student();\n        int size;\n\n        System.out.println(\"Enter the amount of students:\");\n        size = kbd.nextInt();\n        Student[] myStudent = new Student[size];\n        String firstName;\n        String lastName;\n        int test1, test2, test3;\n        Student s;\n\n        for (int i=0; i &lt; size; i++)\n        {\n\n        System.out.println(\"Enter first name of student: \" + i);\n        firstName = kbd.next();\n\n        System.out.println(\"Enter last name if student: \" +i);\n        lastName = kbd.next();\n\n        System.out.println(\"Please Enter first test score: \");\n//        JOptionPane.showInputDialog(\"Please enter first test score:\");\n        test1= kbd.nextInt();\n\n        System.out.println(\"Please enter second test score\");\n//        JOptionPane.showInputDialog(\"Please enter second test score:\");\n        test2= kbd.nextInt();\n\n        System.out.println(\"Please enter third test score\");\n//        JOptionPane.showInputDialog(\"Please enter third test score:\");\n        test3=kbd.nextInt();\n\n//        s = new Student (test1, test2, test3, firstName, lastName);\n        myStudent[i].setTest1(test1);\n        myStudent[i].setTest2(test2);\n        myStudent[i].setTest3(test3);\n        myStudent[i].setfName(fName);\n        myStudent[i].setlName(lname);\n\n\n        }\n        for (int i = 0; i &lt; size; i++)\n        {\n            System.out.println(myStudent[i].getGrade());\n        }\n\n\n\n    }\n}\n\n\npublic class Student extends Person{\n\n    int test1, test2, test3;\n    double average;\n    String grade, firstName, lastName;\n\n\n    public Student() \n    {\n        test1 = 0;\n        test2 = 0;\n        test3 = 0;\n        average = 0;\n\n\n    }\n\n\n\n\n    public Student(int test1, int test2, int test3, String firstName, String lastName) \n    {\n        this.test1 = test1;\n        this.test2 = test2;\n        this.test3 = test3;\n\n        this.setfirstName = firstName;\n    }\n\n\n    public double computeAverage()\n    {\n        average = (test1 + test2 + test3)/3;\n        return average;\n\n    }\n\n    public String calculateGrade()\n    {\n        average = computeAverage();\n\n        if (average &lt; 60){\n            grade = \"F\";}\n        else if (average &lt; 70){\n            grade = \"D\";}\n        else if (average &lt; 80){\n            grade = \"C\";}\n        else if (average &lt; 90){\n            grade = \"B\";}\n        else {\n            grade = \"A\";\n        }\n        return grade;\n    }\n\n    public int getTest1() {\n        return test1;\n    }\n\n    public void setTest1(int test1) {\n        this.test1 = test1;\n    }\n\n    public int getTest2() {\n        return test2;\n    }\n\n    public void setTest2(int test2) {\n        this.test2 = test2;\n    }\n\n    public int getTest3() {\n        return test3;\n    }\n\n    public void setTest3(int test3) {\n        this.test3 = test3;\n    }\n\n    public double getAverage() {\n        return average;\n    }\n\n    public void setAverage(double average) {\n        this.average = average;\n    }\n\n    public String getGrade() {\n        return grade;\n    }\n\n    public void setGrade(String grade) {\n        this.grade = grade;\n    }\n\n\n\n}\n</code></pre>\n"
+}

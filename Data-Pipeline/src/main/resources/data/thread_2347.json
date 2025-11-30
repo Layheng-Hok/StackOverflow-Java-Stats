@@ -1,0 +1,199 @@
+{
+  "tags" : [ "java", "swing", "whitespace", "layout-manager" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1054151,
+      "reputation" : 24636,
+      "user_id" : 1057230,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/XcxYu.png?s=256",
+      "display_name" : "nIcE cOw",
+      "link" : "https://stackoverflow.com/users/1057230/nice-cow"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1374825727,
+    "post_id" : 17874717,
+    "comment_id" : 26102433,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "For example <a href=\"http://stackoverflow.com/a/9425769/1057230\">CardLayout(int, int)</a>, <a href=\"http://stackoverflow.com/a/10372005/1057230\">FlowLayout(int, int, int) and GridLayout(int, int, int, int)</a>, another example <a href=\"http://stackoverflow.com/a/10701307/1057230\">GridLayout(int, int, int, int)</a> and <a href=\"http://stackoverflow.com/a/10596800/1057230\">GridBagLayout() using GridBagConstraints.insets</a>"
+  }, {
+    "owner" : {
+      "account_id" : 70123,
+      "reputation" : 51647,
+      "user_id" : 203657,
+      "user_type" : "registered",
+      "accept_rate" : 53,
+      "profile_image" : "https://i.sstatic.net/ayujB.jpg?s=256",
+      "display_name" : "kleopatra",
+      "link" : "https://stackoverflow.com/users/203657/kleopatra"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1374826653,
+    "post_id" : 17874717,
+    "comment_id" : 26102912,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "use a LayoutManager that supports gaps in semantic terms. You see it coming, don&#39;t you :-) MigLayout to the rescue: you define a grid and the gaps in-between like related, unrelated, paragraph - aftet that just add the components"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 183279,
+      "reputation" : 168989,
+      "user_id" : 418556,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/yOfDr.png?s=256",
+      "display_name" : "Andrew Thompson",
+      "link" : "https://stackoverflow.com/users/418556/andrew-thompson"
+    },
+    "is_accepted" : true,
+    "score" : 67,
+    "last_activity_date" : 1553856149,
+    "last_edit_date" : 1553856149,
+    "creation_date" : 1374821412,
+    "answer_id" : 17874718,
+    "question_id" : 17874717,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are a number of ways in a Swing GUI to provide a separation between components, and white space around components:</p>\n\n<ul>\n<li><code>JToolBar</code> has the methods <a href=\"http://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.html#addSeparator--\" rel=\"nofollow noreferrer\"><code>addSeparator()</code></a> &amp; <a href=\"http://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.html#addSeparator-java.awt.Dimension-\" rel=\"nofollow noreferrer\"><code>addSeparator(Dimension)</code></a>.</li>\n<li><code>JMenu</code> uses a spacing component better suited to menus, available through <a href=\"http://docs.oracle.com/javase/8/docs/api/javax/swing/JMenu.html#addSeparator--\" rel=\"nofollow noreferrer\"><code>addSeparator()</code></a>.  </li>\n</ul>\n\n<p>But more generally, look to:</p>\n\n<ul>\n<li>The spacing as can be defined in the layout constructors.</li>\n<li>Borders.  </li>\n</ul>\n\n<p>Here is an example of using the layout separator <code>hGap</code> &amp; <code>vGap</code> values &amp; borders (specifically an <code>EmptyBorder</code>) to provide 'white' (actually shown as <strong>red</strong> to make it very obvious) space.  Adjust the spinners to see the result.</p>\n\n<p><img src=\"https://i.sstatic.net/lYyOZ.png\" alt=\"With no GUI white space\"></p>\n\n<p><img src=\"https://i.sstatic.net/NVtKI.png\" alt=\"With GUI white space\"></p>\n\n<pre><code>import java.awt.*;\nimport javax.swing.*;\nimport javax.swing.border.EmptyBorder;\nimport javax.swing.event.*;\n\npublic class WhiteSpace {\n\n    private JPanel gui = null;\n    private BorderLayout mainLayout = \n        new BorderLayout(0, 0);\n    private final FlowLayout buttonLayout = \n            new FlowLayout(FlowLayout.CENTER, 0, 0);\n    private final JPanel buttonPanel = new JPanel(buttonLayout);\n    private final SpinnerNumberModel hModel = \n            new SpinnerNumberModel(0, 0, 15, 1);\n    private final SpinnerNumberModel vModel = \n            new SpinnerNumberModel(0, 0, 15, 1);\n    private final SpinnerNumberModel hBorderModel = \n            new SpinnerNumberModel(0, 0, 15, 1);\n    private final SpinnerNumberModel vBorderModel = \n            new SpinnerNumberModel(0, 0, 15, 1);\n    private ChangeListener changeListener;\n\n    public Container getGui() {\n        if (gui == null) {\n            gui = new JPanel(mainLayout);\n            gui.setBackground(Color.RED);\n\n            JTree tree = new JTree();\n            tree.setVisibleRowCount(10);\n            for (int ii = tree.getRowCount(); ii &gt; -1; ii--) {\n                tree.expandRow(ii);\n            }\n            gui.add(new JScrollPane(\n                    tree,\n                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,\n                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),\n                    BorderLayout.LINE_START);\n            gui.add(new JScrollPane(new JTextArea(10, 30)));\n\n            gui.add(buttonPanel, BorderLayout.PAGE_START);\n\n            changeListener = (ChangeEvent e) -&gt; {\n                int hGap = hModel.getNumber().intValue();\n                int vGap = vModel.getNumber().intValue();\n                int hBorder = hBorderModel.getNumber().intValue();\n                int vBorder = vBorderModel.getNumber().intValue();\n                adjustWhiteSpace(hGap, vGap, hBorder, vBorder);\n            };\n\n            addModel(\"H Gap\", hModel);\n            addModel(\"V Gap\", vModel);\n            addModel(\"H Border\", hBorderModel);\n            addModel(\"V Border\", vBorderModel);\n        }\n\n        return gui;\n    }\n\n    private void addModel(String label, SpinnerNumberModel model) {\n        buttonPanel.add(new JLabel(label));\n        final JSpinner spinner = new JSpinner(model);\n        spinner.addChangeListener(changeListener);\n        buttonPanel.add(spinner);\n    }\n\n    private void adjustWhiteSpace(\n            int hGap, int vGap, int hBorder, int vBorder) {\n        mainLayout.setHgap(hGap);\n        mainLayout.setVgap(vGap);\n        buttonLayout.setHgap(hGap);\n        gui.setBorder(new EmptyBorder\n                (vBorder, hBorder, vBorder, hBorder));\n        Container c = gui.getTopLevelAncestor();\n        if (c instanceof Window) {\n            Window w = (Window) c;\n            w.pack();\n        }\n    }\n\n    public static void main(String[] args) {\n        Runnable r = () -&gt; {\n            WhiteSpace ws = new WhiteSpace();\n            Container gui1 = ws.getGui();\n            JFrame f = new JFrame(\"White (OK Red) Space\");\n            f.add(gui1);\n            f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);\n            f.setLocationByPlatform(true);\n            f.setResizable(false);\n            f.pack();\n            f.setVisible(true);\n        };\n        SwingUtilities.invokeLater(r);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1544917,
+        "reputation" : 5445,
+        "user_id" : 1438660,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://i.sstatic.net/C1j2n.jpg?s=256",
+        "display_name" : "splungebob",
+        "link" : "https://stackoverflow.com/users/1438660/splungebob"
+      },
+      "edited" : false,
+      "score" : 9,
+      "creation_date" : 1374857828,
+      "post_id" : 17876938,
+      "comment_id" : 26121754,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "+1 I luuuuuv me some GridBagConstraints insets. We use GBL a lot, so I wrote some helper classes that do the dirty work for me so that the GBL code is quite terse and readable. Like the sample does here, I use a default Insets so that I don&#39;t have to type it in everytime, and the resultant look is a more &quot;relaxed&quot; layout."
+    } ],
+    "owner" : {
+      "account_id" : 1054151,
+      "reputation" : 24636,
+      "user_id" : 1057230,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/XcxYu.png?s=256",
+      "display_name" : "nIcE cOw",
+      "link" : "https://stackoverflow.com/users/1057230/nice-cow"
+    },
+    "is_accepted" : false,
+    "score" : 124,
+    "last_activity_date" : 1378657257,
+    "last_edit_date" : 1378657257,
+    "creation_date" : 1374828537,
+    "answer_id" : 17876938,
+    "question_id" : 17874717,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Using various <code>LayoutManagers</code> one can provide spacing between various components. </p>\n\n<h2> 1.) BorderLayout :</h2>\n\n<ul>\n<li><strong>Overloaded Constructor :</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/BorderLayout.html#BorderLayout%28int,%20int%29\">BorderLayout(int horizontalGap, int verticalGap)</a></li>\n<li><p><strong>Getter and setter methods</strong></p>\n\n<p>For Horizontal Spacing <strong>:</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/BorderLayout.html#getHgap%28%29\">BorderLayout.getHgap()</a> and <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/BorderLayout.html#setHgap%28int%29\">BorderLayout.setHgap(int hgap)</a></p>\n\n<p>For Vertical Spacing <strong>:</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/BorderLayout.html#getVgap%28%29\">BorderLayout.getVgap()</a> and <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/BorderLayout.html#setVgap%28int%29\">BorderLayout.setVgap()</a></p></li>\n</ul>\n\n<h2> 2.) FlowLayout :</h2>\n\n<ul>\n<li><strong>Overloaded Constructor :</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/FlowLayout.html#FlowLayout%28int,%20int,%20int%29\">FlowLayout(int align, int hgap, int vgap)</a></li>\n<li><p><strong>Getter and setter methods</strong></p>\n\n<p>For Horizontal Spacing <strong>:</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/FlowLayout.html#getHgap%28%29\">FlowLayout.getHgap()</a> and <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/FlowLayout.html#setHgap%28int%29\">FlowLayout.setHgap(int hgap)</a></p>\n\n<p>For Vertical Spacing <strong>:</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/FlowLayout.html#getVgap()\">FlowLayout.getVgap()</a> and <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/FlowLayout.html#setVgap(int)\">FlowLayout.setVgap()</a></p></li>\n</ul>\n\n<h2> 3.) GridLayout :</h2>\n\n<ul>\n<li><strong>Overloaded Constructor :</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html#GridLayout%28int,%20int,%20int,%20int%29\">GridLayout(int rows, int columns, int hgap, int vgap)</a></li>\n<li><p><strong>Getter and setter methods</strong></p>\n\n<p>For Horizontal Spacing <strong>:</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html#getHgap()\">GridLayout.getHgap()</a> and <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html#setHgap(int)\">GridLayout.setHgap(int hgap)</a></p>\n\n<p>For Vertical Spacing <strong>:</strong> <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html#getVgap()\">GridLayout.getVgap()</a> and <a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html#setVgap(int)\">GridLayout.setVgap()</a></p></li>\n</ul>\n\n<h2> 4.) GridBagLayout :</h2>\n\n<p><a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridBagConstraints.html#insets\">GridBagConstraints.insets</a></p>\n\n<h2> 5.) CardLayout (<a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html#setHgap(int)\">example</a>) :</h2>\n\n<p><a href=\"http://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html#getVgap()\">CardLayout(int hGap, int vGap)</a></p>\n\n<h2>Example to display all constructors in action :</h2>\n\n<pre><code>import java.awt.*;\nimport java.awt.event.*;\nimport javax.swing.*;\n\npublic class LayoutExample {\n\n    private final int hGap = 5;\n    private final int vGap = 5;\n\n    private String[] borderConstraints = {\n        BorderLayout.PAGE_START,\n        BorderLayout.LINE_START,\n        BorderLayout.CENTER,\n        BorderLayout.LINE_END,\n        BorderLayout.PAGE_END\n    };\n\n    private JButton[] buttons;\n\n    private GridBagConstraints gbc;\n\n    private JPanel borderPanel;\n    private JPanel flowPanel;\n    private JPanel gridPanel;\n    private JPanel gridBagPanel;\n    private JPanel cardPanel;\n\n    public LayoutExample() {\n        buttons = new JButton[16];\n        gbc = new GridBagConstraints();\n        gbc.anchor = GridBagConstraints.FIRST_LINE_START;   \n        gbc.insets = new Insets(hGap, vGap, hGap, vGap);        \n    }\n\n    private void displayGUI() {\n        JFrame frame = new JFrame(\"Layout Example\");\n        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);\n\n        JPanel contentPane = new JPanel(\n                        new GridLayout(0, 1, hGap, vGap));\n        contentPane.setBorder(\n            BorderFactory.createEmptyBorder(hGap, vGap, hGap, vGap));\n        borderPanel = new JPanel(new BorderLayout(hGap, vGap));\n        borderPanel.setBorder(\n            BorderFactory.createTitledBorder(\"BorderLayout\"));\n        borderPanel.setOpaque(true);\n        borderPanel.setBackground(Color.WHITE);\n        for (int i = 0; i &lt; 5; i++) {\n            buttons[i] = new JButton(borderConstraints[i]);\n            borderPanel.add(buttons[i], borderConstraints[i]);\n        }\n        contentPane.add(borderPanel);\n\n        flowPanel = new JPanel(new FlowLayout(\n                    FlowLayout.CENTER, hGap, vGap));\n        flowPanel.setBorder(\n            BorderFactory.createTitledBorder(\"FlowLayout\"));\n        flowPanel.setOpaque(true);\n        flowPanel.setBackground(Color.WHITE);\n        for (int i = 5; i &lt; 8; i++) {\n            buttons[i] = new JButton(Integer.toString(i));\n            flowPanel.add(buttons[i]);\n        }\n        contentPane.add(flowPanel);\n\n        gridPanel = new JPanel(new GridLayout(2, 2, hGap, vGap));\n        gridPanel.setBorder(\n            BorderFactory.createTitledBorder(\"GridLayout\"));\n        gridPanel.setOpaque(true);\n        gridPanel.setBackground(Color.WHITE);\n        for (int i = 8; i &lt; 12; i++) {\n            buttons[i] = new JButton(Integer.toString(i));\n            gridPanel.add(buttons[i]);\n        }\n        contentPane.add(gridPanel);\n\n        gridBagPanel = new JPanel(new GridBagLayout());\n        gridBagPanel.setBorder(\n            BorderFactory.createTitledBorder(\"GridBagLayout\"));\n        gridBagPanel.setOpaque(true);\n        gridBagPanel.setBackground(Color.WHITE);\n        buttons[12] = new JButton(Integer.toString(12));\n        addComp(gridBagPanel, buttons[12], 0, 0, 1, 1\n                            , GridBagConstraints.BOTH, 0.33, 0.5);\n        buttons[13] = new JButton(Integer.toString(13));\n        addComp(gridBagPanel, buttons[13], 1, 0, 1, 1\n                            , GridBagConstraints.BOTH, 0.33, 0.5);\n        buttons[14] = new JButton(Integer.toString(14));\n        addComp(gridBagPanel, buttons[14], 0, 1, 2, 1\n                            , GridBagConstraints.BOTH, 0.66, 0.5);\n        buttons[15] = new JButton(Integer.toString(15));\n        addComp(gridBagPanel, buttons[15], 2, 0, 1, 2\n                            , GridBagConstraints.BOTH, 0.33, 1.0);\n        contentPane.add(gridBagPanel);\n\n        cardPanel = new JPanel(new CardLayout(hGap, vGap));\n        cardPanel.setBorder(\n            BorderFactory.createTitledBorder(\"CardLayout\"));\n        cardPanel.setOpaque(true);\n        cardPanel.setBackground(Color.WHITE);\n        cardPanel.add(getPanel(Color.BLUE));\n        cardPanel.add(getPanel(Color.GREEN));\n        contentPane.add(cardPanel);\n\n        frame.setContentPane(contentPane);\n        frame.pack();\n        frame.setLocationByPlatform(true);\n        frame.setVisible(true);\n    }\n\n    private JPanel getPanel(Color bColor) {\n        JPanel panel = new JPanel(new FlowLayout(\n                    FlowLayout.CENTER, hGap, vGap));\n        panel.setOpaque(true);\n        panel.setBackground(bColor.darker().darker());\n        JButton swapperButton = new JButton(\"Next\");\n        swapperButton.addActionListener(new ActionListener() {\n            @Override\n            public void actionPerformed(ActionEvent ae) {\n                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();\n                cardLayout.next(cardPanel);\n            }\n        });\n\n        panel.add(swapperButton);\n\n        return panel;\n    }\n\n    private void addComp(JPanel panel, JComponent comp\n                                , int x, int y, int gWidth\n                                    , int gHeight, int fill\n                                        , double weightx, double weighty) {\n        gbc.gridx = x;\n        gbc.gridy = y;\n        gbc.gridwidth = gWidth;\n        gbc.gridheight = gHeight;\n        gbc.fill = fill;\n        gbc.weightx = weightx;\n        gbc.weighty = weighty;      \n\n        panel.add(comp, gbc);\n    }\n\n    public static void main(String[] args) {\n        Runnable runnable = new Runnable(){\n            @Override\n            public void run() {\n                new LayoutExample().displayGUI();\n            }\n        };\n        EventQueue.invokeLater(runnable);\n    }\n}\n</code></pre>\n\n<h2>OUTPUT :</h2>\n\n<p><img src=\"https://i.sstatic.net/9mKG9.png\" alt=\"LAYOUTIMAGE\"></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4116853,
+      "reputation" : 11165,
+      "user_id" : 3378204,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/jrjpD.png?s=256",
+      "display_name" : "Eugene",
+      "link" : "https://stackoverflow.com/users/3378204/eugene"
+    },
+    "is_accepted" : false,
+    "score" : 26,
+    "last_activity_date" : 1395813413,
+    "last_edit_date" : 1395813413,
+    "creation_date" : 1395296625,
+    "answer_id" : 22525005,
+    "question_id" : 17874717,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When you use <code>BoxLayout</code>, <code>Box.createVerticalGlue()</code> method can help you to make some white space.</p>\n\n<p>Another method is <code>BorderFactory.createEmptyBorder(int top, int left, int bottom, int right)</code>. It can help you to make some white space around component.</p>\n\n<p>Thanks for Andrew Thompson's remind.I've revised BoxLayout in recent days and I     find that <code>Box.createVerticalGlue()</code> can add some white space depend on the panel's size and you can not set the explicit pixel value of the length of white space.But <code>Box.createVerticalStrut()</code> can do that.  Here is a MCTaRE and show the    effect of those two methods.</p>\n\n<p><img src=\"https://i.sstatic.net/qOIZ5.gif\" alt=\"enter image description here\"></p>\n\n<pre><code>import java.awt.*;\nimport java.awt.event.*;\nimport javax.swing.*;\nimport javax.swing.border.*;\nimport javax.swing.event.*;\n\npublic class WhiteSpace extends JFrame{\n    static WhiteSpace whiteSpace;\n    DemoPanel demoPanel;\n    boolean withGlue;\n    JSpinner spinner;\n\n    public WhiteSpace(){\n        initialWindow();\n        demoPanel = new DemoPanel();\n        ActionPanel actionPanel = new ActionPanel();\n\n        setLayout(new BorderLayout());\n\n        getContentPane().add(actionPanel,BorderLayout.NORTH);\n        getContentPane().add(demoPanel,BorderLayout.CENTER);\n            setVisible(true);\n    }\n\n    public void initialWindow(){\n        setSize(220, 300);\n        setTitle(\"White Space\");\n        setResizable(false);\n        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        setLocationRelativeTo(null);\n        //Show the window in the middle of the screen\n    }\n\n    /**\n     * @param args\n     */\n    public static void main(String[] args) {\n        Runnable runnable = new Runnable() {\n            @Override\n            public void run() {\n                whiteSpace = new WhiteSpace();\n            }\n        };\n        SwingUtilities.invokeLater(runnable);\n    }\n\n    class DemoPanel extends JPanel{\n        //Show the vertical white space between label1 and label2\n        JLabel label1;\n        JLabel label2;\n        public void initialDemoPanel(){\n            setBorder(BorderFactory.createTitledBorder(getBorder(), \"DemoPanel\", TitledBorder.LEADING, TitledBorder.TOP, new Font(\"Default\",Font.PLAIN,10), Color.gray));\n            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));\n\n            label1 = new JLabel(\"This is first line\");\n            label2 = new JLabel(\"This is second line\");\n        }\n\n        public DemoPanel(){\n            initialDemoPanel();\n            add(label1);\n            if(withGlue){\n                add(Box.createVerticalGlue());\n            }\n            add(label2);\n        }\n\n        public DemoPanel(int strutValue){\n            initialDemoPanel();\n            add(label1);\n            add(Box.createVerticalStrut(strutValue));\n            add(label2);\n        }\n    }\n\n    class ActionPanel extends JPanel{\n        public ActionPanel(){\n            setBorder(BorderFactory.createTitledBorder(getBorder(), \"ActionPanel\", TitledBorder.LEADING, TitledBorder.TOP, new Font(\"Default\",Font.PLAIN,10), Color.gray));\n\n            setLayout(new BoxLayout(this,BoxLayout.X_AXIS));\n            JRadioButton glueButton = new JRadioButton(\"With Glue\");\n            glueButton.addActionListener(new glueButtonListener());\n            add(glueButton);\n\n            add(Box.createHorizontalStrut(10));\n            //To create horizontal white space\n            JLabel strutLabel = new JLabel(\"Strut Value\");\n            add(strutLabel);\n            spinner = new JSpinner(new SpinnerNumberModel(0,0,50,1));\n            spinner.addChangeListener(new spinnerListener());\n            add(spinner);\n            //public SpinnerNumberModel(Number value,Comparable minimum,Comparable maximum,Number stepSize)\n        }\n    }\n\n    class glueButtonListener implements ActionListener{\n        @Override\n        public void actionPerformed(ActionEvent e) {\n            spinner.setValue(new Integer(0));\n            withGlue = (withGlue == true ? false:true);\n            whiteSpace.getContentPane().remove(demoPanel);\n            demoPanel = new DemoPanel();\n            whiteSpace.getContentPane().add(demoPanel,BorderLayout.CENTER);\n            whiteSpace.getContentPane().validate();\n        }\n    }\n\n    class spinnerListener implements ChangeListener{\n\n        @Override\n        public void stateChanged(ChangeEvent e) {\n            int strutValue = (Integer) spinner.getValue();\n            whiteSpace.getContentPane().remove(demoPanel);\n            demoPanel = new DemoPanel(strutValue);\n            whiteSpace.getContentPane().add(demoPanel,BorderLayout.CENTER);\n            whiteSpace.getContentPane().validate();\n        }\n    }\n}\n</code></pre>\n\n<p><code>Box.createHorizontalGlue()</code> and <code>Box.createHorizontalStrut(int height)</code> can be used too. Besides, <code>Box.createRigidArea(Dimension d)</code> has the ability too create white space too.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3911256,
+      "reputation" : 1706,
+      "user_id" : 3236525,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/1c9id.jpg?s=256",
+      "display_name" : "javajon",
+      "link" : "https://stackoverflow.com/users/3236525/javajon"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1404651756,
+    "creation_date" : 1404651756,
+    "answer_id" : 24596067,
+    "question_id" : 17874717,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><a href=\"http://www.jgoodies.com/freeware/libraries/forms/\" rel=\"noreferrer\">JGoodies <strong>FormLayout</strong>.</a>  </p>\n\n<p>Author Karsten Lentzsch has a collection of <a href=\"http://www.jgoodies.com/downloads/articles-and-presentations/\" rel=\"noreferrer\">presentations</a> on UI design.   In particular <a href=\"http://www.jgoodies.com/download/presentations/Swing%20with%20Style.pdf\" rel=\"noreferrer\">this PDF</a> speaks to the need for aesthetic whitespace.  Adding meaningful space while also paying attention to clutter separates the wheat from the chaff.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2283646,
+      "reputation" : 11812,
+      "user_id" : 2008247,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/34ac8a5f0e4e6068545751b760b7e719?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jan Bodnar",
+      "link" : "https://stackoverflow.com/users/2008247/jan-bodnar"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1404898724,
+    "last_edit_date" : 1404898724,
+    "creation_date" : 1404837408,
+    "answer_id" : 24637165,
+    "question_id" : 17874717,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>MigLayout</code> has multiple ways of creating space. (A space is called a gap in this layout.)\nGaps can be created at the highest level with layout constraints, it is possible to\ncreate gaps between rows and column and gaps can be also set between individual \ncomponents with component constraints. There are also specific gaps around the borders\nof a container called insets which have their own specific keyword to be set.</p>\n\n<p>The following example creates all these kinds of gaps:</p>\n\n<pre><code>package com.zetcode;\n\nimport java.awt.EventQueue;\nimport javax.swing.BorderFactory;\nimport javax.swing.JButton;\nimport javax.swing.JFrame;\nimport javax.swing.JLabel;\nimport javax.swing.JPanel;\nimport javax.swing.JTextField;\nimport net.miginfocom.swing.MigLayout;\n\n\npublic class MigLayoutGaps2 extends JFrame {\n\n    public MigLayoutGaps2() {\n\n        initUI();\n\n        setTitle(\"Gaps\");\n        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\n        setLocationRelativeTo(null);\n    }\n\n    private void initUI() {\n\n        JPanel base = new JPanel(new MigLayout(\"flowy, ins 30, gap 15\"));\n        setContentPane(base);\n\n        JPanel pnl1 = new JPanel();\n        pnl1.setBorder(\n                BorderFactory.createTitledBorder(\"Grid gaps\")\n        );\n\n        pnl1.setLayout(new MigLayout(\"gap 5 5, ins 10, wrap 3\"));\n\n        pnl1.add(new JButton(\"1\"));\n        pnl1.add(new JButton(\"2\"));\n        pnl1.add(new JButton(\"3\"));\n        pnl1.add(new JButton(\"4\"));\n        pnl1.add(new JButton(\"5\"));\n        pnl1.add(new JButton(\"6\"));\n\n        JPanel pnl2 = new JPanel();\n        pnl2.setBorder(\n                BorderFactory.createTitledBorder(\"Column gaps\")\n        );\n\n        pnl2.setLayout(new MigLayout(\"wrap 3\", \"[]10[]\"));\n\n        JLabel lbl1 = new JLabel();\n        lbl1.setBorder(\n            BorderFactory.createEtchedBorder()\n        );\n\n        JLabel lbl2 = new JLabel();\n        lbl2.setBorder(\n            BorderFactory.createEtchedBorder()\n        );\n\n        JLabel lbl3 = new JLabel();\n        lbl3.setBorder(\n            BorderFactory.createEtchedBorder()\n        );        \n\n        pnl2.add(lbl1, \"w 40, h 110\");\n        pnl2.add(lbl2, \"w 40, h 110\");\n        pnl2.add(lbl3, \"w 40, h 110\");\n\n        JPanel pnl3 = new JPanel();\n        pnl3.setBorder(\n                BorderFactory.createTitledBorder(\"Row gaps\")\n        );\n\n        pnl3.setLayout(new MigLayout(\"wrap\", \"\", \"[]15[]\"));\n\n        JLabel lbl4 = new JLabel();\n        lbl4.setBorder(\n            BorderFactory.createEtchedBorder()\n        );\n\n        JLabel lbl5 = new JLabel();\n        lbl5.setBorder(\n            BorderFactory.createEtchedBorder()\n        );\n\n        JLabel lbl6 = new JLabel();\n        lbl6.setBorder(\n            BorderFactory.createEtchedBorder()\n        );        \n\n        pnl3.add(lbl4, \"w 150, h 20\");\n        pnl3.add(lbl5, \"w 150, h 20\");\n        pnl3.add(lbl6, \"w 150, h 20\");        \n\n        JPanel pnl4 = new JPanel();\n        pnl4.setBorder(\n                BorderFactory.createTitledBorder(\"Component gaps\")\n        );\n\n        pnl4.setLayout(new MigLayout());\n\n        pnl4.add(new JLabel(\"Name:\"), \"gapright 5\");\n        pnl4.add(new JTextField(10), \"gapbottom 20, gaptop 20\");\n\n        base.add(pnl1);\n        base.add(pnl2);\n        base.add(pnl3);\n        base.add(pnl4);\n\n        pack();\n    }\n\n    public static void main(String[] args) {\n\n        EventQueue.invokeLater(new Runnable() {\n            @Override\n            public void run() {\n                MigLayoutGaps2 ex = new MigLayoutGaps2();\n                ex.setVisible(true);\n            }\n        });\n    }\n}\n</code></pre>\n\n<p>We have four panels in the layout. Each of this panels has a <code>MigLayout</code> manager.</p>\n\n<pre><code>JPanel base = new JPanel(new MigLayout(\"flowy, ins 30, gap 15\"));\n</code></pre>\n\n<p>This line creates container insets and vertical gaps between panels.</p>\n\n<pre><code>pnl1.setLayout(new MigLayout(\"gap 5 5, ins 10, wrap 3\"));\n</code></pre>\n\n<p>Here we apply gaps for the whole grid structure and also set container gaps.</p>\n\n<pre><code>pnl2.setLayout(new MigLayout(\"wrap 3\", \"[]10[]\"));\n</code></pre>\n\n<p>This line creates gaps between columns.</p>\n\n<pre><code>pnl3.setLayout(new MigLayout(\"wrap\", \"\", \"[]15[]\"));\n</code></pre>\n\n<p>Row gaps are defined with this code.</p>\n\n<pre><code>pnl4.add(new JLabel(\"Name:\"), \"gapright 5\");\npnl4.add(new JTextField(10), \"gapbottom 20, gaptop 20\");\n</code></pre>\n\n<p>Finally, it is possible to create gaps between individual components.</p>\n\n<p><img src=\"https://i.sstatic.net/tfA8d.png\" alt=\"Gaps\"></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12526035,
+      "reputation" : 45,
+      "user_id" : 9115818,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cac65e6aed2d9f16dfecbe89e7fd5897?s=256&d=identicon&r=PG",
+      "display_name" : "Salsa Gal",
+      "link" : "https://stackoverflow.com/users/9115818/salsa-gal"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1604128473,
+    "last_edit_date" : 1604128473,
+    "creation_date" : 1522583378,
+    "answer_id" : 49597709,
+    "question_id" : 17874717,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Whenever I have this issue, I just use JPanels. For example in a GridLayout:</p>\n<pre><code>JFrame frame = new JFrame;\nframe.setLayout(new GridLayout(2, 0));\n\n//We want the bottom left to be blank\nframe.add(new JLabel(&quot;Top Left&quot;));\nframe.add(new JLabel(&quot;Top Right&quot;));\n\n//This is the position we want empty\nframe.add(new JPanel());\n\n//Now we can continue with the rest of the script\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 183279,
+    "reputation" : 168989,
+    "user_id" : 418556,
+    "user_type" : "registered",
+    "accept_rate" : 98,
+    "profile_image" : "https://i.sstatic.net/yOfDr.png?s=256",
+    "display_name" : "Andrew Thompson",
+    "link" : "https://stackoverflow.com/users/418556/andrew-thompson"
+  },
+  "is_answered" : true,
+  "view_count" : 66009,
+  "accepted_answer_id" : 17874718,
+  "answer_count" : 6,
+  "score" : 176,
+  "last_activity_date" : 1604128473,
+  "creation_date" : 1374821412,
+  "last_edit_date" : 1490123630,
+  "question_id" : 17874717,
+  "link" : "https://stackoverflow.com/questions/17874717/providing-white-space-in-a-swing-gui",
+  "title" : "Providing white space in a Swing GUI",
+  "body" : "<p>A GUI with no white space appears 'crowded'.  How can I provide white space without resorting to explicitly setting the position or size of components?­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­</p>\n"
+}

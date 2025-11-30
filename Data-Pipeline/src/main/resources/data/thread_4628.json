@@ -1,0 +1,63 @@
+{
+  "tags" : [ "java", "android", "android-intent", "broadcastreceiver", "alarmmanager" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 7640500,
+      "reputation" : 506,
+      "user_id" : 5792760,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://lh6.googleusercontent.com/-KtFPeYQHZ2E/AAAAAAAAAAI/AAAAAAAABY0/HDP8BkvF3dM/s256-rj/photo.jpg",
+      "display_name" : "AzraelPwnz",
+      "link" : "https://stackoverflow.com/users/5792760/azraelpwnz"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1521147245,
+    "post_id" : 49308474,
+    "comment_id" : 85620191,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "It is like it doesnt like my trigger time...but I know it is in milliseconds, and it is in the future."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 13070300,
+      "reputation" : 306,
+      "user_id" : 9444065,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-vBrQi0t5UGs/AAAAAAAAAAI/AAAAAAAAAbo/zLJR95FL-zw/s256-rj/photo.jpg",
+      "display_name" : "Peter Arcentales",
+      "link" : "https://stackoverflow.com/users/9444065/peter-arcentales"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1521148618,
+    "creation_date" : 1521148618,
+    "answer_id" : 49309376,
+    "question_id" : 49308474,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>There are some considerations depending in the Android version in which you are testing the alarm, but if you are testing for Android 6 or later then try the next code:</p>\n\n<pre><code>// Init the Alarm Manager.\nAlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); \n\n// Setting the PendingIntent to be fired when alarm triggers.\nIntent serviceIntent = new Intent(context.getApplicationContext(), YourService.class);\nPendingIntent pendingServiceIntent = PendingIntent.getService(context, 0, serviceIntent, 0);\n\n// Set the alarm for the next seconds.  \nalarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + seconds * 1000, pendingServiceIntent);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 7640500,
+    "reputation" : 506,
+    "user_id" : 5792760,
+    "user_type" : "registered",
+    "accept_rate" : 83,
+    "profile_image" : "https://lh6.googleusercontent.com/-KtFPeYQHZ2E/AAAAAAAAAAI/AAAAAAAABY0/HDP8BkvF3dM/s256-rj/photo.jpg",
+    "display_name" : "AzraelPwnz",
+    "link" : "https://stackoverflow.com/users/5792760/azraelpwnz"
+  },
+  "is_answered" : true,
+  "view_count" : 2129,
+  "accepted_answer_id" : 49309376,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1759788910,
+  "creation_date" : 1521145106,
+  "last_edit_date" : 1759788910,
+  "question_id" : 49308474,
+  "link" : "https://stackoverflow.com/questions/49308474/android-alarmmanager-setexact-not-firing",
+  "title" : "Android AlarmManager.setExact() not firing",
+  "body" : "<p>I am having trouble with using Alarm Manager to fire a pending intent in the future. I have been at it for hours, and do not understand what I am doing wrong. Any help would be greatly appreciated.</p>\n<p>This works, sending a broadcast immedietely:</p>\n<pre><code>_context.startService(notificationIntent);\n</code></pre>\n<p>This works, sending a broadcast in ~30 seconds:</p>\n<pre><code>if (mgr != null) \nmgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,  SystemClock.elapsedRealtime() + 30000, AlarmManager.INTERVAL_DAY * 7, pendingNotificationIntent);\n</code></pre>\n<p>This works, sending a broadcast in ~30 seconds:</p>\n<pre><code>if (mgr != null) \nmgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 30000, AlarmManager.INTERVAL_DAY * 7, pendingNotificationIntent);\n</code></pre>\n<p>But for some unknown reason, doing this fails. The broadcast is never triggered. When I take System.currentTimeMillis(), and subtract it from my trigger...it shows that the trigger is indeed in the future:</p>\n<pre><code>if (mgr != null) \nmgr.setExact(AlarmManager.RTC_WAKEUP, trigger, pendingNotificationIntent);\n</code></pre>\n<p>I am printing my variable 'trigger' (type long) to console, and it is definitely a valid time (according to epochconverter.com). The value it is printing currently (just for reference) is 1521144300000, which elapsed a few minutes ago..never having fired my alarm;</p>\n<p>Here is most of the setup:</p>\n<pre><code>Intent notificationIntent = new Intent(_context, com.example.example.NotificationReceiver.class)\n    .setAction(ACTION_SHOW_NOTIFICATION)\n    .putExtra(EXTRA_NOTIFICATION_TITLE, _title)\n    .putExtra(EXTRA_NOTIFICATION_BODY, newBody)\n    .putExtra(EXTRA_NOTIFICATION_TRIGGER_TIME, trigger);\n\n\nAlarmManager mgr = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);\n\nPendingIntent pendingNotificationIntent = PendingIntent.getBroadcast(_context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);\n\nLog.d(TAG, &quot;trigger time: &quot; + trigger);\n\nif (mgr != null) mgr.setExact(AlarmManager.RTC_WAKEUP, trigger, pendingNotificationIntent);\n</code></pre>\n<p>I receive the trigger time from the back-end, which appears correct in every response.</p>\n<p>This also never fires:</p>\n<pre><code>if (mgr != null) mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, trigger, AlarmManager.INTERVAL_DAY * 7, pendingNotificationIntent);\n</code></pre>\n"
+}

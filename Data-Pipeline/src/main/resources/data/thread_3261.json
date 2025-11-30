@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "amazon-iam", "opensearch", "amazon-opensearch" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2218649,
+      "reputation" : 1089,
+      "user_id" : 1958669,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://www.gravatar.com/avatar/fa6aa0b17e850d215a7c28a9d84c062e?s=256&d=identicon&r=PG",
+      "display_name" : "shashantrika",
+      "link" : "https://stackoverflow.com/users/1958669/shashantrika"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1680159689,
+    "post_id" : 75870670,
+    "comment_id" : 133851317,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "hi Taras , Im also facing the same issue , if you find any solution kindly keep it updated here."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 16559864,
+      "reputation" : 35,
+      "user_id" : 11966025,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/WHxl2.png?s=256",
+      "display_name" : "HB HONG",
+      "link" : "https://stackoverflow.com/users/11966025/hb-hong"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1680484405,
+    "last_edit_date" : 1680484405,
+    "creation_date" : 1680246172,
+    "answer_id" : 75895727,
+    "question_id" : 75870670,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I've got a same error.\nThere are a few things you can check:</p>\n<ol>\n<li><strong>Credentials</strong>: Make sure that the <code>access key</code> and <code>secret key</code> in your Java application are correct and match the credentials in your <code>AWS profile</code>.</li>\n<li><strong>Region</strong>: Make sure that your Java application is using the same region as your OpenSearch domain.</li>\n<li><strong>Permissions</strong>: Make sure that the <code>IAM user/role</code> associated with your credentials has the necessary permissions to interact with your OpenSearch domain.</li>\n<li><strong>Endpoint</strong>: Make sure that your Java application is using the correct endpoint URL which excludes <code>https://</code>.</li>\n<li><strong>Version</strong>: Make sure that your Java application implemented correct version of the OpenSearchClient for the version of OpenSearch you are using.</li>\n</ol>\n<p>In my case, in fact, my infrastructure manager set OpenSearch to only allow ID/PW access. Therefore, it is recommended to check the <strong>OpenSearch security configuration</strong>, too.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 17325126,
+      "reputation" : 21,
+      "user_id" : 12549523,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/52e6cb621e8c29972dd208f4356e1d18?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "wals",
+      "link" : "https://stackoverflow.com/users/12549523/wals"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1690353395,
+    "last_edit_date" : 1690353395,
+    "creation_date" : 1690353164,
+    "answer_id" : 76768580,
+    "question_id" : 75870670,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You may have enabled Fine-grained access control with master user when you created your cluster. If that's the case, the request is not authorized when processed with IAM user (in the case you are running your code on your IAM user profile). You have two options:</p>\n<ol>\n<li><p>Go to your Domain in console -&gt; Security configuration -&gt; Fine-grained access control and set IAM ARN as master user.</p>\n</li>\n<li><p>Update domain level access policy to allow your IAM user access.\nResource to help on this point - <a href=\"https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ac.html\" rel=\"nofollow noreferrer\">https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ac.html</a></p>\n</li>\n</ol>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12811038,
+    "reputation" : 41,
+    "user_id" : 9269248,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/44f38035dc2a64c3512ee4b9019bca73?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Taras Vovk",
+    "link" : "https://stackoverflow.com/users/9269248/taras-vovk"
+  },
+  "is_answered" : false,
+  "view_count" : 8543,
+  "answer_count" : 2,
+  "score" : 3,
+  "last_activity_date" : 1762887980,
+  "creation_date" : 1680034384,
+  "last_edit_date" : 1680034515,
+  "question_id" : 75870670,
+  "link" : "https://stackoverflow.com/questions/75870670/aws-opensearch-service-request-failed-security-exception-authentication-auth",
+  "title" : "AWS OpenSearch Service. Request failed: [security_exception] authentication/authorization failure",
+  "body" : "<p>I'm trying to use OpenSearch to connect to my OpenSearch domain on AWS. I set env for AWS. However, I'm encountering an authentication/authorization failure. Here's my code:</p>\n<pre><code>public class Example {\n\n  public static void main(final String[] args) throws IOException {\n    SdkHttpClient httpClient = ApacheHttpClient.builder().build();\n    try {\n      OpenSearchClient client =\n          new OpenSearchClient(\n              new AwsSdk2Transport(\n                  httpClient,\n                  &quot;search-*****-3ovub4o4gncugluu6t2tquptnu.eu-central-1.es.amazonaws.com&quot;,\n                  Region.EU_CENTRAL_1,\n                  AwsSdk2TransportOptions.builder().build()));\n\n      InfoResponse info = client.info();\n      System.out.println(info.version().distribution() + &quot;: &quot; + info.version().number());\n    } finally {\n      httpClient.close();\n    }\n  }\n}\n</code></pre>\n<p>When I run this code, I get the following exception:</p>\n<pre><code>Exception in thread &quot;main&quot; org.opensearch.client.opensearch._types.OpenSearchException: Request failed: [security_exception] authentication/authorization failureat org.opensearch.client.transport.aws.AwsSdk2Transport.parseResponse(AwsSdk2Transport.java:47)at org.opensearch.client.transport.aws.AwsSdk2Transport.executeSync(AwsSdk2Transport.java:393)at org.opensearch.client.transport.aws.AwsSdk2Transport.performRequest(AwsSdk2Transport.java:191)at org.opensearch.client.opensearch.OpenSearchClient.info(OpenSearchClient.java:790)at Example.main(Example.java:25)\n</code></pre>\n<p>I believe I have the correct permissions set up for my IAM user, and I'm using the correct access key and secret key. However, I still can't seem to resolve this issue. What am I missing or doing wrong? Any help or guidance would be appreciated.</p>\n<p>this is my aws config <a href=\"https://i.sstatic.net/Ho0pD.png\" rel=\"nofollow noreferrer\">pic_1</a> <a href=\"https://i.sstatic.net/JfSI4.png\" rel=\"nofollow noreferrer\">pic_2</a> <a href=\"https://i.sstatic.net/iA9Dk.png\" rel=\"nofollow noreferrer\">pic_3</a></p>\n"
+}

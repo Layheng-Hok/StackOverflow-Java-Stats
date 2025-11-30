@@ -1,0 +1,104 @@
+{
+  "tags" : [ "java", "file", "path", "fortify" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 15804504,
+      "reputation" : 63,
+      "user_id" : 11403344,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f56c1b9bb44df351cc1685dabd0855a4?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "RaVin",
+      "link" : "https://stackoverflow.com/users/11403344/ravin"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1556101609,
+    "post_id" : 55823435,
+    "comment_id" : 98320390,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I tried new File(path.normalize().toString()) but this also does not work .Infact it raised 1 more flag for vulnerability"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15804504,
+        "reputation" : 63,
+        "user_id" : 11403344,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f56c1b9bb44df351cc1685dabd0855a4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "RaVin",
+        "link" : "https://stackoverflow.com/users/11403344/ravin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1556504645,
+      "post_id" : 55868097,
+      "comment_id" : 98448772,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The file name comes from user input , there is no other way but process the the input ."
+    }, {
+      "owner" : {
+        "account_id" : 10674291,
+        "reputation" : 88,
+        "user_id" : 10067428,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/1515920005106969/picture?type=large",
+        "display_name" : "Raphael Hagi",
+        "link" : "https://stackoverflow.com/users/10067428/raphael-hagi"
+      },
+      "reply_to_user" : {
+        "account_id" : 15804504,
+        "reputation" : 63,
+        "user_id" : 11403344,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/f56c1b9bb44df351cc1685dabd0855a4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "RaVin",
+        "link" : "https://stackoverflow.com/users/11403344/ravin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1556543879,
+      "post_id" : 55868097,
+      "comment_id" : 98464036,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Do you really need to maintain the original filename? If this is true, ok. You just need to care about the filename itself. I guy can send to  you a .cmd, .bat, .exe somethig like that. If you take care about this issue, can you mark this as false positive."
+    } ],
+    "owner" : {
+      "account_id" : 10674291,
+      "reputation" : 88,
+      "user_id" : 10067428,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/1515920005106969/picture?type=large",
+      "display_name" : "Raphael Hagi",
+      "link" : "https://stackoverflow.com/users/10067428/raphael-hagi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1556283247,
+    "creation_date" : 1556283247,
+    "answer_id" : 55868097,
+    "question_id" : 55823435,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This \"sUnsanitized\" variable comes from user input? Maybe this is your real problem.</p>\n\n<p>Never trust in user input its a number one rule to develpment.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 15804504,
+    "reputation" : 63,
+    "user_id" : 11403344,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/f56c1b9bb44df351cc1685dabd0855a4?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "RaVin",
+    "link" : "https://stackoverflow.com/users/11403344/ravin"
+  },
+  "is_answered" : false,
+  "view_count" : 9332,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761998720,
+  "creation_date" : 1556086310,
+  "last_edit_date" : 1556086561,
+  "question_id" : 55823435,
+  "link" : "https://stackoverflow.com/questions/55823435/how-to-fix-fortify-path-manipulation-input-validation-and-representation-dat",
+  "title" : "How to fix Fortify Path Manipulation ( Input Validation and Representation , Data Flow ) vulnerability",
+  "body" : "<p>I am getting fortify path manipulation vulnerability for creating a file with new keyword </p>\n\n<p>I have tried to sanitize the path before passing it to File object, but the problem persists.\nTried this link also:\n<a href=\"https://www.securecoding.cert.org/confluence/display/java/FIO00-J.+Do+not+operate+on+files+in+shared+directories\" rel=\"nofollow noreferrer\">https://www.securecoding.cert.org/confluence/display/java/FIO00-J.+Do+not+operate+on+files+in+shared+directories</a></p>\n\n<pre><code>public static String sanitizePath(String sUnsanitized) throws URISyntaxException, EncodingException {\n\n   String sSanitized = SAPI.encoder().canonicalize(sUnsanitized);\n   return sSanitized;\n\n}\n\n\n//// the main method code snippet /////\n\nString sSanitizedPath = Utils.sanitizePath(file.getOriginalFilename());\n\n-- fortify scan detects problem here ..in below line --\n\nFile filePath = new File(AppInitializer.UPLOAD_LOCATION, sSanitizedPath);\n\nString canonicalPath = filePath.getCanonicalPath();\nFileOutputStream fileOutputStream = new FileOutputStream(canonicalPath);\n</code></pre>\n\n<p>After the santizePath , I thought the scan will be not pick ,vulnerabilit but , it did.</p>\n"
+}

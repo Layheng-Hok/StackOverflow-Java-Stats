@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "playframework", "playframework-2.0", "ebean" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3686707,
+        "reputation" : 1289,
+        "user_id" : 3070340,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t6uP8.jpg?s=256",
+        "display_name" : "Pico12",
+        "link" : "https://stackoverflow.com/users/3070340/pico12"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1446455487,
+      "post_id" : 33390536,
+      "comment_id" : 54733430,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I tried, and this is working when the distant database is online. But when it&#39;s offline, I get an exception at startup (Configuration error[Cannot connect to database [distantdatabase]])."
+    } ],
+    "owner" : {
+      "account_id" : 1062621,
+      "reputation" : 8202,
+      "user_id" : 1063929,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/mF7ze.jpg?s=256",
+      "display_name" : "Steve Chaloner",
+      "link" : "https://stackoverflow.com/users/1063929/steve-chaloner"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1446033755,
+    "creation_date" : 1446033755,
+    "answer_id" : 33390536,
+    "question_id" : 33349021,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You need to declare which classes you want to be enhanced.  In your application.conf, add the following:</p>\n\n<pre><code>ebean.distantdatabase = [\"models.distantdatabase.*\"]\n</code></pre>\n\n<p>I think you'll need to make sure the <code>EbeanServer</code> is eagerly created (just a guess, I haven't tried your approach before).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3686707,
+      "reputation" : 1289,
+      "user_id" : 3070340,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t6uP8.jpg?s=256",
+      "display_name" : "Pico12",
+      "link" : "https://stackoverflow.com/users/3070340/pico12"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1446820907,
+    "last_edit_date" : 1446820907,
+    "creation_date" : 1446548162,
+    "answer_id" : 33497335,
+    "question_id" : 33349021,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I finally get it, the database model was not exactly what ebean expected.</p>\n\n<p>To solve it, I add in application.conf parameters as for a local database :</p>\n\n<pre><code>ebean.distantdatabase=\"models.distantdatabase.*\"\nplay.evolutions.db.distantdatabase.enabled=true\nplay.evolutions.db.distantdatabase.autoApply = true\ndb = {\n  saetr {\n    driver=com.mysql.jdbc.Driver\n    url=\"jdbc:mysql://localhost/distantdatabase\"\n    username=play\n    password=framework\n  }\n}\n</code></pre>\n\n<p>I created an empty database \"distantdatabase\" on mySQl server.\nI launched my application once. It created tables in the database, and the tables creation sql script (/conf/evolutions/distantdatabase/1.sql).\nWith this file, you could know exactly what database model ebean is expecting.</p>\n\n<p>Then, to use a distant database, which could be offline, you need to not declare anything about it into application.conf, and declare a ServerConfig as this :</p>\n\n<pre><code>ServerConfig saetrServerConfig = new ServerConfig();\nsaetrServerConfig.setName(\"distantdatabase\");\nsaetrServerConfig.setDdlGenerate(false); // ddlGenerate drops all tables and create new tables\nsaetrServerConfig.setDdlRun(false); // ddlRun run migration scripts\nsaetrServerConfig.setDefaultServer(false);\nsaetrServerConfig.setRegister(true);\nsaetrServerConfig.setDataSourceConfig(ds);\nsaetrServerConfig.setClasses(saetrClasses);\n</code></pre>\n\n<p>You could find example from ebean tests : <a href=\"https://github.com/ebean-orm/avaje-ebeanorm/blob/master/src/test/java/com/avaje/tests/basic/MainDbBoolean.java\" rel=\"nofollow\">https://github.com/ebean-orm/avaje-ebeanorm/blob/master/src/test/java/com/avaje/tests/basic/MainDbBoolean.java</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3686707,
+    "reputation" : 1289,
+    "user_id" : 3070340,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/t6uP8.jpg?s=256",
+    "display_name" : "Pico12",
+    "link" : "https://stackoverflow.com/users/3070340/pico12"
+  },
+  "is_answered" : true,
+  "view_count" : 7358,
+  "accepted_answer_id" : 33497335,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1761338986,
+  "creation_date" : 1445871771,
+  "last_edit_date" : 1761338986,
+  "question_id" : 33349021,
+  "link" : "https://stackoverflow.com/questions/33349021/play-bean-class-is-not-enhanced-using-ebeanserverfactory",
+  "title" : "Play : bean class is not enhanced, using EbeanServerFactory",
+  "body" : "<p>using play framework 2.4.2, I have to connect to a distant database  which can be offline.</p>\n<p>I am trying to avoid the &quot;Cannot connect to database [distantdatabase]&quot; exception at startup.</p>\n<p>After trying lots of methods, I decided to create manually an EbeanServerFactory to access this distant database.</p>\n<p>This is my model:</p>\n<pre><code>@Entity\n@Table(name=&quot;vehicules&quot;)\npublic class Vehicule {\n    @Id\n    public Long id;\n    public Long noParc;\n    public Long etat;\n}\n</code></pre>\n<p>And this is how I try to access data</p>\n<pre><code>// Classes of distant database\nList&lt;Class&lt;?&gt;&gt; saetrClasses = new ArrayList&lt;Class&lt;?&gt;&gt;();\nsaetrClasses.add(Vehicule.class);\n        \n// Access configuration to distant database\nDataSourceConfig ds = new DataSourceConfig();\nds.setDriver(&quot;com.mysql.jdbc.Driver&quot;);\nds.setUrl(&quot;jdbc:mysql://localhost/distantdatabase&quot;);\nds.setUsername(&quot;stack&quot;);\nds.setPassword(&quot;overflow&quot;);\n        \nServerConfig saetrServerConfig = new ServerConfig();\nsaetrServerConfig.setName(&quot;distantdatabase&quot;);\nsaetrServerConfig.setDefaultServer(false);\nsaetrServerConfig.setClasses(saetrClasses);\nsaetrServerConfig.setRegister(false);\nsaetrServerConfig.setDataSourceConfig(ds);\n        \nLogger.warn(&quot;EbeanServerFactory.create...&quot;);\n        \nEbeanServer saetrServer = EbeanServerFactory.create(saetrServerConfig);\n        \nsaetrServer.find(Vehicule.class).where().gt(&quot;lastMaj&quot;, lastRequestTime).findList();\n</code></pre>\n<p>build.sbt</p>\n<pre><code>lazy val root = (project in file(&quot;.&quot;)).enablePlugins(PlayJava, PlayEbean, PlayEnhancer)\n</code></pre>\n<p>plugins.sbt</p>\n<pre><code>addSbtPlugin(&quot;com.typesafe.sbt&quot; % &quot;sbt-play-enhancer&quot; % &quot;1.1.0&quot;)\n</code></pre>\n<p>I get the following error:</p>\n<pre><code>[warn] - application - EbeanServerFactory.create...\n[error] - com.avaje.ebeaninternal.server.deploy.BeanDescriptorManager - Error in deployment\njava.lang.IllegalStateException: Bean class models.distantdatabase.Vehicule is not enhanced?\n[...]\n</code></pre>\n<p>I do not understand this error. I've looked a lot of examples and did not find what I'm missing. Any idea?</p>\n<p>Edit: I looked into the source code of ebean, and I get this error because my model does not implement EntityBean interface.\nHow can I force implementation of this interface?</p>\n"
+}

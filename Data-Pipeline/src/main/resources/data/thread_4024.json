@@ -1,0 +1,127 @@
+{
+  "tags" : [ "java", "spring", "spring-boot" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 171033,
+      "reputation" : 1189,
+      "user_id" : 398174,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/e8c428877d1d1670abf777aa44f64cb7?s=256&d=identicon&r=PG",
+      "display_name" : "P44T",
+      "link" : "https://stackoverflow.com/users/398174/p44t"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1520428223,
+    "post_id" : 27845102,
+    "comment_id" : 85309849,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<code>@ConfigurationProperties</code> objects can also be used to specify default values, which would (of course) not be picked up by <code>@ConditionalOnProperty</code>. So this still is a very relevant question."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1223835,
+        "reputation" : 77459,
+        "user_id" : 1189885,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/DLHqU.png?s=256",
+        "display_name" : "chrylis -cautiouslyoptimistic-",
+        "link" : "https://stackoverflow.com/users/1189885/chrylis-cautiouslyoptimistic"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1420758908,
+      "post_id" : 27848918,
+      "comment_id" : 44106572,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The entire point of the Spring Boot autoconfiguration system is to adapt to the external configuration information without having to specify toggles that just provide redundant information, essentially mini-profiles."
+    }, {
+      "owner" : {
+        "account_id" : 1349166,
+        "reputation" : 1517,
+        "user_id" : 1289300,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d98639bbeb9ff4edbd7dd0f0a3559b78?s=256&d=identicon&r=PG",
+        "display_name" : "mariubog",
+        "link" : "https://stackoverflow.com/users/1289300/mariubog"
+      },
+      "reply_to_user" : {
+        "account_id" : 1223835,
+        "reputation" : 77459,
+        "user_id" : 1189885,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/DLHqU.png?s=256",
+        "display_name" : "chrylis -cautiouslyoptimistic-",
+        "link" : "https://stackoverflow.com/users/1189885/chrylis-cautiouslyoptimistic"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1420769259,
+      "post_id" : 27848918,
+      "comment_id" : 44109548,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Sorry I did not notice autoconfiguration.Nothing clean comes to my mind     @Component     @ConfigurationProperties(prefix = &quot;some.selector&quot;)     @Conditional(YourConfiguration.class)     public Class YourConfiguration implements Condition {       private property option; \t@Override \tpublic boolean matches(ConditionContext context,AnnotatedTypeMetadata metadata) { \t\t //some hardcoded properties checking    \t return (System.getProperty(&quot;servicedefault&quot;) == null); \t}      }` not clean but thats the way @Condidional works ,bean will be registered according to condition otherwise fails to register"
+    } ],
+    "owner" : {
+      "account_id" : 1349166,
+      "reputation" : 1517,
+      "user_id" : 1289300,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d98639bbeb9ff4edbd7dd0f0a3559b78?s=256&d=identicon&r=PG",
+      "display_name" : "mariubog",
+      "link" : "https://stackoverflow.com/users/1289300/mariubog"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1420751623,
+    "last_edit_date" : 1420751623,
+    "creation_date" : 1420748753,
+    "answer_id" : 27848918,
+    "question_id" : 27845102,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Can't you just use profile of your application-some_profile.properties file and then create your properties bean conditionally like this</p>\n\n<pre><code>@Profile(\"some_profile\")\n@Component\n@ConfigurationProperties(prefix = \"some.selector\")\n\npublic Class YourConfiguration{\n  private property option;\n}\n</code></pre>\n\n<p>this way it only gets created conditionally depending which profile you select live or mock.\nThan you can either use selected profile for your @Configuration authentication classes for separate approaches or follow with @ConditionalOnBean. That's what profiles are for or maybe I misunderstood the question.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5006322,
+      "reputation" : 1044,
+      "user_id" : 4023888,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/NYOVD.jpg?s=256",
+      "display_name" : "Maximiliano De Lorenzo",
+      "link" : "https://stackoverflow.com/users/4023888/maximiliano-de-lorenzo"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1511804686,
+    "last_edit_date" : 1511804686,
+    "creation_date" : 1511802067,
+    "answer_id" : 47516191,
+    "question_id" : 27845102,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I had a similar problem and I could resolve it with this approach using Spring Boot and Java 8, hope it helps someone:</p>\n\n<pre><code>@Configuration\n@PropertySources({\n    @PropertySource(\"classpath:integration.properties\"),\n    @PropertySource(value = \"classpath:integration-${spring.profiles.active}.properties\", ignoreResourceNotFound = true)\n})\n@ConfigurationProperties(prefix = \"integration\")\npublic class IntegrationProperties {\n\n    private String user;\n\n    private String password;\n\n    private String projectId;\n\n    ....\n\n}\n</code></pre>\n\n<p><strong>integration.properties</strong></p>\n\n<pre><code>integration.user=User\nintegration.password=Password\nintegration.project-id=123\n</code></pre>\n\n<p><strong>integration-prod.properties</strong></p>\n\n<pre><code>integration.project-id=897\n</code></pre>\n\n<p>Spring Boot will create the bean using the properties file, and for production (using the profile <code>prod</code>) it will use the other file and override the <code>project-id</code>. The <code>ignoreResourceNotFound = true</code> will avoid the FileNotFoundException on startup when you are not using the <code>prod</code> profile.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1223835,
+    "reputation" : 77459,
+    "user_id" : 1189885,
+    "user_type" : "registered",
+    "accept_rate" : 43,
+    "profile_image" : "https://i.sstatic.net/DLHqU.png?s=256",
+    "display_name" : "chrylis -cautiouslyoptimistic-",
+    "link" : "https://stackoverflow.com/users/1189885/chrylis-cautiouslyoptimistic"
+  },
+  "is_answered" : false,
+  "view_count" : 8977,
+  "answer_count" : 2,
+  "score" : 7,
+  "last_activity_date" : 1761116645,
+  "creation_date" : 1420735051,
+  "question_id" : 27845102,
+  "link" : "https://stackoverflow.com/questions/27845102/spring-boot-conditional-on-configurationproperties",
+  "title" : "Spring Boot conditional on @ConfigurationProperties",
+  "body" : "<p>I have an authentication service that I want to autoconfigure at runtime but that will be mocked up for development and testing. I would like to use the <code>@ConfigurationProperties</code> feature to define the necessary parameters, but I also need to be able to only conditionally create the <code>AuthenticationManager</code> instances, depending on whether a live service is configured.</p>\n\n<p>The approach I would like to take is to use something like <code>@ConditionalOnBean(AuthProperties.class)</code>, but\nSpring Boot creates a bean of my <code>@ConfigurationProperties</code> class regardless of whether the properties are present. I can apply validation annotations to the fields, but then the context won't start at all if a live service is not configured.</p>\n\n<p>Is there a clean way to make a configuration section conditional on having the properties specified in an <code>@ConfigurationProperties</code> class without repeating the property names in <code>@ConditionalOnProperty</code>?</p>\n"
+}

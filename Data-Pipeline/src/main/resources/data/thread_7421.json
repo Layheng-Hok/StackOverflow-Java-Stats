@@ -1,0 +1,68 @@
+{
+  "tags" : [ "java", "android", "speech-recognition" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3525574,
+      "reputation" : 883,
+      "user_id" : 2946787,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/82Qt1Y1T.jpg?s=256",
+      "display_name" : "sfinja",
+      "link" : "https://stackoverflow.com/users/2946787/sfinja"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1745477272,
+    "post_id" : 79562342,
+    "comment_id" : 140364109,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "When you switch to Bluetooth SCO (via <code>setCommunicationDevice</code> on SDK 31+ or <code>startBluetoothSco</code> on earlier versions), the system prioritizes it for voice communication, such as calls or speech recognition. However, system sounds like the SpeechRecognizer&#39;s start beep are typically played on the STREAM_SYSTEM or STREAM_NOTIFICATION audio stream by default, not STREAM_VOICE_CALL. SCO routing is optimized for low-latency voice input/output, which can inadvertently suppress or reroute non-voice streams to prevent interference."
+  }, {
+    "owner" : {
+      "account_id" : 6234584,
+      "reputation" : 457,
+      "user_id" : 4850296,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Ta7Tf.png?s=256",
+      "display_name" : "Pierre Wargnier",
+      "link" : "https://stackoverflow.com/users/4850296/pierre-wargnier"
+    },
+    "reply_to_user" : {
+      "account_id" : 3525574,
+      "reputation" : 883,
+      "user_id" : 2946787,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/82Qt1Y1T.jpg?s=256",
+      "display_name" : "sfinja",
+      "link" : "https://stackoverflow.com/users/2946787/sfinja"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1746452949,
+    "post_id" : 79562342,
+    "comment_id" : 140397074,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Thanks @sfinja. This is true. On some older versions of Android, these streams are even muted when in SCO mode. By the way, although this does not solve the main issue, I found that using BluetoothHeadset.startVoiceRecognition(BluetoothDevice) switch much faster and has the advantage of working on quite old versions of Android (my app supports APIs 23 through 35 at the moment)."
+  } ],
+  "owner" : {
+    "account_id" : 6234584,
+    "reputation" : 457,
+    "user_id" : 4850296,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/Ta7Tf.png?s=256",
+    "display_name" : "Pierre Wargnier",
+    "link" : "https://stackoverflow.com/users/4850296/pierre-wargnier"
+  },
+  "is_answered" : false,
+  "view_count" : 73,
+  "answer_count" : 0,
+  "score" : 1,
+  "last_activity_date" : 1744122656,
+  "creation_date" : 1744122656,
+  "question_id" : 79562342,
+  "link" : "https://stackoverflow.com/questions/79562342/android-speechrecognizer-start-sound-too-low-or-missing-when-using-bluetooth-sco",
+  "title" : "Android SpeechRecognizer start sound too low or missing when using Bluetooth SCO audio routing (SDK 23–35)",
+  "body" : "<p>I’m working on an Android app that includes hands-free voice interaction using the <code>SpeechRecognizer</code> API. It must be compatible from <strong>SDK 23 to 35</strong>.</p>\n<p>In most usage scenarios, the app <strong>runs outdoors with Bluetooth headphones</strong>, so I’ve implemented <strong>Bluetooth audio profile switching (SCO)</strong> to ensure that the microphone used is the Bluetooth one.</p>\n<h1>\uD83C\uDFA7 The issue</h1>\n<p>On some devices (e.g. Google Pixel 9), when I switch to the SCO profile and start the speech recognizer after SCO is confirmed active, I notice:</p>\n<p>The start sound (beep) played by the system when <code>startListening()</code> is called is <strong>either inaudible or very low</strong></p>\n<p>On other devices, the sound does play but with low volume, especially in SCO mode</p>\n<p>I’ve tried increasing the voice call stream volume before triggering speech recognition, but it didn’t help.</p>\n<h1>\uD83E\uDDEA What I’ve implemented</h1>\n<h2>\uD83D\uDD01 Bluetooth audio profile switching (simplified):</h2>\n<pre><code>public void requestBluetoothMicRouting(@NonNull AudioManager audioManager, @NonNull BluetoothSCOAudioStateListener listener) {\n    if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.S) {\n        boolean result = selectBluetoothMic(audioManager);\n        if (!result) {\n            listener.onBluetoothSCOAudioStateChanged(AudioManager.SCO_AUDIO_STATE_ERROR);\n        }\n    } else {\n        audioManager.startBluetoothSco();\n    }\n}\n\n@RequiresApi(api = Build.VERSION_CODES.S)\nprivate boolean selectBluetoothMic(@NonNull AudioManager audioManager) {\n    for (AudioDeviceInfo deviceInfo : audioManager.getAvailableCommunicationDevices()) {\n        if (deviceInfo.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO) {\n            return audioManager.setCommunicationDevice(deviceInfo);\n        }\n    }\n    return false;\n}\n</code></pre>\n<p>I wait for <code>ACTION_SCO_AUDIO_STATE_UPDATED</code> to confirm SCO activation before starting the recognizer.</p>\n<h2>\uD83D\uDDE3️ Starting speech recognition:</h2>\n<pre><code>if (BluetoothHeadsetHelper.getInstance().hasBluetoothHeadphonesConnected()) {\n    BluetoothHeadsetHelper.getInstance().requestBluetoothMicRouting(audioManager, state -&gt; {\n        if (state != AudioManager.SCO_AUDIO_STATE_ERROR) {\n            MySpeechRecognizer.getInstance().startListening(Locale.getDefault().toLanguageTag());\n        }\n    });\n} else {\n\n    MySpeechRecognizer.getInstance().startListening(Locale.getDefault().toLanguageTag());\n}\n</code></pre>\n<h2>\uD83E\uDDE0 The recognizer implementation:</h2>\n<pre><code>public void startListening(String language) {\n    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);\n    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);\n    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, language);\n    intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);\n    intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);\n    speechRecognizer.startListening(intent);\n}\n</code></pre>\n<h1>\uD83D\uDCC8 What I’ve tried</h1>\n<p>Setting the STREAM_VOICE_CALL volume to maximum:</p>\n<pre><code>audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL), 0);\n</code></pre>\n<p>Playing my own sound using MediaPlayer on the <code>VOICE_CALL</code> stream in <code>onReadyForSpeech</code> → sound plays, but is barely audible in SCO mode</p>\n<p>Reversing the order: calling startListening() before switching audio profile → doesn’t help</p>\n<h1>❓ My question</h1>\n<p>What causes the system start sound to be missing or barely audible when using Bluetooth SCO audio routing?</p>\n<p>Is there a reliable way to ensure the speech recognizer start sound is clearly audible across devices, or to replace it with a custom one without overlap?</p>\n<p>Thanks a lot for any guidance! I'm open to workarounds or internal tricks, as long as they work across most Android versions.</p>\n"
+}

@@ -1,0 +1,324 @@
+{
+  "tags" : [ "java", "lambda", "filter", "java-8", "java-stream" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1416522,
+      "reputation" : 96341,
+      "user_id" : 3553087,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Q2cTS.gif?s=256",
+      "display_name" : "Brian Goetz",
+      "link" : "https://stackoverflow.com/users/3553087/brian-goetz"
+    },
+    "edited" : false,
+    "score" : 81,
+    "creation_date" : 1401987046,
+    "post_id" : 24054773,
+    "comment_id" : 37109524,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Write whichever code is more readable in the situation.  The performance difference is minimal (and highly situational)."
+  }, {
+    "owner" : {
+      "account_id" : 1765312,
+      "reputation" : 501,
+      "user_id" : 2335486,
+      "user_type" : "registered",
+      "accept_rate" : 29,
+      "profile_image" : "https://i.sstatic.net/BEQfc.jpg?s=256",
+      "display_name" : "Diablo",
+      "link" : "https://stackoverflow.com/users/2335486/diablo"
+    },
+    "edited" : false,
+    "score" : 6,
+    "creation_date" : 1519757060,
+    "post_id" : 24054773,
+    "comment_id" : 85036431,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Forget about nano-optimizations and use highly readable &amp; maintainable code. with streams, one should always use each operation seperately including filters."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3049748,
+        "reputation" : 1964,
+        "user_id" : 2584597,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/501424819/picture?type=large",
+        "display_name" : "jucardi",
+        "link" : "https://stackoverflow.com/users/2584597/jucardi"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1479685642,
+      "post_id" : 24055107,
+      "comment_id" : 68649613,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "doesn&#39;t the code have to iterate the resulting stream after each filter?"
+    }, {
+      "owner" : {
+        "account_id" : 3211603,
+        "reputation" : 300858,
+        "user_id" : 2711488,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+        "display_name" : "Holger",
+        "link" : "https://stackoverflow.com/users/2711488/holger"
+      },
+      "reply_to_user" : {
+        "account_id" : 3049748,
+        "reputation" : 1964,
+        "user_id" : 2584597,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/501424819/picture?type=large",
+        "display_name" : "jucardi",
+        "link" : "https://stackoverflow.com/users/2584597/jucardi"
+      },
+      "edited" : false,
+      "score" : 19,
+      "creation_date" : 1479720270,
+      "post_id" : 24055107,
+      "comment_id" : 68660432,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Juan Carlos Diaz: no, streams don’t work that way. Read about “lazy evaluation”; intermediate operations don’t do anything, they only alter the outcome of the terminal operation."
+    } ],
+    "owner" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "is_accepted" : true,
+    "score" : 206,
+    "last_activity_date" : 1516632526,
+    "last_edit_date" : 1516632526,
+    "creation_date" : 1401956459,
+    "answer_id" : 24055107,
+    "question_id" : 24054773,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The code that has to be executed for both alternatives is so similar that you can’t predict a result reliably. The underlying object structure might differ but that’s no challenge to the hotspot optimizer. So it depends on other surrounding conditions which will yield to a faster execution, if there is any difference.</p>\n\n<p>Combining two filter instances creates more objects and hence more delegating code but this can change if you use method references rather than lambda expressions, e.g. replace <code>filter(x -&gt; x.isCool())</code> by <code>filter(ItemType::isCool)</code>. That way you have eliminated the synthetic delegating method created for your lambda expression. So combining two filters using two method references might create the same or lesser delegation code than a single <code>filter</code> invocation using a lambda expression with <code>&amp;&amp;</code>.</p>\n\n<p>But, as said, this kind of overhead will be eliminated by the HotSpot optimizer and is negligible.</p>\n\n<p>In theory, two filters could be easier parallelized than a single filter but that’s only relevant for rather computational intense tasks¹.</p>\n\n<p>So there is no simple answer.</p>\n\n<p>The bottom line is, don’t think about such performance differences below the odor detection threshold. Use what is more readable.</p>\n\n<hr>\n\n<p>¹…and would require an implementation doing parallel processing of subsequent stages, a road currently not taken by the standard Stream implementation</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2413418,
+        "reputation" : 599,
+        "user_id" : 2108024,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4a8688e2e6e432c06b5f644a0a9cd171?s=256&d=identicon&r=PG",
+        "display_name" : "Sperr",
+        "link" : "https://stackoverflow.com/users/2108024/sperr"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1501878313,
+      "post_id" : 36522058,
+      "comment_id" : 77991240,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Interesting - when I change the order to run test2 BEFORE test1, test1 runs slightly slower. It&#39;s only when test1 runs first that it seems faster. Can anyone reproduce this or have any insights?"
+    }, {
+      "owner" : {
+        "account_id" : 953426,
+        "reputation" : 988,
+        "user_id" : 979145,
+        "user_type" : "registered",
+        "accept_rate" : 25,
+        "profile_image" : "https://i.sstatic.net/YeMQP.jpg?s=256",
+        "display_name" : "DaBlick",
+        "link" : "https://stackoverflow.com/users/979145/dablick"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1542223928,
+      "post_id" : 36522058,
+      "comment_id" : 93495689,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It might be because the cost of HotSpot compilation is incurred by whatever test is run first."
+    }, {
+      "owner" : {
+        "account_id" : 3508394,
+        "reputation" : 2097,
+        "user_id" : 2933389,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/PC9xW.jpg?s=256",
+        "display_name" : "Paramesh Korrakuti",
+        "link" : "https://stackoverflow.com/users/2933389/paramesh-korrakuti"
+      },
+      "reply_to_user" : {
+        "account_id" : 2413418,
+        "reputation" : 599,
+        "user_id" : 2108024,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4a8688e2e6e432c06b5f644a0a9cd171?s=256&d=identicon&r=PG",
+        "display_name" : "Sperr",
+        "link" : "https://stackoverflow.com/users/2108024/sperr"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1588093991,
+      "post_id" : 36522058,
+      "comment_id" : 108766067,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Sperr you are right, when the order changed, results are not predictable. But, when I run this with three different threads, always complex filter giving better results, irrespective of which thread starts first. Below are the results. <code>Test #1: {count=100, sum=7207, min=65, average=72.070000, max=91} Test #3: {count=100, sum=7959, min=72, average=79.590000, max=97} Test #2: {count=100, sum=8869, min=79, average=88.690000, max=110}</code>"
+    }, {
+      "owner" : {
+        "account_id" : 203256,
+        "reputation" : 7296,
+        "user_id" : 450812,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/ea4bf084583b2c3fb801faff5aa08a0d?s=256&d=identicon&r=PG",
+        "display_name" : "alfonx",
+        "link" : "https://stackoverflow.com/users/450812/alfonx"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1626822553,
+      "post_id" : 36522058,
+      "comment_id" : 120994313,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This screams for <a href=\"https://openjdk.java.net/projects/code-tools/jmh/\" rel=\"nofollow noreferrer\">openjdk.java.net/projects/code-tools/jmh</a> ;-)"
+    } ],
+    "owner" : {
+      "account_id" : 4264083,
+      "reputation" : 6499,
+      "user_id" : 3487617,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/e3d54c70f0272d988d1b6372b2bcca06?s=256&d=identicon&r=PG",
+      "display_name" : "Hank D",
+      "link" : "https://stackoverflow.com/users/3487617/hank-d"
+    },
+    "is_accepted" : false,
+    "score" : 30,
+    "last_activity_date" : 1460232359,
+    "creation_date" : 1460232359,
+    "answer_id" : 36522058,
+    "question_id" : 24054773,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This test shows that your second option can perform significantly better.  Findings first, then the code:</p>\n\n<pre><code>one filter with predicate of form u -&gt; exp1 &amp;&amp; exp2, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=4142, min=29, average=41.420000, max=82}\ntwo filters with predicates of form u -&gt; exp1, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=13315, min=117, average=133.150000, max=153}\none filter with predicate of form predOne.and(pred2), list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=10320, min=82, average=103.200000, max=127}\n</code></pre>\n\n<p>now the code:</p>\n\n<pre><code>enum Gender {\n    FEMALE,\n    MALE\n}\n\nstatic class User {\n    Gender gender;\n    int age;\n\n    public User(Gender gender, int age){\n        this.gender = gender;\n        this.age = age;\n    }\n\n    public Gender getGender() {\n        return gender;\n    }\n\n    public void setGender(Gender gender) {\n        this.gender = gender;\n    }\n\n    public int getAge() {\n        return age;\n    }\n\n    public void setAge(int age) {\n        this.age = age;\n    }\n}\n\nstatic long test1(List&lt;User&gt; users){\n    long time1 = System.currentTimeMillis();\n    users.stream()\n            .filter((u) -&gt; u.getGender() == Gender.FEMALE &amp;&amp; u.getAge() % 2 == 0)\n            .allMatch(u -&gt; true);                   // least overhead terminal function I can think of\n    long time2 = System.currentTimeMillis();\n    return time2 - time1;\n}\n\nstatic long test2(List&lt;User&gt; users){\n    long time1 = System.currentTimeMillis();\n    users.stream()\n            .filter(u -&gt; u.getGender() == Gender.FEMALE)\n            .filter(u -&gt; u.getAge() % 2 == 0)\n            .allMatch(u -&gt; true);                   // least overhead terminal function I can think of\n    long time2 = System.currentTimeMillis();\n    return time2 - time1;\n}\n\nstatic long test3(List&lt;User&gt; users){\n    long time1 = System.currentTimeMillis();\n    users.stream()\n            .filter(((Predicate&lt;User&gt;) u -&gt; u.getGender() == Gender.FEMALE).and(u -&gt; u.getAge() % 2 == 0))\n            .allMatch(u -&gt; true);                   // least overhead terminal function I can think of\n    long time2 = System.currentTimeMillis();\n    return time2 - time1;\n}\n\npublic static void main(String... args) {\n    int size = 10000000;\n    List&lt;User&gt; users =\n    IntStream.range(0,size)\n            .mapToObj(i -&gt; i % 2 == 0 ? new User(Gender.MALE, i % 100) : new User(Gender.FEMALE, i % 100))\n            .collect(Collectors.toCollection(()-&gt;new ArrayList&lt;&gt;(size)));\n    repeat(\"one filter with predicate of form u -&gt; exp1 &amp;&amp; exp2\", users, Temp::test1, 100);\n    repeat(\"two filters with predicates of form u -&gt; exp1\", users, Temp::test2, 100);\n    repeat(\"one filter with predicate of form predOne.and(pred2)\", users, Temp::test3, 100);\n}\n\nprivate static void repeat(String name, List&lt;User&gt; users, ToLongFunction&lt;List&lt;User&gt;&gt; test, int iterations) {\n    System.out.println(name + \", list size \" + users.size() + \", averaged over \" + iterations + \" runs: \" + IntStream.range(0, iterations)\n            .mapToLong(i -&gt; test.applyAsLong(users))\n            .summaryStatistics());\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 462623,
+      "reputation" : 1024,
+      "user_id" : 865033,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/2c6ceb1d1bfc7de580fac71c5ecd3a69?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "v3nM",
+      "link" : "https://stackoverflow.com/users/865033/v3nm"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1542142496,
+    "creation_date" : 1542142496,
+    "answer_id" : 53289360,
+    "question_id" : 24054773,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is the result of the 6 different combinations of the sample test shared by @Hank D\nIt's evident that predicate of form <code>u -&gt; exp1 &amp;&amp; exp2</code> is highly performant in all the cases.</p>\n\n<pre><code>one filter with predicate of form u -&gt; exp1 &amp;&amp; exp2, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=3372, min=31, average=33.720000, max=47}\ntwo filters with predicates of form u -&gt; exp1, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=9150, min=85, average=91.500000, max=118}\none filter with predicate of form predOne.and(pred2), list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=9046, min=81, average=90.460000, max=150}\n\none filter with predicate of form u -&gt; exp1 &amp;&amp; exp2, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=8336, min=77, average=83.360000, max=189}\none filter with predicate of form predOne.and(pred2), list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=9094, min=84, average=90.940000, max=176}\ntwo filters with predicates of form u -&gt; exp1, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=10501, min=99, average=105.010000, max=136}\n\ntwo filters with predicates of form u -&gt; exp1, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=11117, min=98, average=111.170000, max=238}\none filter with predicate of form u -&gt; exp1 &amp;&amp; exp2, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=8346, min=77, average=83.460000, max=113}\none filter with predicate of form predOne.and(pred2), list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=9089, min=81, average=90.890000, max=137}\n\ntwo filters with predicates of form u -&gt; exp1, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=10434, min=98, average=104.340000, max=132}\none filter with predicate of form predOne.and(pred2), list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=9113, min=81, average=91.130000, max=179}\none filter with predicate of form u -&gt; exp1 &amp;&amp; exp2, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=8258, min=77, average=82.580000, max=100}\n\none filter with predicate of form predOne.and(pred2), list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=9131, min=81, average=91.310000, max=139}\ntwo filters with predicates of form u -&gt; exp1, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=10265, min=97, average=102.650000, max=131}\none filter with predicate of form u -&gt; exp1 &amp;&amp; exp2, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=8442, min=77, average=84.420000, max=156}\n\none filter with predicate of form predOne.and(pred2), list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=8553, min=81, average=85.530000, max=125}\none filter with predicate of form u -&gt; exp1 &amp;&amp; exp2, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=8219, min=77, average=82.190000, max=142}\ntwo filters with predicates of form u -&gt; exp1, list size 10000000, averaged over 100 runs: LongSummaryStatistics{count=100, sum=10305, min=97, average=103.050000, max=132}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 14556785,
+        "reputation" : 464,
+        "user_id" : 10514096,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3e1ce9396bb4149a4c730cd2c820464f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "SpongeBob",
+        "link" : "https://stackoverflow.com/users/10514096/spongebob"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1607427683,
+      "post_id" : 55305892,
+      "comment_id" : 115263383,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "As I understood, in Ops/Sec minimum is the best; is it? Could you please explain what is the meaning of these numbers(Ops/Sec)? Please take an example"
+    }, {
+      "owner" : {
+        "account_id" : 4893749,
+        "reputation" : 670,
+        "user_id" : 3944040,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a8b11a5fa7b70fc20e196b5cbfe2e147?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Leroy",
+        "link" : "https://stackoverflow.com/users/3944040/leroy"
+      },
+      "reply_to_user" : {
+        "account_id" : 14556785,
+        "reputation" : 464,
+        "user_id" : 10514096,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/3e1ce9396bb4149a4c730cd2c820464f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "SpongeBob",
+        "link" : "https://stackoverflow.com/users/10514096/spongebob"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1619104511,
+      "post_id" : 55305892,
+      "comment_id" : 118809246,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "A bit late in the day but @SpongeBob, Ops/Sec is Operations per Second, so the higher Ops/Sec the better"
+    }, {
+      "owner" : {
+        "account_id" : 182955,
+        "reputation" : 2477,
+        "user_id" : 418031,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://www.gravatar.com/avatar/012be039d7b8925c0565f135c4cd728b?s=256&d=identicon&r=PG",
+        "display_name" : "andrejb-dev",
+        "link" : "https://stackoverflow.com/users/418031/andrejb-dev"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1620227751,
+      "post_id" : 55305892,
+      "comment_id" : 119139724,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Just to be sure, does this mean, that parallel stream is not effective at streams of size lower than 10k?"
+    } ],
+    "owner" : {
+      "account_id" : 2485884,
+      "reputation" : 2762,
+      "user_id" : 2164318,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uQcdp.png?s=256",
+      "display_name" : "Serge",
+      "link" : "https://stackoverflow.com/users/2164318/serge"
+    },
+    "is_accepted" : false,
+    "score" : 100,
+    "last_activity_date" : 1563553980,
+    "last_edit_date" : 1563553980,
+    "creation_date" : 1553279711,
+    "answer_id" : 55305892,
+    "question_id" : 24054773,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A complex filter condition is better in performance perspective, but the best performance will show old fashion for loop with a standard <code>if clause</code> is the best option. The difference on a small array 10 elements difference might ~ 2 times, for a large array the difference is not that big.<br>\nYou can take a look on my <a href=\"https://github.com/volkodavs/javafilters-benchmarks\" rel=\"noreferrer\">GitHub project</a>, where I did performance tests for multiple array iteration options </p>\n\n<p>For small array 10 element throughput ops/s: \n<a href=\"https://i.sstatic.net/9TfGT.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/9TfGT.png\" alt=\"10 element array\"></a>\nFor medium 10,000 elements  throughput ops/s:\n<a href=\"https://i.sstatic.net/FjkMX.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/FjkMX.png\" alt=\"enter image description here\"></a>\nFor large array 1,000,000 elements throughput ops/s:\n<a href=\"https://i.sstatic.net/H6Bh1.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/H6Bh1.png\" alt=\"1M elements \"></a></p>\n\n<p>NOTE: tests runs on </p>\n\n<ul>\n<li>8 CPU</li>\n<li>1 GB RAM </li>\n<li>OS version: 16.04.1 LTS (Xenial Xerus)</li>\n<li>java version: 1.8.0_121</li>\n<li>jvm: -XX:+UseG1GC -server -Xmx1024m -Xms1024m</li>\n</ul>\n\n<p><strong>UPDATE:</strong> \nJava 11 has some progress on the performance, but the dynamics stay the same </p>\n\n<p>Benchmark mode: Throughput, ops/time\n<a href=\"https://i.sstatic.net/l6anc.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/l6anc.png\" alt=\"Java 8vs11\"></a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 85409,
+    "reputation" : 93054,
+    "user_id" : 238134,
+    "user_type" : "registered",
+    "accept_rate" : 73,
+    "profile_image" : "https://www.gravatar.com/avatar/d80ce5271185447eb06b360959acd71f?s=256&d=identicon&r=PG",
+    "display_name" : "deamon",
+    "link" : "https://stackoverflow.com/users/238134/deamon"
+  },
+  "is_answered" : true,
+  "view_count" : 311162,
+  "accepted_answer_id" : 24055107,
+  "answer_count" : 4,
+  "score" : 341,
+  "last_activity_date" : 1563553980,
+  "creation_date" : 1401955278,
+  "last_edit_date" : 1462877796,
+  "question_id" : 24054773,
+  "link" : "https://stackoverflow.com/questions/24054773/java-8-streams-multiple-filters-vs-complex-condition",
+  "title" : "Java 8 Streams: multiple filters vs. complex condition",
+  "body" : "<p>Sometimes you want to filter a <code>Stream</code> with more than one condition:</p>\n\n<pre><code>myList.stream().filter(x -&gt; x.size() &gt; 10).filter(x -&gt; x.isCool()) ...\n</code></pre>\n\n<p>or you could do the same with a complex condition and a <em>single</em> <code>filter</code>:</p>\n\n<pre><code>myList.stream().filter(x -&gt; x.size() &gt; 10 &amp;&amp; x -&gt; x.isCool()) ...\n</code></pre>\n\n<p>My guess is that the second approach has better performance characteristics, but I don't <em>know</em> it.</p>\n\n<p>The first approach wins in readability, but what is better for the performance?</p>\n"
+}

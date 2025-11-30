@@ -1,0 +1,44 @@
+{
+  "tags" : [ "java", "arrays", "json", "data-structures", "directory" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 957088,
+      "reputation" : 3980,
+      "user_id" : 982198,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://i.sstatic.net/rlCQj.png?s=256",
+      "display_name" : "ddarellis",
+      "link" : "https://stackoverflow.com/users/982198/ddarellis"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1513681346,
+    "creation_date" : 1513681346,
+    "answer_id" : 47885501,
+    "question_id" : 47883882,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you would like to create a JSON it is better to work with Objects, so a possible solution can be:</p>\n\n<p>This is a class representing a file.</p>\n\n<pre><code>public class CustomFile {\n\n    private String name;\n\n    public CustomFile(String name) {\n        this.name = name;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    @Override\n    public String toString() {\n        return \"CustomFile [name=\" + name + \"]\";\n    }\n\n}\n</code></pre>\n\n<p>This is a class representing a folder.</p>\n\n<pre><code>public class CustomFolder {\n\n    private String name;\n\n    List&lt;CustomFile&gt; files;\n\n    List&lt;CustomFolder&gt; folders;\n\n    public CustomFolder(String name) {\n        files = new ArrayList&lt;&gt;();\n        folders = new ArrayList&lt;&gt;();\n        this.name = name;\n    }\n\n    public String getName() {\n        return name;\n    }\n\n    public void setName(String name) {\n        this.name = name;\n    }\n\n    public List&lt;CustomFile&gt; getFiles() {\n        return files;\n    }\n\n    public void addFile(CustomFile file) {\n        this.files.add(file);\n    }\n\n    public List&lt;CustomFolder&gt; getFolders() {\n        return folders;\n    }\n\n    public void addFolder(CustomFolder folder) {\n        this.folders.add(folder);\n    }\n\n    @Override\n    public String toString() {\n        return \"CustomFolder [name=\" + name + \", files=\" + files + \", folders=\" + folders + \"]\";\n}\n</code></pre>\n\n<p>And the main functionality:</p>\n\n<pre><code>public class Main {\n    static List&lt;String&gt; allList = new ArrayList&lt;String&gt;();\n\n    public static void main(String[] args) throws IOException {\n        CustomFolder parentFolder = new CustomFolder(\"path/to/folder\");\n        CustomFolder mylist = displayIt(parentFolder);\n        ObjectMapper mapper = new ObjectMapper();\n        System.out.println(mapper.writeValueAsString(mylist));\n    }\n\n    public static CustomFolder displayIt(CustomFolder parentFolder) throws IOException {\n        File node = new File(parentFolder.getName());\n        if (node.isDirectory()) {\n            String[] subNote = node.list();\n            for (String filename : subNote) {\n                String path = node + \"\\\\\" + filename;\n                if (new File(path).isDirectory()) {\n                    CustomFolder folder = new CustomFolder(path);\n                    parentFolder.addFolder(folder);\n                    displayIt(folder);\n                } else {\n                    parentFolder.addFile(new CustomFile(path));\n                }\n            }\n        }\n        return parentFolder;\n    }\n\n}\n</code></pre>\n\n<p>For the JSON you need to include the <code>jackson-mapper-asl</code> artifact.</p>\n\n<p>You should check it carefully before add to your program because i didn't test it much, but you can get the feeling.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 224333,
+    "reputation" : 21456,
+    "user_id" : 484082,
+    "user_type" : "registered",
+    "accept_rate" : 78,
+    "profile_image" : "https://i.sstatic.net/xoixf.jpg?s=256",
+    "display_name" : "Alfred",
+    "link" : "https://stackoverflow.com/users/484082/alfred"
+  },
+  "is_answered" : true,
+  "view_count" : 3514,
+  "answer_count" : 1,
+  "score" : 5,
+  "last_activity_date" : 1759686013,
+  "creation_date" : 1513676147,
+  "last_edit_date" : 1513677396,
+  "question_id" : 47883882,
+  "link" : "https://stackoverflow.com/questions/47883882/how-to-get-file-directory-structure-as-json-in-java",
+  "title" : "How to get file directory structure as JSON in Java?",
+  "body" : "<p>What i am trying to accomplish is pretty straight forward. I want to create a method, which accept a root directory param as input, and return the file folder structure comes under input directory as JSON data. I started from the code below;</p>\n\n<pre><code>public class dirscan {\n    public static void main (String args[]) {\n        displayIt(new File(\"D:\\MyDir\"));\n    }\n\n    public static void displayIt(File node) {\n        System.out.println(node.getAbsoluteFile());\n        if (node.isDirectory()) {\n            String[] subNote = node.list();\n            for (String filename : subNote) {\n                displayIt(new File(node, filename));\n            }\n        }\n    }\n}\n</code></pre>\n\n<p>It prints directory and file list. I implemented an array list, and modified it as below; </p>\n\n<pre><code>public class DirScan {\n    static List&lt;String&gt; allList = new ArrayList&lt;String&gt;();\n\n    public static void main(String args[]) {\n        List&lt;String&gt; mylist = displayIt(new File(\"D:\\Books\"));\n        for (String filename : mylist) {\n            System.out.println(filename);\n        }\n    }\n\n    public static List&lt;String&gt; displayIt(File node) {\n        allList.add(node.getAbsoluteFile().toString());\n        if (node.isDirectory()) {\n            String[] subNote = node.list();\n            for (String filename : subNote) {\n                displayIt(new File(node, filename));\n            }\n        }\n        return allList;\n    }\n}\n</code></pre>\n\n<p>It also does the same. What i am trying to accomplish is, to return the directory listing as JSON, something like an array, array inside array solution. Is this possible? </p>\n"
+}

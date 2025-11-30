@@ -1,0 +1,99 @@
+{
+  "tags" : [ "java", "playwright", "playwright-java" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 15081327,
+      "reputation" : 55,
+      "user_id" : 10883906,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-2rCmuHRuUjs/AAAAAAAAAAI/AAAAAAAARMM/d7cL2JHaTLI/s256-rj/photo.jpg",
+      "display_name" : "Barak Bensimhon",
+      "link" : "https://stackoverflow.com/users/10883906/barak-bensimhon"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1737026445,
+    "creation_date" : 1737026445,
+    "answer_id" : 79361373,
+    "question_id" : 79361146,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Found the issue. So I'll start with describing the actual problem, and then my personal issue which caused it.</p>\n<p><strong>The problem</strong></p>\n<p>When Playwright-Java runs, it creates a temp folder which under the hood runs the native Playwright folder which is node project. This folder is located in (windows): &quot;C:\\Users{OS Username}\\AppData\\Local\\Temp\\playwright-java-{some id number}&quot;. The run fails because Playwright can't find the files it needs to run the node process (e.g. 'package.json', 'userAgent.js', etc. ). When I looked in the folder I've confirmed these files are missing, and only 'node.exe' is found.</p>\n<p><strong>The hint</strong></p>\n<p>Each time you run the tests, a new such 'playwright-java-{some id number}' folder is created under &quot;C:\\Users{OS Username}\\AppData\\Local\\Temp&quot;. I was following the 'Temp' folder to explore the newly created 'playwright-java-{some id number}' folder. <strong>Then I discovered that when the test runs it adds the missing files (e.g. 'package.json', 'userAgent.js', etc. ), but at a certain point, before the test ends, it all gets deleted</strong>.</p>\n<p><strong>The solution</strong></p>\n<p>This was kind of a guess, but I was looking back on the last things that I've done were to move the Playwright initializing (e.g. Playwright.create(), playwright.chromium().launch(), etc.) steps into a different class, which doesn't inherit from the class where '@BeforeMethod' is annotated. <strong>Only when I brought back the Playwright initializing steps under '@BeforeMethod' method it all worked well again</strong>. I'm thinking that the issue was caused because the Java garbage collector deleted the Playwright object, but I'm not sure. Nevertheless, I've seen many people write about this issue, sharing their solutions, I've tried them all, and non worked for me other then what I've explored. <strong>This issue has many possible causes, you should try to understand what was the cause in your case while trying to debug the test and understanding at which step does the contents of &quot;C:\\Users{OS Username}\\AppData\\Local\\Temp\\playwright-java-{some id number}&quot; is deleted</strong>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1134918,
+        "reputation" : 523,
+        "user_id" : 1120165,
+        "user_type" : "registered",
+        "accept_rate" : 96,
+        "profile_image" : "https://i.sstatic.net/Ndkvu.jpg?s=256",
+        "display_name" : "DWA",
+        "link" : "https://stackoverflow.com/users/1120165/dwa"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1747756343,
+      "post_id" : 79630288,
+      "comment_id" : 140443291,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This does not really answer the question. If you have a different question, you can ask it by clicking <a href=\"https://stackoverflow.com/questions/ask\">Ask Question</a>. To get notified when this question gets new answers, you can <a href=\"https://meta.stackexchange.com/q/345661\">follow this question</a>. Once you have enough <a href=\"https://stackoverflow.com/help/whats-reputation\">reputation</a>, you can also <a href=\"https://stackoverflow.com/help/privileges/set-bounties\">add a bounty</a> to draw more attention to this question. - <a href=\"/review/late-answers/36871155\">From Review</a>"
+    } ],
+    "owner" : {
+      "account_id" : 119318,
+      "reputation" : 49,
+      "user_id" : 310936,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fee47c62cd01e2934ebab0a1c246c64d?s=256&d=identicon&r=PG",
+      "display_name" : "sten_aksel",
+      "link" : "https://stackoverflow.com/users/310936/sten-aksel"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1747812841,
+    "last_edit_date" : 1747812841,
+    "creation_date" : 1747738386,
+    "answer_id" : 79630288,
+    "question_id" : 79361146,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This error can be caused by forgetting to call <code>playwright.close()</code>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 44812125,
+      "reputation" : 1,
+      "user_id" : 31948446,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bbcae350dfcfe4a13695acda074b4da3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Asrith Chowdary",
+      "link" : "https://stackoverflow.com/users/31948446/asrith-chowdary"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764177978,
+    "last_edit_date" : 1764177978,
+    "creation_date" : 1764148437,
+    "answer_id" : 79830503,
+    "question_id" : 79361146,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you don’t call:</p>\n<pre class=\"lang-java prettyprint-override\"><code>page.close();\nbrowser.close();\nplaywright.close();\n</code></pre>\n<p>then what happens is:</p>\n<pre><code>* The Java side of Playwright is done (your test finishes).\n* The Node side (the helper process that Playwright Java spins up) is still trying to:\n    * finish tracing / HAR\n    * clean up its temp folder (playwright-java-xxxxx/package)\n* During that shutdown, it tries to require('./../../package.json') from that temp folder.\n* Because the process is being torn down in a dirty way, the package.json is already gone → MODULE_NOT_FOUND → that ugly Error: Cannot find module './../../package.json'.\n</code></pre>\n<p>Once you explicitly close everything, Playwright has a clean, ordered shutdown and the Node side doesn’t trip over missing files.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 15081327,
+    "reputation" : 55,
+    "user_id" : 10883906,
+    "user_type" : "registered",
+    "profile_image" : "https://lh4.googleusercontent.com/-2rCmuHRuUjs/AAAAAAAAAAI/AAAAAAAARMM/d7cL2JHaTLI/s256-rj/photo.jpg",
+    "display_name" : "Barak Bensimhon",
+    "link" : "https://stackoverflow.com/users/10883906/barak-bensimhon"
+  },
+  "is_answered" : true,
+  "view_count" : 934,
+  "answer_count" : 3,
+  "score" : 1,
+  "last_activity_date" : 1764177978,
+  "creation_date" : 1737022765,
+  "last_edit_date" : 1737098749,
+  "question_id" : 79361146,
+  "link" : "https://stackoverflow.com/questions/79361146/playwright-cannot-find-module-package-json",
+  "title" : "Playwright cannot find module &#39;./../../package.json&#39;",
+  "body" : "<p>I'm using playwright-java for a few months now and suddenly I got the following error:</p>\n<pre><code>node:internal/modules/cjs/loader:1225\n  const err = new Error(message);\n              ^\n\nError: Cannot find module './../../package.json'\nRequire stack:\n- C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\utils\\userAgent.js\n- C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\utils\\index.js\n- C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\cli\\programWithTestStub.js\n- C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\cli.js\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1225:15)\n    at Module._load (node:internal/modules/cjs/loader:1051:27)\n    at Module.require (node:internal/modules/cjs/loader:1311:19)\n    at require (node:internal/modules/helpers:179:18)\n    at getPlaywrightVersion (C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\utils\\userAgent.js:91:54)\n    at HarTracer.stop (C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\server\\har\\harTracer.js:417:50)\n    at Tracing.abort (C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\server\\trace\\recorder\\tracing.js:203:21)\n    at CRBrowserContext._didCloseInternal (C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\server\\browserContext.js:199:18)\n    at CRBrowserContext._browserClosed (C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\server\\browserContext.js:189:10)\n    at CRBrowser._didClose (C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-2488518356231877608\\package\\lib\\server\\browser.js:128:52) {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: [\n    'C:\\\\Users\\\\BARAK~1.BEN\\\\AppData\\\\Local\\\\Temp\\\\playwright-java-2488518356231877608\\\\package\\\\lib\\\\utils\\\\userAgent.js',\n    'C:\\\\Users\\\\BARAK~1.BEN\\\\AppData\\\\Local\\\\Temp\\\\playwright-java-2488518356231877608\\\\package\\\\lib\\\\utils\\\\index.js',\n    'C:\\\\Users\\\\BARAK~1.BEN\\\\AppData\\\\Local\\\\Temp\\\\playwright-java-2488518356231877608\\\\package\\\\lib\\\\cli\\\\programWithTestStub.js',\n    'C:\\\\Users\\\\BARAK~1.BEN\\\\AppData\\\\Local\\\\Temp\\\\playwright-java-2488518356231877608\\\\package\\\\cli.js'\n  ]\n}\n\nNode.js v20.18.0\n</code></pre>\n<p>Looking in &quot;C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-7117691253024733273&quot; I can see only 'node.exe', which makes sense why the issue occurs. Why is it happening?</p>\n<p>Looking around for answers I've tried many suggested solutions including invalidating cache (on IntelliJ IDEA), deleting all &quot;C:\\Users\\BARAK~1.BEN\\AppData\\Local\\Temp\\playwright-java-*&quot; folders, and more. Any ideas how to resolve the issue?</p>\n<p>OS: Windows 10\nPlaywright version: playwright-java 1.49.0</p>\n"
+}

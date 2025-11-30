@@ -1,0 +1,79 @@
+{
+  "tags" : [ "java", "javaparser" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7087497,
+        "reputation" : 1340,
+        "user_id" : 5423850,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/b89f81705f89b1e6a35cfebee58e4890?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "oneturkmen",
+        "link" : "https://stackoverflow.com/users/5423850/oneturkmen"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1615420303,
+      "post_id" : 43877044,
+      "comment_id" : 117688576,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Is this still actual for newer versions, e.g., <code>3.16.3</code>? I thought you could just provide a project root path and the tool would figure out source directories on its own ..."
+    } ],
+    "owner" : {
+      "account_id" : 1987711,
+      "reputation" : 2268,
+      "user_id" : 1782500,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://i.sstatic.net/a9seB.jpg?s=256",
+      "display_name" : "Federico Tomassetti",
+      "link" : "https://stackoverflow.com/users/1782500/federico-tomassetti"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1494353519,
+    "creation_date" : 1494353519,
+    "answer_id" : 43877044,
+    "question_id" : 43840302,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>here is the mantainer of JavaSymbolSolver. When you a define your <code>JavaParserTypeSolver</code> instances you should point to the root of the source directory, because JavaSymbolSolver will look for classes calculating the path from the root of the source directory considering the package. For example if you specify <code>JavaSymbolSolver(new File(\"/src/foo\"))</code> and then look for class <code>a.b.C.java</code> it will check if a file named <code>/src/foo/a/b/C.java</code> exists. You do not specify the packages directories. If you specify <code>JavaSymbolSolver(new File(\"/src/foo/a/b\"))</code> it would look for file <code>src/foo/a/b/a/b/C.java</code> which does not exist.</p>\n\n<p>Does it help?</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25223771,
+      "reputation" : 511,
+      "user_id" : 19059901,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/wzMFz.png?s=256",
+      "display_name" : "Heisenbug",
+      "link" : "https://stackoverflow.com/users/19059901/heisenbug"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763385616,
+    "creation_date" : 1763385616,
+    "answer_id" : 79822340,
+    "question_id" : 43840302,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here's the working code to resolve <code>UnsolvedSymbolException</code> with javaparser v3.27.1 :</p>\n<pre><code>// false in constructor will solve UnsolvedSymbolException exception for jdk classes.\n// because by default true only includes jre classes and not all classes.\nTypeSolver reflectionTypeSolver = new ReflectionTypeSolver(false);\n\nCombinedTypeSolver combinedTypeSolver = new CombinedTypeSolver();\ncombinedTypeSolver.add(reflectionTypeSolver);\n\n// jarsPath will have all jars 'fully qualified names' to resolve UnsolvedSymbolException for the classes reported.\nfor (String jarPath : jarsPath) {\n    combinedTypeSolver.add(new JarTypeSolver(jarPath));\n}\n\nJavaSymbolSolver symbolSolver = new JavaSymbolSolver(combinedTypeSolver);\nStaticJavaParser.getParserConfiguration().setSymbolResolver(symbolSolver);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10850617,
+    "reputation" : 21,
+    "user_id" : 7978498,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/a80fd1209377d3f40b2bd100657429cb?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "H Kopec",
+    "link" : "https://stackoverflow.com/users/7978498/h-kopec"
+  },
+  "is_answered" : true,
+  "view_count" : 2521,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1763385616,
+  "creation_date" : 1494220969,
+  "question_id" : 43840302,
+  "link" : "https://stackoverflow.com/questions/43840302/javaparser-unsolvedsymbolexception-class-used-on-the-class-being-parsed-uses",
+  "title" : "javaparser UnsolvedSymbolException - Class used on the class being parsed, uses another class that is unresolved",
+  "body" : "<p>I'm not sure if I described the issue well in the title, but here is the background:\nI want to parse a java source code, say TestClassOne.java.</p>\n\n<p>TestClassOne uses another class \"TestClassTwo\" declared as instance variable. Now, TestClassTwo has a class TestClassThree declared as instance variable.</p>\n\n<p>So now, the problem arises when my target class-TestClassOne, gets a reference of TestClassThree via TestClassTwo, thus method test() below:</p>\n\n<pre><code> public class TestClassOne {    \n       private TestClassTwo testTwo = new TestClassTwo();\n\n    public void test() {\n        TestClassThree three = testTwo.getTestThree();\n     }\n    }\n</code></pre>\n\n<p>This is the Exception:</p>\n\n<pre><code>Exception in thread \"main\" UnsolvedSymbolException{context='unknown', name='TestClassThree', typeSolver=null}\n    at com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade.convertToUsage(JavaParserFacade.java:418)\n    at com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade.convertToUsage(JavaParserFacade.java:395)\n    at com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade.convertToUsageVariableType(JavaParserFacade.java:387)\n    at com.github.javaparser.symbolsolver.javaparsermodel.TypeExtractor.visit(TypeExtractor.java:302)\n    at com.github.javaparser.symbolsolver.javaparsermodel.TypeExtractor.visit(TypeExtractor.java:34)\n    at com.github.javaparser.ast.expr.VariableDeclarationExpr.accept(VariableDeclarationExpr.java:104)\n    at com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade.getTypeConcrete(JavaParserFacade.java:371)\n    at com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade.getType(JavaParserFacade.java:263)\n    at com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade.getType(JavaParserFacade.java:257)\n</code></pre>\n\n<p>Here are my codes:</p>\n\n<pre><code>import com.github.javaparser.JavaParser;\nimport com.github.javaparser.ParseException;\nimport com.github.javaparser.ast.CompilationUnit;\nimport com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade;\nimport com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;\nimport com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;\nimport com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;\npublic class TestParser {\n\n    public static void main(String[] args) throws FileNotFoundException, ParseException {\n\n        TypeCalculatorVisitor visitor = new TypeCalculatorVisitor();\n\n        CombinedTypeSolver combinedTypeSolver = new CombinedTypeSolver();\n        combinedTypeSolver.add(new ReflectionTypeSolver());\n\n        combinedTypeSolver\n        .add(new JavaParserTypeSolver(new File(\"..src/javaparser\")));\n\n        combinedTypeSolver.add(\n        new JavaParserTypeSolver(new File(\"..src/javaparser_pkg2\")));\n\n        combinedTypeSolver.add(\n        new JavaParserTypeSolver(new File(\"..src/javaparser_pkg3\")));       \n\n        CompilationUnit agendaCu = JavaParser.parse(new FileInputStream(\n                new File(\"..src/javaparser/TestClassOne.java\")));\n\n        agendaCu.accept(visitor, JavaParserFacade.get(combinedTypeSolver));\n\n        System.out.println(visitor.getParseResult());\n    }\n\n}\n</code></pre>\n\n<p>TestClassOne:</p>\n\n<pre><code>import javaparser_pkg2.TestClassTwo;\nimport javaparser_pkg3.TestClassThree;\n\npublic class TestClassOne {\n    private TestClassTwo testTwo = new TestClassTwo();\n\n    public void test() {\n        TestClassThree three = testTwo.getTestThree();\n    }   \n}\n</code></pre>\n\n<p>TestClassTwo:</p>\n\n<pre><code>import javaparser_pkg3.TestClassThree;\n\npublic class TestClassTwo {\n    private int age;\n    private String status;\n\n    private TestClassThree testThree = new TestClassThree();\n\n    public TestClassThree getTestThree() {\n        return testThree;\n    }\n    public void setTestThree(TestClassThree testThree) {\n        this.testThree = testThree;\n    }\n    public int getAge() {\n        return age;\n    }\n    public void setAge(int age) {\n        this.age = age;\n    }\n    public String getStatus() {\n        return status;\n    }\n    public void setStatus(String status) {\n        this.status = status;\n    }\n\n}\n</code></pre>\n\n<p>TestClassThree:</p>\n\n<pre><code>package javaparser_pkg3;\n\npublic class TestClassThree {\n    private String name;\n    private int ID;\n    public String getName() {\n        return name;\n    }\n    public void setName(String name) {\n        this.name = name;\n    }\n    public int getID() {\n        return ID;\n    }\n    public void setID(int iD) {\n        ID = iD;\n    }\n\n}\n</code></pre>\n\n<p>I have added the directory of TestClassThree as combinedTypeResolver (see above) but still does not work:</p>\n\n<pre><code>combinedTypeSolver.add(\n            new JavaParserTypeSolver(new File(\"..src/javaparser_pkg3\")));\n</code></pre>\n\n<p>How should this be done properly?</p>\n\n<p>Thanks and Regards!</p>\n"
+}

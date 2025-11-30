@@ -1,0 +1,184 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "datasource", "spring-el" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1961640,
+      "reputation" : 13407,
+      "user_id" : 1763035,
+      "user_type" : "registered",
+      "accept_rate" : 56,
+      "profile_image" : "https://i.sstatic.net/wpk6X.jpg?s=256",
+      "display_name" : "Andy Brown",
+      "link" : "https://stackoverflow.com/users/1763035/andy-brown"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1504884123,
+    "post_id" : 46118782,
+    "comment_id" : 79202086,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<code>@ConditionalOnProperty</code> already has a <code>matchIfMissing</code> parameter to control what happens when the property is not present. Are you trying to say that the empty string value is a synonym for not-present in your code?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 312929,
+      "reputation" : 1548,
+      "user_id" : 627297,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/6d1adbc3a909729d59e708d103cf2689?s=256&d=identicon&r=PG",
+      "display_name" : "alex.b",
+      "link" : "https://stackoverflow.com/users/627297/alex-b"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1504883344,
+    "creation_date" : 1504883344,
+    "answer_id" : 46119535,
+    "question_id" : 46118782,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can try more generic purpose annotation which is standard for the Spring Core:\n<code>org.springframework.context.annotation.Conditional</code>. </p>\n\n<p>In the context objects for your callback you can get all the information you need: <code>org.springframework.context.annotation.Condition</code></p>\n\n<p>Also you can consider using Profiles.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1218217,
+      "reputation" : 1398,
+      "user_id" : 1185394,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://i.sstatic.net/AeZpj.png?s=256",
+      "display_name" : "andrii",
+      "link" : "https://stackoverflow.com/users/1185394/andrii"
+    },
+    "is_accepted" : false,
+    "score" : 22,
+    "last_activity_date" : 1659111985,
+    "last_edit_date" : 1659111985,
+    "creation_date" : 1523475008,
+    "answer_id" : 49783092,
+    "question_id" : 46118782,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I'm having the same issue. As I undestood, you'r looking for &quot;property exists and not empty&quot; condition. This condition doesn't come out of the box, therefore some coding required. Solution using <code>org.springframework.context.annotation.Conditional</code> works for me:</p>\n<ol>\n<li><p>Create <code>ConditionalOnPropertyNotEmpty</code> annotation and accompanied <code>OnPropertyNotEmptyCondition</code> class as follows:</p>\n<pre><code> // ConditionalOnPropertyNotEmpty.java\n\n import org.springframework.context.annotation.Condition;\n import org.springframework.context.annotation.ConditionContext;\n import org.springframework.context.annotation.Conditional;\n import org.springframework.core.type.AnnotatedTypeMetadata;\n import java.lang.annotation.ElementType;\n import java.lang.annotation.Retention;\n import java.lang.annotation.RetentionPolicy;\n import java.lang.annotation.Target;\n import java.util.Map;\n\n @Target({ ElementType.TYPE, ElementType.METHOD })\n @Retention(RetentionPolicy.RUNTIME)\n @Conditional(ConditionalOnPropertyNotEmpty.OnPropertyNotEmptyCondition.class)\n public @interface ConditionalOnPropertyNotEmpty {\n     String value();\n\n     class OnPropertyNotEmptyCondition implements Condition {\n\n         @Override\n         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {\n             Map&lt;String, Object&gt; attrs = metadata.getAnnotationAttributes(ConditionalOnPropertyNotEmpty.class.getName());\n             if (attrs == null) {\n                 return false;\n             }\n             String propertyName = (String) attrs.get(&quot;value&quot;);\n             String val = context.getEnvironment().getProperty(propertyName);\n             return val != null &amp;&amp; !val.trim().isEmpty();\n         }\n     }\n }\n</code></pre>\n</li>\n<li><p>Annotate your bean with <code>ConditionalOnPropertyNotEmpty</code>, like:</p>\n<pre><code> @ConditionalOnPropertyNotEmpty(&quot;database.url&quot;)\n @Bean\n public DataSource dataSource() { ... }\n</code></pre>\n</li>\n</ol>\n<p>--</p>\n<p>Alternatively, you can either set detabase.url to false explicitly (e.g. <code>detabase.url: false</code>) or do not define <code>detabase.url</code> at all in your config. Then, <code>@ConditionalOnProperty(value = &quot;database.url&quot;)</code> will work for you as expected.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2318254,
+        "reputation" : 91,
+        "user_id" : 2034754,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/WpzpJ.jpg?s=256",
+        "display_name" : "Hong",
+        "link" : "https://stackoverflow.com/users/2034754/hong"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1640920700,
+      "post_id" : 56775226,
+      "comment_id" : 124691730,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "May I know why we need generic type over there? T(org.springframework.util.StringUtils)"
+    }, {
+      "owner" : {
+        "account_id" : 59692,
+        "reputation" : 36223,
+        "user_id" : 178526,
+        "user_type" : "registered",
+        "accept_rate" : 85,
+        "profile_image" : "https://www.gravatar.com/avatar/91cc672598ad95ab501c35cdd8a23d8f?s=256&d=identicon&r=PG",
+        "display_name" : "sfussenegger",
+        "link" : "https://stackoverflow.com/users/178526/sfussenegger"
+      },
+      "reply_to_user" : {
+        "account_id" : 2318254,
+        "reputation" : 91,
+        "user_id" : 2034754,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/WpzpJ.jpg?s=256",
+        "display_name" : "Hong",
+        "link" : "https://stackoverflow.com/users/2034754/hong"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1641832553,
+      "post_id" : 56775226,
+      "comment_id" : 124904232,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Hong the <code>T(..)</code> is to reference types and has nothing to do with generics. I assume you were thinking of <code>&lt;T&gt;</code>. Here&#39;s the SpEL reference: <a href=\"https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions-types\" rel=\"nofollow noreferrer\">docs.spring.io/spring-framework/docs/current/reference/html/&zwnj;&#8203;&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 59692,
+      "reputation" : 36223,
+      "user_id" : 178526,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/91cc672598ad95ab501c35cdd8a23d8f?s=256&d=identicon&r=PG",
+      "display_name" : "sfussenegger",
+      "link" : "https://stackoverflow.com/users/178526/sfussenegger"
+    },
+    "is_accepted" : false,
+    "score" : 29,
+    "last_activity_date" : 1561559486,
+    "creation_date" : 1561559486,
+    "answer_id" : 56775226,
+    "question_id" : 46118782,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You could use <code>@ConditionalOnExpression</code> with a <a href=\"https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions\" rel=\"noreferrer\">Spring Expression Language (SpEL)</a> expression as value:</p>\n\n<pre><code>@ConditionalOnExpression(\"!T(org.springframework.util.StringUtils).isEmpty('${database.url:}')\")\n@Bean\npublic DataSource dataSource() {\n    // snip\n}\n</code></pre>\n\n<p>For better readability and reusability you could turn this into an annotation:</p>\n\n<pre><code>@Target({ ElementType.TYPE, ElementType.METHOD })\n@Retention(RetentionPolicy.RUNTIME)\n@Documented\n@ConditionalOnExpression(\"!T(org.springframework.util.StringUtils).isEmpty('${database.url:}')\")\npublic @interface ConditionalOnDatabaseUrl {\n}\n\n@ConditionalOnDatabaseUrl\n@Bean\npublic DataSource dataSource() {\n    // snip\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 181196,
+      "reputation" : 5003,
+      "user_id" : 415032,
+      "user_type" : "registered",
+      "accept_rate" : 0,
+      "profile_image" : "https://www.gravatar.com/avatar/ef7889962144e00cc5e1dd54f997cf62?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "E Ciotti",
+      "link" : "https://stackoverflow.com/users/415032/e-ciotti"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1689085896,
+    "creation_date" : 1689085896,
+    "answer_id" : 76663054,
+    "question_id" : 46118782,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The main answer above is correct, but since the <code>isEmpty</code> is deprecated, if you (likely) have <a href=\"https://mvnrepository.com/artifact/org.apache.commons/commons-lang3\" rel=\"nofollow noreferrer\">apache commons</a> loaded, you can use the <code>isNotEmpty</code> and simplify the condition</p>\n<pre><code>@ConditionalOnExpression(\n    &quot;T(org.apache.commons.lang3.StringUtils).isNotEmpty('${database.url:}')&quot;\n)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 174948,
+      "reputation" : 15530,
+      "user_id" : 404615,
+      "user_type" : "registered",
+      "accept_rate" : 79,
+      "profile_image" : "https://www.gravatar.com/avatar/0a13543b6046d44a24ae274809e2fc85?s=256&d=identicon&r=PG",
+      "display_name" : "Igor Mukhin",
+      "link" : "https://stackoverflow.com/users/404615/igor-mukhin"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764078143,
+    "creation_date" : 1764078143,
+    "answer_id" : 79829778,
+    "question_id" : 46118782,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>BTW, you can simply the expression:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Configuration\n@ConditionalOnExpression(&quot;!'${your.property.name:}'.isEmpty()&quot;)\npublic class YourConfiguration {\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4573027,
+    "reputation" : 213,
+    "user_id" : 3712237,
+    "user_type" : "registered",
+    "accept_rate" : 20,
+    "profile_image" : "https://www.gravatar.com/avatar/338b0383df717ee730d8240af5c3d6e8?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3712237",
+    "link" : "https://stackoverflow.com/users/3712237/user3712237"
+  },
+  "is_answered" : true,
+  "view_count" : 38070,
+  "answer_count" : 5,
+  "score" : 20,
+  "last_activity_date" : 1764078143,
+  "creation_date" : 1504880864,
+  "question_id" : 46118782,
+  "link" : "https://stackoverflow.com/questions/46118782/spel-conditionalonproperty-string-property-empty-or-nulll",
+  "title" : "SpEL @ConditionalOnProperty string property empty or nulll",
+  "body" : "<p>I am currently having trouble with my dataSource bean creation on condition of String property from my applications.yaml file.</p>\n\n<p>Ideally, I would only like to create the dataSource bean only if the url is set in my application.yaml file. Shouldn't create the bean if its not present (empty or null). I know this condition checks on boolean but is there anyway to check if the string property is empty or null?</p>\n\n<p>DatabaseConfig.java</p>\n\n<pre><code>@Configuration\npublic class DatabaseConfig {\n    @Value(\"${database.url:}\")\n    private String databaseUrl;\n\n    @Value(\"${database.username:}\")\n    private String databaseUsername;\n\n    @Value(\"${database.password:}\")\n    private String databasePassword;\n\n    protected static final String DRIVER_CLASS_NAME = \"com.sybase.jdbc4.jdbc.SybDriver\";\n\n\n    /**\n     * Configures and returns a datasource. Optional\n     *\n     * @return A datasource.\n     */\n    @ConditionalOnProperty(value = \"database.url\")\n    @Bean\n    public DataSource dataSource() {\n        return DataSourceBuilder.create()\n            .url(testDatabaseUrl)\n            .username(testDatabaseUsername)\n            .password(testDatabasePassword)\n            .build();\n    }\n}\n</code></pre>\n\n<p>application.yml (This field will be optional)</p>\n\n<pre><code>database:\n  url: http://localhost:9000\n</code></pre>\n"
+}

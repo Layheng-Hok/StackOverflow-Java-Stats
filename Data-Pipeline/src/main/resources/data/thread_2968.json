@@ -1,0 +1,99 @@
+{
+  "tags" : [ "java", "netbeans", "oauth", "jax-rs", "oltu" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 6268438,
+      "reputation" : 682,
+      "user_id" : 4873343,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/f8355987a8eab570d73babd60ce88f3f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "haseeb",
+      "link" : "https://stackoverflow.com/users/4873343/haseeb"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1444065446,
+    "post_id" : 32954171,
+    "comment_id" : 53733205,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "You can get the pattern from spring examples"
+  }, {
+    "owner" : {
+      "account_id" : 7009242,
+      "reputation" : 1681,
+      "user_id" : 5372723,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/2ueXt.jpg?s=256",
+      "display_name" : "Turtle",
+      "link" : "https://stackoverflow.com/users/5372723/turtle"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1493817509,
+    "post_id" : 32954171,
+    "comment_id" : 74563577,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I&#39;ll post you an explanation, but first I need to know: do you comprehend the functionnement of OAuth, and its many parts (client, user, ressource server, etc) ?"
+  }, {
+    "owner" : {
+      "account_id" : 7009242,
+      "reputation" : 1681,
+      "user_id" : 5372723,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/2ueXt.jpg?s=256",
+      "display_name" : "Turtle",
+      "link" : "https://stackoverflow.com/users/5372723/turtle"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1493818415,
+    "post_id" : 32954171,
+    "comment_id" : 74564323,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "@user3252187 I posted you an example of what a test client could look like, based on the <a href=\"https://cwiki.apache.org/confluence/display/OLTU/OAuth+2.0+Client+Quickstart\" rel=\"nofollow noreferrer\">oltu example</a> and my own code (that mainly comes from the internet)."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 7009242,
+      "reputation" : 1681,
+      "user_id" : 5372723,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/2ueXt.jpg?s=256",
+      "display_name" : "Turtle",
+      "link" : "https://stackoverflow.com/users/5372723/turtle"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1493818525,
+    "last_edit_date" : 1493818525,
+    "creation_date" : 1493818033,
+    "answer_id" : 43761454,
+    "question_id" : 32954171,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>My answer will be based on Oltu. I'll be using <strong>CLIENT_CREDENTIALS</strong> authent.</p>\n\n<p>Getting the token should look like this:</p>\n\n<pre><code>// We initialize a client\nOAuthClient lOAuthClient = new OAuthClient(new URLConnectionClient());\nOAuthJSONAccessTokenResponse lOAuthResponse;\n\n// We are creating a request that's already formatted following the Oauth specs\nOAuthClientRequest lRequest = OAuthClientRequest\n        .tokenLocation(TOKEN_SERVER_URI)\n        .setGrantType(GrantType.CLIENT_CREDENTIALS)\n        .setClientId(CLIENT_ID)\n        .setClientSecret(CLIENT_SECRET)\n        .setScope(\"admin\")\n        .buildBodyMessage();\n\n//This will submit the request\nString code =  lOAuthClient.accessToken(lRequest, OAuthJSONAccessTokenResponse.class).getAccessToken();\nSystem.out.println(\"Token obtained:\" + token);\n</code></pre>\n\n<p>Now we can get our ressource using our token:</p>\n\n<pre><code>HttpURLConnection resourceConn = (HttpURLConnection) (new URL(RESSOURCE_SERVER_URI).openConnection());\nresourceConn.addRequestProperty(\"Authorization\", \"Bearer \" + token);\n\nInputStream resource = resourceConn.getInputStream();\n\n// Do whatever you want to do with the contents of resource at this point.\nBufferedReader r = new BufferedReader(new InputStreamReader(resource, \"UTF-8\"));\nString line = null;\nwhile ((line = r.readLine()) != null)\n    System.out.println(line);\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3935712,
+    "reputation" : 11,
+    "user_id" : 3252187,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/7cc563828fb663271dc8d315be2988d0?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3252187",
+    "link" : "https://stackoverflow.com/users/3252187/user3252187"
+  },
+  "is_answered" : false,
+  "view_count" : 1309,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1763509962,
+  "creation_date" : 1444065279,
+  "last_edit_date" : 1763509962,
+  "question_id" : 32954171,
+  "link" : "https://stackoverflow.com/questions/32954171/oauth-2-implementation-java",
+  "title" : "OAuth 2 implementation java",
+  "body" : "<p>I'm stuck on an oauth2 issue. I don't use spring. I have some JAX-RS web services made up using NetBeans' included jersey jars. I have to secure this services using OAuth 2 so that mobile client could use it without storing user credentials. I don't even know where to start as all examples I see use Spring... the ones that don't use spring use the Oltu library for which documentation doesn't convince me. Some oltu samples don't even work. Can anyone show me a tutorial that will help me build an authorization server from scratch using jersey and some library? any one even oltu...</p>\n"
+}

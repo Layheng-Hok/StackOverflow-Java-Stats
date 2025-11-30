@@ -1,0 +1,42 @@
+{
+  "tags" : [ "java", "jpanel", "graphics2d" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 12471572,
+      "reputation" : 698,
+      "user_id" : 9134510,
+      "user_type" : "registered",
+      "profile_image" : "https://lh5.googleusercontent.com/-B0hpxcEXfQk/AAAAAAAAAAI/AAAAAAAAArs/Us-9kzjwP4g/s256-rj/photo.jpg",
+      "display_name" : "Alex Cuadr&#243;n",
+      "link" : "https://stackoverflow.com/users/9134510/alex-cuadr%c3%b3n"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761200519,
+    "last_edit_date" : 1761200519,
+    "creation_date" : 1514921743,
+    "answer_id" : 48066783,
+    "question_id" : 48066489,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>First of all you have to <strong>use</strong> the JPanel variable you've created (because it's not a good practice to paint directly in the JFrame as you were doing just because It can cause the problem you were having). Here is an example of the panel class:</p>\n<pre class=\"lang-java prettyprint-override\"><code>class panel extends JPanel {\n    public void paint(Graphics g) {\n        Graphics2D g2 = (Graphics2D) g;\n        for (int i = 0; i &lt;= 1000; i += 50) {\n            g2.draw(new Line2D.Float(i, 0, i, Draw.Framesize));\n            g2.draw(new Line2D.Float(0, i, Draw.Framesize, i));\n        }\n        g2.setPaint(Color.RED);\n        g2.draw(new Ellipse2D.Float(0, 0, 200, 200));\n        g2.drawString(&quot;Test&quot;, 100, 150);\n    }\n}\n</code></pre>\n<p>Then add the panel class to the frame constructor</p>\n<pre class=\"lang-java prettyprint-override\"><code>panel panel = new panel();\nadd(panel);\n</code></pre>\n<p>However, there is no point in removing the upside bar (because, objects below 50 in Y axis will appear).</p>\n<p>But if for some reason you still want to remove the upside bar then, in order to remove it you have to define in the constructor:</p>\n<pre class=\"lang-java prettyprint-override\"><code>setExtendedState(JFrame.MAXIMIZED_BOTH);\nsetUndecorated(true);\n</code></pre>\n<p>Finally, remove the paint method from the main frame (because you will have already defined it in the panel class).</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10796452,
+    "reputation" : 15,
+    "user_id" : 7942031,
+    "user_type" : "registered",
+    "profile_image" : "https://graph.facebook.com/1483677598373290/picture?type=large",
+    "display_name" : "Oleksandr Znachkov",
+    "link" : "https://stackoverflow.com/users/7942031/oleksandr-znachkov"
+  },
+  "is_answered" : false,
+  "view_count" : 653,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1761200519,
+  "creation_date" : 1514920226,
+  "question_id" : 48066489,
+  "link" : "https://stackoverflow.com/questions/48066489/remove-or-hide-toolbar-panel-in-jpanel",
+  "title" : "Remove or hide toolbar panel in Jpanel",
+  "body" : "<p>When I work with Jpanel, I see that while Y is below 50 I don`t see objects, as they are hidden under top panel. I need a way to hide top panel or make it possible to not to add 50 to Y each time. In this example, top of the circle is hidden:</p>\n\n<pre><code>import javax.swing.*;\nimport java.awt.*;\nimport java.awt.geom.*;\n\nclass Draw extends JFrame{\n\n    public static int Framesize=1000;\n\n    public static void main(String []args){\n        Draw s=new Draw();\n        s.setVisible(true);\n\n\n    }\n\n    public Draw(){\n        JPanel panel=new JPanel();\n        setSize(Framesize,Framesize);\n\n        setVisible(true);\n    }\n    public void paint(Graphics g) {\n        Graphics2D g2 = (Graphics2D) g;\n        for (int i=0;i&lt;=1000;i+=50) {\n            g2.draw(new Line2D.Float(i, 0, i, Framesize));\n            g2.draw(new Line2D.Float(0, i, Framesize, i));\n\n        }\n        g2.setPaint(Color.RED);\n        g2.draw(new Ellipse2D.Float(0,0,200,200));\n        g2.drawString(\"Test\", 100, 150);\n    }\n\n}\n</code></pre>\n"
+}

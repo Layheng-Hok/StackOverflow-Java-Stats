@@ -1,0 +1,88 @@
+{
+  "tags" : [ "java", "gradle", "build.gradle", "java-9", "multi-release-jar" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1939636,
+      "reputation" : 32733,
+      "user_id" : 1746118,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://www.gravatar.com/avatar/dea2252138dd9905af87cd6803fb5665?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Naman",
+      "link" : "https://stackoverflow.com/users/1746118/naman"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1531590276,
+    "post_id" : 51341777,
+    "comment_id" : 89657233,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<a href=\"https://github.com/melix/mrjar-gradle#building-a-mrjar-with-gradle\" rel=\"nofollow noreferrer\">This link</a> could be of help to you and <a href=\"https://blog.gradle.org/mrjars#how-to-create-a-multi-release-jar-with-gradle\" rel=\"nofollow noreferrer\">this as well</a>?"
+  }, {
+    "owner" : {
+      "account_id" : 6717794,
+      "reputation" : 33,
+      "user_id" : 5179044,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bde73e13fd7b58ae06c5d7642d499e68?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "austinv11",
+      "link" : "https://stackoverflow.com/users/5179044/austinv11"
+    },
+    "reply_to_user" : {
+      "account_id" : 1939636,
+      "reputation" : 32733,
+      "user_id" : 1746118,
+      "user_type" : "registered",
+      "accept_rate" : 95,
+      "profile_image" : "https://www.gravatar.com/avatar/dea2252138dd9905af87cd6803fb5665?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Naman",
+      "link" : "https://stackoverflow.com/users/1746118/naman"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1531595813,
+    "post_id" : 51341777,
+    "comment_id" : 89658652,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@nullpointer My build.gradle is based on those links actually. I&#39;ve also found a couple other build.gradles, and as far as I can tell there shouldn&#39;t be anything wrong--but there is."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4564492,
+      "reputation" : 2364,
+      "user_id" : 3705861,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/QZvw8.jpg?s=256",
+      "display_name" : "Younes El Ouarti",
+      "link" : "https://stackoverflow.com/users/3705861/younes-el-ouarti"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1592147777,
+    "last_edit_date" : 1592147777,
+    "creation_date" : 1592147413,
+    "answer_id" : 62374367,
+    "question_id" : 51341777,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You're problem is, that your <code>sourceSet</code> is defined after the <code>dependencies</code> block. Put it above <code>dependencies</code> and it should work.</p>\n\n<p>The <a href=\"https://blog.gradle.org/mrjars\" rel=\"nofollow noreferrer\">reference</a> you used also explains it:</p>\n\n<blockquote>\n  <p>A source set represents a set of sources that are going to be compiled together. A jar is built from the result of the compilation of one or more source sets. For each source set, Gradle will automatically create a corresponding compile task that you can configure. This means that if we have sources for Java 8 and sources for Java 9, then they should live in separate source sets. That’s what we do by creating a Java 9 specific source set that will contain the specialized version of our class.</p>\n</blockquote>\n\n<p>So before you can use 'java9'Implementation, gradle needs to know what 'java9' is supposed to mean.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6717794,
+    "reputation" : 33,
+    "user_id" : 5179044,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/bde73e13fd7b58ae06c5d7642d499e68?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "austinv11",
+    "link" : "https://stackoverflow.com/users/5179044/austinv11"
+  },
+  "is_answered" : true,
+  "view_count" : 4170,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1759190100,
+  "creation_date" : 1531589284,
+  "question_id" : 51341777,
+  "link" : "https://stackoverflow.com/questions/51341777/multi-release-jars-in-gradle",
+  "title" : "Multi-Release jars in gradle",
+  "body" : "<p>I have been scratching my head for awhile trying to set up my library to use multi-release jars to use java 9+ features with backup java 8 implementations. However, it is only needed for a module of my project. </p>\n\n<p>My current build.gradle for the module looks like this:</p>\n\n<pre><code>apply plugin: 'java'\napply plugin: 'java-library'\n\ndependencies {\n    compile project(\":common\")\n\n    compile 'org.ow2.asm:asm:6.2'\n    compile 'org.ow2.asm:asm-util:6.2'\n\n    testCompile \"junit:junit:$junit_version\"\n    testCompileOnly \"com.google.auto.service:auto-service:$autoservice_version\"\n\n    java9Implementation files(sourceSets.main.output.classesDirs) { builtBy compileJava }\n}\n\ncompileJava {\n    sourceCompatibility = 8\n    targetCompatibility = 8\n    options.compilerArgs.addAll(['--release', '8'])\n}\n\ncompileJava9Java {\n    sourceCompatibility = 9\n    targetCompatibility = 9\n    options.compilerArgs.addAll(['--release', '9'])\n}\n\nsourceSets {\n    java9 {\n        java {\n            srcDirs = ['src/main/java9']\n        }\n    }\n\n}\n\njar {\n    into('META-INF/versions/9') {\n        from sourceSets.java9.output\n    }\n\n    manifest {\n        attributes(\n                \"Manifest-Version\": \"1.0\",\n                \"Multi-Release\": true\n        )\n    }\n}\n</code></pre>\n\n<p>However refreshing my build.gradle in intellij is getting me this error:\n<code>Could not find method java9Implementation() for arguments [file collection] on object of type org.gradle.api.internal.artifacts.dsl.dependencies.DefaultDependencyHandler.</code></p>\n\n<p>I should also note this is on gradle 4.8.1.</p>\n"
+}

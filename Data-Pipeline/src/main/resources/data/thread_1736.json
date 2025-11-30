@@ -1,0 +1,416 @@
+{
+  "tags" : [ "java", "gson" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 196487,
+      "reputation" : 4706,
+      "user_id" : 439945,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/4df62fdcb616c8d25fa7e9d70c73bdf4?s=256&d=identicon&r=PG",
+      "display_name" : "M.L.",
+      "link" : "https://stackoverflow.com/users/439945/m-l"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1311949447,
+    "post_id" : 6873020,
+    "comment_id" : 8179279,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Have you checked that you are importing correct Date-class in all places? Also code example would be helpful."
+  }, {
+    "owner" : {
+      "account_id" : 193707,
+      "reputation" : 36339,
+      "user_id" : 435605,
+      "user_type" : "registered",
+      "accept_rate" : 45,
+      "profile_image" : "https://www.gravatar.com/avatar/690eec685cbdb79b9f6deee401a61558?s=256&d=identicon&r=PG",
+      "display_name" : "AlikElzin-kilaka",
+      "link" : "https://stackoverflow.com/users/435605/alikelzin-kilaka"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1435669448,
+    "post_id" : 6873020,
+    "comment_id" : 50288643,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "What do you mean by doesn&#39;t work? What do you actually see?"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 365108,
+        "reputation" : 5441,
+        "user_id" : 709863,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/tDu7T.jpg?s=256",
+        "display_name" : "St&#233;phane Piette",
+        "link" : "https://stackoverflow.com/users/709863/st%c3%a9phane-piette"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1312190613,
+      "post_id" : 6875295,
+      "comment_id" : 8209972,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Ok it works better with your way. But how can I display timestamps with this ?"
+    }, {
+      "owner" : {
+        "account_id" : 1764831,
+        "reputation" : 2064,
+        "user_id" : 1610918,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/8c9145d05fad067246f540de9122d885?s=256&d=identicon&r=PG",
+        "display_name" : "Ramsharan",
+        "link" : "https://stackoverflow.com/users/1610918/ramsharan"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1375719908,
+      "post_id" : 6875295,
+      "comment_id" : 26431050,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I am using Gson 2.2.4 and <code>Gson gson = new GsonBuilder().setDateFormat(&quot;yyyy-MM-dd&quot;).create();</code> works."
+    }, {
+      "owner" : {
+        "account_id" : 3071426,
+        "reputation" : 6863,
+        "user_id" : 2601995,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/YtZRR.png?s=256",
+        "display_name" : "user2601995",
+        "link" : "https://stackoverflow.com/users/2601995/user2601995"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1415061863,
+      "post_id" : 6875295,
+      "comment_id" : 42040858,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "using Gson 2.2.2 and <code>Gson gson = new GsonBuilder().setDateFormat(&quot;yyyy-MM-dd&quot;).create();</code> works"
+    } ],
+    "owner" : {
+      "account_id" : 196487,
+      "reputation" : 4706,
+      "user_id" : 439945,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/4df62fdcb616c8d25fa7e9d70c73bdf4?s=256&d=identicon&r=PG",
+      "display_name" : "M.L.",
+      "link" : "https://stackoverflow.com/users/439945/m-l"
+    },
+    "is_accepted" : true,
+    "score" : 351,
+    "last_activity_date" : 1570049976,
+    "last_edit_date" : 1570049976,
+    "creation_date" : 1311952628,
+    "answer_id" : 6875295,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It seems that you need to define formats for both date and time part or use String-based formatting. For example:</p>\n\n<pre><code>Gson gson = new GsonBuilder()\n   .setDateFormat(\"EEE, dd MMM yyyy HH:mm:ss zzz\").create();\n</code></pre>\n\n<p>or <a href=\"https://docs.oracle.com/javase/7/docs/api/java/text/DateFormat.html\" rel=\"noreferrer\">using java.text.DateFormat</a></p>\n\n<pre><code>Gson gson = new GsonBuilder()\n   .setDateFormat(DateFormat.FULL, DateFormat.FULL).create();\n</code></pre>\n\n<p>or do it with serializers:</p>\n\n<p>I believe that formatters cannot produce timestamps, but this serializer/deserializer-pair seems to work</p>\n\n<pre><code>JsonSerializer&lt;Date&gt; ser = new JsonSerializer&lt;Date&gt;() {\n  @Override\n  public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext \n             context) {\n    return src == null ? null : new JsonPrimitive(src.getTime());\n  }\n};\n\nJsonDeserializer&lt;Date&gt; deser = new JsonDeserializer&lt;Date&gt;() {\n  @Override\n  public Date deserialize(JsonElement json, Type typeOfT,\n       JsonDeserializationContext context) throws JsonParseException {\n    return json == null ? null : new Date(json.getAsLong());\n  }\n};\n\nGson gson = new GsonBuilder()\n   .registerTypeAdapter(Date.class, ser)\n   .registerTypeAdapter(Date.class, deser).create();\n</code></pre>\n\n<p>If using Java 8 or above you should use the above serializers/deserializers like so:</p>\n\n<pre><code>JsonSerializer&lt;Date&gt; ser = (src, typeOfSrc, context) -&gt; src == null ? null\n            : new JsonPrimitive(src.getTime());\n\nJsonDeserializer&lt;Date&gt; deser = (jSon, typeOfT, context) -&gt; jSon == null ? null : new Date(jSon.getAsLong());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 356850,
+      "reputation" : 18436,
+      "user_id" : 696632,
+      "user_type" : "registered",
+      "accept_rate" : 62,
+      "profile_image" : "https://www.gravatar.com/avatar/c40a7da9ecf03087ae6335579c075d93?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Michael-O",
+      "link" : "https://stackoverflow.com/users/696632/michael-o"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1676845753,
+    "last_edit_date" : 1676845753,
+    "creation_date" : 1311954260,
+    "answer_id" : 6875646,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This won't really work at all. There is no date type in JSON. I would recommend to serialize to <a href=\"https://en.wikipedia.org/wiki/ISO_8601\" rel=\"nofollow noreferrer\">ISO 8601</a> back and forth (for format agnostics and JS compat). Consider that you have to know which fields contain dates.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 149142,
+      "reputation" : 1872,
+      "user_id" : 361414,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1a83f7b3981959436e67015711648a12?s=256&d=identicon&r=PG",
+      "display_name" : "Milanka",
+      "link" : "https://stackoverflow.com/users/361414/milanka"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1353574136,
+    "creation_date" : 1353574136,
+    "answer_id" : 13508809,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>As M.L. pointed out, JsonSerializer works here. However, if you are formatting database entities, use java.sql.Date to register you serializer. Deserializer is not needed.</p>\n\n<pre><code>Gson gson = new GsonBuilder()\n   .registerTypeAdapter(java.sql.Date.class, ser).create();\n</code></pre>\n\n<p>This bug report might be related: <a href=\"http://code.google.com/p/google-gson/issues/detail?id=230\" rel=\"noreferrer\">http://code.google.com/p/google-gson/issues/detail?id=230</a>. I use version 1.7.2 though.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 470583,
+        "reputation" : 1809,
+        "user_id" : 877856,
+        "user_type" : "registered",
+        "accept_rate" : 20,
+        "profile_image" : "https://i.sstatic.net/ytALd.jpg?s=256",
+        "display_name" : "tj-recess",
+        "link" : "https://stackoverflow.com/users/877856/tj-recess"
+      },
+      "reply_to_user" : {
+        "account_id" : 3851263,
+        "reputation" : 98,
+        "user_id" : 3191399,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/11d027024d905033a8c7f37f52381ab0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Abhi",
+        "link" : "https://stackoverflow.com/users/3191399/abhi"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1422582935,
+      "post_id" : 26631632,
+      "comment_id" : 44819040,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Abhi - Why is quoting &#39;Z&#39; necessary?"
+    }, {
+      "owner" : {
+        "account_id" : 3851263,
+        "reputation" : 98,
+        "user_id" : 3191399,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/11d027024d905033a8c7f37f52381ab0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Abhi",
+        "link" : "https://stackoverflow.com/users/3191399/abhi"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1422618191,
+      "post_id" : 26631632,
+      "comment_id" : 44831818,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I tried without quotes and gson threw Exception that the date is not parseable. Does it work for you without quotes?"
+    }, {
+      "owner" : {
+        "account_id" : 1596239,
+        "reputation" : 6067,
+        "user_id" : 1478296,
+        "user_type" : "registered",
+        "accept_rate" : 57,
+        "profile_image" : "https://www.gravatar.com/avatar/4d318c9fca27b7fa405fa8488e225901?s=256&d=identicon&r=PG",
+        "display_name" : "Billda",
+        "link" : "https://stackoverflow.com/users/1478296/billda"
+      },
+      "edited" : false,
+      "score" : 10,
+      "creation_date" : 1459770095,
+      "post_id" : 26631632,
+      "comment_id" : 60419652,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "ThIs is NOT right solution .. the Z means timezone and it represents UTC timezone, if you hardcode it like this you&#39;ll lost that info"
+    }, {
+      "owner" : {
+        "account_id" : 1954792,
+        "reputation" : 5690,
+        "user_id" : 1758051,
+        "user_type" : "registered",
+        "accept_rate" : 52,
+        "profile_image" : "https://i.sstatic.net/TUWaR.jpg?s=256",
+        "display_name" : "AgilePro",
+        "link" : "https://stackoverflow.com/users/1758051/agilepro"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1667969848,
+      "post_id" : 26631632,
+      "comment_id" : 131292351,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is 8601 format which is right.  The Z means UTC, but I am not sure how you set the time zone on the Gson object.  That must be set as well or you will get the default time zone I would bet."
+    } ],
+    "owner" : {
+      "account_id" : 470583,
+      "reputation" : 1809,
+      "user_id" : 877856,
+      "user_type" : "registered",
+      "accept_rate" : 20,
+      "profile_image" : "https://i.sstatic.net/ytALd.jpg?s=256",
+      "display_name" : "tj-recess",
+      "link" : "https://stackoverflow.com/users/877856/tj-recess"
+    },
+    "is_accepted" : false,
+    "score" : 93,
+    "last_activity_date" : 1591191360,
+    "last_edit_date" : 1591191360,
+    "creation_date" : 1414589272,
+    "answer_id" : 26631632,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>Gson gson = new GsonBuilder().setDateFormat(\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\").create();\n</code></pre>\n\n<p>Above format seems better to me as it has precision up to millis.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1601221,
+      "reputation" : 3244,
+      "user_id" : 1482207,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/0ofmo.jpg?s=256",
+      "display_name" : "Abhijit Chakra",
+      "link" : "https://stackoverflow.com/users/1482207/abhijit-chakra"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1441882459,
+    "creation_date" : 1441882459,
+    "answer_id" : 32499935,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can specify you format <code>Gson gson = builder.setDateFormat(\"yyyy-MM-dd\").create();</code>    in this method instead of <code>yyyy-MM-dd</code> you can use anyother formats </p>\n\n<pre><code> GsonBuilder builder = new GsonBuilder();\n                        builder.registerTypeAdapter(Date.class, new JsonDeserializer&lt;Date&gt;() {\n                            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {\n                                return new Date(json.getAsJsonPrimitive().getAsLong());\n                            }\n                        });\n\n                        Gson gson = builder.setDateFormat(\"yyyy-MM-dd\").create();\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 12881177,
+        "reputation" : 949,
+        "user_id" : 9316168,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/HUaOF.jpg?s=256",
+        "display_name" : "gmk57",
+        "link" : "https://stackoverflow.com/users/9316168/gmk57"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1537789262,
+      "post_id" : 35612915,
+      "comment_id" : 91898079,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It seems that null check can be omitted (Gson does it itself): <code>Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, (JsonDeserializer) (json, typeOfT, context) -&gt; new Date(json.getAsLong())).create();</code>"
+    } ],
+    "owner" : {
+      "account_id" : 3386472,
+      "reputation" : 5038,
+      "user_id" : 2842342,
+      "user_type" : "registered",
+      "accept_rate" : 52,
+      "profile_image" : "https://i.sstatic.net/ztgLY.jpg?s=256",
+      "display_name" : "Karthik",
+      "link" : "https://stackoverflow.com/users/2842342/karthik"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1456347371,
+    "creation_date" : 1456347371,
+    "answer_id" : 35612915,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In case if you hate Inner classes, by taking the advantage of functional interface you can write less code in <strong>Java 8</strong> with a lambda expression.</p>\n\n<pre><code>JsonDeserializer&lt;Date&gt; dateJsonDeserializer = \n     (json, typeOfT, context) -&gt; json == null ? null : new Date(json.getAsLong());\nGson gson = new GsonBuilder().registerTypeAdapter(Date.class,dateJsonDeserializer).create();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5384013,
+      "reputation" : 7199,
+      "user_id" : 4288506,
+      "user_type" : "registered",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/e4dd357b6d026a2f4a9fa090ff2a414c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Marcono1234",
+      "link" : "https://stackoverflow.com/users/4288506/marcono1234"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1557171849,
+    "creation_date" : 1557171849,
+    "answer_id" : 56011429,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is a <a href=\"https://github.com/google/gson/issues/1529\" rel=\"nofollow noreferrer\">bug</a>. Currently you either have to set a <code>timeStyle</code> as well or use one of the alternatives described in the other answers.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1255814,
+        "reputation" : 14041,
+        "user_id" : 1215291,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://i.sstatic.net/lorbp.gif?s=256",
+        "display_name" : "Kamil",
+        "link" : "https://stackoverflow.com/users/1215291/kamil"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1638623197,
+      "post_id" : 60081130,
+      "comment_id" : 124140053,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "&quot;I don&#39;t think it&#39;s good practice to use try/catch blocks&quot; It is good practice to use them, it is bad if you want to control normal program flow with try/catch."
+    }, {
+      "owner" : {
+        "account_id" : 13003328,
+        "reputation" : 106,
+        "user_id" : 9398719,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/10156072206154857/picture?type=large",
+        "display_name" : "Joe Ciaramitaro",
+        "link" : "https://stackoverflow.com/users/9398719/joe-ciaramitaro"
+      },
+      "reply_to_user" : {
+        "account_id" : 1255814,
+        "reputation" : 14041,
+        "user_id" : 1215291,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://i.sstatic.net/lorbp.gif?s=256",
+        "display_name" : "Kamil",
+        "link" : "https://stackoverflow.com/users/1215291/kamil"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1638729084,
+      "post_id" : 60081130,
+      "comment_id" : 124159857,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Kamil, that is what I meant. But upon rereading my answer, I agree with you that clarification is necessary"
+    } ],
+    "owner" : {
+      "account_id" : 13003328,
+      "reputation" : 106,
+      "user_id" : 9398719,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/10156072206154857/picture?type=large",
+      "display_name" : "Joe Ciaramitaro",
+      "link" : "https://stackoverflow.com/users/9398719/joe-ciaramitaro"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1638729054,
+    "last_edit_date" : 1638729054,
+    "creation_date" : 1580923762,
+    "answer_id" : 60081130,
+    "question_id" : 6873020,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I'm on Gson 2.8.6 and discovered this bug today.</p>\n<p>My approach allows all our existing clients (mobile/web/etc) to continue functioning as they were, but adds some handling for those using 24h formats and allows millis too, for good measure.</p>\n<pre><code>Gson rawGson = new Gson();\nSimpleDateFormat fmt = new SimpleDateFormat(&quot;MMM d, yyyy HH:mm:ss&quot;)\nprivate class DateDeserializer implements JsonDeserializer&lt;Date&gt; {\n    @Override\n    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)\n            throws JsonParseException {\n        try {\n            return new rawGson.fromJson(json, Date.class);\n        } catch (JsonSyntaxException e) {}\n        String timeString = json.getAsString();\n        log.warning(&quot;Standard date deserialization didn't work:&quot; + timeString);\n        try {\n            return fmt.parse(timeString);\n        } catch (ParseException e) {}\n        log.warning(&quot;Parsing as json 24 didn't work:&quot; + timeString);\n        return new Date(json.getAsLong());\n    }\n}\n\nGson gson = new GsonBuilder()\n    .registerTypeAdapter(Date.class, new DateDeserializer())\n    .create();\n</code></pre>\n<p>I kept serialization the same as all clients understand the standard json date format.</p>\n<p>Ordinarily, I don't think it's good practice to use try/catch blocks to govern flow control, but this should be a fairly rare case.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 365108,
+    "reputation" : 5441,
+    "user_id" : 709863,
+    "user_type" : "registered",
+    "accept_rate" : 81,
+    "profile_image" : "https://i.sstatic.net/tDu7T.jpg?s=256",
+    "display_name" : "St&#233;phane Piette",
+    "link" : "https://stackoverflow.com/users/709863/st%c3%a9phane-piette"
+  },
+  "is_answered" : true,
+  "view_count" : 280376,
+  "accepted_answer_id" : 6875295,
+  "answer_count" : 8,
+  "score" : 214,
+  "last_activity_date" : 1676845753,
+  "creation_date" : 1311942287,
+  "last_edit_date" : 1388507401,
+  "question_id" : 6873020,
+  "link" : "https://stackoverflow.com/questions/6873020/gson-date-format",
+  "title" : "GSON - Date format",
+  "body" : "<p>I'm trying to have a custom date format in Gson output, but <code>.setDateFormat(DateFormat.FULL)</code> doesn't seem to work and it the same with <code>.registerTypeAdapter(Date.class, new DateSerializer())</code>.</p>\n\n<p>It's like Gson doesn't care about the object \"Date\" and print it in its way.</p>\n\n<p>How can I change that?</p>\n\n<p>Thanks</p>\n\n<p>EDIT: </p>\n\n<pre><code>@Entity\npublic class AdviceSheet {\n  public Date lastModif;\n[...]\n}\n\npublic void method {\n   Gson gson = new GsonBuilder().setDateFormat(DateFormat.LONG).create();\n   System.out.println(gson.toJson(adviceSheet);\n}\n</code></pre>\n\n<p>I always use <code>java.util.Date</code>; <code>setDateFormat()</code> doesn't work :(</p>\n"
+}

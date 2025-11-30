@@ -1,0 +1,65 @@
+{
+  "tags" : [ "java", "maven", "intellij-idea", "java-web-start", "jnlp" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 6068309,
+      "reputation" : 170,
+      "user_id" : 4737923,
+      "user_type" : "registered",
+      "accept_rate" : 46,
+      "profile_image" : "https://lh4.googleusercontent.com/-k6CZOtWLQbQ/AAAAAAAAAAI/AAAAAAAAADg/IyvCNbW8hqQ/s256-rj/photo.jpg",
+      "display_name" : "Azamat Almukhametov",
+      "link" : "https://stackoverflow.com/users/4737923/azamat-almukhametov"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1449214415,
+    "last_edit_date" : 1449214415,
+    "creation_date" : 1449044959,
+    "answer_id" : 34038004,
+    "question_id" : 34035483,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It seems to be answer was found: using <code>maven-shade-plugin</code> to package jar with dependensies and <code>maven-dependency-plugin</code> to copy to custom folder in <code>prepare-package</code> phase. </p>\n\n<p>Dont forget to set version of depended jar via <code>&lt;dependency managament&gt;</code></p>\n\n<pre><code>&lt;plugin&gt;\n            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n            &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;\n            &lt;version&gt;2.1&lt;/version&gt;\n            &lt;executions&gt;\n                &lt;execution&gt;\n                    &lt;phase&gt;package&lt;/phase&gt;\n                    &lt;goals&gt;\n                        &lt;goal&gt;shade&lt;/goal&gt;\n                    &lt;/goals&gt;\n                    &lt;configuration&gt;\n                        &lt;transformers&gt;\n                            &lt;transformer\n                                    implementation=\"org.apache.maven.plugins.shade.resource.ManifestResourceTransformer\"&gt;\n                                &lt;mainClass&gt;Main&lt;/mainClass&gt;\n                            &lt;/transformer&gt;\n                        &lt;/transformers&gt;\n                    &lt;/configuration&gt;\n                &lt;/execution&gt;\n            &lt;/executions&gt;\n        &lt;/plugin&gt;\n\n\n\n&lt;plugin&gt;\n                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n                &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;\n                &lt;version&gt;2.10&lt;/version&gt;\n                &lt;executions&gt;\n                    &lt;execution&gt;\n                        &lt;id&gt;copy&lt;/id&gt;\n                        &lt;phase&gt;prepare-package&lt;/phase&gt;\n                        &lt;goals&gt;\n                            &lt;goal&gt;copy&lt;/goal&gt;\n                        &lt;/goals&gt;\n                        &lt;configuration&gt;\n                            &lt;artifactItems&gt;\n                                &lt;artifactItem&gt;\n                                    &lt;groupId&gt;my.group&lt;/groupId&gt;\n                                    &lt;artifactId&gt;webstart-swt-jar&lt;/artifactId&gt;\n                                    &lt;type&gt;jar&lt;/type&gt;\n                                    &lt;overWrite&gt;false&lt;/overWrite&gt;\n                                    &lt;outputDirectory&gt;\n                                        ${project.build.directory}/${project.build.finalName}/SomeFolderHere\n                                    &lt;/outputDirectory&gt;\n                                    &lt;destFileName&gt;(optional rename..)webstart-swt-jar.jar&lt;/destFileName&gt;\n                                &lt;/artifactItem&gt;\n                            &lt;/artifactItems&gt;\n\n                            &lt;overWriteReleases&gt;true&lt;/overWriteReleases&gt;\n                            &lt;overWriteSnapshots&gt;true&lt;/overWriteSnapshots&gt;\n                        &lt;/configuration&gt;\n                    &lt;/execution&gt;\n                &lt;/executions&gt;\n            &lt;/plugin&gt;\n</code></pre>\n\n<p><strong>ADDED:</strong>\nBut if I dont set <code>webstart-swt-jar</code> to dependency, build failed with error \"webstart-swt-jar not found\". Its not good, because artifact is duplicated in WEB-INF\\lib and my \\custom folder...</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7047892,
+      "reputation" : 2473,
+      "user_id" : 5398113,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6baffcbe85a56bfab44c63bda86ca74d?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "question_maven_com",
+      "link" : "https://stackoverflow.com/users/5398113/question-maven-com"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1516704230,
+    "last_edit_date" : 1516704230,
+    "creation_date" : 1449048118,
+    "answer_id" : 34038983,
+    "question_id" : 34035483,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>[root]\n  - web-start-swt-jar   pom.xml (packaging jar)\n  - web  pom.xml (packaging war)\n pom.xml (packaging pom)\n</code></pre>\n\n<p>Try to add this : web pom.xml  </p>\n\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;\n    &lt;artifactId&gt;web-start-swt-jar&lt;/artifactId&gt;\n&lt;/dependency&gt;\n\n &lt;plugin&gt;\n        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n        &lt;artifactId&gt;maven-dependency-plugin&lt;/artifactId&gt;\n        &lt;version&gt;2.10&lt;/version&gt;\n        &lt;executions&gt;\n          &lt;execution&gt;\n            &lt;id&gt;copy&lt;/id&gt;\n            &lt;phase&gt;package&lt;/phase&gt;\n            &lt;goals&gt;\n              &lt;goal&gt;copy&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n              &lt;artifactItems&gt;\n                &lt;artifactItem&gt;\n                 &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;\n                &lt;artifactId&gt;web-start-swt-jar&lt;/artifactId&gt;\n                  &lt;type&gt;jar&lt;/type&gt;\n                  &lt;overWrite&gt;false&lt;/overWrite&gt;\n                  &lt;!-- outputDirectory not sure. to test--&gt;\n                  &lt;outputDirectory&gt;${basedir}/src/main/webapp/webstartFolder&lt;/outputDirectory&gt;\n                  &lt;destFileName&gt;web-start-swt-jar&lt;/destFileName&gt;\n                &lt;/artifactItem&gt;\n              &lt;/artifactItems&gt; \n              &lt;overWriteReleases&gt;true&lt;/overWriteReleases&gt;\n              &lt;overWriteSnapshots&gt;true&lt;/overWriteSnapshots&gt;\n            &lt;/configuration&gt;\n          &lt;/execution&gt;\n        &lt;/executions&gt;\n      &lt;/plugin&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6068309,
+    "reputation" : 170,
+    "user_id" : 4737923,
+    "user_type" : "registered",
+    "accept_rate" : 46,
+    "profile_image" : "https://lh4.googleusercontent.com/-k6CZOtWLQbQ/AAAAAAAAAAI/AAAAAAAAADg/IyvCNbW8hqQ/s256-rj/photo.jpg",
+    "display_name" : "Azamat Almukhametov",
+    "link" : "https://stackoverflow.com/users/4737923/azamat-almukhametov"
+  },
+  "is_answered" : true,
+  "view_count" : 662,
+  "accepted_answer_id" : 34038004,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1758987815,
+  "creation_date" : 1449033676,
+  "last_edit_date" : 1758987815,
+  "question_id" : 34035483,
+  "link" : "https://stackoverflow.com/questions/34035483/how-to-copy-jar-with-dependencies-in-my-webapp-myfolder-in-maven-idea",
+  "title" : "How to copy jar-with-dependencies in my webapp\\myfolder in maven Idea",
+  "body" : "<p>I have the maven project in Idea with two modules: 1)web and 2)web-start-swt-jar.</p>\n<p>The web-start-swt-jar pom.xml is configured to package with-dependencies.</p>\n<p>My project looks like this:</p>\n<pre><code>[root]\n  - web-start-swt-jar   pom.xml (packaging jar)\n  - web  pom.xml (packaging war)\n pom.xml (packaging pom)\n</code></pre>\n<p>Is it possible to make these steps I wanted to:</p>\n<ol>\n<li>Compile, package with dependencies the web-start-swt-jar.</li>\n<li>Compile, package the web module with copying the recently packaged web-start-swt-jar to webapp\\webstartFolder?</li>\n</ol>\n<p>Yes I use maven assembly plugin, but it copies the jar file which without dependencies.</p>\n<p>Thank you!</p>\n<p>p.s. Maybe you suggest to use some plugins to comfort work with web-start? e.g. webstart-maven-plugin? please help.</p>\n"
+}

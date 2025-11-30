@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "jackson", "nested" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 58650,
+      "reputation" : 4945,
+      "user_id" : 175554,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/KmFczdGy.jpg?s=256",
+      "display_name" : "ozkanpakdil",
+      "link" : "https://stackoverflow.com/users/175554/ozkanpakdil"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1670349369,
+    "post_id" : 74653689,
+    "comment_id" : 131854440,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "can you put a reproducer in github ?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 444225,
+      "reputation" : 328,
+      "user_id" : 835900,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2e45c94431fcf6231f61a1763d3002ce?s=256&d=identicon&r=PG",
+      "display_name" : "Krzysztof Kowalski",
+      "link" : "https://stackoverflow.com/users/835900/krzysztof-kowalski"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1670426133,
+    "creation_date" : 1670426133,
+    "answer_id" : 74718914,
+    "question_id" : 74653689,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You should use DTOs pattern</p>\n<p><a href=\"https://en.wikipedia.org/wiki/Data_transfer_object\" rel=\"nofollow noreferrer\">https://en.wikipedia.org/wiki/Data_transfer_object</a></p>\n<p>Try learning about Mapstruct it might help with this use case</p>\n<p><a href=\"https://mapstruct.org/\" rel=\"nofollow noreferrer\">https://mapstruct.org/</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12396573,
+      "reputation" : 111,
+      "user_id" : 14416170,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/36a5c6ed952c2fda7d57445cfe1bacb6?s=256&d=identicon&r=PG",
+      "display_name" : "azerELweed",
+      "link" : "https://stackoverflow.com/users/14416170/azerelweed"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1762831722,
+    "last_edit_date" : 1762831722,
+    "creation_date" : 1670583927,
+    "answer_id" : 74742240,
+    "question_id" : 74653689,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Solved with <code>@JsonIgnoreProperties(value=&quot;diagnostique&quot;)</code> and a dedicated API endpoint to get the diagnostic of a choice if present.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12396573,
+    "reputation" : 111,
+    "user_id" : 14416170,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/36a5c6ed952c2fda7d57445cfe1bacb6?s=256&d=identicon&r=PG",
+    "display_name" : "azerELweed",
+    "link" : "https://stackoverflow.com/users/14416170/azerelweed"
+  },
+  "is_answered" : true,
+  "view_count" : 562,
+  "accepted_answer_id" : 74742240,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1762832109,
+  "creation_date" : 1669974218,
+  "last_edit_date" : 1762832109,
+  "question_id" : 74653689,
+  "link" : "https://stackoverflow.com/questions/74653689/how-can-i-fix-handling-nested-entities-in-controller-httpmessagenotwritableexc",
+  "title" : "how can I fix handling nested entities in controller? (HttpMessageNotWritableException; JsonMappingException)",
+  "body" : "<p>What I have in my hands are 4 deeply related entities.</p>\n<p>The first one is Sickness defined as follows:</p>\n<pre class=\"lang-java prettyprint-override\"><code>public class Sickness {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    @Column(name = &quot;id&quot;, nullable = false)\n    @JsonView(Views.Superficial.class)\n    private Long id;\n/*\n* ...\n*/\n    @OneToMany(fetch = FetchType.LAZY)\n    private List&lt;Diagnostic&gt; Diagnostic; // &lt;---- The first problem :)\n/*\n*...\n*/\n</code></pre>\n<p>Now the diagnostic for the sickness is defined as follows:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Entity\n/*\n* ...\n*/\n@Table(name = &quot;Diagnostic&quot;)\npublic class Diagnostic {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    @JsonView(Views.Superficial.class)\n    private Long id;\n/*\n*...\n*/\n    @JsonIgnore\n    private String label;\n\n    @ManyToMany(fetch = FetchType.EAGER)\n    @JsonView(Views.Detailed.class)\n    private List&lt;Question&gt; questions; // &lt;-- Second Problem !\n\n    @JsonIgnore\n    @ManyToOne(fetch = FetchType.LAZY)\n    private Sickness sickness;\n</code></pre>\n<p>The question Entity is defined like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Entity\n@NoArgsConstructor\n@AllArgsConstructor\n@Getter\n@Builder\n@Setter\n@Table(name = &quot;question&quot;)\npublic class Question {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    @Column(name = &quot;id&quot;, nullable = false)\n    @JsonView(Views.Superficial.class)\n    private Long id;\n\n    @Enumerated\n    @JsonView(Views.Superficial.class)\n    private TypeQuestion type;\n\n    @JsonView(Views.Superficial.class)\n    private String question_label;\n\n    @ManyToMany\n    @JsonView(Views.Superficial.class)\n    private List&lt;Choice&gt; choiceList; // &lt;-- Third problem XD\n</code></pre>\n<p>And finally the Choice entity is defined as such:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Entity\n@AllArgsConstructor\n@NoArgsConstructor\n@Getter\n@Setter\n@Builder\n@Table(name = &quot;choice&quot;)\npublic class Choice {\n    @Id\n    @GeneratedValue(strategy = GenerationType.AUTO)\n    @JsonView(Views.Superficial.class)\n    private Long id;\n\n    @JsonView(Views.Superficial.class)\n    private String label;\n\n    @OneToOne\n    @JsonView(Views.Detailed.class)\n    private Diagnostique diagnostique; // &lt;-- :) ; did this because you could have multiple \n                                       // diacnostics for a sickness symtome \n\n    @OneToOne\n    @JsonView(Views.Superficial.class)\n    private Traitement traitement; \n\n    @JsonView(Views.Superficial.class)\n    private String noTreatementNoDiagnosticChoice;\n}\n</code></pre>\n<p>The problem is probably the <code>Choice</code> entity since it calls the diagnostic entity recursively in one or two records.</p>\n<p>I have manually injected data records, now it works for the case where I have a single nested diagnostic entity in the Choice object (Diagnostic -&gt; Question -&gt; Choice -&gt; Diagnostic -&gt; Question -&gt; Choice -&gt; Treatment)</p>\n<p>But for the double nested case it throws that error (Diagnostic -&gt; Question -&gt; Choice -&gt; Diagnostic -&gt; Question -&gt; Choice Diagnostic -&gt; Question -&gt; Choice -&gt; Treatment ).</p>\n<p>I really don't know what to do at this point, the data modeling of the case is not that great and I'm really too invested in this version of modeling to change it.</p>\n<p>Can anyone help?</p>\n<p>Here's some stack traces:</p>\n<p>When I query the Sickness</p>\n<pre class=\"lang-none prettyprint-override\"><code>org.springframework.http.converter.HttpMessageNotWritableException: Could not write JSON: 4; nested exception is com.fasterxml.jackson.databind.JsonMappingException: 4\n  at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:465)\n  at org.springframework.http.converter.AbstractGenericHttpMessageConverter.write(AbstractGenericHttpMessageConverter.java:104)\n  at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:290)\n  at org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor.handleReturnValue(HttpEntityMethodProcessor.java:219)\n  at \n</code></pre>\n<p>When I query the diagnostic</p>\n<pre class=\"lang-none prettyprint-override\"><code>org.springframework.http.converter.HttpMessageNotWritableException: Could not write JSON: 4; nested exception is com.fasterxml.jackson.databind.JsonMappingException: 4 (through reference chain: com.nst.onercp.domain.Diagnostic$HibernateProxy$SlDHxnlx[\\&quot;questions\\&quot;])\n  at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:465)\n  at org.springframework.http.converter.AbstractGenericHttpMessageConverter.write(AbstractGenericHttpMessageConverter.java:104)\n  at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:290)\n  at org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor.handleReturnValue(HttpEntityMethodProcessor.java:219)\n  at org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite.handleReturnValue(HandlerMethodReturnValueHandlerComposite.java:78)\n</code></pre>\n<p>Sorry for the long post :)</p>\n"
+}

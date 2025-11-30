@@ -1,0 +1,321 @@
+{
+  "tags" : [ "java", "xml" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 4239251,
+      "reputation" : 752,
+      "user_id" : 3469626,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Pablo Grande",
+      "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+    },
+    "reply_to_user" : {
+      "account_id" : 122932,
+      "reputation" : 53066,
+      "user_id" : 317052,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/GC6F4.jpg?s=256",
+      "display_name" : "Daniel Haley",
+      "link" : "https://stackoverflow.com/users/317052/daniel-haley"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1572105855,
+    "post_id" : 58478632,
+    "comment_id" : 103461394,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Sorry for the delay and thank you for reminding me. Your suggestion did the trick :)"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571758860,
+      "post_id" : 58481951,
+      "comment_id" : 103343627,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks for the explanation. It seems I cannot do it without actively deleting those blank lines :("
+    }, {
+      "owner" : {
+        "account_id" : 5359176,
+        "reputation" : 315,
+        "user_id" : 4288004,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/cfd5bc7b1cec70d35a941eaba17dcfb3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "xuiqzy",
+        "link" : "https://stackoverflow.com/users/4288004/xuiqzy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1723303751,
+      "post_id" : 58481951,
+      "comment_id" : 139030779,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is conceptually correct, because the transformer with default indent etc. and printing newly added elements from the DOM document doesn&#39;t add it&#39;s own newlines. The problem is that it keeps the existing ones from reading the pretty-printed xml. Also see this stackoverflow question on how to remove the newline elements after reading the existing xml: <a href=\"https://stackoverflow.com/questions/978810/how-to-strip-whitespace-only-text-nodes-from-a-dom-before-serialization\" title=\"how to strip whitespace only text nodes from a dom before serialization\">stackoverflow.com/questions/978810/&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 14575602,
+      "reputation" : 3021,
+      "user_id" : 10527550,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/alHHm.png?s=256",
+      "display_name" : "Hong Tang",
+      "link" : "https://stackoverflow.com/users/10527550/hong-tang"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1571644257,
+    "creation_date" : 1571644257,
+    "answer_id" : 58481951,
+    "question_id" : 58478632,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>In Short：</strong> Actually, in Java 9, you may only take the way of deleting the blank line after xml generated or after xml parsed from file, like :</p>\n\n<pre><code>private void clearBlankLine(Element element) {\n    NodeList childNodes = element.getChildNodes();\n    for (int index = 0; index &lt; childNodes.getLength(); index++) {\n        Node item = childNodes.item(index);\n        if (item.getNodeType() != 1 &amp;&amp; System.lineSeparator()\n            .equals(item.getNodeValue())) {\n            element.removeChild(item);\n        } else {\n            if (item instanceof Element) {\n                clearBlankLine((Element) item);\n            }\n        }\n    }\n}\n</code></pre>\n\n<p>Then invoke this with <code>root</code> element.</p>\n\n<p><strong>Details:</strong></p>\n\n<p>In the flow of xml generation, there are three lifecycle for each element parse: <code>startElement</code>,<code>parse</code>,<code>endElement</code>. While the <code>indent</code> feature is implemented in the <code>startElement</code> scope. Also the indent will add a blank line in document.</p>\n\n<p>The invoke stack is <strong>different</strong> in java 8 between java 9:</p>\n\n<p>In Java 8: <code>ToStream#startElement-&gt; ToStream#indent(IfNecessary)</code></p>\n\n<p>In Java 9: <code>ToStream#startElement-&gt;ToStream#flushCharactersBuffer(IfNecessary)-&gt;ToStream#indent(IfNecessary)</code></p>\n\n<p>While the <code>flushCharactersBuffer</code> also do indent when we open the indent feature like: <code>transformer.setOutputProperty(OutputKeys.INDENT, \"yes\");</code>  Also the condition to invoke method: <code>flushCharactersBuffer</code> and method: <code>indent</code> almost same. </p>\n\n<p>That means in Java 9, this would add two new line for each need indented element, result to blank lines appeared.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571758814,
+      "post_id" : 58490222,
+      "comment_id" : 103343603,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I have the exact same result as before"
+    }, {
+      "owner" : {
+        "account_id" : 11889649,
+        "reputation" : 1461,
+        "user_id" : 8700934,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/9pBl6.jpg?s=256",
+        "display_name" : "Lakshan",
+        "link" : "https://stackoverflow.com/users/8700934/lakshan"
+      },
+      "reply_to_user" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571762917,
+      "post_id" : 58490222,
+      "comment_id" : 103345666,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PabloRiutort it is a work for me, please refer the above edited answer"
+    }, {
+      "owner" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571764051,
+      "post_id" : 58490222,
+      "comment_id" : 103346200,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I have executed your code and I got the same result: more and more blank lines piled up. Can I see your imports?"
+    }, {
+      "owner" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571771261,
+      "post_id" : 58490222,
+      "comment_id" : 103349203,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Same result with your imports. Added missing <code>javax.xml.parsers.DocumentBuilder</code>. What version of Java do you use?"
+    }, {
+      "owner" : {
+        "account_id" : 11889649,
+        "reputation" : 1461,
+        "user_id" : 8700934,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/9pBl6.jpg?s=256",
+        "display_name" : "Lakshan",
+        "link" : "https://stackoverflow.com/users/8700934/lakshan"
+      },
+      "reply_to_user" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571839611,
+      "post_id" : 58490222,
+      "comment_id" : 103374338,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PabloRiutort execute with java 8, get the above output. but execute with java 9, generate the xml file with empty lines. please refer, <a href=\"https://stackoverflow.com/q/12669686/8700934\">stackoverflow.com/q/12669686/8700934</a>"
+    }, {
+      "owner" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1571924835,
+      "post_id" : 58490222,
+      "comment_id" : 103407091,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I saw your reference but the only solution goes by removing blanks"
+    } ],
+    "owner" : {
+      "account_id" : 11889649,
+      "reputation" : 1461,
+      "user_id" : 8700934,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/9pBl6.jpg?s=256",
+      "display_name" : "Lakshan",
+      "link" : "https://stackoverflow.com/users/8700934/lakshan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1571839696,
+    "last_edit_date" : 1571839696,
+    "creation_date" : 1571674356,
+    "answer_id" : 58490222,
+    "question_id" : 58478632,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>your solution and below suggestion are both works fine for me, please try with this test case,</p>\n\n<pre><code>public static void main(String[] args) {\n\n    saveUser(\"test one\", \"test two\", \"test three\");\n\n}\n\nprivate static void saveUser(String firstName, String lastName, String username){\n    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();\n    try {\n        DocumentBuilder builder = factory.newDocumentBuilder();\n        Document doc = builder.parse(new File(\"second.xml\"));\n        Element root = doc.getDocumentElement();\n        root.normalize();\n\n        // build user node\n        Element userNode = doc.createElement(\"user\");\n        Element nameNode =  doc.createElement(\"name\");\n        Element lastNameNode = doc.createElement(\"last-name\");\n        Element usernameNode = doc.createElement(\"username\");\n\n        userNode.appendChild(nameNode).setTextContent(firstName); //set the text content\n        userNode.appendChild(lastNameNode).setTextContent(lastName);\n        userNode.appendChild(usernameNode).setTextContent(username);\n        root.appendChild(userNode);\n\n        //write the updated document to file or console\n        TransformerFactory transformerFactory = TransformerFactory.newInstance();\n        Transformer transformer = transformerFactory.newTransformer();\n        DOMSource source = new DOMSource(doc);\n        StreamResult result = new StreamResult(new File(\"second.xml\"));\n        transformer.setOutputProperty(OutputKeys.ENCODING, \"UTF-8\");\n        transformer.setOutputProperty(OutputKeys.INDENT, \"yes\");\n        transformer.transform(source, result);\n\n     }catch (Exception e) {\n        e.printStackTrace();\n     }\n}\n</code></pre>\n\n<p>second.xml (before execution)</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?&gt;\n&lt;users&gt;\n&lt;/users&gt;\n</code></pre>\n\n<p>second.xml (first execution)</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?&gt;\n&lt;users&gt;\n&lt;user&gt;\n&lt;name&gt;test one&lt;/name&gt;\n&lt;last-name&gt;test two&lt;/last-name&gt;\n&lt;username&gt;test three&lt;/username&gt;\n&lt;/user&gt;\n&lt;/users&gt;\n</code></pre>\n\n<p>second.xml (second execution)</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?&gt;\n&lt;users&gt;\n&lt;user&gt;\n&lt;name&gt;test one&lt;/name&gt;\n&lt;last-name&gt;test two&lt;/last-name&gt;\n&lt;username&gt;test three&lt;/username&gt;\n&lt;/user&gt;\n&lt;user&gt;\n&lt;name&gt;test one&lt;/name&gt;\n&lt;last-name&gt;test two&lt;/last-name&gt;\n&lt;username&gt;test three&lt;/username&gt;\n&lt;/user&gt;\n&lt;/users&gt;\n</code></pre>\n\n<p>second.xml (third execution)</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?&gt;\n&lt;users&gt;\n&lt;user&gt;\n&lt;name&gt;test one&lt;/name&gt;\n&lt;last-name&gt;test two&lt;/last-name&gt;\n&lt;username&gt;test three&lt;/username&gt;\n&lt;/user&gt;\n&lt;user&gt;\n&lt;name&gt;test one&lt;/name&gt;\n&lt;last-name&gt;test two&lt;/last-name&gt;\n&lt;username&gt;test three&lt;/username&gt;\n&lt;/user&gt;\n&lt;user&gt;\n&lt;name&gt;test one&lt;/name&gt;\n&lt;last-name&gt;test two&lt;/last-name&gt;\n&lt;username&gt;test three&lt;/username&gt;\n&lt;/user&gt;\n&lt;/users&gt;\n</code></pre>\n\n<p>importing classes,</p>\n\n<pre><code>import java.io.File;\nimport javax.xml.parsers.DocumentBuilderFactory;\nimport javax.xml.transform.OutputKeys;\nimport javax.xml.transform.Transformer;\nimport javax.xml.transform.TransformerFactory;\nimport javax.xml.transform.dom.DOMSource;\nimport javax.xml.transform.stream.StreamResult;\nimport javax.xml.parsers.DocumentBuilder; // missing import class\n\nimport org.w3c.dom.Document;\nimport org.w3c.dom.Element;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4239251,
+        "reputation" : 752,
+        "user_id" : 3469626,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Pablo Grande",
+        "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1572105776,
+      "post_id" : 58510553,
+      "comment_id" : 103461377,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It works like a charm, thank you.   Although, it will put the first <code>&lt;users&gt;</code> tag at the same level as <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code>: <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;users&gt;</code>. To me it&#39;s fine, but maybe the XSLT can be modified in order to prevent that as well?"
+    } ],
+    "owner" : {
+      "account_id" : 122932,
+      "reputation" : 53066,
+      "user_id" : 317052,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/GC6F4.jpg?s=256",
+      "display_name" : "Daniel Haley",
+      "link" : "https://stackoverflow.com/users/317052/daniel-haley"
+    },
+    "is_accepted" : true,
+    "score" : 11,
+    "last_activity_date" : 1764103125,
+    "last_edit_date" : 1764103125,
+    "creation_date" : 1571769881,
+    "answer_id" : 58510553,
+    "question_id" : 58478632,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I suspect it's the Transformer that's adding the blank lines.</p>\n<p>Instead of using the default transformer (<code>transformerFactory.newTransformer()</code>), try passing in an XSLT that has <code>xsl:strip-space</code> set (<code>transformerFactory.newTransformer(new StreamSource(new File(PATH_TO_XSLT_FILE)));</code>)...</p>\n<p><strong>XSLT File</strong></p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;\n  &lt;xsl:output indent=&quot;yes&quot;/&gt;\n  &lt;xsl:strip-space elements=&quot;*&quot;/&gt;\n\n  &lt;xsl:template match=&quot;@*|node()&quot;&gt;\n    &lt;xsl:copy&gt;\n      &lt;xsl:apply-templates select=&quot;@*|node()&quot;/&gt;\n    &lt;/xsl:copy&gt;\n  &lt;/xsl:template&gt;\n\n&lt;/xsl:stylesheet&gt;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1401475,
+      "reputation" : 2116,
+      "user_id" : 1339923,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/N2zeW.jpg?s=256",
+      "display_name" : "Lambart",
+      "link" : "https://stackoverflow.com/users/1339923/lambart"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1652748051,
+    "creation_date" : 1652748051,
+    "answer_id" : 72267026,
+    "question_id" : 58478632,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I found this solution using an <code>XPath</code> to be much cleaner than any of the others here (h/t to Isaac for his answer over at <a href=\"https://stackoverflow.com/a/12670194/1339923\">https://stackoverflow.com/a/12670194/1339923</a>). It doesn't require a separate (i.e., XSLT) file, and doesn't require you to add 14 lines of Java to iterate over every node in the Document. Only 6 lines of code.</p>\n<p>In the case of @pablo-r-grande's original question... right before this comment (i.e., just before loading the <code>Document</code> into the <code>DOMSource</code>):</p>\n<pre class=\"lang-java prettyprint-override\"><code>//write the updated document to file or console\n</code></pre>\n<p>...I would add these lines:</p>\n<pre class=\"lang-java prettyprint-override\"><code>// Generate list of all empty Nodes, them remove them\nXPath xp = XPathFactory.newInstance().newXPath();\nNodeList nl = (NodeList) xp.evaluate(&quot;//text()[normalize-space(.)='']&quot;, doc, XPathConstants.NODESET);\nfor (int i = 0; i &lt; nl.getLength(); ++i) { // note the position of the '++'\n    Node node = nl.item(i);\n    node.getParentNode().removeChild(node);\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 8914491,
+      "reputation" : 315,
+      "user_id" : 6653532,
+      "user_type" : "registered",
+      "accept_rate" : 44,
+      "profile_image" : "https://lh6.googleusercontent.com/-O3OLOdOogXA/AAAAAAAAAAI/AAAAAAAAAJc/8Gazl27hJws/s256-rj/photo.jpg",
+      "display_name" : "Martin WasGehtSieDasAn",
+      "link" : "https://stackoverflow.com/users/6653532/martin-wasgehtsiedasan"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1753689862,
+    "creation_date" : 1753689862,
+    "answer_id" : 79717024,
+    "question_id" : 58478632,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had the same problem and i suspect the</p>\n<pre><code>transformer.setOutputProperty(OutputKeys.INDENT, &quot;yes&quot;);\n</code></pre>\n<p>to be the culprit.</p>\n<p>In my case, whenever there was a whitespace between a closing xml-tag and an opening xml-tag, like this:</p>\n<p>&quot;&lt;tag1&gt;content&lt;/tag1&gt; &lt;tag2&gt;content&lt;/tag1&gt;&quot; instead of something like this<br />\n&quot;&lt;tag1&gt;content&lt;/tag1&gt;&lt;tag2&gt;content&lt;/tag2&gt;&quot;  it would result in a double \\r\\n between the tags.</p>\n<p>i assume the transformer interprets the whitespace(s) as a new xml node and put the content on a new line, resulting in just an empty line between &lt;tag1&gt; and &lt;tag2&gt;.</p>\n<p>i decided to clean up my inputstring with this:</p>\n<pre><code>xmlString = xmlString.replaceAll(&quot;&gt;\\\\s+&lt;&quot;, &quot;&gt;&lt;&quot;);\n</code></pre>\n<p>I cant say anything about the performance hit, because my uses cases are small but it solved my problem with just one line of code.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4239251,
+    "reputation" : 752,
+    "user_id" : 3469626,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/6bbb01e825a8174829c366b1ba9d7360?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Pablo Grande",
+    "link" : "https://stackoverflow.com/users/3469626/pablo-grande"
+  },
+  "is_answered" : true,
+  "view_count" : 7308,
+  "accepted_answer_id" : 58510553,
+  "answer_count" : 5,
+  "score" : 13,
+  "last_activity_date" : 1764103125,
+  "creation_date" : 1571620121,
+  "question_id" : 58478632,
+  "link" : "https://stackoverflow.com/questions/58478632/how-to-avoid-extra-blank-lines-in-xml-generation-with-java",
+  "title" : "How to avoid extra blank lines in XML generation with Java?",
+  "body" : "<p>Currently I'm trying to develop some code with Java 9 and <code>javax.xml</code> libraries (both mandatory for my task) that edits an XML file and I'm having some weird issues adding child nodes.</p>\n\n<p>This is the XML file:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?&gt;\n&lt;users&gt;\n&lt;/users&gt;\n</code></pre>\n\n<p>and I want to edit it build something like this:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?&gt;\n&lt;users&gt;\n    &lt;user&gt;\n        &lt;name&gt;A name&lt;/name&gt;\n        &lt;last-name&gt;Last Name&lt;/last-name&gt;\n        &lt;username&gt;username&lt;/username&gt;\n    &lt;/user&gt;\n&lt;/users&gt;\n</code></pre>\n\n<p>Now, the first run of the code adds a single blank line before the <code>&lt;user&gt;</code> node. When it runs for a second time fills with more blank lines:</p>\n\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;users&gt;\n\n\n    &lt;user&gt;\n\n        &lt;name&gt;name&lt;/name&gt;\n\n        &lt;last-name&gt;lastname&lt;/last-name&gt;\n\n        &lt;username&gt;username&lt;/username&gt;\n\n    &lt;/user&gt;\n\n    &lt;user&gt;\n        &lt;name&gt;name&lt;/name&gt;\n        &lt;last-name&gt;lastname&lt;/last-name&gt;\n        &lt;username&gt;username&lt;/username&gt;\n    &lt;/user&gt;\n&lt;/users&gt;\n</code></pre>\n\n<p>This is the XML generated after running the program 2 times. As you can see, it adds blank lines before the <code>&lt;user&gt;</code> nodes and between the other nodes, exactly n-1 blank lines between nodes being n the times the code was executed.  </p>\n\n<p>Wondering what is the content of those nodes before updating the file I wrote the next code:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>int i=0;\nwhile (root.getChildNodes().item(i)!=null){\n  Node aux = root.getChildNodes().item(i);\n  System.out.println(\"Node text content: \".concat(aux.getTextContent()));\n  i++;\n}\n</code></pre>\n\n<p>1st execution:</p>\n\n<pre><code>Node text content: \n\nNode text content: namelastnameusername\n</code></pre>\n\n<p>2nd execution:</p>\n\n<pre><code>Node text content: \n\n\nNode text content: \n        name\n        lastname\n        username\n\nNode text content: \n\nNode text content: namelastnameusername\n</code></pre>\n\n<p>3rd execution</p>\n\n<pre><code>Node text content: \n\n\n\nNode text content: \n\n        name\n\n        lastname\n\n        username\n\n\nNode text content: \n\n\nNode text content: \n        name\n        lastname\n        username\n\nNode text content: \n\nNode text content: namelastnameusername\n</code></pre>\n\n<p>Finally, this is the Java code:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>private static void saveUser(String firstName, String lastName, String username){\n  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();\n    try {\n      DocumentBuilder builder = factory.newDocumentBuilder();\n      Document doc = builder.parse(new File(databaseFile));\n      Element root = doc.getDocumentElement();\n      root.normalize();\n\n      // build user node\n      Element userNode = doc.createElement(\"user\");\n      Element nameNode =  doc.createElement(\"name\");\n      Element lastNameNode = doc.createElement(\"last-name\");\n      Element usernameNode = doc.createElement(\"username\");\n\n      //build structure\n      nameNode.appendChild(doc.createTextNode(firstName));\n      lastNameNode.appendChild(doc.createTextNode(lastName));\n      usernameNode.appendChild(doc.createTextNode(username));\n\n      userNode.appendChild(nameNode);\n      userNode.appendChild(lastNameNode);\n      userNode.appendChild(usernameNode);\n      root.appendChild(userNode);\n\n      //write the updated document to file or console\n      TransformerFactory transformerFactory = TransformerFactory.newInstance();\n      Transformer transformer = transformerFactory.newTransformer();\n      DOMSource source = new DOMSource(doc);\n      StreamResult result = new StreamResult(new File(databaseFile));\n      transformer.setOutputProperty(OutputKeys.ENCODING, \"UTF-8\");\n      transformer.setOutputProperty(OutputKeys.INDENT, \"yes\");\n      transformer.transform(source, result);\n    }catch (SAXException | ParserConfigurationException | IOException | TransformerException e1) {\n      e1.printStackTrace();\n    }\n}\n</code></pre>\n\n<p>The only solution I could find is to delete blank lines after XML generation, but I think it's not a proper solution and I would like to find some alternatives first.</p>\n\n<p>Any suggestions on how to tackle this problem?</p>\n"
+}

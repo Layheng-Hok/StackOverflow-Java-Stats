@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "node.js", "encryption", "jasypt" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 11440788,
+      "reputation" : 1,
+      "user_id" : 8386458,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0906d94078b173e0c9df501bd069b383?s=256&d=identicon&r=PG",
+      "display_name" : "shashikanth",
+      "link" : "https://stackoverflow.com/users/8386458/shashikanth"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1762543870,
+    "post_id" : 54315103,
+    "comment_id" : 140842522,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I created an implementation for it  <a href=\"https://www.npmjs.com/package/jaspyt-js-pbe\" rel=\"nofollow noreferrer\">npmjs.com/package/jaspyt-js-pbe</a>  feel free to use the decrypt function in this library"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4376511,
+        "reputation" : 27,
+        "user_id" : 3569397,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ce1dd39c54c27d88294db953f06f7ef0?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user3569397",
+        "link" : "https://stackoverflow.com/users/3569397/user3569397"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1548268732,
+      "post_id" : 54318147,
+      "comment_id" : 95484924,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Thanks alot for your help dave, it worked for me. using the forge.pbe.generatePkcs12Key provided successfull key and iv and was able to decrypt the data now."
+    } ],
+    "owner" : {
+      "account_id" : 3421244,
+      "reputation" : 39516,
+      "user_id" : 2868801,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3f265dbe3edef5d671947a604f7171bf?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dave_thompson_085",
+      "link" : "https://stackoverflow.com/users/2868801/dave-thompson-085"
+    },
+    "is_accepted" : true,
+    "score" : 0,
+    "last_activity_date" : 1548201302,
+    "last_edit_date" : 1633613705,
+    "creation_date" : 1548201302,
+    "answer_id" : 54318147,
+    "question_id" : 54315103,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>That PBE scheme is not a an instance of PBKDF2 (PKCS8); it is an instance of the PKCS12 PBE scheme, which is similar in concept but very different in details which are vital in crypto. You can 'easily' tell this by looking up the OID: <a href=\"https://www.bouncycastle.org/oids.html\" rel=\"nofollow noreferrer\">https://www.bouncycastle.org/oids.html</a> :-)</p>\n<p>I don't see any hint that nodejs-crypto exposes this scheme, or PKCS12, although it internally uses OpenSSL which does implement both.</p>\n<p>You could code it yourself following the specification in <a href=\"https://www.rfc-editor.org/rfc/rfc7292#appendix-B\" rel=\"nofollow noreferrer\">RFC 7292 Appendix B and C</a> (which is in fact still widely used even though the document says it is deprecated).</p>\n<p>Alternatively <a href=\"https://github.com/digitalbazaar/forge\" rel=\"nofollow noreferrer\">https://github.com/digitalbazaar/forge</a> (pure js) does support PKCS12  using from an unmentioned (internal) module <code>forge.pbe.generatePkcs12Key</code> (actually key <em>and</em> IV) which looks correct to me on a quick scan (but not tested).</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4376511,
+    "reputation" : 27,
+    "user_id" : 3569397,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/ce1dd39c54c27d88294db953f06f7ef0?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3569397",
+    "link" : "https://stackoverflow.com/users/3569397/user3569397"
+  },
+  "is_answered" : true,
+  "view_count" : 2225,
+  "accepted_answer_id" : 54318147,
+  "answer_count" : 1,
+  "score" : -1,
+  "last_activity_date" : 1762544253,
+  "creation_date" : 1548185022,
+  "last_edit_date" : 1548188023,
+  "question_id" : 54315103,
+  "link" : "https://stackoverflow.com/questions/54315103/encryption-in-java-jasypt-and-decryption-in-nodejs",
+  "title" : "Encryption in java (jasypt) and decryption in nodejs",
+  "body" : "<p>Am trying to decrypt the encoded string (which is actually encoded in java using bouncyCastle provider). As i dont see any equivalent algo for \"PBEWITHSHA256AND256BITAES-CBC-BC\" in nodejs. Could you please suggest me how can i decrypt the encryptedValue(which was encrypted in java) in nodejs.</p>\n\n<p>I tried few approaches, but not able to find the solution.</p>\n\n<p>From Java:\nBelow is the approach</p>\n\n<ol>\n<li>bouncyCastle provider</li>\n<li>Algo# PBEWITHSHA256AND256BITAES-CBC-BC</li>\n<li>encodedOutputType as \"Hex\"</li>\n</ol>\n\n<p>we got the result back as string which is hexadecimal string.</p>\n\n<p>From Nodejs:\nI tried to decrypt using nodejs-crypto package.</p>\n\n<ol>\n<li>Converted back to array values from the hexadecimal String</li>\n<li>Used pbkdf2sync to create the key using sha256 </li>\n<li>tried to decrypt the data using crypto.createDecipherIv\nbut somehow am not able to decrypt in nodejs.</li>\n</ol>\n\n<p>Could someone please suggest me the approach.</p>\n"
+}

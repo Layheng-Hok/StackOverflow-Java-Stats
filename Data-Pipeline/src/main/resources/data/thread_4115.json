@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "geometry", "geojson", "geojsonio" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5165335,
+      "reputation" : 431,
+      "user_id" : 5254154,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/15c00d26c73cec8b88fad4b5e01c121e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Victor Kofia",
+      "link" : "https://stackoverflow.com/users/5254154/victor-kofia"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1549675589,
+    "creation_date" : 1549675589,
+    "answer_id" : 54602317,
+    "question_id" : 54601953,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>geojson-jackson 1.0</strong> is flagging your input GeoJSON as invalid. The exception says that all valid GeoJSON inputs must have a type of either Feature, FeatureCollection, LineString, MultiLineString, MultiPoint, MultiPolygon, Point or Polygon. See <a href=\"https://github.com/opendatalab-de/geojson-jackson/blob/master/src/main/java/org/geojson/GeoJsonObject.java#L14-L16\" rel=\"nofollow noreferrer\">https://github.com/opendatalab-de/geojson-jackson/blob/master/src/main/java/org/geojson/GeoJsonObject.java#L14-L16</a> for the actual source code.</p>\n\n<p>The example input you provided has the type set to \"relocationzone\".</p>\n\n<p>In order to get this to work you will need to extend geojson-jackson by creating new Java classes that more or less correspond to the structure of your GeoJSON inputs. </p>\n\n<p>As a starting point you will need to create a class that looks something like this:</p>\n\n<pre><code>public class relocationzone extends GeoJsonObject {\n\n    @JsonInclude(JsonInclude.Include.ALWAYS)\n    private Map&lt;String, Object&gt; properties = new HashMap&lt;String, Object&gt;();\n    @JsonInclude(JsonInclude.Include.ALWAYS)\n\n    // Expected JSON data\n    private GeoJsonObject geometry;\n    private String id;\n    private String _id;\n    private String updatedAt;;\n    private String name;\n    private String _v;\n    private String createdAt;\n    private String legacyId;\n\n\n    public void setProperty(String key, Object value) {\n        properties.put(key, value);\n    }\n\n    @SuppressWarnings(\"unchecked\")\n    public &lt;T&gt; T getProperty(String key) {\n        return (T)properties.get(key);\n    }\n\n    public Map&lt;String, Object&gt; getProperties() {\n        return properties;\n    }\n\n    public void setProperties(Map&lt;String, Object&gt; properties) {\n        this.properties = properties;\n    }\n\n    public GeoJsonObject getGeometry() {\n        return geometry;\n    }\n\n    public void setGeometry(GeoJsonObject geometry) {\n        this.geometry = geometry;\n    }\n\n    public String getId() {\n        return id;\n    }\n\n    public void setId(String id) {\n        this.id = id;\n    }\n\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1062801,
+    "reputation" : 6884,
+    "user_id" : 1064076,
+    "user_type" : "registered",
+    "accept_rate" : 59,
+    "profile_image" : "https://www.gravatar.com/avatar/8bc3a7335b927521188678577f8cfcd4?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Arun Kumar",
+    "link" : "https://stackoverflow.com/users/1064076/arun-kumar"
+  },
+  "is_answered" : false,
+  "view_count" : 9869,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760918485,
+  "creation_date" : 1549671504,
+  "last_edit_date" : 1549671927,
+  "question_id" : 54601953,
+  "link" : "https://stackoverflow.com/questions/54601953/parsing-geojson-data-to-polygon-using-java",
+  "title" : "Parsing GeoJSON Data to Polygon using Java",
+  "body" : "<p>I have following Geo JSON file data which i want to parse in Polygon(using java)</p>\n\n<p><strong>Geo JSON File</strong>  </p>\n\n<pre><code>[\n  {\n    \"_id\": \"58a58bf685979b5415f3a39a\",\n    \"updatedAt\": \"2017-03-27T14:04:34.470Z\",\n    \"createdAt\": \"2017-02-16T11:24:38.375Z\",\n    \"__v\": 0,\n    \"name\": \"0\",\n    \"cityId\": \"548876e13a9424d55af738b5\",\n    \"legacyId\": \"18_92\",\n    \"type\": \"relocationzone\",\n    \"geoFeatures\": [\n      {\n        \"name\": \"opticalCenter\",\n        \"geometry\": {\n          \"type\": \"Point\",\n          \"coordinates\": [\n            9.1371735,\n            48.790337\n          ]\n        }\n      },\n      {\n        \"name\": \"center\",\n        \"geometry\": {\n          \"type\": \"Point\",\n          \"coordinates\": [\n            9.137148666666667,\n            48.79031233333333\n          ]\n        }\n      }\n    ],\n    \"options\": {\n      \"active\": true,\n      \"is_excluded\": false,\n      \"area\": 0.4\n    },\n    \"timedOptions\": [\n      {\n        \"key\": \"min\",\n        \"changesOverTime\": [\n          [\n            0,\n            0\n          ]\n        ]\n      },\n      {\n        \"key\": \"max\",\n        \"changesOverTime\": [\n          [\n            0,\n            200\n          ]\n        ]\n      },\n      {\n        \"key\": \"idle_time\",\n        \"changesOverTime\": [\n          [\n            0,\n            2000\n          ]\n        ]\n      },\n      {\n        \"key\": \"revenue\",\n        \"changesOverTime\": [\n          [\n            0,\n            0\n          ]\n        ]\n      },\n      {\n        \"key\": \"walking_range1\",\n        \"changesOverTime\": [\n          [\n            0,\n            0\n          ]\n        ]\n      },\n      {\n        \"key\": \"walking_range2\",\n        \"changesOverTime\": [\n          [\n            0,\n            0\n          ]\n        ]\n      }\n    ],\n    \"geometry\": {\n      \"type\": \"Polygon\",\n      \"coordinates\": [\n        [\n          [\n            9.137248,\n            48.790411\n          ],\n          [\n            9.137248,\n            48.790263\n          ],\n          [\n            9.13695,\n            48.790263\n          ],\n          [\n            9.137248,\n            48.790411\n          ]\n        ]\n      ]\n    },\n    \"version\": 1,\n    \"$computed\": {\n      \"activeTimedOptions\": {\n        \"min\": 0,\n        \"max\": 200,\n        \"idle_time\": 2000,\n        \"revenue\": 0,\n        \"walking_range1\": 0,\n        \"walking_range2\": 0\n      }\n    }\n  }\n]\n</code></pre>\n\n<p>I have used <strong>geojson-jackson</strong> 1.0 for parsing using below Java code</p>\n\n<pre><code>GeoJsonObject[] object = new ObjectMapper().readValue(new File(fileLocation), GeoJsonObject[].class);\n        if (object[0] instanceof Polygon) {\n            System.out.println(\"yes\");\n        }\n        else {\n            System.out.println(\"No\");\n        }\n</code></pre>\n\n<p>But i am getting an exception <code>com.fasterxml.jackson.databind.exc.InvalidTypeIdException: Could not resolve type id 'relocationzone' as a subtype of [simple type, class org.geojson.GeoJsonObject]: known type ids = [Feature, FeatureCollection, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon]</code></p>\n\n<p>Can anyone tell me how can i use above JSON file data to parse in Polygon successfully?</p>\n"
+}

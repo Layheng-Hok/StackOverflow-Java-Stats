@@ -1,0 +1,885 @@
+{
+  "tags" : [ "java", "static", "methods", "static-methods" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 422939,
+      "reputation" : 4401,
+      "user_id" : 802012,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/f05691b6b4c4f59ab2c0bb132c3ab8b3?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Butler",
+      "link" : "https://stackoverflow.com/users/802012/mark-butler"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1360676305,
+    "post_id" : 538870,
+    "comment_id" : 20784417,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "See also when not to use the keyword static in Java: <a href=\"http://stackoverflow.com/questions/1766715/when-not-to-use-the-static-keyword-in-java\" title=\"when not to use the static keyword in java\">stackoverflow.com/questions/1766715/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 24436,
+        "reputation" : 73773,
+        "user_id" : 62130,
+        "user_type" : "registered",
+        "accept_rate" : 39,
+        "profile_image" : "https://www.gravatar.com/avatar/520c9c078b8d25980de17b8d4fe0ceba?s=256&d=identicon&r=PG",
+        "display_name" : "Esko Luontola",
+        "link" : "https://stackoverflow.com/users/62130/esko-luontola"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1245801877,
+      "post_id" : 538909,
+      "comment_id" : 846564,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "The JIT compiler will anyways inline and optimize them, so the amount of bytecode instructions has little to do with how fast it will be."
+    }, {
+      "owner" : {
+        "account_id" : 7745,
+        "reputation" : 192629,
+        "user_id" : 13531,
+        "user_type" : "moderator",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Myers",
+        "link" : "https://stackoverflow.com/users/13531/michael-myers"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1245812436,
+      "post_id" : 538909,
+      "comment_id" : 846935,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "That&#39;s why I said &quot;I don&#39;t think it makes any difference in speed (and if it did, it would probably be too small to make a difference overall).&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 199455,
+        "reputation" : 8471,
+        "user_id" : 444796,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/7f0c33445ef45506e339d70a36d57dc1?s=256&d=identicon&r=PG",
+        "display_name" : "Ichthyo",
+        "link" : "https://stackoverflow.com/users/444796/ichthyo"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1389912559,
+      "post_id" : 538909,
+      "comment_id" : 31877815,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Before engaging in any micro optimisations of that kind, you should consider the effect of the hot spot compiler. Bottom line: write your code for readability by humans and leave optimisation to the compiler"
+    } ],
+    "owner" : {
+      "account_id" : 7745,
+      "reputation" : 192629,
+      "user_id" : 13531,
+      "user_type" : "moderator",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+      "display_name" : "Michael Myers",
+      "link" : "https://stackoverflow.com/users/13531/michael-myers"
+    },
+    "is_accepted" : false,
+    "score" : 113,
+    "last_activity_date" : 1234452899,
+    "last_edit_date" : 1234452899,
+    "creation_date" : 1234387973,
+    "answer_id" : 538909,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>It might result in slightly smaller bytecode, since the static methods won't get access to <code>this</code>. I don't think it makes any difference in speed (and if it did, it would probably be too small to make a difference overall).</p>\n\n<p>I would make them static, since I generally do so if at all possible. But that's just me.</p>\n\n<hr>\n\n<p><strong>EDIT:</strong> This answer keeps getting downvoted, possibly because of the unsubstantiated assertion about bytecode size. So I will actually run a test.</p>\n\n<pre><code>class TestBytecodeSize {\n    private void doSomething(int arg) { }\n    private static void doSomethingStatic(int arg) { }\n    public static void main(String[] args) {\n        // do it twice both ways\n        doSomethingStatic(0);\n        doSomethingStatic(0);\n        TestBytecodeSize t = new TestBytecodeSize();\n        t.doSomething(0);\n        t.doSomething(0);\n    }\n}\n</code></pre>\n\n<p>Bytecode (retrieved with <code>javap -c -private TestBytecodeSize</code>):</p>\n\n<pre><code>Compiled from \"TestBytecodeSize.java\"\nclass TestBytecodeSize extends java.lang.Object{\nTestBytecodeSize();\n  Code:\n   0:   aload_0\n   1:   invokespecial   #1; //Method java/lang/Object.\"&lt;init&gt;\":()V\n   4:   return\n\nprivate void doSomething(int);\n  Code:\n   0:   return\n\nprivate static void doSomethingStatic(int);\n  Code:\n   0:   return\n\npublic static void main(java.lang.String[]);\n  Code:\n   0:   iconst_0\n   1:   invokestatic    #2; //Method doSomethingStatic:(I)V\n   4:   iconst_0\n   5:   invokestatic    #2; //Method doSomethingStatic:(I)V\n   8:   new     #3; //class TestBytecodeSize\n   11:  dup\n   12:  invokespecial   #4; //Method \"&lt;init&gt;\":()V\n   15:  astore_1\n   16:  aload_1\n   17:  iconst_0\n   18:  invokespecial   #5; //Method doSomething:(I)V\n   21:  aload_1\n   22:  iconst_0\n   23:  invokespecial   #5; //Method doSomething:(I)V\n   26:  return\n\n}\n</code></pre>\n\n<p>Invoking the static method takes two bytecodes (byteops?): <code>iconst_0</code> (for the argument) and <code>invokestatic</code>.<br>\nInvoking the non-static method takes three: <code>aload_1</code> (for the <code>TestBytecodeSize</code> object, I suppose), <code>iconst_0</code> (for the argument), and <code>invokespecial</code>. (Note that if these hadn't been private methods, it would have been <code>invokevirtual</code> instead of <code>invokespecial</code>; see <a href=\"http://java.sun.com/docs/books/jvms/second_edition/html/Compiling.doc.html#14787\" rel=\"noreferrer\">JLS §7.7 Invoking Methods</a>.)</p>\n\n<p>Now, as I said, I don't expect there to be any great difference in performance between these two, other than the fact that <code>invokestatic</code> requires one fewer bytecode. <code>invokestatic</code> and <code>invokespecial</code> should both be slightly faster than <code>invokevirtual</code>, since they both use static binding instead of dynamic, but I have no idea if either is faster than the other. I can't find any good references either. The closest I can find is <a href=\"http://www.javaworld.com/javaworld/jw-06-1997/jw-06-hood.html\" rel=\"noreferrer\">this 1997 JavaWorld article</a>, which basically restates what I just said:</p>\n\n<blockquote>\n  <p>The fastest instructions will most likely be <code>invokespecial</code> and <code>invokestatic</code>, because methods invoked by these instructions are statically bound. When the JVM resolves the symbolic reference for these instructions and replaces it with a direct reference, that direct reference probably will include a pointer to the actual bytecodes.</p>\n</blockquote>\n\n<p>But many things have changed since 1997.</p>\n\n<p>So in conclusion... I guess I'm still sticking with what I said before. Speed shouldn't be the reason to choose one over the other, since it would be a micro-optimization at best.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 107251,
+        "reputation" : 12312,
+        "user_id" : 285288,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://www.gravatar.com/avatar/321b2437e25c1885cb0edbde62bbf530?s=256&d=identicon&r=PG",
+        "display_name" : "James",
+        "link" : "https://stackoverflow.com/users/285288/james"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1409299189,
+      "post_id" : 538914,
+      "comment_id" : 39921776,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I normally declare those helper methods as <code>protected static</code> which makes them testable very easily in a test class in the same package."
+    }, {
+      "owner" : {
+        "account_id" : 1835287,
+        "reputation" : 812,
+        "user_id" : 1665809,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/eb32a690ac6a1dbc1b6bcc6d1774aa51?s=256&d=identicon&r=PG",
+        "display_name" : "mrod",
+        "link" : "https://stackoverflow.com/users/1665809/mrod"
+      },
+      "reply_to_user" : {
+        "account_id" : 107251,
+        "reputation" : 12312,
+        "user_id" : 285288,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://www.gravatar.com/avatar/321b2437e25c1885cb0edbde62bbf530?s=256&d=identicon&r=PG",
+        "display_name" : "James",
+        "link" : "https://stackoverflow.com/users/285288/james"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1457436822,
+      "post_id" : 538914,
+      "comment_id" : 59396219,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@James or simply <code>static</code> (if we just want it for testing)."
+    } ],
+    "owner" : {
+      "account_id" : 24436,
+      "reputation" : 73773,
+      "user_id" : 62130,
+      "user_type" : "registered",
+      "accept_rate" : 39,
+      "profile_image" : "https://www.gravatar.com/avatar/520c9c078b8d25980de17b8d4fe0ceba?s=256&d=identicon&r=PG",
+      "display_name" : "Esko Luontola",
+      "link" : "https://stackoverflow.com/users/62130/esko-luontola"
+    },
+    "is_accepted" : true,
+    "score" : 184,
+    "last_activity_date" : 1718220786,
+    "last_edit_date" : 1718220786,
+    "creation_date" : 1234388025,
+    "answer_id" : 538914,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I prefer such helper methods to be <code>private static</code>; which will make it clear to the reader that they will not modify the state of the object.  My IDE will also show calls to static methods in italics, so I will know the method is static without looking at the signature.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25372,
+      "reputation" : 4812,
+      "user_id" : 65184,
+      "user_type" : "registered",
+      "accept_rate" : 61,
+      "profile_image" : "https://www.gravatar.com/avatar/85b38a9a30e31f55c332869248fa701f?s=256&d=identicon&r=PG",
+      "display_name" : "notnot",
+      "link" : "https://stackoverflow.com/users/65184/notnot"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1234388073,
+    "creation_date" : 1234388073,
+    "answer_id" : 538918,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The static/non-static question comes down to \"will I really need to use an object of this class\"?</p>\n\n<p>So, are you passing the object between different methods? Does the object contain information that is useful outside the context of the static methods? Is there any reason not to define methods both ways if you'll use them both ways?</p>\n\n<p>If you're in this dilemma, it seems to me that you have all of the data required for the method floating around in your code outside of the object.  Is this what you want? Would it be easier to just always collect that data into an object each time? You might just be ambivalent about committing to a single model.  If you can do it all using one way, then pick either static or non-static and go with it.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 17188,
+        "reputation" : 15439,
+        "user_id" : 38226,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/632a54291b69b0d66c307f2971bc5cf8?s=256&d=identicon&r=PG",
+        "display_name" : "Clint Miller",
+        "link" : "https://stackoverflow.com/users/38226/clint-miller"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1234400191,
+      "post_id" : 538922,
+      "comment_id" : 351872,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "The advantage of not making it static is that someone can subclass and override the method&#39;s behavior."
+    }, {
+      "owner" : {
+        "account_id" : 23031,
+        "reputation" : 10995,
+        "user_id" : 57423,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/WK3i6.jpg?s=256",
+        "display_name" : "Bhushan Bhangale",
+        "link" : "https://stackoverflow.com/users/57423/bhushan-bhangale"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1234412795,
+      "post_id" : 538922,
+      "comment_id" : 352281,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Clint its a private method so you cannot override the method."
+    }, {
+      "owner" : {
+        "account_id" : 22674,
+        "reputation" : 2685,
+        "user_id" : 56169,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/a39edf656557786b5dbac54a9efa9a5d?s=256&d=identicon&r=PG",
+        "display_name" : "Axelle Ziegler",
+        "link" : "https://stackoverflow.com/users/56169/axelle-ziegler"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1234426149,
+      "post_id" : 538922,
+      "comment_id" : 352645,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Exactly, for private method I don&#39;t think it makes much of a difference. For public methods, however, I agree with what you&#39;re saying"
+    } ],
+    "owner" : {
+      "account_id" : 22674,
+      "reputation" : 2685,
+      "user_id" : 56169,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a39edf656557786b5dbac54a9efa9a5d?s=256&d=identicon&r=PG",
+      "display_name" : "Axelle Ziegler",
+      "link" : "https://stackoverflow.com/users/56169/axelle-ziegler"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1234388100,
+    "creation_date" : 1234388100,
+    "answer_id" : 538922,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I can't really think of clear advantages for private static method. That being said, there is no specific advantages to making them non-static either. It's mainly a matter of presentation : you might want to make them static to clearly underline the fact that they are not altering an object.</p>\n\n<p>For method with different access privileges, I think there are two main arguments :</p>\n\n<ul>\n<li>static methods can be called without creating an instance of an object, which can be useful</li>\n<li>static methods can't be inherited, which can be a problem if you need polymorphism (but is irrelevant for private methods).</li>\n</ul>\n\n<p>Besides that, the difference is pretty small, and I strongly doubt that the extra this pointer passed to instance method makes a significant difference.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 28866,
+        "reputation" : 483,
+        "user_id" : 77462,
+        "user_type" : "registered",
+        "accept_rate" : 38,
+        "profile_image" : "https://www.gravatar.com/avatar/8e0641ca30dbff6d2970a4caa1f5542b?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "LegendLength",
+        "link" : "https://stackoverflow.com/users/77462/legendlength"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1237459205,
+      "post_id" : 538934,
+      "comment_id" : 475287,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I disagree.  Code clarity is still important for private methods.  It may be less important but it&#39;s still something to strive for."
+    } ],
+    "owner" : {
+      "account_id" : 25372,
+      "reputation" : 4812,
+      "user_id" : 65184,
+      "user_type" : "registered",
+      "accept_rate" : 61,
+      "profile_image" : "https://www.gravatar.com/avatar/85b38a9a30e31f55c332869248fa701f?s=256&d=identicon&r=PG",
+      "display_name" : "notnot",
+      "link" : "https://stackoverflow.com/users/65184/notnot"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1234388370,
+    "creation_date" : 1234388370,
+    "answer_id" : 538934,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>More specifically to the example you've given, it seems that the purpose of defining these methods is more for code clarity when you're reading it than for functionality (they <em>are</em> defined as private).  In that case, going with static really does nothing for you, since the purpose of static is to expose class functionality.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9921,
+      "reputation" : 109833,
+      "user_id" : 18511,
+      "user_type" : "registered",
+      "accept_rate" : 92,
+      "profile_image" : "https://www.gravatar.com/avatar/c621039e41aef415ad25054da3bf3f9a?s=256&d=identicon&r=PG",
+      "display_name" : "Kip",
+      "link" : "https://stackoverflow.com/users/18511/kip"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1234388610,
+    "creation_date" : 1234388610,
+    "answer_id" : 538953,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>If the method is basically just a subroutine that will never foreseeably use state information, declare it static.</p>\n\n<p>This allows it to be used in other static methods or in class initialization, i.e.:</p>\n\n<pre><code>public class Example {\n   //...\n\n   //Only possible if computeOne is static\n   public final static double COMPUTED_ONE = computeOne(new Something(\"1\"));\n\n   //...\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 20501,
+      "reputation" : 7377,
+      "user_id" : 49046,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/1d8ed28aca9ef8d9aba0f66f89432e83?s=256&d=identicon&r=PG",
+      "display_name" : "maxaposteriori",
+      "link" : "https://stackoverflow.com/users/49046/maxaposteriori"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1234388888,
+    "creation_date" : 1234388888,
+    "answer_id" : 538976,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>My preference in cases like these is to make <code>computeOne</code> and <code>computeMore</code> static methods.  The reason: encapsulation.  The less code which has access to the implementation of your class, the better.</p>\n\n<p>In the example you give, you state that <code>computeOne</code>and <code>computeMore</code> shouldn't need to access the internals of the class, so why give the opportunity for maintainers of the class to meddle with the internals.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11857,
+      "reputation" : 90109,
+      "user_id" : 23072,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/ad19b9146f4ffd608bf137323f68de0c?s=256&d=identicon&r=PG",
+      "display_name" : "Uri",
+      "link" : "https://stackoverflow.com/users/23072/uri"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1234389098,
+    "creation_date" : 1234389098,
+    "answer_id" : 538994,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>I would declare them as static to flag them as stateless.</p>\n\n<p>Java does not have a better mechanism for minor operations that aren't exported, so I think private static is acceptable.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7445,
+        "reputation" : 62917,
+        "user_id" : 12943,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/d6a9924b767fe91c46def7edc7bce035?s=256&d=identicon&r=PG",
+        "display_name" : "Bill K",
+        "link" : "https://stackoverflow.com/users/12943/bill-k"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1254126032,
+      "post_id" : 539006,
+      "comment_id" : 1337593,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "+1: Even though the example is bad, too many methods that COULD be static is a bad code smell.  By the way, static methods are actually funcitons, they are not at all OO.  They may belong as a method in another class, or you may be missing a class that this function could belong to as a method."
+    } ],
+    "owner" : {
+      "account_id" : 8732,
+      "reputation" : 89041,
+      "user_id" : 15880,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/7618ff7a4952a494b8f41bd0df646790?s=256&d=identicon&r=PG",
+      "display_name" : "Powerlord",
+      "link" : "https://stackoverflow.com/users/15880/powerlord"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1234389355,
+    "creation_date" : 1234389355,
+    "answer_id" : 539006,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The answer is... it depends.</p>\n\n<p>If member is an instance variable specific to the object you're dealing with, then why pass it as a parameter at all?</p>\n\n<p>For instance:</p>\n\n<pre><code>public class Example {\n   private Something member;\n\n   public double compute() {\n       double total = 0;\n       total += computeOne();\n       total += computeMore();\n       return total;         \n   }\n\n   private double computeOne() { /* Process member here */ }\n   private double computeMore() { /* Process member here */ } \n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9921,
+        "reputation" : 109833,
+        "user_id" : 18511,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/c621039e41aef415ad25054da3bf3f9a?s=256&d=identicon&r=PG",
+        "display_name" : "Kip",
+        "link" : "https://stackoverflow.com/users/18511/kip"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1234416594,
+      "post_id" : 539426,
+      "comment_id" : 352403,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "you can call an instance method in the constructor, but if you&#39;re delegating to another constructor with super(...) or this(...), you can&#39;t call an instance method until after the delegation (but statics are ok as you point out)"
+    } ],
+    "owner" : {
+      "account_id" : 9178,
+      "reputation" : 134540,
+      "user_id" : 16853,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://i.sstatic.net/lUxU7.jpg?s=256",
+      "display_name" : "oxbow_lakes",
+      "link" : "https://stackoverflow.com/users/16853/oxbow-lakes"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1234425908,
+    "last_edit_date" : 1234425908,
+    "creation_date" : 1234396507,
+    "answer_id" : 539426,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>One reason you might want to declare static helper methods is if you need to call them in the class constructor \"before\" <code>this</code> or <code>super</code>. For example:</p>\n\n<pre><code>public class MyClass extends SomeOtherClass { \n    public MyClass(String arg) {\n       super(recoverInt(arg));\n    }\n\n    private static int recoverInt(String arg) {\n       return Integer.parseInt(arg.substring(arg.length() - 1));\n    }\n}\n</code></pre>\n\n<p>This is a bit of a contrived example but clearly <code>recoverInt</code> cannot be an instance method in this case.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 17188,
+        "reputation" : 15439,
+        "user_id" : 38226,
+        "user_type" : "registered",
+        "accept_rate" : 82,
+        "profile_image" : "https://www.gravatar.com/avatar/632a54291b69b0d66c307f2971bc5cf8?s=256&d=identicon&r=PG",
+        "display_name" : "Clint Miller",
+        "link" : "https://stackoverflow.com/users/38226/clint-miller"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1234400394,
+      "post_id" : 539510,
+      "comment_id" : 351878,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Completely agree.  I usually try to avoid statics and privates altogether for just this reason.  I think that most of the other answers have missed the point."
+    }, {
+      "owner" : {
+        "account_id" : 22705,
+        "reputation" : 82086,
+        "user_id" : 56285,
+        "user_type" : "registered",
+        "accept_rate" : 81,
+        "profile_image" : "https://i.sstatic.net/0u454.jpg?s=256",
+        "display_name" : "Jonik",
+        "link" : "https://stackoverflow.com/users/56285/jonik"
+      },
+      "edited" : false,
+      "score" : 25,
+      "creation_date" : 1234467850,
+      "post_id" : 539510,
+      "comment_id" : 354883,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "We&#39;re talking about <i>private</i> helpers, which means they are not part of the public API of the class. That means nothing at all prevents you from providing a different implementation later, making them non-static, or making any other changes."
+    }, {
+      "owner" : {
+        "account_id" : 10836,
+        "reputation" : 199951,
+        "user_id" : 20654,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://www.gravatar.com/avatar/94066dfa49c2feb14706cb081848fda7?s=256&d=identicon&r=PG",
+        "display_name" : "OscarRyz",
+        "link" : "https://stackoverflow.com/users/20654/oscarryz"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1234469554,
+      "post_id" : 539510,
+      "comment_id" : 354982,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Aaaahmm... that&#39;s a good point Jonik. Still, creating a good habit should be enough reason ( subjectively speaking of course )"
+    }, {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1234474061,
+      "post_id" : 539510,
+      "comment_id" : 355330,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Completely dis-agree.  There is not good reason you would want to change a private method without changing the class in which it is defined.  The only way to do what you suggest is by byte-code manipulation."
+    }, {
+      "owner" : {
+        "account_id" : 23121,
+        "reputation" : 535127,
+        "user_id" : 57695,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/53ee9941b3fefef67175daf212e62d41?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Lawrey",
+        "link" : "https://stackoverflow.com/users/57695/peter-lawrey"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1234474284,
+      "post_id" : 539510,
+      "comment_id" : 355360,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "What you suggest could make sense if the method were not private, but even then I would suggest you design based on a current needed rather than designing based on an imagined need."
+    } ],
+    "owner" : {
+      "account_id" : 10836,
+      "reputation" : 199951,
+      "user_id" : 20654,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/94066dfa49c2feb14706cb081848fda7?s=256&d=identicon&r=PG",
+      "display_name" : "OscarRyz",
+      "link" : "https://stackoverflow.com/users/20654/oscarryz"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1320775258,
+    "last_edit_date" : 1320775258,
+    "creation_date" : 1234398498,
+    "answer_id" : 539510,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p><em>or any particular reason not to [declare them as static]?</em></p>\n</blockquote>\n\n<p>Yes.</p>\n\n<p>By keeping them as instance methods, you allow yourself to provide a different implementation later.</p>\n\n<p>It may sound silly (and actually it would be if those methods are used only by you in a 50 line program) but in larger applications, or in libraries used by someone else, you may decide to choose a better implementation, but don't want to break existing code.</p>\n\n<p>So you create a subclass and return that in the new versions, and since the methods were declared as instance methods, you just let polymorphism do its job. </p>\n\n<p>Additionally, you could benefit from making the constructor private and provide an static factory method for the same reason. </p>\n\n<p>So, my recommendation is to keep them as instance methods, and avoid static if possible.<br>\nTake advantage of the dynamism the language provides.</p>\n\n<p>See here for a somewhat related video:<a href=\"http://www.youtube.com/watch?v=aAb7hSCtvGw\" rel=\"noreferrer\"> How to design a good API and why it matters</a></p>\n\n<p>Although it is not directly related to the \"static vs instance\" method discussion, it touches on some interesting points in API design.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9921,
+        "reputation" : 109833,
+        "user_id" : 18511,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/c621039e41aef415ad25054da3bf3f9a?s=256&d=identicon&r=PG",
+        "display_name" : "Kip",
+        "link" : "https://stackoverflow.com/users/18511/kip"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1234415785,
+      "post_id" : 540005,
+      "comment_id" : 352382,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "but there are places where only a static method can be called, like in my example and in Chris Marshall&#39;s example"
+    }, {
+      "owner" : {
+        "account_id" : 23031,
+        "reputation" : 10995,
+        "user_id" : 57423,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/WK3i6.jpg?s=256",
+        "display_name" : "Bhushan Bhangale",
+        "link" : "https://stackoverflow.com/users/57423/bhushan-bhangale"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1234416985,
+      "post_id" : 540005,
+      "comment_id" : 352417,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Yes Kip your and Chris answer&#39;s are correct. I have not commented on those as they are correct answers. I only talked about wrong answers."
+    } ],
+    "owner" : {
+      "account_id" : 23031,
+      "reputation" : 10995,
+      "user_id" : 57423,
+      "user_type" : "registered",
+      "accept_rate" : 78,
+      "profile_image" : "https://i.sstatic.net/WK3i6.jpg?s=256",
+      "display_name" : "Bhushan Bhangale",
+      "link" : "https://stackoverflow.com/users/57423/bhushan-bhangale"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1671554561,
+    "last_edit_date" : 1671554561,
+    "creation_date" : 1234412431,
+    "answer_id" : 540005,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I would like to clarify a few things some of the other answers have said as they are giving what I think is wrong information.</p>\n<p>Firstly since the methods are private even if you declare them static you will not be able to access them outside of this class. Secondly they are private so you can not even override in subclass so static or non-static doesn't make any difference. Thirdly a non-static private method can be called from a constructor of the class also, it need not be static.</p>\n<p>Now coming to your question of whether a private helper method should be defined as static or non-static. I will go with Steve's answer as marking a private method static shows that this method is stateless as I also follow this rule when I code.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 7745,
+        "reputation" : 192629,
+        "user_id" : 13531,
+        "user_type" : "moderator",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/49f3a2065659f5b4efa05ae29bd0856a?s=256&d=identicon&r=PG",
+        "display_name" : "Michael Myers",
+        "link" : "https://stackoverflow.com/users/13531/michael-myers"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1235401951,
+      "post_id" : 577821,
+      "comment_id" : 389782,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "See my answer below (I added the analysis after it was already at -3, so it&#39;s not very visible)."
+    } ],
+    "owner" : {
+      "account_id" : 12204,
+      "reputation" : 69084,
+      "user_id" : 23903,
+      "user_type" : "registered",
+      "accept_rate" : 66,
+      "profile_image" : "https://www.gravatar.com/avatar/f29924841336dd32eb9831999c73c203?s=256&d=identicon&r=PG",
+      "display_name" : "dsimcha",
+      "link" : "https://stackoverflow.com/users/23903/dsimcha"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1235399738,
+    "creation_date" : 1235399738,
+    "answer_id" : 577821,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>One reason is that, all else being equal, static method calls should be faster.  Static methods cannot be virtual, and do not take an implicit this reference.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 52759,
+      "reputation" : 21975,
+      "user_id" : 157705,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://www.gravatar.com/avatar/72d4492ee192ad44198fdbb08d87e4e1?s=256&d=identicon&r=PG",
+      "display_name" : "jai",
+      "link" : "https://stackoverflow.com/users/157705/jai"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1259128651,
+    "creation_date" : 1259128651,
+    "answer_id" : 1794949,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>As many people said, make it is as a <strong><em>static</em></strong>! \nHere's the thumb rule which I follow : If you think the method is just a <em>mathematical function</em> i.e it is stateless, doesn't involve any instance variables(=> no blue color vars [in eclipse] in the method), and the result of the method will be the same for 'n' number of calls (with the same parameters, ofcourse), then mark that method as STATIC. </p>\n\n<p>And if you think that this method will be useful to other class then move it to a Util class otherwise, put the method as private in the sameclass. (minimizing the accessibility)</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2147,
+        "reputation" : 38986,
+        "user_id" : 2961,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/d5f30c2d40341d55ba235d674d24972e?s=256&d=identicon&r=PG",
+        "display_name" : "Stu Thompson",
+        "link" : "https://stackoverflow.com/users/2961/stu-thompson"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1262764369,
+      "post_id" : 1795030,
+      "comment_id" : 1932375,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "-1: SO is not a messaging forum.  You&#39;ll do better by actually asking a proper question."
+    }, {
+      "owner" : {
+        "account_id" : 418541,
+        "reputation" : 9029,
+        "user_id" : 795158,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://i.sstatic.net/Zpea5.png?s=256",
+        "display_name" : "stackh34p",
+        "link" : "https://stackoverflow.com/users/795158/stackh34p"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1320142408,
+      "post_id" : 1795030,
+      "comment_id" : 9738027,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I&#39;d prefer to have the helper methods along with the class they are bound/related to as static ones. Even more, I can expose some as public if they should be used externally. That way it will be easier to maintain the API for that class, if it is supposed to be publicly exposed and intensively used."
+    } ],
+    "owner" : {
+      "account_id" : 41924,
+      "reputation" : 2406,
+      "user_id" : 122003,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://www.gravatar.com/avatar/faeeef7d7a44f1007f2832d54f8e7e94?s=256&d=identicon&r=PG",
+      "display_name" : "Everyone",
+      "link" : "https://stackoverflow.com/users/122003/everyone"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1259130582,
+    "creation_date" : 1259130582,
+    "answer_id" : 1795030,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Off-Topic: I'd keep the helper methods in a standalone utility/helper class with only static methods in it. </p>\n\n<p>The trouble with having helper methods at the point of use ( read 'same class' ) is that someone down the line may just choose to post their own unrelated helper methods in the same place </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 620187,
+      "reputation" : 11,
+      "user_id" : 880020,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/91b4a5aeea3e3d69b88ddc87dca65027?s=256&d=identicon&r=PG",
+      "display_name" : "mug896",
+      "link" : "https://stackoverflow.com/users/880020/mug896"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1315307987,
+    "last_edit_date" : 1315307987,
+    "creation_date" : 1312526838,
+    "answer_id" : 6952465,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>class Whatever {\n\n    public static varType myVar = initializeClassVariable();\n\n    private static varType initializeClassVariable() {\n\n        //initialization code goes here\n    }\n}\n</code></pre>\n\n<p>The advantage of private static methods is that they can be reused later if you need to reinitialize the class variable.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 890557,
+      "reputation" : 91,
+      "user_id" : 928918,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/c64bc49dd8fe01b42070c4ee89edb879?s=256&d=identicon&r=PG",
+      "display_name" : "Gyan Singh",
+      "link" : "https://stackoverflow.com/users/928918/gyan-singh"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1315227624,
+    "creation_date" : 1315227624,
+    "answer_id" : 7308479,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Correct Answer is:</p>\n\n<p>any method which does not take any information from a field, and does not put any information into a field, does not have to be an instance method. Any method which does not use or alter any fields in its class or object might as well be a static method. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1003622,
+      "reputation" : 536,
+      "user_id" : 1017901,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/bec93dd6c5dcf5f67073a39ce30bc9a1?s=256&d=identicon&r=PG",
+      "display_name" : "bodrin",
+      "link" : "https://stackoverflow.com/users/1017901/bodrin"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1351148875,
+    "creation_date" : 1351148875,
+    "answer_id" : 13063359,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<ol>\n<li><p>Without the static modifier you cannot figure out that the method is stateless without additional analysis which can be easily done when you (re)write the method.</p></li>\n<li><p>Then \"static\" modifier may give you ideas about refactoring besides other things that others may find unuseful.\nE.g. moving the method to some Utility class or converting it to a member method..</p></li>\n</ol>\n"
+  }, {
+    "owner" : {
+      "account_id" : 367633,
+      "reputation" : 6603,
+      "user_id" : 713937,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://www.gravatar.com/avatar/b41402ec931550d7a1c0f7eaa9aaa10b?s=256&d=identicon&r=PG",
+      "display_name" : "Piotr Sobczyk",
+      "link" : "https://stackoverflow.com/users/713937/piotr-sobczyk"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1352272247,
+    "creation_date" : 1352272247,
+    "answer_id" : 13264814,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>From the experience I would state that such private methods tend to be quite universal and reusable. </p>\n\n<p>I think the first thing to do is to ask the question whether the method may be useful outside of current class context. If so, I would do exactly what Everyone suggests and extract this method as static to some utils class where someone hopefully checks before implementing new method doing exactly the same thing.</p>\n\n<p>Such general use private methods are source of big part of code duplication in project because each developer independently reinvents them just in the place she need to use it. So centralization of such methods is a way to go.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 445123,
+        "reputation" : 732,
+        "user_id" : 3667225,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/qNRwJ.jpg?s=256",
+        "display_name" : "B W",
+        "link" : "https://stackoverflow.com/users/3667225/b-w"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1504732014,
+      "post_id" : 23295375,
+      "comment_id" : 79130683,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You shouldn&#39;t write tests for private methods. See <a href=\"https://lostechies.com/chadmyers/2008/11/21/do-not-test-private-methods/\" rel=\"nofollow noreferrer\">here</a>. There&#39;s no need to test a private method whether it&#39;s static or not."
+    }, {
+      "owner" : {
+        "account_id" : 13634501,
+        "reputation" : 24845,
+        "user_id" : 9835872,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/k0ksC.jpg?s=256",
+        "display_name" : "ruohola",
+        "link" : "https://stackoverflow.com/users/9835872/ruohola"
+      },
+      "reply_to_user" : {
+        "account_id" : 445123,
+        "reputation" : 732,
+        "user_id" : 3667225,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/qNRwJ.jpg?s=256",
+        "display_name" : "B W",
+        "link" : "https://stackoverflow.com/users/3667225/b-w"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1568731823,
+      "post_id" : 23295375,
+      "comment_id" : 102363373,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@BW That&#39;s a <i>very</i> subjective thing. There are many valid reasons to test a private method."
+    } ],
+    "owner" : {
+      "account_id" : 45002,
+      "reputation" : 13767,
+      "user_id" : 132374,
+      "user_type" : "registered",
+      "accept_rate" : 87,
+      "profile_image" : "https://www.gravatar.com/avatar/3d5056acc36d1f688872e33768a72501?s=256&d=identicon&r=PG",
+      "display_name" : "Jon Onstott",
+      "link" : "https://stackoverflow.com/users/132374/jon-onstott"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1398434546,
+    "creation_date" : 1398434546,
+    "answer_id" : 23295375,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>One issue about having static methods is that it can make the object more difficult to use in <strong>unit tests</strong>.  Mockito can't create mocks for static methods and you can't create a subclass implementation of the method.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1154474,
+      "reputation" : 142,
+      "user_id" : 1135448,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1b5cffa8b036a50a61288c5d6b1a6566?s=256&d=identicon&r=PG",
+      "display_name" : "ThomasE",
+      "link" : "https://stackoverflow.com/users/1135448/thomase"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1723018628,
+    "creation_date" : 1723018628,
+    "answer_id" : 78842544,
+    "question_id" : 538870,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It's a great question. I have been reading through all answers, and many have very good points, but funny enough, I don't agree with a single one completely. I guess that means there is really no &quot;perfect answer&quot; and a lot is up to code style and preference.</p>\n<p>My personal preference: <strong>make them non-static or move them out of the class</strong></p>\n<p>Reasoning (related also to other answers)</p>\n<ul>\n<li>manipulating state: that's an interesting argument... &quot;make it static to show it's not manipulating state&quot;. But, I wonder (like others have, too)...is that not a code/design smell? Why does one feel the need to declare such a fact about a private method....who cares? Assuming the actually entry point is a non-static method, when would the need for &quot;is this method call manipulating state&quot; come up...isn't something wrong with the design/readability of the code? Also, you won't know until you go to the method declaration...   In my experience, small (single purpose) methods, great variable and method names usually take care of most of those needs, proper ensure things work. the static keyword at least for me doesn't have a place in making the code &quot;better&quot; in any matter</li>\n<li>Testing: it's about <em>private</em> methods, so any  testing shouldn't be a factor. Unit testing is not about helper methods as a unit. What matters is what goes into the &quot;API&quot; call and what comes out. If the calculation is complicated AND part of something bigger, rather than opening such a private helper to testing, consider refactoring your class. And yes, looking at you, who is about to write &quot;but what about this ...[complex case]&quot; - exactly my point, most likely redesigning goes a long way. And trying TDD for such a redesign usually also means that suddenly such &quot;testing private methods&quot; questions suddenly come up a lot less often</li>\n<li>extending: again, it's about private methods. which means it's not part of the question or solution</li>\n<li>speed / footprint: I would think that for most applications, that's not a worthwhile consideration here. There might be differences, but having readable, maintainable, extensible code is far more important most of the time.</li>\n<li>bottom line: I create private methods usually during (test driven) implementation of public entry points, when I start considering various cases and things needed, and the method grows, having too many responsibilities. This development and the refactorings (&quot;replace temp with query&quot; being the most prominent one) make me not even wonder about whether such an extracted method manipulates state or not - maybe now it doesn't, maybe 2min later it does. Who cares, I have my tests and my &quot;API&quot; definition, what's important is what comes out and that various methods do what one expects them given their name. Since you don't see the &quot;static&quot; keyword on invocation, it's (in my mind) not a great way to convey information to the reader.</li>\n</ul>\n<p>But, as I said, it seems to be a lot about code style, and it's a great question to just generally think about various angles.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 21997,
+    "reputation" : 3752,
+    "user_id" : 53905,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/70b531f8812cd68c5c2814ecc7d6cf9b?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "avalys",
+    "link" : "https://stackoverflow.com/users/53905/avalys"
+  },
+  "is_answered" : true,
+  "view_count" : 95202,
+  "accepted_answer_id" : 538914,
+  "answer_count" : 21,
+  "score" : 228,
+  "last_activity_date" : 1723018628,
+  "creation_date" : 1234387472,
+  "last_edit_date" : 1406030194,
+  "question_id" : 538870,
+  "link" : "https://stackoverflow.com/questions/538870/should-private-helper-methods-be-static-if-they-can-be-static",
+  "title" : "Should private helper methods be static if they can be static",
+  "body" : "<p>Let's say I have a class designed to be instantiated. I have several private \"helper\" methods inside the class that do not require access to any of the class members, and operate solely on their arguments, returning a result.</p>\n\n<pre><code>public class Example {\n   private Something member;\n\n   public double compute() {\n       double total = 0;\n       total += computeOne(member);\n       total += computeMore(member);\n       return total;         \n   }\n\n   private double computeOne(Something arg) { ... }\n   private double computeMore(Something arg) {... } \n} \n</code></pre>\n\n<p>Is there any particular reason to specify <code>computeOne</code> and <code>computeMore</code> as static methods - or any particular reason not to?</p>\n\n<p>It is certainly easiest to leave them as non-static, even though they could certainly be static without causing any problems.</p>\n"
+}

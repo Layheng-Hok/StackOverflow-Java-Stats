@@ -1,0 +1,120 @@
+{
+  "tags" : [ "java", "json", "rest" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1815974,
+      "reputation" : 1498,
+      "user_id" : 1651042,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://i.sstatic.net/5N0cw.jpg?s=256",
+      "display_name" : "MadTech",
+      "link" : "https://stackoverflow.com/users/1651042/madtech"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1368265594,
+    "post_id" : 16495744,
+    "comment_id" : 23676602,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I think this will help you (<a href=\"http://stackoverflow.com/questions/15481382/how-to-send-form-field-value-to-a-rest-service-using-json-or-ajax\" title=\"how to send form field value to a rest service using json or ajax\">stackoverflow.com/questions/15481382/&hellip;</a>)"
+  }, {
+    "owner" : {
+      "account_id" : 347037,
+      "reputation" : 80766,
+      "user_id" : 680925,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8a0e32559784b66e390553812573878b?s=256&d=identicon&r=PG",
+      "display_name" : "Perception",
+      "link" : "https://stackoverflow.com/users/680925/perception"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1368271562,
+    "post_id" : 16495744,
+    "comment_id" : 23677876,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Why are you posting JSON to the server when it clearly expects url encoded form data?"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1357880,
+        "reputation" : 8319,
+        "user_id" : 1295905,
+        "user_type" : "registered",
+        "accept_rate" : 61,
+        "profile_image" : "https://www.gravatar.com/avatar/70789f50fa32e28a4b237d7b973cec43?s=256&d=identicon&r=PG",
+        "display_name" : "ebram khalil",
+        "link" : "https://stackoverflow.com/users/1295905/ebram-khalil"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1368266163,
+      "post_id" : 16495835,
+      "comment_id" : 23676716,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "jQuery serilaize does not make a JSON string!"
+    } ],
+    "owner" : {
+      "account_id" : 422964,
+      "reputation" : 34580,
+      "user_id" : 802050,
+      "user_type" : "registered",
+      "accept_rate" : 89,
+      "profile_image" : "https://www.gravatar.com/avatar/b64ecf035c26728e5e3635b940d2cd38?s=256&d=identicon&r=PG",
+      "display_name" : "M Sach",
+      "link" : "https://stackoverflow.com/users/802050/m-sach"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1368266811,
+    "last_edit_date" : 1368266811,
+    "creation_date" : 1368265790,
+    "answer_id" : 16495835,
+    "question_id" : 16495744,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Go for jquery (as it provides many out of box features like serilaize the form parametrs to json)and use below code</p>\n\n<pre><code>var frm = $(document.myform);\nvar data = JSON.stringify(frm.serializeArray());\n\n or\n\nvar data = $('#yourForm).serializeArray();\n</code></pre>\n\n<p>see <a href=\"http://api.jquery.com/serializeArray/\" rel=\"nofollow\">http://api.jquery.com/serializeArray/</a></p>\n\n<pre><code>var url = 'YourURL';\n\n$.ajax({\n  url: url,\n  dataType: 'json',\n  data: data ,\n  type: 'POST',\n  success: function(data) {\n\n  }\n });\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1357880,
+      "reputation" : 8319,
+      "user_id" : 1295905,
+      "user_type" : "registered",
+      "accept_rate" : 61,
+      "profile_image" : "https://www.gravatar.com/avatar/70789f50fa32e28a4b237d7b973cec43?s=256&d=identicon&r=PG",
+      "display_name" : "ebram khalil",
+      "link" : "https://stackoverflow.com/users/1295905/ebram-khalil"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1368271384,
+    "last_edit_date" : 1495542562,
+    "creation_date" : 1368266660,
+    "answer_id" : 16495944,
+    "question_id" : 16495744,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think you have to do 2 steps:</p>\n\n<ol>\n<li>First is to convert your form contents into JS object(hard step).</li>\n<li>Second convert your JS object into JSON format(easy step).</li>\n</ol>\n\n<p>You just need to add more functionality to <a href=\"http://api.jquery.com/serializeArray/\" rel=\"nofollow noreferrer\">jQuery serializeArray</a> to give us our required JS object:</p>\n\n<pre><code>$.fn.serializeObject = function()\n{\n    var o = {};\n    var a = this.serializeArray();\n    $.each(a, function() {\n        if (o[this.name] !== undefined) {\n            if (!o[this.name].push) {\n                o[this.name] = [o[this.name]];\n            }\n            o[this.name].push(this.value || '');\n        } else {\n            o[this.name] = this.value || '';\n        }\n    });\n    return o;\n};\n</code></pre>\n\n<p>Then use <code>JSON.stringify</code> function to convert the JS object into JSON format. You can find more info <a href=\"https://stackoverflow.com/questions/1184624/convert-form-data-to-js-object-with-jquery/1186309#1186309\">here</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 2297644,
+    "reputation" : 941,
+    "user_id" : 2018737,
+    "user_type" : "registered",
+    "accept_rate" : 80,
+    "profile_image" : "https://www.gravatar.com/avatar/b0206505c379851c5549f546053f9070?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "theyCallMeJun",
+    "link" : "https://stackoverflow.com/users/2018737/theycallmejun"
+  },
+  "is_answered" : false,
+  "view_count" : 8795,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1764360205,
+  "creation_date" : 1368265122,
+  "last_edit_date" : 1368265736,
+  "question_id" : 16495744,
+  "link" : "https://stackoverflow.com/questions/16495744/how-do-i-post-form-data-as-json-format",
+  "title" : "How do i post form data as JSON format",
+  "body" : "<p>Posting argument data from my form works perfectly but i need to post the same information using JSON. How can this be done.\nMy form looks like this.</p>\n\n<pre><code>&lt;form enctype=\"multipart/form-data\" method=\"post\" action=\"http://myrestfulservice.com/\"&gt;\n    &lt;input type=\"text\" name=\"name\"&gt;\n    &lt;input type=\"text\" name=\"email\"&gt;\n    &lt;textarea name=\"about\" rows=\"3\"&gt;&lt;/textarea&gt;\n    &lt;input name=\"file\" type=\"file\"&gt;\n&lt;/form&gt;\n</code></pre>\n\n<p>And my JSON string looks like this.</p>\n\n<pre><code>{\n\"name\":\"Josh U\",\n\"email\":\"xxx@gmail.com\",\n\"about\":\"Get rich programming or die tryna be something else\",\n\"file\":\"@/home/josh/image.png\"\n}\n</code></pre>\n\n<p>I have tried  using that JSON string but i get the following </p>\n\n<pre><code>Exception in thread \"main\" java.lang.RuntimeException: Failed : HTTP error code : 500\nat com.ijoshluisaac.restful.client.RESTFulClientPostUsingJavaHTTPClientLibrary.main(RESTFulClientPostUsingJavaHTTPClientLibrary.java:35)\n</code></pre>\n\n<p>My JAVA codes looks like this</p>\n\n<pre><code>import java.io.BufferedReader;\nimport java.io.IOException;\nimport java.io.InputStreamReader;\nimport java.io.OutputStream;\nimport java.net.HttpURLConnection;\nimport java.net.MalformedURLException;\nimport java.net.URL;\n\n  public class RESTFulClientPostUsingJavaHTTPClientLibrary {\n\n// JSON content to post\nprivate static final String JSON_OBJECT = \"{\\\"name\\\":\\\"Josh U\\\",\\\"email\\\":\\\"xxx@gmail.com\\\",\\\"about\\\":\\\"Get rich programming or die tryna be something else\\\",\\\"file\\\":\\\"/home/josh/image.png\\\"}\";\n\n//Web services URLs\nprivate static final String URL_SR = \"http://myrestfulservice.com/\";\n\npublic static void main(String[] args) {\n\n    try {\n        URL url = new URL(URL_SR);\n        HttpURLConnection conn = (HttpURLConnection) url.openConnection();\n        conn.setDoOutput(true);\n        conn.setRequestMethod(\"POST\");\n        conn.setRequestProperty(\"Content-Type\", \"application/json\");\n\n\n        OutputStream os = conn.getOutputStream();\n        os.write(JSON_OBJECT.getBytes());\n        os.flush();\n\n        if (conn.getResponseCode() != HttpURLConnection.HTTP_CREATED) {\n            throw new RuntimeException(\"Failed : HTTP error code : \"\n                    + conn.getResponseCode());\n        }\n\n        BufferedReader br = new BufferedReader(new InputStreamReader(\n                (conn.getInputStream())));\n\n        String output;\n        System.out.println(\"Successfully Executed RESTFul POST .... \\n\");\n        while ((output = br.readLine()) != null) {\n            System.out.println(output);\n        }\n\n        conn.disconnect();\n\n    } catch (MalformedURLException e) {\n\n        e.printStackTrace();\n\n    } catch (IOException e) {\n\n        e.printStackTrace();\n\n    }\n\n}\n</code></pre>\n\n<p>}</p>\n"
+}

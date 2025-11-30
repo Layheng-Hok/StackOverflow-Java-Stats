@@ -1,0 +1,77 @@
+{
+  "tags" : [ "java", "hibernate", "jpa", "metamodel" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 213468,
+      "reputation" : 110270,
+      "user_id" : 466862,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d873f397779db38cd510d9ee5416fd43?s=256&d=identicon&r=PG",
+      "display_name" : "Mark Rotteveel",
+      "link" : "https://stackoverflow.com/users/466862/mark-rotteveel"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1671188545,
+    "post_id" : 74823393,
+    "comment_id" : 132050140,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "You should probably switch to <a href=\"https://central.sonatype.dev/artifact/org.hibernate.orm/hibernate-jpamodelgen/6.1.6.Final\" rel=\"nofollow noreferrer\">org.hibernate.orm:hibernate-jpamodelgen:6.1.6.Final</a> (note: the groupId changed). Otherwise, you&#39;ll need to be a bit more explicit in your problem description (e.g. provide a <a href=\"https://stackoverflow.com/help/minimal-reproducible-example\">minimal reproducible example</a> and include all errors). Also be aware that Hibernate 6 is one big breaking change given it changed to the <code>jakarta.persistence.*</code> package namespace (JPA 3), where Hibernate 5.6 used the <code>javax.persistence</code> package namespace (JPA 2.2)."
+  }, {
+    "owner" : {
+      "account_id" : 4181375,
+      "reputation" : 6264,
+      "user_id" : 3426309,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/v58O6.jpg?s=256",
+      "display_name" : "Andrey B. Panfilov",
+      "link" : "https://stackoverflow.com/users/3426309/andrey-b-panfilov"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1671189664,
+    "post_id" : 74823393,
+    "comment_id" : 132050484,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "That is not required to use <code>maven-processor-plugin</code>, adding <code>hibernate-jpamodelgen</code> to the project dependencies with <code>scope=provided</code> should be enough."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 43365398,
+      "reputation" : 31,
+      "user_id" : 31209962,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a763e54e14030a0262daa2d2c63ed1a6?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "eyesoflight",
+      "link" : "https://stackoverflow.com/users/31209962/eyesoflight"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1759575000,
+    "creation_date" : 1759575000,
+    "answer_id" : 79782434,
+    "question_id" : 74823393,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Hibernate 6 migrated from Java EE's <code>javax.persistence</code> to Jakarta EE's <code>jakarta.persistence</code> package. Your project still uses <code>javax</code> annotations (e.g., <code>javax.persistence.Entity</code>), but <code>hibernate-jpamodelgen:6.1.6.Final</code> expects <code>jakarta</code> annotations. Since the processor can't find Jakarta-annotated entities, no metamodel classes are generated.</p>\n<p>Replace all <code>javax.persistence</code> imports with <code>jakarta.persistence</code> in your entity classes:</p>\n<pre><code>import jakarta.persistence.Entity;\n</code></pre>\n<p>Update your JPA API dependency to Jakarta EE 9+ (required for Hibernate 6):</p>\n<pre><code>&lt;dependency&gt;\n    &lt;groupId&gt;jakarta.persistence&lt;/groupId&gt;\n    &lt;artifactId&gt;jakarta.persistence-api&lt;/artifactId&gt;\n    &lt;version&gt;3.0.0&lt;/version&gt; \n&lt;/dependency&gt;\n</code></pre>\n<p>Remember to keep your plugin configuration unchanged—the processor class name (<code>JPAMetaModelEntityProcessor</code>) remains the same in Hibernate 6.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1098402,
+    "reputation" : 688,
+    "user_id" : 1091484,
+    "user_type" : "registered",
+    "accept_rate" : 86,
+    "profile_image" : "https://www.gravatar.com/avatar/292c731dbf18ae7f9661f422a895d501?s=256&d=identicon&r=PG",
+    "display_name" : "Samuel",
+    "link" : "https://stackoverflow.com/users/1091484/samuel"
+  },
+  "is_answered" : false,
+  "view_count" : 3799,
+  "answer_count" : 1,
+  "score" : 8,
+  "last_activity_date" : 1759575000,
+  "creation_date" : 1671187832,
+  "question_id" : 74823393,
+  "link" : "https://stackoverflow.com/questions/74823393/how-to-upgrade-hibernate-jpamodelgen-from-5-to-6",
+  "title" : "How to upgrade hibernate-jpamodelgen from 5 to 6?",
+  "body" : "<p>I have a working project with this maven section:</p>\n<pre><code>&lt;plugin&gt;\n&lt;groupId&gt;org.bsc.maven&lt;/groupId&gt;\n&lt;artifactId&gt;maven-processor-plugin&lt;/artifactId&gt;\n&lt;version&gt;4.5&lt;/version&gt;\n&lt;executions&gt;\n    &lt;execution&gt;\n        &lt;goals&gt;\n            &lt;goal&gt;process&lt;/goal&gt;\n        &lt;/goals&gt;\n        &lt;phase&gt;generate-sources&lt;/phase&gt;\n        &lt;configuration&gt;\n            &lt;processors&gt;\n                &lt;processor&gt;org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor&lt;/processor&gt;\n            &lt;/processors&gt;\n            &lt;outputDirectory&gt;${project.build.directory}/generated-sources/jpametamodel&lt;/outputDirectory&gt;\n            &lt;overwrite&gt;true&lt;/overwrite&gt;\n        &lt;/configuration&gt;\n    &lt;/execution&gt;\n&lt;/executions&gt;\n&lt;dependencies&gt;\n    &lt;dependency&gt;\n        &lt;groupId&gt;org.hibernate&lt;/groupId&gt;\n        &lt;artifactId&gt;hibernate-jpamodelgen&lt;/artifactId&gt;\n        &lt;version&gt;${hibernate-jpamodelgen.version}&lt;/version&gt;\n    &lt;/dependency&gt;\n&lt;/dependencies&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>When <code>hibernate-jpamodelgen.version</code>=<code>5.6.14.Final</code>, it works.</p>\n<p>When I try to upgrade to <code>6.1.6.Final</code>, the classes are not generated, hence I get compilation errors.</p>\n"
+}

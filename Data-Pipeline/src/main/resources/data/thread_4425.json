@@ -1,0 +1,81 @@
+{
+  "tags" : [ "java", "android", "unit-testing", "powermockito", "spy" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 242113,
+        "reputation" : 53880,
+        "user_id" : 513413,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://i.sstatic.net/ur7p5.jpg?s=256",
+        "display_name" : "Hesam",
+        "link" : "https://stackoverflow.com/users/513413/hesam"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1487357540,
+      "post_id" : 42293956,
+      "comment_id" : 71765520,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thanks for your comment. Yup, I actually saw similar answer in that link and didn&#39;t get what I expected after testing based on this approach. I don&#39;t know why but did not work and I got similar output I mentioned in my question."
+    } ],
+    "owner" : {
+      "account_id" : 3182785,
+      "reputation" : 123,
+      "user_id" : 2689160,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/abc6a94beddb22d4060c89fd318efe0a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "blu3",
+      "link" : "https://stackoverflow.com/users/2689160/blu3"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1487323174,
+    "creation_date" : 1487323174,
+    "answer_id" : 42293956,
+    "question_id" : 42291978,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your logic in the given code is to do nothing when you're passing mActivity object: <code>PowerMockito.doNothing().when(spy).cleanAllMessages(mActivity);</code></p>\n\n<p>But what you're actually passing is null:\n<code>mNavBuilder.addNextScreenBasedOnBookingStatus(null);</code></p>\n\n<p>Also, you have to pass this \"spy\" object in the test class to make your mock logic work. May be you can try something like this -</p>\n\n<pre><code>PowerMockito.whenNew(ChatMsgDbAsyncHelper.class).withNoArguments().thenReturn(spy);\nPowerMockito.doNothing().when(spy).cleanAllMessages(mActivity); // or null, as per your requirement\n</code></pre>\n\n<p>and then pass your mActivity object to the method:</p>\n\n<pre><code>mNavBuilder.addNextScreenBasedOnBookingStatus(mActivity); // or pass null, as per your requirement\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 242113,
+      "reputation" : 53880,
+      "user_id" : 513413,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://i.sstatic.net/ur7p5.jpg?s=256",
+      "display_name" : "Hesam",
+      "link" : "https://stackoverflow.com/users/513413/hesam"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1487357947,
+    "creation_date" : 1487357947,
+    "answer_id" : 42305499,
+    "question_id" : 42291978,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The problem was my understanding :) </p>\n\n<p>I changed signature of the method under test with following and could test it. So in this case I am passing instance of <code>ChatMsgDbAsyncHelper</code> to the method rather than create it within method.</p>\n\n<pre><code>@VisibleForTesting\n    void addNextScreenBasedOnBookingStatus(final Booking booking, final ChatMsgDbAsyncHelper chatMsgHelper) {\n...\n}\n</code></pre>\n\n<p>and test works fine now:</p>\n\n<pre><code>@Test\npublic void addNextScreenBasedOnBookingStatus_whenBookingIsNull() throws Exception {\n    ChatMsgDbAsyncHelper mChatMsgHelper = PowerMockito.spy(new ChatMsgDbAsyncHelper());\n    doNothing().when(mChatMsgHelper).cleanAllMessages(any(Context.class));\n\n    mNavBuilder.addNextScreenBasedOnBookingStatus(null, mChatMsgHelper);\n\n    assertTrue(mNavBuilder.mIntentList.isEmpty());\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 242113,
+    "reputation" : 53880,
+    "user_id" : 513413,
+    "user_type" : "registered",
+    "accept_rate" : 74,
+    "profile_image" : "https://i.sstatic.net/ur7p5.jpg?s=256",
+    "display_name" : "Hesam",
+    "link" : "https://stackoverflow.com/users/513413/hesam"
+  },
+  "is_answered" : false,
+  "view_count" : 12943,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1760220345,
+  "creation_date" : 1487316754,
+  "last_edit_date" : 1530961731,
+  "question_id" : 42291978,
+  "link" : "https://stackoverflow.com/questions/42291978/how-to-mock-a-void-method-with-powermockito",
+  "title" : "How to mock a void method with PowerMockito?",
+  "body" : "<p>This is a duplicate of <a href=\"https://stackoverflow.com/questions/2276271/how-to-make-mock-to-void-methods-with-mockito\">this question</a>. There are bunch of similar questions/answers as well but none helped me. As there are hundreds of developers accepted some answers I am probably wrong somewhere and have no idea where is my problem!</p>\n\n<p>This is my sample class and I want to test its method. </p>\n\n<pre><code>final class NavigationBuilder {\n\n    @VisibleForTesting List&lt;Intent&gt; mIntentList = new ArrayList&lt;&gt;(5);\n\n    @VisibleForTesting\n    void addNextScreenBasedOnBookingStatus(final Booking booking) {\n        final ChatMsgDbAsyncHelper helper = new ChatMsgDbAsyncHelper();\n\n        if (booking == null) {\n            helper.cleanAllMessages(mContext); // &lt;= Crash here\n        } \n\n    }\n}\n</code></pre>\n\n<p>This is my test class:</p>\n\n<pre><code>@RunWith(PowerMockRunner.class)\n@PrepareForTest({ChatMsgDbAsyncHelper.class, SplashActivity.class})\npublic class NavigationBuilderTest {\n\n    private SplashActivity mActivity;\n    private NavigationBuilder mNavBuilder;\n\n    @Before\n    public void setUp() throws Exception {\n\n        mActivity = new SplashActivity();\n        ISplashView view = mock(ISplashView.class);\n        PassengerStorage passengerStorage = mock(PassengerStorage.class);\n\n        mNavBuilder = new NavigationBuilder(mActivity, view, passengerStorage);\n    }\n\n    @Test\n    public void addNextScreenBasedOnBookingStatus_whenBookingIsNull() throws Exception {\n        ChatMsgDbAsyncHelper spy = PowerMockito.spy(new ChatMsgDbAsyncHelper());\n        PowerMockito.doNothing().when(spy).cleanAllMessages(mActivity);\n\n        mNavBuilder.addNextScreenBasedOnBookingStatus(null);\n\n        assertTrue(mNavBuilder.mIntentList.isEmpty());\n    }\n}\n</code></pre>\n\n<p>Test fails and the reason is <code>NullPointerException</code> because test is running logic inside of <code>helper.cleanAllMessages(mContext);</code>. My expectation from above mock is those logic should not be performed.</p>\n\n<blockquote>\n  <p>Caused by: java.lang.NullPointerException     at\n  com.xxx.xxx.db.entities.ChatMessageTable.(ChatMessageTable.java:23)</p>\n</blockquote>\n"
+}

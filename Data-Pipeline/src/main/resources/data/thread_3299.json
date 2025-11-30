@@ -1,0 +1,79 @@
+{
+  "tags" : [ "java", "mysql", "postgresql", "jdbc", "timeout" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 71739,
+      "reputation" : 311872,
+      "user_id" : 207421,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://www.gravatar.com/avatar/5cfe5f7d64f44be04f147295f5c7b88e?s=256&d=identicon&r=PG",
+      "display_name" : "user207421",
+      "link" : "https://stackoverflow.com/users/207421/user207421"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1412751606,
+    "post_id" : 26250141,
+    "comment_id" : 41178991,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "I don&#39;t see any difference, just a poorly chosen name (<code>loginTimeout</code>)."
+  }, {
+    "owner" : {
+      "account_id" : 1545012,
+      "reputation" : 1502,
+      "user_id" : 1438735,
+      "user_type" : "registered",
+      "accept_rate" : 52,
+      "profile_image" : "https://www.gravatar.com/avatar/304d6cf1abce29ed9d38688f7975c690?s=256&d=identicon&r=PG",
+      "display_name" : "Ratatouille",
+      "link" : "https://stackoverflow.com/users/1438735/ratatouille"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1521703072,
+    "post_id" : 26250141,
+    "comment_id" : 85846003,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Where did you found the timeout in millisecond ?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 75579,
+      "reputation" : 779,
+      "user_id" : 216742,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3c1aa2f9ccd31c140992bbdf8a113ad4?s=256&d=identicon&r=PG",
+      "display_name" : "Scott Fines",
+      "link" : "https://stackoverflow.com/users/216742/scott-fines"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1472654973,
+    "creation_date" : 1472654973,
+    "answer_id" : 39252811,
+    "question_id" : 26250141,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>MySQL's <code>socketConnect</code> setting determines how long the client will try to attempt to open a network connection; it makes no claims that the database itself will authenticate or function, only that a socket can be established. </p>\n\n<p>Postgres, by contrast, is indicating a maximum amount of time to connect <em>to the database</em>; if your command returns before the timeout, then the database received the network request and responded in an appropriate amount of time.</p>\n\n<p>So in one situation, you are only putting constraints on network behavior (i.e. how long you wait to connect a socket to that server at that port); in the other, you are putting constraints on <em>database</em> behavior (i.e. how long to wait for the database itself to connect).</p>\n\n<p>As a side note, the interface <code>javax.sql.CommonDataSource</code> dictates a JDBC property for <code>getLoginTimeout</code> which mimics the behavior of PostgreSQL's property. When you look at various implementations of a MysqlDataSource(<a href=\"https://github.com/MariaDB/mariadb-connector-j/blob/41910e840323b7b349dc85c0f18e6f0ba89fa9e1/src/main/java/org/mariadb/jdbc/MariaDbDataSource.java\" rel=\"nofollow\">mariadb</a>, for example), these methods are not implemented; this generally leads me to believe that there is no direct analogue in MySQL.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 982206,
+    "reputation" : 155,
+    "user_id" : 1001667,
+    "user_type" : "registered",
+    "accept_rate" : 44,
+    "profile_image" : "https://www.gravatar.com/avatar/2f7a3d03aa20bb96f295c9769ce8d218?s=256&d=identicon&r=PG",
+    "display_name" : "shreyas K N",
+    "link" : "https://stackoverflow.com/users/1001667/shreyas-k-n"
+  },
+  "is_answered" : false,
+  "view_count" : 12337,
+  "answer_count" : 1,
+  "score" : 4,
+  "last_activity_date" : 1762797870,
+  "creation_date" : 1412748052,
+  "question_id" : 26250141,
+  "link" : "https://stackoverflow.com/questions/26250141/jdbc-connecttimeout-vs-jdbc-logintimeout",
+  "title" : "jdbc connectTimeout vs jdbc loginTimeout",
+  "body" : "<p>There is a requirement in our project to support 'jdbc timeout' feature for Postgres (Postgresql driver).\nwe also support Microsoft SQL (JTDS driver) and MySQl (mysql driver). So i want to introduce the 'loginTimeout' as a common feature for all the Databases.</p>\n\n<p>While going through documentation of the drivers, i found there is a jdbc parameter called 'loginTimeout' supported from both JTDS and Postgresql drivers but not for Msql</p>\n\n<p><a href=\"http://jtds.sourceforge.net/faq.html\" rel=\"nofollow\">http://jtds.sourceforge.net/faq.html</a></p>\n\n<blockquote>\n  <p><strong><em>loginTimeout</strong> (default - 0 for TCP/IP connections or 20 for named pipe connections) The amount of time to wait (in seconds) for a successful\n  connection before timing out. If a TCP/IP connection is used to\n  connect to the database and Java 1.4 or newer is being used, the\n  loginTimeout parameter is used to set the initial connection timeout\n  when initially opening a new socket. A value of zero (the default)\n  causes the connection to wait indefinitely, e.g.,until a connection is\n  established or an error occurs. See also socketTimeout. If a named\n  pipe connection is used (namedPipe is true) and loginTimeout is\n  greater than zero, the value of loginTimeout is used for the length of\n  the retry period when \"All pipe instances are busy\" error messages are\n  received while attempting to connect to the server. If loginTimeout is\n  zero (the default), a value of 20 seconds is used for the named pipe\n  retry period.</em></p>\n</blockquote>\n\n<p><a href=\"http://jdbc.postgresql.org/documentation/84/connect.html\" rel=\"nofollow\">http://jdbc.postgresql.org/documentation/84/connect.html</a></p>\n\n<blockquote>\n  <p><strong>loginTimeout</strong> = int Specify how long to wait for establishment of a\n  database connection. The timeout is specified in seconds.</p>\n</blockquote>\n\n<p>but for Mysql there is nothing like loginTimeout, but has </p>\n\n<blockquote>\n  <p><strong>connectTimeout</strong>: Timeout for socket connect (in milliseconds), with 0\n  being no timeout. Only works on JDK-1.4 or newer. Defaults to '0'</p>\n</blockquote>\n\n<p>So my question is \"what is the difference between connectTimeout and loginTimeout\" , do they do the same functionality ?</p>\n"
+}

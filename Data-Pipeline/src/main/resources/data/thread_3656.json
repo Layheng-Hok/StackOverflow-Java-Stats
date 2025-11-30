@@ -1,0 +1,100 @@
+{
+  "tags" : [ "java", "sql-server", "spring", "jdbc" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 272080,
+      "reputation" : 1546,
+      "user_id" : 562970,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/68f7e7b66b24dced485f06444a7841bd?s=256&d=identicon&r=PG",
+      "display_name" : "Igor Deruga",
+      "link" : "https://stackoverflow.com/users/562970/igor-deruga"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1461599674,
+    "post_id" : 36804032,
+    "comment_id" : 61260257,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Can you also add the stored procedure signature to your question?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 272080,
+      "reputation" : 1546,
+      "user_id" : 562970,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/68f7e7b66b24dced485f06444a7841bd?s=256&d=identicon&r=PG",
+      "display_name" : "Igor Deruga",
+      "link" : "https://stackoverflow.com/users/562970/igor-deruga"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1461599631,
+    "creation_date" : 1461599631,
+    "answer_id" : 36845439,
+    "question_id" : 36804032,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Try declaring the output parameters using SqlOutParameter like in this example, maybe the warning will go away:</p>\n\n<pre><code>SimpleJdbcCall caller = new SimpleJdbcCall(getDataSource())\n.withCatalogName(\"PKG_REG_REVIEW\")\n.withFunctionName(\"fn_get_task_complete_date\")\n.withoutProcedureColumnMetaDataAccess()\n.declareParameters(\nnew SqlOutParameter(\"v_maxdate\", Types.DATE),\nnew SqlParameter(\"p_case_seq\", Types.INTEGER),\nnew SqlParameter(\"p_task_seq\", Types.INTEGER)\n);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10910643,
+      "reputation" : 31,
+      "user_id" : 8020143,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/10211528535502346/picture?type=large",
+      "display_name" : "Steven Dirix",
+      "link" : "https://stackoverflow.com/users/8020143/steven-dirix"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1494943703,
+    "creation_date" : 1494943703,
+    "answer_id" : 44003813,
+    "question_id" : 36804032,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>It worked for me adding the parameter declaration too, but slightly different:</p>\n\n<pre><code>public Student getStudent(Integer id) {\n    SqlParameterSource in = new MapSqlParameterSource().addValue(\"id\", id, Types.INTEGER)\n            .addValue(\"name\",Types.VARCHAR)\n            .addValue(\"age\", Types.INTEGER);\n    Map&lt;String, Object&gt; out = jdbcCall.execute(in);\n\n    Student student = new Student();\n    student.setId(id);\n    student.setName((String) out.get(\"name\"));\n    student.setAge((Integer) out.get(\"age\"));\n\n    return student;\n}\n</code></pre>\n\n<p>please note i was using MS SQL Server instead of MySQL; and have created the procedure slightly different:</p>\n\n<pre><code>CREATE PROCEDURE getRecord\n  @id INT,\n  @name VARCHAR(20) OUTPUT ,\n  @age INT OUTPUT\nAS\n  SELECT @name = name, @age = AGE\n  FROM Student where id = @id\n</code></pre>\n\n<p>but it should be fairly similar.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25994123,
+      "reputation" : 1,
+      "user_id" : 19705805,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AFdZucplsIZ22i0r87XIVRem3RGDpXUz4TzsKKlfLomD=k-s256",
+      "display_name" : "Cao Van Viet FX12045",
+      "link" : "https://stackoverflow.com/users/19705805/cao-van-viet-fx12045"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1659824808,
+    "last_edit_date" : 1659824808,
+    "creation_date" : 1659786416,
+    "answer_id" : 73259459,
+    "question_id" : 36804032,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<pre><code>this.jdbcCall = new SimpleJdbcCall(dataSource)\n.declareParameters (new SqlOutParameter(&quot;out_id&quot;, Types.INTEGER), new SqlOutParameter(&quot;out_name&quot;, Types.NVARCHAR), new SqlOutParameter(&quot;out_age&quot;, Types.INTEGER));\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3840037,
+    "reputation" : 335,
+    "user_id" : 3183411,
+    "user_type" : "registered",
+    "accept_rate" : 70,
+    "profile_image" : "https://www.gravatar.com/avatar/11cd3b6f0b769fe9059b004626de9052?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3183411",
+    "link" : "https://stackoverflow.com/users/3183411/user3183411"
+  },
+  "is_answered" : true,
+  "view_count" : 4601,
+  "answer_count" : 3,
+  "score" : 1,
+  "last_activity_date" : 1761914425,
+  "creation_date" : 1461362797,
+  "last_edit_date" : 1761914425,
+  "question_id" : 36804032,
+  "link" : "https://stackoverflow.com/questions/36804032/receiving-message-unable-to-locate-the-corresponding-parameter-when-calling-stor",
+  "title" : "Receiving Message Unable to locate the Corresponding Parameter when calling Stored Procedure",
+  "body" : "<p>I have been going through the following Spring Tutorial</p>\n<p><a href=\"http://www.tutorialspoint.com/spring/calling_stored_procedure.htm\" rel=\"nofollow noreferrer\">http://www.tutorialspoint.com/spring/calling_stored_procedure.htm</a></p>\n<p>Everything is working the only problem I have is that I am receiving the following message.</p>\n<pre><code>Apr 22, 2016 3:50:51 PM org.springframework.context.support.ClassPathXmlApplicationContext prepareRefresh\nINFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@5910e440: startup date [Fri Apr 22 15:50:51 MDT 2016]; root of context hierarchy\nApr 22, 2016 3:50:51 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions\nINFO: Loading XML bean definitions from class path resource [Beans.xml]\nApr 22, 2016 3:50:51 PM org.springframework.jdbc.datasource.DriverManagerDataSource setDriverClassName\nINFO: Loaded JDBC driver: net.sourceforge.jtds.jdbc.Driver\n----Listing Record with ID = 2 -----\nApr 22, 2016 3:50:52 PM org.springframework.jdbc.core.metadata.CallMetaDataContext matchInParameterValuesWithCallParameters\nWARNING: Unable to locate the corresponding parameter value for 'outName' within the parameter values provided: [inID]\nApr 22, 2016 3:50:52 PM org.springframework.jdbc.core.metadata.CallMetaDataContext matchInParameterValuesWithCallParameters\nWARNING: Unable to locate the corresponding parameter value for 'outAge' within the parameter values provided: [inID]\nID : 3, Name : Ayan, Age : 15\n</code></pre>\n<p>The only difference is I am using a MSSQL. As you can see the results return. I've even passed in a different parameter and the value changes so I know it's working. I'm just not sure why I am receiving these messages. I've verified that the parameters name match with what is in the class.</p>\n<pre><code>package com.tutorialspoint;\nimport java.util.List;\nimport org.springframework.context.ApplicationContext;\nimport org.springframework.context.support.ClassPathXmlApplicationContext;\nimport com.tutorialspoint.StudentJDBCTemplate;\n\npublic class MainApp {\n   public static void main(String[] args) {\n      ApplicationContext context = \n             new ClassPathXmlApplicationContext(&quot;Beans.xml&quot;);\n      \n      \n      StudentJDBCTemplate studentJDBCTemplate = \n      (StudentJDBCTemplate)context.getBean(&quot;studentJDBCTemplate&quot;);\n      /*\n      System.out.println(&quot;------Records Creation--------&quot; );\n      studentJDBCTemplate.create(&quot;Zara&quot;, 11);\n      studentJDBCTemplate.create(&quot;Nuha&quot;, 2);\n      studentJDBCTemplate.create(&quot;Ayan&quot;, 15);\n\n      System.out.println(&quot;------Listing Multiple Records--------&quot; );\n      List&lt;Student&gt; students = studentJDBCTemplate.listStudents();\n      for (Student record : students) {\n         System.out.print(&quot;ID : &quot; + record.getId() );\n         System.out.print(&quot;, Name : &quot; + record.getName() );\n         System.out.println(&quot;, Age : &quot; + record.getAge());\n      }\n      */\n      \n      System.out.println(&quot;----Listing Record with ID = 2 -----&quot; );\n      \n      Student student = studentJDBCTemplate.getStudent(3);\n      System.out.print(&quot;ID : &quot; + student.getId() );\n      System.out.print(&quot;, Name : &quot; + student.getName() );\n      System.out.println(&quot;, Age : &quot; + student.getAge());\n      \n   }\n}\n</code></pre>\n\n<pre><code>package com.tutorialspoint;\n\nimport java.sql.ResultSet;\nimport java.sql.SQLException;\nimport org.springframework.jdbc.core.RowMapper;\n\npublic class StudentMapper implements RowMapper&lt;Student&gt; {\n   public Student mapRow(ResultSet rs, int rowNum) throws SQLException {\n      Student student = new Student();\n      student.setId(rs.getInt(&quot;id&quot;));\n      student.setName(rs.getString(&quot;name&quot;));\n      student.setAge(rs.getInt(&quot;age&quot;));\n      return student;\n   }\n}\n</code></pre>\n\n<pre><code>package com.tutorialspoint;\n\nimport java.util.Map;\nimport java.util.List;\n\nimport javax.sql.DataSource;\nimport org.springframework.jdbc.core.JdbcTemplate;\nimport org.springframework.jdbc.core.namedparam.MapSqlParameterSource;\nimport org.springframework.jdbc.core.namedparam.SqlParameterSource;\nimport org.springframework.jdbc.core.simple.SimpleJdbcCall;\n\npublic class StudentJDBCTemplate implements StudentDAO {\n    \n    private DataSource dataSource;\n    private SimpleJdbcCall jdbcCall;\n    \n    public void setDataSource(DataSource dataSource){   \n        this.dataSource = dataSource;\n        this.jdbcCall = new SimpleJdbcCall(dataSource).withProcedureName(&quot;getRecord&quot;);\n    }\n    \n    public void create(String name, Integer age){\n        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);\n        String SQL = &quot;INSERT INTO Student(name,age) VALUES (?,?)&quot;;\n        jdbcTemplateObject.update(SQL,name,age);\n        System.out.println(&quot;Created Record Name = &quot; + name + &quot; Age = &quot; + age);\n        return;\n    }\n    \n    public Student getStudent(Integer id){\n        \n        SqlParameterSource in = new MapSqlParameterSource().addValue(&quot;inID&quot;, id);\n        Map&lt;String, Object&gt; out = jdbcCall.execute(in);\n        \n        Student student = new Student();\n        student.setId(id);\n        student.setName((String) out.get(&quot;outName&quot;));\n        student.setAge((Integer) out.get(&quot;outAge&quot;));\n\n        return student;\n    }\n    \n    public List&lt;Student&gt; listStudents(){\n        String SQL = &quot;SELECT * FROM Student&quot;;\n        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);\n        List &lt;Student&gt; students = jdbcTemplateObject.query(SQL, new StudentMapper());       \n        return students;\n    }\n\n}\n</code></pre>\n\n<pre><code>package com.tutorialspoint;\n\npublic class Student {\n   private Integer age;\n   private String name;\n   private Integer id;\n\n   public void setAge(Integer age) {\n      this.age = age;\n   }\n   public Integer getAge() {\n      return age;\n   }\n\n   public void setName(String name) {\n      this.name = name;\n   }\n   public String getName() {\n      return name;\n   }\n\n   public void setId(Integer id) {\n      this.id = id;\n   }\n   public Integer getId() {\n      return id;\n   }\n}\n</code></pre>\n"
+}

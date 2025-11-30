@@ -1,0 +1,88 @@
+{
+  "tags" : [ "java", "logback" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 372682,
+      "reputation" : 26502,
+      "user_id" : 721855,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/vZiox.png?s=256",
+      "display_name" : "aled",
+      "link" : "https://stackoverflow.com/users/721855/aled"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1682446047,
+    "post_id" : 76103897,
+    "comment_id" : 134216090,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "How much time did you run it? Are log entries being generated?"
+  }, {
+    "owner" : {
+      "account_id" : 5273740,
+      "reputation" : 834,
+      "user_id" : 4211252,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-87ivl3B4PjA/AAAAAAAAAAI/AAAAAAAAAGA/QtBp_y12AcE/s256-rj/photo.jpg",
+      "display_name" : "Thilo Schwarz",
+      "link" : "https://stackoverflow.com/users/4211252/thilo-schwarz"
+    },
+    "reply_to_user" : {
+      "account_id" : 372682,
+      "reputation" : 26502,
+      "user_id" : 721855,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/vZiox.png?s=256",
+      "display_name" : "aled",
+      "link" : "https://stackoverflow.com/users/721855/aled"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1682485057,
+    "post_id" : 76103897,
+    "comment_id" : 134221459,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@aled Yes, the log entries are generated correctly, and the service is running more than 2 weeks."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 5273740,
+      "reputation" : 834,
+      "user_id" : 4211252,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/-87ivl3B4PjA/AAAAAAAAAAI/AAAAAAAAAGA/QtBp_y12AcE/s256-rj/photo.jpg",
+      "display_name" : "Thilo Schwarz",
+      "link" : "https://stackoverflow.com/users/4211252/thilo-schwarz"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1762034177,
+    "last_edit_date" : 1762034177,
+    "creation_date" : 1684140974,
+    "answer_id" : 76252398,
+    "question_id" : 76103897,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Shame on me! As so often, the problem often lies between the ears.\nIn my project, I moved the log files to another directory. I changed the file tag of the appender but not the fileNamePattern of the rolling policy.</p>\n<p>To avoid such mistakes, I suggest to work consistently with variables! Example:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;property name=&quot;log_path&quot; value=&quot;/var/log/app-name&quot;/&gt;\n&lt;property name=&quot;log_name&quot; value=&quot;myLog&quot;/&gt;\n\n&lt;appender name=&quot;file&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;\n    &lt;property name=&quot;app_log&quot; value=&quot;${log_path}/${log_name}&quot;/&gt;\n    &lt;file&gt;${app_log}.log&lt;/file&gt;\n    &lt;encoder&gt;\n        &lt;pattern&gt;%d [%t] %-5level %logger{50} - %msg%n&lt;/pattern&gt;\n    &lt;/encoder&gt;\n    &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;\n        &lt;fileNamePattern&gt;${app_log}.%d{yyyy-MM}.log.gz&lt;/fileNamePattern&gt;\n        &lt;maxHistory&gt;12&lt;/maxHistory&gt;\n    &lt;/rollingPolicy&gt;\n&lt;/appender&gt;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5273740,
+    "reputation" : 834,
+    "user_id" : 4211252,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/-87ivl3B4PjA/AAAAAAAAAAI/AAAAAAAAAGA/QtBp_y12AcE/s256-rj/photo.jpg",
+    "display_name" : "Thilo Schwarz",
+    "link" : "https://stackoverflow.com/users/4211252/thilo-schwarz"
+  },
+  "is_answered" : true,
+  "view_count" : 509,
+  "accepted_answer_id" : 76252398,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1762087374,
+  "creation_date" : 1682443616,
+  "last_edit_date" : 1762087374,
+  "question_id" : 76103897,
+  "link" : "https://stackoverflow.com/questions/76103897/correct-file-name-pattern-for-weekly-rolling",
+  "title" : "Correct file name pattern for weekly rolling",
+  "body" : "<p>I've tried the following rollingPolicy, but the log file didn't roll:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;\n    &lt;fileNamePattern&gt;log-%d{yyyy-ww}.log.gz&lt;/fileNamePattern&gt;\n    &lt;maxHistory&gt;26&lt;/maxHistory&gt;\n&lt;/rollingPolicy&gt;\n</code></pre>\n<p>The <code>fileNamePattern</code> corresponds to the file definition of the appender.</p>\n<p>Is my file name pattern wrong?</p>\n"
+}

@@ -1,0 +1,101 @@
+{
+  "tags" : [ "java", "android", "xmp" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 343334,
+      "reputation" : 4168,
+      "user_id" : 674976,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/b1ccba5f9b049c3152579de5765c1197?s=256&d=identicon&r=PG",
+      "display_name" : "texnic",
+      "link" : "https://stackoverflow.com/users/674976/texnic"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1399830606,
+    "creation_date" : 1399830606,
+    "answer_id" : 23595956,
+    "question_id" : 23253281,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I've been able to read Picasa face data also stored in XMP using <a href=\"https://code.google.com/p/metadata-extractor/\" rel=\"nofollow\">metadata-extractor</a> library and the iterator through XMP properties:</p>\n\n<pre><code>try {\n    Metadata metadata = ImageMetadataReader.readMetadata(imageFile);\n    XmpDirectory xmpDirectory = metadata.getDirectory(XmpDirectory.class);\n    XMPMeta xmpMeta = xmpDirectory.getXMPMeta();\n    XMPIterator itr = xmpMeta.iterator();\n    while (itr.hasNext()) {\n        XMPPropertyInfo pi = (XMPPropertyInfo) itr.next();\n        if (pi != null &amp;&amp; pi.getPath() != null) {\n            if ((pi.getPath().endsWith(\"stArea:w\")) || (pi.getPath().endsWith(\"mwg-rs:Name\")) || (pi.getPath().endsWith(\"stArea:h\")))\n                System.out.println(pi.getValue().toString());\n        }\n    }\n} catch (final NullPointerException npe) {\n  // ignore\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 997,
+      "reputation" : 16441,
+      "user_id" : 1322,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/lmF7y.jpg?s=256",
+      "display_name" : "Matt McMinn",
+      "link" : "https://stackoverflow.com/users/1322/matt-mcminn"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1400270567,
+    "last_edit_date" : 1400270567,
+    "creation_date" : 1400270104,
+    "answer_id" : 23703573,
+    "question_id" : 23253281,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I ran in to the same problem, and I think the issue is that the extended data is stored in a second xmpmeta section which gets skipped over by, for example, metadata-extractor.  So what I was able to do is search in the byte stream for each section and see if it had the property that I expected.  I also found that, at least for the depth map data, the base 64 encoded string was apparently chunked in to roughly 64 KB sections, and included some headers that needed to be removed in order for the string to be decoded properly.  The fixString function below can most likely be replaced by someone who knows the chunking information.  This relies on the xmpcore library available at <a href=\"https://www.adobe.com/devnet/xmp.html\" rel=\"nofollow\">https://www.adobe.com/devnet/xmp.html</a>.</p>\n\n<pre><code>import java.io.*;\nimport java.util.*;\nimport com.adobe.xmp.*;\nimport com.adobe.xmp.impl.*;\n\npublic class XMP\n{\n    // An encoding should really be specified here, and for other uses of getBytes!\n    private static final byte[] OPEN_ARR = \"&lt;x:xmpmeta\".getBytes();\n    private static final byte[] CLOSE_ARR = \"&lt;/x:xmpmeta&gt;\".getBytes();\n\n    private static void copy(InputStream in, OutputStream out) throws IOException\n    {\n        int len = -1;\n        byte[] buf = new byte[1024];\n        while((len = in.read(buf)) &gt;= 0)\n        {\n            out.write(buf, 0, len);\n        }\n\n        in.close();\n        out.close();\n    }\n\n    private static int indexOf(byte[] arr, byte[] sub, int start)\n    {\n        int subIdx = 0;\n\n        for(int x = start;x &lt; arr.length;x++)\n        {\n            if(arr[x] == sub[subIdx])\n            {\n                if(subIdx == sub.length - 1)\n                {\n                    return x - subIdx;\n                }\n                subIdx++;\n            }\n            else\n            {\n                subIdx = 0;\n            }\n        }\n\n        return -1;\n    }\n\n    private static String fixString(String str)\n    {\n        int idx = 0;\n        StringBuilder buf = new StringBuilder(str);\n        while((idx = buf.indexOf(\"http\")) &gt;= 0)\n        {\n            buf.delete(idx - 4, idx + 75);\n        }\n\n        return buf.toString();\n    }\n\n    private static String findDepthData(File file) throws IOException, XMPException\n    {\n        FileInputStream in = new FileInputStream(file);\n        ByteArrayOutputStream out = new ByteArrayOutputStream();\n\n        copy(in, out);\n        byte[] fileData = out.toByteArray();\n\n        int openIdx = indexOf(fileData, OPEN_ARR, 0);\n        while(openIdx &gt;= 0)\n        {\n            int closeIdx = indexOf(fileData, CLOSE_ARR, openIdx + 1) + CLOSE_ARR.length;\n\n            byte[] segArr = Arrays.copyOfRange(fileData, openIdx, closeIdx);\n            XMPMeta meta = XMPMetaFactory.parseFromBuffer(segArr);\n\n            String str = meta.getPropertyString(\"http://ns.google.com/photos/1.0/depthmap/\", \"Data\");\n\n            if(str != null)\n            {\n                return fixString(str);\n            }\n\n            openIdx = indexOf(fileData, OPEN_ARR, closeIdx + 1);\n        }\n\n        return null;\n    }\n\n    public static void main(String[] args) throws Exception\n    {\n        String data = findDepthData(new File(args[0]));\n        if(data != null)\n        {\n            byte[] imgData = Base64.decode(data.getBytes());\n            ByteArrayInputStream in = new ByteArrayInputStream(imgData);\n            FileOutputStream out = new FileOutputStream(new File(\"out.png\"));\n            copy(in, out);\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1230714,
+      "reputation" : 2715,
+      "user_id" : 1195383,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://i.sstatic.net/l7ggG.png?s=256",
+      "display_name" : "dragon66",
+      "link" : "https://stackoverflow.com/users/1195383/dragon66"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1559526507,
+    "last_edit_date" : 1559526507,
+    "creation_date" : 1425171746,
+    "answer_id" : 28788888,
+    "question_id" : 23253281,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Initially, Adobe didn't expect the XMP data length would exceed the limit of one JPEG segment (about 64K) and their XMP specification stated the XMP data must fit into one. Later when they found a single JPEG APP1 segment is not large enough to hold the XMP data, they changed their specification to allow for multiple APP1 segments for the whole XMP data. The data is split into two parts: the standard XMP and the ExtendedXMP. The standard XMP part is a \"normal\" XMP structure with a package wrapper while the ExtendedXMP part doesn't have a package wrapper. The ExtendedXMP data can be further divided to fit into multiple APP1.</p>\n\n<p>The following quote is from Adobe XMP specification Part 3 for ExtendedXMP chunks as JPEG APP1:</p>\n\n<blockquote>\n  <p>Each chunk is written into the JPEG file within a separate APP1 marker\n  segment. Each ExtendedXMP marker segment contains:</p>\n  \n  <ul>\n  <li>A null-terminated signature string of \"<a href=\"http://ns.adobe.com/xmp/extension/\" rel=\"nofollow noreferrer\">http://ns.adobe.com/xmp/extension/</a>\".</li>\n  <li>A 128-bit GUID stored as a 32-byte ASCII hex string, capital A-F, no null termination. The GUID is a 128-bit MD5 digest of the full\n  ExtendedXMP serialization.</li>\n  <li>The full length of the ExtendedXMP serialization as a 32-bit unsigned integer</li>\n  <li>The offset of this portion as a 32-bit unsigned integer.</li>\n  <li>The portion of the ExtendedXMP</li>\n  </ul>\n</blockquote>\n\n<p>We can see besides the null-terminated string as an id for the ExtendedXMP data, there is also a GUID which should be the same value as the one found in the standard XMP part. The offset is used to join the different parts of the ExtendedXMP - so the sequence for the ExtendedXMP APP1 may not even be in order. Then come the actual data part and this is why @Matt's answer need some way to fix the string. There is another value - full length of the ExtendedXMP serialization which serves two purposes: check the integrity of the data as well as provides the buffer size for joining the data.</p>\n\n<p>When we found a ExtendedXMP segment, we need to join the current data with the other ExtendedXMP segments and finally got the whole ExtendedXMP data. We then join the two XML tree together (removing the GUID from the standard XMP part as well) to retrieve the entire XMP data.</p>\n\n<p>I have made a library <a href=\"https://github.com/dragon66/icafe\" rel=\"nofollow noreferrer\">icafe</a> in Java which can extract and insert XMP as well as ExtendedXMP. One of the usecase for the ExtendedXMP is for Google's depth map data which in fact is a grayscale image hidden inside the actual image as a metadata, and in the case of JPEG, as XMP data. The depth map image could be used for example to blur the original image. The depth map data are usually large and have to be split into standard and extended XMP parts. The whole data is Base64 encoded and could be in PNG format.</p>\n\n<p>The following is an example image and the extracted depth map:</p>\n\n<p><img src=\"https://i.sstatic.net/VUJCH.png\" alt=\"enter image description here\"></p>\n\n<p>The original image comes from <a href=\"http://stereo.jpn.org/kitkat/indexe.html\" rel=\"nofollow noreferrer\">here</a>.</p>\n\n<p>Note: Recently I found another <a href=\"http://vectorcult.com/2015/12/extracting-the-audio-stereo-pair-from-cardboard-camera-3d-panoramic-images/\" rel=\"nofollow noreferrer\">website</a> talking about Google Cardboard Camera app which can take advantage of both the image and audio embedded in the JPEG XMP data. <a href=\"https://github.com/dragon66/icafe\" rel=\"nofollow noreferrer\">ICAFE</a> now supports both image and audio extraction from such images. Example usage can be found <a href=\"https://github.com/dragon66/icafe/blob/master/src/com/icafe4j/test/TestMetadata.java\" rel=\"nofollow noreferrer\">here</a> with the following call <code>JPEGTweaker.extractDepthMap()</code></p>\n\n<p>Here is the image extracted by ICAFE from the original image on the website talking about Google Cardboard Camera app:</p>\n\n<p><a href=\"https://i.sstatic.net/egmyj.jpg\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/egmyj.jpg\" alt=\"enter image description here\"></a></p>\n\n<p>Unfortunately, I can't find a way to insert the MP4 audio here.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5431088,
+      "reputation" : 1975,
+      "user_id" : 4321944,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/--kZd9htpNHM/AAAAAAAAAAI/AAAAAAAAAuU/Kv9p07K92S8/s256-rj/photo.jpg",
+      "display_name" : "Martin Rauscher",
+      "link" : "https://stackoverflow.com/users/4321944/martin-rauscher"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763319419,
+    "creation_date" : 1763319419,
+    "answer_id" : 79821691,
+    "question_id" : 23253281,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In 2025 they are now storing the depth map(s) via concatenating multiple JFIFs after the main image. If you split those you can get the original image and the depth maps from Pixel Camera photos. Source and sample code: <a href=\"https://github.com/dragon66/icafe/issues/90#issuecomment-758031710\" rel=\"nofollow noreferrer\">https://github.com/dragon66/icafe/issues/90#issuecomment-758031710</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 895521,
+    "reputation" : 1934,
+    "user_id" : 932899,
+    "user_type" : "registered",
+    "accept_rate" : 72,
+    "profile_image" : "https://i.sstatic.net/fKb3w.jpg?s=256",
+    "display_name" : "Ruuhkis",
+    "link" : "https://stackoverflow.com/users/932899/ruuhkis"
+  },
+  "is_answered" : true,
+  "view_count" : 13352,
+  "answer_count" : 4,
+  "score" : 7,
+  "last_activity_date" : 1763319419,
+  "creation_date" : 1398280626,
+  "question_id" : 23253281,
+  "link" : "https://stackoverflow.com/questions/23253281/reading-jpg-files-xmp-metadata",
+  "title" : "Reading JPG file&#39;s XMP metadata",
+  "body" : "<p>I am developing Android application that's supposed to make use of Google Camera's new depth map generation feature.</p>\n\n<p>Basically Google has described the meta data used <a href=\"https://developers.google.com/depthmap-metadata/examples\" rel=\"noreferrer\">here</a></p>\n\n<p>I can access to most of the metadata, but unfortunately the most important data is encoded as extendedXmp, and I can't get any XMP parsing library to parse it correctly!</p>\n\n<p>I've tried Commons-Imaging, metadata-extractor and most recently Adobes XMPCore</p>\n\n<p>XMPCore might be able to handle the extended version, but there's no documentation how can I get it to parse the data from JPG file, its assuming raw XMP data to be passed</p>\n\n<p>Is there any correct implementation of XMP parsing that includes the extended parts of JPG files or am I just doing something wrong?</p>\n\n<p>Here's my tries:</p>\n\n<p><strong>With Commons-Imaging:</strong></p>\n\n<pre><code>                try {\n                    String imageParser = new JpegImageParser().getXmpXml(new ByteSourceInputStream(imageStream, \"img.jpg\"), new HashMap&lt;String, Object&gt;());\n\n                    Log.v(TAG, imageParser);\n\n                } catch (ImageReadException e1) {\n                    // TODO Auto-generated catch block\n                    e1.printStackTrace();\n                }\n</code></pre>\n\n<p><strong>With metadata-extractor</strong></p>\n\n<pre><code>                Metadata metadata = ImageMetadataReader.readMetadata(\n                        new BufferedInputStream(imageStream), false);\n\n\n                XmpDirectory xmp = metadata\n                        .getDirectory(XmpDirectory.class);\n                XMPMeta xmpMeta = xmp.getXMPMeta();\n\n\n\n                String uri = \"http://ns.google.com/photos/1.0/depthmap/\";\n\n                Log.v(TAG, xmpMeta.doesPropertyExist(uri, \"GDepth:Format\") + \" \" );\n\n                try {\n                    XMPProperty hasExtendedXMP = xmpMeta.getProperty(\"http://ns.adobe.com/xmp/note/\", \"xmpNote:HasExtendedXMP\");\n\n                    Log.v(TAG, hasExtendedXMP.getValue().toString() + \" \" + new String(Base64.decode(hasExtendedXMP.getValue().toString(), Base64.DEFAULT)));\n\n                } catch (XMPException e) {\n                    e.printStackTrace();\n                }\n</code></pre>\n"
+}

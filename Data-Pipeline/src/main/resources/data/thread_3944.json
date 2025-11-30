@@ -1,0 +1,43 @@
+{
+  "tags" : [ "java", "spring", "maven", "swagger" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 22505792,
+      "reputation" : 11,
+      "user_id" : 16701409,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14GiQiVW-uEyL6xFXQG25GFotQMYV0MEejo0-3okRWgw=k-s256",
+      "display_name" : "Christian Clermont",
+      "link" : "https://stackoverflow.com/users/16701409/christian-clermont"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1661985888,
+    "creation_date" : 1661985888,
+    "answer_id" : 73562639,
+    "question_id" : 72718273,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I am using the Swagger v3 annotations in my project and I was facing the same issue.</p>\n<p>I have found the <code>springdoc-openapi-maven-plugin</code> that works well with the generated Swagger docs using the <code>springdoc-openapi-ui</code> dependency in Maven.</p>\n<p>Here is my configuration in Maven:</p>\n<pre class=\"lang-xml prettyprint-override\"><code>    &lt;profiles&gt;\n        &lt;profile&gt;\n            &lt;id&gt;apidoc&lt;/id&gt;\n            &lt;dependencies&gt;\n                &lt;dependency&gt;\n                    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;\n                    &lt;artifactId&gt;springdoc-openapi-ui&lt;/artifactId&gt;\n                    &lt;version&gt;${springdoc-openapi-ui.version}&lt;/version&gt;\n                &lt;/dependency&gt;\n            &lt;/dependencies&gt;\n\n            &lt;build&gt;\n                &lt;plugins&gt;\n\n                    &lt;plugin&gt;\n                        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;\n                        &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;\n                        &lt;configuration&gt;\n                            &lt;excludes&gt;\n                                &lt;exclude&gt;\n                                    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;\n                                    &lt;artifactId&gt;lombok&lt;/artifactId&gt;\n                                &lt;/exclude&gt;\n                            &lt;/excludes&gt;\n                            &lt;jvmArguments&gt;-Dspring.application.admin.enabled=true&lt;/jvmArguments&gt;\n                        &lt;/configuration&gt;\n                        &lt;executions&gt;\n                            &lt;execution&gt;\n                                &lt;id&gt;pre-integration-test&lt;/id&gt;\n                                &lt;goals&gt;\n                                    &lt;goal&gt;start&lt;/goal&gt;\n                                &lt;/goals&gt;\n                            &lt;/execution&gt;\n                            &lt;execution&gt;\n                                &lt;id&gt;post-integration-test&lt;/id&gt;\n                                &lt;goals&gt;\n                                    &lt;goal&gt;stop&lt;/goal&gt;\n                                &lt;/goals&gt;\n                            &lt;/execution&gt;\n                        &lt;/executions&gt;\n                    &lt;/plugin&gt;\n\n                    &lt;plugin&gt;\n                        &lt;groupId&gt;org.springdoc&lt;/groupId&gt;\n                        &lt;artifactId&gt;springdoc-openapi-maven-plugin&lt;/artifactId&gt;\n                        &lt;version&gt;1.4&lt;/version&gt;\n                        &lt;executions&gt;\n                            &lt;execution&gt;\n                                &lt;id&gt;integration-test&lt;/id&gt;\n                                &lt;goals&gt;\n                                    &lt;goal&gt;generate&lt;/goal&gt;\n                                &lt;/goals&gt;\n                            &lt;/execution&gt;\n                        &lt;/executions&gt;\n                        &lt;configuration&gt;\n                            &lt;apiDocsUrl&gt;http://localhost:8090/v3/api-docs.yaml&lt;/apiDocsUrl&gt;\n                            &lt;outputFileName&gt;openapi.yaml&lt;/outputFileName&gt;\n                            &lt;outputDir&gt;${project.basedir}/src/main/doc/swagger&lt;/outputDir&gt;\n                            &lt;skip&gt;false&lt;/skip&gt;\n                        &lt;/configuration&gt;\n                    &lt;/plugin&gt;\n                &lt;/plugins&gt;\n            &lt;/build&gt;\n\n        &lt;/profile&gt;\n\n</code></pre>\n<p>More information on this plugin here:</p>\n<ul>\n<li><a href=\"https://springdoc.org/plugins.html\" rel=\"nofollow noreferrer\">https://springdoc.org/plugins.html</a></li>\n<li><a href=\"https://github.com/springdoc/springdoc-openapi-maven-plugin\" rel=\"nofollow noreferrer\">https://github.com/springdoc/springdoc-openapi-maven-plugin</a></li>\n</ul>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5221319,
+    "reputation" : 760,
+    "user_id" : 4174701,
+    "user_type" : "registered",
+    "accept_rate" : 27,
+    "profile_image" : "https://i.sstatic.net/gw20W.png?s=256",
+    "display_name" : "michelson",
+    "link" : "https://stackoverflow.com/users/4174701/michelson"
+  },
+  "is_answered" : false,
+  "view_count" : 9822,
+  "answer_count" : 1,
+  "score" : 8,
+  "last_activity_date" : 1761304000,
+  "creation_date" : 1655911944,
+  "last_edit_date" : 1656076027,
+  "question_id" : 72718273,
+  "link" : "https://stackoverflow.com/questions/72718273/generate-openapi-3-0-json-yaml-from-spring-application-sources-at-compile-time-w",
+  "title" : "Generate OpenAPI 3.0 json/yaml from Spring application sources at compile time with maven plugin",
+  "body" : "<p>I want to generate an OpenApi 3.0 definition, at compile time, using maven plugin, from existing Spring (note: NOT Boot) app sources.</p>\n<p>I have set up <code>io.swagger.v3.oas.annotations</code> in controller classes like so:</p>\n<pre class=\"lang-java prettyprint-override\"><code>package com.acme.rest;\n\nimport io.swagger.v3.oas.annotations.Operation;\nimport io.swagger.v3.oas.annotations.tags.Tag;\n\n@Tag(name = &quot;Dummy Controller&quot;, description = &quot;Dummy controller.&quot;)\n@RestController\n@RequestMapping(&quot;/api/v1/dummy&quot;)\npublic class DummyController {\n\n    @Operation(summary = &quot;dummy(). Does litrally nothing.&quot;)\n    @RequestMapping(value = &quot;/&quot;, method = RequestMethod.GET)\n    public String doStuff() {\n        return &quot;dummy&quot;;\n    }\n}\n</code></pre>\n<p>and tried the <a href=\"https://github.com/swagger-api/swagger-core/tree/master/modules/swagger-maven-plugin\" rel=\"noreferrer\">swagger-maven-plugin</a></p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;plugin&gt;\n    &lt;groupId&gt;io.swagger.core.v3&lt;/groupId&gt;\n    &lt;artifactId&gt;swagger-maven-plugin&lt;/artifactId&gt;\n    &lt;version&gt;2.2.0&lt;/version&gt;\n    &lt;configuration&gt;\n        &lt;outputPath&gt;${project.build.directory}/swagger-def&lt;/outputPath&gt;\n        &lt;resourcePackages&gt;com.acme&lt;/resourcePackages&gt;\n        &lt;prettyPrint&gt;true&lt;/prettyPrint&gt;\n    &lt;/configuration&gt;\n    &lt;executions&gt;\n        &lt;execution&gt;\n            &lt;phase&gt;compile&lt;/phase&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;resolve&lt;/goal&gt;\n            &lt;/goals&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n<p>however I get nothing except <code>openapi</code> version.</p>\n<p><code>mvn clean compile</code>, produces:</p>\n<pre class=\"lang-json prettyprint-override\"><code>{\n  &quot;openapi&quot; : &quot;3.0.1&quot;\n}\n</code></pre>\n<hr />\n<p>I dug a bit through the implementation and it seems like there is no <code>io.swagger.v3.oas.integration.api.OpenApiReader</code> and/or <code> io.swagger.v3.oas.integration.api.OpenApiScanner</code> implementation to actually pick up the relevant annotations and parse them. I draw this conclusion from the fact that if I add custom implementation of them as suggested in <a href=\"https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Integration-and-Configuration#configuration-properties\" rel=\"noreferrer\">the docs</a> I can sources generated.</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;scannerClass&gt;com.acme.util.SwaggerOpenApiScanner&lt;/scannerClass&gt;\n&lt;readerClass&gt;com.acme.util.SwaggerOpenApiReader&lt;/readerClass&gt;\n</code></pre>\n<p><strong>I just dont understand why out of the box SWAGGER plugin does not parse SWAGGER annotations despite both of them are from the very same group <code>io.swagger.core.v3</code>?</strong></p>\n<p>What am I missing something? Can you recommend some alternative plugin to do this job?</p>\n"
+}

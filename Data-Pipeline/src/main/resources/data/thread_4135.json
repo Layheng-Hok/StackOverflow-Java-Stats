@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "apache-spark" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 4766511,
+      "reputation" : 1175,
+      "user_id" : 3852499,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c85be99b2b98d3203ff8f19dc2331520?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "SanthoshPrasad",
+      "link" : "https://stackoverflow.com/users/3852499/santhoshprasad"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1483961768,
+    "last_edit_date" : 1483961768,
+    "creation_date" : 1483961417,
+    "answer_id" : 41547053,
+    "question_id" : 41543758,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>After converting your input dataframe to datset using encoder/schema,  for doing map operation you no need to convert back Dataset to RDD you can do the map on Dataset it self, the below code may be useful for you</p>\n\n<pre><code>Dataset&lt;InputType&gt; inputDataSet =someDataFrame.as(Encoders.bean(InputType.class))\n\nDataset&lt;OutputType&gt; outputDataSet=inputDataSet.map(new MapFunction&lt;InputType, OutputType&gt;() {\n            @Override\n            public OutputType call(InputType  value) throws Exception {\n                // TODO Auto-generated method stub\n                val someOutPutVal:OutputType=null;\n                return someOutPutVal;\n            }\n        }, Encoders.bean(OutputType.class));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3519487,
+      "reputation" : 994,
+      "user_id" : 2942154,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/LGX8z.png?s=256",
+      "display_name" : "marilena.oita",
+      "link" : "https://stackoverflow.com/users/2942154/marilena-oita"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1492587349,
+    "creation_date" : 1492587349,
+    "answer_id" : 43489368,
+    "question_id" : 41543758,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you really want to follow the transformation using the Person.class, then you need to define a pojo: create a new java class named Person only with getters and setters, hashcode, and equals, toString() methods for the fields that you want to include in your Person object. Is as simple as that, then you can apply <code>spark.createDataFrame(peopleRDD, Person.class);</code></p>\n\n<p>Or: when you get all fields, package that directly into one Person.</p>\n\n<p><code>public String call(Row row) {}</code> ... create a Person object here directly:</p>\n\n<pre><code>public Person call(Row row) {}  \n</code></pre>\n\n<p>then you will have a <code>JavaRDD&lt;Person&gt; resultRDD</code> .. directly. </p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8691082,
+    "reputation" : 41,
+    "user_id" : 6503950,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/6cc1717fed86721914cc7dea434430fc?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "yufan zhang",
+    "link" : "https://stackoverflow.com/users/6503950/yufan-zhang"
+  },
+  "is_answered" : false,
+  "view_count" : 10799,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1760857410,
+  "creation_date" : 1483950249,
+  "question_id" : 41543758,
+  "link" : "https://stackoverflow.com/questions/41543758/how-to-convert-javardd-to-dataset",
+  "title" : "How&#160;to&#160;convert&#160;javaRDD&#160;to&#160;dataset",
+  "body" : "<p>I try to use spark read the data from the Oracle database into dataset, then convert the dataset into javaRDD for map operation, my code can only store the dataset Spark official documents show: <a href=\"http://spark.apache.org/docs/latest/sql-programming-guide.html#inferring-the-schema-using-reflection\" rel=\"nofollow noreferrer\">http://spark.apache.org/docs/latest/sql-programming-guide.html#inferring-the-schema-using-reflection</a></p>\n\n<hr>\n\n<pre><code>// Apply a schema to an RDD of JavaBeans to get a DataFrame\nDataset&lt;Row&gt; peopleDF = spark.createDataFrame(peopleRDD, Person.class);\n</code></pre>\n\n<p>Our Data is <strong>read from Oracle</strong>, how to define the Person.class, to store to convert the rdd to dataset? Or how to using Java directly take map operation for dataset?\nWhat should I do when my code is like this</p>\n\n<pre><code>import java.math.BigDecimal;\nimport java.util.Properties;\nimport java.util.Random;\nimport org.apache.commons.lang.StringUtils;\nimport org.apache.spark.SparkConf;\nimport org.apache.spark.api.java.JavaRDD;\nimport org.apache.spark.api.java.function.Function;\nimport org.apache.spark.sql.Dataset;\nimport org.apache.spark.sql.Row;\nimport org.apache.spark.sql.SaveMode;\nimport org.apache.spark.sql.SparkSession;\npublic class FlatMapTest {\n    public static void main(String[] args) {\n        SparkConf conf = new SparkConf();\n        conf.set(\"spark.sql.warehouse.dir\", \"./spark-warehouse\");\n        SparkSession spark = SparkSession.builder().master(\"local[3]\").config(conf)\n                .appName(\"Java Spark SQL data sources example\").getOrCreate();\n\n        jdbcDataSource(spark);\n\n    }\n\n    public static void jdbcDataSource(SparkSession spark) {\n        // 连接到数据库，获得DF对象,DF对象封装了数据库的表信息数据\n        Dataset&lt;Row&gt; jdbcDF = spark.read().format(\"jdbc\")\n                .option(\"driver\", \"oracle.jdbc.driver.OracleDriver\")\n                .option(\"url\", \"jdbc:oracle:thin:@192.168.101.207:1521:orcl\")\n                .option(\"dbtable\", \"datamask\")\n                .option(\"user\", \"scott\")\n                .option(\"password\", \"tiger\").load();\n        /*\n         * 创建临时表 datamask\n         */\n        jdbcDF.createOrReplaceTempView(\"datamask\");\n        Dataset&lt;Row&gt; sqlDF = spark.sql(\"select * from datamask\");\n\n\n        JavaRDD&lt;Object&gt; resultRDD = sqlDF.toJavaRDD().map(\n                new Function&lt;Row, Object&gt;() {\n\n                    public String call(Row row) throws Exception {\n                        Random ran = new Random(); \n                        int r = ran.nextInt(9001) + 1000;\n                        /*\n                         * 将每个字段的后4位替换为随机数，替换规则可以自己设定\n                         */\n                        String userName = row.getAs(\"USER_NAME\");\n                        userName = StringUtils.replace(userName,\n                                StringUtils.right(userName, 4), \"\" + r);\n\n                        String loginName = row.getAs(\"LOGIN_NAME\");// LOGIN_NAME为数据库字段名，下同\n                        loginName = StringUtils.replace(loginName,\n                                StringUtils.right(loginName, 4), \"\" + r);\n                        String countyCode = row.getAs(\"COUNTY_CODE\");\n                        countyCode = StringUtils.replace(countyCode,\n                                StringUtils.right(countyCode, 4), \"\" + r);\n                        String passwd = row.getAs(\"PASSWORD\");\n                        passwd = StringUtils.replace(passwd,\n                                StringUtils.right(passwd, 4), \"\" + r);\n                        String areaId = row.getAs(\"AREA_ID\");\n                        areaId = StringUtils.replace(areaId,\n                                StringUtils.right(areaId, 4), \"\" + r);\n                        String cityNo = row.getAs(\"CITY_NO\");\n                        cityNo = StringUtils.replace(cityNo,\n                                StringUtils.right(cityNo, 4), \"\" + r);\n                        String cardID = row.getAs(\"CARD_ID\");\n                        cardID = StringUtils.replace(cardID,\n                                StringUtils.right(cardID, 4), \"\" + r);\n                        String mobile = row.getAs(\"MOBILE\");\n                        mobile = StringUtils.replace(mobile,\n                                StringUtils.right(mobile, 4), \"\" + r);\n                        String email = row.getAs(\"EMAIL\");\n                        email = StringUtils.replace(email,\n                                StringUtils.right(email, 4), \"\" + r);\n                        BigDecimal big = row.getAs(\"QQ\");\n                        String qq = big.toString();\n                        qq = StringUtils.replace(qq, StringUtils.right(qq, 4),\n                                \"\" + r);\n                        String addr = row.getAs(\"ADDR\");\n                        addr = StringUtils.replace(addr,\n                                StringUtils.right(addr, 4), \"\" + r);\n                        String birthday = row.getAs(\"BIRTHDAY\");\n                        birthday = StringUtils.replace(birthday,\n                                StringUtils.right(birthday, 4), \"\" + r);\n                        String birthday1 = row.getAs(\"BIRTHDAY1\");\n                        birthday1 = StringUtils.replace(birthday1,\n                                StringUtils.right(birthday1, 4), \"\" + r);\n                        String codeId = row.getAs(\"CODE_ID\");\n                        codeId = StringUtils.replace(codeId,\n                                StringUtils.right(codeId, 4), \"\" + r);\n                        String deptNo = row.getAs(\"DEPT_NO\");\n                        deptNo = StringUtils.replace(deptNo,\n                                StringUtils.right(deptNo, 4), \"\" + r);\n                        String newCode = row.getAs(\"NEW_CODE\");\n                        newCode = StringUtils.replace(newCode,\n                                StringUtils.right(newCode, 4), \"\" + r);\n                        String oldCode = row.getAs(\"OLD_CODE\");\n                        oldCode = StringUtils.replace(oldCode,\n                                StringUtils.right(oldCode, 4), \"\" + r);\n                        return loginName + \",\" + countyCode + \",\" + passwd\n                                + \",\" + areaId + \",\" + cityNo + \",\" + cardID\n                                + \",\" + mobile + \",\" + email + \",\" + qq + \",\"\n                                + addr + \",\" + birthday + \",\" + \",\" + birthday1\n                                + \",\" + codeId + \",\" + deptNo + \",\" + newCode\n                                + \",\" + oldCode;\n                    }\n\n                });\n        Dataset&lt;Row&gt; peopleDF = spark.createDataFrame(resultRDD, Object.class);\n\n        String url2 = \"jdbc:oracle:thin:@192.168.101.207:1521:orcl\";  \n        Properties connectionProperties2 = new Properties();  \n        connectionProperties2.setProperty(\"user\", \"scott\");// 设置用户名  \n        connectionProperties2.setProperty(\"password\", \"tiger\");// 设置密码  \n        String table2 = \"masked1\";\n\n        peopleDF.write().mode(SaveMode.Append)  \n        .jdbc(url2, table2, connectionProperties2); \n\n    }\n}\n</code></pre>\n"
+}

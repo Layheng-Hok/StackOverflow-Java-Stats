@@ -1,0 +1,112 @@
+{
+  "tags" : [ "java", "datetime", "jodatime" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 459065,
+        "reputation" : 1582,
+        "user_id" : 859317,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/a970d2343f25147f8d33d88a977e127e?s=256&d=identicon&r=PG",
+        "display_name" : "Gambo",
+        "link" : "https://stackoverflow.com/users/859317/gambo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1343832581,
+      "post_id" : 11755741,
+      "comment_id" : 15616404,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I dont understand if I have the months from January to April its 4. January, February, March and April. Maybe my approach is the wrong one or I am using the wrong method"
+    }, {
+      "owner" : {
+        "account_id" : 1165262,
+        "reputation" : 29897,
+        "user_id" : 1143825,
+        "user_type" : "registered",
+        "accept_rate" : 94,
+        "profile_image" : "https://i.sstatic.net/kigXe.jpg?s=256",
+        "display_name" : "Ilya",
+        "link" : "https://stackoverflow.com/users/1143825/ilya"
+      },
+      "reply_to_user" : {
+        "account_id" : 459065,
+        "reputation" : 1582,
+        "user_id" : 859317,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/a970d2343f25147f8d33d88a977e127e?s=256&d=identicon&r=PG",
+        "display_name" : "Gambo",
+        "link" : "https://stackoverflow.com/users/859317/gambo"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1343839940,
+      "post_id" : 11755741,
+      "comment_id" : 15619930,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "April not finished yet at &#39;April 30th&#39;. April finished at &#39;May 1st&#39;"
+    } ],
+    "owner" : {
+      "account_id" : 1165262,
+      "reputation" : 29897,
+      "user_id" : 1143825,
+      "user_type" : "registered",
+      "accept_rate" : 94,
+      "profile_image" : "https://i.sstatic.net/kigXe.jpg?s=256",
+      "display_name" : "Ilya",
+      "link" : "https://stackoverflow.com/users/1143825/ilya"
+    },
+    "is_accepted" : true,
+    "score" : 3,
+    "last_activity_date" : 1343810985,
+    "creation_date" : 1343810985,
+    "answer_id" : 11755741,
+    "question_id" : 11742838,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>  DateTime dt1 = new DateTime(2012, 1, 1, 00, 00, 00, 00);\n  DateTime dt2 = new DateTime(2012, 4, 30, 00, 00, 00, 00);\n  System.out.println(Days.daysIn(new Interval(dt1, dt2)));     // 120D\n  System.out.println(Months.monthsIn(new Interval(dt1, dt2))); // 3M  \n</code></pre>\n\n<p>Diff between dt1 and dt2 in months is <strong>3 full month</strong> - it's true. There should not be 4 months  </p>\n\n<p>Diff between dt1 and dt2 in days is (31 days + 29 days + 31 days + 29 days) = <strong>120 days</strong>. 30th day - 30.04.2012 isn't finished yet, so it's not full day.  </p>\n\n<p>So <em>The result should be 121 days and 4 months</em> - wrong hypothesis.<br>\n<strong>The result should be 120 days and 3 months</strong></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763877139,
+    "last_edit_date" : 1763877139,
+    "creation_date" : 1763876606,
+    "answer_id" : 79827713,
+    "question_id" : 11742838,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2><em>java.time</em></h2>\n<blockquote>\n<p>with joda time?</p>\n</blockquote>\n<p>The <a href=\"https://www.joda.org/joda-time/\" rel=\"nofollow noreferrer\"><em>Joda-Time</em></a> project is now in <a href=\"https://en.wikipedia.org/wiki/Maintenance_mode\" rel=\"nofollow noreferrer\">maintenance-mode</a>. It was supplanted by the <em>java.time</em> classes built into Java 8 and later. The two frameworks share similar concepts, and the same leader, Stephen Colebourne.</p>\n<h2><code>java.time.Period</code></h2>\n<p>To represent a span-of-time on the scale of years-months, use <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Period.html\" rel=\"nofollow noreferrer\"><code>Period</code></a> class.</p>\n<blockquote>\n<p>Dates 1.1.2012 and 30.4.2012</p>\n</blockquote>\n<pre class=\"lang-java prettyprint-override\"><code>LocalDate start = LocalDate.of( 2012 , Month.JANUARY , 1 ) ;\nLocalDate end = LocalDate.of( 2012 , Month.APRIL , 30 ) ;\nPeriod period = Period.between( start , end ) ;\n</code></pre>\n<p>Extract your number of years, months, and days.</p>\n<pre class=\"lang-java prettyprint-override\"><code>int years = period.getYears() ;\nint months = period.getMonths() ;\nint days = period.getDays() ;\n</code></pre>\n<p>You can ask for the <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/Period.html#toTotalMonths()\" rel=\"nofollow noreferrer\">total number of months</a>.</p>\n<pre class=\"lang-java prettyprint-override\"><code>int totalMonths = period.getTotalMonths() ;\n</code></pre>\n<p>If you want total number of days, use <a href=\"https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/time/temporal/ChronoUnit.html#DAYS\" rel=\"nofollow noreferrer\"><code>ChronoUnit.DAYS</code></a> enum object.</p>\n<pre><code>long daysTotal = ChronoUnit.DAYS.between( start , end ) ;\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 459065,
+    "reputation" : 1582,
+    "user_id" : 859317,
+    "user_type" : "registered",
+    "accept_rate" : 86,
+    "profile_image" : "https://www.gravatar.com/avatar/a970d2343f25147f8d33d88a977e127e?s=256&d=identicon&r=PG",
+    "display_name" : "Gambo",
+    "link" : "https://stackoverflow.com/users/859317/gambo"
+  },
+  "is_answered" : true,
+  "view_count" : 1661,
+  "accepted_answer_id" : 11755741,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1763877139,
+  "creation_date" : 1343746201,
+  "last_edit_date" : 1343811300,
+  "question_id" : 11742838,
+  "link" : "https://stackoverflow.com/questions/11742838/days-months-between-to-datesonly-year-month",
+  "title" : "Days/Months between to Dates(only Year/Month)",
+  "body" : "<p>I need to calculate days and month between two start dates.</p>\n\n<p>E.g. I have two Dates 1.1.2012 and 30.4.2012 and now I want to know the amount of days and months which are included in this range.</p>\n\n<p>The result should be 121 days and 4 months. What I get instead is 120 days and 3 months.</p>\n\n<p>What is the best approach to start here with joda time?</p>\n\n<p>My code (both dates are java.util.Date):</p>\n\n<pre><code>Months.monthsBetween(new DateMidnight(startDate), new DateMidnight(endDate)).getMonths();\n</code></pre>\n"
+}

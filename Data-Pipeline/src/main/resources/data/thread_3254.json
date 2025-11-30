@@ -1,0 +1,116 @@
+{
+  "tags" : [ "java", "sftp", "spring-integration", "jsch", "mainframe" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 325503,
+      "reputation" : 10603,
+      "user_id" : 646723,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a7f8e9d841078b823918ade5723fee47?s=256&d=identicon&r=PG",
+      "display_name" : "Bruce Martin",
+      "link" : "https://stackoverflow.com/users/646723/bruce-martin"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1410928895,
+    "post_id" : 25877027,
+    "comment_id" : 40505779,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "On the mainframe, the first part of the HLQ (before the first .) must be defined as a valid HLQ. Also you will need access to write to the file. You need to make sure the user-id has access to write to the particular file"
+  }, {
+    "owner" : {
+      "account_id" : 4715695,
+      "reputation" : 877,
+      "user_id" : 3814889,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0bd736f72a2200d8a4533afd9ec3764e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Andrey E",
+      "link" : "https://stackoverflow.com/users/3814889/andrey-e"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1465399990,
+    "post_id" : 25877027,
+    "comment_id" : 62887715,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Have you solved the issue?"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 311089,
+        "reputation" : 10950,
+        "user_id" : 624463,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/995rN.png?s=256",
+        "display_name" : "cschneid",
+        "link" : "https://stackoverflow.com/users/624463/cschneid"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1410954040,
+      "post_id" : 25877546,
+      "comment_id" : 40517891,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Modern mainframes have at least two file systems.  One looks like Unix, the other is what I refer to as the &quot;classic&quot; file system.  Classic files have no directories, and typically the FTP server translates a leading &quot;//&quot; to mean the client wishes to write a classic file not a Unix file."
+    } ],
+    "owner" : {
+      "account_id" : 3273937,
+      "reputation" : 122596,
+      "user_id" : 2756547,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/2158ce6e7c048277890eb64458864c1c?s=256&d=identicon&r=PG",
+      "display_name" : "Artem Bilan",
+      "link" : "https://stackoverflow.com/users/2756547/artem-bilan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1689619723,
+    "last_edit_date" : 1689619723,
+    "creation_date" : 1410898099,
+    "answer_id" : 25877546,
+    "question_id" : 25877027,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<p>Why am I getting “Permission denied at com.jcraft.jsch.ChannelSftp.throwStatusError(ChannelSftp.java:2297)”</p>\n</blockquote>\n<blockquote>\n<p>We received this error because on some sftp servers “/” meant the root of the user’s home directory, but on others it literally meant the server root to which the user obviously did not have permissions to write. We also received this on some sftp servers when the directory to which the user was trying to write didn’t exist.</p>\n</blockquote>\n<p>Another quote:</p>\n<blockquote>\n<p>I was having the problem also with SFTP and figured out that in the parameters for the File Writer FTP in the box to the right of the ftp server name or address you have to put the fully qualified path of the folder you are going to put files in. Otherwise the MIRTH SFTP tries to change directory to / and gets a permission denied.\neg. sftp:// 111.222.333.444 / foldera/folderb/folderc/</p>\n</blockquote>\n<blockquote>\n<p>To find out what foldera/folderb/folderc/ should be use some sort of SFTP client that works (not MIRTH) and when it connects you it should show the path of folders that you are in.</p>\n</blockquote>\n<blockquote>\n<p>This worked for me.</p>\n</blockquote>\n<p>So, your issue that your SFTP path starts with <code>/</code>. The code from <code>ChannelSftp.put</code>:</p>\n<pre><code>dst=remoteAbsolutePath(dst);\n...\nprivate String remoteAbsolutePath(String path) throws SftpException{\n   if(path.charAt(0)=='/') return path;\n   String cwd=getCwd();\n   if(cwd.endsWith(&quot;/&quot;)) return cwd+path;\n   return cwd+&quot;/&quot;+path;\n}\n</code></pre>\n<p>Try to figure out how to avoid <code>/</code> in the beginning.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1312571,
+      "reputation" : 421,
+      "user_id" : 3724142,
+      "user_type" : "registered",
+      "accept_rate" : 44,
+      "profile_image" : "https://i.sstatic.net/k6J72.png?s=256",
+      "display_name" : "Tim Schumacher",
+      "link" : "https://stackoverflow.com/users/3724142/tim-schumacher"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1584485467,
+    "creation_date" : 1584485467,
+    "answer_id" : 60731310,
+    "question_id" : 25877027,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To follow up on what Artem pointed out, when sFTPing to, for example, a cloud Axway sFTP server, where I was told that the current working directory was \"/\"</p>\n\n<p>First, I used a terminal sftp client:</p>\n\n<pre><code>$ sftp username@mft-xxx.axwaycloud.com\nsftp&gt; pwd\nRemote working directory: /\n</code></pre>\n\n<p>This isn't the root /, but the chrooted directory so that I have no way to determine what the absolute path is. The below code String ftpRemoteDestinationPath = \"/\" + tempFile.getName(); works though in this situation:</p>\n\n<pre><code>    if (tempFile.exists()) {\n\n        try {\n            axwaySftpRemoteFileTemplate.execute((SessionCallback&lt;ChannelSftp.LsEntry, Void&gt;) session -&gt; {\n\n                String ftpRemoteDestinationPath = \"/\" + tempFile.getName();\n\n                logger.info(\"FTP local file residing on server: [\" + tempFile.getAbsolutePath() + \"]\");\n\n                InputStream targetStream = new FileInputStream(tempFile);\n\n                logger.debug(\"sftp uploading file: [\" + tempFile.getName() + \"] using channel connected to an sftp server :[\" + session.getClientInstance().toString() + \"]\");\n                session.write(targetStream, ftpRemoteDestinationPath);\n\n                return null;\n            });\n\n        } catch (Exception e) {\n            logger.error(\"Could not send file per SFTP: \" + e);\n\n            throw new SomeRuntimeSftpException(\"Error FTPing file \" + tempFile.getAbsolutePath() + \" \" + e.getMessage());\n        }\n        finally {\n            tempFile.delete();\n        }\n    }\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5039507,
+    "reputation" : 21,
+    "user_id" : 4047368,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/0d7d646870339122b2e1e9490ad2157f?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "AnnaL",
+    "link" : "https://stackoverflow.com/users/4047368/annal"
+  },
+  "is_answered" : false,
+  "view_count" : 8584,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1762909550,
+  "creation_date" : 1410896175,
+  "last_edit_date" : 1689619657,
+  "question_id" : 25877027,
+  "link" : "https://stackoverflow.com/questions/25877027/spring-integration-sftp-mainframe-failed-to-write-file-nested-exception-is-3",
+  "title" : "spring integration sftp mainframe :failed to write file; nested exception is 3: Permission denied",
+  "body" : "<p>I am trying to sftp file to the mainframe using Spring integration sftp:outbound-gateway:\nthis is configuration:</p>\n<pre><code>&lt;sftp:outbound-gateway id=&quot;putGateway&quot;\n        session-factory=&quot;sftpSessionFactory&quot;\n        request-channel=&quot;sftpFileInputChannel&quot;      \n        command=&quot;put&quot;       \n        expression=&quot;payload&quot;    \n        remote-directory=&quot;${remote.upload.directory}&quot;     \n        remote-filename-generator-expression=&quot;'${remote.upload.filename}'&quot;      \n        use-temporary-file-name=&quot;false&quot;\n        reply-channel=&quot;replayFromPutSftpChannel&quot;/&gt;\n</code></pre>\n<p>where</p>\n<pre><code>remote.upload.filename.credit.fmpl=/!DTS4.UP.G3TRF.S60304\nremote.upload.directory=/\n</code></pre>\n<p>I am getting exception like :</p>\n<pre><code>Caused by: org.springframework.integration.MessagingException: Failed to write to '//!DTS4.UP.G3TRF.S60304' while uploading the file\n    at org.springframework.integration.file.remote.RemoteFileTemplate.sendFileToRemoteDirectory(RemoteFileTemplate.java:392)\n    at org.springframework.integration.file.remote.RemoteFileTemplate.access$500(RemoteFileTemplate.java:56)\n    at org.springframework.integration.file.remote.RemoteFileTemplate$1.doInSession(RemoteFileTemplate.java:213)\n    ... 46 more\nCaused by: org.springframework.core.NestedIOException: failed to write file; nested exception is 3: Permission denied\n    at org.springframework.integration.sftp.session.SftpSession.write(SftpSession.java:158)\n    at org.springframework.integration.file.remote.RemoteFileTemplate.sendFileToRemoteDirectory(RemoteFileTemplate.java:385)\n    ... 48 more\nCaused by: 3: Permission denied\n    at com.jcraft.jsch.ChannelSftp.throwStatusError(ChannelSftp.java:2629)\n    at com.jcraft.jsch.ChannelSftp._put(ChannelSftp.java:545)\n    at com.jcraft.jsch.ChannelSftp.put(ChannelSftp.java:491)\n    at com.jcraft.jsch.ChannelSftp.put(ChannelSftp.java:454)\n    at org.springframework.integration.sftp.session.SftpSession.write(SftpSession.java:155)\n</code></pre>\n<p>If I am uploading from command line using sftp client, the following works :</p>\n<pre><code>put filename //!DTS4.UP.G3TRF.S60304\n</code></pre>\n<p>but via spring integration , it does not.\nThe server, I am trying to sftp to is : IBM z/OS mainframe .</p>\n<p>Please help if you know how to resolve the issue.</p>\n<p>Thank you,\nAnna</p>\n"
+}

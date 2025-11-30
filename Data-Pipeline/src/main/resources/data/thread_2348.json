@@ -1,0 +1,108 @@
+{
+  "tags" : [ "java", "spring", "spring-data", "repository-pattern", "ddd-repositories" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 182903,
+        "reputation" : 1430,
+        "user_id" : 417934,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9d5d58dc55773bbf77291bd1bf73d78f?s=256&d=identicon&r=PG",
+        "display_name" : "Chris Rice",
+        "link" : "https://stackoverflow.com/users/417934/chris-rice"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1498511406,
+      "post_id" : 38511337,
+      "comment_id" : 76518502,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hi Oliver, can you elaborate on how spring discovers the <code>@Repository</code> annotated interfaces in the first place?  Looking at <code>RepositoryFactorySupport#getRepository()</code> show that it takes the interface class as a parameter, so it must be discovered somewhere else.  I&#39;m particularly trying to figure out how to find an annotated interface and automatically generate a JDK proxy bean which implements the interface, very much like spring-data, but for an application-specific purpose not related to Repositories."
+    }, {
+      "owner" : {
+        "account_id" : 9744,
+        "reputation" : 83561,
+        "user_id" : 18122,
+        "user_type" : "registered",
+        "accept_rate" : 80,
+        "profile_image" : "https://i.sstatic.net/q5nPT.jpg?s=256",
+        "display_name" : "Oliver Drotbohm",
+        "link" : "https://stackoverflow.com/users/18122/oliver-drotbohm"
+      },
+      "reply_to_user" : {
+        "account_id" : 182903,
+        "reputation" : 1430,
+        "user_id" : 417934,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9d5d58dc55773bbf77291bd1bf73d78f?s=256&d=identicon&r=PG",
+        "display_name" : "Chris Rice",
+        "link" : "https://stackoverflow.com/users/417934/chris-rice"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1511457329,
+      "post_id" : 38511337,
+      "comment_id" : 81875840,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You might want to have a look at <a href=\"https://github.com/spring-projects/spring-data-commons/blob/0237760345faa011bdc6639ec838790be3d41e9b/src/main/java/org/springframework/data/repository/config/RepositoryComponentProvider.java#L60-L79\" rel=\"nofollow noreferrer\"><code>RepositoryComponentProvider</code></a>. There&#39;s no automatic things happening but a component scan for certain types (either annotated or carrying an annotation) and a <code>FactoryBean</code> configured for each of those."
+    }, {
+      "owner" : {
+        "account_id" : 151436,
+        "reputation" : 181,
+        "user_id" : 365313,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/90d837e0f47e03ead3e7a3867f615908?s=256&d=identicon&r=PG",
+        "display_name" : "iu.david",
+        "link" : "https://stackoverflow.com/users/365313/iu-david"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1529077717,
+      "post_id" : 38511337,
+      "comment_id" : 88759926,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Sorry to comment on an old thread, but was curious ... Are the repository proxies singleton objects? We&#39;re seeing a problem whereby our code is trying to call a repo method, but it never seems to be able to make the call on the proxy. It just hangs. I wonder if it&#39;s waiting for a singleton that&#39;s busy."
+    } ],
+    "owner" : {
+      "account_id" : 9744,
+      "reputation" : 83561,
+      "user_id" : 18122,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/q5nPT.jpg?s=256",
+      "display_name" : "Oliver Drotbohm",
+      "link" : "https://stackoverflow.com/users/18122/oliver-drotbohm"
+    },
+    "is_accepted" : true,
+    "score" : 213,
+    "last_activity_date" : 1469125833,
+    "last_edit_date" : 1469125833,
+    "creation_date" : 1469124220,
+    "answer_id" : 38511337,
+    "question_id" : 38509882,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>First of all, there's no code generation going on, which means: no CGLib, no byte-code generation at all. The fundamental approach is that a JDK proxy instance is created programmatically using Spring's <code>ProxyFactory</code> API to back the interface and a <code>MethodInterceptor</code> intercepts all calls to the instance and routes the method into the appropriate places:</p>\n\n<ol>\n<li>If the repository has been initialized with a custom implementation part (see <a href=\"https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.single-repository-behaviour\" rel=\"noreferrer\">that part of the reference documentation</a> for details), and the method invoked is implemented in that class, the call is routed there.</li>\n<li>If the method is a query method (see <a href=\"https://github.com/spring-projects/spring-data-commons/blob/1.12.2.RELEASE/src/main/java/org/springframework/data/repository/core/support/DefaultRepositoryInformation.java#L163\" rel=\"noreferrer\"><code>DefaultRepositoryInformation</code></a> for how that is determined), the store specific query execution mechanism kicks in and executes the query determined to be executed for that method at startup. For that a resolution mechanism is in place that tries to identify explicitly declared queries in various places (using <code>@Query</code> on the method, JPA named queries) eventually falling back to query derivation from the method name. For the query mechanism detection, see <a href=\"https://github.com/spring-projects/spring-data-jpa/blob/1.10.2.RELEASE/src/main/java/org/springframework/data/jpa/repository/query/JpaQueryLookupStrategy.java#L181\" rel=\"noreferrer\"><code>JpaQueryLookupStrategy</code></a>. The parsing logic for the query derivation can be found in <a href=\"https://github.com/spring-projects/spring-data-commons/blob/1.12.2.RELEASE/src/main/java/org/springframework/data/repository/query/parser/PartTree.java\" rel=\"noreferrer\"><code>PartTree</code></a>. The store specific translation into an actual query can be seen e.g. in <a href=\"https://github.com/spring-projects/spring-data-jpa/blob/1.10.2.RELEASE/src/main/java/org/springframework/data/jpa/repository/query/JpaQueryCreator.java#L214\" rel=\"noreferrer\"><code>JpaQueryCreator</code></a>.</li>\n<li>If none of the above apply the method executed has to be one implemented by a store-specific repository base class (<a href=\"https://github.com/spring-projects/spring-data-jpa/blob/1.10.2.RELEASE/src/main/java/org/springframework/data/jpa/repository/support/SimpleJpaRepository.java#L74\" rel=\"noreferrer\"><code>SimpleJpaRepository</code></a> in case of JPA) and the call is routed into an instance of that.</li>\n</ol>\n\n<p>The method interceptor implementing that routing logic is <code>QueryExecutorMethodInterceptor</code>, the high level routing logic can be found <a href=\"https://github.com/spring-projects/spring-data-commons/blob/1.12.2.RELEASE/src/main/java/org/springframework/data/repository/core/support/RepositoryFactorySupport.java#L470\" rel=\"noreferrer\">here</a>.</p>\n\n<p>The creation of those proxies is encapsulated into a standard Java based Factory pattern implementation. The high-level proxy creation can be found in <a href=\"https://github.com/spring-projects/spring-data-commons/blob/1.12.2.RELEASE/src/main/java/org/springframework/data/repository/core/support/RepositoryFactorySupport.java#L191\" rel=\"noreferrer\"><code>RepositoryFactorySupport</code></a>. The store-specific implementations then add the necessary infrastructure components so that for JPA you can go ahead and just write code like this:</p>\n\n<pre><code>EntityManager em = … // obtain an EntityManager\nJpaRepositoryFactory factory = new JpaRepositoryFactory(em);\nUserRepository repository = factory.getRepository(UserRepository.class);\n</code></pre>\n\n<p>The reason I mention that explicitly is that it should become clear that, in its core, nothing of that code requires a Spring container to run in the first place. It needs Spring as a library on the classpath (because we prefer to not reinvent the wheel), but is container agnostic in general.</p>\n\n<p>To ease the integration with DI containers we've of course then built integration with Spring Java configuration, an XML namespace, but also a <a href=\"https://github.com/spring-projects/spring-data-jpa/tree/1.10.2.RELEASE/src/main/java/org/springframework/data/jpa/repository/cdi\" rel=\"noreferrer\">CDI extension</a>, so that Spring Data can be used in plain CDI scenarios.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5523724,
+    "reputation" : 22562,
+    "user_id" : 4385895,
+    "user_type" : "registered",
+    "accept_rate" : 58,
+    "profile_image" : "https://www.gravatar.com/avatar/7f9ad5b62002bb827c13988d289b644a?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Vasu",
+    "link" : "https://stackoverflow.com/users/4385895/vasu"
+  },
+  "is_answered" : true,
+  "view_count" : 52133,
+  "accepted_answer_id" : 38511337,
+  "answer_count" : 1,
+  "score" : 176,
+  "last_activity_date" : 1469125833,
+  "creation_date" : 1469119329,
+  "last_edit_date" : 1469124399,
+  "question_id" : 38509882,
+  "link" : "https://stackoverflow.com/questions/38509882/how-are-spring-data-repositories-actually-implemented",
+  "title" : "How are Spring Data repositories actually implemented?",
+  "body" : "<p>I have been working with Spring Data JPA repository in my project for some time and I know the below points:</p>\n\n<ul>\n<li>In the repository interfaces, we can add the methods like <code>findByCustomerNameAndPhone()</code> (assuming <code>customerName</code> and <code>phone</code> are fields in the domain object).</li>\n<li>Then, Spring provides the implementation by implementing the above repository interface methods at runtime (during the application run). </li>\n</ul>\n\n<p>I am interested on how this has been coded and I have looked at the Spring JPA source code &amp; APIs, but I could not find answers to the questions below: </p>\n\n<ol>\n<li>How is the repository implementation class generated at runtime &amp; methods being implemented and injected? </li>\n<li>Does Spring Data JPA use CGlib or any bytecode manipulation libraries to implement the methods and inject dynamically?</li>\n</ol>\n\n<p>Could you please help with the above queries and also provide any supported documentation ?</p>\n"
+}

@@ -1,0 +1,100 @@
+{
+  "tags" : [ "java", "lambda", "java-8" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2478127,
+      "reputation" : 19760,
+      "user_id" : 2158288,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/glWQk.jpg?s=256",
+      "display_name" : "ZhongYu",
+      "link" : "https://stackoverflow.com/users/2158288/zhongyu"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1444665486,
+    "post_id" : 33085151,
+    "comment_id" : 53987112,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "yes, I too believe it is a compiler bug. try workaround <code>filter((Boolean b)-&gt;b))</code>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2478127,
+        "reputation" : 19760,
+        "user_id" : 2158288,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/glWQk.jpg?s=256",
+        "display_name" : "ZhongYu",
+        "link" : "https://stackoverflow.com/users/2158288/zhongyu"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1444665743,
+      "post_id" : 33085286,
+      "comment_id" : 53987289,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "no - while the target type is <code>Predicate&lt;? super Boolean&gt;</code>, the type of the lambda expression should be <code>Predicate&lt;Boolean&gt;</code>. (jls#12.27.3). Therefore <code>b</code> has a static type of <code>Boolean</code>"
+    } ],
+    "owner" : {
+      "account_id" : 93689,
+      "reputation" : 427426,
+      "user_id" : 256196,
+      "user_type" : "moderator",
+      "accept_rate" : 77,
+      "profile_image" : "https://www.gravatar.com/avatar/d84b558fd67be10d5a718fb94231909d?s=256&d=identicon&r=PG",
+      "display_name" : "Bohemian",
+      "link" : "https://stackoverflow.com/users/256196/bohemian"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1444665151,
+    "creation_date" : 1444665151,
+    "answer_id" : 33085286,
+    "question_id" : 33085151,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>&lt;? super E&gt;</code> includes <code>Object</code>, which isn't a <code>Boolean</code>. ie </p>\n\n<pre><code>MyPredicate&lt;? super E&gt;\n</code></pre>\n\n<p>Could be a </p>\n\n<pre><code>MyPredicate&lt;Object&gt;\n</code></pre>\n\n<p>and you can't return an <code>Object</code> as a <code>boolean</code>.</p>\n\n<p>Try changing your lambda to:</p>\n\n<pre><code>MyStream.&lt;Boolean&gt; create().filter(b -&gt; Boolean.TRUE.equals(b));\n</code></pre>\n\n<p>which will compile and execute without error not matter the type of the stream, but will return <code>true</code> for elements that are <code>true</code> <code>Boolean</code> values.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2478127,
+      "reputation" : 19760,
+      "user_id" : 2158288,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/glWQk.jpg?s=256",
+      "display_name" : "ZhongYu",
+      "link" : "https://stackoverflow.com/users/2158288/zhongyu"
+    },
+    "is_accepted" : true,
+    "score" : 15,
+    "last_activity_date" : 1762390022,
+    "last_edit_date" : 1762390022,
+    "creation_date" : 1444667221,
+    "answer_id" : 33085893,
+    "question_id" : 33085151,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If a lambda expression appears in a target type with wildcards (as in most cases)</p>\n<pre><code>  Consumer&lt;? super Boolean&gt; consumer = b-&gt;{...}\n</code></pre>\n<p>the question arises - what's the type of the lambda expression; in particular, the type of <code>b</code>.</p>\n<p>Of course, there could be many choices due to the wildcards; e.g. we could explicitly choose</p>\n<pre><code>  Consumer&lt;? super Boolean&gt; consumer = (Object b)-&gt;{...}\n</code></pre>\n<p>However, implicitly, <code>b</code> should be inferred as <code>Boolean</code>. This makes sense since the consumer should only be fed with <code>Boolean</code> anyway.</p>\n<p><a href=\"http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.27.3\" rel=\"nofollow noreferrer\">http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.27.3</a></p>\n<blockquote>\n<p>If T is a wildcard-parameterized functional interface type and the lambda expression is implicitly typed, then the ground target type is the non-wildcard parameterization of T</p>\n</blockquote>\n<p>(This probably assumes that wildcards are used properly variance-wise on the target type; we might find some hilarious examples if the assumption doesn't hold)</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5728567,
+    "reputation" : 447,
+    "user_id" : 4524838,
+    "user_type" : "registered",
+    "accept_rate" : 50,
+    "profile_image" : "https://www.gravatar.com/avatar/c4e11ac570c900749f4487fbe63a3b18?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Roland Illig",
+    "link" : "https://stackoverflow.com/users/4524838/roland-illig"
+  },
+  "is_answered" : true,
+  "view_count" : 81699,
+  "accepted_answer_id" : 33085893,
+  "answer_count" : 2,
+  "score" : 21,
+  "last_activity_date" : 1762390022,
+  "creation_date" : 1444664733,
+  "last_edit_date" : 1444665067,
+  "question_id" : 33085151,
+  "link" : "https://stackoverflow.com/questions/33085151/bad-return-type-in-lambda-expression",
+  "title" : "bad return type in lambda expression",
+  "body" : "<p>The following code compiles fine in IntelliJ and Eclipse, but the JDK compiler 1.8.0_25 complains. First, the code.</p>\n\n<pre><code>import java.util.function.Predicate;\n\npublic abstract class MyStream&lt;E&gt; {\n\n  static &lt;T&gt; MyStream&lt;T&gt; create() {\n    return null;\n  }\n\n  abstract MyStream&lt;E&gt; filter(MyPredicate&lt;? super E&gt; predicate);\n\n  public interface MyPredicate&lt;T&gt; extends Predicate&lt;T&gt; {\n\n    @Override\n    boolean test(T t);\n  }\n\n  public void demo() {\n    MyStream.&lt;Boolean&gt; create().filter(b -&gt; b);\n    MyStream.&lt;String&gt; create().filter(s -&gt; s != null);\n  }\n}\n</code></pre>\n\n<p>The output from javac 1.8.0_25 is:</p>\n\n<pre><code>MyStream.java:18: error: incompatible types: incompatible parameter types in lambda expression\n    MyStream.&lt;Boolean&gt; create().filter(b -&gt; b);\n                                       ^\nMyStream.java:18: error: incompatible types: bad return type in lambda expression\n    MyStream.&lt;Boolean&gt; create().filter(b -&gt; b);\n                                            ^\n    ? super Boolean cannot be converted to boolean\nMyStream.java:19: error: bad operand types for binary operator '!='\n    MyStream.&lt;String&gt; create().filter(s -&gt; s != null);\n                                             ^\n  first type:  ? super String\n  second type: &lt;null&gt;\nMyStream.java:19: error: incompatible types: incompatible parameter types in lambda expression\n    MyStream.&lt;String&gt; create().filter(s -&gt; s != null);\n                                      ^\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n4 errors\n</code></pre>\n\n<p>When I replace <code>? super E</code> with simply <code>E</code>, JDK compiles successfully.</p>\n\n<p>When I replace <code>filter(MyPredicate</code> with <code>filter(Predicate</code>, JDK compiles successfully.</p>\n\n<p>Since it works with JDK 1.8.0_60, I suspect it is a compiler bug.</p>\n\n<p>Any details on what caused this and when it has been fixed?</p>\n"
+}

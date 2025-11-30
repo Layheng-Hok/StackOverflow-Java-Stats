@@ -1,0 +1,134 @@
+{
+  "tags" : [ "java", "jsp", "zip" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6665551,
+        "reputation" : 124,
+        "user_id" : 5143289,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/fKs2s.jpg?s=256",
+        "display_name" : "Sharath Samala",
+        "link" : "https://stackoverflow.com/users/5143289/sharath-samala"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442400071,
+      "post_id" : 32606021,
+      "comment_id" : 53063757,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "how can i add this dynamically to a jsp downlaod button ? actually when i click the download button my code is calling a method that creates the wanted zip file and is then downloaded. but now i want those files unzipped and download when i click download button"
+    }, {
+      "owner" : {
+        "account_id" : 6958665,
+        "reputation" : 1,
+        "user_id" : 5338889,
+        "user_type" : "unregistered",
+        "profile_image" : "https://www.gravatar.com/avatar/faa9aff3d7fd9335f7590156dc5e0e01?s=256&d=identicon&r=PG",
+        "display_name" : "krishna",
+        "link" : "https://stackoverflow.com/users/5338889/krishna"
+      },
+      "reply_to_user" : {
+        "account_id" : 6665551,
+        "reputation" : 124,
+        "user_id" : 5143289,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/fKs2s.jpg?s=256",
+        "display_name" : "Sharath Samala",
+        "link" : "https://stackoverflow.com/users/5143289/sharath-samala"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442402491,
+      "post_id" : 32606021,
+      "comment_id" : 53065265,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "okk if you give me the method code wich creates  zip file we can resolve it."
+    }, {
+      "owner" : {
+        "account_id" : 6958665,
+        "reputation" : 1,
+        "user_id" : 5338889,
+        "user_type" : "unregistered",
+        "profile_image" : "https://www.gravatar.com/avatar/faa9aff3d7fd9335f7590156dc5e0e01?s=256&d=identicon&r=PG",
+        "display_name" : "krishna",
+        "link" : "https://stackoverflow.com/users/5338889/krishna"
+      },
+      "reply_to_user" : {
+        "account_id" : 6665551,
+        "reputation" : 124,
+        "user_id" : 5143289,
+        "user_type" : "registered",
+        "accept_rate" : 64,
+        "profile_image" : "https://i.sstatic.net/fKs2s.jpg?s=256",
+        "display_name" : "Sharath Samala",
+        "link" : "https://stackoverflow.com/users/5143289/sharath-samala"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1442408917,
+      "post_id" : 32606021,
+      "comment_id" : 53069944,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "i think you no need to add to zip,directly you can copy the files and download"
+    } ],
+    "owner" : {
+      "account_id" : 6958665,
+      "reputation" : 1,
+      "user_id" : 5338889,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/faa9aff3d7fd9335f7590156dc5e0e01?s=256&d=identicon&r=PG",
+      "display_name" : "krishna",
+      "link" : "https://stackoverflow.com/users/5338889/krishna"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1442399210,
+    "creation_date" : 1442399210,
+    "answer_id" : 32606021,
+    "question_id" : 32604789,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>yah  you can use java code to unzip the file.here is the example </p>\n\n<pre><code>import java.io.BufferedOutputStream;\nimport java.io.File;\nimport java.io.FileInputStream;\nimport java.io.FileNotFoundException;\nimport java.io.FileOutputStream;\nimport java.io.IOException;\nimport java.util.zip.ZipEntry;\nimport java.util.zip.ZipInputStream;\n\n\npublic class UnzipUtility {\n    public String zipFilePath= \"D:/javatut/corejava/src/zipfile.zip\";\n    public String destDir = \"D:/javatut/corejava\";\n    private static final int BUFFER_SIZE = 4096;\n    /**\n     * @param args\n     * @throws IOException \n     */\n    public static void main(String[] args) throws IOException {\n        UnzipUtility uu = new UnzipUtility();\n        uu.unzip(uu.zipFilePath, uu.destDir);\n    }\n    public void unzip(String zipFilePath,String destDir)throws IOException{\n        File destDirectory = new File(destDir);\n        if(!destDirectory.exists()){\n            destDirectory.mkdir();\n        }\n\n        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));\n        ZipEntry zipEntry = zipIn.getNextEntry();\n        while(zipEntry!=null){\n            String filePath=destDir+File.separator+zipEntry.getName();\n            if(!zipEntry.isDirectory()){\n                extractFile(zipIn,filePath);\n\n            }\n            else{\n                File dir = new File(filePath);\n                dir.mkdir();\n            }\n\n            zipIn.closeEntry();\n            zipEntry = zipIn.getNextEntry();\n        }\n        zipIn.close();\n\n\n    }\n    private void extractFile(ZipInputStream zipIn, String filePath) throws FileNotFoundException {\n         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));\n            byte[] bytesIn = new byte[BUFFER_SIZE];\n            int read = 0;\n            try {\n                while ((read = zipIn.read(bytesIn)) != -1) {\n                    bos.write(bytesIn, 0, read);\n                }\n            } catch (IOException e) {\n                // TODO Auto-generated catch block\n                e.printStackTrace();\n            }\n            try {\n                bos.close();\n            } catch (IOException e) {\n                // TODO Auto-generated catch block\n                e.printStackTrace();\n            }\n        }\n\n    }\n</code></pre>\n\n<p>thank you.......</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 20290999,
+      "reputation" : 1,
+      "user_id" : 14882657,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/415cccf721d6f44390fec57598322d95?s=256&d=identicon&r=PG",
+      "display_name" : "user14882657",
+      "link" : "https://stackoverflow.com/users/14882657/user14882657"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1608800589,
+    "creation_date" : 1608800589,
+    "answer_id" : 65436137,
+    "question_id" : 32604789,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>please follow this path and (clear) automatic files viewer</p>\n<p>chrome://settings/onStartup/Advanced/Downloads/automatic file viewer    <strong><strong>(clear)</strong></strong></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6665551,
+    "reputation" : 124,
+    "user_id" : 5143289,
+    "user_type" : "registered",
+    "accept_rate" : 64,
+    "profile_image" : "https://i.sstatic.net/fKs2s.jpg?s=256",
+    "display_name" : "Sharath Samala",
+    "link" : "https://stackoverflow.com/users/5143289/sharath-samala"
+  },
+  "is_answered" : false,
+  "view_count" : 2622,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1761752354,
+  "creation_date" : 1442395991,
+  "last_edit_date" : 1761752354,
+  "question_id" : 32604789,
+  "link" : "https://stackoverflow.com/questions/32604789/automatically-unzip-file-while-downloading-that-zip-file",
+  "title" : "Automatically unzip file while downloading that zip file",
+  "body" : "<p>I have a download button in my web page where when I click it, it downloads a zip file. Now I want to have a function like, when I click the download button the zip file should automatically extract and save in a user defined folder.</p>\n<p>I have an idea that if we can create a exe file and add it to the download button then it should automatically extract the zip file and save in folder.</p>\n<pre><code>%&gt;\n                    &lt;td align=&quot;center&quot;&gt;\n                    &lt;img onclick=&quot;pullReport('&lt;%=reportPath.toString()%&gt;');&quot; title=&quot;Click to download this Report&quot; src=&quot;./images/down-bt.gif&quot;/&gt;\n                    &lt;/td&gt;\n                &lt;/tr&gt;\n            &lt;%} %&gt;\n</code></pre>\n<p>this is the method that creates zip file</p>\n<pre><code>public ActionForward pullReport(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)throws SQLException{\n     Connection connection=null;\n     boolean cont=false;\n     failureList.clear();\n     logger.info(&quot;dispatch = pullReport&quot;);\n     String filePaths=null; \n     String filePath = null;\n     String fileName = null;\n     String srcFileName = null;\n     String directory = null;\n     try{\n          Properties props = Application.getProperties(); \n          String basePath = props.getProperty(&quot;std.report_location&quot;);\n          logger.info(&quot; basepath &quot; + basePath);\n          connection=ConnectionManager.getConnection();\n          StandardReportsForm standardReportsForm=(StandardReportsForm)form;\n          filePaths=standardReportsForm.getFilePath();\n         logger.info(&quot;filepaths &quot; + filePaths);\n          ServletOutputStream fos = null;\n             \n\n          InputStream is = null;\n          String [] filePathArr = filePaths.split(&quot;,&quot;);\n               \n          FileIO fio = null;\n          FileIO srcFio = null;\n          if (filePathArr.length &gt; 1) {\n            filePath = filePathArr[0].substring(0,filePathArr[0].lastIndexOf(&quot;.&quot;))+&quot;.zip&quot;;\n            logger.info(filePath + &quot; creating zip file ......&quot;); \n            directory = basePath+filePath.substring(0,filePath.lastIndexOf('/'));\n            logger.info( &quot; Direcory Name :&quot; +directory); \n            fileName = filePath.substring(filePath.lastIndexOf('/')+1);\n            logger.info( &quot; File Name :&quot; +fileName); \n            fio = new FileIO(directory,fileName);\n            fio.mkDir();\n            byte[] buffer = new byte[1024];\n           \n            OutputStream fosForZip = fio.createOutputStream();\n\n            ZipOutputStream zos = new ZipOutputStream(fosForZip);\n            InputStream fis = null;\n            for (int i=0; i &lt; filePathArr.length; i++) {\n                srcFileName = filePathArr[i].substring(filePathArr[i].lastIndexOf('/')+1);\n                srcFio = new FileIO(directory,srcFileName);\n                \n                if (srcFio.isFileExist()) {\n                    cont=true;\n                    \n                    logger.info(&quot; adding into zip file &quot; +srcFileName);\n                    fis = srcFio.createInputStream();\n                    BufferedInputStream bis = new BufferedInputStream(fis);\n\n                    zos.putNextEntry(new ZipEntry(srcFileName));\n                    \n                    int length;\n\n                    while ((length = bis.read(buffer)) != -1) {\n                        zos.write(buffer, 0, length);\n                    }\n\n                    zos.closeEntry();\n                    // close the InputStream\n                    bis.close();\n                    srcFio.closeInputStream(fis);\n                } else {\n                    logger.info(srcFileName + &quot; file does not exist on shared drive&quot;);\n                    cont =false;\n                    break;\n                }\n                    \n            }\n            FileIO.closeOutputStream(zos);\n            if (!cont){\n                standardReportsForm.setMissingFileName(srcFileName);\n                request.getSession().getAttribute(&quot;fetchReports&quot;);\n                standardReportsForm.setFetchedReports((List&lt;ReportDetails&gt;)request.getSession().getAttribute(&quot;fetchReports&quot;));\n                return mapping.findForward(&quot;fetchReport&quot;);\n            }\n                \n          } else {\n            filePath = filePathArr[0];\n            fileName = filePath.substring(filePath.lastIndexOf('/')+1);\n          }\n          \n          if (basePath.startsWith(&quot;smb&quot;)) {\n            SmbFile smbFile = new SmbFile(basePath+filePath,SMBHelper.getInstance().createAuthFromSmbLocation(basePath));\n            if(smbFile.exists())\n            {\n                    is = new SmbFileInputStream(smbFile);\n                    cont=true;\n            }\n          } else {\n            File file=new File(basePath+filePath);\n            if(file.exists())\n            {\n                    is = new FileInputStream(file);\n                    cont=true;\n            }\n          }\n          if(cont)\n          {\n              fos=response.getOutputStream();\n                \n              setContentType(response, fileName);\n                \n                //fos.write (baos.toByteArray());\n              ByteArrayOutputStream bos = new ByteArrayOutputStream();\n              byte[] buf = new byte[1024];\n              for (int readNum; (readNum = is.read(buf)) != -1;) {\n                  bos.write(buf, 0, readNum);\n              }\n               \n                byte[] bytes = bos.toByteArray();\n                fos.write(bytes);\n                fos.flush();\n                fos.close();\n                \n          } else {\n                standardReportsForm.setMissingFileName(fileName);\n                request.getSession().getAttribute(&quot;fetchReports&quot;);\n                standardReportsForm.setFetchedReports((List&lt;ReportDetails&gt;)request.getSession().getAttribute(&quot;fetchReports&quot;));\n                return mapping.findForward(&quot;fetchReport&quot;);\n          }\n                \n        }catch(SQLException sx) {\n            logger.error(&quot; error log SQLException &quot; ,sx);\n            failureList.add(new UROCException(UROCMessages.getMessage(&quot;ERR_CONN_EXEC&quot;), sx));\n        } catch(NamingException ne) {\n            logger.info(&quot;RMI error is &quot;+ne);\n            failureList.add(new UROCException(UROCMessages.getMessage(&quot;ERR_NAMING_EXEC&quot;), ne));\n        } catch(Exception e) {\n            logger.error(&quot; error log Exception &quot; ,e);\n            failureList.add(new UROCException(UROCMessages.getMessage(&quot;ERR_GEN_EXEC&quot;, new String[] {&quot;General Exception&quot;}), e));\n        } finally {\n            SQLHelper.closeConnection(connection, failureList, logger);\n        }\n        \n        return null;\n }\n</code></pre>\n"
+}

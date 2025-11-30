@@ -1,0 +1,99 @@
+{
+  "tags" : [ "java", "spring-boot", "h2" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 15664997,
+      "reputation" : 348,
+      "user_id" : 11302953,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/lmZW0.jpg?s=256",
+      "display_name" : "chachay",
+      "link" : "https://stackoverflow.com/users/11302953/chachay"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1631205800,
+    "post_id" : 69121686,
+    "comment_id" : 122166625,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "it may help you: <a href=\"https://github.com/h2database/h2database/issues/2152\" rel=\"nofollow noreferrer\">github.com/h2database/h2database/issues/2152</a>"
+  }, {
+    "owner" : {
+      "account_id" : 17434554,
+      "reputation" : 1367,
+      "user_id" : 12637839,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/U2OOJ.jpg?s=256",
+      "display_name" : "Mykhailo Skliar",
+      "link" : "https://stackoverflow.com/users/12637839/mykhailo-skliar"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1631213382,
+    "post_id" : 69121686,
+    "comment_id" : 122169340,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "It seems that you don&#39;t shutdown your application gracefully (so lock files are not deleted), or h2 database doesn&#39;t have permissions to delete lock files on your OS. See more information here: <a href=\"https://stackoverflow.com/questions/9972372/what-is-the-proper-way-to-close-h2\" title=\"what is the proper way to close h2\">stackoverflow.com/questions/9972372/&hellip;</a>"
+  }, {
+    "owner" : {
+      "account_id" : 955604,
+      "reputation" : 3107,
+      "user_id" : 980967,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/e22db99bb00cb7ea1ad2e872863101e5?s=256&d=identicon&r=PG",
+      "display_name" : "ksnortum",
+      "link" : "https://stackoverflow.com/users/980967/ksnortum"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1631221091,
+    "post_id" : 69121686,
+    "comment_id" : 122171771,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I am being careful to shutdown with actuator/shutdown in Postman.  See edit 3 above."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 955604,
+      "reputation" : 3107,
+      "user_id" : 980967,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/e22db99bb00cb7ea1ad2e872863101e5?s=256&d=identicon&r=PG",
+      "display_name" : "ksnortum",
+      "link" : "https://stackoverflow.com/users/980967/ksnortum"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1764069284,
+    "last_edit_date" : 1764069284,
+    "creation_date" : 1631234461,
+    "answer_id" : 69126023,
+    "question_id" : 69121686,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I found the problem!  Adding <code>debug=true</code> to the <code>applications.properties</code> file, I saw this:</p>\n<pre><code>Starting delayed evictData of schema as part of SessionFactory shut-down\n</code></pre>\n<p>So for some reason, Spring was explicitly dropping my table!</p>\n<p>Adding this to the <code>applications.properties</code> file stopped that:</p>\n<pre class=\"lang-ini prettyprint-override\"><code>spring.jpa.hibernate.ddl-auto=update\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 955604,
+    "reputation" : 3107,
+    "user_id" : 980967,
+    "user_type" : "registered",
+    "accept_rate" : 80,
+    "profile_image" : "https://www.gravatar.com/avatar/e22db99bb00cb7ea1ad2e872863101e5?s=256&d=identicon&r=PG",
+    "display_name" : "ksnortum",
+    "link" : "https://stackoverflow.com/users/980967/ksnortum"
+  },
+  "is_answered" : true,
+  "view_count" : 5166,
+  "accepted_answer_id" : 69126023,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1764069284,
+  "creation_date" : 1631204475,
+  "last_edit_date" : 1631221012,
+  "question_id" : 69121686,
+  "link" : "https://stackoverflow.com/questions/69121686/h2-database-not-flushed-because-of-file-lock",
+  "title" : "H2 database not flushed because of file lock",
+  "body" : "<p>I am running a Spring-Boot project in IDEA Intelli for training that writes a recipe to the database using REST-full services.  The IDE runs the server and I use Postman to query.</p>\n<p>My problem is that the H2 database does not persist the data entered.  In memory it's fine, but as soon as I shutdown and start up again, the data is gone.</p>\n<p>Looking at the database file, I see a trace file that seems to show that the DB wasn't updated because there was a lock on it.  I have searched for a lock file (<code>locate *.lock.db</code>), stopped all Java processes, and even rebooted without a change in behavior.  I've changed the FILE_LOCK options for H2 but the problem persists.</p>\n<p><strong>EDIT:</strong> I just noticed that I hadn't tried FILE_LOCK=FILE.  I just tried it and the db isn't updated.  However, a trace file is not produced.</p>\n<p><strong>EDIT 2:</strong> I forgot to say that I'm running on Ubuntu 20.04.</p>\n<p><strong>EDIT 3:</strong> I am being careful to shutdown using the &quot;actuator/shutdown&quot; from Postman.  Using file locking, I do this:</p>\n<ul>\n<li>start the server running from my IDE.  I can see the lock file being created</li>\n<li>create a new recipe</li>\n<li>make sure I can get it (returns the recipe, no error)</li>\n<li>shutdown using the actuator.  The lock file is removed.</li>\n<li>startup the server again.  New lock file.</li>\n<li>try to get the recipe.  Returns a 404 error.  No trace file.</li>\n</ul>\n<p>What could be causing this?  Here is my trace.db file [note: when I use FILE_LOCK=FILE, no trace file is created, so maybe the locking problem was a red herring?]:</p>\n<pre><code>2021-09-09 07:54:08 database: flush\norg.h2.message.DbException: General error: &quot;java.lang.IllegalStateException: The file is locked: nio:/home/knute/IdeaProjects/recipes_db.mv.db [1.4.200/7]&quot; [50000-200]\n    at org.h2.message.DbException.get(DbException.java:194)\n    at org.h2.message.DbException.convert(DbException.java:347)\n    at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:93)\n    at org.h2.mvstore.MVStore.handleException(MVStore.java:2877)\n    at org.h2.mvstore.MVStore.panic(MVStore.java:481)\n    at org.h2.mvstore.MVStore.&lt;init&gt;(MVStore.java:402)\n    at org.h2.mvstore.MVStore$Builder.open(MVStore.java:3579)\n    at org.h2.mvstore.db.MVTableEngine$Store.open(MVTableEngine.java:170)\n    at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:103)\n    at org.h2.engine.Database.getPageStore(Database.java:2659)\n    at org.h2.engine.Database.open(Database.java:675)\n    at org.h2.engine.Database.openDatabase(Database.java:307)\n    at org.h2.engine.Database.&lt;init&gt;(Database.java:301)\n    at org.h2.engine.Engine.openSession(Engine.java:74)\n    at org.h2.engine.Engine.openSession(Engine.java:192)\n    at org.h2.engine.Engine.createSessionAndValidate(Engine.java:171)\n    at org.h2.engine.Engine.createSession(Engine.java:166)\n    at org.h2.engine.Engine.createSession(Engine.java:29)\n    at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:340)\n    at org.h2.jdbc.JdbcConnection.&lt;init&gt;(JdbcConnection.java:173)\n    at org.h2.jdbc.JdbcConnection.&lt;init&gt;(JdbcConnection.java:152)\n    at org.h2.Driver.connect(Driver.java:69)\n    at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)\n    at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:358)\n    at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206)\n    at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:477)\n    at com.zaxxer.hikari.pool.HikariPool.access$100(HikariPool.java:71)\n    at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:725)\n    at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:711)\n    at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)\n    at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n    at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n    at java.base/java.lang.Thread.run(Thread.java:829)\nCaused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: &quot;java.lang.IllegalStateException: The file is locked: nio:/home/knute/IdeaProjects/recipes_db.mv.db [1.4.200/7]&quot; [50000-200]\n    at org.h2.message.DbException.getJdbcSQLException(DbException.java:505)\n    at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)\n    ... 33 more\nCaused by: java.lang.IllegalStateException: The file is locked: nio:/home/knute/IdeaProjects/recipes_db.mv.db [1.4.200/7]\n    at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:950)\n    at org.h2.mvstore.FileStore.open(FileStore.java:166)\n    at org.h2.mvstore.MVStore.&lt;init&gt;(MVStore.java:381)\n    ... 27 more\nCaused by: java.nio.channels.OverlappingFileLockException\n    at java.base/sun.nio.ch.FileLockTable.checkList(FileLockTable.java:229)\n    at java.base/sun.nio.ch.FileLockTable.add(FileLockTable.java:123)\n    at java.base/sun.nio.ch.FileChannelImpl.tryLock(FileChannelImpl.java:1154)\n    at org.h2.store.fs.FileNio.tryLock(FilePathNio.java:121)\n    at java.base/java.nio.channels.FileChannel.tryLock(FileChannel.java:1165)\n    at org.h2.mvstore.FileStore.open(FileStore.java:163)\n    ... 28 more\n2021-09-09 07:54:08 database: flush\norg.h2.message.DbException: General error: &quot;java.lang.IllegalStateException: The file is locked: nio:/home/knute/IdeaProjects/recipes_db.mv.db [1.4.200/7]&quot; [50000-200]\n    at org.h2.message.DbException.get(DbException.java:194)\n    at org.h2.message.DbException.convert(DbException.java:347)\n    at org.h2.mvstore.db.MVTableEngine$1.uncaughtException(MVTableEngine.java:93)\n    at org.h2.mvstore.MVStore.handleException(MVStore.java:2877)\n    at org.h2.mvstore.MVStore.panic(MVStore.java:481)\n    at org.h2.mvstore.MVStore.&lt;init&gt;(MVStore.java:402)\n    at org.h2.mvstore.MVStore$Builder.open(MVStore.java:3579)\n    at org.h2.mvstore.db.MVTableEngine$Store.open(MVTableEngine.java:170)\n    at org.h2.mvstore.db.MVTableEngine.init(MVTableEngine.java:103)\n    at org.h2.engine.Database.getPageStore(Database.java:2659)\n    at org.h2.engine.Database.open(Database.java:675)\n    at org.h2.engine.Database.openDatabase(Database.java:307)\n    at org.h2.engine.Database.&lt;init&gt;(Database.java:301)\n    at org.h2.engine.Engine.openSession(Engine.java:74)\n    at org.h2.engine.Engine.openSession(Engine.java:192)\n    at org.h2.engine.Engine.createSessionAndValidate(Engine.java:171)\n    at org.h2.engine.Engine.createSession(Engine.java:166)\n    at org.h2.engine.Engine.createSession(Engine.java:29)\n    at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:340)\n    at org.h2.jdbc.JdbcConnection.&lt;init&gt;(JdbcConnection.java:173)\n    at org.h2.jdbc.JdbcConnection.&lt;init&gt;(JdbcConnection.java:152)\n    at org.h2.Driver.connect(Driver.java:69)\n    at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)\n    at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:358)\n    at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206)\n    at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:477)\n    at com.zaxxer.hikari.pool.HikariPool.access$100(HikariPool.java:71)\n    at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:725)\n    at com.zaxxer.hikari.pool.HikariPool$PoolEntryCreator.call(HikariPool.java:711)\n    at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)\n    at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n    at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n    at java.base/java.lang.Thread.run(Thread.java:829)\nCaused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: &quot;java.lang.IllegalStateException: The file is locked: nio:/home/knute/IdeaProjects/recipes_db.mv.db [1.4.200/7]&quot; [50000-200]\n    at org.h2.message.DbException.getJdbcSQLException(DbException.java:505)\n    at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)\n    ... 33 more\nCaused by: java.lang.IllegalStateException: The file is locked: nio:/home/knute/IdeaProjects/recipes_db.mv.db [1.4.200/7]\n    at org.h2.mvstore.DataUtils.newIllegalStateException(DataUtils.java:950)\n    at org.h2.mvstore.FileStore.open(FileStore.java:166)\n    at org.h2.mvstore.MVStore.&lt;init&gt;(MVStore.java:381)\n    ... 27 more\nCaused by: java.nio.channels.OverlappingFileLockException\n    at java.base/sun.nio.ch.FileLockTable.checkList(FileLockTable.java:229)\n    at java.base/sun.nio.ch.FileLockTable.add(FileLockTable.java:123)\n    at java.base/sun.nio.ch.FileChannelImpl.tryLock(FileChannelImpl.java:1154)\n    at org.h2.store.fs.FileNio.tryLock(FilePathNio.java:121)\n    at java.base/java.nio.channels.FileChannel.tryLock(FileChannel.java:1165)\n    at org.h2.mvstore.FileStore.open(FileStore.java:163)\n    ... 28 more\n</code></pre>\n<p>...and the application.properties file [note: in my current iteration, I am using FILE_LOCK=FILE]:</p>\n<pre><code># Required by HyperSkill\nserver.port=8881\nmanagement.endpoints.web.exposure.include=*\nmanagement.endpoint.shutdown.enabled=true\nspring.datasource.url=jdbc:h2:file:../recipes_db\n\n# Solves file locking problem? No.\n#spring.datasource.url=jdbc:h2:file:../recipes_db;DB_CLOSE_ON_EXIT=TRUE;FILE_LOCK=NO\n#spring.datasource.url=jdbc:h2:file:../recipes_db;FILE_LOCK=NO\n#spring.datasource.url=jdbc:h2:file:../recipes_db;FILE_LOCK=SOCKET\n#spring.datasource.url=jdbc:h2:file:../recipes_db;FILE_LOCK=FS\n\n# Needed?\nspring.datasource.auto-commit=true\n\n# To remove warning\nspring.jpa.open-in-view=true\n</code></pre>\n"
+}

@@ -1,0 +1,491 @@
+{
+  "tags" : [ "java", "string", "object", "tostring" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2389614,
+      "reputation" : 3523,
+      "user_id" : 2092405,
+      "user_type" : "registered",
+      "accept_rate" : 93,
+      "profile_image" : "https://www.gravatar.com/avatar/7851e072f6a91643bc0ec24c00902bed?s=256&d=identicon&r=PG",
+      "display_name" : "Ashish Rawat",
+      "link" : "https://stackoverflow.com/users/2092405/ashish-rawat"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1438999654,
+    "post_id" : 29140402,
+    "comment_id" : 51695349,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "You can use <a href=\"https://github.com/google/gson\" rel=\"nofollow noreferrer\">GSON</a> library to convert object to json and vice versa. Very useful for debugging."
+  }, {
+    "owner" : {
+      "account_id" : 261142,
+      "reputation" : 49214,
+      "user_id" : 545127,
+      "user_type" : "registered",
+      "accept_rate" : 69,
+      "profile_image" : "https://i.sstatic.net/RJgJM.png?s=256",
+      "display_name" : "Raedwald",
+      "link" : "https://stackoverflow.com/users/545127/raedwald"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1459001666,
+    "post_id" : 29140402,
+    "comment_id" : 60103117,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "See also <a href=\"http://stackoverflow.com/questions/27647567/how-to-support-println-in-a-class\" title=\"how to support println in a class\">stackoverflow.com/questions/27647567/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 218057,
+      "reputation" : 69716,
+      "user_id" : 474189,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://www.gravatar.com/avatar/32b712ec4f7dcc2e8a6907b9903aa8ba?s=256&d=identicon&r=PG",
+      "display_name" : "Duncan Jones",
+      "link" : "https://stackoverflow.com/users/474189/duncan-jones"
+    },
+    "is_accepted" : true,
+    "score" : 520,
+    "last_activity_date" : 1606768856,
+    "last_edit_date" : 1606768856,
+    "creation_date" : 1426755558,
+    "answer_id" : 29140403,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>Background</h1>\n<p>All Java objects have a <code>toString()</code> method, which is invoked when you try to print the object.</p>\n<pre><code>System.out.println(myObject);  // invokes myObject.toString()\n</code></pre>\n<p>This method is defined in the <a href=\"http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html\" rel=\"noreferrer\"><code>Object</code></a> class (the superclass of all Java objects). The <a href=\"http://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#toString--\" rel=\"noreferrer\"><code>Object.toString()</code></a> method returns a fairly ugly looking string, composed of the name of the class, an <code>@</code> symbol and the <a href=\"https://stackoverflow.com/questions/3563847/what-is-the-use-of-hashcode-in-java\">hashcode</a> of the object in hexadecimal. The code for this looks like:</p>\n<pre><code>// Code of Object.toString()\npublic String toString() {\n    return getClass().getName() + &quot;@&quot; + Integer.toHexString(hashCode());\n}\n</code></pre>\n<p>A result such as <code>com.foo.MyType@2f92e0f4</code> can therefore be explained as:</p>\n<ul>\n<li><code>com.foo.MyType</code>  - the name of the class, i.e. the class is <code>MyType</code> in the package <code>com.foo</code>.</li>\n<li><code>@</code> - joins the string together</li>\n<li><code>2f92e0f4</code> the hashcode of the object.</li>\n</ul>\n<p>The name of array classes look a little different, which is explained well in the Javadocs for <a href=\"http://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--\" rel=\"noreferrer\"><code>Class.getName()</code></a>. For instance, <code>[Ljava.lang.String</code> means:</p>\n<ul>\n<li><code>[</code> - an single-dimensional array (as opposed to <code>[[</code> or <code>[[[</code> etc.)</li>\n<li><code>L</code> - the array contains a class or interface</li>\n<li><code>java.lang.String</code> - the type of objects in the array</li>\n</ul>\n<hr />\n<h1>Customizing the Output</h1>\n<p>To print something different when you call <code>System.out.println(myObject)</code>, you must <a href=\"https://docs.oracle.com/javase/tutorial/java/IandI/override.html\" rel=\"noreferrer\">override</a> the <code>toString()</code> method in your own class. Here's a simple example:</p>\n<pre><code>public class Person {\n\n  private String name;\n  \n  // constructors and other methods omitted\n  \n  @Override\n  public String toString() {\n    return name;\n  }\n}\n</code></pre>\n<p>Now if we print a <code>Person</code>, we see their name rather than <code>com.foo.Person@12345678</code>.</p>\n<p>Bear in mind that <code>toString()</code> is just <em>one</em> way for an object to be converted to a string. Typically this output should fully describe your object in a clear and concise manner. A better <code>toString()</code> for our <code>Person</code> class might be:</p>\n<pre><code>@Override\npublic String toString() {\n  return getClass().getSimpleName() + &quot;[name=&quot; + name + &quot;]&quot;;\n}\n</code></pre>\n<p>Which would print, e.g., <code>Person[name=Henry]</code>. That's a really useful piece of data for debugging/testing.</p>\n<p>If you want to focus on just one aspect of your object or include a lot of jazzy formatting, you might be better to define a separate method instead, e.g. <code>String toElegantReport() {...}</code>.</p>\n<hr />\n<h1>Auto-generating the Output</h1>\n<p>Many <a href=\"http://en.wikipedia.org/wiki/Integrated_development_environment\" rel=\"noreferrer\">IDEs</a> offer support for auto-generating a <code>toString()</code> method, based on the fields in the class. See docs for <a href=\"http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Freference%2Fref-dialog-tostring.htm\" rel=\"noreferrer\">Eclipse</a> and <a href=\"https://plugins.jetbrains.com/plugin/182?pr=idea\" rel=\"noreferrer\">IntelliJ</a>, for example.</p>\n<p>Several popular Java libraries offer this feature as well. Some examples include:</p>\n<ul>\n<li><p><a href=\"http://commons.apache.org/proper/commons-lang/javadocs/api-release/org/apache/commons/lang3/builder/ToStringBuilder.html\" rel=\"noreferrer\"><code>ToStringBuilder</code></a> from <a href=\"http://commons.apache.org/proper/commons-lang/\" rel=\"noreferrer\">Apache Commons Lang</a></p>\n</li>\n<li><p><a href=\"https://google.github.io/guava/releases/19.0/api/docs/com/google/common/base/MoreObjects.ToStringHelper.html\" rel=\"noreferrer\"><code>MoreObjects.ToStringHelper</code></a> from <a href=\"https://github.com/google/guava\" rel=\"noreferrer\">Google Guava</a></p>\n</li>\n<li><p><a href=\"http://projectlombok.org/features/ToString.html\" rel=\"noreferrer\"><code>@ToString</code></a> annotation from <a href=\"http://projectlombok.org/\" rel=\"noreferrer\">Project Lombok</a></p>\n</li>\n</ul>\n<hr />\n<h1>Printing groups of objects</h1>\n<p>So you've created a nice <code>toString()</code> for your class. What happens if that class is placed into an array or a collection?</p>\n<h2>Arrays</h2>\n<p>If you have an array of objects, you can call <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#toString-java.lang.Object:A-\" rel=\"noreferrer\"><code>Arrays.toString()</code></a> to produce a simple representation of the contents of the array. For instance, consider this array of <code>Person</code> objects:</p>\n<pre><code>Person[] people = { new Person(&quot;Fred&quot;), new Person(&quot;Mike&quot;) };\nSystem.out.println(Arrays.toString(people));\n\n// Prints: [Fred, Mike]\n</code></pre>\n<p>Note:  this is a call to a <em>static</em> method called <code>toString()</code> in the Arrays class, which is different to what we've been discussing above.</p>\n<p>If you have a <strong>multi-dimensional array</strong>, you can use <a href=\"http://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#deepToString-java.lang.Object:A-\" rel=\"noreferrer\"><code>Arrays.deepToString()</code></a> to achieve the same sort of output.</p>\n<h2>Collections</h2>\n<p>Most collections will produce a pretty output based on calling <code>.toString()</code> on every element.</p>\n<pre><code>List&lt;Person&gt; people = new ArrayList&lt;&gt;();\npeople.add(new Person(&quot;Alice&quot;));\npeople.add(new Person(&quot;Bob&quot;));    \nSystem.out.println(people);\n\n// Prints [Alice, Bob]\n</code></pre>\n<p>So you just need to ensure your list elements define a nice <code>toString()</code> as discussed above.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1677076,
+        "reputation" : 20286,
+        "user_id" : 1542343,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/0c67fc696612cc6c62a17d8bb2fdd17f?s=256&d=identicon&r=PG",
+        "display_name" : "gvlasov",
+        "link" : "https://stackoverflow.com/users/1542343/gvlasov"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1427232519,
+      "post_id" : 29141638,
+      "comment_id" : 46692422,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is a well-put and short answer, but to clarify why OP is getting <code>[Lcom.foo.Person;@28a418fc</code> as output: that&#39;s the output of <code>toString()</code> method, too, but of the one that is implemented in the class that is generated at runtime for the type <code>Person[]</code>, not <code>Person</code> (see <a href=\"http://stackoverflow.com/a/8546532/1542343\">stackoverflow.com/a/8546532/1542343</a>)."
+    } ],
+    "owner" : {
+      "account_id" : 2516239,
+      "reputation" : 708,
+      "user_id" : 2187621,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://i.sstatic.net/zkGuf.jpg?s=256",
+      "display_name" : "Pankaj Manali",
+      "link" : "https://stackoverflow.com/users/2187621/pankaj-manali"
+    },
+    "is_accepted" : false,
+    "score" : 41,
+    "last_activity_date" : 1541745879,
+    "last_edit_date" : 1541745879,
+    "creation_date" : 1426759488,
+    "answer_id" : 29141638,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Every class in Java has the <code>toString()</code> method in it by default, which is called if you pass some object of that class to <code>System.out.println()</code>. By default, this call returns the className@hashcode of that object.</p>\n\n<pre><code>{\n    SomeClass sc = new SomeClass();\n    // Class @ followed by hashcode of object in Hexadecimal\n    System.out.println(sc);\n}\n</code></pre>\n\n<p>You can override the toString method of a class to get different output. See this example</p>\n\n<pre><code>class A {\n    String s = \"I am just a object\";\n    @Override\n    public String toString()\n    {\n        return s;\n    }\n}\n\nclass B {\n    public static void main(String args[])\n    {\n        A obj = new A();\n        System.out.println(obj);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 10099760,
+        "reputation" : 425,
+        "user_id" : 7463981,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9fdf20122cd19787b1b31d57b60b47ee?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "lukas84",
+        "link" : "https://stackoverflow.com/users/7463981/lukas84"
+      },
+      "edited" : false,
+      "score" : 11,
+      "creation_date" : 1521825398,
+      "post_id" : 29651647,
+      "comment_id" : 85913136,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This has the advantage that it doesn&#39;t require to edit the class, which is sometimes not possible. However, how can I recursively print nested objects too?"
+    }, {
+      "owner" : {
+        "account_id" : 10286342,
+        "reputation" : 1031,
+        "user_id" : 7589512,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-QURGY4LUFus/AAAAAAAAAAI/AAAAAAAAApw/KUFV63BXKQE/s256-rj/photo.jpg",
+        "display_name" : "Viraj Nimbalkar",
+        "link" : "https://stackoverflow.com/users/7589512/viraj-nimbalkar"
+      },
+      "reply_to_user" : {
+        "account_id" : 10099760,
+        "reputation" : 425,
+        "user_id" : 7463981,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9fdf20122cd19787b1b31d57b60b47ee?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "lukas84",
+        "link" : "https://stackoverflow.com/users/7463981/lukas84"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1624035219,
+      "post_id" : 29651647,
+      "comment_id" : 120256617,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@lukas84 ReflectionToStringBuilder.toString(input, new RecursiveToStringStyle()); This will print nested objects as well"
+    }, {
+      "owner" : {
+        "account_id" : 14402529,
+        "reputation" : 989,
+        "user_id" : 10403679,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/5e7b43397bf9358e8ec01b778dfafa94?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Amine",
+        "link" : "https://stackoverflow.com/users/10403679/amine"
+      },
+      "reply_to_user" : {
+        "account_id" : 10099760,
+        "reputation" : 425,
+        "user_id" : 7463981,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9fdf20122cd19787b1b31d57b60b47ee?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "lukas84",
+        "link" : "https://stackoverflow.com/users/7463981/lukas84"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1661725752,
+      "post_id" : 29651647,
+      "comment_id" : 129834011,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@lukas84 definitely useful if the class can&#39;t be edited and is declared as final, otherwise you can just extend it and implement your custom toString() method."
+    } ],
+    "owner" : {
+      "account_id" : 4737832,
+      "reputation" : 1492,
+      "user_id" : 3831651,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6e5979f6fa9c8e9f38d1a244e65ae217?s=256&d=identicon&r=PG",
+      "display_name" : "Rohith K",
+      "link" : "https://stackoverflow.com/users/3831651/rohith-k"
+    },
+    "is_accepted" : false,
+    "score" : 95,
+    "last_activity_date" : 1429216158,
+    "last_edit_date" : 1429216158,
+    "creation_date" : 1429104696,
+    "answer_id" : 29651647,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think apache provides a better util class which provides a function to get the string</p>\n\n<pre><code>ReflectionToStringBuilder.toString(object)\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4722165,
+      "reputation" : 2729,
+      "user_id" : 3819751,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3127c2f74bae0be6c1cd56be05460917?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "ketankk",
+      "link" : "https://stackoverflow.com/users/3819751/ketankk"
+    },
+    "is_accepted" : false,
+    "score" : 18,
+    "last_activity_date" : 1509341398,
+    "last_edit_date" : 1509341398,
+    "creation_date" : 1461246321,
+    "answer_id" : 36771568,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In Eclipse,\nGo to your class,\nRight click->source->Generate <code>toString()</code>;</p>\n\n<p>It will override the <code>toString()</code> method and will print the object of that class.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5694623,
+      "reputation" : 6934,
+      "user_id" : 4501480,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://i.sstatic.net/dr48P.jpg?s=256",
+      "display_name" : "Vikrant Kashyap",
+      "link" : "https://stackoverflow.com/users/4501480/vikrant-kashyap"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1462533744,
+    "creation_date" : 1462533744,
+    "answer_id" : 37071136,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you Directly print any object of Person It will the <code>ClassName@HashCode</code> to the Code.</p>\n\n<p>in your case <code>com.foo.Person@2f92e0f4</code> is getting printed . Where <code>Person</code> is a class to which object belongs and <code>2f92e0f4</code> is hashCode of the Object.</p>\n\n<pre><code>public class Person {\n  private String name;\n\n  public Person(String name){\n  this.name = name;\n  }\n  // getter/setter omitted\n\n   @override\n   public String toString(){\n        return name;\n   }\n}\n</code></pre>\n\n<p>Now if you try to Use the object of <code>Person</code> then it will print the name</p>\n\n<pre><code>Class Test\n {\n  public static void main(String... args){\n    Person obj = new Person(\"YourName\");\n    System.out.println(obj.toString());\n  }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4409801,
+      "reputation" : 4594,
+      "user_id" : 3593084,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/Uq59r.jpg?s=256",
+      "display_name" : "Mr.Q",
+      "link" : "https://stackoverflow.com/users/3593084/mr-q"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1469685649,
+    "creation_date" : 1469685649,
+    "answer_id" : 38628203,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In intellij you can auto generate toString method by  pressing alt+inset and then selecting toString() here is an out put for a test class:</p>\n\n<pre><code>public class test  {\nint a;\nchar b;\nString c;\nTest2 test2;\n\n@Override\npublic String toString() {\n    return \"test{\" +\n            \"a=\" + a +\n            \", b=\" + b +\n            \", c='\" + c + '\\'' +\n            \", test2=\" + test2 +\n            '}';\n }\n}\n</code></pre>\n\n<p>As you can see, it generates a String by concatenating, several attributes of the class, for primitives it will print their values and for reference types it will use their class type (in this case to string method of Test2).   </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4066076,
+      "reputation" : 2608,
+      "user_id" : 3340968,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://i.sstatic.net/70hiV.jpg?s=256",
+      "display_name" : "Yasir Shabbir Choudhary",
+      "link" : "https://stackoverflow.com/users/3340968/yasir-shabbir-choudhary"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1490595695,
+    "creation_date" : 1490595695,
+    "answer_id" : 43039179,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If you look at the Object class (Parent class of all classes in Java) the toString() method implementation is </p>\n\n<pre><code>    public String toString() {\n       return getClass().getName() + \"@\" + Integer.toHexString(hashCode());\n    }\n</code></pre>\n\n<p>whenever you print any object in Java then toString() will be call. Now it's up to you if you override  toString() then your method will call other Object class method call.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1703795,
+      "reputation" : 1344,
+      "user_id" : 1563286,
+      "user_type" : "registered",
+      "accept_rate" : 44,
+      "profile_image" : "https://www.gravatar.com/avatar/81bf76c7b1c1e7d28e8f3e3cbf7d722e?s=256&d=identicon&r=PG",
+      "display_name" : "adn.911",
+      "link" : "https://stackoverflow.com/users/1563286/adn-911"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1517471225,
+    "last_edit_date" : 1517471225,
+    "creation_date" : 1512231794,
+    "answer_id" : 47609931,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>By default, every Object in Java has the <code>toString()</code> method which outputs the ObjectType@HashCode. </p>\n\n<p>If you want more meaningfull information then you need to override the <code>toString()</code> method in your class. </p>\n\n<pre><code>public class Person {\n  private String name;\n\n  // constructor and getter/setter omitted\n\n  // overridding toString() to print name\n  public String toString(){\n     return name;  \n  }\n}\n</code></pre>\n\n<p>Now when you print the person object using <code>System.out.prtinln(personObj);</code> it will print the name of the person instead of the classname and hashcode. </p>\n\n<p>In your second case when you are trying to print the array, it prints <code>[Lcom.foo.Person;@28a418fc</code> the Array type and it's hashcode. </p>\n\n<hr>\n\n<p>If you want to print the person names, there are many ways.</p>\n\n<p>You could write your own function that iterates each person and prints </p>\n\n<pre><code>void printPersonArray(Person[] persons){\n    for(Person person: persons){\n        System.out.println(person);\n    }\n}\n</code></pre>\n\n<p>You could print it using Arrays.toString(). This seems the simplest to me. </p>\n\n<pre><code> System.out.println(Arrays.toString(persons));\n System.out.println(Arrays.deepToString(persons));  // for nested arrays  \n</code></pre>\n\n<p>You could print it the java 8 way (using streams and method reference). </p>\n\n<pre><code> Arrays.stream(persons).forEach(System.out::println);\n</code></pre>\n\n<p>There might be other ways as well. Hope this helps. :) </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6145724,
+      "reputation" : 1219,
+      "user_id" : 4791780,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/3a5588078380142b3a40c0884c9f171f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Agam",
+      "link" : "https://stackoverflow.com/users/4791780/agam"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1539087520,
+    "creation_date" : 1539087520,
+    "answer_id" : 52720911,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I prefer to use a utility function which uses <a href=\"https://github.com/google/gson\" rel=\"noreferrer\">GSON</a> to de-serialize the Java object into JSON string.</p>\n\n<pre><code>/**\n * This class provides basic/common functionalities to be applied on Java Objects.\n */\npublic final class ObjectUtils {\n\n    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();\n\n    private ObjectUtils() {\n         throw new UnsupportedOperationException(\"Instantiation of this class is not permitted in case you are using reflection.\");\n    }\n\n    /**\n     * This method is responsible for de-serializing the Java Object into Json String.\n     *\n     * @param object Object to be de-serialized.\n     * @return String\n     */\n    public static String deserializeObjectToString(final Object object) {\n        return GSON.toJson(object);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 12066330,
+        "reputation" : 541,
+        "user_id" : 8823231,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/-Fs9eWEOpyds/AAAAAAAAAAI/AAAAAAAAAAc/KmCV9iIO6w8/s256-rj/photo.jpg",
+        "display_name" : "Harikrushna Patel",
+        "link" : "https://stackoverflow.com/users/8823231/harikrushna-patel"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1647338174,
+      "post_id" : 64702410,
+      "comment_id" : 126340327,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<code>Gson gson = new Gson(); System.out.println(gson.toJson(yourObject));</code> You don&#39;t need to use toString()"
+    } ],
+    "owner" : {
+      "account_id" : 1215394,
+      "reputation" : 7487,
+      "user_id" : 1183098,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/wbe4o.png?s=256",
+      "display_name" : "user9869932",
+      "link" : "https://stackoverflow.com/users/1183098/user9869932"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1680136569,
+    "last_edit_date" : 1680136569,
+    "creation_date" : 1604597695,
+    "answer_id" : 64702410,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I managed to get this done using <strong>Jackson</strong> in Spring 5. Depending on the object it might not work in all cases.</p>\n<pre class=\"lang-java prettyprint-override\"><code>import com.fasterxml.jackson.databind.ObjectMapper;\n    \nObjectMapper mapper = new ObjectMapper();\nSystem.out.println(mapper.writeValueAsString(yourObject));\n</code></pre>\n<p>The output would look like:</p>\n<pre class=\"lang-js prettyprint-override\"><code>{\n  &quot;id&quot; : 1,\n  &quot;fieldOne&quot; : &quot;string&quot;\n}\n</code></pre>\n<p><a href=\"https://mkyong.com/java/how-to-enable-pretty-print-json-output-jackson/\" rel=\"nofollow noreferrer\">Here</a> are more examples using <strong>Jackson</strong>.</p>\n<p>If you use <a href=\"https://github.com/google/gson\" rel=\"nofollow noreferrer\"><strong>GSON</strong></a> instead It might look like:</p>\n<pre class=\"lang-java prettyprint-override\"><code>Gson gson = new Gson();\nSystem.out.println(gson.toJson(yourObject));\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 98194,
+      "reputation" : 4893,
+      "user_id" : 265954,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fb86bc783e1c8cbf3544083563987cef?s=256&d=identicon&r=PG",
+      "display_name" : "t0r0X",
+      "link" : "https://stackoverflow.com/users/265954/t0r0x"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1732098938,
+    "last_edit_date" : 1732098938,
+    "creation_date" : 1619906479,
+    "answer_id" : 67351224,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "\n<p>For a &quot;deep&quot; <code>toString()</code> there is an alternative to the JSON based answers (Jackson, GSON, etc.): <a href=\"https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ReflectionToStringBuilder.html\" rel=\"nofollow noreferrer\">ReflectionToStringBuilder</a> from the <a href=\"https://commons.apache.org/proper/commons-lang/\" rel=\"nofollow noreferrer\">Apache Commons Lang 3</a> library, with <a href=\"https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/RecursiveToStringStyle.html\" rel=\"nofollow noreferrer\">RecursiveToStringStyle</a> or <a href=\"https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.html\" rel=\"nofollow noreferrer\">MultilineRecursiveToStringStyle</a>. Code example:</p>\n<pre class=\"lang-java prettyprint-override\"><code>System.out.println(&quot;My object: &quot; +\n    ReflectionToStringBuilder\n        .toString(theObject, new RecursiveToStringStyle()));\n\n// or as &quot;toString()&quot; overrides\n\n@Override\npublic String toString() {\n  return ReflectionToStringBuilder\n          .toString(this, new RecursiveToStringStyle());\n}\n\n// or\n\n@Override\npublic String toString() {\n  return ReflectionToStringBuilder\n          .toString(this, new MultilineRecursiveToStringStyle());\n}\n</code></pre>\n<p>Output examples:</p>\n<pre class=\"lang-java prettyprint-override\"><code>// RecursiveToStringStyle\nPerson@7f54[name=Stephen,age=29,smoker=false,job=Job@43cd2[title=Manager]]\n\n// MultilineRecursiveToStringStyle\nPerson@7f54[\n  name=Stephen,\n  age=29,\n  smoker=false,\n  job=Job@43cd2[\n    title=Manager\n  ]\n]\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1215394,
+      "reputation" : 7487,
+      "user_id" : 1183098,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/wbe4o.png?s=256",
+      "display_name" : "user9869932",
+      "link" : "https://stackoverflow.com/users/1183098/user9869932"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1632217165,
+    "last_edit_date" : 1632217165,
+    "creation_date" : 1632216206,
+    "answer_id" : 69266450,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you are using project <strong>Lombok</strong> you could use the <code>@ToString</code> annotation and generate a standard <code>toString()</code> method without adding boilerplate.</p>\n<pre class=\"lang-java prettyprint-override\"><code>import lombok.ToString;\n\n@ToString\npublic class LoginDto {\n  private String user;\n  private String pass;\n}\n</code></pre>\n<pre class=\"lang-java prettyprint-override\"><code>...\nSystem.out.println(loginDto.toString());\n// LoginDto(user=x@xxx.x, pass=xxxxx)\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13226473,
+        "reputation" : 349,
+        "user_id" : 9551407,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/mOcFK.jpg?s=256",
+        "display_name" : "Donald Kagunila",
+        "link" : "https://stackoverflow.com/users/9551407/donald-kagunila"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1664186339,
+      "post_id" : 69932745,
+      "comment_id" : 130405644,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Helpful, additionally you can use @ToString annotation, Data annotation has issues when using relationships"
+    } ],
+    "owner" : {
+      "account_id" : 5512797,
+      "reputation" : 72,
+      "user_id" : 4378540,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/fb2d1af5b3a678fa15dc6b22a86c2759?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Jinendra",
+      "link" : "https://stackoverflow.com/users/4378540/jinendra"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1636652998,
+    "creation_date" : 1636652998,
+    "answer_id" : 69932745,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Using Lombok @Data annotation on class will provide getter, setter, toString and hashcode. Using Lombok is better as it handles boilerplate code.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 17609750,
+      "reputation" : 327,
+      "user_id" : 12778051,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f4c4ab0b937c7c6c942d6114783fa439?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "prajun7",
+      "link" : "https://stackoverflow.com/users/12778051/prajun7"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1680117708,
+    "creation_date" : 1680117708,
+    "answer_id" : 75881353,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you don't want to Override the <code>toString()</code> method you can use this,</p>\n<pre class=\"lang-bash prettyprint-override\"><code>    public static void printJson(Object o) {\n        ObjectMapper mapper = new ObjectMapper();\n        try {\n            String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(o);\n            System.out.println(json);\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n    }\n</code></pre>\n<p>We also need to import,\n<code>import com.fasterxml.jackson.databind.ObjectMapper; </code></p>\n<p>We can make a Utils method and it will be very handy.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 19370048,
+      "reputation" : 791,
+      "user_id" : 14163532,
+      "user_type" : "registered",
+      "profile_image" : "https://lh3.googleusercontent.com/a-/AOh14Gjt_cpegI9vRx8c8_H7IoWyYpvUycNWGENYv49d8g=k-s256",
+      "display_name" : "PKS",
+      "link" : "https://stackoverflow.com/users/14163532/pks"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1704952353,
+    "creation_date" : 1704952353,
+    "answer_id" : 77797933,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Just use the <code>@ToString from Lombok project</code>  gets the job done</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2755346,
+      "reputation" : 45,
+      "user_id" : 2373613,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Ty2Gf.jpg?s=256",
+      "display_name" : "Dhruv",
+      "link" : "https://stackoverflow.com/users/2373613/dhruv"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1717536768,
+    "creation_date" : 1717536768,
+    "answer_id" : 78577825,
+    "question_id" : 29140402,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are 2 good ways to do it</p>\n<ol>\n<li><code>object.toString()</code> - The default implementation of toString() in the Object class returns a string consisting of the class name, the @ character, and the unsigned hexadecimal representation of the hash code of the object. For example, <em>com.example.MyClass@1a2b3c4d</em>.</li>\n</ol>\n<p>It's a common practice to override the toString() method in classes to provide a string representation of the object's state.</p>\n<p><code>Implementation</code></p>\n<pre><code>public class MyClass {\n    private int id;\n    private String name;\n\n    @Override\n    public String toString() {\n        return &quot;MyClass{id=&quot; + id + &quot;, name='&quot; + name + &quot;'}&quot;;\n    }\n}\n\n</code></pre>\n<p><code>Output:</code> <code>MyClass{id=1, name='Test'}</code></p>\n<ol start=\"2\">\n<li><code>ReflectionToStringBuilder.toString(object)</code> -  The ReflectionToStringBuilder from the Apache Commons Lang library uses reflection to automatically generate a string representation of all fields of an object, including inherited fields from superclasses. It provides a quick way to implement a comprehensive toString() method without manually writing the code for each field.</li>\n</ol>\n<p><code>Implementation</code></p>\n<pre><code>import org.apache.commons.lang3.builder.ReflectionToStringBuilder;\n\npublic class MyClass {\n    private int id;\n    private String name;\n\n    @Override\n    public String toString() {\n        return ReflectionToStringBuilder.toString(this);\n    }\n}\n\n</code></pre>\n<p><code>Output:</code> <code>com.example.MyClass@1a2b3c4d[id=1,name=Test]</code></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 218057,
+    "reputation" : 69716,
+    "user_id" : 474189,
+    "user_type" : "registered",
+    "accept_rate" : 72,
+    "profile_image" : "https://www.gravatar.com/avatar/32b712ec4f7dcc2e8a6907b9903aa8ba?s=256&d=identicon&r=PG",
+    "display_name" : "Duncan Jones",
+    "link" : "https://stackoverflow.com/users/474189/duncan-jones"
+  },
+  "is_answered" : true,
+  "view_count" : 623554,
+  "protected_date" : 1429542450,
+  "accepted_answer_id" : 29140403,
+  "answer_count" : 16,
+  "score" : 423,
+  "last_activity_date" : 1732098938,
+  "creation_date" : 1426755558,
+  "last_edit_date" : 1510810606,
+  "question_id" : 29140402,
+  "link" : "https://stackoverflow.com/questions/29140402/how-do-i-print-my-java-object-without-getting-sometype2f92e0f4",
+  "title" : "How do I print my Java object without getting &quot;SomeType@2f92e0f4&quot;?",
+  "body" : "<p>I have a class defined as follows:</p>\n\n<pre><code>public class Person {\n  private String name;\n\n  // constructor and getter/setter omitted\n}\n</code></pre>\n\n<p>I tried to print an instance of my class:</p>\n\n<pre><code>System.out.println(myPerson);\n</code></pre>\n\n<p>but I got the following output: <code>com.foo.Person@2f92e0f4</code>.  </p>\n\n<p>A similar thing happened when I tried to print an array of <code>Person</code> objects:</p>\n\n<pre><code>Person[] people = //...\nSystem.out.println(people); \n</code></pre>\n\n<p>I got the output: <code>[Lcom.foo.Person;@28a418fc</code></p>\n\n<p>What does this output mean? How do I change this output so it contains the name of my person? And how do I print collections of my objects?</p>\n\n<p><sub><strong>Note</strong>: this is intended as a canonical Q&amp;A about this subject.</sub></p>\n"
+}

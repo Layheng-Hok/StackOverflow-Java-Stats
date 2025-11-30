@@ -1,0 +1,117 @@
+{
+  "tags" : [ "java", "bean-validation", "jakarta-validation" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1601399,
+      "reputation" : 638,
+      "user_id" : 1482356,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d6160b6e40d230fa92c6da8072b2f7e5?s=256&d=identicon&r=PG",
+      "display_name" : "Peter Adrian",
+      "link" : "https://stackoverflow.com/users/1482356/peter-adrian"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1743791810,
+    "post_id" : 79555968,
+    "comment_id" : 140300697,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Just as a curiosity, why would you try to apply a regex validation on a UUID?"
+  }, {
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1743834965,
+    "post_id" : 79555968,
+    "comment_id" : 140301808,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "FYI, regarding <a href=\"https://en.wikipedia.org/wiki/Universally_unique_identifier\" rel=\"nofollow noreferrer\">UUID</a>s, be aware that <a href=\"https://datatracker.ietf.org/doc/html/rfc9562\" rel=\"nofollow noreferrer\">RFC 9562</a> of 2024-05 introduced new Versions 6, 7, and 8."
+  }, {
+    "owner" : {
+      "account_id" : 3545096,
+      "reputation" : 397,
+      "user_id" : 2961275,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/e0d5653a1b36763731f691bffd2250ef?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "JackLThornton",
+      "link" : "https://stackoverflow.com/users/2961275/jacklthornton"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1743972625,
+    "post_id" : 79555968,
+    "comment_id" : 140305658,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Peter Adrian - annoying UUID type (value) constraints. Had to laugh when I saw Basil&#39;s question, it&#39;s kind of apropos"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3545096,
+        "reputation" : 397,
+        "user_id" : 2961275,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/e0d5653a1b36763731f691bffd2250ef?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "JackLThornton",
+        "link" : "https://stackoverflow.com/users/2961275/jacklthornton"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1743790037,
+      "post_id" : 79555981,
+      "comment_id" : 140300584,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Marvelous - I will try this out. I made the question a little simpler because we do have a bunch of named regular expressions, and I do have a custom annotation (@NamedPattern) that allows me to specify the expression to use by name - a lot less messy than embedding some of the really huge regex&#39;s in line."
+    } ],
+    "owner" : {
+      "account_id" : 1211967,
+      "reputation" : 9964,
+      "user_id" : 1180351,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/pKB8y.png?s=256",
+      "display_name" : "Rob Spoor",
+      "link" : "https://stackoverflow.com/users/1180351/rob-spoor"
+    },
+    "is_accepted" : true,
+    "score" : 2,
+    "last_activity_date" : 1743788823,
+    "creation_date" : 1743788823,
+    "answer_id" : 79555981,
+    "question_id" : 79555968,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Bean validation works for types, as long as the constraint annotation has a matching <a href=\"https://jakarta.ee/specifications/platform/11/apidocs/jakarta/validation/constraintvalidator\" rel=\"nofollow noreferrer\">ConstraintValidator</a> defined for it. I don't think that you can add support for extra types for the out-of-the-box annotations, but if you create your own custom annotation you can support all types you want.</p>\n<p>A quick-and-dirty example based on <code>@Pattern</code>:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Target({ElementType.FIELD, ElementType.METHOD}) // add others as needed\n@Retention(RetentionPolicy.RUNTIME)\n@Constraint(validatedBy = UuidValidator.class) // one for each type you want to support\n@Documented\npublic @interface UuidPattern {\n\n    String regexp();\n\n    // mandated properties\n    String message() default &quot;UUID doesn't match pattern {regexp}&quot;;\n    Class&lt;?&gt;[] groups() default {};\n    Class&lt;? extends Payload&gt;[] payload() default {};\n\n    public class UuidValidator implements ConstraintValidator&lt;UuidPattern, UUID&gt; {\n\n        private Pattern pattern;\n\n        @Override\n        public void initialize(UuidPattern annotation) {\n            pattern = Pattern.compile(annotation.regexp());\n        }\n\n        @Override\n        public boolean isValid(UUID uuid, ConstraintValidatorContext constraintValidatorContext) {\n            if (uuid == null) {\n                // let @NotNull handle this case\n                return true;\n            }\n            return pattern.matcher().matches(uuid.toString());\n        }\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3545096,
+    "reputation" : 397,
+    "user_id" : 2961275,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/e0d5653a1b36763731f691bffd2250ef?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "JackLThornton",
+    "link" : "https://stackoverflow.com/users/2961275/jacklthornton"
+  },
+  "is_answered" : true,
+  "view_count" : 81,
+  "accepted_answer_id" : 79555981,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1743808065,
+  "creation_date" : 1743788135,
+  "last_edit_date" : 1743808065,
+  "question_id" : 79555968,
+  "link" : "https://stackoverflow.com/questions/79555968/can-you-apply-bean-validation-to-arbitrary-field-types",
+  "title" : "Can you apply Bean Validation to arbitrary field types?",
+  "body" : "<p>I can't find it explicitly stated in any of the documentation for JSR303/JSR380 bean validation (<a href=\"https://jakarta.ee/specifications/bean-validation/\" rel=\"nofollow noreferrer\">Jakarta Validation</a>), but do all fields to which you apply validations have to be &quot;essentially&quot; plain-old-data (POD) types, like Strings and ints and Longs and such?</p>\n<p>I tried to apply a regular expression validator to a UUID field, and I got a <code>NoProviderFoundException</code> thrown. I worked around it by just changing that field to a <code>String</code> and putting the onus of converting the field into a <code>UUID</code> on the consumer(s) of that class, but is there any way to create a custom &quot;bean validation provider&quot; mapped to an arbitrary non-POD class for cases where implementing a workaround isn't as straightforward?</p>\n<p>Note: java.util.UUID is a serializable class, and therefore perfectly valid to include in a Bean.</p>\n"
+}

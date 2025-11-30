@@ -1,0 +1,124 @@
+{
+  "tags" : [ "java", "ssl", "ssl-certificate", "apache-camel" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 241004,
+      "reputation" : 3291,
+      "user_id" : 511562,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/476ecaa6c592a635b7447bfeb826dfe3?s=256&d=identicon&r=PG",
+      "display_name" : "Willem Jiang",
+      "link" : "https://stackoverflow.com/users/511562/willem-jiang"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1390788831,
+    "creation_date" : 1390788831,
+    "answer_id" : 21371960,
+    "question_id" : 21317519,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think you are using <a href=\"http://camel.apache.org/http.html\" rel=\"nofollow\">camel-http</a> component, you need to use <a href=\"http://camel.apache.org/http4.html\" rel=\"nofollow\">camel-http4</a> component instead.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 14371821,
+        "reputation" : 443,
+        "user_id" : 10381368,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-TogyO_fwo-I/AAAAAAAAAAI/AAAAAAAAOVc/SOrTCgeYDoE/s256-rj/photo.jpg",
+        "display_name" : "Srikanth Janapati",
+        "link" : "https://stackoverflow.com/users/10381368/srikanth-janapati"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1602584272,
+      "post_id" : 21686299,
+      "comment_id" : 113760385,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "how we can call this class while communicating with the router, if you have GitHub reference code, could you please share?"
+    }, {
+      "owner" : {
+        "account_id" : 8634173,
+        "reputation" : 123,
+        "user_id" : 13743288,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7da2e13a1b087b068c52153a728a51e3?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "James",
+        "link" : "https://stackoverflow.com/users/13743288/james"
+      },
+      "reply_to_user" : {
+        "account_id" : 14371821,
+        "reputation" : 443,
+        "user_id" : 10381368,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-TogyO_fwo-I/AAAAAAAAAAI/AAAAAAAAOVc/SOrTCgeYDoE/s256-rj/photo.jpg",
+        "display_name" : "Srikanth Janapati",
+        "link" : "https://stackoverflow.com/users/10381368/srikanth-janapati"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1668058884,
+      "post_id" : 21686299,
+      "comment_id" : 131316364,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@SrikanthJanapati did you get to know how to call this from router? Please share"
+    } ],
+    "owner" : {
+      "account_id" : 3901507,
+      "reputation" : 41,
+      "user_id" : 3229256,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a26b54b36ad8f704af44987af4645798?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user3229256",
+      "link" : "https://stackoverflow.com/users/3229256/user3229256"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1392060920,
+    "last_edit_date" : 1495535248,
+    "creation_date" : 1392060920,
+    "answer_id" : 21686299,
+    "question_id" : 21317519,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>OK, I finally managed to get this to work - thanks to the many postings out there that helped with some of the detail of what I was attempting to do, particular thanks to <a href=\"https://stackoverflow.com/questions/5706166/apache-camel-http-and-ssl\" title=\"this posting\">this posting</a>. Step by step using Camel 2.12.1 -</p>\n\n<p>My secure URL behind a proxy -</p>\n\n<pre><code>https4://someURL?proxyAuthHost=proxy.company.com&amp;proxyAuthPort=8080&amp;proxyAuthScheme=http\n</code></pre>\n\n<p>Creating the component to access the URL -</p>\n\n<pre><code>import org.apache.camel.component.http4.HttpComponent;\n...\nfinal HttpComponent myComponent = new HttpComponent();\nmyComponent.setClientConnectionManager(new PoolingClientConnectionManager());\nmyComponent.setHttpClientConfigurer(new myHttpClientConfigurer());\n</code></pre>\n\n<p>Note: the need to set a ClientConnectionManager only became clear when the code threw a NPE in HttpComponent at line 317 -</p>\n\n<pre><code>SchemeRegistry registry = clientConnectionManager.getSchemeRegistry();\n</code></pre>\n\n<p><strong>myHttpClientConfigurer.java</strong></p>\n\n<pre><code> import org.apache.camel.component.http4.HttpClientConfigurer;\n import org.apache.http.client.HttpClient;\n ...\n public class myHttpClientConfigurer implements HttpClientConfigurer {\n\n    @Override\n    public void configureHttpClient(HttpClient hc) {\n        try {\n            Properties properties = loadProperties();\n            KeyStore trustStore = KeyStore.getInstance(\"JKS\");\n            final String javaKeystoreFile = getJavaKeystoreFile(properties);\n            final String keystorePassword = getKeystorePassword(properties);\n            trustStore.load(new FileInputStream(javaKeystoreFile), keystorePassword.toCharArray());\n\n            KeyManagerFactory keyFactory = KeyManagerFactory.getInstance(\"SunX509\");\n            keyFactory.init(trustStore, keystorePassword.toCharArray());\n\n            TrustManagerFactory trustFactory = TrustManagerFactory.getInstance(\"SunX509\");\n            trustFactory.init(trustStore);\n\n            SSLContext sslcontext = SSLContext.getInstance(\"TLS\");\n            sslcontext.init(keyFactory.getKeyManagers(), trustFactory.getTrustManagers(), null);\n\n            TrustStrategy trustStrategy = new TrustStrategy() {\n\n                @Override\n                public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {\n                    return true;\n                }\n\n            };\n\n            SSLSocketFactory factory = new SSLSocketFactory(SSLSocketFactory.TLS, trustStore, keystorePassword, trustStore, null, trustStrategy, SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);\n\n            SchemeRegistry registry = hc.getConnectionManager().getSchemeRegistry();\n            registry.register(new Scheme(\"https\", 443, factory));\n\n        catch ...\n }\n</code></pre>\n\n<p>Note that although the URL specifies \"https4\", the <strong>new Scheme()</strong> is \"https\". This seemed to be the only way I could get it to work, after stepping though the <strong>HttpComponent</strong> code in the debugger.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 9507026,
+      "reputation" : 68,
+      "user_id" : 7066177,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d87e4406169544f06715779cd316309c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sergey Melnikov",
+      "link" : "https://stackoverflow.com/users/7066177/sergey-melnikov"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1477379825,
+    "last_edit_date" : 1477379825,
+    "creation_date" : 1477338162,
+    "answer_id" : 40226275,
+    "question_id" : 21317519,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I have disabled validation as follows:</p>\n\n<pre><code>import org.apache.camel.CamelContext;\nimport org.apache.camel.builder.RouteBuilder;\nimport org.apache.camel.component.http4.HttpComponent;\nimport org.apache.camel.impl.DefaultCamelContext;\nimport org.apache.camel.util.jndi.JndiContext;\nimport org.apache.camel.util.jsse.KeyStoreParameters;\nimport org.apache.camel.util.jsse.SSLContextParameters;\nimport org.apache.camel.util.jsse.TrustManagersParameters;\nimport org.apache.http.conn.ssl.AllowAllHostnameVerifier;\n\npublic class Sample {\n    public static void main(String args[]) throws Exception{     \n     JndiContext jndiContext = new JndiContext();\n     jndiContext.bind(\"x509HostnameVerifier\", new AllowAllHostnameVerifier());\n     CamelContext context = new DefaultCamelContext(jndiContext);   \n     context.addRoutes(new RouteBuilder() {\n         private void configurate(){\n            KeyStoreParameters trust_ksp = new KeyStoreParameters();\n            trust_ksp.setResource(\"keystore/keystore.jks\");\n            trust_ksp.setPassword(\"qweqwe\");\n            TrustManagersParameters trustp = new TrustManagersParameters();\n            trustp.setKeyStore(trust_ksp);\n            SSLContextParameters scp = new SSLContextParameters();\n            scp.setTrustManagers(trustp);\n            HttpComponent httpComponent = getContext().getComponent(\"https4\", HttpComponent.class);\n            httpComponent.setSslContextParameters(scp);\n         }          \n             public void configure() throws Exception {\n                 configurate();\n                     from(\"file://test_folder\")\n                     .setHeader(\"SOAPAction\", constant(\"/Action\"))\n                     .to(\"https4://localhost?x509HostnameVerifier=x509HostnameVerifier&amp;authUsername=user&amp;authPassword=pasword\");    \n        }\n    });\n\n     context.start();\n     Thread.sleep(600000);\n     context.stop();\n\n    }\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3901507,
+    "reputation" : 41,
+    "user_id" : 3229256,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/a26b54b36ad8f704af44987af4645798?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3229256",
+    "link" : "https://stackoverflow.com/users/3229256/user3229256"
+  },
+  "is_answered" : false,
+  "view_count" : 10864,
+  "answer_count" : 3,
+  "score" : 4,
+  "last_activity_date" : 1760375080,
+  "creation_date" : 1390505077,
+  "last_edit_date" : 1390555643,
+  "question_id" : 21317519,
+  "link" : "https://stackoverflow.com/questions/21317519/disable-camel-certificate-validation-in-camel-2-12",
+  "title" : "Disable camel certificate validation in Camel 2.12",
+  "body" : "<p>I have a requirement to temporarily disable certificate validation in Camel 2.12. I am referencing a test web service that is currently supplying an invalid certificate and getting the following exception -</p>\n\n<pre><code>Exception in route: sun.security.validator.ValidatorException: PKIX path building     failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target\n</code></pre>\n\n<p>Many of the example I've found on SO revolve around creating an HttpClientConfigurer and doing this -</p>\n\n<pre><code>        SSLContext ctx = SSLContext.getInstance(\"SSL\"); \n        ctx.init(null, new TrustManager[] { tm }, null); \n\n        SSLSocketFactory ssf = new SSLSocketFactory(ctx, \n                SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER); \n        ClientConnectionManager ccm = client.getConnectionManager(); \n        SchemeRegistry sr = ccm.getSchemeRegistry(); \n        sr.register(new Scheme(\"https4\", 443, ssf)); \n</code></pre>\n\n<p>These solutions require a version of the <strong>configureHttpClient(HttpClient hc)</strong> method that takes an <strong>org.apache.http.client.HttpClient</strong>. In my Camel version, this method takes an <strong>org.apache.commons.httpclient.HttpClient</strong>, and has no reference to <strong>getConnectionManager()</strong>.</p>\n\n<p>I've tried the JVM setting <strong>com.sun.net.ssl.checkRevocation=false</strong>, but this has no effect.</p>\n"
+}

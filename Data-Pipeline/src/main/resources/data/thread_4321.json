@@ -1,0 +1,64 @@
+{
+  "tags" : [ "java", "elm327" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 24885,
+        "reputation" : 31372,
+        "user_id" : 63550,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/RIZKi.png?s=256",
+        "display_name" : "Peter Mortensen",
+        "link" : "https://stackoverflow.com/users/63550/peter-mortensen"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1760463692,
+      "post_id" : 31566617,
+      "comment_id" : 140795497,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "(Regarding the missing OP icon: See <i><a href=\"https://meta.stackexchange.com/questions/413202/author-widgets-are-not-shown-for-answers-anymore\">Author widgets are not shown for answers anymore</a></i>. It is likely to be resolved within 24 hours.)"
+    } ],
+    "owner" : {
+      "account_id" : 351587,
+      "reputation" : 7297,
+      "user_id" : 688161,
+      "user_type" : "registered",
+      "accept_rate" : 84,
+      "profile_image" : "https://www.gravatar.com/avatar/515fc45f3816144d3c348459f55a5a2f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "aufziehvogel",
+      "link" : "https://stackoverflow.com/users/688161/aufziehvogel"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1760463910,
+    "last_edit_date" : 1760463910,
+    "creation_date" : 1437576557,
+    "answer_id" : 31566617,
+    "question_id" : 26861035,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I also used the same library for the first steps into trying out OBD, so I can say at least at the time I used it, it worked fine.</p>\n<p>From my experience however, getting <code>?</code> back can sometimes happen with cheap Bluetooth devices (maybe even with expensive ones? never had one). I guess this happens, if some bits are lost during the transmission, because then command will be misunderstood.</p>\n<p>To circumvent this problem, I set up a process where I sent all <code>AT</code> commands up to 10 times until I got the desired response of <code>OK</code> (except for <code>ATZ</code>, which will respond with <code>ELM327</code>). As for value requests like rotational speed (unit RPM), etc., I usually just throw away the erroneous values.</p>\n<p>That's the short answer, but since such problems with the devices can annoy a lot, I will guide you into debugging the whole process...</p>\n<h3>Setting up a terminal on Windows</h3>\n<p>First of all, to test the functionality of the ELM device, you can send commands to the serial interface directly. On Windows, this is possible using, for example, <a href=\"https://en.wikipedia.org/wiki/Tera_Term\" rel=\"nofollow noreferrer\">Tera Term</a> and then setting up a new Bluetooth connection on your Windows instance as a <a href=\"https://en.wikipedia.org/wiki/COM_%28hardware_interface%29\" rel=\"nofollow noreferrer\">COM port</a> device (search for Bluetooth in <em>Start</em> → search box* and then choose <em>Change Bluetooth settings</em> or similar).</p>\n<p>From there, go to <em>COM connections</em> and then add a new one <em>Outgoing</em> for the Bluetooth OBD-II device. Wait a bit for Windows to calculate the new COM port number; you will need it.</p>\n<p>If you cannot find <em>OBD-II</em> in the dropdown box, you have to bond your PC with your Bluetooth device first. This can be done via <em>Devices and Printers</em>. There you should see the OBD-II device, so you only have to connect it (the <a href=\"https://en.wikipedia.org/wiki/Personal_identification_number\" rel=\"nofollow noreferrer\">PIN</a> code usually is 1234).</p>\n<p>If you're on Linux, it might be somewhat easier, but I haven't done it :)</p>\n<h3>Sending some commands via the terminal</h3>\n<p>Once you have your Bluetooth connection and Tera Term installed, you can start Tera Term and connect to the adapter. Choose <em>Serial</em> and then the port you just set up. Ensure that no other device is connected to the OBD-II adapter (also not your phone). Only one device can be connected at a time.</p>\n<p>If the connection was successful, you should be able to type letters. Usually, in default settings, you should be able to see the letters you type (Echo mode on), but since this is not certain, just type <code>ATZ</code> and hit <code>&lt;Enter&gt;</code>. The ELM should respond with &quot;ELM327&quot; in the same line now (which for me usually results in odd display if <code>echo mode</code> was on, but you should get any response).</p>\n<p>From the terminal, I usually send these commands in order:</p>\n<pre class=\"lang-none prettyprint-override\"><code>ATZ\nE1\nL1\n010c\n</code></pre>\n<p>This will trigger:</p>\n<ol>\n<li>Reset of the OBD-II device</li>\n<li>Make sure that echo is on, so I see what I am typing</li>\n<li>Make sure Line feed is on, so we get responses in the next line</li>\n<li>Request RPM from the vehicle</li>\n</ol>\n<p>Between each command, I'll check what is the reply of the device. For all <code>AT</code> commands (1., 2. and 3.) it must be <code>OK</code>. If I get back <code>?</code>, which can happen, I will repeat the command another time. You will see that in such a case the device indeed did not follow the instructions, e.g., did not set line feed on if it was off. So we really have to send it again.</p>\n<p>In programming mode on the other hand, we will set <code>e0</code> and <code>l0</code> (echo mode off and line feed off), because we do not want to get sent back what we already sent out.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 450710,
+    "reputation" : 10733,
+    "user_id" : 846180,
+    "user_type" : "registered",
+    "accept_rate" : 87,
+    "profile_image" : "https://www.gravatar.com/avatar/4615fddaba197486df35fbd4e2986087?s=256&d=identicon&r=PG",
+    "display_name" : "skayred",
+    "link" : "https://stackoverflow.com/users/846180/skayred"
+  },
+  "is_answered" : true,
+  "view_count" : 1094,
+  "answer_count" : 1,
+  "score" : 3,
+  "last_activity_date" : 1760463910,
+  "creation_date" : 1415696425,
+  "last_edit_date" : 1760462975,
+  "question_id" : 26861035,
+  "link" : "https://stackoverflow.com/questions/26861035/elm327-returns-when-trying-to-use-it-with-odb-java-api",
+  "title" : "ELM327 returns `?` when trying to use it with ODB Java API",
+  "body" : "<p>I'm trying to use ODB Java API <a href=\"https://github.com/pires/obd-java-api\" rel=\"nofollow noreferrer\">(this library)</a> to get the data from ELM327 via Bluetooth from my car, but in returns <code>?</code> on every request, and library raises <code>MisunderstoodException</code></p>\n<p>Here is my code:</p>\n<pre><code>socket = device.createInsecureRfcommSocketToServiceRecord(uuid);\nsocket.connect();\n\nfinal CustomRPMCommand engineRpmCommand = new CustomRPMCommand();\nfinal SpeedObdCommand speedObdCommand = new SpeedObdCommand();\n\nwhile (!Thread.currentThread().isInterrupted()) {\n    engineRpmCommand.run(socket.getInputStream(), socket.getOutputStream());\n    speedObdCommand.run(socket.getInputStream(), socket.getOutputStream());\n\n    runOnUiThread(new Runnable() {\n        @Override\n        public void run() {\n            speedometerGauge.setSpeed(engineRpmCommand.getRPM(), true);\n            rpmGauge.setSpeed(speedObdCommand.getMetricSpeed(), true);\n        }\n    });\n}\n</code></pre>\n<p>What's wrong?</p>\n"
+}

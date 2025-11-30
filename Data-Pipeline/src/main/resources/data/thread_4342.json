@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "json", "spring", "spring-batch" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3477389,
+        "reputation" : 894,
+        "user_id" : 2910265,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/cb06c1e622130d034721afb7dffffe3c?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user2910265",
+        "link" : "https://stackoverflow.com/users/2910265/user2910265"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1414110205,
+      "post_id" : 15204977,
+      "comment_id" : 41704329,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Roman to add to this answer, you really don&#39;t want to read an entire file into memory for any reason.  Benoit&#39;s approach is much more preferred because it keeps memory usage low.  As you become more familiar with Spring Batch, you&#39;ll be able to write your own JSON ItemReader and maybe even contribute it back to the project.  Good luck."
+    } ],
+    "owner" : {
+      "account_id" : 46951,
+      "reputation" : 6264,
+      "user_id" : 138933,
+      "user_type" : "registered",
+      "accept_rate" : 90,
+      "profile_image" : "https://www.gravatar.com/avatar/bc22268daef2c7515e0eaa53bef49630?s=256&d=identicon&r=PG",
+      "display_name" : "Benoit Wickramarachi",
+      "link" : "https://stackoverflow.com/users/138933/benoit-wickramarachi"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1362410725,
+    "creation_date" : 1362410725,
+    "answer_id" : 15204977,
+    "question_id" : 15204491,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Your approach would work but I suggest you to use <a href=\"http://wiki.fasterxml.com/JacksonStreamingApi\" rel=\"nofollow\">Jackson Streaming API</a> to directly parse the JSON file, instead of having an additional step to read the whole file and then process it.</p>\n\n<pre><code>JsonFactory jsonFactory = new JsonFactory();\nJsonParser jp = jsonFactory.createJsonParser(file);\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5411487,
+      "reputation" : 33,
+      "user_id" : 4308092,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/grmsH.jpg?s=256",
+      "display_name" : "chickenempanada",
+      "link" : "https://stackoverflow.com/users/4308092/chickenempanada"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1617458384,
+    "last_edit_date" : 1617458384,
+    "creation_date" : 1617456586,
+    "answer_id" : 66931716,
+    "question_id" : 15204491,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>You can use the <code>JsonItemReader</code> in Spring Batch. In my case, I passed the JSON file name as <code>JobParameter</code>.</p>\n<p>Sample JSON content in my JSON file.</p>\n<pre><code>{ \n   &quot;obj1&quot;: &quot;abc&quot;, \n   &quot;obj2&quot;: &quot;def&quot; \n}\n</code></pre>\n<p>MyObj Class:</p>\n<pre><code>@Data\n@Builder\npublic class MyObject{\n    String obj1;\n    String obj2;\n}\n</code></pre>\n<p>And here is my reader.</p>\n<pre><code>@Bean\n@StepScope\npublic JsonItemReader&lt;MyObj&gt; myReader() {\n\n    LOGGER.info(LOG_TEMPLATE,\n            getClass().getSimpleName(),\n            Thread.currentThread().getStackTrace()[1].getMethodName(),\n            &quot;Inside Reader...&quot;);\n\n    final ObjectMapper mapper = new ObjectMapper();\n\n    final JacksonJsonObjectReader&lt;MyObj&gt; jsonObjectReader = new JacksonJsonObjectReader&lt;&gt;(\n            MyObj.class);\n    jsonObjectReader.setMapper(mapper);\n\n    final String filePath = config.getRootfolder() + SEPERATOR + inputInfo.getFileName();\n\n    return new JsonItemReaderBuilder&lt;MyObj&gt;().jsonObjectReader(jsonObjectReader)\n            .resource(new FileSystemResource(filePath))\n            .name(&quot;myReader&quot;)\n            .build();\n\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 35487,
+    "reputation" : 66436,
+    "user_id" : 100516,
+    "user_type" : "registered",
+    "accept_rate" : 69,
+    "profile_image" : "https://i.sstatic.net/eBhfq.jpg?s=256",
+    "display_name" : "Roman",
+    "link" : "https://stackoverflow.com/users/100516/roman"
+  },
+  "is_answered" : false,
+  "view_count" : 9656,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1760425465,
+  "creation_date" : 1362409248,
+  "question_id" : 15204491,
+  "link" : "https://stackoverflow.com/questions/15204491/how-to-parse-json-file-with-spring-batch",
+  "title" : "How to parse json-file with spring batch?",
+  "body" : "<p>I have a list of serialized entities written to a file in json format.\nI need to read them from the file using spring batch (then process them and write to DB).</p>\n\n<p>I found only Flat file, DB and Xml readers provided with spring batch.\nWhat's the right way to parse json?</p>\n\n<p>The approach I'm going to implement is:</p>\n\n<pre><code>1. read the whole file with FlatFile reader\n2. parse it with Jaxson in `read` method\n</code></pre>\n\n<p>I'm completely newbie in spring batch, so I need a piece of advice here. Is this approach correct? Doesn't it violates any spring-batch principles? Or should I use another one?</p>\n"
+}

@@ -1,0 +1,167 @@
+{
+  "tags" : [ "java", "quarkus", "flyway", "graalvm" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2922228,
+      "reputation" : 64844,
+      "user_id" : 2504224,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/ACuxG.png?s=256",
+      "display_name" : "geoand",
+      "link" : "https://stackoverflow.com/users/2504224/geoand"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1663675213,
+    "post_id" : 73785073,
+    "comment_id" : 130291139,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Does the same problem occur with Quarkus <code>2.12.2.Final</code> and / or <code>2.13.0.CR1</code>?"
+  }, {
+    "owner" : {
+      "account_id" : 9504657,
+      "reputation" : 8623,
+      "user_id" : 7064617,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Q17Fg.png?s=256",
+      "display_name" : "jcompetence",
+      "link" : "https://stackoverflow.com/users/7064617/jcompetence"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1663754585,
+    "post_id" : 73785073,
+    "comment_id" : 130312133,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Could you see if this is similar <a href=\"https://github.com/quarkusio/quarkus/issues/10716\" rel=\"nofollow noreferrer\">github.com/quarkusio/quarkus/issues/10716</a>"
+  }, {
+    "owner" : {
+      "account_id" : 26389399,
+      "reputation" : 21,
+      "user_id" : 20041466,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ca8b00515b148ee0c2925daffc378b5c?s=256&d=identicon&r=PG",
+      "display_name" : "Eusebio",
+      "link" : "https://stackoverflow.com/users/20041466/eusebio"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1663833339,
+    "post_id" : 73785073,
+    "comment_id" : 130333222,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "No, is different issue."
+  }, {
+    "owner" : {
+      "account_id" : 26389399,
+      "reputation" : 21,
+      "user_id" : 20041466,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ca8b00515b148ee0c2925daffc378b5c?s=256&d=identicon&r=PG",
+      "display_name" : "Eusebio",
+      "link" : "https://stackoverflow.com/users/20041466/eusebio"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1663922717,
+    "post_id" : 73785073,
+    "comment_id" : 130357939,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "With 2.12.2.Final of Quarkus I have the same error."
+  }, {
+    "owner" : {
+      "account_id" : 12531823,
+      "reputation" : 127,
+      "user_id" : 9119836,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/857f59a1e0e8e37ffd2f4412c687b3ec?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Golam Wasy Arnob",
+      "link" : "https://stackoverflow.com/users/9119836/golam-wasy-arnob"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1679834987,
+    "post_id" : 73785073,
+    "comment_id" : 133788198,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "@Eusebio have you fixed that error? I am also facing the same error."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 23625304,
+      "reputation" : 11,
+      "user_id" : 17657934,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/40010192dcfcfe36d47e98abe480f6cf?s=256&d=identicon&r=PG",
+      "display_name" : "ScorpioBroker",
+      "link" : "https://stackoverflow.com/users/17657934/scorpiobroker"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1690010351,
+    "last_edit_date" : 1690010351,
+    "creation_date" : 1689685018,
+    "answer_id" : 76713013,
+    "question_id" : 73785073,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had a similar or maybe the same issue and found a solution here <a href=\"https://github.com/quarkusio/quarkus/issues/10716#issuecomment-1069943206\" rel=\"nofollow noreferrer\">https://github.com/quarkusio/quarkus/issues/10716#issuecomment-1069943206</a>. So in my issue I was creating a Flyway instance programmatically <code>(Flyway.flyway())</code> and calling <code>migrate()</code>. This instantiation was the issue for me. Retrieving it via <code>arc</code> solved the issue. Since this is the number 1 thread to find when searching for this issue I'll leave this here.</p>\n<pre><code>QuarkusPathLocationScanner.setApplicationMigrationFiles(files);\nDataSource ds = Flyway.configure().dataSource(&quot;jdbc:&quot; + datasourceUrl, datasourceUsername, datasourcePassword).getDataSource();\nFlywayContainerProducer flywayProducer = Arc.container().instance(FlywayContainerProducer.class).get();\n FlywayContainer flywayContainer = flywayProducer.createFlyway(ds, &quot;&lt;default&gt;&quot;, true, true);\n Flyway flyway = flywayContainer.getFlyway();\n flyway.migrate();\n    \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 21395875,
+      "reputation" : 11,
+      "user_id" : 15758952,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/f4649dfb42e8f0b3697aaf8b597b2675?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Vinicius Duarte",
+      "link" : "https://stackoverflow.com/users/15758952/vinicius-duarte"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1713801864,
+    "creation_date" : 1713801864,
+    "answer_id" : 78367536,
+    "question_id" : 73785073,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I'm using the following config in my environment (and it works ;D)\nI just tried to use a different datasource for the migrations</p>\n<pre><code>quarkus.datasource.db-kind = postgresql\nquarkus.datasource.username = postgres\nquarkus.datasource.password = postgres\nquarkus.datasource.reactive.url = vertx-reactive:postgresql://localhost:5432/mydb\nquarkus.datasource.jdbc = false\n\nquarkus.flyway.&quot;flyway-migration&quot;.active = true\nquarkus.flyway.&quot;flyway-migration&quot;.migrate-at-start = true\nquarkus.datasource.&quot;flyway-migration&quot;.db-kind = postgresql\nquarkus.datasource.&quot;flyway-migration&quot;.jdbc.url = jdbc:postgresql://localhost:5432/mydb\nquarkus.datasource.&quot;flyway-migration&quot;.username = postgres\nquarkus.datasource.&quot;flyway-migration&quot;.password = postgres\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 294022,
+      "reputation" : 118175,
+      "user_id" : 597657,
+      "user_type" : "registered",
+      "accept_rate" : 99,
+      "profile_image" : "https://i.sstatic.net/0h5ec.jpg?s=256",
+      "display_name" : "Eng.Fouad",
+      "link" : "https://stackoverflow.com/users/597657/eng-fouad"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761028654,
+    "last_edit_date" : 1761028654,
+    "creation_date" : 1760285025,
+    "answer_id" : 79788653,
+    "question_id" : 73785073,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you are creating <code>Flyway</code> instance programmatically, make sure to add <code>QuarkusFlywayClassProvider</code> and <code>QuarkusFlywayResourceProvider</code> to avoid using the default scanner:</p>\n<pre class=\"lang-java prettyprint-override\"><code>var flywayConfiguration = Flyway.configure();\nvar quarkusPathLocationScanner = new QuarkusPathLocationScanner(flywayConfiguration,\n                                                    List.of(new Location(&quot;classpath:db/migration&quot;)));\nflywayConfiguration.javaMigrationClassProvider(\n                                    new QuarkusFlywayClassProvider&lt;&gt;(quarkusPathLocationScanner.scanForClasses()));\nflywayConfiguration.resourceProvider(\n                                    new QuarkusFlywayResourceProvider(quarkusPathLocationScanner.scanForResources()));\nflywayConfiguration.encoding(StandardCharsets.UTF_8);\nflywayConfiguration.detectEncoding(false);\nflywayConfiguration.failOnMissingLocations(false);\nflywayConfiguration.dataSource(jdbcUrl, null, null);\nvar flyway = flywayConfiguration.load();\n</code></pre>\n<p>You also need to have at least one datasource configured in application.properties. For example, I am using SQLite (with DB files generated dynamically) and I configured the following:</p>\n<pre><code># Without configuring quarkus.datasource.jdbc.url\nquarkus.datasource.db-kind=sqlite\nquarkus.datasource.jdbc.driver=org.sqlite.JDBC\nquarkus.datasource.devservices.enabled=false\n</code></pre>\n<p>We needed this because <code>FlywayProcessor</code> will initialize <code>QuarkusPathLocationScanner.applicationMigrationFiles</code> and <code>QuarkusPathLocationScanner.applicationMigrationClasses</code> only if there is at least one datasource configured.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 26389399,
+    "reputation" : 21,
+    "user_id" : 20041466,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/ca8b00515b148ee0c2925daffc378b5c?s=256&d=identicon&r=PG",
+    "display_name" : "Eusebio",
+    "link" : "https://stackoverflow.com/users/20041466/eusebio"
+  },
+  "is_answered" : false,
+  "view_count" : 1127,
+  "answer_count" : 3,
+  "score" : 2,
+  "last_activity_date" : 1761028654,
+  "creation_date" : 1663668782,
+  "last_edit_date" : 1663922930,
+  "question_id" : 73785073,
+  "link" : "https://stackoverflow.com/questions/73785073/quarkus-compilation-native-fails-with-flyway",
+  "title" : "Quarkus compilation native fails with flyway",
+  "body" : "<p>I have this error but I cannot found any information about this:</p>\n<pre><code>2022-09-20 09:48:36,035 ERROR [io.qua.run.Application] (main) Failed to start application (with profile prod): java.lang.IllegalStateException: 'org.flywaydb.core.internal.scanner.Scanner' is never used in Quarkus\n        at org.flywaydb.core.internal.scanner.Scanner.&lt;init&gt;(Scanner.java:27)\n        at org.flywaydb.core.FlywayExecutor.createResourceAndClassProviders(FlywayExecutor.java:252)\n        at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:135)\n        at org.flywaydb.core.Flyway.migrate(Flyway.java:124)\n</code></pre>\n<p>I'm pretty sure that the sql migration files are included with the compilation with the parameter &quot;quarkus.native.resources.includes=db/migration/**&quot;.</p>\n<p>Somebody have an idea that what is happening?</p>\n<p><strong>Versions:</strong><br />\nVersion info: 'GraalVM 22.1.0 Java 11 CE'<br />\nQuarkus 2.10.1</p>\n<p><strong>Compilation with maven:</strong></p>\n<pre><code>mvn clean package -Dnative\n</code></pre>\n<p>I had testing also with versions of Quarkus 2.12.2.Final and 2.13.0.CR1 with the same results.</p>\n"
+}

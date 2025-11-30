@@ -1,0 +1,496 @@
+{
+  "tags" : [ "java", "inheritance", "casting" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 279561,
+      "reputation" : 26957,
+      "user_id" : 574799,
+      "user_type" : "registered",
+      "accept_rate" : 74,
+      "profile_image" : "https://i.sstatic.net/9jy55.jpg?s=256",
+      "display_name" : "lukastymo",
+      "link" : "https://stackoverflow.com/users/574799/lukastymo"
+    },
+    "edited" : false,
+    "score" : 3,
+    "creation_date" : 1298398680,
+    "post_id" : 5082044,
+    "comment_id" : 5693589,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "the answer you have here: <a href=\"http://stackoverflow.com/questions/662508/how-can-i-cast-a-list-using-generics-in-java\" title=\"how can i cast a list using generics in java\">stackoverflow.com/questions/662508/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 137237,
+        "reputation" : 14209,
+        "user_id" : 341291,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/LmEnh.jpg?s=256",
+        "display_name" : "Axel",
+        "link" : "https://stackoverflow.com/users/341291/axel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1298404591,
+      "post_id" : 5082088,
+      "comment_id" : 5695080,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Should note that with Arrays, instead of ClassCastException when retrieving an object that is not of type SubClass (or derived), you will get an ArrayStoreException when inserting."
+    }, {
+      "owner" : {
+        "account_id" : 196062,
+        "reputation" : 20920,
+        "user_id" : 439317,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/32373e3d6ddf18b71b26edac43b03c56?s=256&d=identicon&r=PG",
+        "display_name" : "Riley Lark",
+        "link" : "https://stackoverflow.com/users/439317/riley-lark"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1298405110,
+      "post_id" : 5082088,
+      "comment_id" : 5695193,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks especially for the explanation of why the two lists cannot be considered the same."
+    }, {
+      "owner" : {
+        "account_id" : 295869,
+        "reputation" : 75003,
+        "user_id" : 600500,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/5925786f174975db18cbc83dd85e5c1d?s=256&d=identicon&r=PG",
+        "display_name" : "Paŭlo Ebermann",
+        "link" : "https://stackoverflow.com/users/600500/pa%c5%adlo-ebermann"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1457450924,
+      "post_id" : 5082088,
+      "comment_id" : 59406659,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The Java type system pretends that arrays are covariant, but they aren&#39;t really substitutable, proven by the ArrayStoreException."
+    } ],
+    "owner" : {
+      "account_id" : 2496,
+      "reputation" : 270515,
+      "user_id" : 3474,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/ffbf4e85b8ffbae4e9039b9c0cf07bc8?s=256&d=identicon&r=PG",
+      "display_name" : "erickson",
+      "link" : "https://stackoverflow.com/users/3474/erickson"
+    },
+    "is_accepted" : true,
+    "score" : 207,
+    "last_activity_date" : 1298398813,
+    "last_edit_date" : 1298398813,
+    "creation_date" : 1298398342,
+    "answer_id" : 5082088,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The syntax for this sort of assignment uses a wildcard:</p>\n\n<pre><code>List&lt;SubClass&gt; subs = ...;\nList&lt;? extends BaseClass&gt; bases = subs;\n</code></pre>\n\n<p>It's important to realize that a <code>List&lt;SubClass&gt;</code> is <strong>not</strong> interchangeable with a <code>List&lt;BaseClass&gt;</code>. Code that retains a reference to the <code>List&lt;SubClass&gt;</code> will expect every item in the list to be a <code>SubClass</code>. If another part of code referred to the list as a <code>List&lt;BaseClass&gt;</code>, the compiler will not complain when a <code>BaseClass</code> or <code>AnotherSubClass</code> is inserted. But this will cause a <code>ClassCastException</code> for the first piece of code, which assumes that everything in the list is a <code>SubClass</code>.</p>\n\n<p>Generic collections do not behave the same as arrays in Java. Arrays are covariant; that is, it is allowed to do this:</p>\n\n<pre><code>SubClass[] subs = ...;\nBaseClass[] bases = subs;\n</code></pre>\n\n<p>This is allowed, because the array \"knows\" the type of its elements. If someone attempts to store something that isn't an instance of <code>SubClass</code> in the array (via the <code>bases</code> reference), a runtime exception will be thrown. </p>\n\n<p>Generic collections do <em>not</em> \"know\" their component type; this information is \"erased\" at compile time. Therefore, they can't raise a runtime exception when an invalid store occurs. Instead, a <code>ClassCastException</code> will be raised at some far distant, hard-to-associate point in code when a value is read from the collection. If you heed compiler warnings about type safety, you will avoid these type errors at runtime.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 207873,
+      "reputation" : 1781,
+      "user_id" : 458014,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://www.gravatar.com/avatar/0567d31d6c77919cc35f3a873d5fc408?s=256&d=identicon&r=PG",
+      "display_name" : "hd42",
+      "link" : "https://stackoverflow.com/users/458014/hd42"
+    },
+    "is_accepted" : false,
+    "score" : 14,
+    "last_activity_date" : 1298400335,
+    "creation_date" : 1298400335,
+    "answer_id" : 5082437,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>As @erickson explained, if you really want a reference to the original list, make sure no code inserts anything to that list if you ever want to use it again under its original declaration. The simplest way to get it is to just cast it to a plain old ungeneric list:</p>\n\n<pre><code>List&lt;BaseClass&gt; baseList = (List)new ArrayList&lt;SubClass&gt;();\n</code></pre>\n\n<p>I would not recommend this if you don't know what happens to the List and would suggest you change whatever code needs the List to accept the List you have.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8265071,
+        "reputation" : 155,
+        "user_id" : 6214933,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/04ee8bf6d1215ec6c16f9892a52e2f98?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Long",
+        "link" : "https://stackoverflow.com/users/6214933/long"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1623573634,
+      "post_id" : 5083949,
+      "comment_id" : 120113043,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "PS: add(null) is legal"
+    } ],
+    "owner" : {
+      "account_id" : 295869,
+      "reputation" : 75003,
+      "user_id" : 600500,
+      "user_type" : "registered",
+      "accept_rate" : 54,
+      "profile_image" : "https://www.gravatar.com/avatar/5925786f174975db18cbc83dd85e5c1d?s=256&d=identicon&r=PG",
+      "display_name" : "Paŭlo Ebermann",
+      "link" : "https://stackoverflow.com/users/600500/pa%c5%adlo-ebermann"
+    },
+    "is_accepted" : false,
+    "score" : 45,
+    "last_activity_date" : 1298408701,
+    "creation_date" : 1298408701,
+    "answer_id" : 5083949,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>erickson already explained why you can't do this, but here some solutions:</p>\n\n<p>If you only want to take elements out of your base list, in principle your receiving method should be declared as taking a <code>List&lt;? extends BaseClass&gt;</code>.</p>\n\n<p>But if it isn't and you can't change it, you can wrap the list with <code>Collections.unmodifiableList(...)</code>, which allows returning a List of a supertype of the argument's parameter. (It avoids the typesafety problem by throwing UnsupportedOperationException on insertion tries.)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 235159,
+      "reputation" : 284,
+      "user_id" : 501789,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/620e26ffd640c988ff8bb7aaea82b187?s=256&d=identicon&r=PG",
+      "display_name" : "olivervbk",
+      "link" : "https://stackoverflow.com/users/501789/olivervbk"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1427324772,
+    "creation_date" : 1427324772,
+    "answer_id" : 29268187,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Something like this should work too:</p>\n\n<pre><code>public static &lt;T&gt; List&lt;T&gt; convertListWithExtendableClasses(\n    final List&lt; ? extends T&gt; originalList,\n    final Class&lt;T&gt; clazz )\n{\n    final List&lt;T&gt; newList = new ArrayList&lt;&gt;();\n    for ( final T item : originalList )\n    {\n        newList.add( item );\n    }// for\n    return newList;\n}\n</code></pre>\n\n<p>Don't really know why clazz is needed in Eclipse..</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 178619,
+        "reputation" : 2978,
+        "user_id" : 410713,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/0dbff7aadc9d17ac92624bfe702f9432?s=256&d=identicon&r=PG",
+        "display_name" : "marc.guenther",
+        "link" : "https://stackoverflow.com/users/410713/marc-guenther"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1665698762,
+      "post_id" : 43263131,
+      "comment_id" : 130766190,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Shouldn&#39;t this be called <code>upCastList()</code>? After all, you are casting from a sub class to a super class? Otherwise, this is super helpful. I added this as an extension method (using Lombok) to <code>List</code>, so now I can simply <code>superList = subList.upCast();</code>"
+    }, {
+      "owner" : {
+        "account_id" : 404649,
+        "reputation" : 63024,
+        "user_id" : 773113,
+        "user_type" : "registered",
+        "accept_rate" : 72,
+        "profile_image" : "https://i.sstatic.net/FKKLW.jpg?s=256",
+        "display_name" : "Mike Nakis",
+        "link" : "https://stackoverflow.com/users/773113/mike-nakis"
+      },
+      "reply_to_user" : {
+        "account_id" : 178619,
+        "reputation" : 2978,
+        "user_id" : 410713,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/0dbff7aadc9d17ac92624bfe702f9432?s=256&d=identicon&r=PG",
+        "display_name" : "marc.guenther",
+        "link" : "https://stackoverflow.com/users/410713/marc-guenther"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1745436533,
+      "post_id" : 43263131,
+      "comment_id" : 140362860,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@marc.guenther for some reason I only now saw your comment, years later.  Yes, you are right, it is an up-cast. I fixed it."
+    } ],
+    "owner" : {
+      "account_id" : 404649,
+      "reputation" : 63024,
+      "user_id" : 773113,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://i.sstatic.net/FKKLW.jpg?s=256",
+      "display_name" : "Mike Nakis",
+      "link" : "https://stackoverflow.com/users/773113/mike-nakis"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1745436500,
+    "last_edit_date" : 1745436500,
+    "creation_date" : 1491503420,
+    "answer_id" : 43263131,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What you are trying to do is very useful and I find that I need to do it very often in code that I write.</p>\n<p>Most java programmers would not think twice before implementing <code>getConvertedList()</code> by allocating a new <code>ArrayList&lt;&gt;()</code>, populating it with all the elements from the original list, and returning it.  I enjoy entertaining the thought that about 30% of all clock cycles consumed by java code running on millions of machines all over the planet is doing nothing but creating such useless copies of <code>ArrayList</code>s which are garbage-collected microseconds after their creation.</p>\n<p>The solution to this problem is, of course, up-casting the collection. Here is how to do it:</p>\n<pre><code>static &lt;T,U extends T&gt; List&lt;T&gt; upCastList( List&lt;U&gt; list )\n{\n    @SuppressWarnings( &quot;unchecked&quot; )\n    List&lt;T&gt; result = (List&lt;T&gt;)list;\n    return result;\n}\n</code></pre>\n<p>The intermediate <code>result</code> variable is necessary due to a perversion of the java language:</p>\n<ul>\n<li><p><code>return (List&lt;T&gt;)list;</code> would produce an &quot;unchecked cast&quot; warning;</p>\n</li>\n<li><p>in order to suppress the warning, you need a <code>@SuppressWarnings( &quot;unchecked&quot; )</code> annotation, and good programming practices mandate that it must be placed in the smallest possible scope, which is the individual statement, not the method.</p>\n</li>\n<li><p>in java an annotation cannot be placed on just any line of code; it must be placed on some entity, like a class, a field, a method, etc.</p>\n</li>\n<li><p>luckily, one such annotatable entity is a local variable declaration.</p>\n</li>\n<li><p>therefore, we have to declare a new local variable to use the <code>@SuppressWarnings</code> annotation on it, and then return the value of that variable. (It should not matter anyway, because it should be optimized away by the JIT.)</p>\n</li>\n</ul>\n<p>Note: this answer was just upvoted, which is cool, but if you are reading this, please be sure to also read the second, more recent answer of mine to this same question: <a href=\"https://stackoverflow.com/a/72195980/773113\">https://stackoverflow.com/a/72195980/773113</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6229027,
+        "reputation" : 32308,
+        "user_id" : 4850040,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://i.sstatic.net/acYd0.png?s=256",
+        "display_name" : "Toby Speight",
+        "link" : "https://stackoverflow.com/users/4850040/toby-speight"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1500465852,
+      "post_id" : 45183177,
+      "comment_id" : 77347019,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Thank you for this code snippet, which may provide some immediate help.  A proper explanation <a href=\"//meta.stackexchange.com/q/114762\">would greatly improve</a> its educational value by showing <i>why</i> this is a good solution to the problem, and would make it more useful to future readers with similar, but not identical, questions.  Please <a href=\"https://stackoverflow.com/posts/45183177/edit\">edit</a> your answer to add explanation, and give an indication of what limitations and assumptions apply.  In particular, how does this differ from the code in the question that makes a new list?"
+    }, {
+      "owner" : {
+        "account_id" : 1316033,
+        "reputation" : 8088,
+        "user_id" : 1262865,
+        "user_type" : "registered",
+        "accept_rate" : 50,
+        "profile_image" : "https://i.sstatic.net/ojvZh.jpg?s=256",
+        "display_name" : "john16384",
+        "link" : "https://stackoverflow.com/users/1262865/john16384"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582397067,
+      "post_id" : 45183177,
+      "comment_id" : 106766492,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The overhead is not insignifcant, as it also has to (shallow) copy every reference.  As such it scales with the size of the list, so it is an O(n) operation."
+    } ],
+    "owner" : {
+      "account_id" : 1304399,
+      "reputation" : 339,
+      "user_id" : 1253663,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b1758f78c537e007ab43a0ff86e6e9d9?s=256&d=identicon&r=PG",
+      "display_name" : "sigirisetti",
+      "link" : "https://stackoverflow.com/users/1253663/sigirisetti"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1500474187,
+    "last_edit_date" : 1500474187,
+    "creation_date" : 1500447834,
+    "answer_id" : 45183177,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Below is a useful snippet that works. It constructs a new array list but JVM object creation over head is in-significant. </p>\n\n<p>I saw other answers are un-necessarily complicated.</p>\n\n<pre><code>List&lt;BaseClass&gt; baselist = new ArrayList&lt;&gt;(sublist);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1998882,
+        "reputation" : 521,
+        "user_id" : 1790382,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/YehfR.png?s=256",
+        "display_name" : "kanaparthikiran",
+        "link" : "https://stackoverflow.com/users/1790382/kanaparthikiran"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1536178096,
+      "post_id" : 50553783,
+      "comment_id" : 91335141,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This is the complete piece of code that works to cast sub class list to super class."
+    }, {
+      "owner" : {
+        "account_id" : 4611941,
+        "reputation" : 2408,
+        "user_id" : 3739756,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b1e6b6027da99e560f00dbc92e64c2fc?s=256&d=identicon&r=PG",
+        "display_name" : "giulp",
+        "link" : "https://stackoverflow.com/users/3739756/giulp"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1628160183,
+      "post_id" : 50553783,
+      "comment_id" : 121349123,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "wouldn&#39;t be necessary to call <code>.stream()</code> on the list before calling <code>.map()</code> ?"
+    }, {
+      "owner" : {
+        "account_id" : 519380,
+        "reputation" : 408,
+        "user_id" : 1256928,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/d9206860fb84c2f6c99dfe8c896f7645?s=256&d=identicon&r=PG",
+        "display_name" : "drordk",
+        "link" : "https://stackoverflow.com/users/1256928/drordk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1628516813,
+      "post_id" : 50553783,
+      "comment_id" : 121434801,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Yes giulp. Fixed (added stream())."
+    } ],
+    "owner" : {
+      "account_id" : 519380,
+      "reputation" : 408,
+      "user_id" : 1256928,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d9206860fb84c2f6c99dfe8c896f7645?s=256&d=identicon&r=PG",
+      "display_name" : "drordk",
+      "link" : "https://stackoverflow.com/users/1256928/drordk"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1628516765,
+    "last_edit_date" : 1628516765,
+    "creation_date" : 1527435543,
+    "answer_id" : 50553783,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>How about casting all elements. It will create a new list, but will reference the original objects from the old list.</p>\n<pre><code>List&lt;BaseClass&gt; convertedList = listOfSubClass.stream().map(x -&gt; (BaseClass)x).collect(Collectors.toList());\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1998882,
+      "reputation" : 521,
+      "user_id" : 1790382,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YehfR.png?s=256",
+      "display_name" : "kanaparthikiran",
+      "link" : "https://stackoverflow.com/users/1790382/kanaparthikiran"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1536178525,
+    "creation_date" : 1536178525,
+    "answer_id" : 52192809,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is the complete working piece of code using Generics, to cast sub class list to super class.</p>\n\n<p>Caller method that passes subclass type</p>\n\n<pre><code>List&lt;SubClass&gt; subClassParam = new ArrayList&lt;&gt;();    \ngetElementDefinitionStatuses(subClassParam);\n</code></pre>\n\n<p>Callee method that accepts any subtype of the base class</p>\n\n<pre><code>private static List&lt;String&gt; getElementDefinitionStatuses(List&lt;? extends \n    BaseClass&gt; baseClassVariableName) {\n     return allElementStatuses;\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1316033,
+      "reputation" : 8088,
+      "user_id" : 1262865,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://i.sstatic.net/ojvZh.jpg?s=256",
+      "display_name" : "john16384",
+      "link" : "https://stackoverflow.com/users/1262865/john16384"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1582397434,
+    "creation_date" : 1582397434,
+    "answer_id" : 60355596,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I missed the answer where you just cast the original list, using a double cast.  So here it is for completeness:</p>\n\n<pre><code>List&lt;BaseClass&gt; baseList = (List&lt;BaseClass&gt;)(List&lt;?&gt;)subList;\n</code></pre>\n\n<p>Nothing is copied, and the operation is fast.  However, you are tricking the compiler here so you must make absolutely sure to not modify the list in such a way that the <code>subList</code> starts containing items of a different sub type.  When dealing with immutable lists this is usually not an issue.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15459711,
+        "reputation" : 1867,
+        "user_id" : 11152683,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/be6673572a9c8202344ffedadfdcc9e5?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Lubo",
+        "link" : "https://stackoverflow.com/users/11152683/lubo"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1659612077,
+      "post_id" : 72195980,
+      "comment_id" : 129338479,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Nice description, why someone cannot cast ArrayList&lt;S&gt; to ArrayList&lt;D&gt;, but List.of() can be casted."
+    }, {
+      "owner" : {
+        "account_id" : 785560,
+        "reputation" : 15259,
+        "user_id" : 845414,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/8fbe63f77ce3f9656c62b27db4d8583b?s=256&d=identicon&r=PG",
+        "display_name" : "Johannes Kuhn",
+        "link" : "https://stackoverflow.com/users/845414/johannes-kuhn"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1667125397,
+      "post_id" : 72195980,
+      "comment_id" : 131092538,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "A similar thing applies to <a href=\"https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collections.html#unmodifiableList%28java.util.List%29\" rel=\"nofollow noreferrer\"><code>Collections.unmodifiableList()</code></a>, for similar reasons."
+    } ],
+    "owner" : {
+      "account_id" : 404649,
+      "reputation" : 63024,
+      "user_id" : 773113,
+      "user_type" : "registered",
+      "accept_rate" : 72,
+      "profile_image" : "https://i.sstatic.net/FKKLW.jpg?s=256",
+      "display_name" : "Mike Nakis",
+      "link" : "https://stackoverflow.com/users/773113/mike-nakis"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1667123699,
+    "last_edit_date" : 1667123699,
+    "creation_date" : 1652248077,
+    "answer_id" : 72195980,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The most efficient and at the same time <em><strong>safe</strong></em> way of accomplishing this is as follows:</p>\n<pre><code>List&lt;S&gt; supers = List.copyOf( descendants );\n</code></pre>\n<p>The documentation of this function is here: <a href=\"https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/List.html#copyOf(java.util.Collection)\" rel=\"noreferrer\">oracle.com - Java SE 19 docs - List.copyOf()</a>  The documentation states that this function exists &quot;Since: 10&quot;.</p>\n<p>The use of this function has the following advantages:</p>\n<ul>\n<li>It is a neat one-liner.</li>\n<li>It produces no warnings.</li>\n<li>It does not require any typecast.</li>\n<li>It does not require the cumbersome <code>List&lt;? extends S&gt;</code> construct.</li>\n<li>It does <strong>not necessarily</strong> make a copy !!!</li>\n<li>Most importantly: <strong>it does the right thing.</strong> (It is safe.)</li>\n</ul>\n<h3>Why is this the right thing?</h3>\n<p>If you look at the source code of <code>List.copyOf()</code> you will see that it works as follows:</p>\n<ul>\n<li>If your list was created with <code>List.of()</code>, then it will do the cast and return it without copying it.</li>\n<li>Otherwise, (e.g. if your list is an <code>ArrayList()</code>,) it will create a copy and return it.</li>\n</ul>\n<p>If your original <code>List&lt;D&gt;</code> is an <code>ArrayList&lt;D&gt;</code>, then in order to obtain a <code>List&lt;S&gt;</code>, a copy of the <code>ArrayList</code> <strong>must be made</strong>. If a cast was made instead, it would be opening up the possibility of inadvertently adding an <code>S</code> into that <code>List&lt;S&gt;</code>, causing your original <code>ArrayList&lt;D&gt;</code> to contain an <code>S</code> among the <code>D</code>s, which is a disastrous situation known as <em><strong>Heap Pollution</strong></em> (<a href=\"https://en.wikipedia.org/wiki/Heap_pollution\" rel=\"noreferrer\">Wikipedia</a>): attempting to iterate all the <code>D</code>s in the original <code>ArrayList&lt;D&gt;</code> would throw a <code>ClassCastException</code>.</p>\n<p>On the other hand, if your original <code>List&lt;D&gt;</code> has been created using <code>List.of()</code>, then it is unchangeable<sup>(*1)</sup>, so it is okay to simply cast it to <code>List&lt;S&gt;</code>, because nobody can actually add an <code>S</code> among the <code>D</code>s.</p>\n<p><code>List.copyOf()</code> takes care of this decision logic for you.</p>\n<hr />\n<p><sup>(*1) when these lists were first introduced they were called &quot;immutable&quot;; later  they realized that it is wrong to call them immutable, because a collection cannot be immutable, since it cannot vouch for the immutability of the elements that it contains; so they changed the documentation to call them &quot;unmodifiable&quot; instead; however, &quot;unmodifiable&quot; already had a meaning before these lists were introduced, and it meant &quot;an unmodifiable <em><strong>to you</strong></em> view of <em><strong>my</strong></em> list which I am still free to mutate as I please, and <em><strong>the mutations will be very visible to you</strong></em>&quot;. So, neither immutable or unmodifiable is correct. I like to call them &quot;superficially immutable&quot; in the sense that they are not deeply immutable, but that may ruffle some feathers, so I just called them &quot;unchangeable&quot; as a compromise.</sup></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5538696,
+      "reputation" : 592,
+      "user_id" : 4396129,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://lh5.googleusercontent.com/-R127OKD6_0k/AAAAAAAAAAI/AAAAAAAAAIE/Io7kk-ARWCo/s256-rj/photo.jpg",
+      "display_name" : "Rahul Gul",
+      "link" : "https://stackoverflow.com/users/4396129/rahul-gul"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1714025399,
+    "creation_date" : 1714025399,
+    "answer_id" : 78382555,
+    "question_id" : 5082044,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>With Java streams, just adding this does the job.</p>\n<p>List&lt;BaseClass&gt; convertedList = subClassList.stream().collect(Collectors.toList());</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 196062,
+    "reputation" : 20920,
+    "user_id" : 439317,
+    "user_type" : "registered",
+    "accept_rate" : 84,
+    "profile_image" : "https://www.gravatar.com/avatar/32373e3d6ddf18b71b26edac43b03c56?s=256&d=identicon&r=PG",
+    "display_name" : "Riley Lark",
+    "link" : "https://stackoverflow.com/users/439317/riley-lark"
+  },
+  "is_answered" : true,
+  "view_count" : 100307,
+  "accepted_answer_id" : 5082088,
+  "answer_count" : 11,
+  "score" : 174,
+  "last_activity_date" : 1745436500,
+  "creation_date" : 1298398098,
+  "question_id" : 5082044,
+  "link" : "https://stackoverflow.com/questions/5082044/most-efficient-way-to-cast-listsubclass-to-listbaseclass",
+  "title" : "Most efficient way to cast List&lt;SubClass&gt; to List&lt;BaseClass&gt;",
+  "body" : "<p>I have a <code>List&lt;SubClass&gt;</code> that I want to treat as a <code>List&lt;BaseClass&gt;</code>.  It seems like it shouldn't be a problem since casting a <code>SubClass</code> to a <code>BaseClass</code> is a snap, but my compiler complains that the cast is impossible.</p>\n\n<p>So, what's the best way to get a reference to the same objects as a <code>List&lt;BaseClass&gt;</code>?</p>\n\n<p>Right now I'm just making a new list and copying the old list:</p>\n\n<pre><code>List&lt;BaseClass&gt; convertedList = new ArrayList&lt;BaseClass&gt;(listOfSubClass)\n</code></pre>\n\n<p>But as I understand it that has to create an entirely new list.  I'd like a reference to the original list, if possible!</p>\n"
+}

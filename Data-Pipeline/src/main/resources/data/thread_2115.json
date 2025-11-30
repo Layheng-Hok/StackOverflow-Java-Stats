@@ -1,0 +1,260 @@
+{
+  "tags" : [ "java", "exception", "return", "try-catch-finally" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 610,
+        "reputation" : 118341,
+        "user_id" : 797,
+        "user_type" : "registered",
+        "accept_rate" : 66,
+        "profile_image" : "https://www.gravatar.com/avatar/aef85130bf44caa9b4de0a3153e758f2?s=256&d=identicon&r=PG",
+        "display_name" : "Matt Sheppard",
+        "link" : "https://stackoverflow.com/users/797/matt-sheppard"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1220757823,
+      "post_id" : 48096,
+      "comment_id" : 76,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Sure. I guess I&#39;m asking in case someone can give me some really compelling example on the side of good."
+    }, {
+      "owner" : {
+        "account_id" : 8305927,
+        "reputation" : 1397,
+        "user_id" : 7571925,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-O0gSNlEGM6I/AAAAAAAAAAI/AAAAAAAAAcA/O1UAh_d850s/s256-rj/photo.jpg",
+        "display_name" : "Blake",
+        "link" : "https://stackoverflow.com/users/7571925/blake"
+      },
+      "reply_to_user" : {
+        "account_id" : 610,
+        "reputation" : 118341,
+        "user_id" : 797,
+        "user_type" : "registered",
+        "accept_rate" : 66,
+        "profile_image" : "https://www.gravatar.com/avatar/aef85130bf44caa9b4de0a3153e758f2?s=256&d=identicon&r=PG",
+        "display_name" : "Matt Sheppard",
+        "link" : "https://stackoverflow.com/users/797/matt-sheppard"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1538745007,
+      "post_id" : 48096,
+      "comment_id" : 92262395,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@MattSheppard in daos, I will often log the exit of a query in a <a href=\"https://gist.github.com/bicabone/8722d72301798bece20e649b6c1dfcda\" rel=\"nofollow noreferrer\">try-finally</a>"
+    } ],
+    "owner" : {
+      "account_id" : 3416,
+      "reputation" : 83489,
+      "user_id" : 4926,
+      "user_type" : "registered",
+      "accept_rate" : 85,
+      "profile_image" : "https://www.gravatar.com/avatar/3f9f1c5628ed19b0e70fd4e8b8a1d0b9?s=256&d=identicon&r=PG",
+      "display_name" : "Jason Cohen",
+      "link" : "https://stackoverflow.com/users/4926/jason-cohen"
+    },
+    "is_accepted" : true,
+    "score" : 93,
+    "last_activity_date" : 1220757629,
+    "creation_date" : 1220757629,
+    "answer_id" : 48096,
+    "question_id" : 48088,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The examples you provided are reason enough to <i>not</i> use flow-control from finally.</p>\n\n<p>Even if there's a contrived example where it's \"better,\" consider the developer who has to maintain your code later and who might not be aware of the subtleties.  That poor developer might even be you....</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3097,
+      "reputation" : 4258,
+      "user_id" : 4396,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/84feae182bd18d80fc80195eab6b52e5?s=256&d=identicon&r=PG",
+      "display_name" : "Ian",
+      "link" : "https://stackoverflow.com/users/4396/ian"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1220795859,
+    "last_edit_date" : 1220795859,
+    "creation_date" : 1220758317,
+    "answer_id" : 48106,
+    "question_id" : 48088,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Adding control structures and returns to finally{} blocks are just another example of \"just because you can\" abuses which are scattered throughout virtually all development languages.  Jason was right in suggesting it could easily become a maintenance nightmare - the arguments against early returns from functions apply more-so to this case of \"late returns\".</p>\n\n<p>Finally blocks exist for one purpose, to allow you to completely tidy up after yourself, no matter what happened in all the preceeding code. Principally this is closing / releasing file pointers, database connections etc., though I could see it being stretched to say adding in bespoke auditing.</p>\n\n<p>Anything that affects the return of the function should lie in the try{} block.  Even if you had a method whereby you checked an external state, did a time consuming operation, then checked that state again in case it became invalid, you would still want the second check inside the try{} - if it sat inside finally{} and the long operation failed, you would then be checking that state a second time needlessly.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3282,
+      "reputation" : 147614,
+      "user_id" : 4725,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+      "display_name" : "Tom Hawtin - tackline",
+      "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+    },
+    "is_accepted" : false,
+    "score" : 24,
+    "last_activity_date" : 1220795401,
+    "creation_date" : 1220795401,
+    "answer_id" : 48444,
+    "question_id" : 48088,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>javac will warn of return in finally if you use the -Xlint:finally. Originally javac emitted no warnings - if something is wrong with the code, it should fail to compile. Unfortunately backwards compatibility means that unanticipated ingenious foolishness cannot be prohibited.</p>\n\n<p>Exceptions can be thrown from finally blocks, but in that case the exhibited behaviour is almost certainly what you want.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 6099767,
+        "reputation" : 5239,
+        "user_id" : 4759176,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://i.sstatic.net/0U1e5.jpg?s=256",
+        "display_name" : "parsecer",
+        "link" : "https://stackoverflow.com/users/4759176/parsecer"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1584781446,
+      "post_id" : 48740,
+      "comment_id" : 107546035,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Where should one put the return then?"
+    }, {
+      "owner" : {
+        "account_id" : 2454201,
+        "reputation" : 1330,
+        "user_id" : 2139775,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1d593f4ba415fbcd23f186d84d78476e?s=256&d=identicon&r=PG",
+        "display_name" : "Tiago Sippert",
+        "link" : "https://stackoverflow.com/users/2139775/tiago-sippert"
+      },
+      "reply_to_user" : {
+        "account_id" : 6099767,
+        "reputation" : 5239,
+        "user_id" : 4759176,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://i.sstatic.net/0U1e5.jpg?s=256",
+        "display_name" : "parsecer",
+        "link" : "https://stackoverflow.com/users/4759176/parsecer"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1587479880,
+      "post_id" : 48740,
+      "comment_id" : 108524441,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@parsecer I&#39;d say right after calling somethingThatThrewAnException() inside the try block"
+    }, {
+      "owner" : {
+        "account_id" : 316665,
+        "reputation" : 90429,
+        "user_id" : 632951,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://www.gravatar.com/avatar/77f196f4d3b4b89fc179071f3aa21e1e?s=256&d=identicon&r=PG",
+        "display_name" : "Pacerier",
+        "link" : "https://stackoverflow.com/users/632951/pacerier"
+      },
+      "reply_to_user" : {
+        "account_id" : 6099767,
+        "reputation" : 5239,
+        "user_id" : 4759176,
+        "user_type" : "registered",
+        "accept_rate" : 74,
+        "profile_image" : "https://i.sstatic.net/0U1e5.jpg?s=256",
+        "display_name" : "parsecer",
+        "link" : "https://stackoverflow.com/users/4759176/parsecer"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1589074811,
+      "post_id" : 48740,
+      "comment_id" : 109148090,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@parsecer, ?? Just do it the usual way, after the finally."
+    } ],
+    "owner" : {
+      "account_id" : 2536,
+      "reputation" : 25318,
+      "user_id" : 3535,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/7b4287aaf0ec5c4432a3cea172c4ed99?s=256&d=identicon&r=PG",
+      "display_name" : "John Meagher",
+      "link" : "https://stackoverflow.com/users/3535/john-meagher"
+    },
+    "is_accepted" : false,
+    "score" : 169,
+    "last_activity_date" : 1484904613,
+    "last_edit_date" : 1484904613,
+    "creation_date" : 1220818655,
+    "answer_id" : 48740,
+    "question_id" : 48088,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I had a REALLY hard time to track down a bug years ago that was caused by this. The code was something like:</p>\n\n<pre><code>Object problemMethod() {\n    Object rtn = null;\n    try {\n        rtn = somethingThatThrewAnException();\n    }\n    finally {\n        doSomeCleanup();\n        return rtn;\n    }\n}\n</code></pre>\n\n<p>What happened is that the exception was thrown down in some other code. It was being caught and logged and rethrown within the <code>somethingThatThrewAnException()</code> method. But the exception wasn't being propagated up past <code>problemMethod()</code>. After a LONG time of looking at this we finally tracked it down to the return method. The return method in the finally block was basically stopping the exception that happened in the try block from propagating up even though it wasn't caught.</p>\n\n<p>Like others have said, while it is legal to return from a finally block according to the Java spec, it is a BAD thing and shouldn't be done.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 717198,
+      "reputation" : 71,
+      "user_id" : 645117,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/d0af913bf44e6793e375c629c532f562?s=256&d=identicon&r=PG",
+      "display_name" : "Prof. Ondino",
+      "link" : "https://stackoverflow.com/users/645117/prof-ondino"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1299257940,
+    "last_edit_date" : 1299257940,
+    "creation_date" : 1299257046,
+    "answer_id" : 5196685,
+    "question_id" : 48088,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<h2>A simple Groovy Test:</h2>\n\n<pre><code>public class Instance {\n\n  List&lt;String&gt; runningThreads = new ArrayList&lt;String&gt;()\n\n  void test(boolean returnInFinally) {\n\n    println \"\\ntest(returnInFinally: $returnInFinally)\"\n    println \"--------------------------------------------------------------------------\"\n    println \"before execute\"\n    String result = execute(returnInFinally, false)\n    println \"after execute -&gt; result: \" + result\n    println \"--------------------------------------------------------------------------\"\n\n    println \"before execute\"\n    try {\n      result = execute(returnInFinally, true)\n      println \"after execute -&gt; result: \" + result\n    } catch (Exception ex) {\n      println \"execute threw exception: \" + ex.getMessage()\n    }  \n    println \"--------------------------------------------------------------------------\\n\"\n\n  }\n\n  String execute(boolean returnInFinally, boolean throwError) {\n      String thread = Thread.currentThread().getName()\n      println \"...execute(returnInFinally: $returnInFinally, throwError: $throwError) - thread: $thread\"\n      runningThreads.add(thread)\n      try {\n        if (throwError) {\n          println \"...error in execute, throw exception\"\n          throw new Exception(\"as you liked :-)\")\n        }\n        println \"...return 'OK' from execute\"\n        return \"OK\"\n      } finally {\n        println \"...pass finally block\"\n        if (returnInFinally) return \"return value from FINALLY ^^\"\n        // runningThreads.remove(thread)\n      }\n  }\n}\n\nInstance instance = new Instance()\ninstance.test(false)\ninstance.test(true)\n</code></pre>\n\n<h2>Output:</h2>\n\n<pre><code>test(returnInFinally: false)\n-----------------------------------------------------------------------------\nbefore execute\n...execute(returnInFinally: false, throwError: false) - thread: Thread-116\n...return 'OK' from execute\n...pass finally block\nafter execute -&gt; result: OK\n-----------------------------------------------------------------------------\nbefore execute\n...execute(returnInFinally: false, throwError: true) - thread: Thread-116\n...error in execute, throw exception\n...pass finally block\nexecute threw exception: as you liked :-)\n-----------------------------------------------------------------------------\n\n\ntest(returnInFinally: true)\n-----------------------------------------------------------------------------\nbefore execute\n...execute(returnInFinally: true, throwError: false) - thread: Thread-116\n...return 'OK' from execute\n...pass finally block\nafter execute -&gt; result: return value from FINALLY ^^\n-----------------------------------------------------------------------------\nbefore execute\n...execute(returnInFinally: true, throwError: true) - thread: Thread-116\n...error in execute, throw exception\n...pass finally block\nafter execute -&gt; result: return value from FINALLY ^^\n-----------------------------------------------------------------------------\n</code></pre>\n\n<h2>Question:</h2>\n\n<p>One interesting point for me was to see how Groovy deals with implicit returns. In Groovy it is possible to \"return\" from a method simply leaving a value at the end (without return). What do you think happens, if you uncomment the <em>runningThreads.remove(..)</em> line in the finally statement - will this overwrite the regular return value (\"OK\") and cover the exception?!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2401660,
+      "reputation" : 7886,
+      "user_id" : 2099208,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/lCVvM.jpg?s=256",
+      "display_name" : "Ankur Lathi",
+      "link" : "https://stackoverflow.com/users/2099208/ankur-lathi"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1581145161,
+    "creation_date" : 1581145161,
+    "answer_id" : 60124650,
+    "question_id" : 48088,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Returning from inside a <code>finally</code> block will cause <code>exceptions</code> to be lost.</p>\n\n<p><strong>A return statement inside a finally block will cause any exception that might be thrown in the try or catch block to be discarded.</strong> </p>\n\n<p>According to the <a href=\"http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.20.2\" rel=\"nofollow noreferrer\"><strong>Java Language Specification:</strong></a></p>\n\n<blockquote>\n  <p>If execution of the try block completes abruptly for any other reason\n  R, then the finally block is executed, and then there is a choice:</p>\n\n<pre><code>   If the finally block completes normally, then the try statement\n   completes  abruptly for reason R.\n\n   If the finally block completes abruptly for reason S, then the try\n   statement  completes abruptly for reason S (and reason R is\n   discarded).\n</code></pre>\n</blockquote>\n\n<p><em>Note: As per <a href=\"http://docs.oracle.com/javase/specs/jls/se7/html/jls-14.html#jls-14.17\" rel=\"nofollow noreferrer\">JLS 14.17</a> - a return statement always completes abruptly.</em></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 610,
+    "reputation" : 118341,
+    "user_id" : 797,
+    "user_type" : "registered",
+    "accept_rate" : 66,
+    "profile_image" : "https://www.gravatar.com/avatar/aef85130bf44caa9b4de0a3153e758f2?s=256&d=identicon&r=PG",
+    "display_name" : "Matt Sheppard",
+    "link" : "https://stackoverflow.com/users/797/matt-sheppard"
+  },
+  "is_answered" : true,
+  "view_count" : 71110,
+  "accepted_answer_id" : 48096,
+  "answer_count" : 6,
+  "score" : 189,
+  "last_activity_date" : 1704360229,
+  "creation_date" : 1220757358,
+  "last_edit_date" : 1578251238,
+  "question_id" : 48088,
+  "link" : "https://stackoverflow.com/questions/48088/returning-from-a-finally-block-in-java",
+  "title" : "Returning from a finally block in Java",
+  "body" : "<p>I was surprised recently to find that it's possible to have a return statement in a finally block in Java.</p>\n\n<p>It seems like lots of people think it's a bad thing to do as described in '<a href=\"https://web.archive.org/web/20070922061412/http://weblogs.java.net/blog/staufferjames/archive/2007/06/_dont_return_in.html\" rel=\"noreferrer\">Don't return in a finally clause</a>'. Scratching a little deeper, I also found '<a href=\"https://web.archive.org/web/20190528011825/http://www.cs.arizona.edu/projects/sumatra/hallofshame/\" rel=\"noreferrer\">Java's return doesn't always</a>' which shows some pretty horrible examples of other types of flow control in finally blocks.</p>\n\n<p>So, my question is, can anyone give me an example where a return statement (or other flow control) in a finally block produces better / more readable code?</p>\n"
+}

@@ -1,0 +1,496 @@
+{
+  "tags" : [ "java", "reflection", "introspection" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3282,
+        "reputation" : 147614,
+        "user_id" : 4725,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+        "display_name" : "Tom Hawtin - tackline",
+        "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+      },
+      "edited" : false,
+      "score" : 8,
+      "creation_date" : 1245924711,
+      "post_id" : 1042827,
+      "comment_id" : 854022,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Passing an mutable argument in and returning it probably isn&#39;t a great design. fields.addAll(type.getDeclaredFields()); would be more conventional than a enhanced for loop with add."
+    }, {
+      "owner" : {
+        "account_id" : 3282,
+        "reputation" : 147614,
+        "user_id" : 4725,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/B53xA.jpg?s=256",
+        "display_name" : "Tom Hawtin - tackline",
+        "link" : "https://stackoverflow.com/users/4725/tom-hawtin-tackline"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1245926045,
+      "post_id" : 1042827,
+      "comment_id" : 854110,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I&#39;d feel the need to at least compile it (on stackoverflow!), and probably add in a little Arrays.asList."
+    }, {
+      "owner" : {
+        "account_id" : 1716782,
+        "reputation" : 283,
+        "user_id" : 1573682,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6bfa0b5c8d2dd60efeca7435bf62a995?s=256&d=identicon&r=PG",
+        "display_name" : "Peter Verhas",
+        "link" : "https://stackoverflow.com/users/1573682/peter-verhas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1549979788,
+      "post_id" : 1042827,
+      "comment_id" : 96094765,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It seems that your code collects all the fields, also private and static fields that are not inherited."
+    } ],
+    "owner" : {
+      "account_id" : 32251,
+      "reputation" : 116732,
+      "user_id" : 89266,
+      "user_type" : "registered",
+      "accept_rate" : 91,
+      "profile_image" : "https://i.sstatic.net/DVUwx.jpg?s=256",
+      "display_name" : "dfa",
+      "link" : "https://stackoverflow.com/users/89266/dfa"
+    },
+    "is_accepted" : true,
+    "score" : 231,
+    "last_activity_date" : 1490172037,
+    "last_edit_date" : 1490172037,
+    "creation_date" : 1245921447,
+    "answer_id" : 1042827,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>no, you need to write it yourself. It is a simple recursive method called on <a href=\"http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html#getSuperclass()\" rel=\"noreferrer\">Class.getSuperClass()</a>:</p>\n\n<pre><code>public static List&lt;Field&gt; getAllFields(List&lt;Field&gt; fields, Class&lt;?&gt; type) {\n    fields.addAll(Arrays.asList(type.getDeclaredFields()));\n\n    if (type.getSuperclass() != null) {\n        getAllFields(fields, type.getSuperclass());\n    }\n\n    return fields;\n}\n\n@Test\npublic void getLinkedListFields() {\n    System.out.println(getAllFields(new LinkedList&lt;Field&gt;(), LinkedList.class));\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18182,
+      "reputation" : 34536,
+      "user_id" : 41423,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/Z3ixY.jpg?s=256",
+      "display_name" : "Nick Holt",
+      "link" : "https://stackoverflow.com/users/41423/nick-holt"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1409139467,
+    "last_edit_date" : 1409139467,
+    "creation_date" : 1245921480,
+    "answer_id" : 1042829,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You need to call:</p>\n\n<pre><code>Class.getSuperclass().getDeclaredFields()\n</code></pre>\n\n<p>Recursing up the inheritance hierarchy as necessary.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 40190,
+      "reputation" : 19148,
+      "user_id" : 116388,
+      "user_type" : "registered",
+      "accept_rate" : 96,
+      "profile_image" : "https://i.sstatic.net/G9fyZ.png?s=256",
+      "display_name" : "Manuel Selva",
+      "link" : "https://stackoverflow.com/users/116388/manuel-selva"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1245921511,
+    "creation_date" : 1245921511,
+    "answer_id" : 1042832,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>You can try:</p>\n\n<pre><code>   Class parentClass = getClass().getSuperclass();\n   if (parentClass != null) {\n      parentClass.getDeclaredFields();\n   }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 598429,
+      "reputation" : 11,
+      "user_id" : 289257,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/dfc3b2964efc6f152b4fcef98c94a4a9?s=256&d=identicon&r=PG",
+      "display_name" : "DidYouMeanThatTomHawtin",
+      "link" : "https://stackoverflow.com/users/289257/didyoumeanthattomhawtin"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1453329183,
+    "last_edit_date" : 1453329183,
+    "creation_date" : 1268093200,
+    "answer_id" : 2405721,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>private static void addDeclaredAndInheritedFields(Class c, Collection&lt;Field&gt; fields) {\n    fields.addAll(Arrays.asList(c.getDeclaredFields()));\n    Class superClass = c.getSuperclass();\n    if (superClass != null) {\n        addDeclaredAndInheritedFields(superClass, fields);\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2386869,
+        "reputation" : 302,
+        "user_id" : 2087666,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/7cfef736e80ec71927716c2436adad8f?s=256&d=identicon&r=PG",
+        "display_name" : "Remi Morin",
+        "link" : "https://stackoverflow.com/users/2087666/remi-morin"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1378819352,
+      "post_id" : 2405757,
+      "comment_id" : 27584448,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Although I like very much recursivity (it&#39;s fun!), I prefer the readability of this method and the more intuitive parameters (not required a new collection to be pass), no more if (implicit in the for clause) and no iteration over fields themselves."
+    }, {
+      "owner" : {
+        "account_id" : 1249289,
+        "reputation" : 4035,
+        "user_id" : 1422630,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/a193ede75fbebab4834a99110f90c5bc?s=256&d=identicon&r=PG",
+        "display_name" : "Aquarius Power",
+        "link" : "https://stackoverflow.com/users/1422630/aquarius-power"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1425456483,
+      "post_id" : 2405757,
+      "comment_id" : 45966148,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "it shows recursive is unnecessary and.. I like short codes! thx! :)"
+    }, {
+      "owner" : {
+        "account_id" : 9459887,
+        "reputation" : 311,
+        "user_id" : 7033948,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/vsbHm.jpg?s=256",
+        "display_name" : "Touya Akira",
+        "link" : "https://stackoverflow.com/users/7033948/touya-akira"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1504952431,
+      "post_id" : 2405757,
+      "comment_id" : 79221439,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "In many years i always think the initial value in for is just an integer, with @Veera&#39;s question I think only recursive can solve it,@Esko Luontola your command is awesome."
+    } ],
+    "owner" : {
+      "account_id" : 24436,
+      "reputation" : 73773,
+      "user_id" : 62130,
+      "user_type" : "registered",
+      "accept_rate" : 39,
+      "profile_image" : "https://www.gravatar.com/avatar/520c9c078b8d25980de17b8d4fe0ceba?s=256&d=identicon&r=PG",
+      "display_name" : "Esko Luontola",
+      "link" : "https://stackoverflow.com/users/62130/esko-luontola"
+    },
+    "is_accepted" : false,
+    "score" : 106,
+    "last_activity_date" : 1505053475,
+    "last_edit_date" : 1505053475,
+    "creation_date" : 1268093757,
+    "answer_id" : 2405757,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>    public static List&lt;Field&gt; getAllFields(Class&lt;?&gt; type) {\n        List&lt;Field&gt; fields = new ArrayList&lt;Field&gt;();\n        for (Class&lt;?&gt; c = type; c != null; c = c.getSuperclass()) {\n            fields.addAll(Arrays.asList(c.getDeclaredFields()));\n        }\n        return fields;\n    }\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 709850,
+      "reputation" : 31,
+      "user_id" : 622195,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/2330b38f4f12a70f98577573fd88b299?s=256&d=identicon&r=PG",
+      "display_name" : "Theo Platt",
+      "link" : "https://stackoverflow.com/users/622195/theo-platt"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1297979460,
+    "creation_date" : 1297979460,
+    "answer_id" : 5035115,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<pre><code>private static void addDeclaredAndInheritedFields(Class&lt;?&gt; c, Collection&lt;Field&gt; fields) {\n    fields.addAll(Arrays.asList(c.getDeclaredFields())); \n    Class&lt;?&gt; superClass = c.getSuperclass(); \n    if (superClass != null) { \n        addDeclaredAndInheritedFields(superClass, fields); \n    }       \n}\n</code></pre>\n\n<p>Working version of \"DidYouMeanThatTomHa...\" solution above</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 964089,
+      "reputation" : 964,
+      "user_id" : 987856,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7c5a1f97486f228c16562ce5ee39dc8a?s=256&d=identicon&r=PG",
+      "display_name" : "Marek Dec",
+      "link" : "https://stackoverflow.com/users/987856/marek-dec"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1324727107,
+    "last_edit_date" : 1324727107,
+    "creation_date" : 1324512969,
+    "answer_id" : 8598025,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The recursive solutions are OK, the only small issue is that they return a superset of declared and inherited members. Note that getDeclaredFields() method returns also private methods. So given that you navigate the whole superclass hierarchy you will include all private fields declared in the superclasses, and those don't get inherited.</p>\n\n<p>A simple filter with a Modifier.isPublic || Modifier.isProtected predicate would do:</p>\n\n<pre><code>import static java.lang.reflect.Modifier.isPublic;\nimport static java.lang.reflect.Modifier.isProtected;\n\n(...)\n\nList&lt;Field&gt; inheritableFields = new ArrayList&lt;Field&gt;();\nfor (Field field : type.getDeclaredFields()) {\n    if (isProtected(field.getModifiers()) || isPublic(field.getModifiers())) {\n       inheritableFields.add(field);\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1592,
+      "reputation" : 6838,
+      "user_id" : 2134,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1e5eafe107f2ea23c785facf405d79f0?s=256&d=identicon&r=PG",
+      "display_name" : "Chris",
+      "link" : "https://stackoverflow.com/users/2134/chris"
+    },
+    "is_accepted" : false,
+    "score" : 46,
+    "last_activity_date" : 1401290840,
+    "creation_date" : 1401290840,
+    "answer_id" : 23915831,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>If instead you wanted to rely upon a library to accomplish this, <a href=\"http://commons.apache.org/proper/commons-lang/\">Apache Commons Lang</a> version 3.2+ provides <a href=\"http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/reflect/FieldUtils.html#getAllFieldsList%28java.lang.Class%29\"><code>FieldUtils.getAllFieldsList</code></a>:</p>\n\n<pre><code>import java.lang.reflect.Field;\nimport java.util.AbstractCollection;\nimport java.util.AbstractList;\nimport java.util.AbstractSequentialList;\nimport java.util.Arrays;\nimport java.util.LinkedList;\nimport java.util.List;\n\nimport org.apache.commons.lang3.reflect.FieldUtils;\nimport org.junit.Assert;\nimport org.junit.Test;\n\npublic class FieldUtilsTest {\n\n    @Test\n    public void testGetAllFieldsList() {\n\n        // Get all fields in this class and all of its parents\n        final List&lt;Field&gt; allFields = FieldUtils.getAllFieldsList(LinkedList.class);\n\n        // Get the fields form each individual class in the type's hierarchy\n        final List&lt;Field&gt; allFieldsClass = Arrays.asList(LinkedList.class.getFields());\n        final List&lt;Field&gt; allFieldsParent = Arrays.asList(AbstractSequentialList.class.getFields());\n        final List&lt;Field&gt; allFieldsParentsParent = Arrays.asList(AbstractList.class.getFields());\n        final List&lt;Field&gt; allFieldsParentsParentsParent = Arrays.asList(AbstractCollection.class.getFields());\n\n        // Test that `getAllFieldsList` did truly get all of the fields of the the class and all its parents \n        Assert.assertTrue(allFields.containsAll(allFieldsClass));\n        Assert.assertTrue(allFields.containsAll(allFieldsParent));\n        Assert.assertTrue(allFields.containsAll(allFieldsParentsParent));\n        Assert.assertTrue(allFields.containsAll(allFieldsParentsParentsParent));\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 9459887,
+        "reputation" : 311,
+        "user_id" : 7033948,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/vsbHm.jpg?s=256",
+        "display_name" : "Touya Akira",
+        "link" : "https://stackoverflow.com/users/7033948/touya-akira"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1504916956,
+      "post_id" : 30105229,
+      "comment_id" : 79214696,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "HI @Alexis LEGROS : ArrayUtils cannot find symbol."
+    }, {
+      "owner" : {
+        "account_id" : 2678656,
+        "reputation" : 569,
+        "user_id" : 2314430,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b633cdf493afcbcb8d9c00ec5bc37148?s=256&d=identicon&r=PG",
+        "display_name" : "Alexis LEGROS",
+        "link" : "https://stackoverflow.com/users/2314430/alexis-legros"
+      },
+      "reply_to_user" : {
+        "account_id" : 9459887,
+        "reputation" : 311,
+        "user_id" : 7033948,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/vsbHm.jpg?s=256",
+        "display_name" : "Touya Akira",
+        "link" : "https://stackoverflow.com/users/7033948/touya-akira"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1505287879,
+      "post_id" : 30105229,
+      "comment_id" : 79345029,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This class is from Apache Commons Lang."
+    }, {
+      "owner" : {
+        "account_id" : 9459887,
+        "reputation" : 311,
+        "user_id" : 7033948,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://i.sstatic.net/vsbHm.jpg?s=256",
+        "display_name" : "Touya Akira",
+        "link" : "https://stackoverflow.com/users/7033948/touya-akira"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1505294617,
+      "post_id" : 30105229,
+      "comment_id" : 79349561,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Apache already has a FieldUtils.getAllFields function to handle this question request."
+    } ],
+    "owner" : {
+      "account_id" : 2678656,
+      "reputation" : 569,
+      "user_id" : 2314430,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/b633cdf493afcbcb8d9c00ec5bc37148?s=256&d=identicon&r=PG",
+      "display_name" : "Alexis LEGROS",
+      "link" : "https://stackoverflow.com/users/2314430/alexis-legros"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1431011831,
+    "creation_date" : 1431011831,
+    "answer_id" : 30105229,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Shorter and with less object instantiated ? ^^</p>\n\n<pre><code>private static Field[] getAllFields(Class&lt;?&gt; type) {\n    if (type.getSuperclass() != null) {\n        return (Field[]) ArrayUtils.addAll(getAllFields(type.getSuperclass()), type.getDeclaredFields());\n    }\n    return type.getDeclaredFields();\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5040498,
+      "reputation" : 1210,
+      "user_id" : 4048050,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d1d7a3cfa1f93c34f0319020b961a032?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Lukasz Ochmanski",
+      "link" : "https://stackoverflow.com/users/4048050/lukasz-ochmanski"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1465554199,
+    "creation_date" : 1465554199,
+    "answer_id" : 37745825,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Use Reflections library:</p>\n\n<pre><code>public Set&lt;Field&gt; getAllFields(Class&lt;?&gt; aClass) {\n    return org.reflections.ReflectionUtils.getAllFields(aClass);\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 262424,
+      "reputation" : 1708,
+      "user_id" : 547270,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/yEM1T.png?s=256",
+      "display_name" : "scrutari",
+      "link" : "https://stackoverflow.com/users/547270/scrutari"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1547933768,
+    "creation_date" : 1547933768,
+    "answer_id" : 54271609,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>This is a rewording of the accepted answer by @user1079877. It might that a version which does not modify a parameter of the function and also uses some modern Java features.</p>\n\n<pre><code>public &lt;T&gt; Field[] getFields(final Class&lt;T&gt; type, final Field... fields) {\n    final Field[] items = Stream.of(type.getDeclaredFields(), fields).flatMap(Stream::of).toArray(Field[]::new);\n    if (type.getSuperclass() == null) {\n        return items;\n    } else {\n        return getFields(type.getSuperclass(), items);\n    }\n}\n</code></pre>\n\n<p>This implementation also makes invocation a bit more concise:</p>\n\n<pre><code>var fields = getFields(MyType.class);\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 11409023,
+        "reputation" : 713,
+        "user_id" : 8363706,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/WpQVn.jpg?s=256",
+        "display_name" : "Alex",
+        "link" : "https://stackoverflow.com/users/8363706/alex"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1614770155,
+      "post_id" : 54487633,
+      "comment_id" : 117484515,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Its better than best answer, because while cycle always faster than recursive calls. But i think LinkedList as data structure more suitable instead of ArrayList, because ArraysList will be resized (a few times), when size of list reaches capacity value, what will entail time costs"
+    } ],
+    "owner" : {
+      "account_id" : 3146381,
+      "reputation" : 1782,
+      "user_id" : 2660789,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/870192094726c6beb3128ef24b06f01d?s=256&d=identicon&r=PG",
+      "display_name" : "Aman",
+      "link" : "https://stackoverflow.com/users/2660789/aman"
+    },
+    "is_accepted" : false,
+    "score" : 8,
+    "last_activity_date" : 1583311409,
+    "last_edit_date" : 1583311409,
+    "creation_date" : 1549058002,
+    "answer_id" : 54487633,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><strong>getFields():</strong>\nGets all the public fields up the entire class hierarchy and<br> \n<strong>getDeclaredFields():</strong>\nGets all the fields, regardless of their modifiers but only for the current class. So, you have to get for all the hierarchy involved.\n<br>I recently saw this code from <a href=\"https://github.com/apache/commons-lang/blob/master/src/main/java/org/apache/commons/lang3/reflect/FieldUtils.java\" rel=\"noreferrer\">org.apache.commons.lang3.reflect.FieldUtils</a> </p>\n\n<pre><code>public static List&lt;Field&gt; getAllFieldsList(final Class&lt;?&gt; cls) {\n        Validate.isTrue(cls != null, \"The class must not be null\");\n        final List&lt;Field&gt; allFields = new ArrayList&lt;&gt;();\n        Class&lt;?&gt; currentClass = cls;\n        while (currentClass != null) {\n            final Field[] declaredFields = currentClass.getDeclaredFields();\n            Collections.addAll(allFields, declaredFields);\n            currentClass = currentClass.getSuperclass();\n        }\n        return allFields;\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3029291,
+      "reputation" : 1810,
+      "user_id" : 2568649,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/CjZ6t.jpg?s=256",
+      "display_name" : "Chris",
+      "link" : "https://stackoverflow.com/users/2568649/chris"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1574328816,
+    "creation_date" : 1574328816,
+    "answer_id" : 58971539,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are a couple of quirks that aren't addressed by FieldUtils - specifically synthetic fields (eg injected by JaCoCo) and also the fact that an enum type of course has a field for each instance, and if you are traversing an object graph, getting all fields and then getting the fields of each of them etc, then you will get into an infinite loop when you hit an enum. An extended solution (and to be honest I'm sure this must live in a library somewhere!) would be:</p>\n\n<pre><code>/**\n * Return a list containing all declared fields and all inherited fields for the given input\n * (but avoiding any quirky enum fields and tool injected fields).\n */\npublic List&lt;Field&gt; getAllFields(Object input) {\n    return getFieldsAndInheritedFields(new ArrayList&lt;&gt;(), input.getClass());\n}\n\nprivate List&lt;Field&gt; getFieldsAndInheritedFields(List&lt;Field&gt; fields, Class&lt;?&gt; inputType) {\n    fields.addAll(getFilteredDeclaredFields(inputType));\n    return inputType.getSuperclass() == null ? fields : getFieldsAndInheritedFields(fields, inputType.getSuperclass());\n\n}\n\n/**\n * Where the input is NOT an {@link Enum} type then get all declared fields except synthetic fields (ie instrumented\n * additional fields). Where the input IS an {@link Enum} type then also skip the fields that are all the\n * {@link Enum} instances as this would lead to an infinite loop if the user of this class is traversing\n * an object graph.\n */\nprivate List&lt;Field&gt; getFilteredDeclaredFields(Class&lt;?&gt; inputType) {\n    return Arrays.asList(inputType.getDeclaredFields()).stream()\n                 .filter(field -&gt; !isAnEnum(inputType) ||\n                         (isAnEnum(inputType) &amp;&amp; !isSameType(field, inputType)))\n                 .filter(field -&gt; !field.isSynthetic())\n                 .collect(Collectors.toList());\n\n}\n\nprivate boolean isAnEnum(Class&lt;?&gt; type) {\n    return Enum.class.isAssignableFrom(type);\n}\n\nprivate boolean isSameType(Field input, Class&lt;?&gt; ownerType) {\n    return input.getType().equals(ownerType);\n}\n</code></pre>\n\n<p>Test class in Spock (and Groovy adds synthetic fields):</p>\n\n<pre><code>class ReflectionUtilsSpec extends Specification {\n\n    def \"declared fields only\"() {\n\n        given: \"an instance of a class that does not inherit any fields\"\n        def instance = new Superclass()\n\n        when: \"all fields are requested\"\n        def result = new ReflectionUtils().getAllFields(instance)\n\n        then: \"the fields declared by that instance's class are returned\"\n        result.size() == 1\n        result.findAll { it.name in ['superThing'] }.size() == 1\n    }\n\n\n    def \"inherited fields\"() {\n\n        given: \"an instance of a class that inherits fields\"\n        def instance = new Subclass()\n\n        when: \"all fields are requested\"\n        def result = new ReflectionUtils().getAllFields(instance)\n\n        then: \"the fields declared by that instance's class and its superclasses are returned\"\n        result.size() == 2\n        result.findAll { it.name in ['subThing', 'superThing'] }.size() == 2\n\n    }\n\n    def \"no fields\"() {\n        given: \"an instance of a class with no declared or inherited fields\"\n        def instance = new SuperDooperclass()\n\n        when: \"all fields are requested\"\n        def result = new ReflectionUtils().getAllFields(instance)\n\n        then: \"the fields declared by that instance's class and its superclasses are returned\"\n        result.size() == 0\n    }\n\n    def \"enum\"() {\n\n        given: \"an instance of an enum\"\n        def instance = Item.BIT\n\n        when: \"all fields are requested\"\n        def result = new ReflectionUtils().getAllFields(instance)\n\n        then: \"the fields declared by that instance's class and its superclasses are returned\"\n        result.size() == 3\n        result.findAll { it.name == 'smallerItem' }.size() == 1\n    }\n\n    private class SuperDooperclass {\n    }\n\n    private class Superclass extends SuperDooperclass {\n        private String superThing\n    }\n\n\n    private class Subclass extends Superclass {\n        private String subThing\n    }\n\n    private enum Item {\n\n        BIT(\"quark\"), BOB(\"muon\")\n\n        Item(String smallerItem) {\n            this.smallerItem = smallerItem\n        }\n\n        private String smallerItem\n\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2142652,
+      "reputation" : 697,
+      "user_id" : 1900962,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/uIMN3.png?s=256",
+      "display_name" : "Marcelo Rebou&#231;as",
+      "link" : "https://stackoverflow.com/users/1900962/marcelo-rebou%c3%a7as"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1591012383,
+    "last_edit_date" : 1591012383,
+    "creation_date" : 1588682061,
+    "answer_id" : 61613275,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>With spring util library, you can use to check if one specific attribute exists into class:</p>\n\n<pre><code>Field field = ReflectionUtils.findRequiredField(YOUR_CLASS.class, \"ATTRIBUTE_NAME\");\n\nlog.info(field2.getName());\n</code></pre>\n\n<p><strong>Api doc:<br></strong>\n<a href=\"https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/util/ReflectionUtils.html\" rel=\"nofollow noreferrer\">https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/util/ReflectionUtils.html</a></p>\n\n<p>or</p>\n\n<pre><code> Field field2 = ReflectionUtils.findField(YOUR_CLASS.class, \"ATTRIBUTE_NAME\");\n\n log.info(field2.getName());\n</code></pre>\n\n<p><strong>Api doc:<br></strong>\n<a href=\"https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/ReflectionUtils.html\" rel=\"nofollow noreferrer\">https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/ReflectionUtils.html</a></p>\n\n<p>@cheers</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2310423,
+      "reputation" : 1510,
+      "user_id" : 2028671,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4678f4b2377eca9f43e0a73634f3ae71?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sachith Dickwella",
+      "link" : "https://stackoverflow.com/users/2028671/sachith-dickwella"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1650944099,
+    "creation_date" : 1650944099,
+    "answer_id" : 72008075,
+    "question_id" : 1042798,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I know this is a long overdue answer, but I just put here my answer just for my reference or anyone who is interested about an implementation without reflection as an extension of @dfa's answer;</p>\n<pre><code>public List&lt;Field&gt; getDeclaredFields(Class&lt;?&gt; tClass) {\n    List&lt;Field&gt; fields = new LinkedList&lt;&gt;();\n\n    while (tClass != null) {\n        fields.addAll(Arrays.asList(tClass.getDeclaredFields()));\n        tClass = tClass.getSuperclass();\n    }\n\n    return fields;\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 18480,
+    "reputation" : 33332,
+    "user_id" : 42372,
+    "user_type" : "registered",
+    "accept_rate" : 95,
+    "profile_image" : "https://www.gravatar.com/avatar/e9550bd5fab2b2a8ad0af487ff1fddb5?s=256&d=identicon&r=PG",
+    "display_name" : "Veera",
+    "link" : "https://stackoverflow.com/users/42372/veera"
+  },
+  "is_answered" : true,
+  "view_count" : 106884,
+  "accepted_answer_id" : 1042827,
+  "answer_count" : 15,
+  "score" : 171,
+  "last_activity_date" : 1650944099,
+  "creation_date" : 1245921081,
+  "question_id" : 1042798,
+  "link" : "https://stackoverflow.com/questions/1042798/retrieving-the-inherited-attribute-names-values-using-java-reflection",
+  "title" : "Retrieving the inherited attribute names/values using Java Reflection",
+  "body" : "<p>I've a Java object 'ChildObj' which is extended from 'ParentObj'. Now, if it is possible to retrieve all the attribute names and values of ChildObj, including the inherited attributes too, using Java reflection mechanism?</p>\n\n<p><a href=\"http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html#getFields()\" rel=\"noreferrer\">Class.getFields</a> gives me the array of public attributes, and <a href=\"http://java.sun.com/j2se/1.5.0/docs/api/java/lang/Class.html#getDeclaredFields()\" rel=\"noreferrer\">Class.getDeclaredFields</a> gives me the array of all fields, but none of them includes the inherited fields list.</p>\n\n<p>Is there any way to retrieve the inherited attributes also?</p>\n"
+}

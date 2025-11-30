@@ -1,0 +1,80 @@
+{
+  "tags" : [ "java", "authentication", "import-from-excel" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2348349,
+      "reputation" : 44942,
+      "user_id" : 2057919,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/ba5de94dbfd4e2a637e800d9158100f8?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "elixenide",
+      "link" : "https://stackoverflow.com/users/2057919/elixenide"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1437278167,
+    "post_id" : 31497755,
+    "comment_id" : 50959187,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Do you have a question?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 7194099,
+      "reputation" : 1,
+      "user_id" : 5493459,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/af5b18c70e5a89837ba3ce39b31749f5?s=256&d=identicon&r=PG",
+      "display_name" : "nitin dubey",
+      "link" : "https://stackoverflow.com/users/5493459/nitin-dubey"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1445946631,
+    "creation_date" : 1445946631,
+    "answer_id" : 33367258,
+    "question_id" : 31497755,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>you can try this... It's not completely customized but it will help...</p>\n\n<p>public static void selectData(String tcid,String fieldName) throws FilloException{</p>\n\n<pre><code>    Fillo fillo=new Fillo();\n    Connection connection=fillo.getConnection(\"testdata//testcasedata.xlsx\");\n    String strQuery=\"Select * from data where TCID='\"+tcid+\"'\";\n    Recordset recordset=connection.executeQuery(strQuery);\n    while(recordset.next()){\n        ArrayList&lt;String&gt; dataColl=recordset.getFieldNames();\n        //System.out.println(dataColl);\n        Iterator&lt;String&gt; dataIterator=dataColl.iterator();\n        //System.out.println(dataColl.size());  \n\n        while(dataIterator.hasNext()){\n            for (int i=0;i&lt;=dataColl.size()-1;i++){\n                //System.out.println(i);\n                String data=dataIterator.next();\n                String dataVal=recordset.getField(data);\n\n                if (dataVal.equalsIgnoreCase(fieldName)){\n                    //System.out.println(\"passed\");\n                    i=i+1;\n                    //System.out.println(i);\n                    String testData=dataColl.get(i);\n                    System.out.println(recordset.getField(testData));   \n\n                }\n\n            }\n\n            break;\n        }\n    }\n\n    recordset.close();\n    connection.close();\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 7006989,
+      "reputation" : 1,
+      "user_id" : 5371038,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-GHDXV5aYgbw/AAAAAAAAAAI/AAAAAAAAAH0/ornLZThB7kE/s256-rj/photo.jpg",
+      "display_name" : "Nitin Dubey",
+      "link" : "https://stackoverflow.com/users/5371038/nitin-dubey"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1452775875,
+    "creation_date" : 1452775875,
+    "answer_id" : 34790107,
+    "question_id" : 31497755,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You will have to arrange your table like database as fillo works like database. \nPut everything related to a test case in a row. as attached.</p>\n\n<p>below is the code for reader and calling the login class. </p>\n\n<pre><code>        package com.evs.vtiger.framework.util;\n\n        import java.util.ArrayList;\nimport java.util.Iterator;\n\nimport org.openqa.selenium.WebDriver;\nimport org.openqa.selenium.WebElement;\nimport org.openqa.selenium.firefox.FirefoxDriver;\nimport org.openqa.selenium.support.PageFactory;\n\nimport com.evs.vtiger.framework.pages.home.myhomepage.HomePage;\n\nimport Exception.FilloException;\nimport Fillo.Connection;\nimport Fillo.Fillo;\nimport Fillo.Recordset;\nimport com.evs.vtiger.framework.pages.login.login.LoginPage;\n\npublic class TestingFillo {\n\n    public static void main(String[] args) throws FilloException {\n\n        WebDriver driver=new FirefoxDriver();\n        driver.manage().window().maximize();\n        driver.get(\"http://localhost:8080/NBOWeb\");\n        LoginPage lpObj=PageFactory.initElements(driver, LoginPage.class);\n        lpObj.pg_ValidLogin(\"TC001\");\n\n    }\n\n    public static String getTestValue(String TCID, String fieldName) throws FilloException{\n\n        String testString=xlTesting(TCID, fieldName);\n        return testString;\n\n    }\n\n    public static String xlTesting(String tcid,String fieldName) throws FilloException{\n        String testval=null;\n        Fillo fillo=new Fillo();\n        Connection connection=fillo.getConnection(\"TestData//TestData.xlsx\");\n        String strQuery=\"Select * from data where TCID='\"+tcid+\"'\";\n        Recordset recordset=connection.executeQuery(strQuery);\n        while(recordset.next()){\n            ArrayList&lt;String&gt; dataColl=recordset.getFieldNames();\n            //System.out.println(dataColl);\n            Iterator&lt;String&gt; dataIterator=dataColl.iterator();\n            //System.out.println(dataColl.size());  \n\n            while(dataIterator.hasNext()){\n                for (int i=0;i&lt;=dataColl.size()-1;i++){\n                    //System.out.println(i);\n                    String data=dataIterator.next();\n                    String dataVal=recordset.getField(data);\n\n                    if (dataVal.equalsIgnoreCase(fieldName)){\n                        //System.out.println(\"passed\");\n                        i=i+1;\n                        //System.out.println(i);\n                        String testData=dataColl.get(i);\n                        //System.out.println(recordset.getField(testData));   \n                        String testValue= recordset.getField(testData);\n                        testval=testValue;\n                    }\n\n                }\n\n                break;\n            }\n        }\n\n        recordset.close();\n        connection.close();\n        return testval; \n    }\n\n\n    public static void inputText(WebElement we, String fieldName, String TCID) throws FilloException{\n        String fval=getTestValue(TCID, fieldName);\n        we.sendKeys(fval);\n\n    }\n\n\n}\n</code></pre>\n\n<p>Now here is the code of login </p>\n\n<pre><code>  package com.evs.vtiger.framework.pages.login.login;\n    import org.openqa.selenium.WebElement;\n\nimport org.openqa.selenium.support.CacheLookup;\nimport org.openqa.selenium.support.FindBy;\nimport org.openqa.selenium.support.PageFactory;\n\nimport Exception.FilloException;\n\nimport com.evs.vtiger.framework.pages.home.myhomepage.HomePage;\nimport com.evs.vtiger.framework.util.TestingFillo;\nimport com.evs.vtiger.framework.util.UI;\nimport com.evs.vtiger.framework.util.XLReader;\n\npublic class LoginPage {\n\n    @FindBy(name=\"username\")\n    public WebElement UserName_ED;\n\n    @FindBy(xpath=\"//input[@type='password']\")\n    public WebElement Password_ED;\n\n    @FindBy(xpath=\"//input[@value='login']\")\n    public WebElement Login_BT;\n\n\n\n    public void pg_ValidLogin(String TCID) throws FilloException {\n        /*UI.fn_Input(UserName_ED, \"UserName_ED\");\n        UI.fn_Input(Password_ED, \"Password_ED\");\n        UI.fn_Click(Login_BT);*/\n\n        //UserName_ED.sendKeys(\"abc\");\n\n\n        TestingFillo.inputText(UserName_ED, \"UserName_ED\", TCID);\n        TestingFillo.inputText(Password_ED, \"Password_ED\", TCID);\n        Login_BT.click();\n\n       // HomePage hpObj=PageFactory.initElements(UI.driver, HomePage.class);\n       // return hpObj;\n    }\n\n    public void pg_InValidLogin() {\n        UserName_ED.sendKeys(\"rahul\");\n        Password_ED.sendKeys(\"admin\");\n        Login_BT.click();\n    }\n\n}\n</code></pre>\n\n<p>I hope it makes sense. Please ignore the commented code. sorry for that.</p>\n\n<p>Thanks\nNitin</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4960898,
+    "reputation" : 23,
+    "user_id" : 3992050,
+    "user_type" : "registered",
+    "accept_rate" : 40,
+    "profile_image" : "https://www.gravatar.com/avatar/e0ed16edef63ebcfeb161eea1985211c?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Groax",
+    "link" : "https://stackoverflow.com/users/3992050/groax"
+  },
+  "is_answered" : false,
+  "view_count" : 14654,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1760965635,
+  "creation_date" : 1437276873,
+  "last_edit_date" : 1439525460,
+  "question_id" : 31497755,
+  "link" : "https://stackoverflow.com/questions/31497755/fillo-implementation",
+  "title" : "Fillo Implementation",
+  "body" : "<p>I came across a really nice and simple xls and xlsx implementation API called Fillo. I've made a spread sheet with the following values as most people know the all caps sections are for category names to seac</p>\n\n<pre><code>USERID    PASS\njoe       bigjoe\njim       bigjim\njohn      bigjohn\n</code></pre>\n\n<p>Now here's the code:</p>\n\n<pre><code>    import Exception.FilloException;\n    import Fillo.*;\n\n\n  public class CallBack {\n    public static void main(String args[]) throws FilloException {\n        testFillo();\n    }\n\n    private static void testFillo() throws FilloException {\n        Fillo fillo=new Fillo();\n        Connection connection=fillo.getConnection(\"logindatabase.xls\");\n        String strQuery=\"Select * from Sheet1 where USERID='*' and PASS='*'\";\n        Recordset recordset=connection.executeQuery(strQuery);\n\n        /*\n         * I'm wanting the login check to be right here\n         */\n\n        recordset.close();\n        connection.close();\n\n    }\n}\n</code></pre>\n\n<p>The login function should go through the USERID column first and once it finds that it will check the corresponding PASS value. So if it found \"jim\" as the user it then check for \"bigjim\" as the password.</p>\n\n<p>So the big question would be: How would I set something like this up? </p>\n\n<p>Here's the <a href=\"http://www.codoid.com/products/view/2/29\" rel=\"nofollow\">Fillo Documentation</a>.</p>\n\n<p>All the best,</p>\n\n<p>Groax</p>\n"
+}

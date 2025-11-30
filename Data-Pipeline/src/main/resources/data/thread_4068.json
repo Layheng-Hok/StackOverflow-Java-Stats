@@ -1,0 +1,63 @@
+{
+  "tags" : [ "java", "spring-boot", "configuration", "yaml" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 8903518,
+        "reputation" : 532,
+        "user_id" : 8383744,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/568bbbcda1a4b5f96ce794bb73b4017f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Beez",
+        "link" : "https://stackoverflow.com/users/8383744/beez"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1666903778,
+      "post_id" : 74228043,
+      "comment_id" : 131051784,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I will test and let you know, but I&#39;m fairly certain that way I got same error as well."
+    } ],
+    "owner" : {
+      "account_id" : 3624367,
+      "reputation" : 386,
+      "user_id" : 3022395,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/JOu1H.jpg?s=256",
+      "display_name" : "md_rasler",
+      "link" : "https://stackoverflow.com/users/3022395/md-rasler"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1666904026,
+    "last_edit_date" : 1666904026,
+    "creation_date" : 1666903093,
+    "answer_id" : 74228043,
+    "question_id" : 74227859,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I believe the syntax you are looking for is:</p>\n<pre><code>${random.int(1024,65535)}\n</code></pre>\n<p>Rather than:</p>\n<pre><code>$random.int[1024, 65535]}\n</code></pre>\n<p>Edit (adding example code):</p>\n<p>src/main/application.yml</p>\n<pre><code>server.my.port: ${random.int(1024,65535)}\n</code></pre>\n<p>Controller:</p>\n<pre><code>@RestController\npublic class Controller {\n\n    @Value(&quot;${server.my.port}&quot;)\n    private String port;\n\n    @GetMapping(&quot;/port&quot;)\n    public String port() {\n        return port;\n    }\n}\n</code></pre>\n<p>Returns:\n14745 (random port on every application startup)</p>\n<p>Spring Boot Version: 2.7.5</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 8903518,
+    "reputation" : 532,
+    "user_id" : 8383744,
+    "user_type" : "registered",
+    "accept_rate" : 75,
+    "profile_image" : "https://www.gravatar.com/avatar/568bbbcda1a4b5f96ce794bb73b4017f?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "Beez",
+    "link" : "https://stackoverflow.com/users/8383744/beez"
+  },
+  "is_answered" : false,
+  "view_count" : 8766,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1761005295,
+  "creation_date" : 1666901784,
+  "last_edit_date" : 1666903943,
+  "question_id" : 74227859,
+  "link" : "https://stackoverflow.com/questions/74227859/spring-boot-failed-to-bind-properties-under-to-int",
+  "title" : "Spring Boot Failed To Bind Properties Under .. To Int",
+  "body" : "<p>I'm trying to generate a random value for a port in my .yml file using <code>port: ${random.int(1024, 65535)}</code> on startup I am getting this error:</p>\n<pre><code> Could not bind properties to 'SftpConfiguration' : prefix=recon.data.load.sftp.*, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'recon.data.load.sftp.port' to int\n    at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:6\n</code></pre>\n<p>My config classes are as followed:</p>\n<pre><code>@Configuration\npublic class SftpSpringConfiguration {\n  @Bean\n  @ConfigurationProperties(prefix = &quot;recon.data.load.sftp.*&quot;)\n  public SftpConfiguration sftpFileRetrievalConfiguration() {\n    return new SftpConfiguration();\n  }\n\n  @Bean\n  public SftpFileRetrieval fileRetrieval() {\n    return new SftpFileRetrieval(sftpFileRetrievalConfiguration()::createSession);\n  }\n}\n</code></pre>\n<pre><code>@NoArgsConstructor\n@Getter\n@Setter\npublic class SftpConfiguration {\n  private String server;\n  private String username;\n  private Resource privateKey;\n  private int port;\n</code></pre>\n<p>NOTE: Create Session is just standard boilerplate for setting up JSch client.</p>\n<p>As you can see I leverage the spring configuration to bind the values into SftpConfiguration. The problem is on certain classes that I <code>@Autowired</code> my <code>SftpClient</code> in it tries to populate the fields with values from my properties. If I put something other then the <code>$random.int[1024, 65535]}</code> it works as expected, i.e. if I hardcode 1024 into the port property it works just fine. The goal here is to make it work with a random value for the port.</p>\n<p>Any thoughts on this?</p>\n"
+}

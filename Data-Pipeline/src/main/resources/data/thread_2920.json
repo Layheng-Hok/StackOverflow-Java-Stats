@@ -1,0 +1,173 @@
+{
+  "tags" : [ "java", "scala", "apache-kafka", "avro", "kafka-consumer-api" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1141338,
+      "reputation" : 6651,
+      "user_id" : 1125151,
+      "user_type" : "registered",
+      "accept_rate" : 34,
+      "profile_image" : "https://i.sstatic.net/mXSqi.jpg?s=256",
+      "display_name" : "Harmeet Singh Taara",
+      "link" : "https://stackoverflow.com/users/1125151/harmeet-singh-taara"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1486909388,
+    "creation_date" : 1486909388,
+    "answer_id" : 42188734,
+    "question_id" : 42174890,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The solution of this problem is, use </p>\n\n<pre><code>DatumReader&lt;GenericRecord&gt; customerDatumReader = new SpecificDatumReader&lt;&gt;(schema);\n</code></pre>\n\n<p>instead of </p>\n\n<pre><code>`DatumReader&lt;Customer&gt; customerDatumReader = new SpecificDatumReader&lt;&gt;(schema);\n</code></pre>\n\n<p>The exact reason for this, still not found. This may be, because Kafka, doesn't know about the structure of message, we explicitly define schema for message, and <code>GenericRecord</code> is useful to convert any message into readable JSON format according to schema. After creating JSON, we can easily convert it into our POJO class. </p>\n\n<p>But Still, need to find solution for convert directly into our POJO class. </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1141338,
+        "reputation" : 6651,
+        "user_id" : 1125151,
+        "user_type" : "registered",
+        "accept_rate" : 34,
+        "profile_image" : "https://i.sstatic.net/mXSqi.jpg?s=256",
+        "display_name" : "Harmeet Singh Taara",
+        "link" : "https://stackoverflow.com/users/1125151/harmeet-singh-taara"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486910259,
+      "post_id" : 42188770,
+      "comment_id" : 71539574,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hey @Javier, First think my question is related to Consumer not with Producer. Second: If you look into the example, the <code>JavaSessionize.avro.LogLine</code> is look like avro class, so may be they handle serialization for that. Third: I am using Specific-type conversion not generic conversion. Avro only support 8 types, otherwise we need to define the whole schema conversion."
+    }, {
+      "owner" : {
+        "account_id" : 3708451,
+        "reputation" : 1351,
+        "user_id" : 3086378,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/pLskL.png?s=256",
+        "display_name" : "Javier Holguera",
+        "link" : "https://stackoverflow.com/users/3086378/javier-holguera"
+      },
+      "reply_to_user" : {
+        "account_id" : 1141338,
+        "reputation" : 6651,
+        "user_id" : 1125151,
+        "user_type" : "registered",
+        "accept_rate" : 34,
+        "profile_image" : "https://i.sstatic.net/mXSqi.jpg?s=256",
+        "display_name" : "Harmeet Singh Taara",
+        "link" : "https://stackoverflow.com/users/1125151/harmeet-singh-taara"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486911999,
+      "post_id" : 42188770,
+      "comment_id" : 71540189,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@HarmeetSinghTaara I suggested looking into the producer because, if you serialise something different to what you expect, the consumer will fail. I&#39;d recommend to use Confluent&#39;s kafka-avro-console-consumer to read the event and see if it looks like what you expect. If that fails as well, then the problem is not in your consumer."
+    }, {
+      "owner" : {
+        "account_id" : 3708451,
+        "reputation" : 1351,
+        "user_id" : 3086378,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://i.sstatic.net/pLskL.png?s=256",
+        "display_name" : "Javier Holguera",
+        "link" : "https://stackoverflow.com/users/3086378/javier-holguera"
+      },
+      "reply_to_user" : {
+        "account_id" : 1141338,
+        "reputation" : 6651,
+        "user_id" : 1125151,
+        "user_type" : "registered",
+        "accept_rate" : 34,
+        "profile_image" : "https://i.sstatic.net/mXSqi.jpg?s=256",
+        "display_name" : "Harmeet Singh Taara",
+        "link" : "https://stackoverflow.com/users/1125151/harmeet-singh-taara"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486912156,
+      "post_id" : 42188770,
+      "comment_id" : 71540243,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@HarmeetSinghTaara <code>LogLine</code> is the result of passing <a href=\"https://github.com/confluentinc/examples/blob/3.1.x/kafka-clients/specific-avro-producer/src/main/resources/avro/LogLine.avsc\" rel=\"nofollow noreferrer\">this avro schema</a> through the <code>maven-avro-plugin</code> that generates Java classes automatically. If you compile the project you can have a look and compare with your own <code>Customer</code> class. I don&#39;t think they do any serialization inside <code>LogLine</code>, I&#39;m pretty sure it&#39;s just a POJO."
+    }, {
+      "owner" : {
+        "account_id" : 1141338,
+        "reputation" : 6651,
+        "user_id" : 1125151,
+        "user_type" : "registered",
+        "accept_rate" : 34,
+        "profile_image" : "https://i.sstatic.net/mXSqi.jpg?s=256",
+        "display_name" : "Harmeet Singh Taara",
+        "link" : "https://stackoverflow.com/users/1125151/harmeet-singh-taara"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486912651,
+      "post_id" : 42188770,
+      "comment_id" : 71540407,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I am generating Customer class with sbt plugin. Look into this: <a href=\"https://github.com/sbt/sbt-avro\" rel=\"nofollow noreferrer\">github.com/sbt/sbt-avro</a>"
+    }, {
+      "owner" : {
+        "account_id" : 1141338,
+        "reputation" : 6651,
+        "user_id" : 1125151,
+        "user_type" : "registered",
+        "accept_rate" : 34,
+        "profile_image" : "https://i.sstatic.net/mXSqi.jpg?s=256",
+        "display_name" : "Harmeet Singh Taara",
+        "link" : "https://stackoverflow.com/users/1125151/harmeet-singh-taara"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486978777,
+      "post_id" : 42188770,
+      "comment_id" : 71563148,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hey @Javier, I am trying to follow avro example but getting exception. Please look into <a href=\"http://stackoverflow.com/questions/42200875/apache-kafka-and-avro-org-apache-avro-generic-genericdatarecord-cannot-be-cast\" title=\"apache kafka and avro org apache avro generic genericdatarecord cannot be cast\">stackoverflow.com/questions/42200875/&hellip;</a>"
+    } ],
+    "owner" : {
+      "account_id" : 3708451,
+      "reputation" : 1351,
+      "user_id" : 3086378,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/pLskL.png?s=256",
+      "display_name" : "Javier Holguera",
+      "link" : "https://stackoverflow.com/users/3086378/javier-holguera"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1486909611,
+    "creation_date" : 1486909611,
+    "answer_id" : 42188770,
+    "question_id" : 42174890,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You don't need to do the Avro serialization explicitly before passing the values to <code>ProduceRecord</code>. The serializer will do it for you. Your code would look like:</p>\n\n<pre><code>Customer customer1 = new Customer(1002, \"Jimmy\");\nProducerRecord&lt;String, Customer&gt; record1 = new ProducerRecord&lt;&gt;(\"CustomerSpecificCountry\", customer1);\n    asyncSend(record1);\n}\n</code></pre>\n\n<p>See an example from Confluent for a <a href=\"https://github.com/confluentinc/examples/blob/3.1.x/kafka-clients/specific-avro-producer/src/main/java/io/confluent/examples/producer/AvroClicksProducer.java\" rel=\"nofollow noreferrer\">simple producer using avro</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1141338,
+    "reputation" : 6651,
+    "user_id" : 1125151,
+    "user_type" : "registered",
+    "accept_rate" : 34,
+    "profile_image" : "https://i.sstatic.net/mXSqi.jpg?s=256",
+    "display_name" : "Harmeet Singh Taara",
+    "link" : "https://stackoverflow.com/users/1125151/harmeet-singh-taara"
+  },
+  "is_answered" : false,
+  "view_count" : 11847,
+  "answer_count" : 2,
+  "score" : 3,
+  "last_activity_date" : 1763614855,
+  "creation_date" : 1486809567,
+  "question_id" : 42174890,
+  "link" : "https://stackoverflow.com/questions/42174890/apache-kafka-avro-deserialization-unable-to-deserialize-or-decode-specific-type",
+  "title" : "Apache Kafka Avro Deserialization: Unable to deserialize or decode Specific type message.",
+  "body" : "<p>I am trying to use Avro Serialize with Apache kafka for serialize/deserialize messages. I am create one producer, which is used to serialize specific type message and send it to the queue. When message is send successfully to the queue, our consumer pick the message and trying to process, but while trying we are facing an exception, for case bytes to specific object. The exception is as below: </p>\n\n<pre><code>[error] (run-main-0) java.lang.ClassCastException: org.apache.avro.generic.GenericData$Record cannot be cast to com.harmeetsingh13.java.avroserializer.Customer\njava.lang.ClassCastException: org.apache.avro.generic.GenericData$Record cannot be cast to com.harmeetsingh13.java.avroserializer.Customer\n    at com.harmeetsingh13.java.consumers.avrodesrializer.AvroSpecificDeserializer.lambda$infiniteConsumer$0(AvroSpecificDeserializer.java:51)\n    at java.lang.Iterable.forEach(Iterable.java:75)\n    at com.harmeetsingh13.java.consumers.avrodesrializer.AvroSpecificDeserializer.infiniteConsumer(AvroSpecificDeserializer.java:46)\n    at com.harmeetsingh13.java.consumers.avrodesrializer.AvroSpecificDeserializer.main(AvroSpecificDeserializer.java:63)\n    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n</code></pre>\n\n<p>According to exception, we are using some inconenient way for read the data, below is our code: </p>\n\n<p>Kafka Producer Code: </p>\n\n<pre><code>static {\n        kafkaProps.put(\"bootstrap.servers\", \"localhost:9092\");\n        kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);\n        kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);\n        kafkaProps.put(\"schema.registry.url\", \"http://localhost:8081\");\n        kafkaProducer = new KafkaProducer&lt;&gt;(kafkaProps);\n    }\n\n\npublic static void main(String[] args) throws InterruptedException, IOException {\n        Customer customer1 = new Customer(1002, \"Jimmy\");\n\n        Parser parser = new Parser();\n        Schema schema = parser.parse(AvroSpecificProducer.class\n                .getClassLoader().getResourceAsStream(\"avro/customer.avsc\"));\n\n        SpecificDatumWriter&lt;Customer&gt; writer = new SpecificDatumWriter&lt;&gt;(schema);\n        try(ByteArrayOutputStream os = new ByteArrayOutputStream()) {\n            BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(os, null);\n            writer.write(customer1, encoder);\n            encoder.flush();\n\n            byte[] avroBytes = os.toByteArray();\n\n            ProducerRecord&lt;String, byte[]&gt; record1 = new ProducerRecord&lt;&gt;(\"CustomerSpecificCountry\",\n                    \"Customer One 11 \", avroBytes\n            );\n\n            asyncSend(record1);\n        }\n\n        Thread.sleep(10000);\n    }\n</code></pre>\n\n<p>Kafka Consumer Code: </p>\n\n<pre><code>static {\n        kafkaProps.put(\"bootstrap.servers\", \"localhost:9092\");\n        kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);\n        kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);\n        kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, \"CustomerCountryGroup1\");\n        kafkaProps.put(\"schema.registry.url\", \"http://localhost:8081\");\n    }\n\n    public static void infiniteConsumer() throws IOException {\n        try(KafkaConsumer&lt;String, byte[]&gt; kafkaConsumer = new KafkaConsumer&lt;&gt;(kafkaProps)) {\n            kafkaConsumer.subscribe(Arrays.asList(\"CustomerSpecificCountry\"));\n\n            while(true) {\n                ConsumerRecords&lt;String, byte[]&gt; records = kafkaConsumer.poll(100);\n                System.out.println(\"&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;\" + records.count());\n\n                Schema.Parser parser = new Schema.Parser();\n                Schema schema = parser.parse(AvroSpecificDeserializer.class\n                        .getClassLoader().getResourceAsStream(\"avro/customer.avsc\"));\n\n                records.forEach(record -&gt; {\n                    DatumReader&lt;Customer&gt; customerDatumReader = new SpecificDatumReader&lt;&gt;(schema);\n                    BinaryDecoder binaryDecoder = DecoderFactory.get().binaryDecoder(record.value(), null);\n                    try {\n                        System.out.println(\"&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;\");\n                        Customer customer = customerDatumReader.read(null, binaryDecoder);\n                        System.out.println(customer);\n                    } catch (IOException e) {\n                        e.printStackTrace();\n                    }\n                });\n            }\n\n        }\n    }\n</code></pre>\n\n<p>Using consumer in console, we are successfully able to receive the message. So what is the way for decode message into our pojo files ?</p>\n"
+}

@@ -1,0 +1,118 @@
+{
+  "tags" : [ "java", "jackson", "duration", "iso8601", "period" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2645396,
+        "reputation" : 273,
+        "user_id" : 2288215,
+        "user_type" : "registered",
+        "accept_rate" : 73,
+        "profile_image" : "https://www.gravatar.com/avatar/10a76d9f6aff6656f24b489679f6670c?s=256&d=identicon&r=PG",
+        "display_name" : "erickalves05",
+        "link" : "https://stackoverflow.com/users/2288215/erickalves05"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1761215518,
+      "post_id" : 73407611,
+      "comment_id" : 140812669,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "For anyone needing to quickly debug or sanity-check a complex string like P3Y6M4DT12H30M5S before writing a custom Jackson deserializer, I built a simple online tool to visualize the components (disclosure: my site): <a href=\"https://isotimeduration.com/converter\" rel=\"nofollow noreferrer\">isotimeduration.com/converter</a>"
+    } ],
+    "owner" : {
+      "account_id" : 322981,
+      "reputation" : 346727,
+      "user_id" : 642706,
+      "user_type" : "registered",
+      "accept_rate" : 58,
+      "profile_image" : "https://i.sstatic.net/ZWEI3.jpg?s=256",
+      "display_name" : "Basil Bourque",
+      "link" : "https://stackoverflow.com/users/642706/basil-bourque"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761325443,
+    "last_edit_date" : 1761325443,
+    "creation_date" : 1660846034,
+    "answer_id" : 73407611,
+    "question_id" : 73405738,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h1>tl;dr</h1>\n<pre><code>org.threeten.extra.PeriodDuration.parse( &quot;P3Y6M4DT12H30M5S&quot; ) ;\n</code></pre>\n<h1>Details</h1>\n<ul>\n<li>A <code>Period</code> represents a span of time on the scale of years, months, days.</li>\n<li>A <code>Duration</code> represents a span of time on the scale of hours,\nminutes, seconds, and nanoseconds.</li>\n</ul>\n<p>A note of caution: Combining those two concepts into one, as seen in your example input string, rarely makes sense in practice.</p>\n<h2><code>PeriodDuration</code> class</h2>\n<p>However, if you insist on using such values, there is a class for that. Add the <a href=\"https://www.threeten.org/threeten-extra/\" rel=\"nofollow noreferrer\"><em>ThreeTen-Extra</em></a> library to your project. You can then access the <a href=\"https://www.threeten.org/threeten-extra/apidocs/org.threeten.extra/org/threeten/extra/PeriodDuration.html\" rel=\"nofollow noreferrer\"><code>PeriodDuration</code></a> class.</p>\n<p>No need to define a formatting pattern. Your input complies with the <a href=\"https://en.wikipedia.org/wiki/ISO_8601#Durations\" rel=\"nofollow noreferrer\">ISO 8601</a> standard. The <em>java.time</em> classes use the standard formats by default when parsing/generating text.</p>\n<pre><code>org.threeten.extra.PeriodDuration pd = PeriodDuration.parse( &quot;P3Y6M4DT12H30M5S&quot; ) ;\n</code></pre>\n<p>Generate text in standard <a href=\"https://en.wikipedia.org/wiki/ISO_8601#Durations\" rel=\"nofollow noreferrer\">ISO 8601</a> format. See <a href=\"https://isotimeduration.com/what-is-iso-8601-duration\" rel=\"nofollow noreferrer\">this guide</a> to the format.</p>\n<pre><code>String output = pd.toString() ;\n</code></pre>\n<p>You’ll find several handy methods on that class for construction, normalizing, math (addition, subtraction, negation), and more.</p>\n<p>As for Jackson, I’m not a user. I don’t know how to use a third-party class as an automatic formatter in Jackson.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 12934558,
+      "reputation" : 177,
+      "user_id" : 9352400,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/8448d487afd05973b812ba4d6330509d?s=256&d=identicon&r=PG",
+      "display_name" : "treekt",
+      "link" : "https://stackoverflow.com/users/9352400/treekt"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1661186536,
+    "creation_date" : 1661186536,
+    "answer_id" : 73448436,
+    "question_id" : 73405738,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I didnt want use external dependency to use such simple approach so I implemented it by myself.</p>\n<p>I created <strong>PeriodDuration</strong> class which contain Period and Duration fields.</p>\n<p>Next I created deserializer which extends <strong>StdDeserializer</strong> and annotated <strong>PeriodDuration</strong> class with <code>@JsonDeserializer(using = &quot;nameOfMyCustomDeserializer.class)</code>. That deserializer split iso8601 duration string into two string, before 'T' and after 'T'. If period part is empty then set Period.ZERO but if duration partis empty then set Duration.ZERO.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 964210,
+      "reputation" : 1076,
+      "user_id" : 987959,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a51610eaffa3f4e8022a07bcd070ab3c?s=256&d=identicon&r=PG",
+      "display_name" : "PJ Fanning",
+      "link" : "https://stackoverflow.com/users/987959/pj-fanning"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1661528127,
+    "creation_date" : 1661528127,
+    "answer_id" : 73503429,
+    "question_id" : 73405738,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Add com.fasterxml.jackson.datatype.jsr310.JavaTimeModule to your JsonMapper/ObjectMapper - see <a href=\"https://github.com/FasterXML/jackson-modules-java8\" rel=\"nofollow noreferrer\">https://github.com/FasterXML/jackson-modules-java8</a>.</p>\n<p>For serialization, you will need to disable SerializationFeature.WRITE_DATES_AS_TIMESTAMPS - this is enabled, by default. When disabled the duration is output is ISO-8601 format (eg PT12H for 12 hours).</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1472916,
+      "reputation" : 1919,
+      "user_id" : 1384013,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/ceaad460ba937ce53df2927bc928006a?s=256&d=identicon&r=PG",
+      "display_name" : "Ubeogesh",
+      "link" : "https://stackoverflow.com/users/1384013/ubeogesh"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1734428898,
+    "last_edit_date" : 1734428898,
+    "creation_date" : 1734427665,
+    "answer_id" : 79287306,
+    "question_id" : 73405738,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I use an API that returns ISO8601 in either months (periods) or days (durations). Here's what I did in my client code:</p>\n<ol start=\"0\">\n<li>Set coresponding field type TemporalAmount</li>\n<li>Import java time module when creating your objectMapper</li>\n<li>Create a TemporalAmountDeserializer class that (using Java Time Module's deserializers) tries to deserialize as period, then, if fails, as duration, otherwise throw exception</li>\n</ol>\n<pre><code>\npublic class ObjectMapperFactory {\n\n    private ObjectMapper buildMapper() {\n        return JsonMapper.builder()\n            .addModule(new JavaTimeModule())\n            .addModule(new SimpleModule().addDeserializer(TemporalAmount.class, new TemporalAmountDeserializer()))\n            .build();\n    }\n\n    public static class TemporalAmountDeserializer extends JsonDeserializer&lt;TemporalAmount&gt; {\n        @Override\n        public TemporalAmount deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {\n            try {\n                var periodDeserializer = ctxt.findRootValueDeserializer(ctxt.constructType(Period.class));\n                return (Period) periodDeserializer.deserialize(p, ctxt);\n            } catch (Exception e) {\n                try {\n                    var durationDeserializer = ctxt.findRootValueDeserializer(ctxt.constructType(Duration.class));\n                    return (Duration) durationDeserializer.deserialize(p, ctxt);\n                } catch (Exception ex) {\n                    throw JsonMappingException.from(p, &quot;Could not deserialize as either Duration or Period&quot;, ex);\n                }\n            }\n        }\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12934558,
+    "reputation" : 177,
+    "user_id" : 9352400,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/8448d487afd05973b812ba4d6330509d?s=256&d=identicon&r=PG",
+    "display_name" : "treekt",
+    "link" : "https://stackoverflow.com/users/9352400/treekt"
+  },
+  "is_answered" : false,
+  "view_count" : 1763,
+  "answer_count" : 4,
+  "score" : 1,
+  "last_activity_date" : 1761325443,
+  "creation_date" : 1660836573,
+  "question_id" : 73405738,
+  "link" : "https://stackoverflow.com/questions/73405738/how-to-deserialize-iso8601-duration-string-to-duration-and-period-objects-with-j",
+  "title" : "How to deserialize ISO8601 duration string to Duration and Period objects with Jackson",
+  "body" : "<p>I have a string value containing <strong>ISO8601</strong> duration string (P3Y6M4DT12H30M5S).\nHow to deserialize it to Duration and Period object using Jackson ?\nI know that <strong>Duration</strong> accepts days, hours, minutes, seconds and <strong>Period</strong> years and months.</p>\n"
+}

@@ -1,0 +1,135 @@
+{
+  "tags" : [ "java", "spring", "spring-boot", "spring-data-jpa" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2251196,
+      "reputation" : 722,
+      "user_id" : 1983401,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/z2oYG.jpg?s=256",
+      "display_name" : "muzzletov",
+      "link" : "https://stackoverflow.com/users/1983401/muzzletov"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1749900318,
+    "post_id" : 70694903,
+    "comment_id" : 140513318,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "can you please provide the log of the schema generation, as postgres and hibernate should default to text, which is typically not bound in length?"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 22124145,
+        "reputation" : 147,
+        "user_id" : 16376831,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJxz9PXfd_b4SN_TPYtUb1y7TYcJhUijcb-jNqJP=k-s256",
+        "display_name" : "Unknown Guy",
+        "link" : "https://stackoverflow.com/users/16376831/unknown-guy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1642071821,
+      "post_id" : 70695339,
+      "comment_id" : 124976966,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Sing getting same exception"
+    }, {
+      "owner" : {
+        "account_id" : 18544976,
+        "reputation" : 289,
+        "user_id" : 13512579,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/OYLIK.png?s=256",
+        "display_name" : "Navneet Singh",
+        "link" : "https://stackoverflow.com/users/13512579/navneet-singh"
+      },
+      "reply_to_user" : {
+        "account_id" : 22124145,
+        "reputation" : 147,
+        "user_id" : 16376831,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJxz9PXfd_b4SN_TPYtUb1y7TYcJhUijcb-jNqJP=k-s256",
+        "display_name" : "Unknown Guy",
+        "link" : "https://stackoverflow.com/users/16376831/unknown-guy"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1642073643,
+      "post_id" : 70695339,
+      "comment_id" : 124977609,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "can you check the column property in database and see whats the length there. Is it 255 or 2048 ?"
+    } ],
+    "owner" : {
+      "account_id" : 18544976,
+      "reputation" : 289,
+      "user_id" : 13512579,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/OYLIK.png?s=256",
+      "display_name" : "Navneet Singh",
+      "link" : "https://stackoverflow.com/users/13512579/navneet-singh"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1642071085,
+    "creation_date" : 1642071085,
+    "answer_id" : 70695339,
+    "question_id" : 70694903,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>By default maximum characters you can store is 255. Try this</p>\n<pre><code>@ElementCollection\n@Column(columnDefinition=&quot;TEXT&quot;, length = 2048)\n@CollectionTable(name=&quot;general_values&quot;)\nprivate List&lt;String&gt; values;\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15319993,
+      "reputation" : 9,
+      "user_id" : 11052773,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/aaeb2d60a90d9e98334a8153d261e8f3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "poorwa kesharwani",
+      "link" : "https://stackoverflow.com/users/11052773/poorwa-kesharwani"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1642076205,
+    "creation_date" : 1642076205,
+    "answer_id" : 70696477,
+    "question_id" : 70694903,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>First, you need to drop the table and then add the length attribute in the column then only you can see the effect.</p>\n<pre><code>@ElementCollection\n@Column(columnDefinition=&quot;TEXT&quot;, length = 1000)\n@CollectionTable(name=&quot;general_values&quot;)\nprivate List&lt;String&gt; values;\n</code></pre>\n<p>or else you can use SQL command to modify the length</p>\n<pre><code>ALTER TABLE table_name MODIFY column_name varchar(new_length);  \n</code></pre>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user10260739"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1642076352,
+    "creation_date" : 1642076352,
+    "answer_id" : 70696513,
+    "question_id" : 70694903,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>To solve this error either you have to create schema again where @Column contains length property or you can manually update the table in the database.</p>\n<pre><code>@Column(columnDefinition=&quot;TEXT&quot;, length = 1000)\nprivate List&lt;String&gt; values;\n</code></pre>\n<p>It will create a column with a size of 1000 characters when the schema is generated. There will be no effect on the existing table.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 22124145,
+    "reputation" : 147,
+    "user_id" : 16376831,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJxz9PXfd_b4SN_TPYtUb1y7TYcJhUijcb-jNqJP=k-s256",
+    "display_name" : "Unknown Guy",
+    "link" : "https://stackoverflow.com/users/16376831/unknown-guy"
+  },
+  "is_answered" : false,
+  "view_count" : 21092,
+  "answer_count" : 3,
+  "score" : 3,
+  "last_activity_date" : 1760292260,
+  "creation_date" : 1642069071,
+  "last_edit_date" : 1642069450,
+  "question_id" : 70694903,
+  "link" : "https://stackoverflow.com/questions/70694903/error-value-too-long-for-type-character-varying255-in-postgresql",
+  "title" : "ERROR: value too long for type character varying(255) in postgresql",
+  "body" : "<p>I am using spring-boot and <code>JPA </code> this is the field  i am using for the list</p>\n<pre><code>@ElementCollection\n@Column(columnDefinition=&quot;TEXT&quot;)\n@CollectionTable(name=&quot;general_values&quot;)\nprivate List&lt;String&gt; values;\n</code></pre>\n<p>But i am getting Error</p>\n<pre><code>Caused by: org.postgresql.util.PSQLException: ERROR: value too long for type character varying(255)\nat org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2440) ~[postgresql-42.2.5.jar:42.2.5]\n</code></pre>\n<p>However In the database table type of <code>value</code> is showing as text. Since i am using <code>TEXT</code> as a type and in the table column as well it is showing as <code>text</code> but Error is still <code>varying(255)</code>.<a href=\"https://i.sstatic.net/igoLn.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/igoLn.png\" alt=\"table colum\" /></a></p>\n<p>And the request payload for value field</p>\n<pre><code>&quot;values&quot;:[&quot;45&quot;,&quot;There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable&quot;]\n</code></pre>\n"
+}

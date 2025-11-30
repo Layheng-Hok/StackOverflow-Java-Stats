@@ -1,0 +1,62 @@
+{
+  "tags" : [ "java", "video", "watermark" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 133209,
+      "reputation" : 25654,
+      "user_id" : 334402,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/476b932160cd12fa0e4515a313427679?s=256&d=identicon&r=PG",
+      "display_name" : "Mick",
+      "link" : "https://stackoverflow.com/users/334402/mick"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1465828393,
+    "creation_date" : 1465828393,
+    "answer_id" : 37792474,
+    "question_id" : 37789476,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The most common and popular open source tool to put a watermark in a video (or text as in another question that just came up) is probably ffmpeg:</p>\n\n<ul>\n<li><a href=\"https://ffmpeg.org\" rel=\"nofollow\">https://ffmpeg.org</a></li>\n</ul>\n\n<p>ffmpeg can be used in the command line or programatically as part of an application (look at the licensing carefully to make sure it meets your needs if you want to distribute etc).</p>\n\n<p>To use it programatically you can either use the command line tool in a wrapper or use the libraries it is built on directly.</p>\n\n<p>Using the libraries directly (libavcodec, libavutil, libavformat, libavfilter, libavdevice, libswscale and libswresample - see the about page at the link above) should be more efficient and allow greater control etc, but the wrapper approach is still popular as it can be simpler to implement at first and there is a wealth of online info on command line syntax to achieve pretty much anything you might want to do, which you get to leverage with this approach.</p>\n\n<p>The libraries are also c based so you will need some interface (e.g. JNI) to them anyway.</p>\n\n<p>An example of a Java wrapper around ffmpeg is:</p>\n\n<ul>\n<li><a href=\"https://github.com/bramp/ffmpeg-cli-wrapper\" rel=\"nofollow\">https://github.com/bramp/ffmpeg-cli-wrapper</a></li>\n</ul>\n\n<p>There are many online examples of using the ffmpeg tool to add a watermarking to a video - one example is here but it is worth googling to find the latest ad the syntax does change over time:</p>\n\n<ul>\n<li><a href=\"https://en.wikibooks.org/wiki/FFMPEG_An_Intermediate_Guide/watermarks\" rel=\"nofollow\">https://en.wikibooks.org/wiki/FFMPEG_An_Intermediate_Guide/watermarks</a></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 39339042,
+      "reputation" : 101,
+      "user_id" : 29227008,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/M63oMOgp.jpg?s=256",
+      "display_name" : "Oleg Cheban",
+      "link" : "https://stackoverflow.com/users/29227008/oleg-cheban"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760022976,
+    "creation_date" : 1760022976,
+    "answer_id" : 79786577,
+    "question_id" : 37789476,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Take a look at this Java library I wrote called <a href=\"https://github.com/OlegCheban/WaterMarkIt\" rel=\"nofollow noreferrer\">WaterMarkIt</a> for adding customizable watermarks. It supports both images and videos.</p>\n<p>For images</p>\n<pre><code>byte[] res = WatermarkService.create()\n    .watermarkImage(new File(&quot;path/to/sourceImage.jpeg&quot;))\n       .withText(&quot;CodeJava&quot;)\n         .font(Font.ARIAL)\n         .bold()\n         .end()\n       .position(WatermarkPosition.CENTER)             \n    .apply();\n</code></pre>\n<p>and watermarkVideo() method is used to watermark videos.The library requires FFmpeg to be installed on your system and available in the system PATH.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3784051,
+    "reputation" : 1584,
+    "user_id" : 3142611,
+    "user_type" : "registered",
+    "accept_rate" : 71,
+    "profile_image" : "https://i.sstatic.net/zHwAJ.jpg?s=256",
+    "display_name" : "Bahu",
+    "link" : "https://stackoverflow.com/users/3142611/bahu"
+  },
+  "is_answered" : true,
+  "view_count" : 4041,
+  "answer_count" : 2,
+  "score" : 1,
+  "last_activity_date" : 1760354463,
+  "creation_date" : 1465819690,
+  "last_edit_date" : 1760354463,
+  "question_id" : 37789476,
+  "link" : "https://stackoverflow.com/questions/37789476/java-how-to-add-watermark-on-video",
+  "title" : "Java: How to add WaterMark on Video",
+  "body" : "<p>I'm trying to add water mark on image and video. For image i got the solution as below </p>\n\n<p><strong>Image water marking code</strong></p>\n\n<p><em>Method</em></p>\n\n<pre><code>static void addWatermarkOnImage(String text, File sourceImageFile, File destImageFile) {\n    try {\n        BufferedImage sourceImage = ImageIO.read(sourceImageFile);\n        Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();\n\n        // initializes necessary graphic properties\n        AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);\n        g2d.setComposite(alphaChannel);\n        g2d.setColor(Color.BLUE);\n        g2d.setFont(new Font(\"Arial\", Font.BOLD, 64));\n        FontMetrics fontMetrics = g2d.getFontMetrics();\n        Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);\n\n        // calculates the coordinate where the String is painted\n        int centerX = (sourceImage.getWidth() - (int) rect.getWidth()) / 2;\n        int centerY = sourceImage.getHeight() / 2;\n\n        // paints the textual watermark\n        g2d.drawString(text, centerX, centerY);\n\n        ImageIO.write(sourceImage, \"png\", destImageFile);\n        g2d.dispose();\n\n        //System.out.println(\"The tex watermark is added to the image.\");\n\n    } catch (IOException ex) {\n        System.err.println(ex);\n    }\n}\n</code></pre>\n\n<p><em>Method calling</em></p>\n\n<pre><code>File sourceImageFile = new File(\"e:/Test/Watermark/SwingEmailSender.png\");\nFile destImageFile = new File(\"e:/Test/Watermark/text_watermarked.png\");\n\naddTextWatermark(\"CodeJava\", sourceImageFile, destImageFile);\n</code></pre>\n\n<p>By fallowing above code image WaterMarking is working perfectly for me. In case of video water marking i tried lot of examples in online but nothing was helpful for me. So, kindly any one help me for video water marking in java/jsp</p>\n"
+}

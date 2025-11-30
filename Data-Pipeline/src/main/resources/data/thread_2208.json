@@ -1,0 +1,575 @@
+{
+  "tags" : [ "java", "concurrency", "countdownlatch", "cyclicbarrier" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 2812323,
+      "reputation" : 2369,
+      "user_id" : 2418306,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/da974ef722f5e141e8dd2c831784eb0f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "user2418306",
+      "link" : "https://stackoverflow.com/users/2418306/user2418306"
+    },
+    "edited" : false,
+    "score" : 14,
+    "creation_date" : 1459852908,
+    "post_id" : 4168772,
+    "comment_id" : 60462338,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Latches are for waiting for events; barriers are for waiting for other threads. - Java Concurrency in Practice, B.Goetz et al."
+  }, {
+    "owner" : {
+      "account_id" : 12883313,
+      "reputation" : 649,
+      "user_id" : 9317690,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c2426d1206e03ac5c7cbdcf2c6b2911f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "alife",
+      "link" : "https://stackoverflow.com/users/9317690/alife"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1673201404,
+    "post_id" : 4168772,
+    "comment_id" : 132440205,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Careful with the CyclicBarrier.  Unlike the countdown latch, it&#39;s role is to always block any caller until all threads have completed.  This means if you (say) are attempting to use it from the GUI thread to trigger (say) a change in state in another thread, you are required to make sure that the other thread is already waiting, or call <code>.reset()</code> which is apparently highly unclean.  CountDownLatch absolutely should have been resetable; I believe it is a failing.  CyclicBarrier&#39;s are listed as options for when you need a reusable latch, but it&#39;s simply not the same mechanism."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3158057,
+        "reputation" : 2347,
+        "user_id" : 2669960,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/W74fC.jpg?s=256",
+        "display_name" : "Kevin Lee",
+        "link" : "https://stackoverflow.com/users/2669960/kevin-lee"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1397283493,
+      "post_id" : 4168861,
+      "comment_id" : 35177835,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;It also allows you to get the number of clients waiting at the barrier and the number required to trigger the barrier. Once triggered the barrier is reset and can be used again.&quot;    I really like this point. A couple of articles I have read suggested that CyclicBarrier is cyclic because you invoke the reset() method. That is true, but what they don&#39;t often mention is that the barrier is reset automatically as soon as it is triggered. I will post some sample code to illustrate this."
+    }, {
+      "owner" : {
+        "account_id" : 257029,
+        "reputation" : 3311,
+        "user_id" : 538160,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/4b816c3331088ec95af69b0f33137ad9?s=256&d=identicon&r=PG",
+        "display_name" : "supernova",
+        "link" : "https://stackoverflow.com/users/538160/supernova"
+      },
+      "reply_to_user" : {
+        "account_id" : 3158057,
+        "reputation" : 2347,
+        "user_id" : 2669960,
+        "user_type" : "registered",
+        "accept_rate" : 83,
+        "profile_image" : "https://i.sstatic.net/W74fC.jpg?s=256",
+        "display_name" : "Kevin Lee",
+        "link" : "https://stackoverflow.com/users/2669960/kevin-lee"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1514768371,
+      "post_id" : 4168861,
+      "comment_id" : 83064529,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Kevin Lee  Thanks for &quot;the barrier is reset automatically as soon as it is triggered.&quot; so no need to call reset( )  in code."
+    } ],
+    "owner" : {
+      "account_id" : 30387,
+      "reputation" : 63980,
+      "user_id" : 82865,
+      "user_type" : "registered",
+      "accept_rate" : 71,
+      "profile_image" : "https://www.gravatar.com/avatar/053082988d5c2da6fe500a209f8cfdd8?s=256&d=identicon&r=PG",
+      "display_name" : "Jonathan Holloway",
+      "link" : "https://stackoverflow.com/users/82865/jonathan-holloway"
+    },
+    "is_accepted" : true,
+    "score" : 146,
+    "last_activity_date" : 1289594590,
+    "last_edit_date" : 1289594590,
+    "creation_date" : 1289594252,
+    "answer_id" : 4168861,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>One major difference is that <a href=\"http://download.oracle.com/javase/1.5.0/docs/api/java/util/concurrent/CyclicBarrier.html\" rel=\"noreferrer\">CyclicBarrier</a> takes an (optional) Runnable task which is run once the common barrier condition is met.  </p>\n\n<p>It also allows you to get the number of clients waiting at the barrier and the number required to trigger the barrier.  Once triggered the barrier is reset and can be used again.  </p>\n\n<p>For simple use cases - services starting etc... a CountdownLatch is fine.  A CyclicBarrier is useful for more complex co-ordination tasks.  An example of such a thing would be parallel computation - where multiple subtasks are involved in the computation - kind of like <a href=\"http://en.wikipedia.org/wiki/MapReduce\" rel=\"noreferrer\">MapReduce</a>.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 85597,
+        "reputation" : 8297,
+        "user_id" : 238546,
+        "user_type" : "registered",
+        "accept_rate" : 93,
+        "profile_image" : "https://www.gravatar.com/avatar/dbb073a355c74344371d246ebf34f839?s=256&d=identicon&r=PG",
+        "display_name" : "James.Xu",
+        "link" : "https://stackoverflow.com/users/238546/james-xu"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1320391900,
+      "post_id" : 4168895,
+      "comment_id" : 9796100,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "If their difference is just can be reset or not, CyclicBarrier might be better named ResetableCountDownLatch, which is more meaningful due to the difference."
+    } ],
+    "owner" : {
+      "account_id" : 72007,
+      "reputation" : 3068,
+      "user_id" : 208065,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/ea2f6d19964ce90c1aef4a2b1c104815?s=256&d=identicon&r=PG",
+      "display_name" : "JohnnyO",
+      "link" : "https://stackoverflow.com/users/208065/johnnyo"
+    },
+    "is_accepted" : false,
+    "score" : 15,
+    "last_activity_date" : 1289594651,
+    "creation_date" : 1289594651,
+    "answer_id" : 4168895,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The main difference is documented right in the Javadocs for CountdownLatch.  Namely: </p>\n\n<blockquote>\n  <p>A CountDownLatch is initialized with a\n  given count. The await methods block\n  until the current count reaches zero\n  due to invocations of the countDown()\n  method, after which all waiting\n  threads are released and any\n  subsequent invocations of await return\n  immediately. This is a one-shot\n  phenomenon -- the count cannot be\n  reset. If you need a version that\n  resets the count, consider using a\n  CyclicBarrier.</p>\n</blockquote>\n\n<p>source <a href=\"http://download.oracle.com/javase/6/docs/api/java/util/concurrent/CountDownLatch.html\" rel=\"noreferrer\">1.6 Javadoc</a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1037821,
+        "reputation" : 1782,
+        "user_id" : 1044560,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://i.sstatic.net/dYpxT.jpg?s=256",
+        "display_name" : "flagg19",
+        "link" : "https://stackoverflow.com/users/1044560/flagg19"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1376315659,
+      "post_id" : 5150598,
+      "comment_id" : 26652583,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I think this is the answer that better show the theorical differences. The fact that latches can be broken by just calling multiple time a method while barriers need a precise ammount of threads to wait()."
+    }, {
+      "owner" : {
+        "account_id" : 2094629,
+        "reputation" : 5476,
+        "user_id" : 1863694,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://i.sstatic.net/0E0lR.jpg?s=256",
+        "display_name" : "Ivan Voroshilin",
+        "link" : "https://stackoverflow.com/users/1863694/ivan-voroshilin"
+      },
+      "edited" : false,
+      "score" : 54,
+      "creation_date" : 1391001732,
+      "post_id" : 5150598,
+      "comment_id" : 32335437,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Right - that&#39;s the major difference: CountDownLatch--&gt;NumberOfCalls, CyclicBarrier--&gt;NumberOfThreads"
+    }, {
+      "owner" : {
+        "account_id" : 1774567,
+        "reputation" : 9068,
+        "user_id" : 1618592,
+        "user_type" : "registered",
+        "accept_rate" : 95,
+        "profile_image" : "https://www.gravatar.com/avatar/ad57bfdca1515bea454f32c8b7f9d46a?s=256&d=identicon&r=PG",
+        "display_name" : "Ephemera",
+        "link" : "https://stackoverflow.com/users/1618592/ephemera"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1444092927,
+      "post_id" : 5150598,
+      "comment_id" : 53745222,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I agree it would be great for <code>CountDownLatch</code> to be resettable - a workaround I use to implement a rough wait-notify is just to new up a <code>CountDownLatch</code> immediately when the protected code block is entered (when the latch reaches zero). This is not applicable in all circumstances/scopes of course, but I thought it worth noting that it is an option in goldilocks situations."
+    }, {
+      "owner" : {
+        "account_id" : 3013682,
+        "reputation" : 1199,
+        "user_id" : 2556478,
+        "user_type" : "registered",
+        "accept_rate" : 56,
+        "profile_image" : "https://www.gravatar.com/avatar/e5a05e09dbc68fc58cc5f833488f9f77?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "RDM",
+        "link" : "https://stackoverflow.com/users/2556478/rdm"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1508983430,
+      "post_id" : 5150598,
+      "comment_id" : 80836758,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "One of the best answers on this topic. <code>Java Concurrency in Practice</code> - says the same thing: <code>Latches are for waiting for events; barriers are for waiting for other threads.</code>. A primary and essential point to understand the difference between these two."
+    }, {
+      "owner" : {
+        "account_id" : 1353175,
+        "reputation" : 3898,
+        "user_id" : 1292104,
+        "user_type" : "registered",
+        "accept_rate" : 53,
+        "profile_image" : "https://www.gravatar.com/avatar/494d73d987480986f0f564f12976215a?s=256&d=identicon&r=PG",
+        "display_name" : "nir",
+        "link" : "https://stackoverflow.com/users/1292104/nir"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582490687,
+      "post_id" : 5150598,
+      "comment_id" : 106786534,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Java 8 doc says &quot;A CountDownLatch initialized to N can be used to make one thread wait until N threads have completed some action, or some action has been completed N times.&quot; seems to me: CountDownLatch--&gt; NumberOfCalls Or CountDownLatch --&gt; NumberOfThreads"
+    } ],
+    "owner" : {
+      "account_id" : 309761,
+      "reputation" : 1609,
+      "user_id" : 622390,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/af4f8db520e1d4d2940cc88574c1d4eb?s=256&d=identicon&r=PG",
+      "display_name" : "Kim",
+      "link" : "https://stackoverflow.com/users/622390/kim"
+    },
+    "is_accepted" : false,
+    "score" : 150,
+    "last_activity_date" : 1298955213,
+    "creation_date" : 1298955213,
+    "answer_id" : 5150598,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>There's another difference.</p>\n\n<p>When using a <code>CyclicBarrier</code>, the assumption is that you specify the number of waiting threads that trigger the barrier. If you specify 5, you must have at least 5 threads to call <code>await()</code>.</p>\n\n<p>When using a <code>CountDownLatch</code>, you specify the number of calls to <code>countDown()</code> that will result in all waiting threads being released. This means that you can use a <code>CountDownLatch</code> with only a single thread.</p>\n\n<p>\"Why would you do that?\", you may say. Imagine that you are using a mysterious API coded by someone else that performs callbacks. You want one of your threads to wait until a certain callback has been called a number of times. You have no idea which threads the callback will be called on. In this case, a <code>CountDownLatch</code> is perfect, whereas I can't think of any way to implement this using a <code>CyclicBarrier</code> (actually, I can, but it involves timeouts... yuck!).</p>\n\n<p>I just wish that <code>CountDownLatch</code> could be reset!</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1106810,
+      "reputation" : 41,
+      "user_id" : 1098067,
+      "user_type" : "unregistered",
+      "profile_image" : "https://www.gravatar.com/avatar/d50188eb231b712c5bceec68308673a7?s=256&d=identicon&r=PG",
+      "display_name" : "Brandon",
+      "link" : "https://stackoverflow.com/users/1098067/brandon"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1323876389,
+    "last_edit_date" : 1323876389,
+    "creation_date" : 1323874686,
+    "answer_id" : 8506577,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In the case of CyclicBarrier, as soon as ALL child threads begins calling barrier.await(), the Runnable is executed in the Barrier. The barrier.await in each child thread will take different lengh of time to finish, and they all finish at the same time. </p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 146287,
+      "reputation" : 3518,
+      "user_id" : 356645,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c81c08678b0b7eec374998db6469f9aa?s=256&d=identicon&r=PG",
+      "display_name" : "shams",
+      "link" : "https://stackoverflow.com/users/356645/shams"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1335751342,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1335751342,
+    "answer_id" : 10377726,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>A CountDownLatch is used for one-time synchronization. While using a CountDownLatch, any thread is allowed to call countDown() as many times as they like. Threads which called await() are blocked until the count reaches zero because of calls to countDown() by other unblocked threads. The <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html\" rel=\"noreferrer\">javadoc for CountDownLatch</a> states:</p>\n<blockquote>\n<p>The await methods block until the current count reaches zero due to\ninvocations of the countDown() method, after which all waiting threads\nare released and any subsequent invocations of await return\nimmediately.\n...</p>\n<p>Another typical usage would be to divide a problem into N parts,\ndescribe each part with a Runnable that executes that portion and\ncounts down on the latch, and queue all the Runnables to an Executor.\nWhen all sub-parts are complete, the coordinating thread will be able\nto pass through await. (When threads must repeatedly count down in\nthis way, instead use a CyclicBarrier.)</p>\n</blockquote>\n<p>In contrast, the cyclic barrier is used for multiple sychronization points, e.g. if a set of threads are running a loop/phased computation and need to synchronize before starting the next iteration/phase. As per the <a href=\"http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CyclicBarrier.html\" rel=\"noreferrer\">javadoc for CyclicBarrier</a>:</p>\n<blockquote>\n<p>The barrier is called cyclic because it can be re-used after the\nwaiting threads are released.</p>\n</blockquote>\n<p>Unlike the CountDownLatch, each call to await() belongs to some phase and can cause the thread to block until all parties belonging to that phase have invoked await(). There is no explicit countDown() operation supported by the CyclicBarrier.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 329066,
+      "reputation" : 6152,
+      "user_id" : 652378,
+      "user_type" : "registered",
+      "accept_rate" : 52,
+      "profile_image" : "https://www.gravatar.com/avatar/340b924b8e9a48d3d49b0c8742928aab?s=256&d=identicon&r=PG",
+      "display_name" : "Chirlo",
+      "link" : "https://stackoverflow.com/users/652378/chirlo"
+    },
+    "is_accepted" : false,
+    "score" : 49,
+    "last_activity_date" : 1349625782,
+    "creation_date" : 1349625782,
+    "answer_id" : 12770402,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>One point that nobody has yet mentioned is that, in a <code>CyclicBarrier</code>, if a thread has a problem (timeout, interrupted...), all the others that have reached <code>await()</code> get an exception. See Javadoc: </p>\n\n<blockquote>\n  <p>The CyclicBarrier uses an all-or-none breakage model for failed synchronization attempts: If a thread leaves a barrier point prematurely because of interruption, failure, or timeout, all other threads waiting at that barrier point will also leave abnormally via BrokenBarrierException (or InterruptedException if they too were interrupted at about the same time).</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3158057,
+      "reputation" : 2347,
+      "user_id" : 2669960,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/W74fC.jpg?s=256",
+      "display_name" : "Kevin Lee",
+      "link" : "https://stackoverflow.com/users/2669960/kevin-lee"
+    },
+    "is_accepted" : false,
+    "score" : 13,
+    "last_activity_date" : 1397283896,
+    "creation_date" : 1397283896,
+    "answer_id" : 23026934,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This question has been adequately answered already, but I think I can value-add a little by posting some code.</p>\n\n<p>To illustrate the behaviour of cyclic barrier, I have made some sample code. As soon as the barrier is tipped, it is <em>automatically</em> reset so that it can be used again (hence it is \"cyclic\"). When you run the program, observe that the print outs \"Let's play\" are triggered only after the barrier is tipped.</p>\n\n<pre><code>import java.util.concurrent.BrokenBarrierException;\nimport java.util.concurrent.CyclicBarrier;\n\npublic class CyclicBarrierCycles {\n\n    static CyclicBarrier barrier;\n\n    public static void main(String[] args) throws InterruptedException {\n        barrier = new CyclicBarrier(3); \n\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n        Thread.sleep(1000);\n\n        System.out.println(\"Barrier automatically resets.\");\n\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n    }\n\n}\n\n\nclass Worker extends Thread {\n    @Override\n    public void run() {\n        try {\n            CyclicBarrierCycles.barrier.await();\n            System.out.println(\"Let's play.\");\n        } catch (InterruptedException e) {\n            e.printStackTrace();\n        } catch (BrokenBarrierException e) {\n            e.printStackTrace();\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2641595,
+        "reputation" : 1917,
+        "user_id" : 2285111,
+        "user_type" : "registered",
+        "accept_rate" : 70,
+        "profile_image" : "https://i.sstatic.net/IUSlU.jpg?s=256",
+        "display_name" : "Vladimir Nabokov",
+        "link" : "https://stackoverflow.com/users/2285111/vladimir-nabokov"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1432391385,
+      "post_id" : 24524351,
+      "comment_id" : 48913853,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "&quot;In CyclicBarrier, there are only one type of threads&quot;  ...They are equal in their &quot;role of waiting&quot; till other threads call .await(), but they may be &quot;not equal in what they do&quot;. Also they all must be absolutely different thread instances(!) of the same type or of different types, while in CountDownLatch the same thread may call countDown() and influence the result."
+    }, {
+      "owner" : {
+        "account_id" : 1329420,
+        "reputation" : 1115,
+        "user_id" : 1273619,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/ebf298deb6500cc7ee72944f1e30c33e?s=256&d=identicon&r=PG",
+        "display_name" : "isaolmez",
+        "link" : "https://stackoverflow.com/users/1273619/isaolmez"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1588601069,
+      "post_id" : 24524351,
+      "comment_id" : 108952950,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I agree that CountDownLatch inherently requires two roles: one client for countDown and one client for await. On the other hand, CyclicBarrier clients can operate just fine with the await method."
+    }, {
+      "owner" : {
+        "account_id" : 12883313,
+        "reputation" : 649,
+        "user_id" : 9317690,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c2426d1206e03ac5c7cbdcf2c6b2911f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "alife",
+        "link" : "https://stackoverflow.com/users/9317690/alife"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1673201886,
+      "post_id" : 24524351,
+      "comment_id" : 132440306,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "CyclicBarrier cannot be used as a trigger though in non-blockable threads (such as the GUI event thread) unless you 1. Are absolutely certain that the thread you&#39;re trying to notify is already waiting (otherwise) OR 2. use <code>.reset()</code> which is considered unclean."
+    } ],
+    "owner" : {
+      "account_id" : 3375818,
+      "reputation" : 923,
+      "user_id" : 2833957,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/EzRA5.jpg?s=256",
+      "display_name" : "Justin Civi",
+      "link" : "https://stackoverflow.com/users/2833957/justin-civi"
+    },
+    "is_accepted" : false,
+    "score" : 28,
+    "last_activity_date" : 1428746568,
+    "last_edit_date" : 1428746568,
+    "creation_date" : 1404282830,
+    "answer_id" : 24524351,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I think that the JavaDoc has explained the differences explicitly.\nMost people know that CountDownLatch can not be reset, however, CyclicBarrier can. But this is not the only difference, or the CyclicBarrier could be renamed to ResetbleCountDownLatch.\nWe should tell the differences from the perspective of their goals, which are described in JavaDoc</p>\n\n<p><strong>CountDownLatch:</strong> A synchronization aid that allows one or more threads to wait until a set of operations being performed in other threads completes.</p>\n\n<p><strong>CyclicBarrier:</strong> A synchronization aid that allows a set of threads to all wait for each other to reach a common barrier point.</p>\n\n<p>In countDownLatch, there is one or more threads, that are waiting for a set of <strong>other threads</strong> to complete. In this situation, there are two types of threads, one type is waiting, another type is doing something, after finishes their tasks, they could be waiting or just terminated. </p>\n\n<p>In CyclicBarrier, there are only one type of threads, they are waiting for each other, they are equal.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3071466,
+      "reputation" : 131,
+      "user_id" : 2602026,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/76ba061947b66ba9813c521457169e8c?s=256&d=identicon&r=PG",
+      "display_name" : "Pramma",
+      "link" : "https://stackoverflow.com/users/2602026/pramma"
+    },
+    "is_accepted" : false,
+    "score" : 5,
+    "last_activity_date" : 1446139267,
+    "creation_date" : 1446139267,
+    "answer_id" : 33420760,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>One obvious difference is, only N threads can await on a CyclicBarrier of N to be release in one cycle. But unlimited number of threads can await on a CountDownLatch of N. The count down decrement can be done by one thread N times or N threads one time each or combinations.  </p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 2784842,
+        "reputation" : 69441,
+        "user_id" : 2396539,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/nGigV.png?s=256",
+        "display_name" : "Aniket Thakur",
+        "link" : "https://stackoverflow.com/users/2396539/aniket-thakur"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1547569593,
+      "post_id" : 37230484,
+      "comment_id" : 95232835,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "It need not be the main thread. It could be any thread that creates CountDownLatch and shares it with other non-main threads."
+    } ],
+    "owner" : {
+      "account_id" : 7376502,
+      "reputation" : 391,
+      "user_id" : 5614906,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/256eeaf6feb5c02c21f9469a3a01b887?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "V Jo",
+      "link" : "https://stackoverflow.com/users/5614906/v-jo"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1661427988,
+    "last_edit_date" : 1661427988,
+    "creation_date" : 1463251093,
+    "answer_id" : 37230484,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>In <strong>CountDownLatch</strong>, threads waits for other threads to complete their execution. In <strong>CyclicBarrier</strong>, worker threads wait for each other to complete their execution.</p>\n<p>You can not reuse same <strong>CountDownLatch</strong> instance once count reaches to zero and latch is open, on the other hand <strong>CyclicBarrier</strong> can be reused by resetting Barrier, Once barrier is broken.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 2745991,
+      "reputation" : 2784,
+      "user_id" : 2366397,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/24ee2b89e9791e936235b16af77ebda4?s=256&d=identicon&r=PG",
+      "display_name" : "igor.zh",
+      "link" : "https://stackoverflow.com/users/2366397/igor-zh"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1485208615,
+    "creation_date" : 1485208615,
+    "answer_id" : 41816419,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><em>In a nutshell</em>, just to understand key <em>functional</em> differences between the two :</p>\n\n<pre><code>public class CountDownLatch {\n    private Object mutex = new Object();\n    private int count;\n\n    public CountDownLatch(int count) {\n        this.count = count;\n    }\n\n    public void await() throws InterruptedException {\n        synchronized (mutex) {\n            while (count &gt; 0) {\n                mutex.wait();\n            }\n        }\n    }\n\n    public void countDown() {\n        synchronized (mutex) {\n            if (--count == 0)\n                mutex.notifyAll();\n        }\n\n    }\n}\n</code></pre>\n\n<p>and</p>\n\n<pre><code>public class CyclicBarrier {\n    private Object mutex = new Object();\n    private int count;\n\n    public CyclicBarrier(int count) {\n        this.count = count;\n    }\n\n    public void await() throws InterruptedException {\n        synchronized (mutex) {\n            count--;\n            while(count &gt; 0)\n                mutex.wait();\n            mutex.notifyAll();\n        }\n    }\n}\n</code></pre>\n\n<p>except, of course, features like non-blocking, timed waiting, diagnostics and everything which has been in details explained in the above answers. </p>\n\n<p>The above classes are, however, fully functional and equivalent, within the provided functionality, to their correspondent namesakes.</p>\n\n<p>On a different note, <code>CountDownLatch</code>'s inner class subclasses <code>AQS</code>, while <code>CyclicBarrier</code> uses <code>ReentrantLock</code> (my suspicion is it could be other way around or both could use AQS or both use Lock -- without any loss of performance efficiency)</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4409801,
+      "reputation" : 4594,
+      "user_id" : 3593084,
+      "user_type" : "registered",
+      "accept_rate" : 40,
+      "profile_image" : "https://i.sstatic.net/Uq59r.jpg?s=256",
+      "display_name" : "Mr.Q",
+      "link" : "https://stackoverflow.com/users/3593084/mr-q"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1502278272,
+    "creation_date" : 1502278272,
+    "answer_id" : 45589454,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>When I was studying about Latches and cyclicbarriers I came up with this metaphors.\n<strong>cyclicbarriers</strong>: Imagine a company has a meeting room. In order to start the meeting, a certain number of meeting attendees have to come to meeting (to make it official). the following is the code of a normal meeting attendee (an employee)</p>\n\n<pre><code>class MeetingAtendee implements Runnable {\n\nCyclicBarrier myMeetingQuorumBarrier;\n\npublic MeetingAtendee(CyclicBarrier myMileStoneBarrier) {\n    this.myMeetingQuorumBarrier = myMileStoneBarrier;\n}\n\n@Override\npublic void run() {\n    try {\n        System.out.println(Thread.currentThread().getName() + \" i joined the meeting ...\");\n        myMeetingQuorumBarrier.await();\n        System.out.println(Thread.currentThread().getName()+\" finally meeting stared ...\");\n    } catch (InterruptedException e) {\n        e.printStackTrace();\n    } catch (BrokenBarrierException e) {\n        System.out.println(\"Meeting canceled! every body dance &lt;by chic band!&gt;\");\n    }\n }\n}\n</code></pre>\n\n<p>employee joins the meeting, waits for others to come to start meeting. also he gets exited if the meeting gets canceled :) then we have THE BOSS how doses not like to wait for others to show up and if he looses his patient, he cancels meeting.</p>\n\n<pre><code>class MeetingAtendeeTheBoss implements Runnable {\n\nCyclicBarrier myMeetingQuorumBarrier;\n\npublic MeetingAtendeeTheBoss(CyclicBarrier myMileStoneBarrier) {\n    this.myMeetingQuorumBarrier = myMileStoneBarrier;\n}\n\n@Override\npublic void run() {\n    try {\n        System.out.println(Thread.currentThread().getName() + \"I am THE BOSS - i joined the meeting ...\");\n        //boss dose not like to wait too much!! he/she waits for 2 seconds and we END the meeting\n        myMeetingQuorumBarrier.await(1,TimeUnit.SECONDS);\n        System.out.println(Thread.currentThread().getName()+\" finally meeting stared ...\");\n    } catch (InterruptedException e) {\n        e.printStackTrace();\n    } catch (BrokenBarrierException e) {\n        System.out.println(\"what WHO canceled The meeting\");\n    } catch (TimeoutException e) {\n        System.out.println(\"These employees waste my time!!\");\n    }\n }\n}\n</code></pre>\n\n<p>On a normal day, employee come to meeting wait for other to show up and if some attendees don`t come they have to wait indefinitely! in some special meeting the boss comes and he does not like to wait.(5 persons need to start meeting but only boss comes and also an enthusiastic employee) so he cancels the meeting (angrily)</p>\n\n<pre><code>CyclicBarrier meetingAtendeeQuorum = new CyclicBarrier(5);\nThread atendeeThread = new Thread(new MeetingAtendee(meetingAtendeeQuorum));\nThread atendeeThreadBoss = new Thread(new MeetingAtendeeTheBoss(meetingAtendeeQuorum));\n    atendeeThread.start();\n    atendeeThreadBoss.start();\n</code></pre>\n\n<p>Output:</p>\n\n<pre><code>//Thread-1I am THE BOSS - i joined the meeting ...\n// Thread-0 i joined the meeting ...\n// These employees waste my time!!\n// Meeting canceled! every body dance &lt;by chic band!&gt;\n</code></pre>\n\n<p>There is another scenario in which another outsider thread (an earth quake) cancels the meeting (call reset method). in this case all the waiting threads get woken up by an exception.</p>\n\n<pre><code>class NaturalDisasters implements Runnable {\n\nCyclicBarrier someStupidMeetingAtendeeQuorum;\n\npublic NaturalDisasters(CyclicBarrier someStupidMeetingAtendeeQuorum) {\n    this.someStupidMeetingAtendeeQuorum = someStupidMeetingAtendeeQuorum;\n}\n\nvoid earthQuakeHappening(){\n    System.out.println(\"earth quaking.....\");\n    someStupidMeetingAtendeeQuorum.reset();\n}\n\n@Override\npublic void run() {\n    earthQuakeHappening();\n }\n}\n</code></pre>\n\n<p>running code will result in funny output:</p>\n\n<pre><code>// Thread-1I am THE BOSS - i joined the meeting ...\n// Thread-0 i joined the meeting ...\n// earth quaking.....\n// what WHO canceled The meeting\n// Meeting canceled! every body dance &lt;by chic band!&gt;\n</code></pre>\n\n<p>You can also add a secretary to meeting room, if a meeting is held she will document every thing but she is not part of the meeting:</p>\n\n<pre><code>class MeetingSecretary implements Runnable {\n\n@Override\npublic void run() {\n        System.out.println(\"preparing meeting documents\");\n        System.out.println(\"taking notes ...\");\n }\n}\n</code></pre>\n\n<p><strong>Latches</strong>: if the angry boss wants to hold an exhibition for company customers, every thing needs to be ready (resources). we provide a to-do list every worker (Thread) dose his job and we check the to-do list (some workers do painting, others prepare sound system ...). when all the items in to-do list are complete (resources are provided) we can open the doors to customers. </p>\n\n<pre><code>public class Visitor implements Runnable{\n\nCountDownLatch exhibitonDoorlatch = null;\n\npublic Visitor (CountDownLatch latch) {\n    exhibitonDoorlatch  = latch;\n}\n\npublic void run() {\n    try {\n        exhibitonDoorlatch .await();\n    } catch (InterruptedException e) {\n        e.printStackTrace();\n    }\n\n    System.out.println(\"customer visiting exebition\");\n }\n}\n</code></pre>\n\n<p>And the workers how are preparing the exhibition:</p>\n\n<pre><code>class Worker implements Runnable {\n\nCountDownLatch myTodoItem = null;\n\npublic Worker(CountDownLatch latch) {\n    this.myTodoItem = latch;\n}\n\npublic void run() {\n        System.out.println(\"doing my part of job ...\");\n        System.out.println(\"My work is done! remove it from todo list\");\n        myTodoItem.countDown();\n }\n}\n\n    CountDownLatch preperationTodoList = new CountDownLatch(3);\n\n    // exhibition preparation workers  \n    Worker      electricalWorker      = new Worker(preperationTodoList);\n    Worker      paintingWorker      = new Worker(preperationTodoList);\n\n    // Exhibition Visitors \n    ExhibitionVisitor exhibitionVisitorA = new ExhibitionVisitor(preperationTodoList);\n    ExhibitionVisitor exhibitionVisitorB = new ExhibitionVisitor(preperationTodoList);\n    ExhibitionVisitor exhibitionVisitorC = new ExhibitionVisitor(preperationTodoList);\n\n    new Thread(electricalWorker).start();\n    new Thread(paintingWorker).start();\n\n    new Thread(exhibitionVisitorA).start();\n    new Thread(exhibitionVisitorB).start();\n    new Thread(exhibitionVisitorC).start();\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 12883313,
+        "reputation" : 649,
+        "user_id" : 9317690,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c2426d1206e03ac5c7cbdcf2c6b2911f?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "alife",
+        "link" : "https://stackoverflow.com/users/9317690/alife"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1673201642,
+      "post_id" : 52866452,
+      "comment_id" : 132440255,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Did you use an AI Chat to produce this &quot;answer&quot;?  It&#39;s frankly a disaster."
+    } ],
+    "owner" : {
+      "account_id" : 11348189,
+      "reputation" : 189,
+      "user_id" : 8320076,
+      "user_type" : "registered",
+      "accept_rate" : 60,
+      "profile_image" : "https://www.gravatar.com/avatar/ac60ba7f5ca5f970a811b892dd5e5b24?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "yk42b",
+      "link" : "https://stackoverflow.com/users/8320076/yk42b"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1539832747,
+    "last_edit_date" : 1539832747,
+    "creation_date" : 1539832341,
+    "answer_id" : 52866452,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>CountDownLatch is a count down of anything; CyclicBarrier is a count down for thread only</p>\n\n<p>assume there are 5 worker threads and one shipper thread, and when workers produce 100 items, shipper will ship them out.</p>\n\n<p>For CountDownLatch, the counter can be on workers or items</p>\n\n<p>For CyclicBarrier, the counter can only on workers</p>\n\n<p>If a worker falls infinite sleep, with CountDownLatch on items, Shipper can ship; However, with CyclicBarrier, Shipper can never be called</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5068854,
+      "reputation" : 3300,
+      "user_id" : 4068218,
+      "user_type" : "registered",
+      "accept_rate" : 7,
+      "profile_image" : "https://i.sstatic.net/qAsED.gif?s=256",
+      "display_name" : "Hari Rao",
+      "link" : "https://stackoverflow.com/users/4068218/hari-rao"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1541514137,
+    "creation_date" : 1541514137,
+    "answer_id" : 53173829,
+    "question_id" : 4168772,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>@Kevin Lee and @Jon I tried CyclicBarrier with Optional Runnable. Looks like it runs in the beginning and after the CyclicBarrier is tipped. Here is the code and output</p>\n\n<p>static CyclicBarrier barrier;</p>\n\n<pre><code>    public static void main(String[] args) throws InterruptedException {\n        barrier = new CyclicBarrier(3, new Runnable() {\n            @Override\n            public void run() {\n                System.out.println(\"I run in the beginning and after the CyclicBarrier is tipped\");\n            }\n        });\n\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n        Thread.sleep(1000);\n\n        System.out.println(\"Barrier automatically resets.\");\n\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n        Thread.sleep(1000);\n        new Worker().start();\n    }\n</code></pre>\n\n<p><strong>Output</strong></p>\n\n<pre><code>I run in the beginning and after the CyclicBarrier is tipped\nLet's play.\nLet's play.\nLet's play.\nBarrier automatically resets.\nI run in the beginning and after the CyclicBarrier is tipped\nLet's play.\nLet's play.\nLet's play.\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 159676,
+    "reputation" : 92891,
+    "user_id" : 379235,
+    "user_type" : "registered",
+    "accept_rate" : 62,
+    "profile_image" : "https://i.sstatic.net/qSUBs.png?s=256",
+    "display_name" : "daydreamer",
+    "link" : "https://stackoverflow.com/users/379235/daydreamer"
+  },
+  "is_answered" : true,
+  "view_count" : 102739,
+  "protected_date" : 1370953416,
+  "accepted_answer_id" : 4168861,
+  "answer_count" : 14,
+  "score" : 183,
+  "last_activity_date" : 1661427988,
+  "creation_date" : 1289593601,
+  "last_edit_date" : 1352659666,
+  "question_id" : 4168772,
+  "link" : "https://stackoverflow.com/questions/4168772/java-concurrency-countdown-latch-vs-cyclic-barrier",
+  "title" : "Java concurrency: Countdown latch vs Cyclic barrier",
+  "body" : "<p>I was reading through the <a href=\"http://download.oracle.com/javase/6/docs/api/java/util/concurrent/package-summary.html\" rel=\"noreferrer\">java.util.concurrent API</a>, and found that  </p>\n\n<ul>\n<li><code>CountDownLatch</code>: A synchronization aid that allows one or more threads to wait until a set of operations being performed in other threads completes.</li>\n<li><code>CyclicBarrier</code>: A synchronization aid that allows a set of threads to all wait for each other to reach a common barrier point.  </li>\n</ul>\n\n<p>To me both seems equal, but I am sure there is much more to it.  </p>\n\n<p>For example, in <code>CoundownLatch, the countdown value could not be reset, that can happen in the case of CyclicBarrier</code>.   </p>\n\n<p>Is there any other difference between the two?<br>\nWhat are the <code>use cases</code> where someone would want to reset the value of countdown?</p>\n"
+}

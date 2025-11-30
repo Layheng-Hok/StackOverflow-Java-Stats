@@ -1,0 +1,982 @@
+{
+  "tags" : [ "java", "maven-2", "intellij-idea" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 297814,
+      "reputation" : 26439,
+      "user_id" : 603516,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/40895ef337d0a2eb7d538f5f8b3e6d58?s=256&d=identicon&r=PG",
+      "display_name" : "Vadzim",
+      "link" : "https://stackoverflow.com/users/603516/vadzim"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1379398987,
+    "post_id" : 5170620,
+    "comment_id" : 27799232,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Take a look at <a href=\"http://stackoverflow.com/questions/10735380/define-additional-source-directory-in-maven\" title=\"define additional source directory in maven\">stackoverflow.com/questions/10735380/&hellip;</a>"
+  }, {
+    "owner" : {
+      "account_id" : 10669883,
+      "reputation" : 150,
+      "user_id" : 7855267,
+      "user_type" : "registered",
+      "profile_image" : "https://lh4.googleusercontent.com/-SHWe-GO_DM4/AAAAAAAAAAI/AAAAAAAAAGk/EtZzunh8Ja4/s256-rj/photo.jpg",
+      "display_name" : "Asad Abdin",
+      "link" : "https://stackoverflow.com/users/7855267/asad-abdin"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1510640279,
+    "post_id" : 5170620,
+    "comment_id" : 81508318,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Try this solution, it may resolve your issue. <a href=\"https://stackoverflow.com/a/47278829/7855267\">click here for the solution</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 19015,
+        "reputation" : 17811,
+        "user_id" : 44124,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/abd7e4e758d0d286502543a7b032abcf?s=256&d=identicon&r=PG",
+        "display_name" : "Kannan Ekanath",
+        "link" : "https://stackoverflow.com/users/44124/kannan-ekanath"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1299086345,
+      "post_id" : 5170761,
+      "comment_id" : 5807935,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "Thanks Sean. I actually observed that Intellij adds both target/generated-sources/com as well as target/generated-sources (this is added as a source directory explicitly in &quot;resource&quot; section). Is there any other way to prevent the first thing from happening. If No, then I will try your workaround."
+    }, {
+      "owner" : {
+        "account_id" : 1291135,
+        "reputation" : 3219,
+        "user_id" : 2587343,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/52874e9b4f06834f233ea323925fd305?s=256&d=identicon&r=PG",
+        "display_name" : "Vlastimil Ovč&#225;č&#237;k",
+        "link" : "https://stackoverflow.com/users/2587343/vlastimil-ov%c4%8d%c3%a1%c4%8d%c3%adk"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1457719707,
+      "post_id" : 5170761,
+      "comment_id" : 59550606,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes, the author should have use <code>target&#47;generated-sources&#47;my-tool</code>."
+    } ],
+    "owner" : {
+      "account_id" : 138128,
+      "reputation" : 300582,
+      "user_id" : 342852,
+      "user_type" : "registered",
+      "accept_rate" : 97,
+      "profile_image" : "https://i.sstatic.net/aLKQa.png?s=256",
+      "display_name" : "Sean Patrick Floyd",
+      "link" : "https://stackoverflow.com/users/342852/sean-patrick-floyd"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1299085425,
+    "last_edit_date" : 1299085425,
+    "creation_date" : 1299085116,
+    "answer_id" : 5170761,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Whoever wrote that plugin screwed up big time. That's not the way to do it!</p>\n\n<p>Any workaround would be a huge hack, make the plugin developer aware of his bug.</p>\n\n<p>Sorry, that's the only thing to do.</p>\n\n<hr>\n\n<p>OK here's a hack, directly after your plugin's execution, use the antrun plugin to move the directory somewhere else:</p>\n\n<pre><code>&lt;plugin&gt;\n    &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;\n    &lt;version&gt;1.6&lt;/version&gt;\n    &lt;executions&gt;\n      &lt;execution&gt;\n        &lt;phase&gt;process-sources&lt;/phase&gt;\n        &lt;configuration&gt;\n          &lt;target&gt;\n            &lt;move todir=\"${project.build.directory}/generated-sources/toolname/com\"\n                  overwrite=\"true\"&gt;\n                &lt;fileset dir=\"${project.build.directory}/generated-sources/com\"/&gt;\n            &lt;/move&gt;\n          &lt;/target&gt;\n        &lt;/configuration&gt;\n        &lt;goals&gt;\n          &lt;goal&gt;run&lt;/goal&gt;\n        &lt;/goals&gt;\n      &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n\n<p>In this example, <code>toolname</code> should be replaced by anything that uniquely identifies the plugin that created the code and <code>com</code> stands for the root of the created packages. If you have multiple package roots, you probably need multiple <code>&lt;move&gt;</code> tasks.</p>\n\n<p>But if the plugin adds the folder as source folder, then you're screwed.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 83010,
+      "reputation" : 28004,
+      "user_id" : 233014,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/XyJIf.jpg?s=256",
+      "display_name" : "Christoffer Hammarstr&#246;m",
+      "link" : "https://stackoverflow.com/users/233014/christoffer-hammarstr%c3%b6m"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1299085195,
+    "creation_date" : 1299085195,
+    "answer_id" : 5170782,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Maybe you can add a step to the generate-sources phase that moves the folder?</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 19015,
+        "reputation" : 17811,
+        "user_id" : 44124,
+        "user_type" : "registered",
+        "accept_rate" : 84,
+        "profile_image" : "https://www.gravatar.com/avatar/abd7e4e758d0d286502543a7b032abcf?s=256&d=identicon&r=PG",
+        "display_name" : "Kannan Ekanath",
+        "link" : "https://stackoverflow.com/users/44124/kannan-ekanath"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1299086778,
+      "post_id" : 5171035,
+      "comment_id" : 5808057,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "This option sounds interesting. I would lose this setting everytime I run &quot;mvn idea:idea&quot;. Is there a way to declare a maven idea plugin with this &quot;workaround&quot;?"
+    }, {
+      "owner" : {
+        "account_id" : 82370,
+        "reputation" : 1487,
+        "user_id" : 231645,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/0a95f5f3fb8e197c9781669dd68f9f97?s=256&d=identicon&r=PG",
+        "display_name" : "NBW",
+        "link" : "https://stackoverflow.com/users/231645/nbw"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1386977755,
+      "post_id" : 5171035,
+      "comment_id" : 30782585,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You can&#39;t add the generated sources folder if it under build because IDEA excludes the build folder."
+    }, {
+      "owner" : {
+        "account_id" : 484452,
+        "reputation" : 22336,
+        "user_id" : 900130,
+        "user_type" : "registered",
+        "accept_rate" : 65,
+        "profile_image" : "https://i.sstatic.net/m5mjk.jpg?s=256",
+        "display_name" : "Zolt&#225;n",
+        "link" : "https://stackoverflow.com/users/900130/zolt%c3%a1n"
+      },
+      "reply_to_user" : {
+        "account_id" : 82370,
+        "reputation" : 1487,
+        "user_id" : 231645,
+        "user_type" : "registered",
+        "accept_rate" : 58,
+        "profile_image" : "https://www.gravatar.com/avatar/0a95f5f3fb8e197c9781669dd68f9f97?s=256&d=identicon&r=PG",
+        "display_name" : "NBW",
+        "link" : "https://stackoverflow.com/users/231645/nbw"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1426509886,
+      "post_id" : 5171035,
+      "comment_id" : 46387601,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@NBW you can&#39;t manually, yes. But if you delete your module and then reimport it, (with this plugin set up), idea recognizes everything correctly."
+    }, {
+      "owner" : {
+        "account_id" : 1291135,
+        "reputation" : 3219,
+        "user_id" : 2587343,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/52874e9b4f06834f233ea323925fd305?s=256&d=identicon&r=PG",
+        "display_name" : "Vlastimil Ovč&#225;č&#237;k",
+        "link" : "https://stackoverflow.com/users/2587343/vlastimil-ov%c4%8d%c3%a1%c4%8d%c3%adk"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1457719561,
+      "post_id" : 5171035,
+      "comment_id" : 59550520,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This should be and usually is automatically done by Idea. Rebuilding project may reset the source status back to the problematic state."
+    }, {
+      "owner" : {
+        "account_id" : 2999741,
+        "reputation" : 1256,
+        "user_id" : 2545439,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4e4857b59b4cdd0243b5cd83c409c097?s=256&d=identicon&r=PG",
+        "display_name" : "Pieter De Bie",
+        "link" : "https://stackoverflow.com/users/2545439/pieter-de-bie"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1512053181,
+      "post_id" : 5171035,
+      "comment_id" : 82109109,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You can also right click any folder and use &quot;mark directory as&quot;"
+    }, {
+      "owner" : {
+        "account_id" : 1681423,
+        "reputation" : 1912,
+        "user_id" : 1545579,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/2dc0bae055929d856d9b2f7665adae5b?s=256&d=identicon&r=PG",
+        "display_name" : "Mahdi",
+        "link" : "https://stackoverflow.com/users/1545579/mahdi"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1526983558,
+      "post_id" : 5171035,
+      "comment_id" : 87943119,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "My problem was some of the files only, and it turns out the files were bigger than what IntelliJ appreciated. I could fix it by increasing that limit like explained here: <a href=\"https://stackoverflow.com/a/23058324/1545579\">stackoverflow.com/a/23058324/1545579</a>"
+    }, {
+      "owner" : {
+        "account_id" : 216152,
+        "reputation" : 9196,
+        "user_id" : 471214,
+        "user_type" : "registered",
+        "accept_rate" : 54,
+        "profile_image" : "https://www.gravatar.com/avatar/b2c0159f79af53c8626707e5ede7111b?s=256&d=identicon&r=PG",
+        "display_name" : "mmdemirbas",
+        "link" : "https://stackoverflow.com/users/471214/mmdemirbas"
+      },
+      "edited" : false,
+      "score" : 6,
+      "creation_date" : 1528275943,
+      "post_id" : 5171035,
+      "comment_id" : 88441244,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Although my pom.xml was contain this snippet, IDEA didn&#39;t see the generated sources. Running <code>mvn idea:idea</code> solved the issue in my case. For records."
+    }, {
+      "owner" : {
+        "account_id" : 5958731,
+        "reputation" : 372,
+        "user_id" : 4684506,
+        "user_type" : "registered",
+        "accept_rate" : 71,
+        "profile_image" : "https://www.gravatar.com/avatar/f7072d1072fd126528e00e7c63a817ce?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Meraj Hussain",
+        "link" : "https://stackoverflow.com/users/4684506/meraj-hussain"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1576666877,
+      "post_id" : 5171035,
+      "comment_id" : 104971228,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "how to do the same with gradle"
+    }, {
+      "owner" : {
+        "account_id" : 9336122,
+        "reputation" : 4115,
+        "user_id" : 6930251,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/bn3QD.jpg?s=256",
+        "display_name" : "illusionx",
+        "link" : "https://stackoverflow.com/users/6930251/illusionx"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1613045495,
+      "post_id" : 5171035,
+      "comment_id" : 116957630,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Solved the problem, For readers out there, go for recent version: 3.2.0"
+    }, {
+      "owner" : {
+        "account_id" : 3001759,
+        "reputation" : 425,
+        "user_id" : 2547119,
+        "user_type" : "registered",
+        "profile_image" : "https://graph.facebook.com/615145625/picture?type=large",
+        "display_name" : "Luis Mauricio",
+        "link" : "https://stackoverflow.com/users/2547119/luis-mauricio"
+      },
+      "reply_to_user" : {
+        "account_id" : 2999741,
+        "reputation" : 1256,
+        "user_id" : 2545439,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4e4857b59b4cdd0243b5cd83c409c097?s=256&d=identicon&r=PG",
+        "display_name" : "Pieter De Bie",
+        "link" : "https://stackoverflow.com/users/2545439/pieter-de-bie"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1620670799,
+      "post_id" : 5171035,
+      "comment_id" : 119264154,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@PieterDeBie do you know any way to automatize this, I have several generated-sources on several projects and can&#39;t be modifying poms and doing &quot;mark as generated sources&quot; manually takes a few hours every time..."
+    }, {
+      "owner" : {
+        "account_id" : 6375303,
+        "reputation" : 328,
+        "user_id" : 7072438,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-2zuoj-zJaEw/AAAAAAAAAAI/AAAAAAAA9FM/CM6ZKBE1_9A/s256-rj/photo.jpg",
+        "display_name" : "Arsalan Siddiqui",
+        "link" : "https://stackoverflow.com/users/7072438/arsalan-siddiqui"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1674832070,
+      "post_id" : 5171035,
+      "comment_id" : 132803347,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Weird things happen if you add a generated source folder as a source for your project. Intellij then tries to compile that class and your project then doesn&#39;t start if that source file is dependent on other source files which you don&#39;t have."
+    }, {
+      "owner" : {
+        "account_id" : 117556,
+        "reputation" : 3900,
+        "user_id" : 307795,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://i.sstatic.net/ARUlC.jpg?s=256",
+        "display_name" : "DaShaun",
+        "link" : "https://stackoverflow.com/users/307795/dashaun"
+      },
+      "reply_to_user" : {
+        "account_id" : 6375303,
+        "reputation" : 328,
+        "user_id" : 7072438,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-2zuoj-zJaEw/AAAAAAAAAAI/AAAAAAAA9FM/CM6ZKBE1_9A/s256-rj/photo.jpg",
+        "display_name" : "Arsalan Siddiqui",
+        "link" : "https://stackoverflow.com/users/7072438/arsalan-siddiqui"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1674880104,
+      "post_id" : 5171035,
+      "comment_id" : 132813244,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@ArsalanSiddiqui How can you compile ANY source files if you don&#39;t have all of the dependencies?"
+    }, {
+      "owner" : {
+        "account_id" : 6375303,
+        "reputation" : 328,
+        "user_id" : 7072438,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-2zuoj-zJaEw/AAAAAAAAAAI/AAAAAAAA9FM/CM6ZKBE1_9A/s256-rj/photo.jpg",
+        "display_name" : "Arsalan Siddiqui",
+        "link" : "https://stackoverflow.com/users/7072438/arsalan-siddiqui"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1678918092,
+      "post_id" : 5171035,
+      "comment_id" : 133628535,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@DaShaun So the only thing missing in this answer is that we do not need to explicitly make the &quot;generated-sources&quot; folder as a &quot;source&quot; folder. Intellij will automatically detect it and compile using all the code in it."
+    }, {
+      "owner" : {
+        "account_id" : 139494,
+        "reputation" : 944,
+        "user_id" : 345130,
+        "user_type" : "registered",
+        "accept_rate" : 40,
+        "profile_image" : "https://www.gravatar.com/avatar/a4ae113cedee9ecc4485cb0291abc4c6?s=256&d=identicon&r=PG",
+        "display_name" : "ILya Cyclone",
+        "link" : "https://stackoverflow.com/users/345130/ilya-cyclone"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1679091621,
+      "post_id" : 5171035,
+      "comment_id" : 133665331,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@DaShaun Why not do this with maven-compiler-plugin? pom.xml: <code>plugin&gt;maven-compiler-plugin&gt;configuration&gt;generatedSourcesD&zwnj;&#8203;irectory&gt;${project.b&zwnj;&#8203;uild.directory}&#47;gene&zwnj;&#8203;rated-sources</code>"
+    } ],
+    "owner" : {
+      "account_id" : 117556,
+      "reputation" : 3900,
+      "user_id" : 307795,
+      "user_type" : "registered",
+      "accept_rate" : 43,
+      "profile_image" : "https://i.sstatic.net/ARUlC.jpg?s=256",
+      "display_name" : "DaShaun",
+      "link" : "https://stackoverflow.com/users/307795/dashaun"
+    },
+    "is_accepted" : true,
+    "score" : 206,
+    "last_activity_date" : 1431413911,
+    "last_edit_date" : 1431413911,
+    "creation_date" : 1299086415,
+    "answer_id" : 5171035,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can just change the project structure to add that folder as a \"source\" directory.</p>\n\n<p><em>Project Structure → Modules →</em> Click the <code>generated-sources</code> folder and make it a <code>sources</code> folder.</p>\n\n<p>Or:</p>\n\n<pre><code>&lt;plugin&gt;\n    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n    &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;\n    &lt;version&gt;1.4&lt;/version&gt;\n    &lt;executions&gt;\n        &lt;execution&gt;\n            &lt;id&gt;test&lt;/id&gt;\n            &lt;phase&gt;generate-sources&lt;/phase&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;add-source&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n                &lt;sources&gt;\n                    &lt;source&gt;${basedir}/target/generated-sources&lt;/source&gt;\n                &lt;/sources&gt;\n            &lt;/configuration&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1828043,
+        "reputation" : 1928,
+        "user_id" : 1660256,
+        "user_type" : "registered",
+        "accept_rate" : 79,
+        "profile_image" : "https://www.gravatar.com/avatar/d9f494e4085cae4437571682c1963d79?s=256&d=identicon&r=PG",
+        "display_name" : "aatuc210",
+        "link" : "https://stackoverflow.com/users/1660256/aatuc210"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1464707760,
+      "post_id" : 35947085,
+      "comment_id" : 62587618,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This fix is the only one that&#39;s worked for me in DAYS of looking. Thanks!"
+    }, {
+      "owner" : {
+        "account_id" : 2999741,
+        "reputation" : 1256,
+        "user_id" : 2545439,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4e4857b59b4cdd0243b5cd83c409c097?s=256&d=identicon&r=PG",
+        "display_name" : "Pieter De Bie",
+        "link" : "https://stackoverflow.com/users/2545439/pieter-de-bie"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1481094239,
+      "post_id" : 35947085,
+      "comment_id" : 69230118,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Oh thanks, I just updated intellij and they&#39;ve changed their icons. I didn&#39;t thought that the orange folder would mean that it&#39;s not a source."
+    }, {
+      "owner" : {
+        "account_id" : 2477626,
+        "reputation" : 1171,
+        "user_id" : 2157911,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/7a87a45d8791d0a331d8cb89dca20c21?s=256&d=identicon&r=PG",
+        "display_name" : "Piotr Tempes",
+        "link" : "https://stackoverflow.com/users/2157911/piotr-tempes"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1486725559,
+      "post_id" : 35947085,
+      "comment_id" : 71481367,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "half a day I have been looking for this. Worked for me with antlr4. Thanks!"
+    }, {
+      "owner" : {
+        "account_id" : 2451938,
+        "reputation" : 20723,
+        "user_id" : 2137996,
+        "user_type" : "registered",
+        "accept_rate" : 77,
+        "profile_image" : "https://i.sstatic.net/dYdyn.jpg?s=256",
+        "display_name" : "Alex Reinking",
+        "link" : "https://stackoverflow.com/users/2137996/alex-reinking"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1552423533,
+      "post_id" : 35947085,
+      "comment_id" : 97002318,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "For ANTLR &gt;=4.5.3 (maybe earlier, too), as long as my grammar was located in <code>src&#47;main&#47;antlr4&#47;&lt;path-to-package&gt;&#47;</code>, then it would appear in <code>target&#47;generated-sources&#47;antlr4&#47;&lt;path-to-package&gt;</code>. IntelliJ automatically marked the correct directory as a sources root and no package prefix was necessary. I suspect this fix is needed when people place their grammars directly in <code>src&#47;main&#47;antlr4</code>, which is often recommended for some reason."
+    } ],
+    "owner" : {
+      "account_id" : 1291135,
+      "reputation" : 3219,
+      "user_id" : 2587343,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/52874e9b4f06834f233ea323925fd305?s=256&d=identicon&r=PG",
+      "display_name" : "Vlastimil Ovč&#225;č&#237;k",
+      "link" : "https://stackoverflow.com/users/2587343/vlastimil-ov%c4%8d%c3%a1%c4%8d%c3%adk"
+    },
+    "is_accepted" : false,
+    "score" : 23,
+    "last_activity_date" : 1457719871,
+    "last_edit_date" : 1592644375,
+    "creation_date" : 1457719871,
+    "answer_id" : 35947085,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h3>The fix</h3>\n<p>Go to <em>Project Structure</em> - <em>Modules</em> - <em>Source Folders</em> and find the <code>target/generated-sources/antlr4/com/mycompany</code> - click <em>Edit properties</em> and set <em>Package prefix</em> to <code>com.mycompany</code>.</p>\n<p>This is exactly the reason why we can set <em>Package prefix</em> on source dirs.</p>\n<hr />\n<p><em>Different but related problem <a href=\"https://stackoverflow.com/a/35946928/2587343\">here</a></em></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 114381,
+        "reputation" : 17604,
+        "user_id" : 300807,
+        "user_type" : "registered",
+        "accept_rate" : 89,
+        "profile_image" : "https://i.sstatic.net/WxsTX.jpg?s=256",
+        "display_name" : "Chris Cooper",
+        "link" : "https://stackoverflow.com/users/300807/chris-cooper"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1485383561,
+      "post_id" : 40890492,
+      "comment_id" : 70909567,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This worked for me for both IntelliJ&#39;s project import and <code>gradle idea</code>. Thanks! :)"
+    }, {
+      "owner" : {
+        "account_id" : 9346423,
+        "reputation" : 1560,
+        "user_id" : 6937584,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/nNHLD.png?s=256",
+        "display_name" : "cdalxndr",
+        "link" : "https://stackoverflow.com/users/6937584/cdalxndr"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1623102385,
+      "post_id" : 40890492,
+      "comment_id" : 119978913,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This only works if I don&#39;t use <code>annotationProcessor</code> in my dependencies."
+    } ],
+    "owner" : {
+      "account_id" : 2661162,
+      "reputation" : 1060,
+      "user_id" : 2300810,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://www.gravatar.com/avatar/ffb1bf99983af1b449d0bffcc96facfa?s=256&d=identicon&r=PG",
+      "display_name" : "zhywu",
+      "link" : "https://stackoverflow.com/users/2300810/zhywu"
+    },
+    "is_accepted" : false,
+    "score" : 33,
+    "last_activity_date" : 1480514908,
+    "creation_date" : 1480514908,
+    "answer_id" : 40890492,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>With gradle, the project settings will be cleared whenever you refresh the gradle settings. Instead you need to add the following lines (or similar) in your build.gradle, I'm using kotlin so:</p>\n\n<pre><code>sourceSets {\n    main {\n        java {\n            srcDir \"${buildDir.absolutePath}/generated/source/kapt/main\"\n        }\n    }\n}\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 446961,
+        "reputation" : 2586,
+        "user_id" : 840315,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://www.gravatar.com/avatar/10d561d2efd1c02da819a731485749e4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "szab.kel",
+        "link" : "https://stackoverflow.com/users/840315/szab-kel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1524032012,
+      "post_id" : 46812593,
+      "comment_id" : 86800263,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Works without messing up the folder structure yourself!"
+    }, {
+      "owner" : {
+        "account_id" : 467130,
+        "reputation" : 440,
+        "user_id" : 872290,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/50e953555c51d64c8f79eef4e7224721?s=256&d=identicon&r=PG",
+        "display_name" : "stusrob",
+        "link" : "https://stackoverflow.com/users/872290/stusrob"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1555059617,
+      "post_id" : 46812593,
+      "comment_id" : 97984994,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "This answer deserves to be higher - much more convenient than the accepted answer"
+    }, {
+      "owner" : {
+        "account_id" : 1161198,
+        "reputation" : 1761,
+        "user_id" : 1140659,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/3ee3d1f46b24f01133940bb5e5f9f17e?s=256&d=identicon&r=PG",
+        "display_name" : "Roeland Van Heddegem",
+        "link" : "https://stackoverflow.com/users/1140659/roeland-van-heddegem"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1556520570,
+      "post_id" : 46812593,
+      "comment_id" : 98452601,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Notice that in the latest version of Intellij 2019.1, you can click the second button in the maven menu (on the right, expand the maven sidebar, on the top, second button)"
+    }, {
+      "owner" : {
+        "account_id" : 1988712,
+        "reputation" : 923,
+        "user_id" : 1783283,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/tghNe.jpg?s=256",
+        "display_name" : "Jonathan",
+        "link" : "https://stackoverflow.com/users/1783283/jonathan"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582735799,
+      "post_id" : 46812593,
+      "comment_id" : 106882677,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I also had to check my maven settings.xml that was pointing to the wrong not default repo"
+    }, {
+      "owner" : {
+        "account_id" : 11766240,
+        "reputation" : 588,
+        "user_id" : 14056755,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/a1b4q.jpg?s=256",
+        "display_name" : "Marcin Rzepecki",
+        "link" : "https://stackoverflow.com/users/14056755/marcin-rzepecki"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1607601110,
+      "post_id" : 46812593,
+      "comment_id" : 115326881,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Works like charm!"
+    }, {
+      "owner" : {
+        "account_id" : 4873106,
+        "reputation" : 146,
+        "user_id" : 3928975,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b7bfbc5e1bb9bce154d949100926fd8f?s=256&d=identicon&r=PG",
+        "display_name" : "ThomasCh",
+        "link" : "https://stackoverflow.com/users/3928975/thomasch"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1629970698,
+      "post_id" : 46812593,
+      "comment_id" : 121830186,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "The word &quot;automatically&quot; imply that Intellj do it without user interaction. This isn&#39;t true. There is always the need to click the &quot;Generate Sources And Update Folders&quot; button each time IntelliJ decide to wipe the sources or/and resources. Wiping them work automatically, but reimporting the project not. This behavior is really annoying."
+    } ],
+    "owner" : {
+      "account_id" : 6356329,
+      "reputation" : 3932,
+      "user_id" : 4933464,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/6t1yV.png?s=256",
+      "display_name" : "Mehmet Hanoğlu",
+      "link" : "https://stackoverflow.com/users/4933464/mehmet-hano%c4%9flu"
+    },
+    "is_accepted" : false,
+    "score" : 348,
+    "last_activity_date" : 1715840614,
+    "last_edit_date" : 1715840614,
+    "creation_date" : 1508336909,
+    "answer_id" : 46812593,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I'm using Maven (Spring Boot application). Solution is:</p>\n<ol>\n<li>Right click project folder</li>\n<li>Select <strong>Maven</strong></li>\n<li>Select <strong>Generate Sources And Update Folders</strong></li>\n</ol>\n<p>Then, IntelliJ automatically imports generated sources to project.</p>\n"
+  }, {
+    "owner" : {
+      "user_type" : "does_not_exist",
+      "display_name" : "user9934722"
+    },
+    "is_accepted" : false,
+    "score" : 3,
+    "last_activity_date" : 1546530160,
+    "last_edit_date" : 1546530160,
+    "creation_date" : 1532427752,
+    "answer_id" : 51496198,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I had the same issue with Eclipse a couple of months ago when importing my project. Now I had the same with intelliJ.\nHere is how someone helped me to solve this in IntelliJ:</p>\n\n<p>Menu => View => Tools windows => Maven Project\nIn the spring_user value  => Run Configuration, choose clean install.\nThis should do a clean install and after this you should be able to see the classes\n<a href=\"https://i.sstatic.net/enQqf.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/enQqf.png\" alt=\"enter image description here\"></a></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1015589,
+        "reputation" : 1874,
+        "user_id" : 2746335,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://i.sstatic.net/JAa2j.jpg?s=256",
+        "display_name" : "caduceus",
+        "link" : "https://stackoverflow.com/users/2746335/caduceus"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1677494857,
+      "post_id" : 59963483,
+      "comment_id" : 133342091,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "solution doesn&#39;t last"
+    }, {
+      "owner" : {
+        "account_id" : 31094,
+        "reputation" : 1390,
+        "user_id" : 85155,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://www.gravatar.com/avatar/945d11f3b6b15cabf8c59732126af4fb?s=256&d=identicon&r=PG",
+        "display_name" : "user85155",
+        "link" : "https://stackoverflow.com/users/85155/user85155"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1704197694,
+      "post_id" : 59963483,
+      "comment_id" : 137062735,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "for me that worked, together with the build-helper"
+    }, {
+      "owner" : {
+        "account_id" : 1497191,
+        "reputation" : 10223,
+        "user_id" : 1402846,
+        "user_type" : "registered",
+        "accept_rate" : 90,
+        "profile_image" : "https://i.sstatic.net/z5AzI.png?s=256",
+        "display_name" : "Pang",
+        "link" : "https://stackoverflow.com/users/1402846/pang"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1715842391,
+      "post_id" : 59963483,
+      "comment_id" : 138371499,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I fixed it like this: 1. Close IDEA. 2. Backup <code>.idea</code> folder. 3. Reopen project in IDEA and wait until it finished loading. 4. Close IDEA. 5. Restore original <code>.idea</code> folder. 6. Reopen project in IDEA. \uD83E\uDD37‍♀️"
+    } ],
+    "owner" : {
+      "account_id" : 1988712,
+      "reputation" : 923,
+      "user_id" : 1783283,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/tghNe.jpg?s=256",
+      "display_name" : "Jonathan",
+      "link" : "https://stackoverflow.com/users/1783283/jonathan"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1715842202,
+    "last_edit_date" : 1715842202,
+    "creation_date" : 1580288057,
+    "answer_id" : 59963483,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The only working condition, after several attempts, was to remove the hidden .idea folder from the root project folder and re-import it from IntelliJ.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10097463,
+      "reputation" : 151,
+      "user_id" : 7462392,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/ca64390816e322d3dd9557735934779c?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "J.P",
+      "link" : "https://stackoverflow.com/users/7462392/j-p"
+    },
+    "is_accepted" : false,
+    "score" : 10,
+    "last_activity_date" : 1582186910,
+    "creation_date" : 1582186910,
+    "answer_id" : 60315582,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Solved it by removing the \"Excluded\" in the module setting (right click on project, \"Open module settings\").\n<a href=\"https://i.sstatic.net/VPNmP.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/VPNmP.png\" alt=\"enter image description here\"></a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 19602091,
+      "reputation" : 1,
+      "user_id" : 14346659,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/334907e97ad74ad257a5b75b6b5192f3?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "anupam",
+      "link" : "https://stackoverflow.com/users/14346659/anupam"
+    },
+    "is_accepted" : false,
+    "score" : -1,
+    "last_activity_date" : 1601149078,
+    "creation_date" : 1601149078,
+    "answer_id" : 64081805,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I wanted to update at the comment earlier made by <a href=\"https://stackoverflow.com/users/307795/dashaun\">DaShaun</a>, but as it is my first time commenting, application didn't allow me.</p>\n<p>Nonetheless, I am using eclipse and after I added the below mention code snippet to my pom.xml as suggested by Dashun and I ran the mvn clean package to generate the avro source files, but I was still getting compilation error in the workspace.</p>\n<p>I right clicked on project_name -&gt; maven -&gt; update project and updated the project, which added the target/generated-sources as a source folder to my eclipse project.</p>\n<pre><code>&lt;plugin&gt;\n    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;\n    &lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;\n    &lt;version&gt;1.4&lt;/version&gt;\n    &lt;executions&gt;\n        &lt;execution&gt;\n            &lt;id&gt;test&lt;/id&gt;\n            &lt;phase&gt;generate-sources&lt;/phase&gt;\n            &lt;goals&gt;\n                &lt;goal&gt;add-source&lt;/goal&gt;\n            &lt;/goals&gt;\n            &lt;configuration&gt;\n                &lt;sources&gt;\n                    &lt;source&gt;${basedir}/target/generated-sources&lt;/source&gt;\n                &lt;/sources&gt;\n            &lt;/configuration&gt;\n        &lt;/execution&gt;\n    &lt;/executions&gt;\n&lt;/plugin&gt;\n</code></pre>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 303463,
+        "reputation" : 2234,
+        "user_id" : 612418,
+        "user_type" : "registered",
+        "accept_rate" : 41,
+        "profile_image" : "https://www.gravatar.com/avatar/01147154dd2da0238920c2a2d7f3e6c3?s=256&d=identicon&r=PG",
+        "display_name" : "Kai",
+        "link" : "https://stackoverflow.com/users/612418/kai"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1618457521,
+      "post_id" : 65036498,
+      "comment_id" : 118608662,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "that is not a very persistent way of doing it."
+    } ],
+    "owner" : {
+      "account_id" : 4852867,
+      "reputation" : 1029,
+      "user_id" : 3914720,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/906dbc257cc9f8bc69493102d7e7cb8b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Preeti Joshi",
+      "link" : "https://stackoverflow.com/users/3914720/preeti-joshi"
+    },
+    "is_accepted" : false,
+    "score" : 4,
+    "last_activity_date" : 1606476042,
+    "creation_date" : 1606476042,
+    "answer_id" : 65036498,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>i ran mvn generate-resources and then marked the /target/generated-resources folder as &quot;sources&quot; (Project Structure -&gt; Project Settings -&gt; Modules -&gt; Select /target/generated-resources -&gt; Click on blue &quot;Sources&quot; icon.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 13228129,
+      "reputation" : 219,
+      "user_id" : 9552662,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a8cbd2460a4547473a858a4cdeb26ec5?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "SebastianX",
+      "link" : "https://stackoverflow.com/users/9552662/sebastianx"
+    },
+    "is_accepted" : false,
+    "score" : 9,
+    "last_activity_date" : 1622206126,
+    "creation_date" : 1622206126,
+    "answer_id" : 67739160,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>For someone still struggle to fix the generated source not picking up by IntelliJ,</p>\n<p>One reason could be the generated file size too big for it to load, then you need to put following line into your &quot;custom IntelliJ IDEA properties&quot; (under menu help)</p>\n<pre><code>idea.max.intellisense.filesize=7500\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 18538382,
+      "reputation" : 185,
+      "user_id" : 13507504,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/mkiC8.jpg?s=256",
+      "display_name" : "ahmetyavuzoruc",
+      "link" : "https://stackoverflow.com/users/13507504/ahmetyavuzoruc"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1656423089,
+    "creation_date" : 1656423089,
+    "answer_id" : 72787358,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p><a href=\"https://i.sstatic.net/axrOc.png\" rel=\"nofollow noreferrer\"><img src=\"https://i.sstatic.net/axrOc.png\" alt=\"Automatically mark directory as a generated source  \" /></a>\nWhen you run mvn clean install, if you want to mark directory as a generated sources you can use this solution</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 5788522,
+        "reputation" : 135,
+        "user_id" : 4566875,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://lh3.googleusercontent.com/-E0AkaFrt2sU/AAAAAAAAAAI/AAAAAAAAADQ/cLGJfvdgu0k/s256-rj/photo.jpg",
+        "display_name" : "Fullstack",
+        "link" : "https://stackoverflow.com/users/4566875/fullstack"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1673708573,
+      "post_id" : 72825653,
+      "comment_id" : 132560487,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Which directory? (to click)"
+    }, {
+      "owner" : {
+        "account_id" : 6375303,
+        "reputation" : 328,
+        "user_id" : 7072438,
+        "user_type" : "registered",
+        "profile_image" : "https://lh5.googleusercontent.com/-2zuoj-zJaEw/AAAAAAAAAAI/AAAAAAAA9FM/CM6ZKBE1_9A/s256-rj/photo.jpg",
+        "display_name" : "Arsalan Siddiqui",
+        "link" : "https://stackoverflow.com/users/7072438/arsalan-siddiqui"
+      },
+      "reply_to_user" : {
+        "account_id" : 5788522,
+        "reputation" : 135,
+        "user_id" : 4566875,
+        "user_type" : "registered",
+        "accept_rate" : 29,
+        "profile_image" : "https://lh3.googleusercontent.com/-E0AkaFrt2sU/AAAAAAAAAAI/AAAAAAAAADQ/cLGJfvdgu0k/s256-rj/photo.jpg",
+        "display_name" : "Fullstack",
+        "link" : "https://stackoverflow.com/users/4566875/fullstack"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1674832221,
+      "post_id" : 72825653,
+      "comment_id" : 132803395,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@Fullstack Once you have a generated source folder, right click on it and then select &quot;Mark Directory As&quot; --&gt; &quot;Generated Sources Root&quot;. This solution worked for me."
+    }, {
+      "owner" : {
+        "account_id" : 1987376,
+        "reputation" : 136,
+        "user_id" : 1782228,
+        "user_type" : "registered",
+        "accept_rate" : 33,
+        "profile_image" : "https://www.gravatar.com/avatar/0f1b18c022eb4395f8269a1937803a80?s=256&d=identicon&r=PG",
+        "display_name" : "Immelstorn",
+        "link" : "https://stackoverflow.com/users/1782228/immelstorn"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1729664947,
+      "post_id" : 72825653,
+      "comment_id" : 139505985,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "omg, this! Thanks!"
+    } ],
+    "owner" : {
+      "account_id" : 1496451,
+      "reputation" : 1838,
+      "user_id" : 1402270,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://i.sstatic.net/8tYAW.jpg?s=256",
+      "display_name" : "Devender Goyal",
+      "link" : "https://stackoverflow.com/users/1402270/devender-goyal"
+    },
+    "is_accepted" : false,
+    "score" : 35,
+    "last_activity_date" : 1715840558,
+    "last_edit_date" : 1715840558,
+    "creation_date" : 1656659951,
+    "answer_id" : 72825653,
+    "question_id" : 5170620,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>It's very simple.</p>\n<p>Just right click on the directory and mark it as generated sources root. See the below screenshot.</p>\n<p><a href=\"https://i.sstatic.net/8DZob.png\" rel=\"noreferrer\"><img src=\"https://i.sstatic.net/8DZob.png\" alt=\"enter image description here\" /></a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 19015,
+    "reputation" : 17811,
+    "user_id" : 44124,
+    "user_type" : "registered",
+    "accept_rate" : 84,
+    "profile_image" : "https://www.gravatar.com/avatar/abd7e4e758d0d286502543a7b032abcf?s=256&d=identicon&r=PG",
+    "display_name" : "Kannan Ekanath",
+    "link" : "https://stackoverflow.com/users/44124/kannan-ekanath"
+  },
+  "is_answered" : true,
+  "view_count" : 233113,
+  "accepted_answer_id" : 5171035,
+  "answer_count" : 14,
+  "score" : 173,
+  "last_activity_date" : 1715842202,
+  "creation_date" : 1299084366,
+  "last_edit_date" : 1495540483,
+  "question_id" : 5170620,
+  "link" : "https://stackoverflow.com/questions/5170620/unable-to-use-intellij-with-a-generated-sources-folder",
+  "title" : "Unable to use Intellij with a generated sources folder",
+  "body" : "<p>Related question\n<a href=\"https://stackoverflow.com/questions/2644609/how-to-configure-intellij-idea-and-or-maven-to-automatically-add-directories-with\">How to configure IntelliJ IDEA and/or Maven to automatically add directories with Java source code generated using jaxb2-maven-plugin?</a></p>\n\n<p>I have a custom plugin that generates sources under <code>target/generated-sources</code> (Note no toolname here). So I get sources like <code>target/generated-sources/com/mycompany</code>...etc.</p>\n\n<p>This format cannot be changed at all, so will I be able to configure Intellij into adding it as a source folder. As of now, I can see that Intellij has added <code>target/generated-sources/com</code> as the source folder.</p>\n\n<p>Please note that I do not have the option of configuring the plugin !</p>\n\n<p><strong>UPDATE 1</strong>: I do not agree with the fact that I MUST put my generated sources under a tool name folder. It may be a good convention, but if I have only one generator there is no need for me to put it there? Again, in my pom.xml I have a <code>resources</code> section which clearly indicates that <code>target/generated-sources</code> should be treated as a source folder. This works perfectly fine in Eclipse so I have no idea why Intellij would not respect my settings. </p>\n\n<p>TL;DR -> When I put <code>target/generated-sources</code> in the resource section of <code>pom.xml</code> why is Intellij overzealous to add <code>target/generated-sources/com</code> to the classpath?</p>\n"
+}

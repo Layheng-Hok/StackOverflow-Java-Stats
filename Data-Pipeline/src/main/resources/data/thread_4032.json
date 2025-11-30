@@ -1,0 +1,134 @@
+{
+  "tags" : [ "java", "csv", "annotations", "javabeans", "opencsv" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3540948,
+      "reputation" : 5957,
+      "user_id" : 2958086,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/5iJz9.png?s=256",
+      "display_name" : "Compass",
+      "link" : "https://stackoverflow.com/users/2958086/compass"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1472097230,
+    "post_id" : 39136431,
+    "comment_id" : 65617690,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Failing as in, an exception? Or failing as in not working as expected."
+  }, {
+    "owner" : {
+      "account_id" : 4072209,
+      "reputation" : 12837,
+      "user_id" : 3344829,
+      "user_type" : "registered",
+      "accept_rate" : 67,
+      "profile_image" : "https://www.gravatar.com/avatar/d1a55010c301a283b7eb5246ef1b91ae?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Saravana",
+      "link" : "https://stackoverflow.com/users/3344829/saravana"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1472100329,
+    "post_id" : 39136431,
+    "comment_id" : 65618394,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "have you ignored the header? it seems error on line 1 i.e. header"
+  }, {
+    "owner" : {
+      "account_id" : 190518,
+      "reputation" : 490,
+      "user_id" : 430542,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://www.gravatar.com/avatar/392474565ea5fb7b87346c58089ea1f3?s=256&d=identicon&r=PG",
+      "display_name" : "rray",
+      "link" : "https://stackoverflow.com/users/430542/rray"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1472123304,
+    "post_id" : 39136431,
+    "comment_id" : 65631281,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Thank you for your suggestion.  When I skip line one, the mapper cannot find the bean field based upon column.  What happens is the JavaBean is created but none of the fields are populated."
+  }, {
+    "owner" : {
+      "account_id" : 190518,
+      "reputation" : 490,
+      "user_id" : 430542,
+      "user_type" : "registered",
+      "accept_rate" : 55,
+      "profile_image" : "https://www.gravatar.com/avatar/392474565ea5fb7b87346c58089ea1f3?s=256&d=identicon&r=PG",
+      "display_name" : "rray",
+      "link" : "https://stackoverflow.com/users/430542/rray"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1472214584,
+    "post_id" : 39136431,
+    "comment_id" : 65674937,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Okay, I have walked through the code several times.  What I have discovered is the AbstractConverter class is not handling the &quot;&quot; String properly when it attempts to convert to a java.util.Date.  The useDefault variable is set to false.  The defaultValue equals null.  The handleMissing method is throwing a ConversionException."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 190518,
+        "reputation" : 490,
+        "user_id" : 430542,
+        "user_type" : "registered",
+        "accept_rate" : 55,
+        "profile_image" : "https://www.gravatar.com/avatar/392474565ea5fb7b87346c58089ea1f3?s=256&d=identicon&r=PG",
+        "display_name" : "rray",
+        "link" : "https://stackoverflow.com/users/430542/rray"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1472416060,
+      "post_id" : 39194509,
+      "comment_id" : 65731464,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Scott, Thank you for your suggestions.  I downloaded the source code and tried them both.  It did not work. :-(  It is still failing on the same data point for the same reason."
+    } ],
+    "owner" : {
+      "account_id" : 4836940,
+      "reputation" : 1083,
+      "user_id" : 3903279,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/0534dacbba1fad177a30171caafe470e?s=256&d=identicon&r=PG",
+      "display_name" : "Scott Conway",
+      "link" : "https://stackoverflow.com/users/3903279/scott-conway"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1472409045,
+    "creation_date" : 1472409045,
+    "answer_id" : 39194509,
+    "question_id" : 39136431,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>We identified the issue you are seeing as an issue in the opencsv code.  A contributor is in the process of rewriting the date handling code the 3.9 release so we will make sure that the code fixes your issue.  </p>\n\n<p>We have not set a date for the 3.9 release so if you need something immediately and you have or can build the code yourself go to the BeanFieldDate class and in the convert method and replace:</p>\n\n<pre><code>    if (required &amp;&amp; StringUtils.isEmpty(value)) {\n        throw new CsvRequiredFieldEmptyException();\n    }\n</code></pre>\n\n<p>with something like</p>\n\n<pre><code>    if (required &amp;&amp; StringUtils.isEmpty(value)) {\n        if (required) {\n            throw new CsvRequiredFieldEmptyException();\n        } else {\n            return null;   // or maybe empty string\n        }\n    }\n</code></pre>\n\n<p>and see if that would help.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 190518,
+    "reputation" : 490,
+    "user_id" : 430542,
+    "user_type" : "registered",
+    "accept_rate" : 55,
+    "profile_image" : "https://www.gravatar.com/avatar/392474565ea5fb7b87346c58089ea1f3?s=256&d=identicon&r=PG",
+    "display_name" : "rray",
+    "link" : "https://stackoverflow.com/users/430542/rray"
+  },
+  "is_answered" : false,
+  "view_count" : 9574,
+  "answer_count" : 1,
+  "score" : 2,
+  "last_activity_date" : 1761098650,
+  "creation_date" : 1472097163,
+  "last_edit_date" : 1472097592,
+  "question_id" : 39136431,
+  "link" : "https://stackoverflow.com/questions/39136431/opencsv-not-mapping-javabeans-with-annotations",
+  "title" : "OpenCSV not mapping JavaBeans with annotations",
+  "body" : "<p>I am using version 3.8 of OpenCSV library.  I am using annotation to map the bean fields to the columns in the CSV file.  I have it working to a point.  It is failing when a date field is blank.  </p>\n\n<pre><code>java.lang.RuntimeException: Error parsing CSV line: 1 \nat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\nat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\nat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\nat java.lang.reflect.Method.invoke(Method.java:483)\nat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)\nat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\nat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)\nat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\nat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)\nat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)\nat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)\nat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\nat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\nat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\nat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\nat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\nat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\nat org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)\nat org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)\nat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)\nat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)\nat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)\nat org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)\n\n **Caused by: com.opencsv.exceptions.CsvDataTypeMismatchException**\nat com.opencsv.bean.BeanFieldDate.convertLocaleInspecific(BeanFieldDate.java:216)\nat com.opencsv.bean.BeanFieldDate.convert(BeanFieldDate.java:242)\nat com.opencsv.bean.AbstractBeanField.setFieldValue(AbstractBeanField.java:70)\nat com.opencsv.bean.CsvToBean.processField(CsvToBean.java:245)\nat com.opencsv.bean.CsvToBean.processLine(CsvToBean.java:220)\nat com.opencsv.bean.CsvToBean.processLine(CsvToBean.java:189)\nat com.opencsv.bean.CsvToBean.parse(CsvToBean.java:166)\n... 26 more\n**Caused by: org.apache.commons.beanutils.ConversionException: No value specified for 'Date'\nat** org.apache.commons.beanutils.converters.AbstractConverter.handleMissing(AbstractConverter.java:327)\nat org.apache.commons.beanutils.converters.DateTimeConverter.convertToType(DateTimeConverter.java:327)\nat org.apache.commons.beanutils.converters.AbstractConverter.convert(AbstractConverter.java:169)\nat com.opencsv.bean.BeanFieldDate.convertLocaleInspecific(BeanFieldDate.java:214)\n... 32 more\n</code></pre>\n\n<p>The annotation for the specific bean field as \"required=false\" but it still does not work. Here is the JavaBean annotation where I am using the Java.Util.Date class:</p>\n\n<pre><code>@CsvBindByName(column=\"Sent On\", required=true)\n@CsvDate(value=\"MM/dd/yyyy HH:mm:ss a z\")\nprivate Date sentOn;\n\n@CsvBindByName(column=\"Last Activity\", required=false)\n@CsvDate(value=\"MM/dd/yyyy HH:mm:ss a z\")\nprivate Date lastActivity;\n\n@CsvBindByName(column=\"Completed On\", required=false)\n@CsvDate(value=\"MM/dd/yyyy HH:mm:ss a z\")\nprivate Date completedOn; \n</code></pre>\n\n<p>This is how I have created the CSV reader and parser:</p>\n\n<pre><code>    final char QUOTE_CHARACTER = '\"';\n    ClassLoader classLoader = getClass().getClassLoader();\n    File newFile = new File(classLoader.getResource(fileName).getFile());\n    CSVReader reader2 = null;\n\n    FileReader fileReader2 = null;\n\n    List&lt;My_Data&gt; myList = null;\n\n     try {\n\n        HeaderColumnNameMappingStrategy&lt;My_Data&gt; strat = new HeaderColumnNameMappingStrategy&lt;My_Data&gt;();\n        strat.setType(My_Data.class);\n\n        CsvToBean&lt;My_Data&gt; csv = new CsvToBean&lt;&gt;();\n\n        final CSVParser csvParser = new CSVParserBuilder().withSeparator(delimiter)\n                                                          .withQuoteChar(QUOTE_CHARACTER)\n                                                          .withStrictQuotes(true)\n                                                          .build();\n\n        fileReader2 = new FileReader(newFile);\n\n        reader2 = new CSVReaderBuilder(fileReader2).withCSVParser(csvParser)\n                                                   .withVerifyReader(true)\n                                                   .withKeepCarriageReturn(false)\n                                                   .build();\n\n\n         myList = csv.parse(strat, reader2);\n</code></pre>\n\n<p>Here is CSV file data:</p>\n\n<pre><code>\"Subject\",\"Status\",\"Sender Name\",\"Recipient\",\"Sent On\",\"Last Activity\",\"Completed On\",\"Completion Time (DD:HH:MM)\",\"Created Date\",\"Declined Date\",\"Document ID\",\"Reason for Declining\",\"Expiration Date\",\"Date Signed\"\n\"MyCompany: Plan RCP Endorsements Select Bundle\",\"Sent\",\"ENV_PROD\",\"SANDRA BULLOCK\",\"7/21/2016 10:49:38 AM EST\",\"7/21/2016 10:49:38 AM EST\",\"\",\"\",\"7/21/2016 10:49:37 AM EST\",\"\",\"e05e53d8-e8bd-469e-a774-c0dec98481b2\",\"\",\"9/4/2016 10:49:38 AM EST\",\"\"\n</code></pre>\n\n<p>How I discovered this fault is walking through the source code.  I am hoping others have face a similar issue and can give me a suggestion on how to get around this issue.  I like this mapping approach as it saves me time and effort. The process is working by just reading the file into a List.  The problem with this approach is I would have to write the factory process for the JavaBeans. </p>\n\n<p>Suggestions are welcomed. </p>\n\n<p>Thanks,</p>\n\n<p>Russ</p>\n"
+}

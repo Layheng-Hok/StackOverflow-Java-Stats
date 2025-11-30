@@ -1,0 +1,117 @@
+{
+  "tags" : [ "java", "spring", "aop" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1024835,
+      "reputation" : 146,
+      "user_id" : 1034385,
+      "user_type" : "registered",
+      "accept_rate" : 12,
+      "profile_image" : "https://www.gravatar.com/avatar/9f6a059a8f67f1d6b81eed4b0be602cb?s=256&d=identicon&r=PG",
+      "display_name" : "Alvin",
+      "link" : "https://stackoverflow.com/users/1034385/alvin"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1340603981,
+    "post_id" : 11184104,
+    "comment_id" : 14676583,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Everytime I debug the code, it skip the AOP part goes directly to getOrg();"
+  }, {
+    "owner" : {
+      "account_id" : 362538,
+      "reputation" : 22728,
+      "user_id" : 705773,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://i.sstatic.net/aMoQ5.jpg?s=256",
+      "display_name" : "Ajinkya",
+      "link" : "https://stackoverflow.com/users/705773/ajinkya"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1340607148,
+    "post_id" : 11184104,
+    "comment_id" : 14677356,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "have you added <code>OrgManagerSynchronizer</code> in <code>component:scan</code> ?"
+  }, {
+    "owner" : {
+      "account_id" : 5707824,
+      "reputation" : 785,
+      "user_id" : 4510763,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/a59b17f872a0d0c6218ec13e4b573d7a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ben Cheng",
+      "link" : "https://stackoverflow.com/users/4510763/ben-cheng"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1511084611,
+    "post_id" : 11184104,
+    "comment_id" : 81703296,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Could you post your xml config? Please check OrgManagerImpl  is whether a Spring bean."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 1964600,
+      "reputation" : 1016,
+      "user_id" : 1765193,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/24c8570d2e9b72c653ac1a97ec02f383?s=256&d=identicon&r=PG",
+      "display_name" : "Ravi K",
+      "link" : "https://stackoverflow.com/users/1765193/ravi-k"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1350983833,
+    "creation_date" : 1350983833,
+    "answer_id" : 13027143,
+    "question_id" : 11184104,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Check below things.</p>\n\n<p>1) Check if OrgManagerImpl is either defind as bean in context xml or it is marked as @Component &amp; in context xml you have  or that classes's package.</p>\n\n<p>2) If above thing is correct then try changing pointcut as below</p>\n\n<pre><code>@Pointcut(\"execution(* get*(..))\")\n</code></pre>\n\n<p>This pointcut intercepts all get methods. See if with this point cut your synchronize method is working or not. If it works then at least your spring configurations are fine. you just need to refine pointcut expression. But if this also doesn't work then there is something wrong with your spring aop configuration itself, so we can concentrate on those. </p>\n\n<p>Also if this doesn't work then try to give some more info like you context xml, bean java classes etc.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5707824,
+      "reputation" : 785,
+      "user_id" : 4510763,
+      "user_type" : "registered",
+      "accept_rate" : 50,
+      "profile_image" : "https://www.gravatar.com/avatar/a59b17f872a0d0c6218ec13e4b573d7a?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Ben Cheng",
+      "link" : "https://stackoverflow.com/users/4510763/ben-cheng"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1511084896,
+    "creation_date" : 1511084896,
+    "answer_id" : 47375525,
+    "question_id" : 11184104,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>Two things you need to check.</p>\n\n<ol>\n<li>aop:aspectj-autoproxy is enabled in configuration</li>\n<li>The Point Cut / Aspect / Target are spring bean</li>\n</ol>\n\n<p>The below is my xml config example.</p>\n\n<pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;\n&lt;beans xmlns=\"http://www.springframework.org/schema/beans\"\n    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n    xmlns:context=\"http://www.springframework.org/schema/context\"\n    xmlns:aop=\"http://www.springframework.org/schema/aop\" \n    xsi:schemaLocation=\"\n        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd\n        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd\n        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd\"&gt;\n\n    &lt;aop:aspectj-autoproxy/&gt;\n    &lt;context:component-scan base-package=\"com.techoffice\"/&gt;\n\n    &lt;bean class=\"com.techoffice.example.ExampleAspect\"/&gt;\n\n&lt;/beans&gt;\n</code></pre>\n\n<p><strong>ExampleAspect.java</strong></p>\n\n<pre><code>package com.techoffice.example;\n\nimport org.aspectj.lang.JoinPoint;\nimport org.aspectj.lang.annotation.After;\nimport org.aspectj.lang.annotation.Aspect;\nimport org.aspectj.lang.annotation.Before;\nimport org.aspectj.lang.annotation.Pointcut;\n\n@Aspect\npublic class ExampleAspect {\n\n    @Pointcut(\"execution (* com.techoffice..*(..))\")        \n    public void anyRun() {}\n\n    @Before(value=\"anyRun()\")\n    public void beforeAnyRun(JoinPoint jointPoint){\n        System.out.println(\"Before \" + jointPoint.getClass().getName() + \".\" + jointPoint.getSignature().getName());\n    }\n\n    @After(value=\"anyRun()\")\n    public void afterAnyRun(JoinPoint jointPoint){\n        System.out.println(\"After \" + jointPoint.getClass().getName() + \".\" + jointPoint.getSignature().getName());\n    }\n}\n</code></pre>\n\n<p><strong>HelloWorldExample</strong></p>\n\n<pre><code>package com.techoffice.example;\n\nimport org.springframework.context.ApplicationContext;\nimport org.springframework.context.support.ClassPathXmlApplicationContext;\nimport org.springframework.stereotype.Component;\n\n@Component\npublic class HelloWorldExample {\n\n    public void run(){\n        System.out.println(\"run\");\n    }\n\n    public static void main(String[] args){\n        ApplicationContext context = new ClassPathXmlApplicationContext(\"beans.xml\");\n        HelloWorldExample helloWorldExample = context.getBean(HelloWorldExample.class);\n        helloWorldExample.run();\n    }\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1024835,
+    "reputation" : 146,
+    "user_id" : 1034385,
+    "user_type" : "registered",
+    "accept_rate" : 12,
+    "profile_image" : "https://www.gravatar.com/avatar/9f6a059a8f67f1d6b81eed4b0be602cb?s=256&d=identicon&r=PG",
+    "display_name" : "Alvin",
+    "link" : "https://stackoverflow.com/users/1034385/alvin"
+  },
+  "is_answered" : false,
+  "view_count" : 8842,
+  "answer_count" : 2,
+  "score" : 5,
+  "last_activity_date" : 1763420625,
+  "creation_date" : 1340603839,
+  "last_edit_date" : 1511080667,
+  "question_id" : 11184104,
+  "link" : "https://stackoverflow.com/questions/11184104/spring-aop-pointcut-not-triggering",
+  "title" : "Spring AOP @Pointcut not triggering",
+  "body" : "<p>I want to trigger a method when a particular method from another class is invoked that is why I thought of using @Pointcut.</p>\n\n<p>The code below is almost identical to the that I am coding and I don't what else I have to add.</p>\n\n<pre><code>public class OrgManagerImpl implements OrgManager {\n    public IOrg getOrg(String orgShortName) {\n    }\n}\n</code></pre>\n\n<p>and this is the class that will should be triggered:</p>\n\n<pre><code>@Aspect\npublic class OrgManagerSynchronizer { \n\n    @Pointcut(\"execution(* com.alvin.OrgManager.getOrg(..))\")\n    public void classMethods() {}\n\n    @Before(\"classMethods()\")\n    public void synchronize(JoinPoint jp) {\n        //code should be executed. but does not execute.\n    }\n}\n</code></pre>\n\n<p>and in my .xml this was specified:</p>\n\n<pre><code>aop:aspectj-autoproxy\n</code></pre>\n\n<p>What more should I add? What to do next?</p>\n"
+}

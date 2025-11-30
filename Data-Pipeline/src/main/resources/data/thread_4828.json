@@ -1,0 +1,63 @@
+{
+  "tags" : [ "java", "spring", "inheritance", "autowired" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 195331,
+      "reputation" : 281010,
+      "user_id" : 438154,
+      "user_type" : "registered",
+      "accept_rate" : 98,
+      "profile_image" : "https://www.gravatar.com/avatar/4ec21df1e55febf8deb2e3b24b9cb39b?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Sotirios Delimanolis",
+      "link" : "https://stackoverflow.com/users/438154/sotirios-delimanolis"
+    },
+    "edited" : false,
+    "score" : 4,
+    "creation_date" : 1402541118,
+    "post_id" : 24175664,
+    "comment_id" : 37316233,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "If you&#39;re using XML configuration for these beans, why even use <code>@Autowired</code>? Just specify the <code>property</code> directly."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 999669,
+      "reputation" : 8136,
+      "user_id" : 1014830,
+      "user_type" : "registered",
+      "accept_rate" : 57,
+      "profile_image" : "https://www.gravatar.com/avatar/0f2ab8f245e5f1e2baacd129bdd8a3ad?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "dharam",
+      "link" : "https://stackoverflow.com/users/1014830/dharam"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1402542746,
+    "last_edit_date" : 1495542513,
+    "creation_date" : 1402542746,
+    "answer_id" : 24175900,
+    "question_id" : 24175664,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p><code>@Qualifier</code> is the option, you are probably not able to use it.</p>\n\n<p>Modifying your XML:</p>\n\n<pre><code>&lt;bean id=\"authClientA\"  class=\"com.xyz.Client\"&gt;\n    &lt;property name=\"auth\" value=\"abc\"&gt;\n    &lt;qualifier value=\"clientA\" /&gt;\n&lt;/bean&gt;\n\n\n&lt;bean id=\"authClientB\"  class=\"com.xyz.Client\"&gt;\n    &lt;property name=\"auth\" value=\"xyz\"&gt;\n    &lt;qualifier value=\"clientB\" /&gt;\n&lt;/bean&gt;\n\n&lt;bean id=\"beanA\"  class=\"ClassA\"&gt;\n    &lt;property name=\"client\"  ref=\"authClientA\"&gt;\n&lt;/bean&gt;\n\n&lt;bean id=\"beanB\"  class=\"ClassB\"&gt;\n    &lt;property name=\"auth\" ref=\"authClientB\"&gt;\n&lt;/bean&gt;\n</code></pre>\n\n<p>And fixing your class:</p>\n\n<pre><code>abstract class A{\n\n      @Qualifier(\"clientA\")\n      Client clientA;                     \n\n      @Qualifier(\"clientB\")\n      Client clientB;       \n\n      protected void doSomething(){ \n               /* ....some code .... */\n               client.someStuff(); /* HERE YOU NEED SOME LOGIC TO INVOKCE THE CORRECT OBJECT METHOD */\n               /* ....some code .... */\n      }\n\n      /* ..... few abstract methods * ........./\n}\n</code></pre>\n\n<p>Also, if you want to understand more, please check this answer here :</p>\n\n<p><a href=\"https://stackoverflow.com/questions/15971288/spring-autowire-annotation-on-abstract-class-no-unique-bean-is-defined\">Spring Autowire Annotation on Abstract class: No unique bean is defined</a></p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4601813,
+    "reputation" : 41,
+    "user_id" : 3732326,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/6d0d964f5948874b41048e650abfef7d?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "user3732326",
+    "link" : "https://stackoverflow.com/users/3732326/user3732326"
+  },
+  "is_answered" : false,
+  "view_count" : 10039,
+  "answer_count" : 1,
+  "score" : 4,
+  "last_activity_date" : 1759312960,
+  "creation_date" : 1402540898,
+  "last_edit_date" : 1430177447,
+  "question_id" : 24175664,
+  "link" : "https://stackoverflow.com/questions/24175664/spring-autowire-with-inheritance",
+  "title" : "Spring @Autowire with Inheritance",
+  "body" : "<p>I am new to Spring and wanted your all assistance. I have run into the \"expected single match bean but found two\" exception. I have searched for the solution and think have understood the solution. Most solutions suggest using @Qualifier to resolve this exception. However I don't think it will solve my issue. Below is my class hierarchy:</p>\n\n<pre><code>abstract class A{\n\n    @Autowired\n    Client client;                     \n\n    protected void doSomething(){ \n        /* ....some code .... */\n        client.someStuff(); \n        /* ....some code .... */\n    }\n\n    /* ..... few abstract methods ......... */\n}\n\nclass B extends A{ \n    public void action(){ doSomething() }\n}\n\nclass C extends A{\n    public void action(){ doSomething() }\n}\n</code></pre>\n\n<p>My .xml confirugration file is</p>\n\n<pre><code>    &lt;bean id=\"authClientA\"  class=\"com.xyz.Client\"&gt;\n        &lt;property name=\"auth\" value=\"abc\"&gt;\n    &lt;/bean&gt;\n\n\n    &lt;bean id=\"authClientB\"  class=\"com.xyz.Client\"&gt;\n        &lt;property name=\"auth\" value=\"xyz\"&gt;\n    &lt;/bean&gt;\n\n    &lt;bean id=\"beanA\"  class=\"ClassA\"&gt;\n        &lt;property name=\"client\"  ref=\"authClientA\"&gt;\n    &lt;/bean&gt;\n\n    &lt;bean id=\"beanB\"  class=\"ClassB\"&gt;\n        &lt;property name=\"auth\" ref=\"authClientB\"&gt;\n    &lt;/bean&gt;\n</code></pre>\n\n<p>So basically, I have an abstract class which has a method which will be common to both the subclasses. This method uses the client reference but at run time will use different object. <code>doSomething()</code> is not overridden in the subclasses.</p>\n\n<p>So when I try to run this code, it gives me the exception for client reference. I dont think I can use @Qualifier because @Qualifier requires to specify bean name from .xml as parameter, but since the 'client' attribute is common, I cant use only one bean name. </p>\n\n<p>Can someone please assist in explaining if there is a way to get around. Duplicating the <code>doSomething()</code> method defeats the entire purpose of inheritance and will cause duplicate code across classes. I can't have the <code>client</code> attribute in the subclasses as it will become unknown to <code>doSomething()</code> method at compile time.</p>\n\n<p>Any ideas/suggestions/solutions will be helpful.</p>\n\n<p>Thanks in advance :)</p>\n"
+}

@@ -1,0 +1,78 @@
+{
+  "tags" : [ "java", "maven", "plugins", "gerrit" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 24238338,
+        "reputation" : 1,
+        "user_id" : 18191102,
+        "user_type" : "registered",
+        "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJz6PKY5TwkSQGQts2jR9pMJI-J4Ev8TdB3m_eIQ=k-s256",
+        "display_name" : "Moonie Pie",
+        "link" : "https://stackoverflow.com/users/18191102/moonie-pie"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1644697111,
+      "post_id" : 71095027,
+      "comment_id" : 125676880,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I am not trying to run a custom annotation processor. I am trying to build a gerrit plugin which may or may not be using Gson annotation processing. I know that I can disable it by providing the compile time argument &lt;compilerArgument&gt;-proc:none&lt;/compilerArgument&gt;. But I want annotations to be processed. Why is it choosing this particular class? com.ryanharter.auto.value.gson.factory.AutoValueGsonAdapterF&zwnj;&#8203;actoryProcessor"
+    } ],
+    "owner" : {
+      "account_id" : 22627540,
+      "reputation" : 1095,
+      "user_id" : 16805423,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/LA3Jp.jpg?s=256",
+      "display_name" : "Brentspine",
+      "link" : "https://stackoverflow.com/users/16805423/brentspine"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1761567974,
+    "last_edit_date" : 1761567974,
+    "creation_date" : 1644693162,
+    "answer_id" : 71095027,
+    "question_id" : 71094963,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are not many details to what you're trying to do, but I've found this through a simple google search:</p>\n<p>The default maven lifecycle runs javac with javax.annotation.processing.Processor file as a part of classpath. This cause compiler to expect a compiled instance of annotation processors listed in the files. But LogMeCustomAnnotationProcessor is not compiled at that moment so compiler raises &quot;Bad service configuration file ...&quot; error. See bug report.</p>\n<p>To solve this issue maven compilation phase can be separated to compile annotation processor at the first place and then compile whole project.</p>\n<pre class=\"lang-xml prettyprint-override\"><code>&lt;build&gt;\n    &lt;plugins&gt;\n        &lt;plugin&gt;\n            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;\n            &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;\n            &lt;version&gt;3.5.1&lt;/version&gt;\n            &lt;configuration&gt;\n                &lt;source&gt;1.8&lt;/source&gt;\n                &lt;target&gt;1.8&lt;/target&gt;\n            &lt;/configuration&gt;\n            &lt;executions&gt;\n                &lt;execution&gt;\n                    &lt;id&gt;default-compile&lt;/id&gt;\n                    &lt;configuration&gt;\n                        &lt;compilerArgument&gt;-proc:none&lt;/compilerArgument&gt;\n                        &lt;includes&gt;\n                            &lt;include&gt;fun/n/learn/annotation/LogMeCustomAnnotationProcessor.java&lt;/include&gt;\n                            &lt;!--include dependencies required for LogMeCustomAnnotationProcessor --&gt;\n                        &lt;/includes&gt;\n                    &lt;/configuration&gt;\n                &lt;/execution&gt;\n                &lt;execution&gt;\n                    &lt;id&gt;compile-project&lt;/id&gt;\n                    &lt;phase&gt;compile&lt;/phase&gt;\n                    &lt;goals&gt;\n                        &lt;goal&gt;compile&lt;/goal&gt;\n                    &lt;/goals&gt;\n                &lt;/execution&gt;\n            &lt;/executions&gt;\n        &lt;/plugin&gt;\n    &lt;/plugins&gt;\n&lt;/build&gt;\n</code></pre>\n<p>default-compile execution compiles LogMeCustomAnnotationProcessor with disabled annotation processing in order to have successful compilation.\ncompile-project compiles whole project with annotaton processing.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 24864595,
+      "reputation" : 1,
+      "user_id" : 18739874,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/YtLqc.jpg?s=256",
+      "display_name" : "mya",
+      "link" : "https://stackoverflow.com/users/18739874/mya"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1649358213,
+    "creation_date" : 1649358213,
+    "answer_id" : 71787649,
+    "question_id" : 71094963,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I managed to fix this by adding the dependency to my plugin's dependency list as a provided dependency. Hope this helps!</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 24238338,
+    "reputation" : 1,
+    "user_id" : 18191102,
+    "user_type" : "registered",
+    "profile_image" : "https://lh3.googleusercontent.com/a/AATXAJz6PKY5TwkSQGQts2jR9pMJI-J4Ev8TdB3m_eIQ=k-s256",
+    "display_name" : "Moonie Pie",
+    "link" : "https://stackoverflow.com/users/18191102/moonie-pie"
+  },
+  "is_answered" : false,
+  "view_count" : 404,
+  "answer_count" : 2,
+  "score" : 0,
+  "last_activity_date" : 1761567974,
+  "creation_date" : 1644692664,
+  "question_id" : 71094963,
+  "link" : "https://stackoverflow.com/questions/71094963/getting-error-duing-maven-org-apache-maven-pluginsmaven-compiler-plugin2-3-2c",
+  "title" : "Getting error duing maven org.apache.maven.plugins:maven-compiler-plugin:2.3.2:compile goal",
+  "body" : "<p>While trying to build a gerrit plugin project, I seem to be seeing this error</p>\n<pre><code>[ERROR] error: Bad service configuration file, or exception thrown while constructing Processor object: javax.annotation.processing.Processor: com.ryanharter.auto.value.gson.factory.AutoValueGsonAdapterFactoryProcessor Unable to get public no-arg constructor\n[ERROR]\n</code></pre>\n"
+}

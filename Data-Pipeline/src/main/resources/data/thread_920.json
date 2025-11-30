@@ -1,0 +1,523 @@
+{
+  "tags" : [ "java", "concurrency" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 481416,
+      "reputation" : 392532,
+      "user_id" : 895245,
+      "user_type" : "registered",
+      "accept_rate" : 49,
+      "profile_image" : "https://i.sstatic.net/5Powi.jpg?s=256",
+      "display_name" : "Ciro Santilli OurBigBook.com",
+      "link" : "https://stackoverflow.com/users/895245/ciro-santilli-ourbigbook-com"
+    },
+    "edited" : false,
+    "score" : 11,
+    "creation_date" : 1428510583,
+    "post_id" : 4501223,
+    "comment_id" : 47195385,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "Related: <code>volatile boolean</code> vs <code>AtomicBoolean</code>: <a href=\"http://stackoverflow.com/questions/3786825/volatile-boolean-vs-atomicboolean\" title=\"volatile boolean vs atomicboolean\">stackoverflow.com/questions/3786825/&hellip;</a>"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4367263,
+        "reputation" : 144,
+        "user_id" : 3562600,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6561bd3234fa28d0e07d7d5b6d1d3e6d?s=256&d=identicon&r=PG",
+        "display_name" : "harogaston",
+        "link" : "https://stackoverflow.com/users/3562600/harogaston"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1625693307,
+      "post_id" : 4501284,
+      "comment_id" : 120698059,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "Can you elaborate how access to AtomicXXX is non blocking? Thanks"
+    } ],
+    "owner" : {
+      "account_id" : 43539,
+      "reputation" : 80467,
+      "user_id" : 127320,
+      "user_type" : "registered",
+      "accept_rate" : 87,
+      "profile_image" : "https://i.sstatic.net/5W9TK.jpg?s=256",
+      "display_name" : "Aravind Yarram",
+      "link" : "https://stackoverflow.com/users/127320/aravind-yarram"
+    },
+    "is_accepted" : false,
+    "score" : 72,
+    "last_activity_date" : 1556973349,
+    "last_edit_date" : 1556973349,
+    "creation_date" : 1292947667,
+    "answer_id" : 4501284,
+    "question_id" : 4501223,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here is the notes (from <a href=\"http://www.javaconcurrencyinpractice.com/\" rel=\"noreferrer\">Brian Goetz book</a>) I made, that might be of help to you</p>\n\n<p>AtomicXXX classes</p>\n\n<ul>\n<li><p>provide Non-blocking Compare-And-Swap implementation</p></li>\n<li><p>Takes advantage of the support provide\nby hardware (the CMPXCHG instruction\non Intel) When lots of threads are\nrunning through your code that uses\nthese atomic concurrency API, they\nwill scale much better than code\nwhich uses Object level\nmonitors/synchronization. Since,\nJava's synchronization mechanisms\nmakes code wait, when there are lots\nof threads running through your\ncritical sections, a substantial\namount of CPU time is spent in\nmanaging the synchronization\nmechanism itself (waiting, notifying,\netc). Since the new API uses hardware\nlevel constructs (atomic variables)\nand wait and lock free algorithms to\nimplement thread-safety, a lot more\nof CPU time is spent \"doing stuff\"\nrather than in managing\nsynchronization.</p></li>\n<li><p>not only offer better\nthroughput, but they also provide\ngreater resistance to liveness\nproblems such as deadlock and\npriority inversion.</p></li>\n</ul>\n"
+  }, {
+    "owner" : {
+      "account_id" : 218120,
+      "reputation" : 55236,
+      "user_id" : 474283,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/7b2ec254f2eed46ce041f294e8240240?s=256&d=identicon&r=PG",
+      "display_name" : "Cameron Skinner",
+      "link" : "https://stackoverflow.com/users/474283/cameron-skinner"
+    },
+    "is_accepted" : false,
+    "score" : 25,
+    "last_activity_date" : 1292947724,
+    "creation_date" : 1292947724,
+    "answer_id" : 4501293,
+    "question_id" : 4501223,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>The <code>AtomicBoolean</code> class gives you a boolean value that you can update atomically. Use it when you have multiple threads accessing a boolean variable.</p>\n\n<p>The <a href=\"http://download.oracle.com/javase/1.5.0/docs/api/java/util/concurrent/atomic/package-summary.html\" rel=\"noreferrer\">java.util.concurrent.atomic package overview</a> gives you a good high-level description of what the classes in this package do and when to use them. I'd also recommend the book <a href=\"https://rads.stackoverflow.com/amzn/click/com/0321349601\" rel=\"noreferrer\" rel=\"nofollow noreferrer\">Java Concurrency in Practice</a> by Brian Goetz.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 65386,
+        "reputation" : 40326,
+        "user_id" : 192444,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/caa09b52f2616de4fd1a6ffcc65a5859?s=256&d=identicon&r=PG",
+        "display_name" : "John Vint",
+        "link" : "https://stackoverflow.com/users/192444/john-vint"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1292948675,
+      "post_id" : 4501295,
+      "comment_id" : 4926245,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "For the love of god, that was only to show the mutability of the object itself.  I specifically wrote that for demonstration purposes."
+    }, {
+      "owner" : {
+        "account_id" : 65386,
+        "reputation" : 40326,
+        "user_id" : 192444,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/caa09b52f2616de4fd1a6ffcc65a5859?s=256&d=identicon&r=PG",
+        "display_name" : "John Vint",
+        "link" : "https://stackoverflow.com/users/192444/john-vint"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1292948727,
+      "post_id" : 4501295,
+      "comment_id" : 4926253,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "And further more, if that was ALL that was happening then yes, it will always return true"
+    }, {
+      "owner" : {
+        "account_id" : 65386,
+        "reputation" : 40326,
+        "user_id" : 192444,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/caa09b52f2616de4fd1a6ffcc65a5859?s=256&d=identicon&r=PG",
+        "display_name" : "John Vint",
+        "link" : "https://stackoverflow.com/users/192444/john-vint"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1292952202,
+      "post_id" : 4501295,
+      "comment_id" : 4927010,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "That isn&#39;t proving if it is or isnt thread-safe.  I can finish my snippets of code to make the class very thread-safe, but that only kills my point."
+    }, {
+      "owner" : {
+        "account_id" : 65386,
+        "reputation" : 40326,
+        "user_id" : 192444,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/caa09b52f2616de4fd1a6ffcc65a5859?s=256&d=identicon&r=PG",
+        "display_name" : "John Vint",
+        "link" : "https://stackoverflow.com/users/192444/john-vint"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1292952381,
+      "post_id" : 4501295,
+      "comment_id" : 4927048,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "There you go, a thread-safe class that in no way helps what I was explaining"
+    }, {
+      "owner" : {
+        "account_id" : 64613,
+        "reputation" : 933,
+        "user_id" : 190652,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/422c2cbceb03805717cc93b7f49b76f0?s=256&d=identicon&r=PG",
+        "display_name" : "Shay Tsadok",
+        "link" : "https://stackoverflow.com/users/190652/shay-tsadok"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1427229099,
+      "post_id" : 4501295,
+      "comment_id" : 46690614,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "I think that only Volatile is not enough. Think about a situation in which two threads that read and write the same value directly from the main memory, there isn&#39;t any sync between those threads - hance concurrency problems might arise."
+    }, {
+      "owner" : {
+        "account_id" : 65386,
+        "reputation" : 40326,
+        "user_id" : 192444,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/caa09b52f2616de4fd1a6ffcc65a5859?s=256&d=identicon&r=PG",
+        "display_name" : "John Vint",
+        "link" : "https://stackoverflow.com/users/192444/john-vint"
+      },
+      "reply_to_user" : {
+        "account_id" : 64613,
+        "reputation" : 933,
+        "user_id" : 190652,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/422c2cbceb03805717cc93b7f49b76f0?s=256&d=identicon&r=PG",
+        "display_name" : "Shay Tsadok",
+        "link" : "https://stackoverflow.com/users/190652/shay-tsadok"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1427232986,
+      "post_id" : 4501295,
+      "comment_id" : 46692629,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@ShayTsadok Can you explain your point further?  I am having trouble associating it to may answer.  If someone were to use an <code>AtomicBoolean</code> with say, compareAndSet, then there wouldn&#39;t be any race conditions."
+    }, {
+      "owner" : {
+        "account_id" : 64613,
+        "reputation" : 933,
+        "user_id" : 190652,
+        "user_type" : "registered",
+        "accept_rate" : 62,
+        "profile_image" : "https://www.gravatar.com/avatar/422c2cbceb03805717cc93b7f49b76f0?s=256&d=identicon&r=PG",
+        "display_name" : "Shay Tsadok",
+        "link" : "https://stackoverflow.com/users/190652/shay-tsadok"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1427233193,
+      "post_id" : 4501295,
+      "comment_id" : 46692720,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You wrote in the answer &quot;If you do not use an AtomicBoolean you must synchronize the boolean variable you are using by <b>declaring it volatile</b> or synchronizing around the read and write of the field&quot;, I think that volatile won&#39;t be enough."
+    }, {
+      "owner" : {
+        "account_id" : 65386,
+        "reputation" : 40326,
+        "user_id" : 192444,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/caa09b52f2616de4fd1a6ffcc65a5859?s=256&d=identicon&r=PG",
+        "display_name" : "John Vint",
+        "link" : "https://stackoverflow.com/users/192444/john-vint"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1427234088,
+      "post_id" : 4501295,
+      "comment_id" : 46693149,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "You&#39;re right it wouldn&#39;t be enough for atomic set then check operations, though there wasn&#39;t enough context from the OP to make that assumption.  To say, volatile might not be enough is always true depending on the situation of course."
+    } ],
+    "owner" : {
+      "account_id" : 65386,
+      "reputation" : 40326,
+      "user_id" : 192444,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/caa09b52f2616de4fd1a6ffcc65a5859?s=256&d=identicon&r=PG",
+      "display_name" : "John Vint",
+      "link" : "https://stackoverflow.com/users/192444/john-vint"
+    },
+    "is_accepted" : false,
+    "score" : 53,
+    "last_activity_date" : 1618448679,
+    "last_edit_date" : 1618448679,
+    "creation_date" : 1292947739,
+    "answer_id" : 4501295,
+    "question_id" : 4501223,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There are two main reasons why you can use an atomic boolean.  First it's mutable, you can pass it in as a reference and change the value that is associated to the boolean itself, for example.</p>\n<pre><code>public final class MyThreadSafeClass{\n\n    private AtomicBoolean myBoolean = new AtomicBoolean(false);\n    private SomeThreadSafeObject someObject = new SomeThreadSafeObject();\n\n    public boolean doSomething(){\n         someObject.doSomeWork(myBoolean);\n         return myBoolean.get(); //will return true\n    }\n}\n</code></pre>\n<p>and in the someObject class</p>\n<pre><code>public final class SomeThreadSafeObject{\n    public void doSomeWork(AtomicBoolean b){\n        b.set(true);\n    }\n}\n</code></pre>\n<p>More importantly though, it's thread safe and can indicate to developers maintaining the class, that this variable is expected to be modified and read from multiple threads.  If you do not use an AtomicBoolean, you must synchronize the boolean variable you are using by declaring it volatile or synchronizing around the read and write of the field.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 36208,
+        "reputation" : 243304,
+        "user_id" : 103154,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2a48823f3303f6c34f30574b9cb68e48?s=256&d=identicon&r=PG",
+        "display_name" : "axtavt",
+        "link" : "https://stackoverflow.com/users/103154/axtavt"
+      },
+      "edited" : false,
+      "score" : 72,
+      "creation_date" : 1292948359,
+      "post_id" : 4501314,
+      "comment_id" : 4926181,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "It doesn&#39;t look like a real-world example - other thread can see <code>true</code> when <code>initialize()</code> haven&#39;t been completed. So, it works only if other threads don&#39;t care about completion of <code>initialize()</code>."
+    }, {
+      "owner" : {
+        "account_id" : 7848,
+        "reputation" : 110300,
+        "user_id" : 13792,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/10db0f801d3ba12114f8d3fc4737eb1e?s=256&d=identicon&r=PG",
+        "display_name" : "ColinD",
+        "link" : "https://stackoverflow.com/users/13792/colind"
+      },
+      "reply_to_user" : {
+        "account_id" : 36208,
+        "reputation" : 243304,
+        "user_id" : 103154,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/2a48823f3303f6c34f30574b9cb68e48?s=256&d=identicon&r=PG",
+        "display_name" : "axtavt",
+        "link" : "https://stackoverflow.com/users/103154/axtavt"
+      },
+      "edited" : false,
+      "score" : 13,
+      "creation_date" : 1292948696,
+      "post_id" : 4501314,
+      "comment_id" : 4926249,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@axtavt: I think it&#39;s a perfectly valid real-world example if <code>initialized</code> is simply being used to ensure that one and only one thread will invoke the <code>initialize()</code> method. Obviously <code>initialized</code> being true doesn&#39;t mean that initialization has definitely completed in this case, so <i>maybe</i> a slightly different term would be better here. Again, it depends on what it&#39;s being used for."
+    }, {
+      "owner" : {
+        "account_id" : 37818,
+        "reputation" : 12431,
+        "user_id" : 108234,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/b20a2b2684e66eceb87a9e57c930649a?s=256&d=identicon&r=PG",
+        "display_name" : "Martin",
+        "link" : "https://stackoverflow.com/users/108234/martin"
+      },
+      "edited" : false,
+      "score" : 23,
+      "creation_date" : 1292952731,
+      "post_id" : 4501314,
+      "comment_id" : 4927108,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "you would need 2 booleans for initStarted and initCompleted, then the first thread sets initStarted and calls initialise(), the rest wait until initCompleted is true."
+    }, {
+      "owner" : {
+        "account_id" : 239738,
+        "reputation" : 2722,
+        "user_id" : 509551,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/1c3042d65995e4bc9072101251471afa?s=256&d=identicon&r=PG",
+        "display_name" : "Uberto",
+        "link" : "https://stackoverflow.com/users/509551/uberto"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1360229716,
+      "post_id" : 4501314,
+      "comment_id" : 20638369,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "with this solution (and also if you use 2 booleans) you cannot avoid for many threads to start the initialisation in parallel. If this is a problem (for example because it involve DB access) than using a Future is a better idea."
+    }, {
+      "owner" : {
+        "account_id" : 60171,
+        "reputation" : 117188,
+        "user_id" : 179850,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/6b2c535fac79e482b71f15de561f55ca?s=256&d=identicon&r=PG",
+        "display_name" : "Gray",
+        "link" : "https://stackoverflow.com/users/179850/gray"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1380907423,
+      "post_id" : 4501314,
+      "comment_id" : 28388588,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Care to change the <code>initialize()</code> method to be <code>start()</code> or something else that doesn&#39;t get into the problem around the class being used by threads before it is fully initialized?  Thanks."
+    }, {
+      "owner" : {
+        "account_id" : 2524075,
+        "reputation" : 36294,
+        "user_id" : 2193767,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/tr7wR.jpg?s=256",
+        "display_name" : "TheLostMind",
+        "link" : "https://stackoverflow.com/users/2193767/thelostmind"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1406730549,
+      "post_id" : 4501314,
+      "comment_id" : 38944409,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Bozho - reads and writes to <i>boolean</i> fields are atomic right?, Now, <i>volatile</i> gives me the latest value of the boolean field. So, effectively, wouldn&#39;t <code>volatile boolean</code> be same as <code>AtomicBoolean</code>?."
+    }, {
+      "owner" : {
+        "account_id" : 1209394,
+        "reputation" : 1268,
+        "user_id" : 1178243,
+        "user_type" : "registered",
+        "accept_rate" : 88,
+        "profile_image" : "https://www.gravatar.com/avatar/a36dcd0016eca112571b6d2533a16e4f?s=256&d=identicon&r=PG",
+        "display_name" : "gcali",
+        "link" : "https://stackoverflow.com/users/1178243/gcali"
+      },
+      "reply_to_user" : {
+        "account_id" : 2524075,
+        "reputation" : 36294,
+        "user_id" : 2193767,
+        "user_type" : "registered",
+        "accept_rate" : 78,
+        "profile_image" : "https://i.sstatic.net/tr7wR.jpg?s=256",
+        "display_name" : "TheLostMind",
+        "link" : "https://stackoverflow.com/users/2193767/thelostmind"
+      },
+      "edited" : false,
+      "score" : 5,
+      "creation_date" : 1441119502,
+      "post_id" : 4501314,
+      "comment_id" : 52543882,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@TheLostMind I&#39;m pretty late to the party, but what you would miss are functionalities like <code>compareAndSet</code>, which are effectively not implementable without some kind of synchronization"
+    }, {
+      "owner" : {
+        "account_id" : 68984,
+        "reputation" : 7885,
+        "user_id" : 200985,
+        "user_type" : "registered",
+        "accept_rate" : 97,
+        "profile_image" : "https://www.gravatar.com/avatar/0a07a11efd94fa8a87043f7ef91cd08d?s=256&d=identicon&r=PG",
+        "display_name" : "lmat - Reinstate Monica",
+        "link" : "https://stackoverflow.com/users/200985/lmat-reinstate-monica"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1467813986,
+      "post_id" : 4501314,
+      "comment_id" : 63873915,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is a bad example. Presumably a function is checking for initialization because the class needs some initialization. In this case, the initialization flag could be set to true, initialization not complete, and another thread comes by and see the initialize flag is set to true and continues without initialization having happened!"
+    }, {
+      "owner" : {
+        "account_id" : 953149,
+        "reputation" : 184783,
+        "user_id" : 978917,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/92d059913eace78a868a3e87f98e0a57?s=256&d=identicon&r=PG",
+        "display_name" : "ruakh",
+        "link" : "https://stackoverflow.com/users/978917/ruakh"
+      },
+      "reply_to_user" : {
+        "account_id" : 37818,
+        "reputation" : 12431,
+        "user_id" : 108234,
+        "user_type" : "registered",
+        "accept_rate" : 87,
+        "profile_image" : "https://www.gravatar.com/avatar/b20a2b2684e66eceb87a9e57c930649a?s=256&d=identicon&r=PG",
+        "display_name" : "Martin",
+        "link" : "https://stackoverflow.com/users/108234/martin"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1476489091,
+      "post_id" : 4501314,
+      "comment_id" : 67382872,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@Martin: There&#39;s no direct way to wait for a boolean to become true; you need additional mechanisms. The most sensible approach is to use a <code>synchronized</code> block, in which case you no longer need an <code>AtomicBoolean</code>, just a <code>volatile boolean</code>. (<code>if(! this.initialized) { synchronized(this) { if(! this.initialized) { initialize(); this.initialized = true; } } }</code> will ensure that only one thread calls <code>initialize</code>, and that all other threads wait for it to have done so, provided that <code>initialized</code> is marked <code>volatile</code>.)"
+    }, {
+      "owner" : {
+        "account_id" : 10541959,
+        "reputation" : 12927,
+        "user_id" : 7767664,
+        "user_type" : "registered",
+        "accept_rate" : 63,
+        "profile_image" : "https://www.gravatar.com/avatar/4d7cd0fdee548cca41c14d6bfb497ed4?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "user924",
+        "link" : "https://stackoverflow.com/users/7767664/user924"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1524406278,
+      "post_id" : 4501314,
+      "comment_id" : 86949328,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "it&#39;s not only about threading, but just that you can reference to this  <code>AtomicBoolean</code> instance from different classes and get the same value, if you send <code>Boolean</code> instance to another class constructor then you get new variable, but with <code>AtomicBoolean</code> you get the same instance and reference with the same value and value is changed across all instances (would be same, it doesn&#39;t matter where from which instance it was changed)"
+    } ],
+    "owner" : {
+      "account_id" : 70258,
+      "reputation" : 599026,
+      "user_id" : 203907,
+      "user_type" : "registered",
+      "accept_rate" : 81,
+      "profile_image" : "https://i.sstatic.net/07ej2.jpg?s=256",
+      "display_name" : "Bozho",
+      "link" : "https://stackoverflow.com/users/203907/bozho"
+    },
+    "is_accepted" : true,
+    "score" : 327,
+    "last_activity_date" : 1292947843,
+    "creation_date" : 1292947843,
+    "answer_id" : 4501314,
+    "question_id" : 4501223,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>When multiple threads need to check and change the boolean. For example:</p>\n\n<pre><code>if (!initialized) {\n   initialize();\n   initialized = true;\n}\n</code></pre>\n\n<p>This is not thread-safe. You can fix it by using <code>AtomicBoolean</code>:</p>\n\n<pre><code>if (atomicInitialized.compareAndSet(false, true)) {\n    initialize();\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 10836,
+      "reputation" : 199951,
+      "user_id" : 20654,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://www.gravatar.com/avatar/94066dfa49c2feb14706cb081848fda7?s=256&d=identicon&r=PG",
+      "display_name" : "OscarRyz",
+      "link" : "https://stackoverflow.com/users/20654/oscarryz"
+    },
+    "is_accepted" : false,
+    "score" : 7,
+    "last_activity_date" : 1292947954,
+    "creation_date" : 1292947954,
+    "answer_id" : 4501332,
+    "question_id" : 4501223,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>Excerpt from the <a href=\"http://download.oracle.com/javase/1.5.0/docs/api/java/util/concurrent/atomic/package-summary.html\" rel=\"noreferrer\">package description</a></p>\n\n<blockquote>\n  <p><em>Package java.util.concurrent.atomic description: A small toolkit of classes that support lock-free thread-safe programming on single variables.[...]</em> </p>\n  \n  <p><em>The specifications of these methods enable implementations to employ efficient machine-level atomic instructions that are available on contemporary processors.[...]</em> </p>\n  \n  <p><em>Instances of classes AtomicBoolean, AtomicInteger, AtomicLong, and AtomicReference each provide access and updates to a single variable of the corresponding type.[...]</em></p>\n  \n  <p><em>The memory effects for accesses and updates of atomics generally follow the rules for volatiles:</em></p>\n  \n  <ul>\n  <li><em>get has the memory effects of reading a volatile variable.</em></li>\n  <li><em>set has the memory effects of writing (assigning) a volatile variable.</em></li>\n  <li><em>weakCompareAndSet atomically reads and conditionally writes a variable, is ordered with respect to other memory operations on that variable, but otherwise acts as an ordinary non-volatile memory operation.</em></li>\n  <li><em>compareAndSet and all other read-and-update operations such as getAndIncrement have the memory effects of both reading and writing volatile variables.</em></li>\n  </ul>\n</blockquote>\n"
+  } ],
+  "owner" : {
+    "account_id" : 82850,
+    "reputation" : 7825,
+    "user_id" : 232666,
+    "user_type" : "registered",
+    "accept_rate" : 63,
+    "profile_image" : "https://www.gravatar.com/avatar/09a4538ef213f916a6c874cf6d7d7045?s=256&d=identicon&r=PG",
+    "display_name" : "yart",
+    "link" : "https://stackoverflow.com/users/232666/yart"
+  },
+  "is_answered" : true,
+  "view_count" : 257000,
+  "accepted_answer_id" : 4501314,
+  "answer_count" : 5,
+  "score" : 321,
+  "last_activity_date" : 1618448679,
+  "creation_date" : 1292947336,
+  "last_edit_date" : 1476488267,
+  "question_id" : 4501223,
+  "link" : "https://stackoverflow.com/questions/4501223/when-do-i-need-to-use-atomicboolean-in-java",
+  "title" : "When do I need to use AtomicBoolean in Java?",
+  "body" : "<p>How I can use AtomicBoolean and what is that class for?</p>\n"
+}

@@ -1,0 +1,330 @@
+{
+  "tags" : [ "java", "regex" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13025,
+        "reputation" : 18412,
+        "user_id" : 25949,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/eff3175735075d38c6e8f7542c776914?s=256&d=identicon&r=PG",
+        "display_name" : "Nivas",
+        "link" : "https://stackoverflow.com/users/25949/nivas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1283842843,
+      "post_id" : 3652309,
+      "comment_id" : 3845965,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I want to match any string that starts with &quot;User Comments&quot;, and the string can contain newlines also. So I used the pattern <code>User Comments: [\\\\s\\\\S]*</code> and this worked. (thanks!) From the answer of @Tim I got the pattern <code>User Comments:(.*)</code>, this is also ok Now, is there a <i>recommended</i> or <i>better</i> way among these, or are these just two ways of doing the same?"
+    }, {
+      "owner" : {
+        "account_id" : 55219,
+        "reputation" : 59531,
+        "user_id" : 165297,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/Ts23W.jpg?s=256",
+        "display_name" : "Amarghosh",
+        "link" : "https://stackoverflow.com/users/165297/amarghosh"
+      },
+      "reply_to_user" : {
+        "account_id" : 13025,
+        "reputation" : 18412,
+        "user_id" : 25949,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/eff3175735075d38c6e8f7542c776914?s=256&d=identicon&r=PG",
+        "display_name" : "Nivas",
+        "link" : "https://stackoverflow.com/users/25949/nivas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1283848702,
+      "post_id" : 3652309,
+      "comment_id" : 3846716,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "@Nivas I don&#39;t think there would be any difference performance wise; but I think <code>(.*)</code> along with <code>DOTALL</code> flag is more obvious/readable than <code>([\\\\s\\\\S]*)</code>"
+    }, {
+      "owner" : {
+        "account_id" : 333399,
+        "reputation" : 2879,
+        "user_id" : 659246,
+        "user_type" : "registered",
+        "accept_rate" : 76,
+        "profile_image" : "https://i.sstatic.net/VZANh.jpg?s=256",
+        "display_name" : "GoldBishop",
+        "link" : "https://stackoverflow.com/users/659246/goldbishop"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1521646380,
+      "post_id" : 3652309,
+      "comment_id" : 85822513,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "This is the best answer....provides both access to Java code and Pattern String options, for MultiLine capability."
+    } ],
+    "owner" : {
+      "account_id" : 55219,
+      "reputation" : 59531,
+      "user_id" : 165297,
+      "user_type" : "registered",
+      "accept_rate" : 75,
+      "profile_image" : "https://i.sstatic.net/Ts23W.jpg?s=256",
+      "display_name" : "Amarghosh",
+      "link" : "https://stackoverflow.com/users/165297/amarghosh"
+    },
+    "is_accepted" : false,
+    "score" : 23,
+    "last_activity_date" : 1283785808,
+    "last_edit_date" : 1283785808,
+    "creation_date" : 1283784249,
+    "answer_id" : 3652309,
+    "question_id" : 3651725,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p><code>str.matches(regex)</code> <a href=\"http://download.oracle.com/javase/1.4.2/docs/api/java/lang/String.html#matches%28java.lang.String%29\" rel=\"noreferrer\">behaves like</a> <code>Pattern.matches(regex,  str)</code> which attempts to match the entire input sequence against the pattern and returns</p>\n\n<blockquote>\n  <p><code>true</code> if, and only if, the <strong>entire</strong> input sequence matches this matcher's pattern</p>\n</blockquote>\n\n<p>Whereas <code>matcher.find()</code> <a href=\"http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Matcher.html#find%28%29\" rel=\"noreferrer\">attempts to find</a> the next subsequence of the input sequence that matches the pattern and returns </p>\n\n<blockquote>\n  <p><code>true</code> if, and only if, a <strong>subsequence</strong> of the input sequence matches this matcher's pattern</p>\n</blockquote>\n\n<p>Thus the problem is with the regex. Try the following.</p>\n\n<pre><code>String test = \"User Comments: This is \\t a\\ta \\ntest\\n\\n message \\n\";\n\nString pattern1 = \"User Comments: [\\\\s\\\\S]*^test$[\\\\s\\\\S]*\";\nPattern p = Pattern.compile(pattern1, Pattern.MULTILINE);\nSystem.out.println(p.matcher(test).find());  //true\n\nString pattern2 = \"(?m)User Comments: [\\\\s\\\\S]*^test$[\\\\s\\\\S]*\";\nSystem.out.println(test.matches(pattern2));  //true\n</code></pre>\n\n<p>Thus in short, the <code>(\\\\W)*(\\\\S)*</code> portion in your first regex matches an empty string as <code>*</code> means zero or more occurrences and the real matched string is <code>User Comments:</code> and not the whole string as you'd expect. The second one fails as it tries to match the whole string but it can't as <code>\\\\W</code> matches a non word character, ie <code>[^a-zA-Z0-9_]</code> and the first character is <code>T</code>, a word character.</p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 13025,
+        "reputation" : 18412,
+        "user_id" : 25949,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/eff3175735075d38c6e8f7542c776914?s=256&d=identicon&r=PG",
+        "display_name" : "Nivas",
+        "link" : "https://stackoverflow.com/users/25949/nivas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1283794277,
+      "post_id" : 3652392,
+      "comment_id" : 3842079,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I am trying to find a pattern that would match any string that starts with &quot;User Comments:&quot;. After this &quot;User Comments:&quot; is something a user enters in a textarea, and therefore can contain <i>anything</i> - even new lines. Looks like I need to learn a lot in regex..."
+    }, {
+      "owner" : {
+        "account_id" : 13025,
+        "reputation" : 18412,
+        "user_id" : 25949,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/eff3175735075d38c6e8f7542c776914?s=256&d=identicon&r=PG",
+        "display_name" : "Nivas",
+        "link" : "https://stackoverflow.com/users/25949/nivas"
+      },
+      "edited" : false,
+      "score" : 3,
+      "creation_date" : 1283843136,
+      "post_id" : 3652392,
+      "comment_id" : 3845994,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "This works (thanks!) I tried the pattern <code>(?s)User Comments:\\s*(.*)</code> . From the answer of @Amarghosh I got the pattern <code>User Comments: [\\\\s\\\\S]*</code>. Among these is there a <i>better</i> or <i>recommended</i> way or are these just two different ways of doing the same?"
+    }, {
+      "owner" : {
+        "account_id" : 10843,
+        "reputation" : 337423,
+        "user_id" : 20670,
+        "user_type" : "registered",
+        "accept_rate" : 100,
+        "profile_image" : "https://www.gravatar.com/avatar/251f2449ffba9fbcc3491db6564ff4a2?s=256&d=identicon&r=PG",
+        "display_name" : "Tim Pietzcker",
+        "link" : "https://stackoverflow.com/users/20670/tim-pietzcker"
+      },
+      "edited" : false,
+      "score" : 4,
+      "creation_date" : 1283845439,
+      "post_id" : 3652392,
+      "comment_id" : 3846285,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "They both mean the same; <code>[\\s\\S]</code> is a bit more explicit (&quot;match any character that is either whitespace or non-whitespace&quot;), <code>.</code> is easier to read, but you need to look for the <code>(?s)</code> or <code>DOTALL</code> modifier in order to find out whether newlines are included or not. I&#39;d prefer <code>.</code> with the <code>Pattern.DOTALL</code> flag set (this is easier to read and remember than <code>(?s)</code> in my opinion. You should use what you feel most comfortable with."
+    }, {
+      "owner" : {
+        "account_id" : 55219,
+        "reputation" : 59531,
+        "user_id" : 165297,
+        "user_type" : "registered",
+        "accept_rate" : 75,
+        "profile_image" : "https://i.sstatic.net/Ts23W.jpg?s=256",
+        "display_name" : "Amarghosh",
+        "link" : "https://stackoverflow.com/users/165297/amarghosh"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1283848860,
+      "post_id" : 3652392,
+      "comment_id" : 3846744,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "<code>.*</code> with <code>DOTALL</code> is more readable. I used the other one to show that the issue is in the differences between str.matches and matcher.find and not the flags. +1"
+    }, {
+      "owner" : {
+        "account_id" : 13025,
+        "reputation" : 18412,
+        "user_id" : 25949,
+        "user_type" : "registered",
+        "accept_rate" : 67,
+        "profile_image" : "https://www.gravatar.com/avatar/eff3175735075d38c6e8f7542c776914?s=256&d=identicon&r=PG",
+        "display_name" : "Nivas",
+        "link" : "https://stackoverflow.com/users/25949/nivas"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1283934888,
+      "post_id" : 3652392,
+      "comment_id" : 3857639,
+      "content_license" : "CC BY-SA 2.5",
+      "body" : "I prefer <code>.*</code> with <code>Pattern.DOTALL</code>, but will have to go with (?s) because I have to use <code>String.matches</code>."
+    }, {
+      "owner" : {
+        "account_id" : 86093,
+        "reputation" : 10207,
+        "user_id" : 239657,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/b53c0fe850111d3f1bbd41c24c7c62b3?s=256&d=identicon&r=PG",
+        "display_name" : "Beni Cherniavsky-Paskin",
+        "link" : "https://stackoverflow.com/users/239657/beni-cherniavsky-paskin"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1563199800,
+      "post_id" : 3652392,
+      "comment_id" : 100610785,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "<a href=\"https://www.regular-expressions.info/dot.html\" rel=\"nofollow noreferrer\">regular-expressions.info/dot.html</a> has comprehensive background on <code>.</code>  and what DOTALL is called in various languages."
+    }, {
+      "owner" : {
+        "account_id" : 6009919,
+        "reputation" : 567,
+        "user_id" : 4720669,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/1938472d517989c83ec6ded7ac948700?s=256&d=identicon&r=PG",
+        "display_name" : "Aakash Patel",
+        "link" : "https://stackoverflow.com/users/4720669/aakash-patel"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1597821223,
+      "post_id" : 3652392,
+      "comment_id" : 112254862,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I am using @Pattern annotation on variable to match regex on pattern: [a-zA-Z0-9]*[0-9a-zA-Z,/. -]*  can you please tell me what can i do to allow multi line string ?"
+    } ],
+    "owner" : {
+      "account_id" : 10843,
+      "reputation" : 337423,
+      "user_id" : 20670,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://www.gravatar.com/avatar/251f2449ffba9fbcc3491db6564ff4a2?s=256&d=identicon&r=PG",
+      "display_name" : "Tim Pietzcker",
+      "link" : "https://stackoverflow.com/users/20670/tim-pietzcker"
+    },
+    "is_accepted" : true,
+    "score" : 377,
+    "last_activity_date" : 1283939147,
+    "last_edit_date" : 1283939147,
+    "creation_date" : 1283784931,
+    "answer_id" : 3652392,
+    "question_id" : 3651725,
+    "content_license" : "CC BY-SA 2.5",
+    "body" : "<p>First, you're using the modifiers under an incorrect assumption.</p>\n\n<p><code>Pattern.MULTILINE</code> or <code>(?m)</code> tells Java to accept the anchors <code>^</code> and <code>$</code> to match at the start and end of each line (otherwise they only match at the start/end of the entire string).</p>\n\n<p><code>Pattern.DOTALL</code> or <code>(?s)</code> tells Java to allow the dot to match newline characters, too.</p>\n\n<p>Second, in your case, the regex fails because you're using the <code>matches()</code> method which expects the regex to match the <em>entire</em> string - which of course doesn't work since there are some characters left after <code>(\\\\W)*(\\\\S)*</code> have matched.</p>\n\n<p>So if you're simply looking for a string that starts with <code>User Comments:</code>, use the regex</p>\n\n<pre><code>^\\s*User Comments:\\s*(.*)\n</code></pre>\n\n<p>with the <code>Pattern.DOTALL</code> option:</p>\n\n<pre><code>Pattern regex = Pattern.compile(\"^\\\\s*User Comments:\\\\s+(.*)\", Pattern.DOTALL);\nMatcher regexMatcher = regex.matcher(subjectString);\nif (regexMatcher.find()) {\n    ResultString = regexMatcher.group(1);\n} \n</code></pre>\n\n<p><code>ResultString</code> will then contain the text after <code>User Comments:</code></p>\n"
+  }, {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 15387,
+        "reputation" : 67718,
+        "user_id" : 32453,
+        "user_type" : "registered",
+        "accept_rate" : 92,
+        "profile_image" : "https://www.gravatar.com/avatar/bec38d63650c8912b6ba9b557fb953b9?s=256&d=identicon&r=PG",
+        "display_name" : "rogerdpack",
+        "link" : "https://stackoverflow.com/users/32453/rogerdpack"
+      },
+      "edited" : false,
+      "score" : 7,
+      "creation_date" : 1354557479,
+      "post_id" : 3652402,
+      "comment_id" : 18794322,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Hard to believe they used the method name &quot;#matches&quot; to mean &quot;matches all&quot; yikes"
+    }, {
+      "owner" : {
+        "account_id" : 984229,
+        "reputation" : 171,
+        "user_id" : 1003157,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/c2b8151d0ec3e1c4986136f3c1218e11?s=256&d=identicon&r=PG",
+        "display_name" : "Raymond Naseef",
+        "link" : "https://stackoverflow.com/users/1003157/raymond-naseef"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1582401145,
+      "post_id" : 3652402,
+      "comment_id" : 106767759,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "@alan-moore Sorry I down this even though it is correct [ need more sleep :) ]"
+    } ],
+    "owner" : {
+      "account_id" : 10959,
+      "reputation" : 75581,
+      "user_id" : 20938,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/CuXSm.jpg?s=256",
+      "display_name" : "Alan Moore",
+      "link" : "https://stackoverflow.com/users/20938/alan-moore"
+    },
+    "is_accepted" : false,
+    "score" : 53,
+    "last_activity_date" : 1383859599,
+    "last_edit_date" : 1383859599,
+    "creation_date" : 1283785029,
+    "answer_id" : 3652402,
+    "question_id" : 3651725,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>This has nothing to do with the MULTILINE flag; what you're seeing is the difference between the <code>find()</code> and <code>matches()</code> methods.  <code>find()</code> succeeds if a match can be found <em>anywhere in the target string</em>, while <code>matches()</code> expects the regex to match <em>the entire string</em>.</p>\n\n<pre><code>Pattern p = Pattern.compile(\"xyz\");\n\nMatcher m = p.matcher(\"123xyzabc\");\nSystem.out.println(m.find());    // true\nSystem.out.println(m.matches()); // false\n\nMatcher m = p.matcher(\"xyz\");\nSystem.out.println(m.matches()); // true\n</code></pre>\n\n<p>Furthermore, <code>MULTILINE</code> doesn't mean what you think it does.  Many people seem to jump to the conclusion that you have to use that flag if your target string contains newlines--that is, if it contains multiple logical lines.  I've seen several answers here on SO to that effect, but in fact, all that flag does is change the behavior of the anchors, <code>^</code> and <code>$</code>.  </p>\n\n<p>Normally <code>^</code> matches the very beginning of the target string, and <code>$</code> matches the very end (or before a newline at the end, but we'll leave that aside for now).  But if the string contains newlines, you can choose for <code>^</code> and <code>$</code> to match at the start and end of any logical line, not just the start and end of the whole string, by setting the MULTILINE flag.</p>\n\n<p>So forget about what <code>MULTILINE</code> <em>means</em> and just remember what it <em>does</em>: changes the behavior of the <code>^</code> and <code>$</code> anchors.  <code>DOTALL</code> mode was originally called \"single-line\" (and still is in some flavors, including Perl and .NET), and it has always caused similar confusion.  We're fortunate that the Java devs went with the more descriptive name in that case, but there was no reasonable alternative for \"multiline\" mode.  </p>\n\n<p>In Perl, where all this madness started, they've admitted their mistake and gotten rid of both \"multiline\" and \"single-line\" modes in Perl 6 regexes.  In another twenty years, maybe the rest of the world will have followed suit.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 6877843,
+      "reputation" : 3579,
+      "user_id" : 5476516,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/cenS1.jpg?s=256",
+      "display_name" : "Yehuda Schwartz",
+      "link" : "https://stackoverflow.com/users/5476516/yehuda-schwartz"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1541019224,
+    "creation_date" : 1541019224,
+    "answer_id" : 53091807,
+    "question_id" : 3651725,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The multiline flag tells regex to match the pattern to each line as opposed to the entire string for your purposes a wild card will suffice.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 13025,
+    "reputation" : 18412,
+    "user_id" : 25949,
+    "user_type" : "registered",
+    "accept_rate" : 67,
+    "profile_image" : "https://www.gravatar.com/avatar/eff3175735075d38c6e8f7542c776914?s=256&d=identicon&r=PG",
+    "display_name" : "Nivas",
+    "link" : "https://stackoverflow.com/users/25949/nivas"
+  },
+  "is_answered" : true,
+  "view_count" : 267792,
+  "accepted_answer_id" : 3652392,
+  "answer_count" : 4,
+  "score" : 208,
+  "last_activity_date" : 1678684215,
+  "creation_date" : 1283778855,
+  "last_edit_date" : 1678684215,
+  "question_id" : 3651725,
+  "link" : "https://stackoverflow.com/questions/3651725/match-multiline-text-using-regular-expression",
+  "title" : "Match multiline text using regular expression",
+  "body" : "<p>I am trying to match a multi line text using Java. When I use the <code>Pattern</code> class with the <code>Pattern.MULTILINE</code> modifier, I am able to match, but I am not able to do so with <code>(?m).</code></p>\n<p>The same pattern with <code>(?m)</code> and using <code>String.matches</code> does not seem to work. I am sure I am missing something, but no idea what.</p>\n<p>This is what I tried:</p>\n<pre><code>String test = &quot;User Comments: This is \\t a\\ta \\n test \\n\\n message \\n&quot;;\n        \nString pattern1 = &quot;User Comments: (\\\\W)*(\\\\S)*&quot;;\nPattern p = Pattern.compile(pattern1, Pattern.MULTILINE);\nSystem.out.println(p.matcher(test).find());  //true\n\nString pattern2 = &quot;(?m)User Comments: (\\\\W)*(\\\\S)*&quot;;\nSystem.out.println(test.matches(pattern2));  //false - why?\n</code></pre>\n"
+}

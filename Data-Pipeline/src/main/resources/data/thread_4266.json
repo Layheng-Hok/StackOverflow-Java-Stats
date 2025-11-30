@@ -1,0 +1,98 @@
+{
+  "tags" : [ "java", "spring-boot", "junit5", "wiremock" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1574698,
+      "reputation" : 2316,
+      "user_id" : 1461484,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/JF8i3.jpg?s=256",
+      "display_name" : "badjr",
+      "link" : "https://stackoverflow.com/users/1461484/badjr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1644788507,
+    "post_id" : 71104624,
+    "comment_id" : 125693171,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "&quot;failed to resolve &#39;null&#39;&quot; suggests that the <code>webClient</code> base URL is null. How is the <code>webClient</code> being created? If it is something like <code>WebClient.builder().baseUrl(...).build()</code>, ensure that a base URL is supplied when the test is run (may have to do some mocking)."
+  }, {
+    "owner" : {
+      "account_id" : 1574698,
+      "reputation" : 2316,
+      "user_id" : 1461484,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/JF8i3.jpg?s=256",
+      "display_name" : "badjr",
+      "link" : "https://stackoverflow.com/users/1461484/badjr"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1644788616,
+    "post_id" : 71104624,
+    "comment_id" : 125693203,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "In the test, there is a stub for the URL <code>&#47;api&#47;v21.3&#47;vobjects&#47;ecotox_study__c&#47;actions&#47;Objectlifecycles&zwnj;&#8203;tateuseraction.ecoto&zwnj;&#8203;x_study__c.study_set&zwnj;&#8203;up_completed_state__&zwnj;&#8203;c.change_state_to_st&zwnj;&#8203;udy_contracted_usera&zwnj;&#8203;ct__c</code>, but in the code, it calls <code>&#47;vobjects&#47;ecotox_study__c&#47;actions&#47;Objectlifecyclestateuserac&zwnj;&#8203;tion.ecotox_study__c&zwnj;&#8203;.study_setup_complet&zwnj;&#8203;ed_state__c.change_s&zwnj;&#8203;tate_to_study_contra&zwnj;&#8203;cted_useract__c</code>. These two should match or otherwise you would get a 404 not found when running the test."
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 24214480,
+        "reputation" : 55,
+        "user_id" : 18170566,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/Od660.jpg?s=256",
+        "display_name" : "pussyCat",
+        "link" : "https://stackoverflow.com/users/18170566/pussycat"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1644826847,
+      "post_id" : 71105459,
+      "comment_id" : 125699506,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;m going to test your proposition, thank you! :)"
+    } ],
+    "owner" : {
+      "account_id" : 1574698,
+      "reputation" : 2316,
+      "user_id" : 1461484,
+      "user_type" : "registered",
+      "accept_rate" : 82,
+      "profile_image" : "https://i.sstatic.net/JF8i3.jpg?s=256",
+      "display_name" : "badjr",
+      "link" : "https://stackoverflow.com/users/1461484/badjr"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1644791825,
+    "creation_date" : 1644791825,
+    "answer_id" : 71105459,
+    "question_id" : 71104624,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<blockquote>\n<p>WebClientRequestException: failed to resolve 'null' after 6 queries;</p>\n</blockquote>\n<p>This error message suggests that the <code>WebClient</code> is being created with a <code>null</code> base URL when the test is run. Not sure how the <code>WebClient</code> is being created in the actual code, but one approach that could also make this work in the test would be to create one in the test class with <code>localhost</code> as the base URL so that it will work with WireMock.</p>\n<p>For example:</p>\n<pre><code>@Test\n@DisplayName(&quot;Test changeState&quot;)\nvoid changeState() {\n    //Create and start the WireMockServer for localhost on port 8090\n    WireMockServer wireMockServer = new WireMockServer(8090);\n    wireMockServer.start();\n\n    //Create a WebClient with base URL localhost on port 8090\n    WebClient localhostWebClient = WebClient.builder().baseUrl(&quot;http://localhost:8090&quot;).build();\n\n    //Initialize VaultService with the localhost web client\n    VaultService vaultService = new VaultService(localhostWebClient);\n\n    ...\n</code></pre>\n<p>To allow the <code>WebClient</code> to be injected into the Vault service, add a parameter for <code>WebClient</code> in the constructor:</p>\n<pre><code>public class VaultService {\n\n    private WebClient webClient;\n\n    public VaultService(WebClient webClient) {\n        this.webClient = webClient;\n    }\n    ...\n</code></pre>\n<blockquote>\n<p>As I can see, asserting is obviously done wrong, because I'm asserting the whole body vs. just a single string.</p>\n</blockquote>\n<p>The JSON response can be mapped to a Java object assuming the field names and data types match up, and the JSON is syntactically valid. Here is some Java objects that could be made that matches the data model of the JSON response:</p>\n<p><strong>VaultResponse.java</strong>:</p>\n<pre><code>public class VaultResponse {\n    private String responseStatus;\n    private VaultResponseData[] data;\n\n    public String getResponseStatus() {\n        return responseStatus;\n    }\n\n    public void setResponseStatus(String responseStatus) {\n        this.responseStatus = responseStatus;\n    }\n\n    public VaultResponseData[] getData() {\n        return data;\n    }\n\n    public void setData(VaultResponseData[] data) {\n        this.data = data;\n    }\n}\n</code></pre>\n<p><strong>VaultResponseData.java</strong>:</p>\n<pre><code>public class VaultResponseData {\n    private String responseStatus;\n    private String id;\n\n    public String getResponseStatus() {\n        return responseStatus;\n    }\n\n    public void setResponseStatus(String responseStatus) {\n        this.responseStatus = responseStatus;\n    }\n\n    public String getId() {\n        return id;\n    }\n\n    public void setId(String id) {\n        this.id = id;\n    }\n}\n</code></pre>\n<p>Now in the <code>changeState()</code> method, the response can be mapped to a <code>VaultResponse</code> object instead of a <code>String</code>:</p>\n<pre><code>return webClient.post()\n        .uri(&quot;/vobjects/ecotox_study__c/actions/Objectlifecyclestateuseraction.ecotox_study__c.study_setup_completed_state__c.change_state_to_study_contracted_useract__c&quot;)\n        .header(HttpHeaders.AUTHORIZATION, getSessionId())\n        .header(HttpHeaders.ACCEPT, PageAttributes.MediaType.APPLICATION_JSON_VALUE)\n        .bodyValue(form)\n        .retrieve()\n        .bodyToMono(VaultResponse.class) //Response can be mapped to an Object instead of a raw String\n        .block();\n</code></pre>\n<p>And finally, in the assert, you can assert on just the ID string instead of the whole JSON response body. A couple of things have to be fixed as well:</p>\n<ol>\n<li>There is an extra comma after the ID in the JSON body. <code>\\&quot;id\\&quot;: \\&quot;V4600000001K001\\&quot;,\\n&quot;</code> should become <code>\\&quot;id\\&quot;: \\&quot;V4600000001K001\\&quot;\\n&quot;</code></li>\n<li>The WireMock URL should match the URL being used in the code.</li>\n</ol>\n<p>Here is the whole test method after all of the changes:</p>\n<pre><code>@Test\n@DisplayName(&quot;Test changeState&quot;)\nvoid changeState() {\n    //Create and start the WireMockServer for localhost on port 8090\n    WireMockServer wireMockServer = new WireMockServer(8090);\n    wireMockServer.start();\n\n    //Create a WebClient with base URL localhost on port 8090\n    WebClient localhostWebClient = WebClient.builder().baseUrl(&quot;http://localhost:8090&quot;).build();\n\n    //Initialize VaultService with the localhost web client\n    VaultService vaultService = new VaultService(localhostWebClient);\n\n    String body = &quot;{\\n&quot; +\n            &quot;    \\&quot;responseStatus\\&quot;: \\&quot;SUCCESS\\&quot;,\\n&quot; +\n            &quot;    \\&quot;data\\&quot;: [\\n&quot; +\n            &quot;        {\\n&quot; +\n            &quot;            \\&quot;responseStatus\\&quot;: \\&quot;SUCCESS\\&quot;,\\n&quot; +\n            &quot;                \\&quot;id\\&quot;: \\&quot;V4600000001K001\\&quot;\\n&quot; + //Extra comma here was removed to make this valid JSON\n            &quot;        }\\n&quot; +\n            &quot;    ]\\n&quot; +\n            &quot;}&quot;;\n\n    //This URL must match the URL being called in the code\n    wireMockServer.stubFor(post(urlEqualTo(&quot;/vobjects/ecotox_study__c/actions/Objectlifecyclestateuseraction.ecotox_study__c.study_setup_completed_state__c.change_state_to_study_contracted_useract__c&quot;))\n            .willReturn(aResponse()\n                    .withStatus(200)\n                    .withHeader(&quot;Content-Type&quot;, &quot;application/json&quot;)\n                    .withBody(body))\n    );\n\n    VaultResponse vaultResponse = vaultService.changeState(&quot;V4600000001K001&quot;);\n    assertEquals(&quot;V4600000001K001&quot;, vaultResponse.getData()[0].getId());\n}\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 24214480,
+    "reputation" : 55,
+    "user_id" : 18170566,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/Od660.jpg?s=256",
+    "display_name" : "pussyCat",
+    "link" : "https://stackoverflow.com/users/18170566/pussycat"
+  },
+  "is_answered" : false,
+  "view_count" : 9736,
+  "answer_count" : 1,
+  "score" : 0,
+  "last_activity_date" : 1760558420,
+  "creation_date" : 1644784477,
+  "last_edit_date" : 1644787992,
+  "question_id" : 71104624,
+  "link" : "https://stackoverflow.com/questions/71104624/webclientrequestexception-when-wiremocking-spring-boot-service-post-method",
+  "title" : "WebClientRequestException when wiremocking Spring Boot Service POST method",
+  "body" : "<p>I'm testing my Service in Spring Boot, but I'm getting <code>WebClientRequestException: failed to resolve 'null' after 6 queries; nested exception is java.net.UnknownHostException: failed to resolve 'null' after 6 queries.</code></p>\n<p>I'm new to mocking and testing in general. I guess stubbing is properly done, but asserting is done wrong. Here's my service:</p>\n<pre><code>public String changeState(String ids) {\n    MultiValueMap&lt;String, String&gt; form = new LinkedMultiValueMap&lt;&gt;();\n    form.add(&quot;ids&quot;, ids);\n\nreturn webClient.post()\n        .uri(&quot;/vobjects/ecotox_study__c/actions/Objectlifecyclestateuseraction.ecotox_study__c.study_setup_completed_state__c.change_state_to_study_contracted_useract__c&quot;)\n        .header(HttpHeaders.AUTHORIZATION, getSessionId())\n        .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)\n        .bodyValue(form)\n        .retrieve()\n        .bodyToMono(String.class)\n        .block();\n}\n</code></pre>\n<p>And here's my test, with the response from Postman as a body:</p>\n<pre><code>@Test\n@DisplayName(&quot;Test changeState&quot;)\nvoid changeState() {\n    String body = &quot;{\\n&quot; +\n            &quot;    \\&quot;responseStatus\\&quot;: \\&quot;SUCCESS\\&quot;,\\n&quot; +\n            &quot;    \\&quot;data\\&quot;: [\\n&quot; +\n            &quot;        {\\n&quot; +\n            &quot;            \\&quot;responseStatus\\&quot;: \\&quot;SUCCESS\\&quot;,\\n&quot; +\n            &quot;                \\&quot;id\\&quot;: \\&quot;V4600000001K001\\&quot;,\\n&quot; +\n            &quot;        }\\n&quot; +\n            &quot;    ]\\n&quot; +\n            &quot;}&quot;;\n    wireMockServer.stubFor(post(urlEqualTo(&quot;/api/v21.3/vobjects/ecotox_study__c/actions/Objectlifecyclestateuseraction.ecotox_study__c.study_setup_completed_state__c.change_state_to_study_contracted_useract__c&quot;))\n            .willReturn(aResponse()\n                    .withStatus(200)\n                    .withHeader(&quot;Content-Type&quot;, &quot;application/json&quot;)\n                    .withBody(body))\n    );\n    String vaultIds = vaultServiceTest.changeState(&quot;V4600000001K001&quot;);\n    assertEquals(body, vaultIds);\n}\n</code></pre>\n<p>As I can see, asserting is obviously done wrong, because I'm asserting the whole body vs. just a single string. I'm not sure is this the right approach or my test method is wrong as a whole.</p>\n"
+}

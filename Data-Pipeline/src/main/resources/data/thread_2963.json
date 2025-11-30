@@ -1,0 +1,153 @@
+{
+  "tags" : [ "java", "design-patterns", "single-responsibility-principle" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 3399605,
+        "reputation" : 977,
+        "user_id" : 2852193,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://www.gravatar.com/avatar/2659d0004b4593295018a89b13a7bcfd?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "anathema",
+        "link" : "https://stackoverflow.com/users/2852193/anathema"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1445559951,
+      "post_id" : 33276481,
+      "comment_id" : 54385900,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "thank you for the input, I would like to as on the <code>Also, the calculation for each Employee.Type might change too</code>. How does the calculation for the employee would affect the method? Since each type is just calling a method to perform the calculation, I think, and also based on your answer and on the statement given by the book can I assume that my hypothesis on how I understand the principle is correct?"
+    }, {
+      "owner" : {
+        "account_id" : 7164996,
+        "reputation" : 1103,
+        "user_id" : 5474410,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/4170c0c01a3b04e637e2627e2e7bd639?s=256&d=identicon&r=PG",
+        "display_name" : "Janus Pienaar",
+        "link" : "https://stackoverflow.com/users/5474410/janus-pienaar"
+      },
+      "reply_to_user" : {
+        "account_id" : 3399605,
+        "reputation" : 977,
+        "user_id" : 2852193,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://www.gravatar.com/avatar/2659d0004b4593295018a89b13a7bcfd?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "anathema",
+        "link" : "https://stackoverflow.com/users/2852193/anathema"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1445579435,
+      "post_id" : 33276481,
+      "comment_id" : 54390607,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "The <a href=\"https://en.wikipedia.org/wiki/Single_responsibility_principle\" rel=\"nofollow noreferrer\">Single Responsibility Principal</a> should be seen in the context of a Class and not necessarily on Method level. This is why I&#39;m saying that if any calculation changes you would need to update this class. If you moved this Method to a derivative of Employee, then only that class will have to change if the calculation needs to change."
+    }, {
+      "owner" : {
+        "account_id" : 9158407,
+        "reputation" : 465,
+        "user_id" : 6810625,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/6123ece4c5e29f8f4a2d23b32a9fefd5?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "Robert F.",
+        "link" : "https://stackoverflow.com/users/6810625/robert-f"
+      },
+      "reply_to_user" : {
+        "account_id" : 3399605,
+        "reputation" : 977,
+        "user_id" : 2852193,
+        "user_type" : "registered",
+        "accept_rate" : 43,
+        "profile_image" : "https://www.gravatar.com/avatar/2659d0004b4593295018a89b13a7bcfd?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "anathema",
+        "link" : "https://stackoverflow.com/users/2852193/anathema"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1490782922,
+      "post_id" : 33276481,
+      "comment_id" : 73262823,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@anathema also, if e.g. we want to calculate hourly payment differently (let&#39;s say working on weekend has an effect on the salary) then we might change calculateHourlyPay function signature (adding a boolean flag or a datetime), hence the calculatePay function is also need to be changed."
+    } ],
+    "owner" : {
+      "account_id" : 7164996,
+      "reputation" : 1103,
+      "user_id" : 5474410,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/4170c0c01a3b04e637e2627e2e7bd639?s=256&d=identicon&r=PG",
+      "display_name" : "Janus Pienaar",
+      "link" : "https://stackoverflow.com/users/5474410/janus-pienaar"
+    },
+    "is_accepted" : false,
+    "score" : 12,
+    "last_activity_date" : 1445502387,
+    "creation_date" : 1445502387,
+    "answer_id" : 33276481,
+    "question_id" : 33276095,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<blockquote>\n  <p>\"...clearly does more than one thing. Third, it violates the Single\n  Responsibility Principle (SRP) because there is more than one reason\n  for it to change.\"</p>\n</blockquote>\n\n<p>There lies your answer. Every time a new <code>Employee.Type</code> is added that method will have to change. Also, the calculation for each <code>Employee.Type</code> might change too.</p>\n\n<p>A better solution would be to create an <a href=\"https://en.wikipedia.org/wiki/Abstract_factory_pattern\">Abstract Factory</a> for Employee and each derivative of Employee having it's own implementation of <code>CalculatePay</code>. This way, only ONE class needs to changed when the Calculation changes or when a new <code>Employee.Type</code> is added.</p>\n\n<p>Here is another extract from Clean Code that explains in more detail - </p>\n\n<blockquote>\n  <p>The solution to this problem (see Listing 3-5) is to bury the switch\n  statement in the basement of an ABSTRACT FACTORY,9 and never let\n  anyone see it. The factory will use the switch statement to create\n  appropriate instances of the derivatives of Employee, and the various\n  functions, such as calculatePay, isPayday, and deliverPay, will be\n  dispatched polymorphically through the Employee interface. My general\n  rule for switch statements is that they can be tolerated if they\n  appear only once, are used to create polymorphic objects</p>\n</blockquote>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1188690,
+      "reputation" : 6846,
+      "user_id" : 1162077,
+      "user_type" : "registered",
+      "accept_rate" : 80,
+      "profile_image" : "https://i.sstatic.net/dNzNu.png?s=256",
+      "display_name" : "David Osborne",
+      "link" : "https://stackoverflow.com/users/1162077/david-osborne"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1445502528,
+    "creation_date" : 1445502528,
+    "answer_id" : 33276523,
+    "question_id" : 33276095,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>I generally apply the SRP at the class level. It prevents classes becoming too big and taking on too many roles.</p>\n\n<p>I treat the 'responsibilities' as conceptual. Therefore, I would argue that your method has only one responsibility: to calculate pay.</p>\n\n<p>I try and follow Google's <a href=\"http://misko.hevery.com/code-reviewers-guide/\" rel=\"noreferrer\">guidelines</a> on this and look for these warning signs that suggest you're wandering away from the SRP:</p>\n\n<ul>\n<li>Summarising what the class does includes the word ‘and’. </li>\n<li>Class would be challenging for new team members or inexperienced developers\nto read and quickly ‘get it’.</li>\n<li>Class has fields that are only used in some methods.</li>\n<li>Class has static methods that only operate on parameters.</li>\n</ul>\n\n<p>On another note, however, your code contains a switch statement that suggests you might be wandering away from the OCP...</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 42420563,
+      "reputation" : 1,
+      "user_id" : 30745351,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/29fc330c9848df11b681d04c2911e98f?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "Rishav Jain",
+      "link" : "https://stackoverflow.com/users/30745351/rishav-jain"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763529706,
+    "creation_date" : 1763529706,
+    "answer_id" : 79824089,
+    "question_id" : 33276095,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>There is a misconception of SRE Principal that all are thinking about different method inside same class and one changes create disturbance of that class, so instead of creating in same class you can create different class for different mechanism.</p>\n<p>According to your code it created <strong>new Employee. TYPE</strong> each and every time which trigger the same class, now in future if any calculation or any functionality is changes then only that separated class is changes not the whole class.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 3399605,
+    "reputation" : 977,
+    "user_id" : 2852193,
+    "user_type" : "registered",
+    "accept_rate" : 43,
+    "profile_image" : "https://www.gravatar.com/avatar/2659d0004b4593295018a89b13a7bcfd?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "anathema",
+    "link" : "https://stackoverflow.com/users/2852193/anathema"
+  },
+  "is_answered" : true,
+  "view_count" : 1787,
+  "answer_count" : 3,
+  "score" : 11,
+  "last_activity_date" : 1763529706,
+  "creation_date" : 1445501036,
+  "last_edit_date" : 1454998096,
+  "question_id" : 33276095,
+  "link" : "https://stackoverflow.com/questions/33276095/understanding-the-single-responsibility-principle",
+  "title" : "Understanding the Single Responsibility Principle",
+  "body" : "<p>I am quite confused on how to determine if a single method has one responsibility being done just like the following code from the book Clean Code</p>\n\n<pre><code>public Money calculatePay(Employee e) throws InvalidEmployeeType {\n        switch (e.type) {\n            case COMMISSIONED:\n                return calculateCommissionedPay(e);\n            case HOURLY:\n                return calculateHourlyPay(e);\n            case SALARIED:\n                return calculateSalariedPay(e);\n            default:\n                throw new InvalidEmployeeType(e.type);\n        }\n    }\n</code></pre>\n\n<p>As the author stated on this code snippet: \"...<strong>clearly does more than one thing.\nThird, it violates the Single Responsibility Principle (SRP) because there is more than one\nreason for it to change.</strong>\". On a first glance at the code I was thinking that how come that the method violates SRP since if there is a change in the code it would be the switch statement only if there will be an added employee type but as I try to understand the method further I came up with a hypothesis on why it violates the said principle.</p>\n\n<p>My hypothesis is that since the name of the method is <code>calculatePay(Employee e)</code> then the only responsibility of this method is for the payment computation as the method's name suggest but since inside the method there is a switch on filtering the type of Employee this filtering is now a different or another responsibility thus violates SRP. I don't know if I got it right.</p>\n"
+}

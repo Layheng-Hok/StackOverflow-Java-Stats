@@ -1,0 +1,63 @@
+{
+  "tags" : [ "java", "spring", "lombok", "final", "spring-annotations" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 10777133,
+      "reputation" : 8304,
+      "user_id" : 7928721,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/Pzwgx.jpg?s=256",
+      "display_name" : "samabcde",
+      "link" : "https://stackoverflow.com/users/7928721/samabcde"
+    },
+    "is_accepted" : true,
+    "score" : 3,
+    "last_activity_date" : 1681108492,
+    "last_edit_date" : 1681108492,
+    "creation_date" : 1681107900,
+    "answer_id" : 75974745,
+    "question_id" : 75974580,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The problem is closely related to lombok, which is quite common.</p>\n<h2>What I would suggest for such problem is <strong>to look at the processed class</strong>.</h2>\n<p>If you are using IntelliJ, go to the project build directory to open the class file.</p>\n<h2>1. if the Vechicle member variable of Person is declared as final, an exception is thrown;</h2>\n<p>The processed class is:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Component\npublic class Person {\n    private String name = &quot;Mike&quot;;\n    @Qualifier(&quot;vehicle2&quot;)\n    private final Vehicle vehicle;\n\n    public Person(final Vehicle vehicle) {\n        this.vehicle = vehicle;\n    }\n    ...\n}\n\n</code></pre>\n<p>We see that injection is through the constructor in this case, and <code>@Qualifier</code> is neglected. Hence we will see <code>NoUniqueBeanDefinitionException</code> as we does not specify which bean to use.</p>\n<h2>2. otherwise, no exception is thrown (but the vehicle is null).</h2>\n<p>This time the processed class is:</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Component\npublic class Person {\n    private String name = &quot;Mike&quot;;\n    @Qualifier(&quot;vehicle2&quot;)\n    private Vehicle vehicle;\n\n    public Person() {\n    }\n    ...\n}\n</code></pre>\n<p><code>vehicle</code> does not appear in the constructor this time and there is no <code>@Autowired</code> for `vehicle, so no injection is preformed and it is null.</p>\n<h2>How to make it work?</h2>\n<p>To begin, it is not common to use <code>@Data</code> with Spring bean, <code>@Data</code> is usually used by DTO. And in favour of constructor injection, I will modify <code>Person</code> like below</p>\n<pre class=\"lang-java prettyprint-override\"><code>@Component\npublic class Person {\n    private String name = &quot;Mike&quot;;\n    private final Vehicle vehicle;\n    public Person(@Qualifier(&quot;vehicle2&quot;) Vehicle vehicle) {\n        this.vehicle = vehicle;\n    }\n    // ... getter setter omitted\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 1628102,
+      "reputation" : 5215,
+      "user_id" : 1503163,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/c849158de87c316eccc01649e521374a?s=256&d=identicon&r=PG",
+      "display_name" : "Sanjay Bharwani",
+      "link" : "https://stackoverflow.com/users/1503163/sanjay-bharwani"
+    },
+    "is_accepted" : false,
+    "score" : 2,
+    "last_activity_date" : 1697030288,
+    "creation_date" : 1697030288,
+    "answer_id" : 77273423,
+    "question_id" : 75974580,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I faced the same problem. If you were not using Lombok annotations then your class Person would have a constructor with @Autowired annotation</p>\n<pre><code>    @Autowired\n    public Person(@Qualifier(&quot;vehicle2&quot;) Vehicle vehicle) {\n        this.myService = myService;\n    }\n</code></pre>\n<p>This tells Spring to load a bean with @Qualifier(&quot;vehicle2&quot;) while loading bean of class Person in the context. And this works perfectly fine.</p>\n<p>The problem here is the use of Lombok annotations. So with @Data,  <code>@RequiredArgsConstructor</code> comes into picture.\nAnd by default Lombok doesn't copy the @Qualifier annotation to the injected constructor.</p>\n<p>This was an issue/limitation in Lombok until version 1.18.4. However it is fixed now and you need to add following line in <code>lombok.config</code> (if you are not already using this file, then create one <code>src</code> folder)</p>\n<pre><code>lombok.copyableAnnotations += org.springframework.beans.factory.annotation.Qualifier\n</code></pre>\n<p>As the key means, it will instruct Lombok to add the Qualifier annotation to the injected constructor.</p>\n<p>And this will then work as expected.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 6712897,
+    "reputation" : 437,
+    "user_id" : 5175699,
+    "user_type" : "registered",
+    "accept_rate" : 7,
+    "profile_image" : "https://www.gravatar.com/avatar/72b002b9f8922766dc476158db65a1a1?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "leo",
+    "link" : "https://stackoverflow.com/users/5175699/leo"
+  },
+  "is_answered" : true,
+  "view_count" : 5580,
+  "accepted_answer_id" : 75974745,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1759573318,
+  "creation_date" : 1681105864,
+  "last_edit_date" : 1681138209,
+  "question_id" : 75974580,
+  "link" : "https://stackoverflow.com/questions/75974580/why-qualifier-annotation-does-not-work-with-final-member-variable",
+  "title" : "Why @Qualifier annotation does not work with final member variable",
+  "body" : "<p>I noticed that the <code>@Qualifier</code> annotation does not work with <code>final</code> member variable.\nIn the code below,</p>\n<ul>\n<li>if the <code>Vehicle</code> member variable of <code>Person</code> is declared as <code>final</code>, an exception is thrown;</li>\n<li>otherwise, no exception is thrown (but the    <code>vehicle</code> is null).</li>\n</ul>\n<p>Can anyone please explain why?</p>\n<pre><code>// 2 Vehicle beans are annotated by @Qualifier;\n@Configuration\npublic class Config \n{\n  @Bean\n  @Qualifier(&quot;vehicle1&quot;)\n  Vehicle vehicle1() {\n    var veh = new Vehicle();\n    veh.setName(&quot;Benz&quot;);\n    return veh;\n  }\n\n  @Bean\n  @Qualifier(&quot;vehicle2&quot;)\n  Vehicle vehicle2() {\n    var veh = new Vehicle();\n    veh.setName(&quot;BMW&quot;);\n    return veh;\n  }\n}\n\n// Person has a final member variable Vehicle\n@Component\n@Data\npublic class Person \n{\n  private String name=&quot;Mike&quot;;\n\n  @Qualifier(&quot;vehicle2&quot;)\n  private final Vehicle vehicle;\n}\n</code></pre>\n<p>Springboot complain about NoUniqueBeanDefinitionException:</p>\n<blockquote>\n<ul>\n<li>No qualifying bean of type 'project1.Vehicle' available: expected\nsingle matching bean but found 2: vehicle1,vehicle2</li>\n</ul>\n</blockquote>\n"
+}

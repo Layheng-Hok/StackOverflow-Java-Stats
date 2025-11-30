@@ -1,0 +1,97 @@
+{
+  "tags" : [ "java", "classloader", "decompiling" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 25223771,
+        "reputation" : 511,
+        "user_id" : 19059901,
+        "user_type" : "registered",
+        "profile_image" : "https://i.sstatic.net/wzMFz.png?s=256",
+        "display_name" : "Heisenbug",
+        "link" : "https://stackoverflow.com/users/19059901/heisenbug"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1763383956,
+      "post_id" : 42893266,
+      "comment_id" : 140858190,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I tried with current latest procyon v0.6.0,  both the versions of classname i.e. with dot separated and with slash separated worked fine."
+    } ],
+    "owner" : {
+      "account_id" : 10496658,
+      "reputation" : 63,
+      "user_id" : 7736659,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/yo6GB.png?s=256",
+      "display_name" : "NopMind",
+      "link" : "https://stackoverflow.com/users/7736659/nopmind"
+    },
+    "is_accepted" : true,
+    "score" : 1,
+    "last_activity_date" : 1489963838,
+    "creation_date" : 1489963838,
+    "answer_id" : 42893266,
+    "question_id" : 42892108,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>The answer is simple: class namespaces are not prefixed with <code>.</code> then with <code>/</code> instead.</p>\n\n<p>So just replacing <code>Decompiler.decompile(\"com/myjar/foo\", ...)</code> works fine. Sorry</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 58477,
+      "reputation" : 25663,
+      "user_id" : 175070,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/6d7266ccba60891b8e94000b6d0004e1?s=256&d=identicon&r=PG",
+      "display_name" : "Mike Strobel",
+      "link" : "https://stackoverflow.com/users/175070/mike-strobel"
+    },
+    "is_accepted" : false,
+    "score" : 1,
+    "last_activity_date" : 1504898475,
+    "creation_date" : 1504898475,
+    "answer_id" : 46123278,
+    "question_id" : 42892108,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>You can coax Procyon into being more forgiving with class names.  All you have to do is wrap your 'primary' type loader in an <code>InputTypeLoader</code>.</p>\n\n\n\n<pre class=\"lang-java prettyprint-override\"><code>settings.setTypeLoader(new InputTypeLoader(new JarTypeLoader(myJar)));\n</code></pre>\n\n<p>The <code>InputTypeLoader</code> will first try to locate classes using your primary type loader, and if it can't find a match, it will try to 'massage' the class name.  It's used by the command-line decompiler, where users may try to use an alternate form, like <code>.</code> instead of <code>/</code> or <code>$</code>.  For example, if there exists a class <code>com/jar/Foo</code>, and the user tries to decompile <code>com.jar.Foo</code>, it should be able to resolve that.  It should work for inner classes too, e.g., <code>com.jar.Foo.Bar</code> could be used to locate <code>com/jar/Foo$Bar</code>.  It's up to you whether you want to use this.</p>\n\n<p><strong>I do have a recommendation for you, though:</strong> you probably don't want to be using a <code>JarTypeLoader</code> as your <em>primary</em> type loader.  If you do that, Procyon will <em>only</em> search for classes inside your specific jar.  That may <em>sound</em> like what you want, but it's probably not.</p>\n\n<p>See, there are some optimizations that Procyon can only perform when it can resolve and analyze a class's dependencies.  For example, when it decompiles a method call, Procyon will initially insert casts in front of every argument that doesn't <em>exactly</em> match the parameter types on the target method.  It has to do this for correctness, because the method could have overloads, and removing those casts might result in the call being bound the wrong method.  <em>However</em>, if Procyon can locate the class that declared the method <em>and</em> it can locate all of its ancestor classes, then it can figure out which casts can be safely removed while still binding to the correct method.  It then removes those redundant casts, resulting in cleaner output.  That's just one example—there are others too.</p>\n\n<p>Here is what I'd recommend using:</p>\n\n<pre class=\"lang-java prettyprint-override\"><code>settings.setTypeLoader(\n    new InputTypeLoader(                // allow more relaxed type names\n        new CompositeTypeLoader(\n            new JarTypeLoader(myJar),   // search your specific jar first\n            new ClasspathTypeLoader()   // fall back to your classpath\n        )\n    )\n);\n</code></pre>\n\n<p>This will give Procyon the opportunity search for dependencies in the JRE and anywhere else that happens to be in your classpath.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 25223771,
+      "reputation" : 511,
+      "user_id" : 19059901,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/wzMFz.png?s=256",
+      "display_name" : "Heisenbug",
+      "link" : "https://stackoverflow.com/users/19059901/heisenbug"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1763384404,
+    "creation_date" : 1763384404,
+    "answer_id" : 79822320,
+    "question_id" : 42892108,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Here's the latest working code to use <code>JarTypeLoader</code> with procyon v0.6.0 :</p>\n<pre><code>private static String callProcyonDecompiler(String className, List&lt;String&gt; jarsPath) {\n    try (StringWriter writer = new StringWriter()) {\n        DecompilerSettings settings = DecompilerSettings.javaDefaults();\n\n        List&lt;ITypeLoader&gt; loaders = new ArrayList&lt;&gt;();\n        for (String jarPath : jarsPath) {\n            loaders.add(new JarTypeLoader(new JarFile(jarPath)));\n        }\n        CompositeTypeLoader composite = new CompositeTypeLoader(loaders.toArray(new ITypeLoader[0]));\n        InputTypeLoader inputWrapper = new InputTypeLoader(composite);\n\n        settings.setTypeLoader(inputWrapper);\n        settings.setIncludeLineNumbersInBytecode(true);\n        settings.setRetainRedundantCasts(false);\n        settings.setShowSyntheticMembers(false);\n        settings.setForceExplicitImports(true);\n\n        PlainTextOutput output = new PlainTextOutput(writer);\n        Decompiler.decompile(className, output, settings);\n\n        return writer.toString();\n    } catch (Exception e) {\n    }\n    return null;\n}\n</code></pre>\n<p>In my case, I used <code>JarTypeLoader</code> to resolve <code>!!! ERROR: Failed to load class &lt;classname&gt;.</code>.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 10496658,
+    "reputation" : 63,
+    "user_id" : 7736659,
+    "user_type" : "registered",
+    "profile_image" : "https://i.sstatic.net/yo6GB.png?s=256",
+    "display_name" : "NopMind",
+    "link" : "https://stackoverflow.com/users/7736659/nopmind"
+  },
+  "is_answered" : true,
+  "view_count" : 1890,
+  "accepted_answer_id" : 42893266,
+  "answer_count" : 3,
+  "score" : 3,
+  "last_activity_date" : 1763386522,
+  "creation_date" : 1489956642,
+  "last_edit_date" : 1763386522,
+  "question_id" : 42892108,
+  "link" : "https://stackoverflow.com/questions/42892108/procyon-decompiling-specific-classes-of-jar",
+  "title" : "Procyon: decompiling specific classes of jar",
+  "body" : "<p>I'm trying to decompile specific classes from a JAR file using the <a href=\"https://bitbucket.org/mstrobel/procyon/wiki/Java%20Decompiler\" rel=\"nofollow noreferrer\"><code>com.strobel.decompiler.Decompiler</code></a> decompiler from the <a href=\"https://bitbucket.org/mstrobel/procyon\" rel=\"nofollow noreferrer\"><code>Procyon</code></a> library.</p>\n<p>This is my current approach:</p>\n<pre class=\"lang-java prettyprint-override\"><code>// jar file containing foo.class and bar.class\nJarFile myJar = new JarFile(&quot;my.jar&quot;);\n// creating decompiler settings\nDecompilerSettings settings = new DecompilerSettings();\n// set type loader to jar file\nsettings.setTypeLoader(new JarTypeLoader(myJar));\n\nStringWriter foo = new StringWriter();\nDecompiler.decompile(&quot;com.myjar.foo&quot;, new PlainTextOutput(foo), settings);\nSystem.out.print(foo.toString());\n</code></pre>\n<p>This only prints: <code>!!! ERROR: Failed to load class com.myjar.foo.</code></p>\n<p>I'm pretty sure I missed something for class loading the classes from <code>my.jar</code>. (Thought this would be done by setting the type loader).</p>\n<p>The actual question: how do I decompile a specific class from a JAR file with the Procyon decompiler? (What have I done wrong in my approach?)</p>\n"
+}

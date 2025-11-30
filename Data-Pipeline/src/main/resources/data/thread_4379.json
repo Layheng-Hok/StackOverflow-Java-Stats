@@ -1,0 +1,87 @@
+{
+  "tags" : [ "java", "javassist" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "edited" : false,
+    "score" : 2,
+    "creation_date" : 1697210718,
+    "post_id" : 77288727,
+    "comment_id" : 136255561,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "What makes you think that <code>StackMapTable</code> and <code>StackDependencies</code> are equivalent? Because there’s “stack” in the name?"
+  }, {
+    "owner" : {
+      "account_id" : 14159226,
+      "reputation" : 55,
+      "user_id" : 10228983,
+      "user_type" : "registered",
+      "profile_image" : "https://graph.facebook.com/2028359710516054/picture?type=large",
+      "display_name" : "Jordan Tan Jun Wen",
+      "link" : "https://stackoverflow.com/users/10228983/jordan-tan-jun-wen"
+    },
+    "reply_to_user" : {
+      "account_id" : 3211603,
+      "reputation" : 300858,
+      "user_id" : 2711488,
+      "user_type" : "registered",
+      "profile_image" : "https://i.sstatic.net/t2hoD.jpg?s=256",
+      "display_name" : "Holger",
+      "link" : "https://stackoverflow.com/users/2711488/holger"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1697248519,
+    "post_id" : 77288727,
+    "comment_id" : 136260115,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "That&#39;s exactly it. I was trying to remove custom code since implementing Javassist into the project."
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 7421543,
+      "reputation" : 3595,
+      "user_id" : 5645656,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/cWJZKa1g.png?s=256",
+      "display_name" : "Cardinal System",
+      "link" : "https://stackoverflow.com/users/5645656/cardinal-system"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760361747,
+    "creation_date" : 1760361747,
+    "answer_id" : 79789311,
+    "question_id" : 77288727,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Unfortunately, Javassist is terribly documented, and there are very limited resources that  explain how to use it.</p>\n<p>If you look at the <a href=\"https://github.com/jboss-javassist/javassist/blob/master/src/main/javassist/bytecode/StackMapTable.java#L148\" rel=\"nofollow noreferrer\">source code for <code>Walker</code></a>, you'll see that several methods have empty bodies. This is because the intended usage of Walker is to create a subclass and override those various methods.</p>\n<pre><code>import javassist.bytecode.BadBytecode;\nimport javassist.bytecode.StackMapTable;\nimport javassist.bytecode.StackMapTable.Walker;\n\npublic class MyStackMapTableWalker extends Walker {\n\n    public MyStackMapTableWalker(StackMapTable smt) {\n        super(smt);\n    }\n\n    public MyStackMapTableWalker(byte[] data) {\n        super(data);\n    }\n\n    @Override\n    public void appendFrame(int pos, int offsetDelta, int[] tags, int[] data) throws BadBytecode {\n        System.out.printf(&quot;appendFrame - {pos: %d, offsetDelta: %d}%n&quot;, pos, offsetDelta);\n    }\n\n    @Override\n    public void chopFrame(int pos, int offsetDelta, int k) throws BadBytecode {\n        System.out.printf(&quot;chopFrame - {pos: %d, offsetDelta: %d}%n&quot;, pos, offsetDelta);\n    }\n\n    @Override\n    public void fullFrame(int pos, int offsetDelta, int[] localTags, int[] localData, int[] stackTags, int[] stackData)\n            throws BadBytecode {\n        System.out.printf(&quot;fullFrame - {pos: %d, offsetDelta: %d}%n&quot;, pos, offsetDelta);\n    }\n\n    @Override\n    public void objectOrUninitialized(int tag, int data, int pos) {\n        System.out.printf(&quot;objectOrUninitialized - {pos: %d}%n&quot;, pos);\n    }\n\n    @Override\n    public void sameFrame(int pos, int offsetDelta) throws BadBytecode {\n        System.out.printf(&quot;sameFrame - {pos: %d, offsetDelta: %d}%n&quot;, pos, offsetDelta);\n    }\n\n    @Override\n    public void sameLocals(int pos, int offsetDelta, int stackTag, int stackData) throws BadBytecode {\n        System.out.printf(&quot;sameLocals - {pos: %d, offsetDelta: %d}%n&quot;, pos, offsetDelta);\n    }\n\n}\n</code></pre>\n<p>Once you have done this, you call <a href=\"https://www.javassist.org/html/javassist/bytecode/StackMapTable.Walker.html#parse()\" rel=\"nofollow noreferrer\"><code>parse()</code></a> and it will walk the stack map table, calling the appropriate methods as it visits each entry.</p>\n<pre><code>CodeAttribute attribute = ...;\nStackMapTable table = (StackMapTable) attribute.getAttribute(StackMapTable.tag);\nMyStackMapTableWalker walker = new MyStackMapTableWalker(table);\nwalker.parse();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 14159226,
+    "reputation" : 55,
+    "user_id" : 10228983,
+    "user_type" : "registered",
+    "profile_image" : "https://graph.facebook.com/2028359710516054/picture?type=large",
+    "display_name" : "Jordan Tan Jun Wen",
+    "link" : "https://stackoverflow.com/users/10228983/jordan-tan-jun-wen"
+  },
+  "is_answered" : false,
+  "view_count" : 60,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760361747,
+  "creation_date" : 1697208744,
+  "last_edit_date" : 1697209187,
+  "question_id" : 77288727,
+  "link" : "https://stackoverflow.com/questions/77288727/how-to-loop-through-javassist-stackmaptable",
+  "title" : "How to loop through Javassist StackMapTable?",
+  "body" : "<p>Referring to <a href=\"https://stackoverflow.com/questions/45995417/how-to-create-or-retrieve-a-stackmaptable-in-javassist\">this question</a>, I still do not get the idea of looping through StackMapTable although I am able to get the Walker</p>\n<pre><code>StackMapTable stackMapTable = (StackMapTable) instructionToVisit.toCodeAttribute().getAttribute(StackMapTable.tag);\n\nStackMapTable.Walker walker = new StackMapTable.Walker(stackMapTable);\n</code></pre>\n<p>Since integrating Javassist into <a href=\"https://github.com/amyjko/whyline/tree/master\" rel=\"nofollow noreferrer\">the project</a>, I am assuming that StackMapTablehttps://www.javassist.org/html/javassist/bytecode/StackMapTable.html is equivalent to <a href=\"https://github.com/amyjko/whyline/blob/master/edu/cmu/hcii/whyline/bytecode/StackDependencies.java\" rel=\"nofollow noreferrer\">StackDependencies</a></p>\n<p>But I am not sure, is it able to be written like the <a href=\"https://github.com/amyjko/whyline/blob/master/edu/cmu/hcii/whyline/analysis/ValueSourceAnalyzer.java#L460\" rel=\"nofollow noreferrer\">for-loop block in this class</a></p>\n<p>I tried to understand how to use Javassist StackMapTable to loop through dependencies in the Stack memory of Java. Besides that, I was hoping to get a validation whether my assumption on replacing Javassist StackMapTable to the existing Whyline StackDependencies.</p>\n"
+}

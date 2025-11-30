@@ -1,0 +1,102 @@
+{
+  "tags" : [ "java", "spring-boot", "wiremock", "spring-boot-3" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 991044,
+      "reputation" : 4274,
+      "user_id" : 1008361,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a15d69ce57773a0c918ac1e752b29646?s=256&d=identicon&r=PG",
+      "display_name" : "Tom",
+      "link" : "https://stackoverflow.com/users/1008361/tom"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1732700703,
+    "post_id" : 79228556,
+    "comment_id" : 139712138,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "Are you using the latest version of WireMock and the Jetty12 JAR?"
+  }, {
+    "owner" : {
+      "account_id" : 27232510,
+      "reputation" : 13,
+      "user_id" : 20759988,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/cf2b5e41cadce85915c6e6139cad279a?s=256&d=identicon&r=PG",
+      "display_name" : "IanM",
+      "link" : "https://stackoverflow.com/users/20759988/ianm"
+    },
+    "reply_to_user" : {
+      "account_id" : 991044,
+      "reputation" : 4274,
+      "user_id" : 1008361,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a15d69ce57773a0c918ac1e752b29646?s=256&d=identicon&r=PG",
+      "display_name" : "Tom",
+      "link" : "https://stackoverflow.com/users/1008361/tom"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1733189228,
+    "post_id" : 79228556,
+    "comment_id" : 139740585,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I was using wiremock-jetty12 3.9.2. I just attempted to use version 3.10, which was just released and had the same result."
+  }, {
+    "owner" : {
+      "account_id" : 991044,
+      "reputation" : 4274,
+      "user_id" : 1008361,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/a15d69ce57773a0c918ac1e752b29646?s=256&d=identicon&r=PG",
+      "display_name" : "Tom",
+      "link" : "https://stackoverflow.com/users/1008361/tom"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1733305526,
+    "post_id" : 79228556,
+    "comment_id" : 139748421,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "I can&#39;t replicate this from the info you&#39;ve posted. Can you post the full details needed to reproduce this in a GitHub issue?"
+  } ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 16638988,
+      "reputation" : 173,
+      "user_id" : 12025006,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/122d17214f5c6d25e02f2ea772c4a697?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "flaviuratiu",
+      "link" : "https://stackoverflow.com/users/12025006/flaviuratiu"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760105415,
+    "creation_date" : 1760105415,
+    "answer_id" : 79787433,
+    "question_id" : 79228556,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What fixed the issue for me was to use the instance rule, instead of the static one, as suggested <a href=\"https://github.com/wiremock/wiremock/issues/2912\" rel=\"nofollow noreferrer\">here</a>.</p>\n<p>I am using the WireMockExtension like this:</p>\n<pre><code>@RegisterExtension\nprivate WireMockExtension wireMockExtension = new WireMockExtension(8081);\n</code></pre>\n<p>And I was getting the NullPointerException mentioned in the question while this field was declared as static.</p>\n<p>In your case, I think the solution should be similar: avoiding the ClassRule in favor of the instance rule.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 27232510,
+    "reputation" : 13,
+    "user_id" : 20759988,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/cf2b5e41cadce85915c6e6139cad279a?s=256&d=identicon&r=PG",
+    "display_name" : "IanM",
+    "link" : "https://stackoverflow.com/users/20759988/ianm"
+  },
+  "is_answered" : false,
+  "view_count" : 342,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1760105415,
+  "creation_date" : 1732663612,
+  "question_id" : 79228556,
+  "link" : "https://stackoverflow.com/questions/79228556/wiremock-has-null-requesthandler-when-testing-multiple-classes",
+  "title" : "Wiremock has null requesthandler when testing multiple classes",
+  "body" : "<p>I am attempting to upgrade one of my projects to use Spring Boot 3. The code is running with no issues and all of my tests pass when run individually or I run tests from only a single class.</p>\n<p>The issue appears when I attempt to run multiple test classes in the same run. The first test to be run that calls wiremock's stubFor() function will succeed, as will all other tests in that test's class, but any test from a different class that calls stubFor() will fail with the following error:</p>\n<pre><code>`2024-11-26 22:55:42.258Z  WARN   --- [qtp213383793-95] o.e.jetty.ee10.servlet.ServletChannel    : {} /__admin/mappings\n\njava.lang.NullPointerException: Cannot invoke \n&quot;com.github.tomakehurst.wiremock.http.RequestHandler.handle(\ncom.github.tomakehurst.wiremock.http.Request, com.github.tomakehurst.wiremock.http.HttpResponder, com.github.tomakehurst.wiremock.stubbing.ServeEvent)&quot; \nbecause &quot;this.requestHandler&quot; is null\n    at com.github.tomakehurst.wiremock.servlet.WireMockHandlerDispatchingServlet.service(WireMockHandlerDispatchingServlet.java:165)\n    at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:614)\n    at org.eclipse.jetty.ee10.servlet.ServletHolder.handle(ServletHolder.java:736)\n    at org.eclipse.jetty.ee10.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1614)\n    at org.eclipse.jetty.ee10.servlets.CrossOriginFilter.handle(CrossOriginFilter.java:317)\n    at org.eclipse.jetty.ee10.servlets.CrossOriginFilter.doFilter(CrossOriginFilter.java:270)\n    at org.eclipse.jetty.ee10.servlet.FilterHolder.doFilter(FilterHolder.java:205)\n    at org.eclipse.jetty.ee10.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1586)\n    at org.eclipse.jetty.ee10.servlet.ServletHandler$MappedServlet.handle(ServletHandler.java:1547)\n    at org.eclipse.jetty.ee10.servlet.ServletChannel.dispatch(ServletChannel.java:824)\n    at org.eclipse.jetty.ee10.servlet.ServletChannel.handle(ServletChannel.java:436)\n    at org.eclipse.jetty.ee10.servlet.ServletHandler.handle(ServletHandler.java:464)\n    at org.eclipse.jetty.server.handler.ContextHandler.handle(ContextHandler.java:1060)\n    at org.eclipse.jetty.server.Handler$Sequence.handle(Handler.java:805)\n    at org.eclipse.jetty.server.Server.handle(Server.java:182)\n    at org.eclipse.jetty.server.internal.HttpChannelState$HandlerInvoker.run(HttpChannelState.java:662)\n    at org.eclipse.jetty.server.internal.HttpConnection.onFillable(HttpConnection.java:414)\n    at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:322)\n    at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:99)\n    at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)\n    at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:979)\n    at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1209)\n    at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1164)\n    at java.base/java.lang.Thread.run(Thread.java:1583)`\n\nExpected status 2xx for http://localhost:8089/__admin/mappings but was 500\ncom.github.tomakehurst.wiremock.client.VerificationException: Expected status 2xx for http://localhost:8089/__admin/mappings but was 500\n</code></pre>\n<p>This issue has no effect on any test that does not call stubFor, those always pass no matter when they are run.</p>\n<p>WireMockClassRule is instantiated as specified in the <a href=\"https://wiremock.org/docs/junit-extensions/\" rel=\"nofollow noreferrer\">wiremock documentation</a>, and I am using JUnit 4.13.</p>\n<pre><code>@ClassRule\npublic static WireMockClassRule wireMockRule = new WireMockClassRule(8089);\n\n@Rule\npublic WireMockClassRule instanceRule = wireMockRule;\n</code></pre>\n"
+}

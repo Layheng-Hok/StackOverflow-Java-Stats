@@ -1,0 +1,185 @@
+{
+  "tags" : [ "java", "hibernate", "jpa" ],
+  "comments" : [ {
+    "owner" : {
+      "account_id" : 1275953,
+      "reputation" : 26120,
+      "user_id" : 1231230,
+      "user_type" : "registered",
+      "accept_rate" : 76,
+      "profile_image" : "https://i.sstatic.net/pX6ku.jpg?s=256",
+      "display_name" : "Ankur Singhal",
+      "link" : "https://stackoverflow.com/users/1231230/ankur-singhal"
+    },
+    "edited" : false,
+    "score" : 0,
+    "creation_date" : 1422525947,
+    "post_id" : 28211806,
+    "comment_id" : 44787806,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "ergul have a look <a href=\"http://www.objectdb.com/java/jpa/query/criteria\" rel=\"nofollow noreferrer\">here</a>"
+  }, {
+    "owner" : {
+      "account_id" : 160350,
+      "reputation" : 11591,
+      "user_id" : 380338,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/1cb2fc8100ee717e04bb73ede7133be1?s=256&d=identicon&r=PG",
+      "display_name" : "Neil Stockton",
+      "link" : "https://stackoverflow.com/users/380338/neil-stockton"
+    },
+    "edited" : false,
+    "score" : 1,
+    "creation_date" : 1422525962,
+    "post_id" : 28211806,
+    "comment_id" : 44787813,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "And what does the documentation of your chosen JPA implementation say about how to do the WHERE clause of Criteria? You don&#39;t say why you &quot;can&#39;t&quot;, or what you have tried"
+  } ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 91502,
+        "reputation" : 89455,
+        "user_id" : 251173,
+        "user_type" : "registered",
+        "accept_rate" : 86,
+        "profile_image" : "https://www.gravatar.com/avatar/23de335ea2208b179ece18bec0b2597f?s=256&d=identicon&r=PG",
+        "display_name" : "Buhake Sindi",
+        "link" : "https://stackoverflow.com/users/251173/buhake-sindi"
+      },
+      "reply_to_user" : {
+        "account_id" : 5120163,
+        "reputation" : 5980,
+        "user_id" : 4104008,
+        "user_type" : "registered",
+        "accept_rate" : 91,
+        "profile_image" : "https://i.sstatic.net/cPhXQ.jpg?s=256",
+        "display_name" : "Harun ERGUL",
+        "link" : "https://stackoverflow.com/users/4104008/harun-ergul"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1422526328,
+      "post_id" : 28211896,
+      "comment_id" : 44788019,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "Yes, it should as your are running <code>CriteriaQuery</code> <code>cq</code>. I just took your sample source code and added <code>ParameterExpression</code>."
+    } ],
+    "owner" : {
+      "account_id" : 91502,
+      "reputation" : 89455,
+      "user_id" : 251173,
+      "user_type" : "registered",
+      "accept_rate" : 86,
+      "profile_image" : "https://www.gravatar.com/avatar/23de335ea2208b179ece18bec0b2597f?s=256&d=identicon&r=PG",
+      "display_name" : "Buhake Sindi",
+      "link" : "https://stackoverflow.com/users/251173/buhake-sindi"
+    },
+    "is_accepted" : true,
+    "score" : 13,
+    "last_activity_date" : 1760197742,
+    "last_edit_date" : 1760197742,
+    "creation_date" : 1422526050,
+    "answer_id" : 28211896,
+    "question_id" : 28211806,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Use <a href=\"http://docs.oracle.com/javaee/7/api/javax/persistence/criteria/ParameterExpression.html\" rel=\"nofollow noreferrer\"><code>ParameterExpression</code></a>. Note: <em>Untested</em>.</p>\n<pre class=\"lang-java prettyprint-override\"><code>CriteriaBuilder cb = entityManager.getCriteriaBuilder();\nCriteriaQuery&lt;Long&gt; cq = cb.createQuery(Long.class);\nRoot&lt;MyEntity&gt; from = cq.from(MyEntity.class);\ncq.select(cb.count(from));\nParameterExpression&lt;Integer&gt; p = cb.parameter(Integer.class);\nq.where(cb.eq(from.get(&quot;age&quot;), 45));\nreturn entityManager.createQuery(cq).getSingleResult();\n</code></pre>\n<p><a href=\"http://www.objectdb.com/java/jpa/query/jpql/where\" rel=\"nofollow noreferrer\">Reference</a>.</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3551933,
+      "reputation" : 3521,
+      "user_id" : 2966603,
+      "user_type" : "registered",
+      "accept_rate" : 36,
+      "profile_image" : "https://i.sstatic.net/S0Eyw.jpg?s=256",
+      "display_name" : "RichardK",
+      "link" : "https://stackoverflow.com/users/2966603/richardk"
+    },
+    "is_accepted" : false,
+    "score" : 6,
+    "last_activity_date" : 1422526121,
+    "creation_date" : 1422526121,
+    "answer_id" : 28211921,
+    "question_id" : 28211806,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<pre><code>EntityManagerFactory emf =\n                    Persistence.createEntityManagerFactory(\"your table name\");\n            EntityManager em = emf.createEntityManager();\n\n\n            // JPA Query Language is executed on your entities (Java Classess), not on your database tables;\n\n            Query query = em.createQuery(\"SELECT count(*) FROM your Classname WHERE ... etc\");\n            long count = (long) query.getSingleResult();\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 5506151,
+      "reputation" : 3698,
+      "user_id" : 4373948,
+      "user_type" : "registered",
+      "accept_rate" : 88,
+      "profile_image" : "https://i.sstatic.net/4IaGv.png?s=256",
+      "display_name" : "Abder KRIMA",
+      "link" : "https://stackoverflow.com/users/4373948/abder-krima"
+    },
+    "is_accepted" : false,
+    "score" : -2,
+    "last_activity_date" : 1422526293,
+    "creation_date" : 1422526293,
+    "answer_id" : 28211983,
+    "question_id" : 28211806,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>you can use the Query parameter,\nExample :</p>\n\n<pre><code>StringBuilder strQuery ;\n    strQuery= new StringBuilder();\n    try {\n        strQuery.append(\"FROM SSS s where s.age:age\");\n        Query query = this.getEntityManager().createQuery(\n                strQuery.toString());\n        query.setParameter(\"age\", 45);\n    } catch (Exception e) {\n        LOGGER.info(\"Erreur\", e);\n    }\n</code></pre>\n\n<p>it's useful for you?</p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 15313230,
+      "reputation" : 217,
+      "user_id" : 11047896,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/2f5680e124216e946065a5f49415689e?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "jdominus",
+      "link" : "https://stackoverflow.com/users/11047896/jdominus"
+    },
+    "is_accepted" : false,
+    "score" : 20,
+    "last_activity_date" : 1549927632,
+    "creation_date" : 1549927632,
+    "answer_id" : 54640641,
+    "question_id" : 28211806,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>The best and simple way in jpa :</p>\n\n<pre><code>public interface YourEntityRepository extends JpaRepository&lt;YourEntity, Serializable&gt; {\n\nLong countByAgeGreaterThan(Integer age);\n\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 4801623,
+      "reputation" : 1875,
+      "user_id" : 3878168,
+      "user_type" : "registered",
+      "accept_rate" : 83,
+      "profile_image" : "https://i.sstatic.net/39TS0.jpg?s=256",
+      "display_name" : "Yay295",
+      "link" : "https://stackoverflow.com/users/3878168/yay295"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1652388950,
+    "creation_date" : 1652388950,
+    "answer_id" : 72221967,
+    "question_id" : 28211806,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>If you use <code>EntityManager.createQuery()</code> instead of the CriteriaBuilder it looks like this:</p>\n<pre class=\"lang-java prettyprint-override\"><code>final TypedQuery&lt;Number&gt; query = em.createQuery(&quot;SELECT COUNT(e) FROM MyEntity e WHERE e.age = :age&quot;, Number.class);\nquery.setParameter(&quot;age&quot;,45);\nfinal long count = query.getSingleResult().longValue();\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 5120163,
+    "reputation" : 5980,
+    "user_id" : 4104008,
+    "user_type" : "registered",
+    "accept_rate" : 91,
+    "profile_image" : "https://i.sstatic.net/cPhXQ.jpg?s=256",
+    "display_name" : "Harun ERGUL",
+    "link" : "https://stackoverflow.com/users/4104008/harun-ergul"
+  },
+  "is_answered" : true,
+  "view_count" : 58699,
+  "accepted_answer_id" : 28211896,
+  "answer_count" : 5,
+  "score" : 12,
+  "last_activity_date" : 1760197742,
+  "creation_date" : 1422525738,
+  "question_id" : 28211806,
+  "link" : "https://stackoverflow.com/questions/28211806/how-to-count-number-of-rows-using-jpa",
+  "title" : "How to count number of rows using JPA?",
+  "body" : "<p>I try to count number of rows using JPA.I want to use where clause \nhowever I can't. </p>\n\n<pre><code>CriteriaBuilder qb = entityManager.getCriteriaBuilder();\nCriteriaQuery&lt;Long&gt; cq = qb.createQuery(Long.class);\ncq.select(qb.count(cq.from(MyEntity.class)));\ncq.where();  //how to write where clause \nreturn entityManager.createQuery(cq).getSingleResult();\n</code></pre>\n\n<p>How can I set where clause forexample where age=\"45\".\nThanks in advance.</p>\n"
+}

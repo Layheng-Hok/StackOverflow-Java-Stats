@@ -1,0 +1,60 @@
+{
+  "tags" : [ "java", "spring", "liquibase" ],
+  "answers" : [ {
+    "owner" : {
+      "account_id" : 12606951,
+      "reputation" : 53,
+      "user_id" : 9167519,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/9f264fb951125a8b91b40d44cc11a988?s=256&d=identicon&r=PG&f=y&so-version=2",
+      "display_name" : "spark82",
+      "link" : "https://stackoverflow.com/users/9167519/spark82"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1652174566,
+    "creation_date" : 1652174566,
+    "answer_id" : 72183766,
+    "question_id" : 72172914,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>I worked it out implementing custom SpringLiquibase and SpringResourceAcessor and moving from liquibase 4.0 to 4.6.1</p>\n<p>If anyone is interested, here's my code :</p>\n<pre><code>public class CustomSpringResourceAcessor extends SpringResourceAccessor {\n\n\n    public CustomSpringResourceAcessor(ResourceLoader resourceLoader) {\n        super(resourceLoader);\n    }\n\n    @Override\n    protected String finalizeSearchPath(String searchPath) {\n        return super.finalizeSearchPath(searchPath).substring(11);\n    }\n\n    @Override\n    public InputStreamList openStreams(String relativeTo, String streamPath) throws IOException {\n        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();\n        path = path.substring(0, path.indexOf(&quot;/target&quot;));\n\n        if (relativeTo == null) {\n            return super.openStreams(path, streamPath);\n        }\n\n        return super.openStreams(path + &quot;/&quot; + relativeTo, streamPath);\n    }\n}\n</code></pre>\n<p>and</p>\n<pre><code>public class CustomSpringLiquibase extends SpringLiquibase {\n    @Override\n    protected SpringResourceAccessor createResourceOpener() {\n        return new CustomSpringResourceAcessor(getResourceLoader());\n    }\n}\n</code></pre>\n"
+  }, {
+    "owner" : {
+      "account_id" : 11456710,
+      "reputation" : 813,
+      "user_id" : 8397480,
+      "user_type" : "registered",
+      "profile_image" : "https://lh6.googleusercontent.com/-X0vTMwQKan4/AAAAAAAAAAI/AAAAAAAAeTc/s0_dVEk0Jl4/s256-rj/photo.jpg",
+      "display_name" : "xardbaiz",
+      "link" : "https://stackoverflow.com/users/8397480/xardbaiz"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1760627751,
+    "last_edit_date" : 1760627751,
+    "creation_date" : 1760624116,
+    "answer_id" : 79792248,
+    "question_id" : 72172914,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<h2><strong>Problem</strong></h2>\n<p>I faced the same. When tried to set absolute path to <code>change-log</code> file, Liquibase throwed error:</p>\n<pre><code>“Specifying files by absolute path was removed in Liquibase 4.0. Please use a relative path or add ‘/’ to the classpath parameter.”\n</code></pre>\n<h2></h2>\n<h2><strong>Solution</strong></h2>\n<p>Create Liquibase configuration which supports <code>Path</code> resources and de-sanitize URIs<br />\nHope it will help somebody \uD83D\uDE07</p>\n<pre><code>  @TestConfiguration\n  class Config {\n    private static final String ROOT_CHANGELOG_FILENAME = &quot;db.changelog-root.xml&quot;;\n\n    @Bean\n    @Primary\n    public SpringLiquibase enableDatabaseTestLiquibase(DataSource dataSource) {\n      Path migrationRootFolderPath = Paths.get(&quot;%Absolute path to ROOT_CHANGELOG_FILENAME  file%&quot;);\n      Path changeLogFilePath = migrationRootFolderPath.resolve(ROOT_CHANGELOG_FILENAME);\n\n      SpringLiquibase liquibase = new AbsPathLiquibase(migrationRootFolderPath);\n      liquibase.setContexts(DEFAULT_PROFILE);\n      liquibase.setResourceLoader(new FileSystemResourceLoader());\n      liquibase.setChangeLog(changeLogFilePath.toString());\n      liquibase.setDataSource(dataSource);\n      liquibase.setShouldRun(true);\n      return liquibase;\n    }\n\n    public static class AbsPathLiquibase extends SpringLiquibase {\n      private final SpringResourceAccessor resourceAccessor;\n\n      public AbsPathLiquibase(Path migrationRootFolderAbsPath) {\n        super();\n        this.resourceAccessor =\n            new AbsPathResourceAccessor(getResourceLoader(), migrationRootFolderAbsPath);\n      }\n\n      @Override\n      protected SpringResourceAccessor createResourceOpener() {\n        return resourceAccessor;\n      }\n    }\n\n    \n    public static class AbsPathResourceAccessor extends SpringResourceAccessor {\n      private final Path migrationRootFolderAbsPath;\n\n      public AbsPathResourceAccessor(\n          ResourceLoader resourceLoader, Path migrationRootFolderAbsPath) {\n        super(resourceLoader);\n        this.migrationRootFolderAbsPath = migrationRootFolderAbsPath;\n      }\n\n      @Override\n      public List&lt;Resource&gt; getAll(String path) throws IOException {\n        Path resolvedAbsPath = resolveAbsPathIfExists(path);\n        if (resolvedAbsPath == null) {\n          String absPathStr = fromSanitizedToAbsPath(path);\n          resolvedAbsPath = resolveAbsPathIfExists(absPathStr);\n        }\n\n        if (resolvedAbsPath != null) {\n          return List.of(new PathResource(path, resolvedAbsPath));\n        }\n\n        return List.of();\n      }\n\n      private @Nullable Path resolveAbsPathIfExists(String path) {\n        Path pathObj = Paths.get(path);\n        if (pathObj.isAbsolute() &amp;&amp; Files.exists(pathObj)) {\n          return pathObj;\n        }\n        return null;\n      }\n\n      /**\n       * Converts a sanitized path to an absolute path by resolving it against the migration root\n       * folder. If the path contains the migration root folder name, it will extract the suffix\n       * after that folder and resolve it against the absolute migration root path.\n       *\n       * @param sanitizedPath the path &quot;sanitized&quot; on previous steps by {@link\n       *     DatabaseChangeLog#normalizePath(String)}\n       * @return the absolute path\n       */\n      private String fromSanitizedToAbsPath(String sanitizedPath) {\n        String migrationRootFolderName = migrationRootFolderAbsPath.getFileName().toString();\n\n        int migrationRootFolderIndex = sanitizedPath.lastIndexOf(migrationRootFolderName);\n        if (migrationRootFolderIndex &gt;= 0) {\n          // Extract the portion after the root folder name\n          int pathSuffixStart = migrationRootFolderIndex + migrationRootFolderName.length();\n          String pathSuffix = sanitizedPath.substring(pathSuffixStart);\n\n          // Remove leading slash if present\n          if (pathSuffix.startsWith(&quot;/&quot;) || pathSuffix.startsWith(&quot;\\\\&quot;)) {\n            pathSuffix = pathSuffix.substring(1);\n          }\n\n          // Resolve suffix against the root path if not empty\n          return pathSuffix.isEmpty()\n              ? migrationRootFolderAbsPath.toAbsolutePath().toString()\n              : migrationRootFolderAbsPath.resolve(pathSuffix).toAbsolutePath().toString();\n        }\n\n        // If the path doesn't contain the migration root folder name, just resolve it directly\n        return migrationRootFolderAbsPath.resolve(sanitizedPath).toString();\n      }\n    }\n  }\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 12606951,
+    "reputation" : 53,
+    "user_id" : 9167519,
+    "user_type" : "registered",
+    "profile_image" : "https://www.gravatar.com/avatar/9f264fb951125a8b91b40d44cc11a988?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "spark82",
+    "link" : "https://stackoverflow.com/users/9167519/spark82"
+  },
+  "is_answered" : false,
+  "view_count" : 965,
+  "answer_count" : 2,
+  "score" : 2,
+  "last_activity_date" : 1760627751,
+  "creation_date" : 1652103528,
+  "question_id" : 72172914,
+  "link" : "https://stackoverflow.com/questions/72172914/springliquibase-with-liquibase-4-and-filesystemresourceloader",
+  "title" : "SpringLiquibase with Liquibase 4 and FileSystemResourceLoader",
+  "body" : "<p>I'm currently facing a problem.\nMy project looks like this :<br/>\nProject<br/>\n|_ module 1<br/>\n   |_ liquibase<br/>\n      |_ migration.xml<br/>\n      |_ file1.xml<br/>\n   |_ src<br/>\n      |_ main<br/>\n         |_ java<br/>\n         |_ resources<br/></p>\n<p>To be able to launch component tests, I run, using docker, a postgresql container.\nI want to launch my liquibase scripts.</p>\n<p>Here's a my code :</p>\n<pre><code>        SpringLiquibase liquibase = new SpringLiquibase();\n        liquibase.setResourceLoader(new FileSystemResourceLoader());\n        liquibase.setDataSource(dataSource);\n        liquibase.setChangeLog(&quot;liquibase/migration.xml&quot;);\n        liquibase.setDefaultSchema(&quot;mySchema&quot;);\n        liquibase.setDropFirst(false);\n        liquibase.setShouldRun(true);\n        try {\n            liquibase.afterPropertiesSet();\n            log.info(&quot;Liquibase run ended&quot;);\n        } catch (Exception e) {\n            log.error(e.getMessage());\n            throw new RuntimeException(e.getMessage());\n        }\n</code></pre>\n<p>This has run well for a long time, until I made an update to Liquibase 4.\nNow, I'm getting the following error : Specifying files by absolute path was removed in Liquibase 4.0. Please use a relative path or add '/' to the classpath parameter.</p>\n<p>I searched throught the web and didn't find anything helpful.\nI tried a lot of different things, and nothing worked</p>\n<p>Someone has a clue ? (other than moving my liquibase folder inside resources)</p>\n"
+}

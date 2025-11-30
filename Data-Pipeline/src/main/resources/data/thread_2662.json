@@ -1,0 +1,82 @@
+{
+  "tags" : [ "java", "angular", "database", "hibernate", "quarkus" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 4243987,
+        "reputation" : 139,
+        "user_id" : 3473178,
+        "user_type" : "registered",
+        "accept_rate" : 0,
+        "profile_image" : "https://www.gravatar.com/avatar/d26e316d7c60e23dfa2fa3108688a670?s=256&d=identicon&r=PG&f=y&so-version=2",
+        "display_name" : "aristos",
+        "link" : "https://stackoverflow.com/users/3473178/aristos"
+      },
+      "edited" : false,
+      "score" : 0,
+      "creation_date" : 1611264445,
+      "post_id" : 65790828,
+      "comment_id" : 116402778,
+      "content_license" : "CC BY-SA 4.0",
+      "body" : "I&#39;m using the latest version 1.11.0. I hadn&#39;t looked well. Thank you very much for the link. I will study the examples and build the architecture of my application for the separate schema. Thank you again for the info."
+    } ],
+    "owner" : {
+      "account_id" : 8428380,
+      "reputation" : 1237,
+      "user_id" : 6324924,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://i.sstatic.net/qil2Y.png?s=256",
+      "display_name" : "Robert van der Spek",
+      "link" : "https://stackoverflow.com/users/6324924/robert-van-der-spek"
+    },
+    "is_accepted" : true,
+    "score" : 3,
+    "last_activity_date" : 1611056541,
+    "creation_date" : 1611056541,
+    "answer_id" : 65790828,
+    "question_id" : 65704050,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>What version of Quarkus are you using? It seems like the latest Quarkus Hibernate ORM version has exactly what you're asking for:</p>\n<blockquote>\n<p>Quarkus currently supports the separate database and the separate\nschema approach.</p>\n</blockquote>\n<p>From: <a href=\"https://quarkus.io/guides/hibernate-orm#multitenancy\" rel=\"nofollow noreferrer\">https://quarkus.io/guides/hibernate-orm#multitenancy</a></p>\n"
+  }, {
+    "owner" : {
+      "account_id" : 3342882,
+      "reputation" : 881,
+      "user_id" : 2808740,
+      "user_type" : "registered",
+      "accept_rate" : 100,
+      "profile_image" : "https://graph.facebook.com/1195541898/picture?type=large",
+      "display_name" : "Mathias Stavrou",
+      "link" : "https://stackoverflow.com/users/2808740/mathias-stavrou"
+    },
+    "is_accepted" : false,
+    "score" : 0,
+    "last_activity_date" : 1764147921,
+    "creation_date" : 1764147921,
+    "answer_id" : 79830496,
+    "question_id" : 65704050,
+    "content_license" : "CC BY-SA 4.0",
+    "body" : "<p>Quarkus does support multitenancy at the Hibernate ORM level (separate schema / separate database), but that only solves data isolation.<br />\nIn most SaaS applications you also need application-level tenant resolution, for example:</p>\n<ul>\n<li><p>extracting the tenant from an HTTP header, JWT claim, request path, or subdomain</p>\n</li>\n<li><p>storing the tenant in a request-scoped context</p>\n</li>\n<li><p>making it accessible in business logic, services, and repositories</p>\n</li>\n</ul>\n<p>Quarkus does not provide this part out of the box, so developers usually implement filters/interceptors + a tenant context manually.</p>\n<p>To avoid rewriting this logic in every project, I created a small helper library that provides:</p>\n<ul>\n<li><p><code>TenantContext</code> to access the current tenant anywhere in the code</p>\n</li>\n<li><p><code>TenantResolver</code> strategies (header, JWT, etc.)</p>\n</li>\n<li><p>configuration properties to enable/disable multitenancy and choose the strategy</p>\n</li>\n</ul>\n<p>Example usage:</p>\n<pre><code>quarkus.multi-tenant.enabled=true\nquarkus.multi-tenant.strategy=header\nquarkus.multi-tenant.header-name=X-Tenant-Id\n</code></pre>\n<p>and then in your application code:</p>\n<pre><code>@Inject\nTenantContext tenantContext;\nString tenantId = tenantContext.getTenantId();\n</code></pre>\n<p>You can find the project here, including examples and documentation:</p>\n<p><a href=\"https://github.com/mathias82/quarkus-multitenancy-helper\" rel=\"nofollow noreferrer\">https://github.com/mathias82/quarkus-multitenancy-helper</a></p>\n<p>It can be useful if you want full multitenancy behavior (tenant extraction + context + Hibernate isolation) without building everything from scratch.</p>\n"
+  } ],
+  "owner" : {
+    "account_id" : 4243987,
+    "reputation" : 139,
+    "user_id" : 3473178,
+    "user_type" : "registered",
+    "accept_rate" : 0,
+    "profile_image" : "https://www.gravatar.com/avatar/d26e316d7c60e23dfa2fa3108688a670?s=256&d=identicon&r=PG&f=y&so-version=2",
+    "display_name" : "aristos",
+    "link" : "https://stackoverflow.com/users/3473178/aristos"
+  },
+  "is_answered" : true,
+  "view_count" : 5079,
+  "accepted_answer_id" : 65790828,
+  "answer_count" : 2,
+  "score" : 4,
+  "last_activity_date" : 1764147921,
+  "creation_date" : 1610548547,
+  "question_id" : 65704050,
+  "link" : "https://stackoverflow.com/questions/65704050/quarkus-multi-tenant-application",
+  "title" : "Quarkus Multi-tenant Application",
+  "body" : "<p>I would like to develop a SaaS application <strong>(multiple tenants</strong>) with <a href=\"https://quarkus.io/\" rel=\"nofollow noreferrer\">Quarkus</a> , but I am facing a problem because <em>Quarkus does not support multi-tenants yet</em>. <strong>What to do ? What alternative ? Do you have any idea how I can do this ? Do I have to write everything myself ?</strong></p>\n<p>I would like to use Postgresql as the DBMS with the <em>architecture of a unique database and a separate schema for each tenant</em>.</p>\n"
+}

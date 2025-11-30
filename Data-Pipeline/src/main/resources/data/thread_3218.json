@@ -1,0 +1,90 @@
+{
+  "tags" : [ "java", "java-me", "midp", "lcdui" ],
+  "answers" : [ {
+    "comments" : [ {
+      "owner" : {
+        "account_id" : 1309947,
+        "reputation" : 512,
+        "user_id" : 1258147,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9e35014be27e02eed2a5120394164903?s=256&d=identicon&r=PG",
+        "display_name" : "kurtzbot",
+        "link" : "https://stackoverflow.com/users/1258147/kurtzbot"
+      },
+      "edited" : false,
+      "score" : 2,
+      "creation_date" : 1344010404,
+      "post_id" : 11799334,
+      "comment_id" : 15677992,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "More specifically, he needs to do <code>ok.setCommandListener(this);</code> to get the behavior he wants."
+    }, {
+      "owner" : {
+        "account_id" : 1466637,
+        "reputation" : 23151,
+        "user_id" : 1379286,
+        "user_type" : "registered",
+        "accept_rate" : 66,
+        "profile_image" : "https://www.gravatar.com/avatar/b2435015b556d425de69598dfcd65b4b?s=256&d=identicon&r=PG",
+        "display_name" : "PeakGen",
+        "link" : "https://stackoverflow.com/users/1379286/peakgen"
+      },
+      "reply_to_user" : {
+        "account_id" : 1309947,
+        "reputation" : 512,
+        "user_id" : 1258147,
+        "user_type" : "registered",
+        "profile_image" : "https://www.gravatar.com/avatar/9e35014be27e02eed2a5120394164903?s=256&d=identicon&r=PG",
+        "display_name" : "kurtzbot",
+        "link" : "https://stackoverflow.com/users/1258147/kurtzbot"
+      },
+      "edited" : false,
+      "score" : 1,
+      "creation_date" : 1344089010,
+      "post_id" : 11799334,
+      "comment_id" : 15693864,
+      "content_license" : "CC BY-SA 3.0",
+      "body" : "@kurtzbot: ok Button has no methods like that. I Checked that."
+    } ],
+    "owner" : {
+      "account_id" : 446514,
+      "reputation" : 6251,
+      "user_id" : 839601,
+      "user_type" : "registered",
+      "profile_image" : "https://www.gravatar.com/avatar/d6db99aa846a8217f7e2aba6fa198e7c?s=256&d=identicon&r=PG",
+      "display_name" : "gnat",
+      "link" : "https://stackoverflow.com/users/839601/gnat"
+    },
+    "is_accepted" : true,
+    "score" : 4,
+    "last_activity_date" : 1344683556,
+    "last_edit_date" : 1495542236,
+    "creation_date" : 1344009932,
+    "answer_id" : 11799334,
+    "question_id" : 11798920,
+    "content_license" : "CC BY-SA 3.0",
+    "body" : "<p>In this code snippet <a href=\"http://docs.oracle.com/javame/config/cldc/ref-impl/midp2.0/jsr118/javax/microedition/lcdui/CommandListener.html#commandAction(javax.microedition.lcdui.Command,%20javax.microedition.lcdui.Displayable)\" rel=\"nofollow noreferrer\" title=\"API javadocs\">commandAction</a> won't be invoked because you forgot to <a href=\"http://docs.oracle.com/javame/config/cldc/ref-impl/midp2.0/jsr118/javax/microedition/lcdui/Displayable.html#setCommandListener(javax.microedition.lcdui.CommandListener)\" rel=\"nofollow noreferrer\" title=\"API javadocs\">setCommandListener</a>:</p>\n\n<blockquote>\n  <p>Sets a listener for Commands to this Displayable...</p>\n</blockquote>\n\n<p>In startApp, this would look about as follows:</p>\n\n<pre><code>    //...\n    form.addCommand(ok);\n    // set command listener\n    form.setCommandListener(this);\n    //...\n</code></pre>\n\n<p>Also, as <a href=\"https://stackoverflow.com/a/11798976/839601\">pointed in another answer</a>, even after you set the listener, it will miss the command because code checks it wrong - in Java, <code>\"ok\"</code> does not <a href=\"http://docs.oracle.com/javame/config/cldc/ref-impl/midp2.0/jsr118/java/lang/String.html#equals%28java.lang.Object%29\" rel=\"nofollow noreferrer\" title=\"API javadocs\">equals</a> <code>\"OK\"</code>.</p>\n\n<p>Actually, given that there's only one command here, there is no need to check in the commandAction - you can proceed straight into <code>showInput</code> there - again, until there's <em>only one</em> command.</p>\n\n<hr>\n\n<p>Another thing worth adding in this code snippet is <a href=\"http://en.wikipedia.org/wiki/Computer_data_logging\" rel=\"nofollow noreferrer\" title=\"what&#39;s this?\">logging</a>.</p>\n\n<p>With appropriate logging, it would be dead easy to just run code in emulator, look into console and find out that eg commandAction isn't invoked at all, or that command isn't detected properly:</p>\n\n<pre><code>// ...\npublic void commandAction(Command c, Displayable d) \n{\n    String label = c.getLabel();\n    // log the event details; note Displayable.getTitle is available since MIDP 2.0\n    log(\"command  s [\" + label + \"], screen is [\" + d.getTitle() + \"]\");\n\n    if(label.equals(\"ok\"))\n    {\n        // log detection of the command\n        log(\"command obtained, showing input\");\n        showInput();\n    }\n}\n\nprivate void log(String message)\n{\n    // show message in emulator console\n    System.out.println(message);\n}\n// ...\n</code></pre>\n"
+  } ],
+  "owner" : {
+    "account_id" : 1466637,
+    "reputation" : 23151,
+    "user_id" : 1379286,
+    "user_type" : "registered",
+    "accept_rate" : 66,
+    "profile_image" : "https://www.gravatar.com/avatar/b2435015b556d425de69598dfcd65b4b?s=256&d=identicon&r=PG",
+    "display_name" : "PeakGen",
+    "link" : "https://stackoverflow.com/users/1379286/peakgen"
+  },
+  "is_answered" : true,
+  "view_count" : 391,
+  "accepted_answer_id" : 11799334,
+  "answer_count" : 1,
+  "score" : 1,
+  "last_activity_date" : 1762972240,
+  "creation_date" : 1344008337,
+  "last_edit_date" : 1344009169,
+  "question_id" : 11798920,
+  "link" : "https://stackoverflow.com/questions/11798920/ok-button-not-working",
+  "title" : "OK button not working",
+  "body" : "<p>Please have a look at the following code.</p>\n\n<p>In here, the \"OK\" button is not responding.</p>\n\n<pre><code>import javax.microedition.midlet.*;\nimport javax.microedition.lcdui.*;\n\npublic class TexyFieldExample extends MIDlet implements CommandListener\n{\n    private Form form;\n    private Display display;\n    private TextField name, company;\n    private Command ok;\n\n    public TexyFieldExample()\n    {        \n        name = new TextField(\"Name\",\"\",30,TextField.ANY);\n        company = new TextField(\"Company\",\"\",30,TextField.ANY);\n        ok = new Command(\"OK\",Command.OK,2);\n\n    }\n\n    public void startApp()\n    {\n        form = new Form(\"Text Field Example\");\n        display = Display.getDisplay(this);\n\n        form.append(name);\n        form.append(company);\n        form.addCommand(ok);\n\n        display.setCurrent(form);\n\n    }\n\n    public void pauseApp()\n    {\n\n    }\n\n    public void destroyApp(boolean destroy)\n    {\n        notifyDestroyed();\n    }\n\n    public void commandAction(Command c, Displayable d) \n    {\n        String label = c.getLabel();\n\n        if(label.equals(\"ok\"))\n        {\n            showInput();\n        }\n    }\n\n    private void showInput()\n    {\n        form = new Form(\"Input Data\");\n        display = Display.getDisplay(this);\n\n        form.append(name.getString());\n        form.append(company.getString());\n\n        display.setCurrent(form);\n\n    }\n}\n</code></pre>\n"
+}
