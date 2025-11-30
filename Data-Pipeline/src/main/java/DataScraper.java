@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 public class DataScraper {
-    private static final String API_KEY = "rl_cHJGiQYPoazNCqNFxvgyeHnPu";
+    private static final String API_KEY = "";
     private static final String TAG = "java";
     private static final int CHUNK_SIZE = 2500; // 4 chunks, CHUNK_SIZE * 4 = 10,000 threads
 
