@@ -1,0 +1,40 @@
+services:
+  # 1. The Database Container
+  database:
+    image: postgres:15-alpine
+    container_name: so-db
+    environment:
+      POSTGRES_DB: stackoverflow
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d stackoverflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. The Spring Boot App Container
+  backend:
+    build: ./backend/so-java-stats
+    container_name: so-backend
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/so-java-stats/data:/app/data
+      - ./.env:/app/.env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/stackoverflow
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+
+volumes:
+  db_data:
