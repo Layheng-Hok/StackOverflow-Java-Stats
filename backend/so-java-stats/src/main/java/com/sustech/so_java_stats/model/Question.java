@@ -11,6 +11,7 @@ import java.util.List;
 @Table(name = "questions")
 @Data
 public class Question {
+
     @Id
     private Long questionId;
 

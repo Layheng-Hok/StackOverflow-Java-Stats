@@ -9,6 +9,7 @@ import lombok.Data;
 @Table(name = "stack_users")
 @Data
 public class StackUser {
+
     @Id
     private Long stackUserId;
 

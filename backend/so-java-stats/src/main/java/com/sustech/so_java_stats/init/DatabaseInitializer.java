@@ -17,6 +17,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner {
+
     private final QuestionRepository questionRepository;
     private final StackUserRepository stackUserRepository;
     private final TagRepository tagRepository;

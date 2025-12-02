@@ -9,6 +9,7 @@ import java.time.Instant;
 @Table(name = "comments")
 @Data
 public class Comment {
+
     @Id
     private Long commentId;
 
