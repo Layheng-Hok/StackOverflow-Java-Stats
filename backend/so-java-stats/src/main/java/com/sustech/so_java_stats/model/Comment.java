@@ -2,6 +2,7 @@ package com.sustech.so_java_stats.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.Instant;
 
 @Entity
@@ -18,6 +19,11 @@ public class Comment {
 
     private Integer score;
 
+    private Boolean edited;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private StackUser owner;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private StackUser replyToUser;
 }

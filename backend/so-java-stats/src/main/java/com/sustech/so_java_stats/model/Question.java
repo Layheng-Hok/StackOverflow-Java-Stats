@@ -2,6 +2,7 @@ package com.sustech.so_java_stats.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,10 @@ public class Question {
 
     @Column(columnDefinition = "TEXT")
     private String body;
+
+    private Instant lastEditDate;
+
+    private Instant lastActivityDate;
 
     private Instant creationDate;
 

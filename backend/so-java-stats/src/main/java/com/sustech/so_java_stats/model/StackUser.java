@@ -6,11 +6,11 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "users")
+@Table(name = "stack_users")
 @Data
 public class StackUser {
     @Id
-    private Long userId;
+    private Long stackUserId;
 
     private Integer reputation;
 

@@ -2,6 +2,7 @@ package com.sustech.so_java_stats.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,10 @@ public class Answer {
     private String body;
 
     private Instant creationDate;
+
+    private Instant lastEditDate;
+
+    private Instant lastActivityDate;
 
     private Integer score;
 
