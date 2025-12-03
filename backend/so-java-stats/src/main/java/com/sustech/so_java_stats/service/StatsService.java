@@ -12,10 +12,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,15 +32,32 @@ public class StatsService {
         List<Question> questions = questionRepository.findByCreationDateBetween(startInstant, endInstant);
 
         DateTimeFormatter formatter;
-        if ("yearly".equalsIgnoreCase(granularity)) {
+        boolean isYearly = granularity.equalsIgnoreCase("yearly");
+        if (isYearly) {
             formatter = DateTimeFormatter.ofPattern("yyyy");
         } else {
             formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         }
 
+        List<String> allDateBuckets = new ArrayList<>();
+        LocalDate current = startDate.withDayOfMonth(1);
+        while (!current.isAfter(endDate)) {
+            allDateBuckets.add(current.format(formatter));
+
+            if (isYearly) {
+                current = current.plusYears(1);
+            } else {
+                current = current.plusMonths(1);
+            }
+        }
+
         Map<String, Map<String, Integer>> tempAggregator = new HashMap<>();
         for (String topic : requestedTopics) {
-            tempAggregator.put(topic, new TreeMap<>());
+            Map<String, Integer> timeSeries = new TreeMap<>();
+            for (String bucket : allDateBuckets) {
+                timeSeries.put(bucket, 0);
+            }
+            tempAggregator.put(topic, timeSeries);
         }
 
         for (Question question : questions) {
@@ -54,7 +68,9 @@ public class StatsService {
             for (Tag tag : question.getTags()) {
                 String tagName = tag.getTagName();
                 if (tempAggregator.containsKey(tagName)) {
-                    tempAggregator.get(tagName).merge(dateBucket, 1, Integer::sum);
+                    if (tempAggregator.get(tagName).containsKey(dateBucket)) {
+                        tempAggregator.get(tagName).merge(dateBucket, 1, Integer::sum);
+                    }
                 }
             }
         }
