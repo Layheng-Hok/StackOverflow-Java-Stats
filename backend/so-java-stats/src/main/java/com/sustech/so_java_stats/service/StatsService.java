@@ -75,7 +75,7 @@ public class StatsService {
             }
         }
 
-        Map<String, List<TopicTrendResponseDto.TimePoint>> finalData = new HashMap<>();
+        Map<String, List<TopicTrendResponseDto.TimePoint>> finalData = new LinkedHashMap<>();
         for (String topic : requestedTopics) {
             List<TopicTrendResponseDto.TimePoint> timePoints = tempAggregator.get(topic).entrySet().stream()
                     .map(entry -> new TopicTrendResponseDto.TimePoint(entry.getKey(), entry.getValue()))
