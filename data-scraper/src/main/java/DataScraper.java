@@ -53,8 +53,6 @@ public class DataScraper {
             System.out.println("SCRAPING COMPLETE.");
             System.out.println("Total threads collected: " + threadCount);
             System.out.println("Data saved to: " + threadsDir.getAbsolutePath());
-            System.out.println("Now run 'DatabaseImporter.java' to persist the data to database.");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

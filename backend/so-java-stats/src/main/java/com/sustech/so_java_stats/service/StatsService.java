@@ -1,91 +1,88 @@
 package com.sustech.so_java_stats.service;
 
+import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
+import com.sustech.so_java_stats.model.Question;
+import com.sustech.so_java_stats.model.Tag;
 import com.sustech.so_java_stats.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StatsService {
+
     private final QuestionRepository questionRepository;
 
-    public Map<String, Object> getTopicTrends(List<String> topics, LocalDate startDate, LocalDate endDate, String granularity) {
-        // Compute time range in Instant (UTC)
-        ZoneOffset utc = ZoneOffset.UTC;
-        Instant startInst = startDate.atStartOfDay(utc).toInstant();
-        Instant endInst = endDate.plusDays(1).atStartOfDay(utc).toInstant();
+    @Transactional(readOnly = true)
+    public TopicTrendResponseDto getTopicTrends(List<String> requestedTopics,
+                                                LocalDate startDate,
+                                                LocalDate endDate,
+                                                String granularity) {
 
-        // Determine DB granularity string for date_trunc
-        String dbGran = "monthly".equals(granularity) ? "month" : "year";
+        Instant startInstant = startDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
+        Instant endInstant = endDate.plusDays(1).atStartOfDay(ZoneId.of("UTC")).toInstant();
+        List<Question> questions = questionRepository.findByCreationDateBetween(startInstant, endInstant);
 
-        // Query raw counts
-        List<Object[]> rawResults = questionRepository.findTrends(topics, startInst, endInst, dbGran);
-
-        // Map: tag -> bucket -> count
-        Map<String, Map<String, Long>> tagToBucketCount = new HashMap<>();
-        for (Object[] row : rawResults) {
-            String tag = (String) row[0];
-            Instant ts = (Instant) row[1];
-            long cnt = ((Number) row[2]).longValue();
-            String bucket = formatBucket(ts, granularity);
-            tagToBucketCount.computeIfAbsent(tag, k -> new HashMap<>()).put(bucket, cnt);
+        DateTimeFormatter formatter;
+        boolean isYearly = granularity.equalsIgnoreCase("yearly");
+        if (isYearly) {
+            formatter = DateTimeFormatter.ofPattern("yyyy");
+        } else {
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM");
         }
 
-        // Generate all expected buckets
-        List<String> allBuckets = generateBuckets(startDate, endDate, granularity);
+        List<String> allDateBuckets = new ArrayList<>();
+        LocalDate current = startDate.withDayOfMonth(1);
+        while (!current.isAfter(endDate)) {
+            allDateBuckets.add(current.format(formatter));
 
-        // Build series per topic (fill missing with 0)
-        Map<String, List<Map<String, Object>>> data = new HashMap<>();
-        for (String topic : topics) {
-            Map<String, Long> bucketCount = tagToBucketCount.getOrDefault(topic, Collections.emptyMap());
-            List<Map<String, Object>> series = allBuckets.stream()
-                    .map(bucket -> Map.<String, Object>of(
-                            "date", bucket,
-                            "value", bucketCount.getOrDefault(bucket, 0L)
-                    ))
-                    .toList();
-            data.put(topic, series);
-        }
-
-        return Map.of(
-                "topics", topics,
-                "data", data
-        );
-    }
-
-    private List<String> generateBuckets(LocalDate start, LocalDate end, String granularity) {
-        if ("monthly".equals(granularity)) {
-            YearMonth startYm = YearMonth.from(start);
-            YearMonth endYm = YearMonth.from(end);
-            List<String> buckets = new ArrayList<>();
-            YearMonth current = startYm;
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM");
-            while (!current.isAfter(endYm)) {
-                buckets.add(current.format(fmt));
+            if (isYearly) {
+                current = current.plusYears(1);
+            } else {
                 current = current.plusMonths(1);
-
             }
-            return buckets;
-        } else {
-            int startY = start.getYear();
-            int endY = end.getYear();
-            return IntStream.rangeClosed(startY, endY)
-                    .mapToObj(String::valueOf)
-                    .toList();
         }
-    }
 
-    private String formatBucket(Instant ts, String granularity) {
-        LocalDateTime ldt = LocalDateTime.ofInstant(ts, ZoneOffset.UTC);
-        if ("monthly".equals(granularity)) {
-            return ldt.format(DateTimeFormatter.ofPattern("yyyy-MM"));
-        } else {
-            return String.valueOf(ldt.getYear());
+        Map<String, Map<String, Integer>> tempAggregator = new HashMap<>();
+        for (String topic : requestedTopics) {
+            Map<String, Integer> timeSeries = new TreeMap<>();
+            for (String bucket : allDateBuckets) {
+                timeSeries.put(bucket, 0);
+            }
+            tempAggregator.put(topic, timeSeries);
         }
+
+        for (Question question : questions) {
+            String dateBucket = question.getCreationDate()
+                    .atZone(ZoneId.of("UTC"))
+                    .format(formatter);
+
+            for (Tag tag : question.getTags()) {
+                String tagName = tag.getTagName();
+                if (tempAggregator.containsKey(tagName)) {
+                    if (tempAggregator.get(tagName).containsKey(dateBucket)) {
+                        tempAggregator.get(tagName).merge(dateBucket, 1, Integer::sum);
+                    }
+                }
+            }
+        }
+
+        Map<String, List<TopicTrendResponseDto.TimePoint>> finalData = new LinkedHashMap<>();
+        for (String topic : requestedTopics) {
+            List<TopicTrendResponseDto.TimePoint> timePoints = tempAggregator.get(topic).entrySet().stream()
+                    .map(entry -> new TopicTrendResponseDto.TimePoint(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList());
+            finalData.put(topic, timePoints);
+        }
+
+        return new TopicTrendResponseDto(requestedTopics, finalData);
     }
 }
