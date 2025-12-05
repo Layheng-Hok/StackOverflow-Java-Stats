@@ -1,5 +1,6 @@
 package com.sustech.so_java_stats.service;
 
+import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 
@@ -19,5 +20,9 @@ public interface StatsService {
             int topN,
             int minFrequency,
             List<String> excludedTags
+    );
+
+    List<MultithreadingPitfallResponseDto> getMultithreadingPitfalls(
+            int topN
     );
 }

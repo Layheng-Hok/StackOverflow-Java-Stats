@@ -1,7 +1,10 @@
 package com.sustech.so_java_stats.service.impl;
 
+import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
+import com.sustech.so_java_stats.model.Answer;
+import com.sustech.so_java_stats.model.Comment;
 import com.sustech.so_java_stats.model.Question;
 import com.sustech.so_java_stats.model.Tag;
 import com.sustech.so_java_stats.repository.QuestionRepository;
@@ -16,6 +19,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +28,24 @@ import java.util.stream.Collectors;
 public class StatsServiceImpl implements StatsService {
 
     private final QuestionRepository questionRepository;
+
+    private static final List<String> CONCURRENCY_TAGS = List.of(
+            "multithreading", "java-multithreading", "concurrency",
+            "synchronization", "thread-safety", "parallel-processing",
+            "executor-service", "fork-join", "atomic", "volatile", "locking"
+    );
+
+    private static final Map<String, Pattern> PITFALL_PATTERNS = new HashMap<>();
+
+    static {
+        PITFALL_PATTERNS.put("Deadlock", Pattern.compile("\\bdeadlock\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("Race Condition", Pattern.compile("\\brace condition\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("ConcurrentModificationException", Pattern.compile("ConcurrentModificationException"));
+        PITFALL_PATTERNS.put("Memory Consistency / Visibility", Pattern.compile("\\b(visibility problem|memory consistency|volatile variable)\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("Thread Starvation", Pattern.compile("\\b(starvation|livelock)\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("Thread Leak", Pattern.compile("\\b(thread leak|thread exhaustion)\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("IllegalMonitorStateException", Pattern.compile("IllegalMonitorStateException"));
+    }
 
     @Transactional(readOnly = true)
     public TopicTrendResponseDto getTopicTrends(List<String> requestedTopics,
@@ -104,6 +127,61 @@ public class StatsServiceImpl implements StatsService {
                         List.of(projection.getTag1(), projection.getTag2()),
                         projection.getFrequency()
                 ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<MultithreadingPitfallResponseDto> getMultithreadingPitfalls(int topN) {
+        List<Question> relevantQuestions = questionRepository.findDistinctByTags_TagNameIn(CONCURRENCY_TAGS);
+
+        Map<String, List<Long>> pitfallMatches = new HashMap<>();
+        for (String key : PITFALL_PATTERNS.keySet()) {
+            pitfallMatches.put(key, new ArrayList<>());
+        }
+
+        for (Question question : relevantQuestions) {
+            StringBuilder contentBuilder = new StringBuilder();
+
+            contentBuilder.append(question.getTitle()).append(" ");
+            contentBuilder.append(question.getBody()).append(" ");
+
+            if (question.getComments() != null) {
+                for (Comment comment : question.getComments()) {
+                    contentBuilder.append(comment.getBody()).append(" ");
+                }
+            }
+
+            if (question.getAnswers() != null) {
+                for (Answer answer : question.getAnswers()) {
+                    contentBuilder.append(answer.getBody()).append(" ");
+
+                    if (answer.getComments() != null) {
+                        for (Comment comment : answer.getComments()) {
+                            contentBuilder.append(comment.getBody()).append(" ");
+                        }
+                    }
+                }
+            }
+
+            String fullContent = contentBuilder.toString();
+
+            for (Map.Entry<String, Pattern> entry : PITFALL_PATTERNS.entrySet()) {
+                Matcher matcher = entry.getValue().matcher(fullContent);
+                if (matcher.find()) {
+                    pitfallMatches.get(entry.getKey()).add(question.getQuestionId());
+                }
+            }
+        }
+
+        return pitfallMatches.entrySet().stream()
+                .map(entry -> new MultithreadingPitfallResponseDto(
+                        entry.getKey(),
+                        entry.getValue().size(),
+                        new ArrayList<>(entry.getValue())
+                ))
+                .filter(responseDto -> responseDto.count() > 0)
+                .sorted(Comparator.comparingInt(MultithreadingPitfallResponseDto::count).reversed())
+                .limit(topN)
                 .collect(Collectors.toList());
     }
 }
