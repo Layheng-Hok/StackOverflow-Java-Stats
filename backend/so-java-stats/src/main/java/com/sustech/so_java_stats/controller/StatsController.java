@@ -18,7 +18,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class StatsController {
 
-    private final StatsService topicTrendService;
+    private final StatsService statsService;
 
     @GetMapping("/topic-trends")
     public ResponseEntity<TopicTrendResponseDto> getTopicTrends(
@@ -27,7 +27,7 @@ public class StatsController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(defaultValue = "yearly") String granularity
     ) {
-        TopicTrendResponseDto topicTrendResponseDto = topicTrendService.getTopicTrends(Arrays.asList(topics.split(",")), startDate, endDate, granularity);
+        TopicTrendResponseDto topicTrendResponseDto = statsService.getTopicTrends(Arrays.asList(topics.split(",")), startDate, endDate, granularity);
         return ResponseEntity.ok(topicTrendResponseDto);
     }
 }
