@@ -36,7 +36,7 @@ public class StatsController {
     @GetMapping("/topic-cooccurrences")
     public ResponseEntity<List<TopicCooccurrenceResponseDto>> getTopicCooccurrences(
             @RequestParam(defaultValue = "10") int topN,
-            @RequestParam(defaultValue = "5") int minFrequency
+            @RequestParam(defaultValue = "10") int minFrequency
     ) {
         List<TopicCooccurrenceResponseDto> response = statsService.getTopicCooccurrences(topN, minFrequency);
         return ResponseEntity.ok(response);
