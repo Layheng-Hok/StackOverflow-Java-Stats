@@ -1,5 +1,6 @@
 package com.sustech.so_java_stats.controller;
 
+import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.service.StatsService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -27,7 +29,16 @@ public class StatsController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(defaultValue = "yearly") String granularity
     ) {
-        TopicTrendResponseDto topicTrendResponseDto = statsService.getTopicTrends(Arrays.asList(topics.split(",")), startDate, endDate, granularity);
-        return ResponseEntity.ok(topicTrendResponseDto);
+        TopicTrendResponseDto response = statsService.getTopicTrends(Arrays.asList(topics.split(",")), startDate, endDate, granularity);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/topic-cooccurrences")
+    public ResponseEntity<List<TopicCooccurrenceResponseDto>> getTopicCooccurrences(
+            @RequestParam(defaultValue = "10") int topN,
+            @RequestParam(defaultValue = "5") int minFrequency
+    ) {
+        List<TopicCooccurrenceResponseDto> response = statsService.getTopicCooccurrences(topN, minFrequency);
+        return ResponseEntity.ok(response);
     }
 }
