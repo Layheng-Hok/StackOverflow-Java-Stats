@@ -17,6 +17,7 @@ public interface StatsService {
 
     List<TopicCooccurrenceResponseDto> getTopicCooccurrences(
             int topN,
-            int minFrequency
+            int minFrequency,
+            List<String> excludedTags
     );
 }

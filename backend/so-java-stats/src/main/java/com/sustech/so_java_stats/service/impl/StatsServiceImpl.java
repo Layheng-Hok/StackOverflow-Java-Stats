@@ -5,6 +5,7 @@ import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.model.Question;
 import com.sustech.so_java_stats.model.Tag;
 import com.sustech.so_java_stats.repository.QuestionRepository;
+import com.sustech.so_java_stats.repository.projection.TopicCooccurrenceProjection;
 import com.sustech.so_java_stats.service.StatsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -90,8 +91,15 @@ public class StatsServiceImpl implements StatsService {
 
     @Transactional(readOnly = true)
     public List<TopicCooccurrenceResponseDto> getTopicCooccurrences(int topN,
-                                                                    int minFrequency) {
-        return questionRepository.findTopicCooccurrences(topN, minFrequency).stream()
+                                                                    int minFrequency,
+                                                                    List<String> excludedTags) {
+        List<TopicCooccurrenceProjection> projections;
+        if (excludedTags.isEmpty()) {
+            projections = questionRepository.findTopicCooccurrencesWithoutExclude(topN, minFrequency);
+        } else {
+            projections = questionRepository.findTopicCooccurrencesWithExclude(topN, minFrequency, excludedTags);
+        }
+        return projections.stream()
                 .map(projection -> new TopicCooccurrenceResponseDto(
                         List.of(projection.getTag1(), projection.getTag2()),
                         projection.getFrequency()
