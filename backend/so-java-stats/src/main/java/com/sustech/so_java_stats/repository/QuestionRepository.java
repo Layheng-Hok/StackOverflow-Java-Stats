@@ -29,7 +29,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             """, nativeQuery = true)
     List<TopicCooccurrenceProjection> findTopicCooccurrencesWithExclude(@Param("topN") int topN,
                                                                         @Param("minFrequency") int minFrequency,
-                                                                        @Param("excluded") List<String> excluded);
+                                                                        @Param("excludedTags") List<String> excludedTags);
 
     @Query(value = """
             SELECT t1.tag_name AS tag1, t2.tag_name AS tag2, COUNT(t1.question_id) AS frequency
@@ -45,4 +45,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             """, nativeQuery = true)
     List<TopicCooccurrenceProjection> findTopicCooccurrencesWithoutExclude(@Param("topN") int topN,
                                                                            @Param("minFrequency") int minFrequency);
+
+    List<Question> findDistinctByTags_TagNameIn(List<String> tags);
 }

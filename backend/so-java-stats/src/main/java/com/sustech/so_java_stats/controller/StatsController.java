@@ -1,5 +1,6 @@
 package com.sustech.so_java_stats.controller;
 
+import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.service.StatsService;
@@ -65,6 +66,16 @@ public class StatsController {
                 ? Arrays.asList(excludeTags.split(","))
                 : Collections.emptyList();
         List<TopicCooccurrenceResponseDto> response = statsService.getTopicCooccurrences(topN, minFrequency, excludedTags);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get Common Multithreading Pitfalls", description = "Analyzes threads tagged with concurrency topics to find common pitfalls using regex.")
+    @GetMapping("/multithreading-pitfalls")
+    public ResponseEntity<List<MultithreadingPitfallResponseDto>> getMultithreadingPitfalls(
+            @Parameter(description = "Number of top pitfalls to return", example = "5")
+            @RequestParam(defaultValue = "5") int topN
+    ) {
+        List<MultithreadingPitfallResponseDto> response = statsService.getMultithreadingPitfalls(topN);
         return ResponseEntity.ok(response);
     }
 }

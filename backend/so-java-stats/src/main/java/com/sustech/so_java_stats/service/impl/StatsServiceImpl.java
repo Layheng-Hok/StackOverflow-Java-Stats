@@ -1,7 +1,9 @@
 package com.sustech.so_java_stats.service.impl;
 
+import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
+import com.sustech.so_java_stats.model.Answer;
 import com.sustech.so_java_stats.model.Question;
 import com.sustech.so_java_stats.model.Tag;
 import com.sustech.so_java_stats.repository.QuestionRepository;
@@ -16,6 +18,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +27,24 @@ import java.util.stream.Collectors;
 public class StatsServiceImpl implements StatsService {
 
     private final QuestionRepository questionRepository;
+
+    private static final List<String> CONCURRENCY_TAGS = List.of(
+            "multithreading", "java-multithreading", "concurrency",
+            "synchronization", "thread-safety", "parallel-processing",
+            "executor-service", "fork-join", "atomic", "volatile", "locking"
+    );
+
+    private static final Map<String, Pattern> PITFALL_PATTERNS = new HashMap<>();
+
+    static {
+        PITFALL_PATTERNS.put("Deadlock", Pattern.compile("\\bdeadlock\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("Race Condition", Pattern.compile("\\brace condition\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("ConcurrentModificationException", Pattern.compile("ConcurrentModificationException"));
+        PITFALL_PATTERNS.put("Memory Consistency / Visibility", Pattern.compile("\\b(visibility problem|memory consistency|volatile variable)\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("Thread Starvation", Pattern.compile("\\b(starvation|livelock)\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("Thread Leak", Pattern.compile("\\b(thread leak|thread exhaustion)\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("IllegalMonitorStateException", Pattern.compile("IllegalMonitorStateException"));
+    }
 
     @Transactional(readOnly = true)
     public TopicTrendResponseDto getTopicTrends(List<String> requestedTopics,
@@ -104,6 +126,53 @@ public class StatsServiceImpl implements StatsService {
                         List.of(projection.getTag1(), projection.getTag2()),
                         projection.getFrequency()
                 ))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<MultithreadingPitfallResponseDto> getMultithreadingPitfalls(int topN) {
+        // 1. Fetch relevant threads (Question + Answers) based on tags
+        List<Question> relevantQuestions = questionRepository.findDistinctByTags_TagNameIn(CONCURRENCY_TAGS);
+
+        // Map to store results: Pitfall Name -> List of Question IDs
+        Map<String, List<Long>> pitfallMatches = new HashMap<>();
+        for (String key : PITFALL_PATTERNS.keySet()) {
+            pitfallMatches.put(key, new ArrayList<>());
+        }
+
+        // 2. Iterate and analyze content using Regex
+        for (Question question : relevantQuestions) {
+            // Combine Title, Body, and Answer Bodies for a comprehensive search
+            StringBuilder contentBuilder = new StringBuilder();
+            contentBuilder.append(question.getTitle()).append(" ");
+            contentBuilder.append(question.getBody()).append(" ");
+            if (question.getAnswers() != null) {
+                for (Answer answer : question.getAnswers()) {
+                    contentBuilder.append(answer.getBody()).append(" ");
+                }
+            }
+            String fullContent = contentBuilder.toString();
+
+            // Check against each pattern
+            for (Map.Entry<String, Pattern> entry : PITFALL_PATTERNS.entrySet()) {
+                Matcher matcher = entry.getValue().matcher(fullContent);
+                if (matcher.find()) {
+                    pitfallMatches.get(entry.getKey()).add(question.getQuestionId());
+                }
+            }
+        }
+
+        // 3. Transform to DTOs, Sort by Count, and Limit
+        return pitfallMatches.entrySet().stream()
+                .map(entry -> new MultithreadingPitfallResponseDto(
+                        entry.getKey(),
+                        entry.getValue().size(),
+                        // Limit examples to first 5 IDs to keep response clean, or full list if needed
+                        entry.getValue().stream().limit(5).collect(Collectors.toList())
+                ))
+                .filter(dto -> dto.count() > 0) // Only return pitfalls found at least once
+                .sorted(Comparator.comparingInt(MultithreadingPitfallResponseDto::count).reversed())
+                .limit(topN)
                 .collect(Collectors.toList());
     }
 }
