@@ -4,6 +4,7 @@ import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.model.Answer;
+import com.sustech.so_java_stats.model.Comment;
 import com.sustech.so_java_stats.model.Question;
 import com.sustech.so_java_stats.model.Tag;
 import com.sustech.so_java_stats.repository.QuestionRepository;
@@ -42,6 +43,7 @@ public class StatsServiceImpl implements StatsService {
         PITFALL_PATTERNS.put("ConcurrentModificationException", Pattern.compile("ConcurrentModificationException"));
         PITFALL_PATTERNS.put("Memory Consistency / Visibility", Pattern.compile("\\b(visibility problem|memory consistency|volatile variable)\\b", Pattern.CASE_INSENSITIVE));
         PITFALL_PATTERNS.put("Thread Starvation", Pattern.compile("\\b(starvation|livelock)\\b", Pattern.CASE_INSENSITIVE));
+        PITFALL_PATTERNS.put("Thread Leak", Pattern.compile("\\b(thread leak|thread exhaustion)\\b", Pattern.CASE_INSENSITIVE));
         PITFALL_PATTERNS.put("IllegalMonitorStateException", Pattern.compile("IllegalMonitorStateException"));
     }
 
@@ -139,13 +141,28 @@ public class StatsServiceImpl implements StatsService {
 
         for (Question question : relevantQuestions) {
             StringBuilder contentBuilder = new StringBuilder();
+
             contentBuilder.append(question.getTitle()).append(" ");
             contentBuilder.append(question.getBody()).append(" ");
+
+            if (question.getComments() != null) {
+                for (Comment comment : question.getComments()) {
+                    contentBuilder.append(comment.getBody()).append(" ");
+                }
+            }
+
             if (question.getAnswers() != null) {
                 for (Answer answer : question.getAnswers()) {
                     contentBuilder.append(answer.getBody()).append(" ");
+
+                    if (answer.getComments() != null) {
+                        for (Comment comment : answer.getComments()) {
+                            contentBuilder.append(comment.getBody()).append(" ");
+                        }
+                    }
                 }
             }
+
             String fullContent = contentBuilder.toString();
 
             for (Map.Entry<String, Pattern> entry : PITFALL_PATTERNS.entrySet()) {
@@ -162,7 +179,7 @@ public class StatsServiceImpl implements StatsService {
                         entry.getValue().size(),
                         new ArrayList<>(entry.getValue())
                 ))
-                .filter(dto -> dto.count() > 0)
+                .filter(responseDto -> responseDto.count() > 0)
                 .sorted(Comparator.comparingInt(MultithreadingPitfallResponseDto::count).reversed())
                 .limit(topN)
                 .collect(Collectors.toList());
