@@ -69,11 +69,11 @@ public class StatsController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Get Common Multithreading Pitfalls", description = "Analyzes threads tagged with concurrency topics to find common pitfalls using regex.")
+    @Operation(summary = "Get Common Multithreading Pitfalls", description = "Analyzes threads tagged with concurrency topics to find common pitfalls.")
     @GetMapping("/multithreading-pitfalls")
     public ResponseEntity<List<MultithreadingPitfallResponseDto>> getMultithreadingPitfalls(
-            @Parameter(description = "Number of top pitfalls to return", example = "5")
-            @RequestParam(defaultValue = "5") int topN
+            @Parameter(description = "Number of top pitfalls to return", example = "6")
+            @RequestParam(defaultValue = "6") int topN
     ) {
         List<MultithreadingPitfallResponseDto> response = statsService.getMultithreadingPitfalls(topN);
         return ResponseEntity.ok(response);

@@ -5,6 +5,6 @@ import java.util.List;
 public record MultithreadingPitfallResponseDto(
         String pitfall,
         int count,
-        List<Long> examples
+        List<Long> questionIds
 ) {
 }

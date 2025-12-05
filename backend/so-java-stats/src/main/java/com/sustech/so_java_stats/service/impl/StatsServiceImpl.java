@@ -42,7 +42,6 @@ public class StatsServiceImpl implements StatsService {
         PITFALL_PATTERNS.put("ConcurrentModificationException", Pattern.compile("ConcurrentModificationException"));
         PITFALL_PATTERNS.put("Memory Consistency / Visibility", Pattern.compile("\\b(visibility problem|memory consistency|volatile variable)\\b", Pattern.CASE_INSENSITIVE));
         PITFALL_PATTERNS.put("Thread Starvation", Pattern.compile("\\b(starvation|livelock)\\b", Pattern.CASE_INSENSITIVE));
-        PITFALL_PATTERNS.put("Thread Leak", Pattern.compile("\\b(thread leak|thread exhaustion)\\b", Pattern.CASE_INSENSITIVE));
         PITFALL_PATTERNS.put("IllegalMonitorStateException", Pattern.compile("IllegalMonitorStateException"));
     }
 
@@ -131,18 +130,14 @@ public class StatsServiceImpl implements StatsService {
 
     @Transactional(readOnly = true)
     public List<MultithreadingPitfallResponseDto> getMultithreadingPitfalls(int topN) {
-        // 1. Fetch relevant threads (Question + Answers) based on tags
         List<Question> relevantQuestions = questionRepository.findDistinctByTags_TagNameIn(CONCURRENCY_TAGS);
 
-        // Map to store results: Pitfall Name -> List of Question IDs
         Map<String, List<Long>> pitfallMatches = new HashMap<>();
         for (String key : PITFALL_PATTERNS.keySet()) {
             pitfallMatches.put(key, new ArrayList<>());
         }
 
-        // 2. Iterate and analyze content using Regex
         for (Question question : relevantQuestions) {
-            // Combine Title, Body, and Answer Bodies for a comprehensive search
             StringBuilder contentBuilder = new StringBuilder();
             contentBuilder.append(question.getTitle()).append(" ");
             contentBuilder.append(question.getBody()).append(" ");
@@ -153,7 +148,6 @@ public class StatsServiceImpl implements StatsService {
             }
             String fullContent = contentBuilder.toString();
 
-            // Check against each pattern
             for (Map.Entry<String, Pattern> entry : PITFALL_PATTERNS.entrySet()) {
                 Matcher matcher = entry.getValue().matcher(fullContent);
                 if (matcher.find()) {
@@ -162,15 +156,13 @@ public class StatsServiceImpl implements StatsService {
             }
         }
 
-        // 3. Transform to DTOs, Sort by Count, and Limit
         return pitfallMatches.entrySet().stream()
                 .map(entry -> new MultithreadingPitfallResponseDto(
                         entry.getKey(),
                         entry.getValue().size(),
-                        // Limit examples to first 5 IDs to keep response clean, or full list if needed
-                        entry.getValue().stream().limit(5).collect(Collectors.toList())
+                        new ArrayList<>(entry.getValue())
                 ))
-                .filter(dto -> dto.count() > 0) // Only return pitfalls found at least once
+                .filter(dto -> dto.count() > 0)
                 .sorted(Comparator.comparingInt(MultithreadingPitfallResponseDto::count).reversed())
                 .limit(topN)
                 .collect(Collectors.toList());
