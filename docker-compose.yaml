@@ -17,15 +17,13 @@ services:
       timeout: 5s
       retries: 5
 
-  # Spring Boot App
+  # Spring Boot Backend
   backend:
     build: ./backend/so-java-stats
     container_name: so-backend
     depends_on:
       database:
         condition: service_healthy
-    ports:
-      - "8080:8080"
     volumes:
       - ./backend/so-java-stats/src/main/resources/data:/app/src/main/resources/data
       - ./.env:/app/.env
@@ -35,6 +33,15 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+
+  # React Frontend
+  frontend:
+    build: ./frontend
+    container_name: so-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
 
 volumes:
   db_data:
