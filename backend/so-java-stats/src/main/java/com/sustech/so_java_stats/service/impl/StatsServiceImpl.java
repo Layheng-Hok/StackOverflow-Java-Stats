@@ -1,6 +1,7 @@
 package com.sustech.so_java_stats.service.impl;
 
 import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
+import com.sustech.so_java_stats.dto.QuestionSolvabilityResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.model.Answer;
@@ -47,6 +48,7 @@ public class StatsServiceImpl implements StatsService {
         PITFALL_PATTERNS.put("IllegalMonitorStateException", Pattern.compile("IllegalMonitorStateException"));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public TopicTrendResponseDto getTopicTrends(List<String> requestedTopics,
                                                 LocalDate startDate,
@@ -112,6 +114,7 @@ public class StatsServiceImpl implements StatsService {
         return new TopicTrendResponseDto(requestedTopics, finalData);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<TopicCooccurrenceResponseDto> getTopicCooccurrences(int topN,
                                                                     int minFrequency,
@@ -130,6 +133,7 @@ public class StatsServiceImpl implements StatsService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<MultithreadingPitfallResponseDto> getMultithreadingPitfalls(int topN) {
         List<Question> relevantQuestions = questionRepository.findDistinctByTags_TagNameIn(CONCURRENCY_TAGS);
@@ -183,5 +187,71 @@ public class StatsServiceImpl implements StatsService {
                 .sorted(Comparator.comparingInt(MultithreadingPitfallResponseDto::count).reversed())
                 .limit(topN)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public QuestionSolvabilityResponseDto getQuestionSolvabilityFactors() {
+        List<Question> questions = questionRepository.findAll();
+
+        List<Question> solvable = questions.stream()
+                .filter(question -> question.getAcceptedAnswerId() != null)
+                .toList();
+
+        List<Question> hard = questions.stream()
+                .filter(question -> question.getAcceptedAnswerId() == null)
+                .toList();
+
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        counts.put("Solvable", solvable.size());
+        counts.put("Hard-to-Solve", hard.size());
+
+        List<QuestionSolvabilityResponseDto.FactorComparison> factors = new ArrayList<>();
+
+        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
+                "Average Owner Reputation",
+                calculateAverageReputation(solvable),
+                calculateAverageReputation(hard),
+                "score"
+        ));
+
+        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
+                "Average Body Length",
+                calculateAverageBodyLength(solvable),
+                calculateAverageBodyLength(hard),
+                "chars"
+        ));
+
+        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
+                "Average Question Score",
+                calculateAverageScore(solvable),
+                calculateAverageScore(hard),
+                "votes"
+        ));
+
+        return new QuestionSolvabilityResponseDto(counts, factors);
+    }
+
+    private double calculateAverageReputation(List<Question> questions) {
+        return questions.stream()
+                .map(Question::getOwner)
+                .filter(Objects::nonNull)
+                .mapToInt(user -> user.getReputation() != null ? user.getReputation() : 0)
+                .average()
+                .orElse(0.0);
+    }
+
+    private double calculateAverageBodyLength(List<Question> questions) {
+        return questions.stream()
+                .mapToInt(question -> question.getBody() != null ? question.getBody().length() : 0)
+                .average()
+                .orElse(0.0);
+    }
+
+    private double calculateAverageScore(List<Question> questions) {
+        return questions.stream()
+                .mapToInt(question -> question.getScore() != null ? question.getScore() : 0)
+                .average()
+                .orElse(0.0);
     }
 }

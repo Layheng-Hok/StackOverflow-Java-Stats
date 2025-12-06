@@ -1,6 +1,7 @@
 package com.sustech.so_java_stats.controller;
 
 import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
+import com.sustech.so_java_stats.dto.QuestionSolvabilityResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.service.StatsService;
@@ -23,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Tag(name = "StatsController", description = "APIs for analyzing Java-tagged Stack Overflow data")
+@Tag(name = "StatsController", description = "Controller for stats analytics")
 public class StatsController {
 
     private final StatsService statsService;
@@ -32,20 +33,19 @@ public class StatsController {
     @GetMapping("/topic-trends")
     public ResponseEntity<TopicTrendResponseDto> getTopicTrends(
             @Parameter(description = "Comma-separated list of topics", example = "stream,collections,multithreading,generics,reflection,lambda")
-            @RequestParam(defaultValue = "stream,collections,multithreading,generics,reflection,lambda") String topics,
+            @RequestParam String topics,
 
             @Parameter(description = "Start date (YYYY-MM-DD)", example = "2024-11-01")
-            @RequestParam(defaultValue = "2024-11-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
 
             @Parameter(description = "End date (YYYY-MM-DD)", example = "2025-11-30")
-            @RequestParam(defaultValue = "2025-11-30") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
 
             @Parameter(description = "Data granularity", example = "monthly")
-            @RequestParam(defaultValue = "monthly") String granularity
+            @RequestParam String granularity
     ) {
         String cleanedTopics = topics.endsWith(",") ? topics.substring(0, topics.length() - 1) : topics;
         List<String> requestedTopics = Arrays.asList(cleanedTopics.split(","));
-
         TopicTrendResponseDto response = statsService.getTopicTrends(requestedTopics, startDate, endDate, granularity);
         return ResponseEntity.ok(response);
     }
@@ -54,10 +54,10 @@ public class StatsController {
     @GetMapping("/topic-cooccurrences")
     public ResponseEntity<List<TopicCooccurrenceResponseDto>> getTopicCooccurrences(
             @Parameter(description = "Number of top results to return", example = "10")
-            @RequestParam(defaultValue = "10") int topN,
+            @RequestParam int topN,
 
             @Parameter(description = "Minimum frequency to be considered", example = "10")
-            @RequestParam(defaultValue = "10") int minFrequency,
+            @RequestParam int minFrequency,
 
             @Parameter(description = "Tags to exclude (comma separated)")
             @RequestParam(required = false) String excludeTags
@@ -73,9 +73,16 @@ public class StatsController {
     @GetMapping("/multithreading-pitfalls")
     public ResponseEntity<List<MultithreadingPitfallResponseDto>> getMultithreadingPitfalls(
             @Parameter(description = "Number of top pitfalls to return", example = "7")
-            @RequestParam(defaultValue = "7") int topN
+            @RequestParam int topN
     ) {
         List<MultithreadingPitfallResponseDto> response = statsService.getMultithreadingPitfalls(topN);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get Factors of What Make a Question Solvable or Hard-to-Solve", description = "Compares solvable vs. hard-to-solve questions based on user reputation, question clarity, and number of question upvotes.")
+    @GetMapping("/question-solvability")
+    public ResponseEntity<QuestionSolvabilityResponseDto> getQuestionSolvabilityFactors() {
+        QuestionSolvabilityResponseDto response = statsService.getQuestionSolvabilityFactors();
         return ResponseEntity.ok(response);
     }
 }
