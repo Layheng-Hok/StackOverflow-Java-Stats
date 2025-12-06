@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-@Tag(name = "StatsController", description = "Controller for stats analytics")
+@Tag(name = "StatsController", description = "Controller for stats analytics.")
 public class StatsController {
 
     private final StatsService statsService;
