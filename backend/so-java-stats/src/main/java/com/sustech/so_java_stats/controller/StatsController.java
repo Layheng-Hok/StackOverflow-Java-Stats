@@ -46,7 +46,6 @@ public class StatsController {
     ) {
         String cleanedTopics = topics.endsWith(",") ? topics.substring(0, topics.length() - 1) : topics;
         List<String> requestedTopics = Arrays.asList(cleanedTopics.split(","));
-
         TopicTrendResponseDto response = statsService.getTopicTrends(requestedTopics, startDate, endDate, granularity);
         return ResponseEntity.ok(response);
     }
@@ -80,7 +79,7 @@ public class StatsController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Get Factors of What Make a Question Solvable or Hard-to-Solve", description = "Compares solvable vs. hard-to-solve questions based on reputation, length, and code snippets.")
+    @Operation(summary = "Get Factors of What Make a Question Solvable or Hard-to-Solve", description = "Compares solvable vs. hard-to-solve questions based on user reputation, question clarity, and number of question upvotes.")
     @GetMapping("/question-solvability")
     public ResponseEntity<QuestionSolvabilityResponseDto> getQuestionSolvabilityFactors() {
         QuestionSolvabilityResponseDto response = statsService.getQuestionSolvabilityFactors();

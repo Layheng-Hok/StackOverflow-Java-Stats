@@ -192,64 +192,47 @@ public class StatsServiceImpl implements StatsService {
     @Override
     @Transactional(readOnly = true)
     public QuestionSolvabilityResponseDto getQuestionSolvabilityFactors() {
-        List<Question> allQuestions = questionRepository.findAll();
+        List<Question> questions = questionRepository.findAll();
 
-        // 1. Segmentation
-        // Solvable: Has an accepted answer (Strongest signal for "solved")
-        // Hard-to-Solve: No accepted answer
-        List<Question> solvable = allQuestions.stream()
-                .filter(q -> q.getAcceptedAnswerId() != null)
+        List<Question> solvable = questions.stream()
+                .filter(question -> question.getAcceptedAnswerId() != null)
                 .toList();
 
-        List<Question> hard = allQuestions.stream()
-                .filter(q -> q.getAcceptedAnswerId() == null)
+        List<Question> hard = questions.stream()
+                .filter(question -> question.getAcceptedAnswerId() == null)
                 .toList();
 
-        Map<String, Integer> counts = Map.of(
-                "Solvable", solvable.size(),
-                "Hard-to-Solve", hard.size()
-        );
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        counts.put("Solvable", solvable.size());
+        counts.put("Hard-to-Solve", hard.size());
 
         List<QuestionSolvabilityResponseDto.FactorComparison> factors = new ArrayList<>();
 
-        // 2. Factor: User Reputation
         factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
-                "Avg Owner Reputation",
-                calculateAvgReputation(solvable),
-                calculateAvgReputation(hard),
+                "Average Owner Reputation",
+                calculateAverageReputation(solvable),
+                calculateAverageReputation(hard),
                 "score"
         ));
 
-        // 3. Factor: Question Clarity (Body Length)
         factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
-                "Avg Body Length",
-                calculateAvgBodyLength(solvable),
-                calculateAvgBodyLength(hard),
+                "Average Body Length",
+                calculateAverageBodyLength(solvable),
+                calculateAverageBodyLength(hard),
                 "chars"
         ));
 
-        // 4. Factor: Code Snippet Presence
         factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
-                "Contains Code Snippet",
-                calculateCodeSnippetRate(solvable) * 100,
-                calculateCodeSnippetRate(hard) * 100,
-                "%"
-        ));
-
-        // 5. Factor: Question Score
-        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
-                "Avg Question Score",
-                calculateAvgScore(solvable),
-                calculateAvgScore(hard),
+                "Average Question Score",
+                calculateAverageScore(solvable),
+                calculateAverageScore(hard),
                 "votes"
         ));
 
         return new QuestionSolvabilityResponseDto(counts, factors);
     }
 
-    // --- Helper Methods for Statistics ---
-
-    private double calculateAvgReputation(List<Question> questions) {
+    private double calculateAverageReputation(List<Question> questions) {
         return questions.stream()
                 .map(Question::getOwner)
                 .filter(Objects::nonNull)
@@ -258,24 +241,16 @@ public class StatsServiceImpl implements StatsService {
                 .orElse(0.0);
     }
 
-    private double calculateAvgBodyLength(List<Question> questions) {
+    private double calculateAverageBodyLength(List<Question> questions) {
         return questions.stream()
-                .mapToInt(q -> q.getBody() != null ? q.getBody().length() : 0)
+                .mapToInt(question -> question.getBody() != null ? question.getBody().length() : 0)
                 .average()
                 .orElse(0.0);
     }
 
-    private double calculateCodeSnippetRate(List<Question> questions) {
-        if (questions.isEmpty()) return 0.0;
-        long countWithCode = questions.stream()
-                .filter(q -> q.getBody() != null && (q.getBody().contains("<code>") || q.getBody().contains("<pre>")))
-                .count();
-        return (double) countWithCode / questions.size();
-    }
-
-    private double calculateAvgScore(List<Question> questions) {
+    private double calculateAverageScore(List<Question> questions) {
         return questions.stream()
-                .mapToInt(q -> q.getScore() != null ? q.getScore() : 0)
+                .mapToInt(question -> question.getScore() != null ? question.getScore() : 0)
                 .average()
                 .orElse(0.0);
     }
