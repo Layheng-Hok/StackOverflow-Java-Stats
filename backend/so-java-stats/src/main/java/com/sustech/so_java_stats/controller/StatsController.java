@@ -35,7 +35,7 @@ public class StatsController {
             @Parameter(description = "Comma-separated list of topics", example = "stream,collections,multithreading,generics,reflection,lambda")
             @RequestParam String topics,
 
-            @Parameter(description = "Start date (YYYY-MM-DD)", example = "2024-11-01")
+            @Parameter(description = "Start date (YYYY-MM-DD)", example = "2024-12-01")
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
 
             @Parameter(description = "End date (YYYY-MM-DD)", example = "2025-11-30")

@@ -28,8 +28,14 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        long existingQuestions = questionRepository.count();
+        if (existingQuestions > 0) {
+            log.info("Database already contains {} questions. Skipping initialization.", existingQuestions);
+            return;
+        }
+
         String dataDir = "src/main/resources/data";
-        log.info("Starting database initialization from directory: {}", dataDir);
+        log.info("Database is empty. Starting initialization from directory: {}", dataDir);
 
         int successCount = 0;
         int skipCount = 0;
