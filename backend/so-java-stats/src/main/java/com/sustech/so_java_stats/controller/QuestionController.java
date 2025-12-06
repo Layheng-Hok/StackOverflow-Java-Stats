@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/questions")
 @RequiredArgsConstructor
 @Tag(name = "QuestionController", description = "Controller for question-related operations.")
 public class QuestionController {
@@ -21,7 +21,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @Operation(summary = "Get Question Details", description = "Fetches full details for a specific question, including answers and comments.")
-    @GetMapping("/questions/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<QuestionDetailResponseDto> getQuestionDetails(
             @Parameter(description = "The StackOverflow Question ID", example = "106591")
             @PathVariable("id") Long questionId

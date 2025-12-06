@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/tags")
 @RequiredArgsConstructor
 @Tag(name = "TagController", description = "Controller for tag-related operations.")
 public class TagController {
@@ -20,7 +20,7 @@ public class TagController {
     private final TagService tagService;
 
     @Operation(summary = "Check Tag Existence", description = "Checks if a specific tag exists in the collected database.")
-    @GetMapping("/tags/check")
+    @GetMapping("/check")
     public ResponseEntity<Boolean> checkTagExists(
             @Parameter(description = "The tag name to check", example = "spring-boot")
             @RequestParam String tagName
