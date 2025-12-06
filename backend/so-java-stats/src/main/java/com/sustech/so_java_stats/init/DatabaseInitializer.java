@@ -7,6 +7,7 @@ import com.sustech.so_java_stats.repository.QuestionRepository;
 import com.sustech.so_java_stats.repository.StackUserRepository;
 import com.sustech.so_java_stats.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.io.File;
 import java.time.Instant;
 import java.util.*;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner {
@@ -27,115 +29,137 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         String dataDir = "src/main/resources/data";
+        log.info("Starting database initialization from directory: {}", dataDir);
 
-        for (int x = 1; x <= 7500; x++) {
+        int successCount = 0;
+        int skipCount = 0;
+        int totalFilesToCheck = 7500;
+
+        for (int x = 1; x <= totalFilesToCheck; x++) {
             File file = new File(dataDir + "/thread_" + x + ".json");
+
             if (!file.exists()) {
+                skipCount++;
+                log.trace("File not found, skipping: thread_{}.json", x);
                 continue;
             }
 
-            JsonNode root = objectMapper.readTree(file);
+            try {
+                log.debug("Processing file: {}", file.getName());
 
-            Map<Long, StackUser> userCache = new HashMap<>();
+                JsonNode root = objectMapper.readTree(file);
+                Map<Long, StackUser> userCache = new HashMap<>();
 
-            Question question = new Question();
-            question.setQuestionId(root.path("question_id").asLong());
-            question.setTitle(root.path("title").asText());
-            question.setBody(root.path("body").asText());
-            question.setCreationDate(Instant.ofEpochSecond(root.path("creation_date").asLong()));
-            question.setScore(root.path("score").asInt());
-            question.setViewCount(root.path("view_count").asInt());
-            question.setAnswerCount(root.path("answer_count").asInt());
-            question.setIsAnswered(root.path("is_answered").asBoolean());
+                Question question = new Question();
+                question.setQuestionId(root.path("question_id").asLong());
+                question.setTitle(root.path("title").asText());
+                question.setBody(root.path("body").asText());
+                question.setCreationDate(Instant.ofEpochSecond(root.path("creation_date").asLong()));
+                question.setScore(root.path("score").asInt());
+                question.setViewCount(root.path("view_count").asInt());
+                question.setAnswerCount(root.path("answer_count").asInt());
+                question.setIsAnswered(root.path("is_answered").asBoolean());
 
-            if (root.has("last_edit_date")) {
-                question.setLastEditDate(Instant.ofEpochSecond(root.path("last_edit_date").asLong()));
-            }
-            if (root.has("last_activity_date")) {
-                question.setLastActivityDate(Instant.ofEpochSecond(root.path("last_activity_date").asLong()));
-            }
-            if (root.has("accepted_answer_id")) {
-                question.setAcceptedAnswerId(root.path("accepted_answer_id").asLong());
-            }
-
-            // Owner
-            JsonNode ownerNode = root.path("owner");
-            if (!ownerNode.isMissingNode()) {
-                StackUser owner = getOrCreateStackUser(ownerNode, userCache);
-                question.setOwner(owner);
-            }
-
-            // Tags
-            List<Tag> tags = new ArrayList<>();
-            JsonNode tagsArray = root.path("tags");
-            for (JsonNode tagNode : tagsArray) {
-                String tagName = tagNode.asText();
-                Tag tag = tagRepository.findById(tagName).orElseGet(() -> {
-                    Tag newTag = new Tag(tagName);
-                    return tagRepository.save(newTag);
-                });
-                tags.add(tag);
-            }
-            question.setTags(tags);
-
-            // Question comments
-            List<Comment> qComments = createComments(root.path("comments"), userCache);
-            question.setComments(qComments);
-
-            // Answers
-            List<Answer> answers = new ArrayList<>();
-            JsonNode answersArray = root.path("answers");
-            for (JsonNode ansNode : answersArray) {
-                Answer answer = new Answer();
-                answer.setAnswerId(ansNode.path("answer_id").asLong());
-                answer.setBody(ansNode.path("body").asText());
-                answer.setCreationDate(Instant.ofEpochSecond(ansNode.path("creation_date").asLong()));
-                answer.setScore(ansNode.path("score").asInt());
-                answer.setIsAccepted(ansNode.path("is_accepted").asBoolean());
-
-                if (ansNode.has("last_edit_date")) {
-                    answer.setLastEditDate(Instant.ofEpochSecond(ansNode.path("last_edit_date").asLong()));
+                if (root.has("last_edit_date")) {
+                    question.setLastEditDate(Instant.ofEpochSecond(root.path("last_edit_date").asLong()));
                 }
-                if (ansNode.has("last_activity_date")) {
-                    answer.setLastActivityDate(Instant.ofEpochSecond(ansNode.path("last_activity_date").asLong()));
+                if (root.has("last_activity_date")) {
+                    question.setLastActivityDate(Instant.ofEpochSecond(root.path("last_activity_date").asLong()));
+                }
+                if (root.has("accepted_answer_id")) {
+                    question.setAcceptedAnswerId(root.path("accepted_answer_id").asLong());
                 }
 
-                // Answer owner
-                JsonNode ansOwnerNode = ansNode.path("owner");
-                if (!ansOwnerNode.isMissingNode()) {
-                    StackUser ansOwner = getOrCreateStackUser(ansOwnerNode, userCache);
-                    answer.setOwner(ansOwner);
+                // Owner
+                JsonNode ownerNode = root.path("owner");
+                if (!ownerNode.isMissingNode()) {
+                    StackUser owner = getOrCreateStackUser(ownerNode, userCache);
+                    question.setOwner(owner);
                 }
 
-                // Answer comments
-                List<Comment> ansComments = createComments(ansNode.path("comments"), userCache);
-                answer.setComments(ansComments);
+                // Tags
+                List<Tag> tags = new ArrayList<>();
+                JsonNode tagsArray = root.path("tags");
+                for (JsonNode tagNode : tagsArray) {
+                    String tagName = tagNode.asText();
+                    Tag tag = tagRepository.findById(tagName).orElseGet(() -> {
+                        log.debug("Creating new tag: {}", tagName);
+                        Tag newTag = new Tag(tagName);
+                        return tagRepository.save(newTag);
+                    });
+                    tags.add(tag);
+                }
+                question.setTags(tags);
 
-                answer.setQuestion(question);
-                answers.add(answer);
-            }
-            question.setAnswers(answers);
+                // Question comments
+                List<Comment> qComments = createComments(root.path("comments"), userCache);
+                question.setComments(qComments);
 
-            // Set acceptedAnswerId if not set but present in answers
-            if (question.getAcceptedAnswerId() == null) {
-                for (Answer ans : answers) {
-                    if (Boolean.TRUE.equals(ans.getIsAccepted())) {
-                        question.setAcceptedAnswerId(ans.getAnswerId());
-                        break;
+                // Answers
+                List<Answer> answers = new ArrayList<>();
+                JsonNode answersArray = root.path("answers");
+                for (JsonNode ansNode : answersArray) {
+                    Answer answer = new Answer();
+                    answer.setAnswerId(ansNode.path("answer_id").asLong());
+                    answer.setBody(ansNode.path("body").asText());
+                    answer.setCreationDate(Instant.ofEpochSecond(ansNode.path("creation_date").asLong()));
+                    answer.setScore(ansNode.path("score").asInt());
+                    answer.setIsAccepted(ansNode.path("is_accepted").asBoolean());
+
+                    if (ansNode.has("last_edit_date")) {
+                        answer.setLastEditDate(Instant.ofEpochSecond(ansNode.path("last_edit_date").asLong()));
+                    }
+                    if (ansNode.has("last_activity_date")) {
+                        answer.setLastActivityDate(Instant.ofEpochSecond(ansNode.path("last_activity_date").asLong()));
+                    }
+
+                    // Answer owner
+                    JsonNode ansOwnerNode = ansNode.path("owner");
+                    if (!ansOwnerNode.isMissingNode()) {
+                        StackUser ansOwner = getOrCreateStackUser(ansOwnerNode, userCache);
+                        answer.setOwner(ansOwner);
+                    }
+
+                    // Answer comments
+                    List<Comment> ansComments = createComments(ansNode.path("comments"), userCache);
+                    answer.setComments(ansComments);
+
+                    answer.setQuestion(question);
+                    answers.add(answer);
+                }
+                question.setAnswers(answers);
+
+                if (question.getAcceptedAnswerId() == null) {
+                    for (Answer ans : answers) {
+                        if (Boolean.TRUE.equals(ans.getIsAccepted())) {
+                            question.setAcceptedAnswerId(ans.getAnswerId());
+                            break;
+                        }
                     }
                 }
-            }
 
-            // Save the question (cascades to answers, comments, etc.)
-            questionRepository.save(question);
+                questionRepository.save(question);
+                successCount++;
+
+                if (successCount % 500 == 0) {
+                    log.info("Progress: Processed {} files...", successCount);
+                }
+
+            } catch (Exception e) {
+                log.error("Failed to process file: {}", file.getName(), e);
+            }
         }
+
+        log.info("Database initialization finished. Processed: {}, Skipped: {}", successCount, skipCount);
     }
 
     private StackUser getOrCreateStackUser(JsonNode userNode, Map<Long, StackUser> userCache) {
         long userId = userNode.path("user_id").asLong();
+
         if (userCache.containsKey(userId)) {
             return userCache.get(userId);
         }
+
         Optional<StackUser> existingUser = stackUserRepository.findById(userId);
         StackUser user;
         if (existingUser.isPresent()) {
