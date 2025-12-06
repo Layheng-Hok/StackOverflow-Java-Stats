@@ -1,6 +1,7 @@
 package com.sustech.so_java_stats.service.impl;
 
 import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
+import com.sustech.so_java_stats.dto.QuestionSolvabilityResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.model.Answer;
@@ -47,6 +48,7 @@ public class StatsServiceImpl implements StatsService {
         PITFALL_PATTERNS.put("IllegalMonitorStateException", Pattern.compile("IllegalMonitorStateException"));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public TopicTrendResponseDto getTopicTrends(List<String> requestedTopics,
                                                 LocalDate startDate,
@@ -112,6 +114,7 @@ public class StatsServiceImpl implements StatsService {
         return new TopicTrendResponseDto(requestedTopics, finalData);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<TopicCooccurrenceResponseDto> getTopicCooccurrences(int topN,
                                                                     int minFrequency,
@@ -130,6 +133,7 @@ public class StatsServiceImpl implements StatsService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<MultithreadingPitfallResponseDto> getMultithreadingPitfalls(int topN) {
         List<Question> relevantQuestions = questionRepository.findDistinctByTags_TagNameIn(CONCURRENCY_TAGS);
@@ -183,5 +187,96 @@ public class StatsServiceImpl implements StatsService {
                 .sorted(Comparator.comparingInt(MultithreadingPitfallResponseDto::count).reversed())
                 .limit(topN)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public QuestionSolvabilityResponseDto getQuestionSolvabilityFactors() {
+        List<Question> allQuestions = questionRepository.findAll();
+
+        // 1. Segmentation
+        // Solvable: Has an accepted answer (Strongest signal for "solved")
+        // Hard-to-Solve: No accepted answer
+        List<Question> solvable = allQuestions.stream()
+                .filter(q -> q.getAcceptedAnswerId() != null)
+                .toList();
+
+        List<Question> hard = allQuestions.stream()
+                .filter(q -> q.getAcceptedAnswerId() == null)
+                .toList();
+
+        Map<String, Integer> counts = Map.of(
+                "Solvable", solvable.size(),
+                "Hard-to-Solve", hard.size()
+        );
+
+        List<QuestionSolvabilityResponseDto.FactorComparison> factors = new ArrayList<>();
+
+        // 2. Factor: User Reputation
+        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
+                "Avg Owner Reputation",
+                calculateAvgReputation(solvable),
+                calculateAvgReputation(hard),
+                "score"
+        ));
+
+        // 3. Factor: Question Clarity (Body Length)
+        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
+                "Avg Body Length",
+                calculateAvgBodyLength(solvable),
+                calculateAvgBodyLength(hard),
+                "chars"
+        ));
+
+        // 4. Factor: Code Snippet Presence
+        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
+                "Contains Code Snippet",
+                calculateCodeSnippetRate(solvable) * 100,
+                calculateCodeSnippetRate(hard) * 100,
+                "%"
+        ));
+
+        // 5. Factor: Question Score
+        factors.add(new QuestionSolvabilityResponseDto.FactorComparison(
+                "Avg Question Score",
+                calculateAvgScore(solvable),
+                calculateAvgScore(hard),
+                "votes"
+        ));
+
+        return new QuestionSolvabilityResponseDto(counts, factors);
+    }
+
+    // --- Helper Methods for Statistics ---
+
+    private double calculateAvgReputation(List<Question> questions) {
+        return questions.stream()
+                .map(Question::getOwner)
+                .filter(Objects::nonNull)
+                .mapToInt(user -> user.getReputation() != null ? user.getReputation() : 0)
+                .average()
+                .orElse(0.0);
+    }
+
+    private double calculateAvgBodyLength(List<Question> questions) {
+        return questions.stream()
+                .mapToInt(q -> q.getBody() != null ? q.getBody().length() : 0)
+                .average()
+                .orElse(0.0);
+    }
+
+    private double calculateCodeSnippetRate(List<Question> questions) {
+        if (questions.isEmpty()) return 0.0;
+        long countWithCode = questions.stream()
+                .filter(q -> q.getBody() != null && (q.getBody().contains("<code>") || q.getBody().contains("<pre>")))
+                .count();
+        return (double) countWithCode / questions.size();
+    }
+
+    private double calculateAvgScore(List<Question> questions) {
+        return questions.stream()
+                .mapToInt(q -> q.getScore() != null ? q.getScore() : 0)
+                .average()
+                .orElse(0.0);
     }
 }

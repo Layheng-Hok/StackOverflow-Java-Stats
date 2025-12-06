@@ -1,6 +1,7 @@
 package com.sustech.so_java_stats.controller;
 
 import com.sustech.so_java_stats.dto.MultithreadingPitfallResponseDto;
+import com.sustech.so_java_stats.dto.QuestionSolvabilityResponseDto;
 import com.sustech.so_java_stats.dto.TopicCooccurrenceResponseDto;
 import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.service.StatsService;
@@ -76,6 +77,13 @@ public class StatsController {
             @RequestParam(defaultValue = "7") int topN
     ) {
         List<MultithreadingPitfallResponseDto> response = statsService.getMultithreadingPitfalls(topN);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get Factors of What Make a Question Solvable or Hard-to-Solve", description = "Compares solvable vs. hard-to-solve questions based on reputation, length, and code snippets.")
+    @GetMapping("/question-solvability")
+    public ResponseEntity<QuestionSolvabilityResponseDto> getQuestionSolvabilityFactors() {
+        QuestionSolvabilityResponseDto response = statsService.getQuestionSolvabilityFactors();
         return ResponseEntity.ok(response);
     }
 }
