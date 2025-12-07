@@ -20,8 +20,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
             WHERE t1.tag_name < t2.tag_name
               AND t1.tag_name != 'java'
               AND t2.tag_name != 'java'
-              AND t1.tag_name NOT IN :excluded
-              AND t2.tag_name NOT IN :excluded
+              AND t1.tag_name NOT IN :excludedTags
+              AND t2.tag_name NOT IN :excludedTags
             GROUP BY t1.tag_name, t2.tag_name
             HAVING COUNT(t1.question_id) >= :minFrequency
             ORDER BY frequency DESC
