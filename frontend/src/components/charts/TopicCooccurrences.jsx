@@ -112,8 +112,13 @@ const TopicCooccurrences = () => {
                 tick={{fill: 'hsl(var(--foreground))'}}
               />
               <Tooltip 
-                 cursor={{fill: 'transparent'}}
-                 contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
+                 cursor={{fill: 'hsl(var(--muted))', opacity: 0.4}}
+                 contentStyle={{ 
+                   backgroundColor: 'hsl(var(--card))', 
+                   borderColor: 'hsl(var(--border))', 
+                   color: 'hsl(var(--foreground))' 
+                 }}
+                 itemStyle={{ color: 'hsl(var(--foreground))' }}
               />
               <Bar dataKey="frequency" radius={[0, 4, 4, 0]}>
                 {data.map((entry, index) => (
