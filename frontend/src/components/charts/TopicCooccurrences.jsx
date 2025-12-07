@@ -94,10 +94,16 @@ const TopicCooccurrences = () => {
             <BarChart
               layout="vertical"
               data={data}
-              margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
+              margin={{ top: 5, right: 30, left: 100, bottom: 20 }}
             >
-              <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} className="stroke-muted" />
-              <XAxis type="number" hide />
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} vertical={true} className="stroke-muted" />
+              
+              <XAxis 
+                type="number" 
+                className="text-xs font-medium"
+                tick={{fill: 'hsl(var(--foreground))'}}
+              />
+              
               <YAxis 
                 type="category" 
                 dataKey="pair" 
