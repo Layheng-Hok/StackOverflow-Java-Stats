@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { X } from 'lucide-react';
 
-const TopicCooccurrence = () => {
+const TopicCooccurrences = () => {
   const [data, setData] = useState([]);
   const [excludeInput, setExcludeInput] = useState('');
   const [excludedTags, setExcludedTags] = useState([]);
@@ -122,4 +122,4 @@ const TopicCooccurrence = () => {
   );
 };
 
-export default TopicCooccurrence;
+export default TopicCooccurrences;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Moon, Sun, BarChart2, Share2, AlertTriangle, CheckCircle } from 'lucide-react';
 import TopicTrends from './components/charts/TopicTrends';
-import TopicCooccurrence from './components/charts/TopicCooccurrence';
+import TopicCooccurrences from './components/charts/TopicCooccurrences';
 import MultithreadingPitfalls from './components/charts/MultithreadingPitfalls';
 import QuestionSolvability from './components/charts/QuestionSolvability';
 
@@ -101,7 +101,7 @@ const App = () => {
                 <p className="text-muted-foreground">Explore which tags frequently appear together in the Java ecosystem.</p>
                 <div className="rounded-xl border bg-card text-card-foreground shadow">
                   <div className="p-6 pt-0 mt-6">
-                    <TopicCooccurrence />
+                    <TopicCooccurrences />
                   </div>
                 </div>
               </div>
