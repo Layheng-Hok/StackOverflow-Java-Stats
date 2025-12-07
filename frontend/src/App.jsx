@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Sun, BarChart2, Share2, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Moon, Sun, TrendingUp, Share2, AlertTriangle, CheckCircle } from 'lucide-react';
 import TopicTrends from './components/charts/TopicTrends';
 import TopicCooccurrences from './components/charts/TopicCooccurrences';
 import MultithreadingPitfalls from './components/charts/MultithreadingPitfalls';
@@ -28,7 +28,7 @@ const App = () => {
   };
 
   const navItems = [
-    { id: 'trends', label: 'Topic Trends', icon: <BarChart2 size={20} /> },
+    { id: 'trends', label: 'Topic Trends', icon: <TrendingUp size={20} /> },
     { id: 'cooccurrence', label: 'Co-occurrences', icon: <Share2 size={20} /> },
     { id: 'pitfalls', label: 'Concurrency Pitfalls', icon: <AlertTriangle size={20} /> },
     { id: 'solvability', label: 'Solvability Factors', icon: <CheckCircle size={20} /> },
