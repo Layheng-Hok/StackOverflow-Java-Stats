@@ -24,7 +24,6 @@ const TopicCooccurrences = () => {
           excludeTags: excludedTags.join(',')
         }
       });
-      // Transform for chart: label "spring + spring-boot"
       const chartData = response.data.map(item => ({
         pair: item.pair.join(' + '),
         frequency: item.frequency
