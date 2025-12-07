@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { X } from 'lucide-react';
+import ChartSkeleton from '../ChartSkeleton';
 
-const TopicCooccurrence = () => {
+const TopicCooccurrences = () => {
   const [data, setData] = useState([]);
   const [excludeInput, setExcludeInput] = useState('');
   const [excludedTags, setExcludedTags] = useState([]);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -24,7 +25,6 @@ const TopicCooccurrence = () => {
           excludeTags: excludedTags.join(',')
         }
       });
-      // Transform for chart: label "spring + spring-boot"
       const chartData = response.data.map(item => ({
         pair: item.pair.join(' + '),
         frequency: item.frequency
@@ -91,35 +91,50 @@ const TopicCooccurrence = () => {
       </div>
 
       <div className="h-[400px] w-full">
-         <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              layout="vertical"
-              data={data}
-              margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} className="stroke-muted" />
-              <XAxis type="number" hide />
-              <YAxis 
-                type="category" 
-                dataKey="pair" 
-                width={150} 
-                className="text-xs font-medium"
-                tick={{fill: 'hsl(var(--foreground))'}}
-              />
-              <Tooltip 
-                 cursor={{fill: 'transparent'}}
-                 contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
-              />
-              <Bar dataKey="frequency" radius={[0, 4, 4, 0]}>
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={`hsl(var(--primary))`}/>
-                ))}
-              </Bar>
-            </BarChart>
-         </ResponsiveContainer>
+        {loading ? (
+           <ChartSkeleton height="h-full" />
+        ) : (
+           <ResponsiveContainer width="100%" height="100%">
+             <BarChart
+               layout="vertical"
+               data={data}
+               margin={{ top: 5, right: 30, left: 100, bottom: 20 }}
+             >
+               <CartesianGrid strokeDasharray="3 3" horizontal={false} vertical={true} className="stroke-muted" />
+               
+               <XAxis 
+                 type="number" 
+                 className="text-xs font-medium"
+                 tick={{fill: 'hsl(var(--foreground))'}}
+               />
+               
+               <YAxis 
+                 type="category" 
+                 dataKey="pair" 
+                 width={150} 
+                 className="text-xs font-medium"
+                 tick={{fill: 'hsl(var(--foreground))'}}
+               />
+               <Tooltip 
+                  cursor={{fill: 'hsl(var(--muted))', opacity: 0.4}}
+                  contentStyle={{ 
+                    backgroundColor: 'hsl(var(--card))', 
+                    borderColor: 'hsl(var(--border))', 
+                    color: 'hsl(var(--foreground))' 
+                  }}
+                  itemStyle={{ color: 'hsl(var(--foreground))' }}
+               />
+               <Bar dataKey="frequency" radius={[0, 4, 4, 0]}>
+                 {data.map((entry, index) => (
+                   <Cell key={`cell-${index}`} fill={`hsl(var(--primary))`}/>
+                 ))}
+               </Bar>
+             </BarChart>
+           </ResponsiveContainer>
+        )}
       </div>
     </div>
   );
 };
 
-export default TopicCooccurrence;
+export default TopicCooccurrences;

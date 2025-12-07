@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import ChartSkeleton from '../ChartSkeleton';
 
 const TOPIC_GROUPS = {
   "Java Core": "stream,collections,multithreading,generics,reflection",
-  "Runtime": "jvm,garbage-collection,javac",
-  "Spring": "spring,spring-boot,spring-security,spring-data-jpa,spring-mvc",
+  "Java Runtime & Internals": "jvm,garbage-collection,javac",
+  "Spring Ecosystem": "spring,spring-boot,spring-security,spring-data-jpa,spring-mvc",
+  "Servlet Containers": "tomcat,jetty",
   "Build Tools": "maven,gradle",
-  "Servlet": "tomcat,jetty",
   "IDEs": "intellij-idea,eclipse",
   "Serialization": "json,jackson,gson,protobuf,xml"
 };
@@ -17,7 +18,7 @@ const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088fe'];
 const TopicTrends = () => {
   const [selectedGroup, setSelectedGroup] = useState("Java Core");
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -27,7 +28,6 @@ const TopicTrends = () => {
     setLoading(true);
     try {
       const topics = TOPIC_GROUPS[selectedGroup];
-      // Fixed dates as per requirement
       const response = await axios.get('/api/stats/topic-trends', {
         params: {
           topics: topics,
@@ -39,7 +39,6 @@ const TopicTrends = () => {
 
       const rawData = response.data.data;
       
-      // Transform data for Recharts: [{ date: '2024-12', stream: 10, collections: 5 }, ...]
       const chartData = [];
       const dates = Object.values(rawData)[0]?.map(t => t.date) || [];
       
@@ -66,9 +65,9 @@ const TopicTrends = () => {
           <button
             key={group}
             onClick={() => setSelectedGroup(group)}
-            className={`px-4 py-2 text-sm rounded-md transition-colors ${
+            className={`px-4 py-2 text-sm rounded-md transition-all ${
               selectedGroup === group 
-                ? 'bg-primary text-primary-foreground' 
+                ? 'bg-primary text-primary-foreground shadow-md' 
                 : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
             }`}
           >
@@ -79,26 +78,30 @@ const TopicTrends = () => {
 
       <div className="h-[400px] w-full">
         {loading ? (
-          <div className="h-full flex items-center justify-center text-muted-foreground">Loading...</div>
+          <ChartSkeleton height="h-full" />
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-              <XAxis dataKey="date" className="text-xs" />
-              <YAxis className="text-xs" />
+              <XAxis dataKey="date" className="text-xs" stroke="hsl(var(--muted-foreground))" />
+              <YAxis className="text-xs" stroke="hsl(var(--muted-foreground))" />
               <Tooltip 
-                contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', color: 'hsl(var(--foreground))' }}
+                contentStyle={{ 
+                  backgroundColor: 'hsl(var(--card))', 
+                  borderColor: 'hsl(var(--border))',
+                  color: 'hsl(var(--foreground))'
+                }}
               />
-              <Legend />
-              {TOPIC_GROUPS[selectedGroup].split(',').map((topic, index) => (
-                <Line 
-                  key={topic} 
-                  type="monotone" 
-                  dataKey={topic} 
-                  stroke={COLORS[index % COLORS.length]} 
-                  activeDot={{ r: 8 }}
+              <Legend wrapperStyle={{ paddingTop: '20px' }}/>
+              {Object.keys(data[0] || {}).filter(k => k !== 'date').map((topic, index) => (
+                <Line
+                  key={topic}
+                  type="monotone"
+                  dataKey={topic}
+                  stroke={COLORS[index % COLORS.length]}
                   strokeWidth={2}
-                  animationDuration={1500}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
                 />
               ))}
             </LineChart>
