@@ -40,7 +40,7 @@ const QuestionModal = ({ isOpen, onClose, questionId }) => {
           </div>
         ) : details ? (
           <>
-            {/* --- STICKY HEADER SECTION --- */}
+            {/* Sticky Header */}
             <div className="p-6 pb-4 border-b bg-background shrink-0 flex justify-between items-start gap-4">
               <div className="flex-1 min-w-0">
                 <h2 className="text-2xl font-bold text-primary leading-tight" dangerouslySetInnerHTML={{__html: details.title}} />
@@ -53,7 +53,6 @@ const QuestionModal = ({ isOpen, onClose, questionId }) => {
                 </div>
               </div>
               
-              {/* Close Button is now part of the sticky header */}
               <button 
                 onClick={onClose}
                 className="p-2 rounded-full hover:bg-muted transition-colors shrink-0 -mr-2 -mt-2"
@@ -62,7 +61,7 @@ const QuestionModal = ({ isOpen, onClose, questionId }) => {
               </button>
             </div>
 
-            {/* --- SCROLLABLE CONTENT SECTION --- */}
+            {/* Scrollable Body */}
             <div className="overflow-y-auto p-6 pt-4">
               <div className="prose dark:prose-invert max-w-none text-sm border-b pb-6">
                 <div dangerouslySetInnerHTML={{ __html: details.body }} />
@@ -83,7 +82,14 @@ const QuestionModal = ({ isOpen, onClose, questionId }) => {
                    </h3>
                    <div className="space-y-4">
                      {details.answers.map(ans => (
-                        <div key={ans.answerId} className={`p-4 rounded border bg-card ${ans.isAccepted ? 'border-green-500 ring-1 ring-green-500' : ''}`}>
+                        <div 
+                          key={ans.answerId} 
+                          className={`p-4 rounded border ${
+                            ans.isAccepted 
+                              ? 'border-green-500 ring-1 ring-green-500 bg-green-500/10' 
+                              : 'bg-card'
+                          }`}
+                        >
                            <div className="prose dark:prose-invert text-sm max-w-none" dangerouslySetInnerHTML={{__html: ans.body}} />
                            <div className="mt-2 text-xs text-muted-foreground text-right">
                               Answered by {ans.owner.displayName} {ans.isAccepted && '(Accepted)'}
