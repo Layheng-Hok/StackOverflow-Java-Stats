@@ -4,10 +4,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 const TOPIC_GROUPS = {
   "Java Core": "stream,collections,multithreading,generics,reflection",
-  "Runtime": "jvm,garbage-collection,javac",
-  "Spring": "spring,spring-boot,spring-security,spring-data-jpa,spring-mvc",
+  "Java Runtime & Internals": "jvm,garbage-collection,javac",
+  "Spring Ecosystem": "spring,spring-boot,spring-security,spring-data-jpa,spring-mvc",
   "Build Tools": "maven,gradle",
-  "Servlet": "tomcat,jetty",
+  "Servle Containers": "tomcat,jetty",
   "IDEs": "intellij-idea,eclipse",
   "Serialization": "json,jackson,gson,protobuf,xml"
 };
