@@ -44,12 +44,21 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      {/* Top Bar for Mobile / Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-between px-8">
-          <div className="mr-4 flex font-bold text-xl text-primary">
+          
+          <div className="mr-4 flex items-center gap-2 font-bold text-xl text-primary">
+            <svg 
+              viewBox="0 0 120 120" 
+              className="h-8 w-8 fill-current text-orange-500"
+              aria-hidden="true"
+            >
+              <path d="M84.4 93.8V70.6h7.7v30.9H22.6V70.6h7.7v23.2z" />
+              <path d="M38.8 68.4l37.8 7.9 1.6-7.6-37.8-7.9-1.6 7.6zm5-18l35 16.3 3.2-7-35-16.4-3.2 7.1zm9.7-17.2l29.7 24.7 4.9-5.9-29.7-24.7-4.9 5.9zm19.2-18.3l-6.2 4.6 23 31 6.2-4.6-23-31zM38 86h38.6v-7.7H38V86z" />
+            </svg>
              StackOverflow Java Stats
           </div>
+
           <button
             onClick={toggleTheme}
             className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground h-10 w-10"
