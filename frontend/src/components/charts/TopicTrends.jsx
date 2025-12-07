@@ -6,8 +6,8 @@ const TOPIC_GROUPS = {
   "Java Core": "stream,collections,multithreading,generics,reflection",
   "Java Runtime & Internals": "jvm,garbage-collection,javac",
   "Spring Ecosystem": "spring,spring-boot,spring-security,spring-data-jpa,spring-mvc",
+  "Servlet Containers": "tomcat,jetty",
   "Build Tools": "maven,gradle",
-  "Servle Containers": "tomcat,jetty",
   "IDEs": "intellij-idea,eclipse",
   "Serialization": "json,jackson,gson,protobuf,xml"
 };
