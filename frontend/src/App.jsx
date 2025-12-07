@@ -7,8 +7,8 @@ import QuestionSolvability from './components/charts/QuestionSolvability';
 
 const App = () => {
   const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     return 'light';
   });
@@ -24,7 +24,6 @@ const App = () => {
     };
 
     mediaQuery.addEventListener('change', handleChange);
-
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
@@ -117,6 +116,7 @@ const App = () => {
           </button>
         </div>
       </header>
+
       <div className="flex w-full items-start pt-14">
         <aside className="fixed top-14 left-0 z-30 hidden h-[calc(100vh-3.5rem)] w-[220px] overflow-y-auto border-r bg-background md:block lg:w-[240px]">
           <nav className="grid items-start gap-2 p-4 text-sm font-medium">
