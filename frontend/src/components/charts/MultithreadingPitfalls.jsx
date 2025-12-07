@@ -28,7 +28,7 @@ const MultithreadingPitfalls = () => {
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
-      {/* Chart Section */}
+      {/* Chart Section - Takes remaining space (approx 70%) */}
       <div className="flex-1 min-h-[300px]">
         <ResponsiveContainer width="100%" height={350}>
           <PieChart>
@@ -57,8 +57,8 @@ const MultithreadingPitfalls = () => {
         </p>
       </div>
 
-      {/* List Section */}
-      <div className="flex-1 border rounded-md p-4 h-[350px] overflow-y-auto bg-muted/20">
+      {/* List Section - Fixed at 30% width on Desktop */}
+      <div className="w-full md:w-[30%] shrink-0 border rounded-md p-4 h-[350px] overflow-y-auto bg-muted/20">
         <h4 className="font-semibold mb-3 sticky top-0 bg-background/0 backdrop-blur-sm">
           {selectedPitfall ? `${selectedPitfall.pitfall} Questions` : 'Select a pitfall to view questions'}
         </h4>
@@ -69,9 +69,10 @@ const MultithreadingPitfalls = () => {
               <button
                 key={id}
                 onClick={() => openQuestion(id)}
-                className="w-full text-left px-3 py-2 text-sm rounded hover:bg-accent hover:text-accent-foreground transition-colors flex items-center gap-2"
+                className="group w-full text-left px-3 py-2 text-sm rounded hover:bg-accent hover:text-accent-foreground transition-colors flex items-center gap-2"
               >
-                <span className="text-primary">#</span> {id}
+                {/* Added group-hover effect specific to the ID */}
+                <span className="text-primary font-mono group-hover:underline group-hover:font-bold"># {id}</span>
               </button>
             ))}
           </div>
