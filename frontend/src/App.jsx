@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Moon, Sun, TrendingUp, Share2, AlertTriangle, CheckCircle } from 'lucide-react';
 import TopicTrends from './components/charts/TopicTrends';
 import TopicCooccurrences from './components/charts/TopicCooccurrences';
@@ -14,6 +14,7 @@ const App = () => {
   });
 
   const [activeSection, setActiveSection] = useState('trends');
+  const [isManualScrolling, setIsManualScrolling] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -40,18 +41,47 @@ const App = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  const navItems = [
+  const navItems = useMemo(() => [
     { id: 'trends', label: 'Topic Trends', icon: <TrendingUp size={20} /> },
     { id: 'cooccurrence', label: 'Co-occurrences', icon: <Share2 size={20} /> },
     { id: 'pitfalls', label: 'Concurrency Pitfalls', icon: <AlertTriangle size={20} /> },
     { id: 'solvability', label: 'Solvability Factors', icon: <CheckCircle size={20} /> },
-  ];
+  ], []);
+
+
+  useEffect(() => {
+    if (isManualScrolling) return;
+
+    const handleIntersect = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, {
+      root: null,
+
+      rootMargin: '-20% 0px -50% 0px', 
+      threshold: 0
+    });
+
+    navItems.forEach((item) => {
+      const element = document.getElementById(item.id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, [navItems, isManualScrolling]);
 
   const scrollToSection = (id) => {
+    setIsManualScrolling(true);
     setActiveSection(id);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => setIsManualScrolling(false), 1000);
     }
   };
 
