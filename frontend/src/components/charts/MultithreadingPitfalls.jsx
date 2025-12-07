@@ -84,7 +84,7 @@ const MultithreadingPitfalls = () => {
               onClick={handleSliceClick}
               onMouseEnter={onPieEnter}
               cursor="pointer"
-              label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+              label={({ name, percent }) => `${(percent * 100).toFixed(1)}%`}
               labelLine={true}
             >
               {data.map((entry, index) => (
