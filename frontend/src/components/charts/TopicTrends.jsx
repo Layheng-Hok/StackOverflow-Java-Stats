@@ -65,7 +65,7 @@ const TopicTrends = () => {
           <button
             key={group}
             onClick={() => setSelectedGroup(group)}
-            className={`px-4 py-2 text-sm rounded-full transition-all ${
+            className={`px-4 py-2 text-sm rounded-md transition-all ${
               selectedGroup === group 
                 ? 'bg-primary text-primary-foreground shadow-md' 
                 : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
