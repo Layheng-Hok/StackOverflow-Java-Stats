@@ -62,8 +62,7 @@ const App = () => {
 
     const observer = new IntersectionObserver(handleIntersect, {
       root: null,
-
-      rootMargin: '-20% 0px -50% 0px', 
+      rootMargin: '-100px 0px -50% 0px', 
       threshold: 0
     });
 
@@ -80,15 +79,23 @@ const App = () => {
     setActiveSection(id);
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+        });
+        
       setTimeout(() => setIsManualScrolling(false), 1000);
     }
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between px-8">
+      <header className="fixed top-0 left-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex h-14 items-center justify-between px-8">
           
           <div className="mr-4 flex items-center gap-2 font-bold text-xl text-primary">
             <svg 
@@ -110,12 +117,9 @@ const App = () => {
           </button>
         </div>
       </header>
-
-      <div className="container flex-1 items-start md:grid md:grid-cols-[220px_1fr] md:gap-6 lg:grid-cols-[240px_1fr] lg:gap-10 p-8">
-        
-        {/* Left Navigation (Sticky) */}
-        <aside className="fixed top-20 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r md:sticky md:block">
-          <nav className="grid items-start gap-2 text-sm font-medium lg:px-4">
+      <div className="flex w-full items-start pt-14">
+        <aside className="fixed top-14 left-0 z-30 hidden h-[calc(100vh-3.5rem)] w-[220px] overflow-y-auto border-r bg-background md:block lg:w-[240px]">
+          <nav className="grid items-start gap-2 p-4 text-sm font-medium">
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -131,9 +135,8 @@ const App = () => {
           </nav>
         </aside>
 
-        {/* Main Content Area */}
-        <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr]">
-          <div className="w-full min-w-0">
+        <main className="flex-1 py-6 md:pl-[220px] lg:pl-[240px]">
+          <div className="container px-4 md:px-8 max-w-6xl mx-auto">
             
             <section id="trends" className="mb-20 scroll-mt-24">
               <div className="space-y-4">
