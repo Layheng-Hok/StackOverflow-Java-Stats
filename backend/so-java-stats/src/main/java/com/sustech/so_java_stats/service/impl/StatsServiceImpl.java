@@ -7,9 +7,9 @@ import com.sustech.so_java_stats.dto.TopicTrendResponseDto;
 import com.sustech.so_java_stats.model.Answer;
 import com.sustech.so_java_stats.model.Comment;
 import com.sustech.so_java_stats.model.Question;
-import com.sustech.so_java_stats.model.Tag;
 import com.sustech.so_java_stats.repository.QuestionRepository;
 import com.sustech.so_java_stats.repository.projection.TopicCooccurrenceProjection;
+import com.sustech.so_java_stats.repository.projection.TopicTrendProjection;
 import com.sustech.so_java_stats.service.StatsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,68 +49,35 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     @Transactional(readOnly = true)
-    public TopicTrendResponseDto getTopicTrends(List<String> requestedTopics,
-                                                LocalDate startDate,
-                                                LocalDate endDate,
-                                                String granularity) {
+    public TopicTrendResponseDto getTopicTrends(List<String> topics, LocalDate startDate, LocalDate endDate, String granularity) {
 
-        Instant startInstant = startDate.atStartOfDay(ZoneId.of("UTC")).toInstant();
-        Instant endInstant = endDate.plusDays(1).atStartOfDay(ZoneId.of("UTC")).toInstant();
-        List<Question> questions = questionRepository.findByCreationDateBetween(startInstant, endInstant);
+        Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant endInstant = endDate.atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant();
 
-        DateTimeFormatter formatter;
-        boolean isYearly = granularity.equalsIgnoreCase("yearly");
-        if (isYearly) {
-            formatter = DateTimeFormatter.ofPattern("yyyy");
-        } else {
-            formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        List<TopicTrendProjection> projections;
+
+        switch (granularity.toLowerCase()) {
+            case "year", "yearly" ->
+                    projections = questionRepository.findTopicTrendsYearly(topics, startInstant, endInstant);
+            case "month", "monthly" ->
+                    projections = questionRepository.findTopicTrendsMonthly(topics, startInstant, endInstant);
+            default -> throw new IllegalArgumentException("Invalid granularity: " + granularity);
         }
 
-        List<String> allDateBuckets = new ArrayList<>();
-        LocalDate current = startDate.withDayOfMonth(1);
-        while (!current.isAfter(endDate)) {
-            allDateBuckets.add(current.format(formatter));
+        Map<String, List<TopicTrendResponseDto.TimePoint>> mappedData = new HashMap<>();
+        topics.forEach(t -> mappedData.put(t, new ArrayList<>()));
 
-            if (isYearly) {
-                current = current.plusYears(1);
-            } else {
-                current = current.plusMonths(1);
+        for (TopicTrendProjection projection : projections) {
+            String topic = projection.getTopic();
+            if (mappedData.containsKey(topic)) {
+                mappedData.get(topic).add(new TopicTrendResponseDto.TimePoint(
+                        projection.getDatePoint(),
+                        projection.getCountVal().intValue()
+                ));
             }
         }
 
-        Map<String, Map<String, Integer>> tempAggregator = new HashMap<>();
-        for (String topic : requestedTopics) {
-            Map<String, Integer> timeSeries = new TreeMap<>();
-            for (String bucket : allDateBuckets) {
-                timeSeries.put(bucket, 0);
-            }
-            tempAggregator.put(topic, timeSeries);
-        }
-
-        for (Question question : questions) {
-            String dateBucket = question.getCreationDate()
-                    .atZone(ZoneId.of("UTC"))
-                    .format(formatter);
-
-            for (Tag tag : question.getTags()) {
-                String tagName = tag.getTagName();
-                if (tempAggregator.containsKey(tagName)) {
-                    if (tempAggregator.get(tagName).containsKey(dateBucket)) {
-                        tempAggregator.get(tagName).merge(dateBucket, 1, Integer::sum);
-                    }
-                }
-            }
-        }
-
-        Map<String, List<TopicTrendResponseDto.TimePoint>> finalData = new LinkedHashMap<>();
-        for (String topic : requestedTopics) {
-            List<TopicTrendResponseDto.TimePoint> timePoints = tempAggregator.get(topic).entrySet().stream()
-                    .map(entry -> new TopicTrendResponseDto.TimePoint(entry.getKey(), entry.getValue()))
-                    .collect(Collectors.toList());
-            finalData.put(topic, timePoints);
-        }
-
-        return new TopicTrendResponseDto(requestedTopics, finalData);
+        return new TopicTrendResponseDto(topics, mappedData);
     }
 
     @Override
