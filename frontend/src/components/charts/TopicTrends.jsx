@@ -15,10 +15,35 @@ const TOPIC_GROUPS = {
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#0088fe'];
 
+const generateMonthRange = (startDateStr, endDateStr) => {
+  const start = new Date(startDateStr);
+  const end = new Date(endDateStr);
+  const dates = [];
+
+  let current = new Date(start.getFullYear(), start.getMonth(), 1);
+  const endTime = end.getTime();
+
+  while (current.getTime() <= endTime) {
+    const year = current.getFullYear();
+    const month = String(current.getMonth() + 1).padStart(2, '0');
+    dates.push(`${year}-${month}`);
+    
+    current.setMonth(current.getMonth() + 1);
+  }
+  return dates;
+};
+
 const TopicTrends = () => {
   const [selectedGroup, setSelectedGroup] = useState("Java Core");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [availableTopics, setAvailableTopics] = useState([]);
+
+  const QUERY_CONFIG = {
+    startDate: '2024-12-01',
+    endDate: '2025-11-30',
+    granularity: 'monthly'
+  };
 
   useEffect(() => {
     fetchData();
@@ -31,28 +56,33 @@ const TopicTrends = () => {
       const response = await axios.get('/api/stats/topic-trends', {
         params: {
           topics: topics,
-          startDate: '2024-12-01',
-          endDate: '2025-11-30',
-          granularity: 'monthly'
+          ...QUERY_CONFIG
         }
       });
 
       const rawData = response.data.data;
-      
-      const chartData = [];
-      const dates = Object.values(rawData)[0]?.map(t => t.date) || [];
-      
-      dates.forEach((date, index) => {
+      const topicList = response.data.topics || [];
+      const fullDateRange = generateMonthRange(QUERY_CONFIG.startDate, QUERY_CONFIG.endDate);
+
+
+      const chartData = fullDateRange.map(date => {
         const point = { date };
-        response.data.topics.forEach(topic => {
-          point[topic] = rawData[topic][index]?.value || 0;
+        
+        topicList.forEach(topic => {
+          const topicPoints = rawData[topic] || [];
+          const match = topicPoints.find(p => p.date === date);
+          point[topic] = match ? match.value : 0;
         });
-        chartData.push(point);
+
+        return point;
       });
 
       setData(chartData);
+      setAvailableTopics(topicList);
+
     } catch (error) {
       console.error("Error fetching trends", error);
+      setData([]); 
     } finally {
       setLoading(false);
     }
@@ -81,30 +111,44 @@ const TopicTrends = () => {
           <ChartSkeleton height="h-full" />
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-              <XAxis dataKey="date" className="text-xs" stroke="hsl(var(--muted-foreground))" />
-              <YAxis className="text-xs" stroke="hsl(var(--muted-foreground))" />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'hsl(var(--card))', 
-                  borderColor: 'hsl(var(--border))',
-                  color: 'hsl(var(--foreground))'
-                }}
-              />
-              <Legend wrapperStyle={{ paddingTop: '20px' }}/>
-              {Object.keys(data[0] || {}).filter(k => k !== 'date').map((topic, index) => (
-                <Line
-                  key={topic}
-                  type="monotone"
-                  dataKey={topic}
-                  stroke={COLORS[index % COLORS.length]}
-                  strokeWidth={2}
-                  dot={{ r: 4 }}
-                  activeDot={{ r: 6 }}
+            {data.length > 0 ? (
+              <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis 
+                  dataKey="date" 
+                  className="text-xs" 
+                  stroke="hsl(var(--muted-foreground))" 
                 />
-              ))}
-            </LineChart>
+                <YAxis 
+                  className="text-xs" 
+                  stroke="hsl(var(--muted-foreground))" 
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'hsl(var(--card))', 
+                    borderColor: 'hsl(var(--border))',
+                    color: 'hsl(var(--foreground))'
+                  }}
+                />
+                <Legend wrapperStyle={{ paddingTop: '20px' }}/>
+                
+                {availableTopics.map((topic, index) => (
+                  <Line
+                    key={topic}
+                    type="monotone"
+                    dataKey={topic}
+                    stroke={COLORS[index % COLORS.length]}
+                    strokeWidth={2}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                ))}
+              </LineChart>
+            ) : (
+              <div className="flex h-full items-center justify-center text-muted-foreground">
+                No data available for this range.
+              </div>
+            )}
           </ResponsiveContainer>
         )}
       </div>
