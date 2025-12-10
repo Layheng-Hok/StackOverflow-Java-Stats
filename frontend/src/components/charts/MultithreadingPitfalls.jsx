@@ -8,7 +8,6 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'
 
 const renderActiveShape = (props) => {
   const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
-
   return (
     <g>
       <Sector
@@ -69,61 +68,73 @@ const MultithreadingPitfalls = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-8">
+    <div className="flex flex-col md:flex-row gap-8 min-h-[350px] h-auto"> 
       {/* Chart Section */}
-      <div className="flex-1 min-h-[300px]">
+      <div className="flex-1 min-h-[250px] flex flex-col"> 
         {loading ? (
-          <ChartSkeleton height="h-[350px]" />
+          <ChartSkeleton height="h-full" />
         ) : (
-          <ResponsiveContainer width="100%" height={350}>
-            <PieChart>
-              <Pie
-                activeIndex={activeIndex}
-                activeShape={renderActiveShape}
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="count"
-                nameKey="pitfall"
-                onClick={handleSliceClick}
-                onMouseEnter={onPieEnter}
-                cursor="pointer"
-                label={({ name, percent }) => `${(percent * 100).toFixed(1)}%`}
-                labelLine={true}
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} strokeWidth={0} />
-                ))}
-              </Pie>
-              <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'hsl(var(--card))', 
-                    borderColor: 'hsl(var(--border))',
-                    color: 'hsl(var(--foreground))'
+          <>
+            <ResponsiveContainer width="99%" height="100%">
+              <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}> {/* Zero margins */}
+                <Pie
+                  activeIndex={activeIndex}
+                  activeShape={renderActiveShape}
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="30%" 
+                  outerRadius="70%" 
+                  fill="#8884d8"
+                  dataKey="count"
+                  nameKey="pitfall"
+                  onClick={handleSliceClick}
+                  onMouseEnter={onPieEnter}
+                  cursor="pointer"
+                  label={({ name, percent }) => `${(percent * 100).toFixed(1)}%`}
+                  labelLine={true}
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} strokeWidth={0} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--card))', 
+                      borderColor: 'hsl(var(--border))',
+                      color: 'hsl(var(--foreground))'
+                    }}
+                    itemStyle={{ color: 'hsl(var(--foreground))' }}
+                />
+                <Legend 
+                  layout="horizontal" 
+                  align="center" 
+                  verticalAlign="bottom"
+                  content={(props) => { 
+                    const { payload } = props;
+                    return (
+                      <ul className="flex flex-wrap justify-center gap-1 text-sm p-1"> {/* Reduced gap-2 to gap-1, p-2 to p-1 */}
+                        {payload.map((entry, index) => (
+                          <li key={`item-${index}`} className="flex items-center">
+                            <div className="w-3 h-3 mr-1 rounded-full" style={{ backgroundColor: entry.color }} />
+                            {entry.value}
+                          </li>
+                        ))}
+                      </ul>
+                    );
                   }}
-                  itemStyle={{ color: 'hsl(var(--foreground))' }}
-              />
-              <Legend 
-                layout="vertical" 
-                align="right" 
-                verticalAlign="middle"
-                wrapperStyle={{ color: 'hsl(var(--foreground))' }} 
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        )}
-        {!loading && (
-          <p className="text-center text-sm text-muted-foreground mt-2">
-            Click a slice to view details
-          </p>
+                />
+              </PieChart>
+            </ResponsiveContainer>
+            <p className="text-center text-sm text-muted-foreground py-1"> 
+              Click a slice to view details
+            </p>
+          </>
         )}
       </div>
 
       {/* List Section */}
-      <div className={`w-full md:w-[30%] shrink-0 border rounded-md p-4 h-[350px] overflow-y-auto ${loading ? 'border-none p-0 overflow-hidden' : 'bg-muted/20'}`}>
+      <div className={`w-full md:w-[30%] shrink-0 border rounded-md p-4 min-h-[200px] h-[350px] overflow-y-auto ${loading ? 'border-none p-0 overflow-hidden' : 'bg-muted/20'}`}>
         {loading ? (
             <div className="h-full w-full animate-pulse bg-muted/20 rounded-md p-4">
               <div className="h-6 w-3/4 bg-muted rounded mb-4"></div>
