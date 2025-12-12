@@ -2,15 +2,34 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ChartSkeleton from '../ChartSkeleton';
+import { Download } from 'lucide-react';
+
+const downloadJson = (data, filename) => {
+  if (!data) return;
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
 
 const QuestionSolvability = () => {
   const [data, setData] = useState(null);
+  const [rawData, setRawData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     axios.get('/api/stats/question-solvability')
-      .then(res => setData(res.data))
+      .then(res => {
+        setData(res.data);
+        setRawData(res.data);
+      }) 
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -66,6 +85,17 @@ const QuestionSolvability = () => {
           <span>Total Hard-to-Solve</span>
         </div>
       </div>
+      {rawData && (
+        <div className="flex justify-end -mt-2">
+          <button
+            onClick={() => downloadJson(rawData, 'question-solvability.json')}
+            className="p-2 bg-background/80 hover:bg-background rounded-md shadow-sm transition-colors"
+            title="Download raw JSON data"
+          >
+            <Download size={16} className="text-muted-foreground hover:text-foreground" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
