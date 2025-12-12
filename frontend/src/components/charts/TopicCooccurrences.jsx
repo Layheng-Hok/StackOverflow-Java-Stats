@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { X } from 'lucide-react';
+import { X, Download } from 'lucide-react';
 import ChartSkeleton from '../ChartSkeleton';
+
+const downloadJson = (data, filename) => {
+  if (!data) return;
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
 
 const TopicCooccurrences = () => {
   const [data, setData] = useState([]);
+  const [rawData, setRawData] = useState(null);
   const [excludeInput, setExcludeInput] = useState('');
   const [excludedTags, setExcludedTags] = useState([]);
   const [error, setError] = useState('');
@@ -25,6 +40,7 @@ const TopicCooccurrences = () => {
           excludeTags: excludedTags.join(',')
         }
       });
+      setRawData(response.data);
       const chartData = response.data.map(item => ({
         pair: item.pair.join(' + '),
         frequency: item.frequency
@@ -133,6 +149,17 @@ const TopicCooccurrences = () => {
            </ResponsiveContainer>
         )}
       </div>
+      {rawData && (
+        <div className="flex justify-end -mt-2">
+          <button
+            onClick={() => downloadJson(rawData, 'topic-cooccurrences.json')}
+            className="p-2 bg-background/80 hover:bg-background rounded-md shadow-sm transition-colors"
+            title="Download raw JSON data"
+          >
+            <Download size={16} className="text-muted-foreground hover:text-foreground" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
