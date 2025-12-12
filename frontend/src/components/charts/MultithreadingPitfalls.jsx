@@ -3,6 +3,7 @@ import axios from 'axios';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, Sector } from 'recharts';
 import QuestionModal from '../QuestionModal';
 import ChartSkeleton from '../ChartSkeleton';
+import { Download } from 'lucide-react';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658'];
 
@@ -33,8 +34,23 @@ const renderActiveShape = (props) => {
   );
 };
 
+const downloadJson = (data, filename) => {
+  if (!data) return;
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
 const MultithreadingPitfalls = () => {
   const [data, setData] = useState([]);
+  const [rawData, setRawData] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedPitfall, setSelectedPitfall] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,6 +62,7 @@ const MultithreadingPitfalls = () => {
     axios.get('/api/stats/multithreading-pitfalls', { params: { topN: 7 } })
       .then(res => {
         setData(res.data);
+        setRawData(res.data);
         if (res.data.length > 0) {
           setSelectedPitfall(res.data[0]);
         }
@@ -129,6 +146,17 @@ const MultithreadingPitfalls = () => {
             <p className="text-center text-sm text-muted-foreground py-1"> 
               Click a slice to view details
             </p>
+            {rawData && (
+              <div className="flex justify-end -mt-2">
+                <button
+                  onClick={() => downloadJson(rawData, 'multithreading-pitfalls.json')}
+                  className="p-2 bg-background/80 hover:bg-background rounded-md shadow-sm transition-colors"
+                  title="Download raw JSON data"
+                >
+                  <Download size={16} className="text-muted-foreground hover:text-foreground" />
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

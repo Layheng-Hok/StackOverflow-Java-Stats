@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ChartSkeleton from '../ChartSkeleton';
+import { Download } from 'lucide-react';
 
 const TOPIC_GROUPS = {
   "Java Core": "stream,collections,multithreading,generics,reflection",
@@ -33,9 +34,24 @@ const generateMonthRange = (startDateStr, endDateStr) => {
   return dates;
 };
 
+const downloadJson = (data, filename) => {
+  if (!data) return;
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
 const TopicTrends = () => {
   const [selectedGroup, setSelectedGroup] = useState("Java Core");
   const [data, setData] = useState([]);
+  const [rawData, setRawData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [availableTopics, setAvailableTopics] = useState([]);
 
@@ -60,16 +76,15 @@ const TopicTrends = () => {
         }
       });
 
-      const rawData = response.data.data;
-      const topicList = response.data.topics || [];
+      const rawResponse = response.data;
+      setRawData(rawResponse);
+      const topicList = rawResponse.topics || [];
       const fullDateRange = generateMonthRange(QUERY_CONFIG.startDate, QUERY_CONFIG.endDate);
-
-
       const chartData = fullDateRange.map(date => {
         const point = { date };
         
         topicList.forEach(topic => {
-          const topicPoints = rawData[topic] || [];
+          const topicPoints = rawResponse.data[topic] || [];
           const match = topicPoints.find(p => p.date === date);
           point[topic] = match ? match.value : 0;
         });
@@ -83,6 +98,7 @@ const TopicTrends = () => {
     } catch (error) {
       console.error("Error fetching trends", error);
       setData([]); 
+      setRawData(null);
     } finally {
       setLoading(false);
     }
@@ -106,7 +122,7 @@ const TopicTrends = () => {
         ))}
       </div>
 
-      <div className="h-[400px] w-full">
+      <div className="relative h-[400px] w-full">
         {loading ? (
           <ChartSkeleton height="h-full" />
         ) : (
@@ -152,6 +168,17 @@ const TopicTrends = () => {
           </ResponsiveContainer>
         )}
       </div>
+      {rawData && (
+        <div className="flex justify-end -mt-2">
+          <button
+            onClick={() => downloadJson(rawData, `${selectedGroup.toLowerCase().replace(/\s+/g, '-')}-trends.json`)}
+            className="p-2 bg-background/80 hover:bg-background rounded-md shadow-sm transition-colors"
+            title="Download raw JSON data"
+          >
+            <Download size={16} className="text-muted-foreground hover:text-foreground" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
