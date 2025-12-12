@@ -4,6 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, Sector } fro
 import QuestionModal from '../QuestionModal';
 import ChartSkeleton from '../ChartSkeleton';
 import { Download } from 'lucide-react';
+import { downloadJson } from '../../utils/downloadUtils'; 
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658'];
 
@@ -32,20 +33,6 @@ const renderActiveShape = (props) => {
       />
     </g>
   );
-};
-
-const downloadJson = (data, filename) => {
-  if (!data) return;
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 };
 
 const MultithreadingPitfalls = () => {

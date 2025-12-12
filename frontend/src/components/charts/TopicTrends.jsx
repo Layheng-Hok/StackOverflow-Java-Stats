@@ -3,6 +3,7 @@ import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import ChartSkeleton from '../ChartSkeleton';
 import { Download } from 'lucide-react';
+import { downloadJson } from '../../utils/downloadUtils';
 
 const TOPIC_GROUPS = {
   "Java Core": "stream,collections,multithreading,generics,reflection",
@@ -32,20 +33,6 @@ const generateMonthRange = (startDateStr, endDateStr) => {
     current.setMonth(current.getMonth() + 1);
   }
   return dates;
-};
-
-const downloadJson = (data, filename) => {
-  if (!data) return;
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 };
 
 const TopicTrends = () => {
