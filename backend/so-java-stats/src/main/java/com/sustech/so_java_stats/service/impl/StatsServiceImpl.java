@@ -65,7 +65,7 @@ public class StatsServiceImpl implements StatsService {
         }
 
         Map<String, List<TopicTrendResponseDto.TimePoint>> mappedData = new HashMap<>();
-        topics.forEach(t -> mappedData.put(t, new ArrayList<>()));
+        topics.forEach(topic -> mappedData.put(topic, new ArrayList<>()));
 
         for (TopicTrendProjection projection : projections) {
             String topic = projection.getTopic();
