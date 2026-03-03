@@ -4,6 +4,7 @@ A comprehensive full-stack data visualization dashboard designed to analyze and 
 
 ## 📺 Preview
 
+https://github.com/user-attachments/assets/79b786a1-b9b9-44ab-b35f-df3a97a4c3e9
 
 ## 🛠 Tech Stack
 ### Frontend
@@ -55,9 +56,6 @@ A comprehensive full-stack data visualization dashboard designed to analyze and 
 │   │       ├── application.yaml        # App configuration
 │   │       └── data/                   # raw data source [7500 thread_X.json files]
 │   └── mvnw
-├── data-scraper
-│   ├── pom.xml
-│   └── src/main/java/DataScraper.java  # Scraper entry point
 ├── frontend
 │   ├── Dockerfile
 │   ├── index.html
@@ -78,6 +76,9 @@ A comprehensive full-stack data visualization dashboard designed to analyze and 
 │       │       └── TopicTrends.jsx
 │       ├── utils/                      # Export/Download utilities
 │       index.css
+├── data-scraper
+│   ├── pom.xml
+│   └── src/main/java/DataScraper.java  # Scraper entry point
 ├── docker-compose.yaml
 └── README.md
 ```
