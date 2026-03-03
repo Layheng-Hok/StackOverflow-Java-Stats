@@ -82,6 +82,20 @@ A comprehensive full-stack data visualization dashboard designed to analyze and 
 └── README.md
 ```
 
+## 📊 Analytics Features
+
+- **Topic Trends**: A time-series analysis showing the volume of questions for specific Java sub-topics (e.g., Spring, JVM, Multithreading) over time.
+
+- **Topic Co-occurrences**: A relationship graph/chart identifying which technologies are most frequently paired with Java.
+
+- **Concurrency Analysis**: A regex-based deep dive into question bodies and answers to identify the most common multithreading "pitfalls" (Deadlocks, Race Conditions, etc.).
+
+- **Solvability Analysis**: Comparison of metrics between "Solvable" (accepted answer) and "Hard-to-solve" questions, looking at user reputation and body length.
+
+## 🕷 Data Scraper
+
+The `data-scraper` module is a standalone Java tool that interfaces with the StackExchange API. It uses a custom filter to fetch rich thread data (including owners, comments, and full answer bodies) and saves them as serialized JSON files for the backend to ingest.
+
 ## 🚀 Getting Started
 ### Prerequisites
 
@@ -145,17 +159,3 @@ docker-compose up -d --build
    ```
 
    Access the app at http://localhost:5173.
-
-## 📊 Analytics Features
-
-- **Topic Trends**: A time-series analysis showing the volume of questions for specific Java sub-topics (e.g., Spring, JVM, Multithreading) over time.
-
-- **Topic Co-occurrences**: A relationship graph/chart identifying which technologies are most frequently paired with Java.
-
-- **Concurrency Analysis**: A regex-based deep dive into question bodies and answers to identify the most common multithreading "pitfalls" (Deadlocks, Race Conditions, etc.).
-
-- **Solvability Analysis**: Comparison of metrics between "Solvable" (accepted answer) and "Hard-to-solve" questions, looking at user reputation and body length.
-
-## 🕷 Data Scraper
-
-The `data-scraper` module is a standalone Java tool that interfaces with the StackExchange API. It uses a custom filter to fetch rich thread data (including owners, comments, and full answer bodies) and saves them as serialized JSON files for the backend to ingest.
