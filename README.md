@@ -1,4 +1,4 @@
-# StackOverflow-Java-Stats
+# StackOverflow Java Stats
 
 A comprehensive full-stack data visualization dashboard designed to analyze and display insights from over 7,500 StackOverflow threads tagged with Java. This project explores topic trends, tag co-occurrences, common multithreading pitfalls, and factors affecting question solvability.
 
